@@ -54,6 +54,10 @@
 
   <modules>
     <module>kuflow-engine-common</module>
+    <module>kuflow-engine-activity-api-task</module>
+    <module>kuflow-engine-activity-impl-task</module>
+    <module>kuflow-engine-activity-api-email</module>
+    <module>kuflow-engine-activity-impl-email</module>
   </modules>
 
   <dependencyManagement>
@@ -91,6 +95,18 @@
         <artifactId>jsr305</artifactId>
         <version>${jsr305.version}</version>
       </dependency>
+
+      <dependency>
+        <groupId>com.kuflow</groupId>
+        <artifactId>kuflow-engine-common</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.kuflow</groupId>
+        <artifactId>kuflow-engine-activity-api-task</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
     </dependencies>
   </dependencyManagement>
 
