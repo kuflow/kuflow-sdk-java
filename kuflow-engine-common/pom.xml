@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.kuflow</groupId>
+    <artifactId>kuflow-components</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>kuflow-engine-common</artifactId>
+  <packaging>jar</packaging>
+
+  <name>KuFlow :: Engine :: Common</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-openfeign</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.swagger</groupId>
+      <artifactId>swagger-annotations</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.openapitools</groupId>
+      <artifactId>jackson-databind-nullable</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.temporal</groupId>
+      <artifactId>temporal-sdk</artifactId>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>com.hubspot.maven.plugins</groupId>
+        <artifactId>prettier-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.openapitools</groupId>
+        <artifactId>openapi-generator-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <!-- https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-maven-plugin -->
+              <inputSpec>${project.parent.basedir}/etc/openapi/v1/openapi.yaml</inputSpec>
+              <generatorName>java</generatorName>
+              <templateDirectory>${project.basedir}/src/main/resources</templateDirectory>
+              <modelNameSuffix>Resource</modelNameSuffix>
+              <generateApiTests>false</generateApiTests>
+              <generateModelTests>false</generateModelTests>
+              <supportingFilesToGenerate>StringUtil.java,EncodingUtils.java</supportingFilesToGenerate>
+              <typeMappings>
+                <typeMapping>OffsetDateTime=Instant</typeMapping>
+              </typeMappings>
+              <importMappings>
+                <importMapping>java.time.OffsetDateTime=java.time.Instant</importMapping>
+              </importMappings>
+              <globalProperties>
+                <!-- No skip models defined as the form parameters in "requestBody", ie: multipart/form-data -->
+                <skipFormModel>false</skipFormModel>
+              </globalProperties>
+
+              <!-- Necessary to avoid cycles in IDEs like vscode -->
+              <skipIfSpecIsUnchanged>true</skipIfSpecIsUnchanged>
+
+              <!-- https://github.com/OpenAPITools/openapi-generator/blob/master/docs/generators/java.md -->
+              <configOptions>
+                <hideGenerationTimestamp>true</hideGenerationTimestamp>
+                <library>feign</library>
+                <dateLibrary>java8</dateLibrary>
+                <apiPackage>com.kuflow.engine.api.controller</apiPackage>
+                <modelPackage>com.kuflow.engine.api.resource</modelPackage>
+                <invokerPackage>com.kuflow.engine.api.invoker</invokerPackage>
+                <performBeanValidation>true</performBeanValidation>
+                <useBeanValidation>true</useBeanValidation>
+                <legacyDiscriminatorBehavior>true</legacyDiscriminatorBehavior>
+              </configOptions>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
