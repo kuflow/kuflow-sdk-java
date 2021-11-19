@@ -13,6 +13,12 @@ import io.temporal.activity.ActivityMethod;
 
 @ActivityInterface
 public interface EmailActivities {
+    /**
+     * Send an e-mail. The template and recipients indicated are used.
+     *
+     * @param request must not be {@literal null}.
+     * @return
+     */
     @ActivityMethod
     SendMailResponseResource sendMail(SendMailRequestResource request);
 }
