@@ -13,7 +13,7 @@
     <relativePath /> <!-- lookup parent from repository -->
   </parent>
 
-  <groupId>com.kuflow</groupId>
+  <groupId>com.kuflow.components</groupId>
   <artifactId>kuflow-components</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
@@ -53,12 +53,12 @@
   </properties>
 
   <modules>
-    <module>kuflow-engine-common</module>
-    <module>kuflow-engine-activity-api-task</module>
-    <module>kuflow-engine-activity-impl-task</module>
-    <module>kuflow-engine-activity-api-email</module>
-    <module>kuflow-engine-activity-impl-email</module>
-    <module>kuflow-engine-worker-sample</module>
+    <module>kuflow-common</module>
+    <module>kuflow-activity-api-task</module>
+    <module>kuflow-activity-impl-task</module>
+    <module>kuflow-activity-api-email</module>
+    <module>kuflow-activity-impl-email</module>
+    <module>kuflow-worker-sample</module>
   </modules>
 
   <dependencyManagement>
@@ -98,28 +98,28 @@
       </dependency>
 
       <dependency>
-        <groupId>com.kuflow</groupId>
-        <artifactId>kuflow-engine-common</artifactId>
+        <groupId>com.kuflow.components</groupId>
+        <artifactId>kuflow-common</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.kuflow</groupId>
-        <artifactId>kuflow-engine-activity-api-task</artifactId>
+        <groupId>com.kuflow.components</groupId>
+        <artifactId>kuflow-activity-api-task</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.kuflow</groupId>
-        <artifactId>kuflow-engine-activity-impl-task</artifactId>
+        <groupId>com.kuflow.components</groupId>
+        <artifactId>kuflow-activity-impl-task</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.kuflow</groupId>
-        <artifactId>kuflow-engine-activity-api-email</artifactId>
+        <groupId>com.kuflow.components</groupId>
+        <artifactId>kuflow-activity-api-email</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.kuflow</groupId>
-        <artifactId>kuflow-engine-activity-impl-email</artifactId>
+        <groupId>com.kuflow.components</groupId>
+        <artifactId>kuflow-activity-impl-email</artifactId>
         <version>${project.version}</version>
       </dependency>
     </dependencies>
