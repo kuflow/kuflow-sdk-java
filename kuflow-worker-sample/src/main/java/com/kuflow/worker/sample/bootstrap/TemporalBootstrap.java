@@ -6,10 +6,12 @@
 
 package com.kuflow.worker.sample.bootstrap;
 
+import com.kuflow.activity.api.email.service.EmailActivities;
 import com.kuflow.activity.api.task.service.KuFlowActivities;
 import com.kuflow.activity.api.task.service.KuFlowActivitiesDelegate;
 import com.kuflow.activity.api.task.service.KuFlowDetachedActivities;
 import com.kuflow.activity.api.task.service.KuFlowDetachedActivitiesDelegate;
+import com.kuflow.activity.impl.email.service.EmailActivitiesDelegate;
 import com.kuflow.worker.sample.config.property.ApplicationProperties;
 import com.kuflow.worker.sample.workflow.sample.SampleWorkflowImpl;
 import io.temporal.worker.Worker;
@@ -32,18 +34,22 @@ public class TemporalBootstrap implements InitializingBean, DisposableBean {
 
     private final KuFlowDetachedActivities kuflowDetachedActivities;
 
+    private final EmailActivities emailActivities;
+
     private final ApplicationProperties applicationProperties;
 
     public TemporalBootstrap(
         ApplicationProperties applicationProperties,
         WorkerFactory factory,
         KuFlowActivities kuflowActivities,
-        KuFlowDetachedActivities kuflowDetachedActivities
+        KuFlowDetachedActivities kuflowDetachedActivities,
+        EmailActivities emailActivities
     ) {
         this.applicationProperties = applicationProperties;
         this.factory = factory;
         this.kuflowActivities = kuflowActivities;
         this.kuflowDetachedActivities = kuflowDetachedActivities;
+        this.emailActivities = emailActivities;
     }
 
     @Override
@@ -64,6 +70,7 @@ public class TemporalBootstrap implements InitializingBean, DisposableBean {
         worker.registerWorkflowImplementationTypes(SampleWorkflowImpl.class);
         worker.registerActivitiesImplementations(new KuFlowActivitiesDelegate(this.kuflowActivities));
         worker.registerActivitiesImplementations(new KuFlowDetachedActivitiesDelegate(this.kuflowDetachedActivities));
+        worker.registerActivitiesImplementations(new EmailActivitiesDelegate(this.emailActivities));
 
         this.factory.start();
     }

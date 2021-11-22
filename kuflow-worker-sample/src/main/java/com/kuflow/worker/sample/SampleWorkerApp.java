@@ -6,6 +6,7 @@
 
 package com.kuflow.worker.sample;
 
+import com.kuflow.activity.impl.email.config.KuFlowActivityEmailConfiguration;
 import com.kuflow.activity.impl.task.config.KuFlowActivityTaskConfiguration;
 import com.kuflow.worker.sample.common.Constants;
 import com.kuflow.worker.sample.config.property.ApplicationProperties;
@@ -28,7 +29,7 @@ import org.springframework.core.env.Environment;
 
 @SpringBootApplication
 @EnableConfigurationProperties({ ApplicationProperties.class })
-@Import({ KuFlowActivityTaskConfiguration.class })
+@Import({ KuFlowActivityTaskConfiguration.class, KuFlowActivityEmailConfiguration.class })
 public class SampleWorkerApp implements CommandLineRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SampleWorkerApp.class);
