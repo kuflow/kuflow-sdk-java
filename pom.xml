@@ -58,6 +58,7 @@
     <module>kuflow-engine-activity-impl-task</module>
     <module>kuflow-engine-activity-api-email</module>
     <module>kuflow-engine-activity-impl-email</module>
+    <module>kuflow-engine-worker-sample</module>
   </modules>
 
   <dependencyManagement>
@@ -108,10 +109,19 @@
       </dependency>
       <dependency>
         <groupId>com.kuflow</groupId>
+        <artifactId>kuflow-engine-activity-impl-task</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.kuflow</groupId>
         <artifactId>kuflow-engine-activity-api-email</artifactId>
         <version>${project.version}</version>
       </dependency>
-
+      <dependency>
+        <groupId>com.kuflow</groupId>
+        <artifactId>kuflow-engine-activity-impl-email</artifactId>
+        <version>${project.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 

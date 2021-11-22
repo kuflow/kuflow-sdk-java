@@ -20,6 +20,14 @@ import java.util.stream.Collectors;
 
 public final class ElementUtils {
 
+    /**
+     * Utility class to extract the instance of a {@code TaskResource} element that has a maximum cardinality of one and is required.
+     *
+     * @param task must not be {@literal null}.
+     * @param code must not be {@literal null}.
+     * @param clazz search element class.  Must not be {@literal null}.
+     * @return
+     */
     public static <T extends ElementValueBaseResource> T getSingleValueByCode(TaskResource task, String code, Class<T> clazz) {
         List<T> elements = getValuesByCode(task, code, clazz);
         if (elements.size() > 2) {
