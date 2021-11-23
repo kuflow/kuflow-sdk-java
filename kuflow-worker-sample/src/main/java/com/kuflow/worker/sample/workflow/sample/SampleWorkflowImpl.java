@@ -176,14 +176,11 @@ public class SampleWorkflowImpl implements SampleWorkflow {
         email.addVariables("subject", subjectElementValue.getValue());
         email.addVariables("body", bodyElementValue.getValue());
 
-        System.out.println("111111111111111111111111111");
-
         // Send a mail
         SendMailRequestResource request = new SendMailRequestResource();
         request.setEmail(email);
         this.emailActivities.sendMail(request);
 
-        System.out.println("2222222222222222222222");
         // Add some logs to Kuflow task in order to see feedback in Kuflow app
         this.addLogInfoEntryTask(taskResponse.getTask().getId(), "Email sent!");
 
