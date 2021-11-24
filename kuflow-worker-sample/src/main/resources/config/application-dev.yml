@@ -1,0 +1,58 @@
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
+logging:
+  level:
+    ROOT: INFO
+    '[com.kuflow]': DEBUG
+
+spring:
+  config:
+    import: "optional:classpath:config/application-local.yml"
+  devtools:
+    restart:
+      enabled: true
+      additional-exclude: static/**
+    livereload:
+      enabled: false
+  mail:
+    host: 127.0.0.1
+    port: 3025
+    username: username
+    password: password
+    test-connection: true
+  messages:
+    cache-duration: PT1S # 1 second, see the ISO 8601 standard
+  thymeleaf:
+    cache: false
+  output:
+    ansi:
+      enabled: ALWAYS
+
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: full
+
+kuflow:
+  activity:
+    kuflow:
+      endpoint: http://localhost:8080/apis/external/v1
+      application-id: FILL_ME
+      password: FILL_ME
+
+# ===================================================================
+# Application specific properties
+# ===================================================================
+application:
+  temporal:
+    namespace: FILL_ME
+    kuflow-queue: KUFLOW_TASK_QUEUE
+    mutual-tls:
+      ca-data: FILL_ME_SECRET
+      cert-data: FILL_ME_SECRET
+      key-data: FILL_ME_SECRET
