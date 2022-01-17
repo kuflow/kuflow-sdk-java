@@ -133,7 +133,7 @@ public class SampleWorkflowImpl implements SampleWorkflow {
      * automatic task in Kuflow that encompasses them. As always, it all depends on the requirements of your workflow.
      *
      * @param startProcess response of start process activity
-     * @param task kuflow task with the data to send in the email
+     * @param infoTask kuflow task with the data to send in the email
      * @return
      */
     private TaskResponseResource createAutomaticTaskSendEmail(StartProcessResponseResource startProcess, TaskResponseResource infoTask) {

@@ -58,7 +58,7 @@
     <module>kuflow-activity-impl-task</module>
     <module>kuflow-activity-api-email</module>
     <module>kuflow-activity-impl-email</module>
-    <module>kuflow-worker-sample</module>
+    <module>kuflow-worker-sample-email</module>
   </modules>
 
   <dependencyManagement>

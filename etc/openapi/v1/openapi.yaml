@@ -30,7 +30,6 @@ info:
 
     This API is documented in OpenAPI format. This file allows you to create REST clients with the technology of your choice automatically. In our code repositories you can find an example of this automation using Feign for JAVA.
 
-
 externalDocs:
   description: Find out more about KuFlow
   url: 'https://kuflow.com'
@@ -259,6 +258,13 @@ paths:
             items:
               type: string
               format: uuid
+        - name: state
+          in: query
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/TaskState'
+
       responses:
         '200':
           description: Tasks found paginated
@@ -298,6 +304,31 @@ paths:
       responses:
         '200':
           description: Task claimed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        default:
+          $ref: '#/components/responses/DefaultError'
+
+  /tasks/{id}/~actions/assign:
+    post:
+      summary: Assign a task
+      description: Allow to assing a task to a user or application. Only one option will be necessary.
+      operationId: actionsAssignTask
+      tags:
+        - task
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignTaskCommand'
+      responses:
+        '200':
+          description: Task assigned
           content:
             application/json:
               schema:
@@ -450,8 +481,9 @@ paths:
 
   /tasks/{id}/~actions/complete:
     post:
-      summary: Complete a claimed task by the principal or a task unclaimed  task
-      description: Allow to complete a task
+      summary: Complete a task
+      description: |
+        Allow to complete a claimed task by the principal
       operationId: actionsCompleteTask
       tags:
         - task
@@ -544,14 +576,31 @@ components:
           format: date-time
         status:
           type: integer
-        statusMessage:
-          type: string
         message:
           type: string
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/DefaultErrorInfo'
       required:
         - timestamp
         - status
-        - statusMessage
+        - message
+
+    DefaultErrorInfo:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        location:
+          type: string
+        locationType:
+          type: string
+      required:
+        - code
+        - message
 
     WebhookEventProcessStateChangedData:
       type: object
@@ -853,6 +902,8 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/ElementValueBase'
+            initiator:
+              $ref: '#/components/schemas/Principal'
           required:
             - processDefinition
 
@@ -894,6 +945,8 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Log'
+            owner:
+              $ref: '#/components/schemas/Principal'
           required:
             - taskDefinition
             - processId
@@ -950,6 +1003,24 @@ components:
         level:
           $ref: '#/components/schemas/LogLevel'
 
+    Principal:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          $ref: '#/components/schemas/PrincipalType'
+        name:
+          type: string
+
+    PrincipalType:
+      type: string
+      enum:
+        - USER
+        - APPLICATION
+        - SYSTEM
+
     DeleteElementsCommand:
       type: object
       properties:
@@ -958,6 +1029,17 @@ components:
           type: string
       required:
         - elementDefinitionCode
+
+    AssignTaskCommand:
+      type: object
+      description: Command to assign task, only one option is required.
+      properties:
+        principalId:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
 
   responses:
     DefaultError:
