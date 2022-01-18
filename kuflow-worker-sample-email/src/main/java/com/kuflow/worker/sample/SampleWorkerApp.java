@@ -8,14 +8,10 @@ package com.kuflow.worker.sample;
 
 import com.kuflow.activity.impl.email.config.KuFlowActivityEmailConfiguration;
 import com.kuflow.activity.impl.task.config.KuFlowActivityTaskConfiguration;
-import com.kuflow.worker.sample.common.Constants;
 import com.kuflow.worker.sample.config.property.ApplicationProperties;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Optional;
-import javax.annotation.PostConstruct;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
