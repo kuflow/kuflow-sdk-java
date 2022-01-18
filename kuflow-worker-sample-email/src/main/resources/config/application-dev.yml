@@ -37,22 +37,3 @@ feign:
     config:
       default:
         loggerLevel: full
-
-kuflow:
-  activity:
-    kuflow:
-      endpoint: http://localhost:8080/apis/external/v1
-      application-id: FILL_ME
-      password: FILL_ME
-
-# ===================================================================
-# Application specific properties
-# ===================================================================
-application:
-  temporal:
-    namespace: FILL_ME
-    kuflow-queue: KUFLOW_TASK_QUEUE
-    mutual-tls:
-      ca-data: FILL_ME_SECRET
-      cert-data: FILL_ME_SECRET
-      key-data: FILL_ME_SECRET

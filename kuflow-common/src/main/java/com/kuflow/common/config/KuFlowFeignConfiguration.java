@@ -32,7 +32,7 @@ public class KuFlowFeignConfiguration {
 
     @Bean
     public BasicAuthRequestInterceptor basicAuthRequestInterceptor() {
-        return new BasicAuthRequestInterceptor(this.clientKuflowProperties.getApplicationId(), this.clientKuflowProperties.getPassword());
+        return new BasicAuthRequestInterceptor(this.clientKuflowProperties.getApplicationId(), this.clientKuflowProperties.getToken());
     }
 
     @Bean

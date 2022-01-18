@@ -34,28 +34,6 @@ public class SampleWorkerApp implements CommandLineRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SampleWorkerApp.class);
 
-    private final Environment env;
-
-    public SampleWorkerApp(Environment env) {
-        this.env = env;
-    }
-
-    /**
-     * Initializes app.
-     * <p>
-     * Spring profiles can be configured with a program argument
-     * --spring.profiles.active=your-active-profile
-     */
-    @PostConstruct
-    public void initApplication() {
-        Collection<String> activeProfiles = Arrays.asList(this.env.getActiveProfiles());
-        if (activeProfiles.contains(Constants.SPRING_PROFILE_DEVELOPMENT) && activeProfiles.contains(Constants.SPRING_PROFILE_PRODUCTION)) {
-            LOGGER.error(
-                "You have misconfigured your application! It should not run " + "with both the 'dev' and 'prod' profiles at the same time."
-            );
-        }
-    }
-
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(SampleWorkerApp.class);
         Environment env = app.run(args).getEnvironment();
