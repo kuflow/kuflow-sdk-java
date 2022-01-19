@@ -13,16 +13,16 @@
     <relativePath /> <!-- lookup parent from repository -->
   </parent>
 
-  <groupId>com.kuflow.components</groupId>
-  <artifactId>kuflow-components</artifactId>
+  <groupId>com.kuflow.engine.client</groupId>
+  <artifactId>kuflow-engine-client</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>KuFlow :: Components :: Java</name>
+  <name>KuFlow Engine Client</name>
 
   <properties>
     <maven.version>3.8.1</maven.version>
-    <java.version>17</java.version>
+    <java.version>11</java.version>
     <resource.delimiter>#</resource.delimiter>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -35,8 +35,8 @@
     <!-- Maven plugin dependencies -->
     <maven-checkstyle.version>3.1.2</maven-checkstyle.version>
     <checkstyle.version>9.1</checkstyle.version>
-    <prettier-maven-plugin.version>0.16</prettier-maven-plugin.version>
-    <prettier-java.version>1.5.0</prettier-java.version>
+    <prettier-maven-plugin.version>0.17</prettier-maven-plugin.version>
+    <prettier-java.version>1.6.1</prettier-java.version>
     <openapi-generator-maven-plugin.version>5.2.1</openapi-generator-maven-plugin.version>
 
     <!-- Spring dependencies -->
@@ -53,12 +53,12 @@
   </properties>
 
   <modules>
-    <module>kuflow-common</module>
-    <module>kuflow-activity-api-task</module>
-    <module>kuflow-activity-impl-task</module>
-    <module>kuflow-activity-api-email</module>
-    <module>kuflow-activity-impl-email</module>
-    <module>kuflow-worker-sample-email</module>
+    <module>kuflow-engine-client-common</module>
+    <module>kuflow-engine-client-activity-api-email</module>
+    <module>kuflow-engine-client-activity-api-task</module>
+    <module>kuflow-engine-client-activity-impl-email</module>
+    <module>kuflow-engine-client-activity-impl-task</module>
+<!--    <module>kuflow-worker-sample-email</module>-->
   </modules>
 
   <dependencyManagement>
@@ -98,28 +98,28 @@
       </dependency>
 
       <dependency>
-        <groupId>com.kuflow.components</groupId>
-        <artifactId>kuflow-common</artifactId>
+        <groupId>com.kuflow.engine.client</groupId>
+        <artifactId>kuflow-engine-client-common</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.kuflow.components</groupId>
-        <artifactId>kuflow-activity-api-task</artifactId>
+        <groupId>com.kuflow.engine.client</groupId>
+        <artifactId>kuflow-engine-client-activity-api-task</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.kuflow.components</groupId>
-        <artifactId>kuflow-activity-impl-task</artifactId>
+        <groupId>com.kuflow.engine.client</groupId>
+        <artifactId>kuflow-engine-client-activity-impl-task</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.kuflow.components</groupId>
-        <artifactId>kuflow-activity-api-email</artifactId>
+        <groupId>com.kuflow.engine.client</groupId>
+        <artifactId>kuflow-engine-client-activity-api-email</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.kuflow.components</groupId>
-        <artifactId>kuflow-activity-impl-email</artifactId>
+        <groupId>com.kuflow.engine.client</groupId>
+        <artifactId>kuflow-engine-client-activity-impl-email</artifactId>
         <version>${project.version}</version>
       </dependency>
     </dependencies>

@@ -10,34 +10,23 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>kuflow-worker-sample-email</artifactId>
+  <artifactId>kuflow-engine-client-activity-impl-email</artifactId>
   <packaging>jar</packaging>
 
-  <name>KuFlow :: Worker :: Sample :: Email</name>
+  <name>KuFlow Engine Client :: Activity :: Impl :: Email</name>
 
   <dependencies>
     <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-mail</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-thymeleaf</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.kuflow.engine.client</groupId>
-      <artifactId>kuflow-activity-impl-task</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.kuflow.engine.client</groupId>
-      <artifactId>kuflow-activity-impl-email</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-logging</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-configuration-processor</artifactId>
-      <optional>true</optional>
+      <artifactId>kuflow-engine-client-activity-api-email</artifactId>
     </dependency>
   </dependencies>
 
