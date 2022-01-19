@@ -1,3 +1,4 @@
+![GitHub](https://img.shields.io/github/license/kuflow/kuflow-engine-client-java?label=License)
 [![Maven Central](https://img.shields.io/maven-central/v/com.kuflow.engine.client/kuflow-engine-client?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.kuflow.engine.client%22%20AND%20a:%22kuflow-engine-client%22)
 
 # KuFlow Client Java
