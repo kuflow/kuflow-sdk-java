@@ -7,17 +7,19 @@
 logging:
   level:
     ROOT: INFO
-    '[com.kuflow]': INFO
+    '[com.kuflow]': DEBUG
 
 spring:
   application:
     name: KuFlow Engine Worker Sample Email
-  profiles:
-    default: dev
-    # The commented value for `active` can be replaced with valid Spring profiles to load.
-    # Otherwise, it will be filled in by maven when building the JAR file
-    # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
-    active: #spring.profiles.active#
+  config:
+    import:
+      - "classpath:config/application-fillme.yml"
+      - "optional:classpath:config/application-local.yml"
+  messages:
+    cache-duration: PT1S # 1 second, see the ISO 8601 standard
+  thymeleaf:
+    cache: false
   jmx:
     enabled: false
   main:
@@ -26,12 +28,21 @@ spring:
     ansi:
       enabled: detect
 
+  devtools:
+    restart:
+      enabled: true
+      additional-exclude: static/**
+    livereload:
+      enabled: false
+
+  mail:
+    host: 127.0.0.1
+    port: 3025
+    username: username
+    password: password
+    test-connection: true
+
 feign:
   autoconfiguration:
     jackson:
       enabled: true
-
-# ===================================================================
-# Application specific properties
-# ===================================================================
-#application:

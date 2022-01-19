@@ -15,7 +15,7 @@ public class ClientKuFlowProperties {
 
     private String applicationId;
 
-    private String password;
+    private String token;
 
     public String getEndpoint() {
         return this.endpoint;
@@ -33,11 +33,11 @@ public class ClientKuFlowProperties {
         this.applicationId = applicationId;
     }
 
-    public String getPassword() {
-        return this.password;
+    public String getToken() {
+        return this.token;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setToken(String token) {
+        this.token = token;
     }
 }
