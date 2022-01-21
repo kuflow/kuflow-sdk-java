@@ -52,7 +52,7 @@ public class JacksonPojoWriter extends AbstractWriter {
     private boolean isUserPojo(@NonNull Object object) {
         Class<?> type = object.getClass();
         Package typePackage = type.getPackage();
+        return typePackage != null && typePackage.getName().startsWith("com.kuflow.");
 
-        return typePackage != null && typePackage.getName().startsWith("com.kuflow.engine.api.");
     }
 }
