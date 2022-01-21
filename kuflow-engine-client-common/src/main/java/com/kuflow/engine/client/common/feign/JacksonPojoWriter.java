@@ -53,6 +53,5 @@ public class JacksonPojoWriter extends AbstractWriter {
         Class<?> type = object.getClass();
         Package typePackage = type.getPackage();
         return typePackage != null && typePackage.getName().startsWith("com.kuflow.");
-
     }
 }
