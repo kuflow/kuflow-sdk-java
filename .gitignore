@@ -72,6 +72,7 @@ out/
 node/
 log/
 target/
+*.versionsBackup
 
 ######################
 # Gradle
