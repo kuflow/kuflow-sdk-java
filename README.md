@@ -21,4 +21,4 @@ We are happy to receive your help and comments, together we will dance a wonderf
 
 ## License
 
-[MIT License](https://github.com/kuflow/kuflow-components-java/blob/master/LICENSE)
+[MIT License](https://github.com/kuflow/kuflow-engine-client-java/blob/master/LICENSE)
