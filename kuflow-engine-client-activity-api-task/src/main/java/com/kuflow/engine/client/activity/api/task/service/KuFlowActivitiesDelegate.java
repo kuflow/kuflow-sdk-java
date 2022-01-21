@@ -18,7 +18,6 @@ import com.kuflow.engine.client.activity.api.task.resource.TaskCompleteRequestRe
 import com.kuflow.engine.client.activity.api.task.resource.TaskCompleteResponseResource;
 import com.kuflow.engine.client.activity.api.task.resource.TaskRequestResource;
 import com.kuflow.engine.client.activity.api.task.resource.TaskResponseResource;
-
 import javax.annotation.Nonnull;
 
 public class KuFlowActivitiesDelegate implements KuFlowActivities {

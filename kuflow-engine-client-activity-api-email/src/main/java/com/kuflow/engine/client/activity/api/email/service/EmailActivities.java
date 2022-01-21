@@ -10,7 +10,6 @@ import com.kuflow.engine.client.activity.api.email.resource.SendMailRequestResou
 import com.kuflow.engine.client.activity.api.email.resource.SendMailResponseResource;
 import io.temporal.activity.ActivityInterface;
 import io.temporal.activity.ActivityMethod;
-
 import javax.annotation.Nonnull;
 
 @ActivityInterface(namePrefix = "KuFlow_Email_")

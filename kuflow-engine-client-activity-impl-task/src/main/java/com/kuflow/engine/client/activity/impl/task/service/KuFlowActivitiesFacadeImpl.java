@@ -27,9 +27,8 @@ import com.kuflow.engine.client.common.service.KuFlowService;
 import com.kuflow.engine.client.common.util.TemporalUtils;
 import io.temporal.activity.Activity;
 import io.temporal.activity.ActivityExecutionContext;
-import org.springframework.stereotype.Component;
-
 import javax.annotation.Nonnull;
+import org.springframework.stereotype.Component;
 
 @Component
 public class KuFlowActivitiesFacadeImpl implements KuFlowActivities {
