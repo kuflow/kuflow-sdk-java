@@ -13,6 +13,8 @@ import com.kuflow.engine.client.activity.api.email.service.EmailActivities;
 import com.kuflow.engine.client.activity.impl.email.dto.EmailDto;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Nonnull;
+
 @Component
 public class EmailActivitiesFacadeImpl implements EmailActivities {
 
@@ -22,7 +24,9 @@ public class EmailActivitiesFacadeImpl implements EmailActivities {
         this.emailService = emailService;
     }
 
-    public SendMailResponseResource sendMail(SendMailRequestResource request) {
+    @Nonnull
+    @Override
+    public SendMailResponseResource sendMail(@Nonnull SendMailRequestResource request) {
         EmailResource resource = request.getEmail();
 
         EmailDto emailDto = EmailDto

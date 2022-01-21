@@ -10,6 +10,8 @@ import com.kuflow.engine.client.activity.api.email.resource.SendMailRequestResou
 import com.kuflow.engine.client.activity.api.email.resource.SendMailResponseResource;
 import com.kuflow.engine.client.activity.api.email.service.EmailActivities;
 
+import javax.annotation.Nonnull;
+
 public class EmailActivitiesDelegate implements EmailActivities {
 
     private final EmailActivities delegate;
@@ -18,8 +20,9 @@ public class EmailActivitiesDelegate implements EmailActivities {
         this.delegate = delegate;
     }
 
+    @Nonnull
     @Override
-    public SendMailResponseResource sendMail(SendMailRequestResource request) {
+    public SendMailResponseResource sendMail(@Nonnull SendMailRequestResource request) {
         return this.delegate.sendMail(request);
     }
 }

@@ -11,14 +11,17 @@ import com.kuflow.engine.client.activity.api.email.resource.SendMailResponseReso
 import io.temporal.activity.ActivityInterface;
 import io.temporal.activity.ActivityMethod;
 
-@ActivityInterface
+import javax.annotation.Nonnull;
+
+@ActivityInterface(namePrefix = "KuFlow_Email_")
 public interface EmailActivities {
     /**
      * Send an e-mail. The template and recipients indicated are used.
      *
      * @param request must not be {@literal null}.
-     * @return
+     * @return the email sent
      */
     @ActivityMethod
-    SendMailResponseResource sendMail(SendMailRequestResource request);
+    @Nonnull
+    SendMailResponseResource sendMail(@Nonnull SendMailRequestResource request);
 }
