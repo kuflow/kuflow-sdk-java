@@ -1,6 +1,6 @@
-# Developing kuflow-components-java
+# Developing kuflow-engine-client-java
 
-This doc is intended for contributors to `kuflow-components-java`
+This doc is intended for contributors to `kuflow-engine-client-java`
 
 ## Development Environment
 

@@ -16,7 +16,7 @@
   <packaging>pom</packaging>
 
   <name>KuFlow Engine Client</name>
-  <description>Client componentes to use in KuFlow server engine.</description>
+  <description>Client components to use in KuFlow server engine.</description>
 
   <modules>
     <module>kuflow-engine-client-common</module>
@@ -24,7 +24,6 @@
     <module>kuflow-engine-client-activity-api-task</module>
     <module>kuflow-engine-client-activity-impl-email</module>
     <module>kuflow-engine-client-activity-impl-task</module>
-    <!--    <module>kuflow-worker-sample-email</module>-->
   </modules>
 
   <properties>
