@@ -18,6 +18,7 @@ import com.kuflow.engine.client.activity.api.task.resource.TaskCompleteRequestRe
 import com.kuflow.engine.client.activity.api.task.resource.TaskCompleteResponseResource;
 import com.kuflow.engine.client.activity.api.task.resource.TaskRequestResource;
 import com.kuflow.engine.client.activity.api.task.resource.TaskResponseResource;
+import javax.annotation.Nonnull;
 
 public class KuFlowActivitiesDelegate implements KuFlowActivities {
 
@@ -27,33 +28,45 @@ public class KuFlowActivitiesDelegate implements KuFlowActivities {
         this.delegate = delegate;
     }
 
+    @Nonnull
     @Override
-    public StartProcessResponseResource startProcess(StartProcessRequestResource request) {
+    public StartProcessResponseResource startProcess(@Nonnull StartProcessRequestResource request) {
         return this.delegate.startProcess(request);
     }
 
+    @Nonnull
     @Override
-    public CompleteProcessResponseResource completeProcess(CompleteProcessRequestResource request) {
+    public CompleteProcessResponseResource completeProcess(@Nonnull CompleteProcessRequestResource request) {
         return this.delegate.completeProcess(request);
     }
 
+    @Nonnull
     @Override
-    public TaskResponseResource createTask(TaskRequestResource request) {
+    public TaskResponseResource createTask(@Nonnull TaskRequestResource request) {
         return this.delegate.createTask(request);
     }
 
+    @Nonnull
     @Override
-    public TaskCompleteResponseResource completeTask(TaskCompleteRequestResource request) {
+    public TaskResponseResource createTaskAndWaitTermination(@Nonnull TaskRequestResource request) {
+        return this.delegate.createTask(request);
+    }
+
+    @Nonnull
+    @Override
+    public TaskCompleteResponseResource completeTask(@Nonnull TaskCompleteRequestResource request) {
         return this.delegate.completeTask(request);
     }
 
+    @Nonnull
     @Override
-    public TaskClaimResponseResource claimTask(TaskClaimRequestResource request) {
+    public TaskClaimResponseResource claimTask(@Nonnull TaskClaimRequestResource request) {
         return this.delegate.claimTask(request);
     }
 
+    @Nonnull
     @Override
-    public LogResponseResource appendLog(LogRequestResource request) {
+    public LogResponseResource appendLog(@Nonnull LogRequestResource request) {
         return this.delegate.appendLog(request);
     }
 }

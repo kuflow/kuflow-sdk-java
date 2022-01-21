@@ -24,6 +24,10 @@ import com.kuflow.engine.client.common.api.resource.ProcessResource;
 import com.kuflow.engine.client.common.api.resource.TaskResource;
 import com.kuflow.engine.client.common.api.resource.TasksDefinitionSummaryResource;
 import com.kuflow.engine.client.common.service.KuFlowService;
+import com.kuflow.engine.client.common.util.TemporalUtils;
+import io.temporal.activity.Activity;
+import io.temporal.activity.ActivityExecutionContext;
+import javax.annotation.Nonnull;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -35,8 +39,9 @@ public class KuFlowActivitiesFacadeImpl implements KuFlowActivities {
         this.kuFlowService = kuflowService;
     }
 
+    @Nonnull
     @Override
-    public StartProcessResponseResource startProcess(StartProcessRequestResource request) {
+    public StartProcessResponseResource startProcess(@Nonnull StartProcessRequestResource request) {
         ProcessResource processResource = this.kuFlowService.startProcess(request.getProcessId());
 
         StartProcessResponseResource response = new StartProcessResponseResource();
@@ -45,8 +50,9 @@ public class KuFlowActivitiesFacadeImpl implements KuFlowActivities {
         return response;
     }
 
+    @Nonnull
     @Override
-    public CompleteProcessResponseResource completeProcess(CompleteProcessRequestResource request) {
+    public CompleteProcessResponseResource completeProcess(@Nonnull CompleteProcessRequestResource request) {
         this.kuFlowService.completeProcess(request.getProcessId());
 
         CompleteProcessResponseResource response = new CompleteProcessResponseResource();
@@ -55,8 +61,9 @@ public class KuFlowActivitiesFacadeImpl implements KuFlowActivities {
         return response;
     }
 
+    @Nonnull
     @Override
-    public TaskResponseResource createTask(TaskRequestResource request) {
+    public TaskResponseResource createTask(@Nonnull TaskRequestResource request) {
         TasksDefinitionSummaryResource taskDefinition = new TasksDefinitionSummaryResource();
         taskDefinition.setCode(request.getTaskDefinitionCode());
 
@@ -74,8 +81,32 @@ public class KuFlowActivitiesFacadeImpl implements KuFlowActivities {
         return response;
     }
 
+    @Nonnull
     @Override
-    public TaskCompleteResponseResource completeTask(TaskCompleteRequestResource request) {
+    public TaskResponseResource createTaskAndWaitTermination(@Nonnull TaskRequestResource request) {
+        ActivityExecutionContext context = Activity.getExecutionContext();
+        String temporalToken = TemporalUtils.getTemporalTokenAsString(context);
+
+        TasksDefinitionSummaryResource taskDefinition = new TasksDefinitionSummaryResource();
+        taskDefinition.setCode(request.getTaskDefinitionCode());
+
+        TaskResource taskResource = new TaskResource();
+        taskResource.setProcessId(request.getProcessId());
+        taskResource.setTaskDefinition(taskDefinition);
+        taskResource.setId(request.getTaskId());
+        taskResource.setActivityToken(temporalToken);
+        taskResource.setElementValues(request.getElementValues());
+
+        this.kuFlowService.createTask(taskResource);
+
+        context.doNotCompleteOnReturn();
+
+        return null;
+    }
+
+    @Nonnull
+    @Override
+    public TaskCompleteResponseResource completeTask(@Nonnull TaskCompleteRequestResource request) {
         this.kuFlowService.completeTask(request.getTaskId());
 
         TaskCompleteResponseResource response = new TaskCompleteResponseResource();
@@ -84,8 +115,9 @@ public class KuFlowActivitiesFacadeImpl implements KuFlowActivities {
         return response;
     }
 
+    @Nonnull
     @Override
-    public TaskClaimResponseResource claimTask(TaskClaimRequestResource request) {
+    public TaskClaimResponseResource claimTask(@Nonnull TaskClaimRequestResource request) {
         this.kuFlowService.claimTask(request.getTaskId());
 
         TaskClaimResponseResource response = new TaskClaimResponseResource();
@@ -94,8 +126,9 @@ public class KuFlowActivitiesFacadeImpl implements KuFlowActivities {
         return response;
     }
 
+    @Nonnull
     @Override
-    public LogResponseResource appendLog(LogRequestResource request) {
+    public LogResponseResource appendLog(@Nonnull LogRequestResource request) {
         LogResource logResource = new LogResource();
         logResource.setId(request.getLogId());
         logResource.setLevel(request.getLevel());

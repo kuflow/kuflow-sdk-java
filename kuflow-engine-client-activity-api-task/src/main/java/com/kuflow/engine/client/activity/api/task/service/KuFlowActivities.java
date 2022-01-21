@@ -20,12 +20,13 @@ import com.kuflow.engine.client.activity.api.task.resource.TaskRequestResource;
 import com.kuflow.engine.client.activity.api.task.resource.TaskResponseResource;
 import io.temporal.activity.ActivityInterface;
 import io.temporal.activity.ActivityMethod;
+import javax.annotation.Nonnull;
 
 /**
  * Kuflow activities to be used in Temporal.
  *
  */
-@ActivityInterface
+@ActivityInterface(namePrefix = "KuFlow_Task_")
 public interface KuFlowActivities {
     /**
      * Start a Process. The state of Process is setted to running.
@@ -34,7 +35,8 @@ public interface KuFlowActivities {
      * @return process started
      */
     @ActivityMethod
-    StartProcessResponseResource startProcess(StartProcessRequestResource request);
+    @Nonnull
+    StartProcessResponseResource startProcess(@Nonnull StartProcessRequestResource request);
 
     /**
      * Complete a Process. The state of Process is setted to completed.
@@ -43,7 +45,8 @@ public interface KuFlowActivities {
      * @return process completed
      */
     @ActivityMethod
-    CompleteProcessResponseResource completeProcess(CompleteProcessRequestResource request);
+    @Nonnull
+    CompleteProcessResponseResource completeProcess(@Nonnull CompleteProcessRequestResource request);
 
     /**
      * Create a Task and optionally fill its elements.
@@ -54,7 +57,22 @@ public interface KuFlowActivities {
      * @return task created
      */
     @ActivityMethod
-    TaskResponseResource createTask(TaskRequestResource request);
+    @Nonnull
+    TaskResponseResource createTask(@Nonnull TaskRequestResource request);
+
+    /**
+     * Create a Task and optionally fill its elements. The activity is not completed until the <strong>"COMPLETED"</strong> or
+     * <strong>"CANCELLED"</strong> event is received from KuFlow. This is useful in KuFlow tasks where you have to wait for an external
+     * agent, usually a human, to complete it.
+     *
+     * If you want the method to be idempotent, please specify the id field in {@link TaskCompleteRequestResource}.
+     *
+     * @param request must not be {@literal null}.
+     * @return task created
+     */
+    @ActivityMethod
+    @Nonnull
+    TaskResponseResource createTaskAndWaitTermination(@Nonnull TaskRequestResource request);
 
     /**
      * Complete a task.
@@ -65,7 +83,8 @@ public interface KuFlowActivities {
      * @return task completed
      */
     @ActivityMethod
-    TaskCompleteResponseResource completeTask(TaskCompleteRequestResource request);
+    @Nonnull
+    TaskCompleteResponseResource completeTask(@Nonnull TaskCompleteRequestResource request);
 
     /**
      * Claim a task.
@@ -74,7 +93,8 @@ public interface KuFlowActivities {
      * @return task claimed
      */
     @ActivityMethod
-    TaskClaimResponseResource claimTask(TaskClaimRequestResource request);
+    @Nonnull
+    TaskClaimResponseResource claimTask(@Nonnull TaskClaimRequestResource request);
 
     /**
      * Append a log to the task.
@@ -85,5 +105,6 @@ public interface KuFlowActivities {
      * @return log appended
      */
     @ActivityMethod
-    LogResponseResource appendLog(LogRequestResource request);
+    @Nonnull
+    LogResponseResource appendLog(@Nonnull LogRequestResource request);
 }
