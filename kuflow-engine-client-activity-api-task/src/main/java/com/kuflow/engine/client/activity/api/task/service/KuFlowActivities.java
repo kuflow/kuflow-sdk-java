@@ -61,7 +61,9 @@ public interface KuFlowActivities {
     TaskResponseResource createTask(@Nonnull TaskRequestResource request);
 
     /**
-     * Create a Task and optionally fill its elements and wait that the task reach "COMPLETED" or "CANCELLED" state.
+     * Create a Task and optionally fill its elements. The activity is not completed until the <strong>"COMPLETED"</strong> or
+     * <strong>"CANCELLED"</strong> event is received from KuFlow. This is useful in KuFlow tasks where you have to wait for an external
+     * agent, usually a human, to complete it.
      *
      * If you want the method to be idempotent, please specify the id field in {@link TaskCompleteRequestResource}.
      *
