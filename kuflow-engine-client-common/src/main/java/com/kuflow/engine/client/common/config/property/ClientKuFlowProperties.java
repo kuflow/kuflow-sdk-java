@@ -8,7 +8,7 @@ package com.kuflow.engine.client.common.config.property;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "kuflow.activity.kuflow")
+@ConfigurationProperties(prefix = "kuflow.api")
 public class ClientKuFlowProperties {
 
     private String endpoint;
