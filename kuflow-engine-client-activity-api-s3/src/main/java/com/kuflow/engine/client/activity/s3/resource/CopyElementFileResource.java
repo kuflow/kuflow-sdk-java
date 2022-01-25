@@ -38,6 +38,8 @@ public class CopyElementFileResource {
 
     /**
      * @see #getElementValueId()
+     *
+     * @param elementValueId the element value id
      */
     public void setElementValueId(UUID elementValueId) {
         this.elementValueId = elementValueId;
@@ -54,6 +56,8 @@ public class CopyElementFileResource {
 
     /**
      * @see #getElementDefinitionCode()
+     *
+     * @param elementDefinitionCode the element definition code
      */
     public void setElementDefinitionCode(String elementDefinitionCode) {
         this.elementDefinitionCode = elementDefinitionCode;
@@ -70,6 +74,8 @@ public class CopyElementFileResource {
 
     /**
      * @see #getBucket()
+     *
+     * @param bucket the bucket
      */
     public void setBucket(String bucket) {
         this.bucket = bucket;
@@ -86,6 +92,8 @@ public class CopyElementFileResource {
 
     /**
      * @see #getKey()
+     *
+     * @param key the s3 key
      */
     public void setKey(String key) {
         this.key = key;

@@ -14,7 +14,7 @@ import java.util.UUID;
  * to the bucket key, ie:
  * <pre>
  * key:
- *   a/b/c --> a/b/c
+ *   a/b/c --&gt; a/b/c
  *             a/b/c_1
  * </pre>
  */
@@ -44,7 +44,9 @@ public class CopyTaskElementFilesRequestResource extends AbstractResource {
     }
 
     /**
-     * Slement definition code from we want copy the values. <strong>Required</strong>
+     * Element definition code from we want copy the values. <strong>Required</strong>
+     *
+     * @param sourceElementDefinitionCode The source element definition code
      */
     public void setSourceElementDefinitionCode(String sourceElementDefinitionCode) {
         this.sourceElementDefinitionCode = sourceElementDefinitionCode;
@@ -57,6 +59,8 @@ public class CopyTaskElementFilesRequestResource extends AbstractResource {
     /**
      * Target bucket to copy all the related files associated to {@link #sourceElementDefinitionCode}.By default, it the
      * <strong>default</strong> bucket defined in the activity configuration
+     *
+     * @param targetBucket The target bucket
      */
     public void setTargetBucket(String targetBucket) {
         this.targetBucket = targetBucket;
@@ -69,6 +73,8 @@ public class CopyTaskElementFilesRequestResource extends AbstractResource {
     /**
      * Target bucket to copy all the related files associated to {@link #sourceElementDefinitionCode}.By default, if this is missing the
      * original element value path will be used
+     *
+     * @param targetKey The target key
      */
     public void setTargetKey(String targetKey) {
         this.targetKey = targetKey;
