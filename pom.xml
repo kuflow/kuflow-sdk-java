@@ -21,21 +21,19 @@
   <modules>
     <module>kuflow-engine-client-common</module>
     <module>kuflow-engine-client-activity-api-email</module>
-    <module>kuflow-engine-client-activity-api-task</module>
+    <module>kuflow-engine-client-activity-api-s3</module>
+    <module>kuflow-engine-client-activity-api-kuflow</module>
     <module>kuflow-engine-client-activity-impl-email</module>
-    <module>kuflow-engine-client-activity-impl-task</module>
+    <module>kuflow-engine-client-activity-impl-s3</module>
+    <module>kuflow-engine-client-activity-impl-kuflow</module>
   </modules>
 
   <properties>
     <maven.version>3.8.1</maven.version>
     <java.version>11</java.version>
     <resource.delimiter>#</resource.delimiter>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
     <maven.build.timestamp.format>yyyy-MM-dd'T'HH-mm-ss</maven.build.timestamp.format>
-    <maven.compiler.source>${java.version}</maven.compiler.source>
-    <maven.compiler.target>${java.version}</maven.compiler.target>
     <argLine>-Djava.security.egd=file:/dev/./urandom -Xmx256m</argLine>
 
     <!-- Maven plugin dependencies -->
@@ -57,6 +55,7 @@
     <swagger-annotations.version>1.6.2</swagger-annotations.version>
     <jackson-databind-nullable.version>0.2.1</jackson-databind-nullable.version>
     <jsr305.version>3.0.2</jsr305.version>
+    <awssdk.version>2.16.3</awssdk.version>
   </properties>
 
   <dependencyManagement>
@@ -68,6 +67,14 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <dependency>
+        <groupId>software.amazon.awssdk</groupId>
+        <artifactId>bom</artifactId>
+        <version>${awssdk.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
       <dependency>
         <groupId>io.temporal</groupId>
         <artifactId>temporal-sdk</artifactId>
@@ -102,12 +109,12 @@
       </dependency>
       <dependency>
         <groupId>com.kuflow.engine.client</groupId>
-        <artifactId>kuflow-engine-client-activity-api-task</artifactId>
+        <artifactId>kuflow-engine-client-activity-api-kuflow</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.kuflow.engine.client</groupId>
-        <artifactId>kuflow-engine-client-activity-impl-task</artifactId>
+        <artifactId>kuflow-engine-client-activity-impl-kuflow</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -118,6 +125,16 @@
       <dependency>
         <groupId>com.kuflow.engine.client</groupId>
         <artifactId>kuflow-engine-client-activity-impl-email</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.kuflow.engine.client</groupId>
+        <artifactId>kuflow-engine-client-activity-api-s3</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.kuflow.engine.client</groupId>
+        <artifactId>kuflow-engine-client-activity-impl-s3</artifactId>
         <version>${project.version}</version>
       </dependency>
     </dependencies>

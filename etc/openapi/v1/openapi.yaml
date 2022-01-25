@@ -520,6 +520,32 @@ paths:
               schema:
                 $ref: '#/components/schemas/Task'
 
+
+  /tasks/{id}/~actions/download-element-document:
+    get:
+      summary: Download document
+      description: Given a task, download a document from an element of document type
+      operationId: actionsDownloadTaskElementDocument
+      tags:
+        - task
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+        - name: elementValueId
+          in: query
+          description: Element Value Id to download.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Document requested
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+
 x-webhooks:
   events:
     post:

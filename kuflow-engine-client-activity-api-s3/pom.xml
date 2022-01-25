@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.kuflow.engine.client</groupId>
+    <artifactId>kuflow-engine-client</artifactId>
+    <version>0.0.4-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>kuflow-engine-client-activity-api-s3</artifactId>
+  <packaging>jar</packaging>
+
+  <name>KuFlow Engine Client :: Activity :: API  :: S3</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.kuflow.engine.client</groupId>
+      <artifactId>kuflow-engine-client-common</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>com.hubspot.maven.plugins</groupId>
+        <artifactId>prettier-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
