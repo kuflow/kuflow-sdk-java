@@ -10,5 +10,5 @@ import com.kuflow.engine.client.common.api.controller.ProcessApi;
 import com.kuflow.engine.client.common.config.KuFlowFeignConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
 
-@FeignClient(value = "kuFlowProcessApi", url = "${kuflow.activity.kuflow.endpoint}", configuration = KuFlowFeignConfiguration.class)
+@FeignClient(value = "kuFlowProcessApi", url = "${kuflow.api.endpoint}", configuration = KuFlowFeignConfiguration.class)
 public interface ProcessFeignApi extends ProcessApi {}
