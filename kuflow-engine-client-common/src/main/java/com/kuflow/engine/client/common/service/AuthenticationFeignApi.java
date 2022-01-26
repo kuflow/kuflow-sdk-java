@@ -10,5 +10,5 @@ import com.kuflow.engine.client.common.api.controller.AuthenticationApi;
 import com.kuflow.engine.client.common.config.KuFlowFeignConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
 
-@FeignClient(value = "kuFlowAuthenticationApi", url = "${kuflow.activity.kuflow.endpoint}", configuration = KuFlowFeignConfiguration.class)
+@FeignClient(value = "kuFlowAuthenticationApi", url = "${kuflow.api.endpoint}", configuration = KuFlowFeignConfiguration.class)
 public interface AuthenticationFeignApi extends AuthenticationApi {}
