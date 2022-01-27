@@ -207,40 +207,6 @@ paths:
         default:
           $ref: '#/components/responses/DefaultError'
 
-  /processes/{id}/~actions/create-task:
-    post:
-      summary: Create a new Task in the selected Process
-      description: |
-        Create a Task and optionally fill its elements
-
-        If you want the method to be idempotent, please specify the `id` field in the request body.
-      operationId: actionsCreateTask
-      tags:
-        - process
-      parameters:
-        - $ref: '#/components/parameters/IdPathParam'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Task'
-      responses:
-        '200':
-          description: Task already created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Task'
-        '201':
-          description: Task created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Task'
-        default:
-          $ref: '#/components/responses/DefaultError'
-
   /tasks:
     get:
       summary: Find all accessible Taks
@@ -272,6 +238,36 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TaskPage'
+        default:
+          $ref: '#/components/responses/DefaultError'
+    post:
+      summary: Create a new Task in the selected Process
+      description: |
+        Create a Task and optionally fill its elements
+
+        If you want the method to be idempotent, please specify the `id` field in the request body.
+      operationId: createTask
+      tags:
+        - task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+      responses:
+        '200':
+          description: Task already created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '201':
+          description: Task created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
         default:
           $ref: '#/components/responses/DefaultError'
 
@@ -963,6 +959,9 @@ components:
             activityToken:
               type: string
               description: When create a Kuflow Task backed with a Temporal.io servers, this value is required and must be setted with the context task token of Temporal.io activity
+            activityResponseVersion:
+              type: string
+              description: When create a Kuflow Task backed with a Temporal.io servers, this value is required and must be setted with the activity version response.
             elementValues:
               type: array
               items:

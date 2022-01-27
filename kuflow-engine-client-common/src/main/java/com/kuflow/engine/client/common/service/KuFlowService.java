@@ -42,7 +42,7 @@ public class KuFlowService {
     }
 
     public TaskResource createTask(TaskResource taskResource) {
-        return this.processApi.actionsCreateTask(taskResource.getProcessId(), taskResource);
+        return this.taskApi.createTask(taskResource);
     }
 
     public TaskResource claimTask(UUID taskId) {
