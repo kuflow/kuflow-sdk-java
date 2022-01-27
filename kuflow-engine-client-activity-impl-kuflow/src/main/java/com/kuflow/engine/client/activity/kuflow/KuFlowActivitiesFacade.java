@@ -94,6 +94,7 @@ public class KuFlowActivitiesFacade implements KuFlowActivities {
         taskResource.setTaskDefinition(taskDefinition);
         taskResource.setId(request.getTaskId());
         taskResource.setActivityToken(temporalToken);
+        taskResource.setActivityResponseVersion("v1");
         taskResource.setElementValues(request.getElementValues());
 
         this.kuFlowService.createTask(taskResource);

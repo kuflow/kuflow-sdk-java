@@ -6,6 +6,7 @@
 
 package com.kuflow.engine.client.activity.email.service;
 
+import com.kuflow.engine.client.activity.email.config.EmailActivitiesProperties;
 import com.kuflow.engine.client.activity.email.dto.EmailDto;
 import com.kuflow.engine.client.common.error.SystemException;
 import java.nio.charset.StandardCharsets;
@@ -44,17 +45,21 @@ public class EmailService {
 
     private final MailProperties mailProperties;
 
+    private final EmailActivitiesProperties emailActivitiesProperties;
+
     private final ApplicationContext applicationContext;
 
     public EmailService(
         JavaMailSender mailSender,
         ITemplateEngine templateEngine,
         MailProperties mailProperties,
+        EmailActivitiesProperties emailActivitiesProperties,
         ApplicationContext applicationContext
     ) {
         this.mailSender = mailSender;
         this.templateEngine = templateEngine;
         this.mailProperties = mailProperties;
+        this.emailActivitiesProperties = emailActivitiesProperties;
         this.applicationContext = applicationContext;
     }
 
@@ -62,6 +67,9 @@ public class EmailService {
         try {
             Context context = new Context();
             context.setLocale(email.getLocale());
+            if (this.emailActivitiesProperties.getTemplateVariables().containsKey(email.getTemplate())) {
+                context.setVariables(this.emailActivitiesProperties.getTemplateVariables().get(email.getTemplate()));
+            }
             context.setVariables(email.getVariables());
 
             TemplateSpec subjectSpec = new TemplateSpec(email.getTemplate() + ".subject", TemplateMode.TEXT);
