@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.kuflow.engine.client</groupId>
     <artifactId>kuflow-engine-client</artifactId>
-    <version>0.0.5-SNAPSHOT</version>
+    <version>0.0.5</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
