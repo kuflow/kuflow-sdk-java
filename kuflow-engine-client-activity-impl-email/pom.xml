@@ -33,6 +33,10 @@
       <groupId>com.kuflow.engine.client</groupId>
       <artifactId>kuflow-engine-client-activity-api-email</artifactId>
     </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+    </dependency>
   </dependencies>
 
   <build>
