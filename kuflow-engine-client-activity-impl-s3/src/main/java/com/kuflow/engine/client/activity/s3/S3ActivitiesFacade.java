@@ -10,11 +10,11 @@ import com.kuflow.engine.client.activity.s3.config.S3ActivitiesProperties;
 import com.kuflow.engine.client.activity.s3.resource.CopyElementFileResource;
 import com.kuflow.engine.client.activity.s3.resource.CopyTaskElementFilesRequestResource;
 import com.kuflow.engine.client.activity.s3.resource.CopyTaskElementFilesResponseResource;
-import com.kuflow.engine.client.common.api.controller.TaskApi;
-import com.kuflow.engine.client.common.api.resource.ElementValueDocumentResource;
-import com.kuflow.engine.client.common.api.resource.TaskResource;
-import com.kuflow.engine.client.common.error.SystemException;
-import com.kuflow.engine.client.common.util.ElementUtils;
+import com.kuflow.engine.client.common.error.KuFlowEngineClientException;
+import com.kuflow.rest.client.controller.TaskApi;
+import com.kuflow.rest.client.resource.ElementValueDocumentResource;
+import com.kuflow.rest.client.resource.TaskResource;
+import com.kuflow.rest.client.util.ElementUtils;
 import feign.Response;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,8 +22,6 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Nonnull;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.http.ContentDisposition;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -91,13 +89,13 @@ public class S3ActivitiesFacade implements S3Activities {
                 .builder()
                 .bucket(targetBucket)
                 .contentType(elementValueDocument.getContentType())
-                .contentDisposition(ContentDisposition.attachment().filename(elementValueDocument.getName()).build().toString())
+                .contentDisposition(String.format("attachment; filename=\"%s\"", elementValueDocument.getName()))
                 .key(targetKey)
                 .build();
 
             this.s3Client.putObject(putObjectRequest, requestBody);
         } catch (IOException e) {
-            throw new SystemException("Input stream error", e);
+            throw new KuFlowEngineClientException("Input stream error", e);
         }
     }
 
@@ -122,6 +120,10 @@ public class S3ActivitiesFacade implements S3Activities {
     }
 
     private String getTargetBucket(CopyTaskElementFilesRequestResource request) {
-        return StringUtils.defaultString(request.getTargetBucket(), this.s3ActivitiesProperties.getDefaultBucket());
+        if (request.getTargetBucket() == null) {
+            return this.s3ActivitiesProperties.getDefaultBucket();
+        }
+
+        return request.getTargetBucket();
     }
 }

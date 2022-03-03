@@ -6,7 +6,7 @@
 
 package com.kuflow.engine.client.common.util;
 
-import com.kuflow.engine.client.common.error.SystemException;
+import com.kuflow.engine.client.common.error.KuFlowEngineClientException;
 import io.temporal.activity.ActivityExecutionContext;
 import io.temporal.common.metadata.POJOActivityInterfaceMetadata;
 import io.temporal.common.metadata.POJOActivityMethodMetadata;
@@ -31,7 +31,7 @@ public final class TemporalUtils {
             .stream()
             .filter(it -> it.getMethod().getName().equals(activityMethod))
             .findFirst()
-            .orElseThrow(() -> new SystemException("activityMethod " + activityMethod + " not found"));
+            .orElseThrow(() -> new KuFlowEngineClientException("activityMethod " + activityMethod + " not found"));
 
         return pojoActivityMethodMetadata.getActivityTypeName();
     }

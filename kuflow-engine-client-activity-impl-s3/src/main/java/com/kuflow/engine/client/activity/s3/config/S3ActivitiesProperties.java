@@ -10,7 +10,6 @@ import java.net.URI;
 import java.util.Optional;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotEmpty;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 import software.amazon.awssdk.regions.Region;
@@ -91,7 +90,7 @@ public class S3ActivitiesProperties {
             Region
                 .regions()
                 .stream()
-                .filter(r -> r.metadata().id().equals(StringUtils.lowerCase(this.region)))
+                .filter(r -> r.metadata().id().equals(this.region.toLowerCase()))
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Region %s not found", this.region)))
         );

@@ -8,7 +8,7 @@ package com.kuflow.engine.client.activity.email.service;
 
 import com.kuflow.engine.client.activity.email.config.EmailActivitiesProperties;
 import com.kuflow.engine.client.activity.email.dto.EmailDto;
-import com.kuflow.engine.client.common.error.SystemException;
+import com.kuflow.engine.client.common.error.KuFlowEngineClientException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -92,7 +92,7 @@ public class EmailService {
 
             this.mailSender.send(mimeMessage);
         } catch (Exception ex) {
-            throw new SystemException("Unable to send email", ex);
+            throw new KuFlowEngineClientException("Unable to send email", ex);
         }
     }
 
