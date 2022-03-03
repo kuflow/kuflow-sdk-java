@@ -10,7 +10,6 @@ import com.kuflow.engine.client.activity.email.config.EmailActivitiesProperties;
 import com.kuflow.engine.client.activity.email.dto.EmailDto;
 import com.kuflow.engine.client.common.error.KuFlowEngineClientException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -20,6 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 import javax.mail.internet.MimeMessage;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafProperties;
 import org.springframework.context.ApplicationContext;
@@ -104,7 +104,7 @@ public class EmailService {
             String contentId = UUID.nameUUIDFromBytes(imageSource.getBytes(StandardCharsets.UTF_8)).toString();
             html = html.replaceAll(imageSource, "cid:" + contentId);
 
-            String imageLocation = Path.of(ThymeleafProperties.DEFAULT_PREFIX, imageSource).toString();
+            String imageLocation = FilenameUtils.concat(ThymeleafProperties.DEFAULT_PREFIX, imageSource);
             Resource resource = this.applicationContext.getResource(imageLocation);
 
             emailResources.images.put(contentId, resource);
