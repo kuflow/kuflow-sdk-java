@@ -6,9 +6,9 @@
 
 package com.kuflow.engine.client.common.authorization;
 
-import com.kuflow.engine.client.common.api.controller.AuthenticationApi;
-import com.kuflow.engine.client.common.api.resource.AuthenticationResource;
-import com.kuflow.engine.client.common.api.resource.AuthenticationTypeResource;
+import com.kuflow.rest.client.controller.AuthenticationApi;
+import com.kuflow.rest.client.resource.AuthenticationResource;
+import com.kuflow.rest.client.resource.AuthenticationTypeResource;
 import io.temporal.authorization.AuthorizationTokenSupplier;
 import java.time.Duration;
 import java.time.Instant;

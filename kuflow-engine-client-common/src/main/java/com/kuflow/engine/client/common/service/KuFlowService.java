@@ -6,17 +6,17 @@
 
 package com.kuflow.engine.client.common.service;
 
-import com.kuflow.engine.client.common.api.controller.ProcessApi;
-import com.kuflow.engine.client.common.api.controller.TaskApi;
-import com.kuflow.engine.client.common.api.resource.DeleteElementsCommandResource;
-import com.kuflow.engine.client.common.api.resource.ElementDefinitionTypeResource;
-import com.kuflow.engine.client.common.api.resource.ElementValueDecisionResource;
-import com.kuflow.engine.client.common.api.resource.ElementValueDocumentResource;
-import com.kuflow.engine.client.common.api.resource.ElementValueFieldResource;
-import com.kuflow.engine.client.common.api.resource.ElementValueFormResource;
-import com.kuflow.engine.client.common.api.resource.LogResource;
-import com.kuflow.engine.client.common.api.resource.ProcessResource;
-import com.kuflow.engine.client.common.api.resource.TaskResource;
+import com.kuflow.rest.client.controller.ProcessApi;
+import com.kuflow.rest.client.controller.TaskApi;
+import com.kuflow.rest.client.resource.DeleteElementsCommandResource;
+import com.kuflow.rest.client.resource.ElementDefinitionTypeResource;
+import com.kuflow.rest.client.resource.ElementValueDecisionResource;
+import com.kuflow.rest.client.resource.ElementValueDocumentResource;
+import com.kuflow.rest.client.resource.ElementValueFieldResource;
+import com.kuflow.rest.client.resource.ElementValueFormResource;
+import com.kuflow.rest.client.resource.LogResource;
+import com.kuflow.rest.client.resource.ProcessResource;
+import com.kuflow.rest.client.resource.TaskResource;
 import java.io.File;
 import java.util.UUID;
 import org.springframework.stereotype.Service;

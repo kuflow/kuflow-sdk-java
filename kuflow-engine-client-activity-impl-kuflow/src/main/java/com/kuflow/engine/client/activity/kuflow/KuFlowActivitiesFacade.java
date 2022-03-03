@@ -18,12 +18,12 @@ import com.kuflow.engine.client.activity.kuflow.resource.TaskCompleteRequestReso
 import com.kuflow.engine.client.activity.kuflow.resource.TaskCompleteResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskResponseResource;
-import com.kuflow.engine.client.common.api.resource.LogResource;
-import com.kuflow.engine.client.common.api.resource.ProcessResource;
-import com.kuflow.engine.client.common.api.resource.TaskResource;
-import com.kuflow.engine.client.common.api.resource.TasksDefinitionSummaryResource;
 import com.kuflow.engine.client.common.service.KuFlowService;
 import com.kuflow.engine.client.common.util.TemporalUtils;
+import com.kuflow.rest.client.resource.LogResource;
+import com.kuflow.rest.client.resource.ProcessResource;
+import com.kuflow.rest.client.resource.TaskResource;
+import com.kuflow.rest.client.resource.TasksDefinitionSummaryResource;
 import io.temporal.activity.Activity;
 import io.temporal.activity.ActivityExecutionContext;
 import javax.annotation.Nonnull;

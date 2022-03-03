@@ -73,6 +73,7 @@ node/
 log/
 target/
 *.versionsBackup
+.flattened-pom.xml
 
 ######################
 # Gradle

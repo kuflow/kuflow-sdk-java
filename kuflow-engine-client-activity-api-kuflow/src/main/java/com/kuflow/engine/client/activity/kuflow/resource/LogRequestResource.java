@@ -6,8 +6,8 @@
 
 package com.kuflow.engine.client.activity.kuflow.resource;
 
-import com.kuflow.engine.client.common.api.resource.LogLevelResource;
 import com.kuflow.engine.client.common.resource.AbstractResource;
+import com.kuflow.rest.client.resource.LogLevelResource;
 import java.util.UUID;
 
 public class LogRequestResource extends AbstractResource {

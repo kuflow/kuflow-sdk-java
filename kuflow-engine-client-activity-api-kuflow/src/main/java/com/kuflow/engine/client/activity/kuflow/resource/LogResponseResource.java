@@ -6,8 +6,8 @@
 
 package com.kuflow.engine.client.activity.kuflow.resource;
 
-import com.kuflow.engine.client.common.api.resource.TaskResource;
 import com.kuflow.engine.client.common.resource.AbstractResource;
+import com.kuflow.rest.client.resource.TaskResource;
 
 public class LogResponseResource extends AbstractResource {
 

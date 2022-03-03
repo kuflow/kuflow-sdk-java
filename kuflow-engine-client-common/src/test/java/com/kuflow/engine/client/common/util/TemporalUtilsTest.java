@@ -9,7 +9,7 @@ package com.kuflow.engine.client.common.util;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 
-import com.kuflow.engine.client.common.error.SystemException;
+import com.kuflow.engine.client.common.error.KuFlowEngineClientException;
 import io.temporal.activity.ActivityInterface;
 import io.temporal.activity.ActivityMethod;
 import org.junit.jupiter.api.DisplayName;
@@ -47,7 +47,7 @@ public class TemporalUtilsTest {
     public void givenActivityInterfaceAndActivityMethodAndANonExistingMethodNameWhenGetActivityTypeThenErrorIsThrough() {
         Throwable thrown = catchThrowable(() -> TemporalUtils.getActivityType(ActivityA.class, "method999"));
 
-        assertThat(thrown).isInstanceOf(SystemException.class);
+        assertThat(thrown).isInstanceOf(KuFlowEngineClientException.class);
     }
 
     @ActivityInterface

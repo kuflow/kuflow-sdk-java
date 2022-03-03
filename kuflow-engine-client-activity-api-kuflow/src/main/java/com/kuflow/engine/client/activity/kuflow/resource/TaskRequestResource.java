@@ -6,8 +6,8 @@
 
 package com.kuflow.engine.client.activity.kuflow.resource;
 
-import com.kuflow.engine.client.common.api.resource.ElementValueBaseResource;
 import com.kuflow.engine.client.common.resource.AbstractResource;
+import com.kuflow.rest.client.resource.ElementValueBaseResource;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
