@@ -12,6 +12,8 @@ import com.kuflow.engine.client.activity.kuflow.resource.LogRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.LogResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.StartProcessRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.StartProcessResponseResource;
+import com.kuflow.engine.client.activity.kuflow.resource.TaskAssignRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.TaskAssignResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskClaimRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskClaimResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskCompleteRequestResource;
@@ -95,6 +97,16 @@ public interface KuFlowActivities {
     @ActivityMethod
     @Nonnull
     TaskClaimResponseResource claimTask(@Nonnull TaskClaimRequestResource request);
+
+    /**
+     * Assign a task to a user.
+     *
+     * @param request must not be {@literal null}.
+     * @return task assigned
+     */
+    @ActivityMethod
+    @Nonnull
+    TaskAssignResponseResource assignTask(@Nonnull TaskAssignRequestResource request);
 
     /**
      * Append a log to the task.

@@ -12,6 +12,8 @@ import com.kuflow.engine.client.activity.kuflow.resource.LogRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.LogResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.StartProcessRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.StartProcessResponseResource;
+import com.kuflow.engine.client.activity.kuflow.resource.TaskAssignRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.TaskAssignResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskClaimRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskClaimResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskCompleteRequestResource;
@@ -26,6 +28,7 @@ import com.kuflow.rest.client.resource.TaskResource;
 import com.kuflow.rest.client.resource.TasksDefinitionSummaryResource;
 import io.temporal.activity.Activity;
 import io.temporal.activity.ActivityExecutionContext;
+import io.temporal.failure.ApplicationFailure;
 import javax.annotation.Nonnull;
 import org.springframework.stereotype.Component;
 
@@ -41,6 +44,8 @@ public class KuFlowActivitiesFacade implements KuFlowActivities {
     @Nonnull
     @Override
     public StartProcessResponseResource startProcess(@Nonnull StartProcessRequestResource request) {
+        this.validateStartProcessRequest(request);
+
         ProcessResource processResource = this.kuFlowService.startProcess(request.getProcessId());
 
         StartProcessResponseResource response = new StartProcessResponseResource();
@@ -52,6 +57,8 @@ public class KuFlowActivitiesFacade implements KuFlowActivities {
     @Nonnull
     @Override
     public CompleteProcessResponseResource completeProcess(@Nonnull CompleteProcessRequestResource request) {
+        this.validateCopleteProcessRequest(request);
+
         this.kuFlowService.completeProcess(request.getProcessId());
 
         CompleteProcessResponseResource response = new CompleteProcessResponseResource();
@@ -63,6 +70,8 @@ public class KuFlowActivitiesFacade implements KuFlowActivities {
     @Nonnull
     @Override
     public TaskResponseResource createTask(@Nonnull TaskRequestResource request) {
+        this.validateTaskRequest(request);
+
         TasksDefinitionSummaryResource taskDefinition = new TasksDefinitionSummaryResource();
         taskDefinition.setCode(request.getTaskDefinitionCode());
 
@@ -83,6 +92,8 @@ public class KuFlowActivitiesFacade implements KuFlowActivities {
     @Nonnull
     @Override
     public TaskResponseResource createTaskAndWaitTermination(@Nonnull TaskRequestResource request) {
+        this.validateTaskRequest(request);
+
         ActivityExecutionContext context = Activity.getExecutionContext();
         String temporalToken = TemporalUtils.getTemporalTokenAsString(context);
 
@@ -107,6 +118,8 @@ public class KuFlowActivitiesFacade implements KuFlowActivities {
     @Nonnull
     @Override
     public TaskCompleteResponseResource completeTask(@Nonnull TaskCompleteRequestResource request) {
+        this.validateTaskCompleteRequest(request);
+
         this.kuFlowService.completeTask(request.getTaskId());
 
         TaskCompleteResponseResource response = new TaskCompleteResponseResource();
@@ -118,6 +131,8 @@ public class KuFlowActivitiesFacade implements KuFlowActivities {
     @Nonnull
     @Override
     public TaskClaimResponseResource claimTask(@Nonnull TaskClaimRequestResource request) {
+        this.validateTaskClaimRequest(request);
+
         this.kuFlowService.claimTask(request.getTaskId());
 
         TaskClaimResponseResource response = new TaskClaimResponseResource();
@@ -128,7 +143,22 @@ public class KuFlowActivitiesFacade implements KuFlowActivities {
 
     @Nonnull
     @Override
+    public TaskAssignResponseResource assignTask(@Nonnull TaskAssignRequestResource request) {
+        this.validateTaskAssignRequest(request);
+
+        this.kuFlowService.assignTask(request.getTaskId(), request.getEmail(), request.getPrincipalId());
+
+        TaskAssignResponseResource response = new TaskAssignResponseResource();
+        response.setTaskId(request.getTaskId());
+
+        return response;
+    }
+
+    @Nonnull
+    @Override
     public LogResponseResource appendLog(@Nonnull LogRequestResource request) {
+        this.validateLogRequest(request);
+
         LogResource logResource = new LogResource();
         logResource.setId(request.getLogId());
         logResource.setLevel(request.getLevel());
@@ -140,5 +170,59 @@ public class KuFlowActivitiesFacade implements KuFlowActivities {
         response.setTask(taskResource);
 
         return response;
+    }
+
+    private void validateStartProcessRequest(StartProcessRequestResource request) {
+        if (request.getProcessId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("processId is required", "KuFlowActivities.validation");
+        }
+    }
+
+    private void validateCopleteProcessRequest(CompleteProcessRequestResource request) {
+        if (request.getProcessId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("processId is required", "KuFlowActivities.validation");
+        }
+    }
+
+    private void validateTaskRequest(TaskRequestResource request) {
+        if (request.getProcessId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("processId is required", "KuFlowActivities.validation");
+        }
+        if (request.getTaskDefinitionCode() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("taskDefinitionCode is required", "KuFlowActivities.validation");
+        }
+    }
+
+    private void validateTaskCompleteRequest(TaskCompleteRequestResource request) {
+        if (request.getTaskId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("taskId is required", "KuFlowActivities.validation");
+        }
+    }
+
+    private void validateTaskClaimRequest(TaskClaimRequestResource request) {
+        if (request.getTaskId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("taskId is required", "KuFlowActivities.validation");
+        }
+    }
+
+    private void validateTaskAssignRequest(TaskAssignRequestResource request) {
+        if (request.getTaskId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("taskId is required", "KuFlowActivities.validation");
+        }
+        if (request.getEmail() == null && request.getPrincipalId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("email or principalId is required", "KuFlowActivities.validation");
+        }
+    }
+
+    private void validateLogRequest(LogRequestResource request) {
+        if (request.getTaskId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("processId is required", "KuFlowActivities.validation");
+        }
+        if (request.getLevel() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("level is required", "KuFlowActivities.validation");
+        }
+        if (request.getMessage() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("message is required", "KuFlowActivities.validation");
+        }
     }
 }
