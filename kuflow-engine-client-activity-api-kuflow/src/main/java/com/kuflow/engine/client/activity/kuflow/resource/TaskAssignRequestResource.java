@@ -22,7 +22,7 @@ public class TaskAssignRequestResource extends AbstractResource {
     private String email;
 
     /**
-     * User principal id that want to use to assign the task. Attribute @{link email} or @{link principalId} must be set.
+     * Principal id that want to use to assign the task. Attribute @{link email} or @{link principalId} must be set.
      */
     private UUID principalId;
 

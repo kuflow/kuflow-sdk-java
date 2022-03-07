@@ -99,7 +99,7 @@ public interface KuFlowActivities {
     TaskClaimResponseResource claimTask(@Nonnull TaskClaimRequestResource request);
 
     /**
-     * Assign a task to a user.
+     * Assign a task to a user or application using their email or principalId
      *
      * @param request must not be {@literal null}.
      * @return task assigned
