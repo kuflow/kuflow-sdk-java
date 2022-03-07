@@ -8,6 +8,7 @@ package com.kuflow.engine.client.common.service;
 
 import com.kuflow.rest.client.controller.ProcessApi;
 import com.kuflow.rest.client.controller.TaskApi;
+import com.kuflow.rest.client.resource.AssignTaskCommandResource;
 import com.kuflow.rest.client.resource.DeleteElementsCommandResource;
 import com.kuflow.rest.client.resource.ElementDefinitionTypeResource;
 import com.kuflow.rest.client.resource.ElementValueDecisionResource;
@@ -19,6 +20,8 @@ import com.kuflow.rest.client.resource.ProcessResource;
 import com.kuflow.rest.client.resource.TaskResource;
 import java.io.File;
 import java.util.UUID;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -47,6 +50,14 @@ public class KuFlowService {
 
     public TaskResource claimTask(UUID taskId) {
         return this.taskApi.actionsClaimTask(taskId);
+    }
+
+    public TaskResource assignTask(@Nonnull UUID taskId, @Nullable String email, @Nullable UUID principalId) {
+        AssignTaskCommandResource command = new AssignTaskCommandResource();
+        command.setEmail(email);
+        command.setPrincipalId(principalId);
+
+        return this.taskApi.actionsAssignTask(taskId, command);
     }
 
     public TaskResource completeTask(UUID taskId) {

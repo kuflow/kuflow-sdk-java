@@ -12,6 +12,8 @@ import com.kuflow.engine.client.activity.kuflow.resource.LogRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.LogResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.StartProcessRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.StartProcessResponseResource;
+import com.kuflow.engine.client.activity.kuflow.resource.TaskAssignRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.TaskAssignResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskClaimRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskClaimResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskCompleteRequestResource;
@@ -62,6 +64,12 @@ public class KuFlowActivitiesDelegate implements KuFlowActivities {
     @Override
     public TaskClaimResponseResource claimTask(@Nonnull TaskClaimRequestResource request) {
         return this.delegate.claimTask(request);
+    }
+
+    @Nonnull
+    @Override
+    public TaskAssignResponseResource assignTask(@Nonnull TaskAssignRequestResource request) {
+        return this.delegate.assignTask(request);
     }
 
     @Nonnull
