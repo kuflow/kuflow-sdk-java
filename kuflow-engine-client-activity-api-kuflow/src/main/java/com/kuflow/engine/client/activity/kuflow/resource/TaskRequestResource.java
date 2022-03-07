@@ -53,8 +53,13 @@ public class TaskRequestResource extends AbstractResource {
     }
 
     public void setElementValues(List<ElementValueBaseResource> elementValues) {
-        Assert.notNull(elementValues, "ElementValues is required");
+        Assert.notNull(elementValues, "elementValues is required");
         this.elementValues.clear();
         this.elementValues.addAll(elementValues);
+    }
+
+    public void addElementValue(ElementValueBaseResource elementValue) {
+        Assert.notNull(elementValue, "elementValue is required");
+        this.elementValues.add(elementValue);
     }
 }
