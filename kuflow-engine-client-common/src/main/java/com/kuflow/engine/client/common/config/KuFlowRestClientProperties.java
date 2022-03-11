@@ -6,15 +6,20 @@
 
 package com.kuflow.engine.client.common.config;
 
+import com.kuflow.engine.client.common.validation.NotFillMeAttributesValues;
 import com.kuflow.rest.client.KuFlowRestClientProperties.Level;
+
 import java.time.Duration;
+
 import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.URL;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
 @ConfigurationProperties(prefix = "kuflow.api")
 @Validated
+@NotFillMeAttributesValues
 public class KuFlowRestClientProperties {
 
     @NotNull
