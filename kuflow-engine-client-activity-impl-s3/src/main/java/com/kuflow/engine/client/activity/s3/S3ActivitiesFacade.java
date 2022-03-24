@@ -14,7 +14,6 @@ import com.kuflow.engine.client.common.error.KuFlowEngineClientException;
 import com.kuflow.rest.client.controller.TaskApi;
 import com.kuflow.rest.client.resource.ElementValueDocumentResource;
 import com.kuflow.rest.client.resource.TaskResource;
-import com.kuflow.rest.client.util.ElementUtils;
 import feign.Response;
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,11 +46,9 @@ public class S3ActivitiesFacade implements S3Activities {
     @Override
     public CopyTaskElementFilesResponseResource copyTaskElementFiles(@Nonnull CopyTaskElementFilesRequestResource request) {
         TaskResource task = this.taskApi.retrieveTask(request.getSourceTaskId());
-        List<ElementValueDocumentResource> elementValues = ElementUtils.getValuesByCode(
-            task,
-            request.getSourceElementDefinitionCode(),
-            ElementValueDocumentResource.class
-        );
+
+        String elementDefinitionCode = request.getSourceElementDefinitionCode();
+        List<ElementValueDocumentResource> elementValues = task.getElementValues().get(elementDefinitionCode).getValuesAsDocument();
 
         String targetBucket = this.getTargetBucket(request);
 
@@ -64,7 +61,7 @@ public class S3ActivitiesFacade implements S3Activities {
 
             CopyElementFileResource targetFile = new CopyElementFileResource();
             targetFile.setElementValueId(elementValueDocument.getId());
-            targetFile.setElementDefinitionCode(elementValueDocument.getElementDefinitionCode());
+            targetFile.setElementDefinitionCode(elementDefinitionCode);
             targetFile.setBucket(targetBucket);
             targetFile.setKey(targetKey);
 
@@ -81,7 +78,7 @@ public class S3ActivitiesFacade implements S3Activities {
         Assert.notNull(elementValueDocument.getContentLength(), "ContentLength required");
         Assert.notNull(elementValueDocument.getName(), "Name required");
 
-        Response sourceFile = this.taskApi.actionsDownloadTaskElementDocument(task.getId(), elementValueDocument.getId());
+        Response sourceFile = this.taskApi.actionsDownloadElementDocument(task.getId(), elementValueDocument.getId());
 
         try (InputStream sourceInputStream = sourceFile.body().asInputStream()) {
             RequestBody requestBody = RequestBody.fromInputStream(sourceInputStream, elementValueDocument.getContentLength());

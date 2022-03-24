@@ -7,12 +7,10 @@
 package com.kuflow.engine.client.activity.kuflow.resource;
 
 import com.kuflow.engine.client.common.resource.AbstractResource;
-import com.kuflow.rest.client.resource.ElementValueBaseResource;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import com.kuflow.rest.client.resource.ElementValueWrapperResource;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
-import org.springframework.util.Assert;
 
 public class TaskRequestResource extends AbstractResource {
 
@@ -22,7 +20,7 @@ public class TaskRequestResource extends AbstractResource {
 
     private String taskDefinitionCode;
 
-    private List<ElementValueBaseResource> elementValues = new LinkedList<>();
+    private Map<String, ElementValueWrapperResource> elementValues = new HashMap<>();
 
     public UUID getTaskId() {
         return this.taskId;
@@ -48,18 +46,19 @@ public class TaskRequestResource extends AbstractResource {
         this.taskDefinitionCode = code;
     }
 
-    public List<ElementValueBaseResource> getElementValues() {
-        return Collections.unmodifiableList(this.elementValues);
+    public Map<String, ElementValueWrapperResource> getElementValues() {
+        return this.elementValues;
     }
 
-    public void setElementValues(List<ElementValueBaseResource> elementValues) {
-        Assert.notNull(elementValues, "elementValues is required");
-        this.elementValues.clear();
-        this.elementValues.addAll(elementValues);
+    public void setElementValues(Map<String, ElementValueWrapperResource> elementValues) {
+        this.elementValues = elementValues;
     }
 
-    public void addElementValue(ElementValueBaseResource elementValue) {
-        Assert.notNull(elementValue, "elementValue is required");
-        this.elementValues.add(elementValue);
+    public void putElementValue(String key, ElementValueWrapperResource elementValue) {
+        if (this.elementValues == null) {
+            this.elementValues = new HashMap<>();
+        }
+
+        this.elementValues.put(key, elementValue);
     }
 }
