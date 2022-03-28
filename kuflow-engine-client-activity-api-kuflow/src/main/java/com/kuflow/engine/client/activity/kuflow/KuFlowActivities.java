@@ -10,8 +10,6 @@ import com.kuflow.engine.client.activity.kuflow.resource.CompleteProcessRequestR
 import com.kuflow.engine.client.activity.kuflow.resource.CompleteProcessResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.LogRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.LogResponseResource;
-import com.kuflow.engine.client.activity.kuflow.resource.StartProcessRequestResource;
-import com.kuflow.engine.client.activity.kuflow.resource.StartProcessResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskAssignRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskAssignResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskClaimRequestResource;
@@ -30,16 +28,6 @@ import javax.annotation.Nonnull;
  */
 @ActivityInterface(namePrefix = "KuFlow_Engine_")
 public interface KuFlowActivities {
-    /**
-     * Start a Process. The state of Process is setted to running.
-     *
-     * @param request must not be {@literal null}.
-     * @return process started
-     */
-    @ActivityMethod
-    @Nonnull
-    StartProcessResponseResource startProcess(@Nonnull StartProcessRequestResource request);
-
     /**
      * Complete a Process. The state of Process is setted to completed.
      *

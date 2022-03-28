@@ -34,10 +34,6 @@ public class KuFlowService {
         this.processApi = processApi;
     }
 
-    public ProcessResource startProcess(@Nonnull UUID processId) {
-        return this.processApi.actionsStartProcess(processId);
-    }
-
     public ProcessResource completeProcess(@Nonnull UUID processId) {
         return this.processApi.actionsCompleteProcess(processId);
     }

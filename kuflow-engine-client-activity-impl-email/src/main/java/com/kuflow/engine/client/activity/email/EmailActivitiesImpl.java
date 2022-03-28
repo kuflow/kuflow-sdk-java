@@ -15,11 +15,11 @@ import javax.annotation.Nonnull;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EmailActivitiesFacade implements EmailActivities {
+public class EmailActivitiesImpl implements EmailActivities {
 
     private final EmailService emailService;
 
-    public EmailActivitiesFacade(EmailService emailService) {
+    public EmailActivitiesImpl(EmailService emailService) {
         this.emailService = emailService;
     }
 

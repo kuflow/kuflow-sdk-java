@@ -28,7 +28,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 @Component
-public class S3ActivitiesFacade implements S3Activities {
+public class S3ActivitiesImpl implements S3Activities {
 
     private final TaskApi taskApi;
 
@@ -36,7 +36,7 @@ public class S3ActivitiesFacade implements S3Activities {
 
     private final S3ActivitiesProperties s3ActivitiesProperties;
 
-    public S3ActivitiesFacade(TaskApi taskApi, S3Client s3Client, S3ActivitiesProperties s3ActivitiesProperties) {
+    public S3ActivitiesImpl(TaskApi taskApi, S3Client s3Client, S3ActivitiesProperties s3ActivitiesProperties) {
         this.taskApi = taskApi;
         this.s3Client = s3Client;
         this.s3ActivitiesProperties = s3ActivitiesProperties;

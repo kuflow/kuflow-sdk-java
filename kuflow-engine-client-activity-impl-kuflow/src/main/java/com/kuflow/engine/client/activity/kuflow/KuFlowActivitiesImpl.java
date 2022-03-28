@@ -10,8 +10,6 @@ import com.kuflow.engine.client.activity.kuflow.resource.CompleteProcessRequestR
 import com.kuflow.engine.client.activity.kuflow.resource.CompleteProcessResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.LogRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.LogResponseResource;
-import com.kuflow.engine.client.activity.kuflow.resource.StartProcessRequestResource;
-import com.kuflow.engine.client.activity.kuflow.resource.StartProcessResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskAssignRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskAssignResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskClaimRequestResource;
@@ -23,7 +21,6 @@ import com.kuflow.engine.client.activity.kuflow.resource.TaskResponseResource;
 import com.kuflow.engine.client.common.service.KuFlowService;
 import com.kuflow.engine.client.common.util.TemporalUtils;
 import com.kuflow.rest.client.resource.LogResource;
-import com.kuflow.rest.client.resource.ProcessResource;
 import com.kuflow.rest.client.resource.TaskResource;
 import com.kuflow.rest.client.resource.TasksDefinitionSummaryResource;
 import io.temporal.activity.Activity;
@@ -33,25 +30,12 @@ import javax.annotation.Nonnull;
 import org.springframework.stereotype.Component;
 
 @Component
-public class KuFlowActivitiesFacade implements KuFlowActivities {
+public class KuFlowActivitiesImpl implements KuFlowActivities {
 
     private final KuFlowService kuFlowService;
 
-    public KuFlowActivitiesFacade(KuFlowService kuflowService) {
+    public KuFlowActivitiesImpl(KuFlowService kuflowService) {
         this.kuFlowService = kuflowService;
-    }
-
-    @Nonnull
-    @Override
-    public StartProcessResponseResource startProcess(@Nonnull StartProcessRequestResource request) {
-        this.validateStartProcessRequest(request);
-
-        ProcessResource processResource = this.kuFlowService.startProcess(request.getProcessId());
-
-        StartProcessResponseResource response = new StartProcessResponseResource();
-        response.setProcess(processResource);
-
-        return response;
     }
 
     @Nonnull
@@ -170,12 +154,6 @@ public class KuFlowActivitiesFacade implements KuFlowActivities {
         response.setTask(taskResource);
 
         return response;
-    }
-
-    private void validateStartProcessRequest(StartProcessRequestResource request) {
-        if (request.getProcessId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("processId is required", "KuFlowActivities.validation");
-        }
     }
 
     private void validateCopleteProcessRequest(CompleteProcessRequestResource request) {
