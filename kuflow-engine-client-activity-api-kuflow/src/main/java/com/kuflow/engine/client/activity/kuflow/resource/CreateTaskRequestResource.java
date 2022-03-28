@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class TaskRequestResource extends AbstractResource {
+public class CreateTaskRequestResource extends AbstractResource {
 
     private UUID taskId;
 

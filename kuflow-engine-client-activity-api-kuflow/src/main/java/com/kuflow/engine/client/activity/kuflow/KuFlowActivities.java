@@ -8,16 +8,20 @@ package com.kuflow.engine.client.activity.kuflow;
 
 import com.kuflow.engine.client.activity.kuflow.resource.CompleteProcessRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.CompleteProcessResponseResource;
+import com.kuflow.engine.client.activity.kuflow.resource.CreateTaskRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.CreateTaskResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.LogRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.LogResponseResource;
+import com.kuflow.engine.client.activity.kuflow.resource.RetrieveProcessRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.RetrieveProcessResponseResource;
+import com.kuflow.engine.client.activity.kuflow.resource.RetrieveTaskRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.RetrieveTaskResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskAssignRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskAssignResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskClaimRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskClaimResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskCompleteRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskCompleteResponseResource;
-import com.kuflow.engine.client.activity.kuflow.resource.TaskRequestResource;
-import com.kuflow.engine.client.activity.kuflow.resource.TaskResponseResource;
 import io.temporal.activity.ActivityInterface;
 import io.temporal.activity.ActivityMethod;
 import javax.annotation.Nonnull;
@@ -29,6 +33,16 @@ import javax.annotation.Nonnull;
 @ActivityInterface(namePrefix = "KuFlow_Engine_")
 public interface KuFlowActivities {
     /**
+     * Retrieve a Process.
+     *
+     * @param request must not be {@literal null}.
+     * @return process completed
+     */
+    @ActivityMethod
+    @Nonnull
+    RetrieveProcessResponseResource retrieveProcess(@Nonnull RetrieveProcessRequestResource request);
+
+    /**
      * Complete a Process. The state of Process is setted to completed.
      *
      * @param request must not be {@literal null}.
@@ -37,6 +51,16 @@ public interface KuFlowActivities {
     @ActivityMethod
     @Nonnull
     CompleteProcessResponseResource completeProcess(@Nonnull CompleteProcessRequestResource request);
+
+    /**
+     * Retrieve a Task.
+     *
+     * @param request must not be {@literal null}.
+     * @return process completed
+     */
+    @ActivityMethod
+    @Nonnull
+    RetrieveTaskResponseResource retrieveTask(@Nonnull RetrieveTaskRequestResource request);
 
     /**
      * Create a Task and optionally fill its elements.
@@ -48,7 +72,7 @@ public interface KuFlowActivities {
      */
     @ActivityMethod
     @Nonnull
-    TaskResponseResource createTask(@Nonnull TaskRequestResource request);
+    CreateTaskResponseResource createTask(@Nonnull CreateTaskRequestResource request);
 
     /**
      * Create a Task and optionally fill its elements. The activity is not completed until the <strong>"COMPLETED"</strong> or
@@ -62,7 +86,7 @@ public interface KuFlowActivities {
      */
     @ActivityMethod
     @Nonnull
-    TaskResponseResource createTaskAndWaitTermination(@Nonnull TaskRequestResource request);
+    CreateTaskResponseResource createTaskAndWaitTermination(@Nonnull CreateTaskRequestResource request);
 
     /**
      * Complete a task.

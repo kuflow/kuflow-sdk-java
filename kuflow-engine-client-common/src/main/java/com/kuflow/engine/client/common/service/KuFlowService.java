@@ -34,16 +34,20 @@ public class KuFlowService {
         this.processApi = processApi;
     }
 
+    public ProcessResource retrieveProcess(@Nonnull UUID processId) {
+        return this.processApi.retrieveProcess(processId);
+    }
+
     public ProcessResource completeProcess(@Nonnull UUID processId) {
         return this.processApi.actionsCompleteProcess(processId);
     }
 
-    public TaskResource createTask(@Nonnull TaskResource taskResource) {
-        return this.taskApi.createTask(taskResource);
-    }
-
     public TaskResource retrieveTask(@Nonnull UUID taskId) {
         return this.taskApi.retrieveTask(taskId);
+    }
+
+    public TaskResource createTask(@Nonnull TaskResource taskResource) {
+        return this.taskApi.createTask(taskResource);
     }
 
     public TaskResource claimTask(@Nonnull UUID taskId) {
