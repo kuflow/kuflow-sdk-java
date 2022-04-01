@@ -9,15 +9,15 @@ package com.kuflow.engine.client.activity.kuflow.resource;
 import com.kuflow.engine.client.common.resource.AbstractResource;
 import java.util.UUID;
 
-public class StartProcessRequestResource extends AbstractResource {
+public class RetrieveTaskRequestResource extends AbstractResource {
 
-    private UUID processId;
+    private UUID taskId;
 
-    public UUID getProcessId() {
-        return this.processId;
+    public UUID getTaskId() {
+        return this.taskId;
     }
 
-    public void setProcessId(UUID processId) {
-        this.processId = processId;
+    public void setTaskId(UUID taskId) {
+        this.taskId = taskId;
     }
 }

@@ -9,7 +9,7 @@ package com.kuflow.engine.client.activity.kuflow.resource;
 import com.kuflow.engine.client.common.resource.AbstractResource;
 import com.kuflow.rest.client.resource.TaskResource;
 
-public class TaskResponseResource extends AbstractResource {
+public class RetrieveTaskResponseResource extends AbstractResource {
 
     private TaskResource task;
 

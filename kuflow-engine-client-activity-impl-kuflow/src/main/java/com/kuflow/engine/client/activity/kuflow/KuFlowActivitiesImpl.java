@@ -8,18 +8,20 @@ package com.kuflow.engine.client.activity.kuflow;
 
 import com.kuflow.engine.client.activity.kuflow.resource.CompleteProcessRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.CompleteProcessResponseResource;
+import com.kuflow.engine.client.activity.kuflow.resource.CreateTaskRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.CreateTaskResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.LogRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.LogResponseResource;
-import com.kuflow.engine.client.activity.kuflow.resource.StartProcessRequestResource;
-import com.kuflow.engine.client.activity.kuflow.resource.StartProcessResponseResource;
+import com.kuflow.engine.client.activity.kuflow.resource.RetrieveProcessRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.RetrieveProcessResponseResource;
+import com.kuflow.engine.client.activity.kuflow.resource.RetrieveTaskRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.RetrieveTaskResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskAssignRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskAssignResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskClaimRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskClaimResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskCompleteRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskCompleteResponseResource;
-import com.kuflow.engine.client.activity.kuflow.resource.TaskRequestResource;
-import com.kuflow.engine.client.activity.kuflow.resource.TaskResponseResource;
 import com.kuflow.engine.client.common.service.KuFlowService;
 import com.kuflow.engine.client.common.util.TemporalUtils;
 import com.kuflow.rest.client.resource.LogResource;
@@ -33,23 +35,22 @@ import javax.annotation.Nonnull;
 import org.springframework.stereotype.Component;
 
 @Component
-public class KuFlowActivitiesFacade implements KuFlowActivities {
+public class KuFlowActivitiesImpl implements KuFlowActivities {
 
     private final KuFlowService kuFlowService;
 
-    public KuFlowActivitiesFacade(KuFlowService kuflowService) {
+    public KuFlowActivitiesImpl(KuFlowService kuflowService) {
         this.kuFlowService = kuflowService;
     }
 
-    @Nonnull
     @Override
-    public StartProcessResponseResource startProcess(@Nonnull StartProcessRequestResource request) {
-        this.validateStartProcessRequest(request);
+    public RetrieveProcessResponseResource retrieveProcess(RetrieveProcessRequestResource request) {
+        this.validateRetrieveProcessRequest(request);
 
-        ProcessResource processResource = this.kuFlowService.startProcess(request.getProcessId());
+        ProcessResource process = this.kuFlowService.retrieveProcess(request.getProcessId());
 
-        StartProcessResponseResource response = new StartProcessResponseResource();
-        response.setProcess(processResource);
+        RetrieveProcessResponseResource response = new RetrieveProcessResponseResource();
+        response.setProcess(process);
 
         return response;
     }
@@ -67,9 +68,21 @@ public class KuFlowActivitiesFacade implements KuFlowActivities {
         return response;
     }
 
+    @Override
+    public RetrieveTaskResponseResource retrieveTask(RetrieveTaskRequestResource request) {
+        this.validateRetrieveTaskRequest(request);
+
+        TaskResource task = this.kuFlowService.retrieveTask(request.getTaskId());
+
+        RetrieveTaskResponseResource response = new RetrieveTaskResponseResource();
+        response.setTask(task);
+
+        return response;
+    }
+
     @Nonnull
     @Override
-    public TaskResponseResource createTask(@Nonnull TaskRequestResource request) {
+    public CreateTaskResponseResource createTask(@Nonnull CreateTaskRequestResource request) {
         this.validateTaskRequest(request);
 
         TasksDefinitionSummaryResource taskDefinition = new TasksDefinitionSummaryResource();
@@ -83,7 +96,7 @@ public class KuFlowActivitiesFacade implements KuFlowActivities {
 
         taskResource = this.kuFlowService.createTask(taskResource);
 
-        TaskResponseResource response = new TaskResponseResource();
+        CreateTaskResponseResource response = new CreateTaskResponseResource();
         response.setTask(taskResource);
 
         return response;
@@ -91,7 +104,7 @@ public class KuFlowActivitiesFacade implements KuFlowActivities {
 
     @Nonnull
     @Override
-    public TaskResponseResource createTaskAndWaitTermination(@Nonnull TaskRequestResource request) {
+    public CreateTaskResponseResource createTaskAndWaitTermination(@Nonnull CreateTaskRequestResource request) {
         this.validateTaskRequest(request);
 
         ActivityExecutionContext context = Activity.getExecutionContext();
@@ -172,7 +185,7 @@ public class KuFlowActivitiesFacade implements KuFlowActivities {
         return response;
     }
 
-    private void validateStartProcessRequest(StartProcessRequestResource request) {
+    private void validateRetrieveProcessRequest(RetrieveProcessRequestResource request) {
         if (request.getProcessId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("processId is required", "KuFlowActivities.validation");
         }
@@ -184,7 +197,13 @@ public class KuFlowActivitiesFacade implements KuFlowActivities {
         }
     }
 
-    private void validateTaskRequest(TaskRequestResource request) {
+    private void validateRetrieveTaskRequest(RetrieveTaskRequestResource request) {
+        if (request.getTaskId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("TaskId is required", "KuFlowActivities.validation");
+        }
+    }
+
+    private void validateTaskRequest(CreateTaskRequestResource request) {
         if (request.getProcessId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("processId is required", "KuFlowActivities.validation");
         }

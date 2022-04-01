@@ -14,7 +14,6 @@ import com.kuflow.engine.client.common.error.KuFlowEngineClientException;
 import com.kuflow.rest.client.controller.TaskApi;
 import com.kuflow.rest.client.resource.ElementValueDocumentResource;
 import com.kuflow.rest.client.resource.TaskResource;
-import com.kuflow.rest.client.util.ElementUtils;
 import feign.Response;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,7 +28,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 @Component
-public class S3ActivitiesFacade implements S3Activities {
+public class S3ActivitiesImpl implements S3Activities {
 
     private final TaskApi taskApi;
 
@@ -37,7 +36,7 @@ public class S3ActivitiesFacade implements S3Activities {
 
     private final S3ActivitiesProperties s3ActivitiesProperties;
 
-    public S3ActivitiesFacade(TaskApi taskApi, S3Client s3Client, S3ActivitiesProperties s3ActivitiesProperties) {
+    public S3ActivitiesImpl(TaskApi taskApi, S3Client s3Client, S3ActivitiesProperties s3ActivitiesProperties) {
         this.taskApi = taskApi;
         this.s3Client = s3Client;
         this.s3ActivitiesProperties = s3ActivitiesProperties;
@@ -47,11 +46,9 @@ public class S3ActivitiesFacade implements S3Activities {
     @Override
     public CopyTaskElementFilesResponseResource copyTaskElementFiles(@Nonnull CopyTaskElementFilesRequestResource request) {
         TaskResource task = this.taskApi.retrieveTask(request.getSourceTaskId());
-        List<ElementValueDocumentResource> elementValues = ElementUtils.getValuesByCode(
-            task,
-            request.getSourceElementDefinitionCode(),
-            ElementValueDocumentResource.class
-        );
+
+        String elementDefinitionCode = request.getSourceElementDefinitionCode();
+        List<ElementValueDocumentResource> elementValues = task.getElementValues().get(elementDefinitionCode).getValueAsDocumentList();
 
         String targetBucket = this.getTargetBucket(request);
 
@@ -64,7 +61,7 @@ public class S3ActivitiesFacade implements S3Activities {
 
             CopyElementFileResource targetFile = new CopyElementFileResource();
             targetFile.setElementValueId(elementValueDocument.getId());
-            targetFile.setElementDefinitionCode(elementValueDocument.getElementDefinitionCode());
+            targetFile.setElementDefinitionCode(elementDefinitionCode);
             targetFile.setBucket(targetBucket);
             targetFile.setKey(targetKey);
 
@@ -81,7 +78,7 @@ public class S3ActivitiesFacade implements S3Activities {
         Assert.notNull(elementValueDocument.getContentLength(), "ContentLength required");
         Assert.notNull(elementValueDocument.getName(), "Name required");
 
-        Response sourceFile = this.taskApi.actionsDownloadTaskElementDocument(task.getId(), elementValueDocument.getId());
+        Response sourceFile = this.taskApi.actionsDownloadElementDocument(task.getId(), elementValueDocument.getId());
 
         try (InputStream sourceInputStream = sourceFile.body().asInputStream()) {
             RequestBody requestBody = RequestBody.fromInputStream(sourceInputStream, elementValueDocument.getContentLength());
