@@ -12,7 +12,7 @@
 
   <groupId>com.kuflow.engine.client</groupId>
   <artifactId>kuflow-engine-client</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>KuFlow Engine Client</name>
