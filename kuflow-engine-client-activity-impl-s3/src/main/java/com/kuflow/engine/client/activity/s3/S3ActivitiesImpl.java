@@ -48,7 +48,7 @@ public class S3ActivitiesImpl implements S3Activities {
         TaskResource task = this.taskApi.retrieveTask(request.getSourceTaskId());
 
         String elementDefinitionCode = request.getSourceElementDefinitionCode();
-        List<ElementValueDocumentResource> elementValues = task.getElementValues().get(elementDefinitionCode).getValuesAsDocument();
+        List<ElementValueDocumentResource> elementValues = task.getElementValues().get(elementDefinitionCode).getValueAsDocumentList();
 
         String targetBucket = this.getTargetBucket(request);
 
