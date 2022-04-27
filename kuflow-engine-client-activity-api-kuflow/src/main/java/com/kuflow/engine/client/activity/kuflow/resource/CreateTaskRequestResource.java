@@ -71,5 +71,4 @@ public class CreateTaskRequestResource extends AbstractResource {
     public void setOwnerId(UUID ownerId) {
         this.ownerId = ownerId;
     }
-
 }
