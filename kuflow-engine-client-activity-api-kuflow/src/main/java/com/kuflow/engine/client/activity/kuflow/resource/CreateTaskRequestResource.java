@@ -22,6 +22,8 @@ public class CreateTaskRequestResource extends AbstractResource {
 
     private Map<String, TaskElementValueWrapperResource> elementValues = new HashMap<>();
 
+    private UUID ownerId;
+
     public UUID getTaskId() {
         return this.taskId;
     }
@@ -61,4 +63,13 @@ public class CreateTaskRequestResource extends AbstractResource {
 
         this.elementValues.put(key, elementValue);
     }
+
+    public UUID getOwnerId() {
+        return this.ownerId;
+    }
+
+    public void setOwnerId(UUID ownerId) {
+        this.ownerId = ownerId;
+    }
+
 }

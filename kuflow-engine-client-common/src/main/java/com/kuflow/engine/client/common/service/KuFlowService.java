@@ -94,7 +94,7 @@ public class KuFlowService {
         return this.taskApi.actionsDeleteElement(taskId, command);
     }
 
-    public TaskResource actionsDeleteDocument(@Nonnull UUID taskId, @Nonnull String documentId) {
+    public TaskResource actionsDeleteDocument(@Nonnull UUID taskId, @Nonnull UUID documentId) {
         DeleteElementDocumentCommandResource command = new DeleteElementDocumentCommandResource();
         command.setDocumentId(documentId);
 

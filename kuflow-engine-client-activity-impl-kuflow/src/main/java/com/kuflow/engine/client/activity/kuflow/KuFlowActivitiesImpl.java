@@ -25,6 +25,7 @@ import com.kuflow.engine.client.activity.kuflow.resource.TaskCompleteResponseRes
 import com.kuflow.engine.client.common.service.KuFlowService;
 import com.kuflow.engine.client.common.util.TemporalUtils;
 import com.kuflow.rest.client.resource.LogResource;
+import com.kuflow.rest.client.resource.PrincipalResource;
 import com.kuflow.rest.client.resource.ProcessResource;
 import com.kuflow.rest.client.resource.TaskResource;
 import com.kuflow.rest.client.resource.TasksDefinitionSummaryResource;
@@ -43,8 +44,9 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
         this.kuFlowService = kuflowService;
     }
 
+    @Nonnull
     @Override
-    public RetrieveProcessResponseResource retrieveProcess(RetrieveProcessRequestResource request) {
+    public RetrieveProcessResponseResource retrieveProcess(@Nonnull RetrieveProcessRequestResource request) {
         this.validateRetrieveProcessRequest(request);
 
         ProcessResource process = this.kuFlowService.retrieveProcess(request.getProcessId());
@@ -58,7 +60,7 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
     @Nonnull
     @Override
     public CompleteProcessResponseResource completeProcess(@Nonnull CompleteProcessRequestResource request) {
-        this.validateCopleteProcessRequest(request);
+        this.validateCompleteProcessRequest(request);
 
         this.kuFlowService.completeProcess(request.getProcessId());
 
@@ -68,8 +70,9 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
         return response;
     }
 
+    @Nonnull
     @Override
-    public RetrieveTaskResponseResource retrieveTask(RetrieveTaskRequestResource request) {
+    public RetrieveTaskResponseResource retrieveTask(@Nonnull RetrieveTaskRequestResource request) {
         this.validateRetrieveTaskRequest(request);
 
         TaskResource task = this.kuFlowService.retrieveTask(request.getTaskId());
@@ -120,6 +123,11 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
         taskResource.setActivityToken(temporalToken);
         taskResource.setActivityResponseVersion("v1.0");
         taskResource.setElementValues(request.getElementValues());
+        if (request.getOwnerId() != null) {
+            PrincipalResource ownerResource = new PrincipalResource();
+            ownerResource.setId(request.getOwnerId());
+            taskResource.setOwner(ownerResource);
+        }
 
         this.kuFlowService.createTask(taskResource);
 
@@ -191,7 +199,7 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
         }
     }
 
-    private void validateCopleteProcessRequest(CompleteProcessRequestResource request) {
+    private void validateCompleteProcessRequest(CompleteProcessRequestResource request) {
         if (request.getProcessId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("processId is required", "KuFlowActivities.validation");
         }
