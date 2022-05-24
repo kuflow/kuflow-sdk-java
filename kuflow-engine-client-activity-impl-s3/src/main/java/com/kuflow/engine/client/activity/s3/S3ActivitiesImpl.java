@@ -12,9 +12,11 @@ import com.kuflow.engine.client.activity.s3.resource.CopyTaskElementFilesRequest
 import com.kuflow.engine.client.activity.s3.resource.CopyTaskElementFilesResponseResource;
 import com.kuflow.engine.client.common.error.KuFlowEngineClientException;
 import com.kuflow.rest.client.controller.TaskApi;
-import com.kuflow.rest.client.resource.ElementValueDocumentResource;
+import com.kuflow.rest.client.resource.TaskElementValueDocumentResource;
+import com.kuflow.rest.client.resource.TaskElementValueWrapperResource;
 import com.kuflow.rest.client.resource.TaskResource;
 import feign.Response;
+import io.temporal.failure.ApplicationFailure;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
@@ -22,7 +24,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
@@ -46,9 +47,21 @@ public class S3ActivitiesImpl implements S3Activities {
     @Override
     public CopyTaskElementFilesResponseResource copyTaskElementFiles(@Nonnull CopyTaskElementFilesRequestResource request) {
         TaskResource task = this.taskApi.retrieveTask(request.getSourceTaskId());
+        if (task.getElementValues() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("ElementValues is empty", "KuFlowActivities.validation");
+        }
 
         String elementDefinitionCode = request.getSourceElementDefinitionCode();
-        List<ElementValueDocumentResource> elementValues = task.getElementValues().get(elementDefinitionCode).getValueAsDocumentList();
+
+        TaskElementValueWrapperResource elementValue = task.getElementValues().get(elementDefinitionCode);
+        if (elementValue == null) {
+            throw ApplicationFailure.newNonRetryableFailure(
+                String.format("elementDefinitionCode %s not found", elementDefinitionCode),
+                "KuFlowActivities.validation"
+            );
+        }
+
+        List<TaskElementValueDocumentResource> elementValues = elementValue.getValueAsDocumentList();
 
         String targetBucket = this.getTargetBucket(request);
 
@@ -74,13 +87,23 @@ public class S3ActivitiesImpl implements S3Activities {
         return result;
     }
 
-    private void putObject(TaskResource task, ElementValueDocumentResource elementValueDocument, String targetBucket, String targetKey) {
-        Assert.notNull(elementValueDocument.getContentLength(), "ContentLength required");
-        Assert.notNull(elementValueDocument.getName(), "Name required");
+    private void putObject(
+        TaskResource task,
+        TaskElementValueDocumentResource elementValueDocument,
+        String targetBucket,
+        String targetKey
+    ) {
+        if (elementValueDocument.getContentLength() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("ContentLength required", "KuFlowActivities.validation");
+        }
+        if (elementValueDocument.getName() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("Name required", "KuFlowActivities.validation");
+        }
 
-        Response sourceFile = this.taskApi.actionsDownloadElementDocument(task.getId(), elementValueDocument.getId());
-
-        try (InputStream sourceInputStream = sourceFile.body().asInputStream()) {
+        try (
+            Response sourceFile = this.taskApi.actionsDownloadElementDocument(task.getId(), elementValueDocument.getId());
+            InputStream sourceInputStream = sourceFile.body().asInputStream()
+        ) {
             RequestBody requestBody = RequestBody.fromInputStream(sourceInputStream, elementValueDocument.getContentLength());
             PutObjectRequest putObjectRequest = PutObjectRequest
                 .builder()
@@ -98,8 +121,8 @@ public class S3ActivitiesImpl implements S3Activities {
 
     private String getTargetKey(
         CopyTaskElementFilesRequestResource request,
-        List<ElementValueDocumentResource> elementValues,
-        ElementValueDocumentResource elementValueDocument
+        List<TaskElementValueDocumentResource> elementValues,
+        TaskElementValueDocumentResource elementValueDocument
     ) {
         String targetKey = elementValueDocument.getContentPath();
         if (request.getTargetKey() != null) {

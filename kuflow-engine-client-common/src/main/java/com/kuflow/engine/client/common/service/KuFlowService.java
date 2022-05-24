@@ -11,10 +11,10 @@ import com.kuflow.rest.client.controller.TaskApi;
 import com.kuflow.rest.client.resource.AssignTaskCommandResource;
 import com.kuflow.rest.client.resource.DeleteElementCommandResource;
 import com.kuflow.rest.client.resource.DeleteElementDocumentCommandResource;
-import com.kuflow.rest.client.resource.ElementValueOrArrayValueResource;
 import com.kuflow.rest.client.resource.LogResource;
 import com.kuflow.rest.client.resource.ProcessResource;
 import com.kuflow.rest.client.resource.SaveElementDocumentCommandResource;
+import com.kuflow.rest.client.resource.TaskElementValueOrArrayValueResource;
 import com.kuflow.rest.client.resource.TaskResource;
 import java.io.File;
 import java.util.UUID;
@@ -62,7 +62,7 @@ public class KuFlowService {
         return this.taskApi.actionsAssignTask(taskId, command);
     }
 
-    public TaskResource actionsSaveElement(@Nonnull UUID taskId, ElementValueOrArrayValueResource elementValueOrArrayValueResource) {
+    public TaskResource actionsSaveElement(@Nonnull UUID taskId, TaskElementValueOrArrayValueResource elementValueOrArrayValueResource) {
         return this.taskApi.actionsSaveElement(taskId, elementValueOrArrayValueResource);
     }
 
@@ -94,7 +94,7 @@ public class KuFlowService {
         return this.taskApi.actionsDeleteElement(taskId, command);
     }
 
-    public TaskResource actionsDeleteDocument(@Nonnull UUID taskId, @Nonnull UUID documentId) {
+    public TaskResource actionsDeleteDocument(@Nonnull UUID taskId, @Nonnull String documentId) {
         DeleteElementDocumentCommandResource command = new DeleteElementDocumentCommandResource();
         command.setDocumentId(documentId);
 

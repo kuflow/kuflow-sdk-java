@@ -6,14 +6,12 @@
 
 package com.kuflow.engine.client.activity.s3.resource;
 
-import java.util.UUID;
-
 /**
  * File details copied.
  */
 public class CopyElementFileResource {
 
-    private UUID elementValueId;
+    private String elementValueId;
 
     private String elementDefinitionCode;
 
@@ -32,7 +30,7 @@ public class CopyElementFileResource {
      *
      * @return The elementValueId
      */
-    public UUID getElementValueId() {
+    public String getElementValueId() {
         return this.elementValueId;
     }
 
@@ -41,7 +39,7 @@ public class CopyElementFileResource {
      *
      * @param elementValueId the element value id
      */
-    public void setElementValueId(UUID elementValueId) {
+    public void setElementValueId(String elementValueId) {
         this.elementValueId = elementValueId;
     }
 
