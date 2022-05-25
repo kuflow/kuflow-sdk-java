@@ -201,8 +201,8 @@
           <updatePomFile>true</updatePomFile>
           <flattenMode>ossrh</flattenMode>
           <pomElements>
-            <organization />
-            <issueManagement />
+            <organization></organization>
+            <issueManagement></issueManagement>
           </pomElements>
         </configuration>
         <executions>
@@ -259,6 +259,16 @@
     <system>GitHub</system>
     <url>https://github.com/kuflow/kuflow-engine-client-java/issues</url>
   </issueManagement>
+
+  <repositories>
+    <repository>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>ossrh</id>
+      <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+    </repository>
+  </repositories>
 
   <distributionManagement>
     <repository>
