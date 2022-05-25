@@ -46,26 +46,26 @@ public class S3ActivitiesImpl implements S3Activities {
     @Nonnull
     @Override
     public CopyTaskElementFilesResponseResource copyTaskElementFiles(@Nonnull CopyTaskElementFilesRequestResource request) {
+        List<CopyElementFileResource> targetFiles = new LinkedList<>();
+
+        CopyTaskElementFilesResponseResource result = new CopyTaskElementFilesResponseResource();
+        result.setFiles(targetFiles);
+
         TaskResource task = this.taskApi.retrieveTask(request.getSourceTaskId());
         if (task.getElementValues() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("ElementValues is empty", "KuFlowActivities.validation");
+            return result;
         }
 
         String elementDefinitionCode = request.getSourceElementDefinitionCode();
 
         TaskElementValueWrapperResource elementValue = task.getElementValues().get(elementDefinitionCode);
         if (elementValue == null) {
-            throw ApplicationFailure.newNonRetryableFailure(
-                String.format("elementDefinitionCode %s not found", elementDefinitionCode),
-                "KuFlowActivities.validation"
-            );
+            return result;
         }
 
         List<TaskElementValueDocumentResource> elementValues = elementValue.getValueAsDocumentList();
 
         String targetBucket = this.getTargetBucket(request);
-
-        List<CopyElementFileResource> targetFiles = new LinkedList<>();
 
         elementValues.forEach(elementValueDocument -> {
             String targetKey = this.getTargetKey(request, elementValues, elementValueDocument);
@@ -80,9 +80,6 @@ public class S3ActivitiesImpl implements S3Activities {
 
             targetFiles.add(targetFile);
         });
-
-        CopyTaskElementFilesResponseResource result = new CopyTaskElementFilesResponseResource();
-        result.setFiles(targetFiles);
 
         return result;
     }
