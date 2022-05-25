@@ -10,10 +10,10 @@ import com.kuflow.rest.client.controller.ProcessApi;
 import com.kuflow.rest.client.controller.TaskApi;
 import com.kuflow.rest.client.resource.AssignTaskCommandResource;
 import com.kuflow.rest.client.resource.DeleteElementCommandResource;
-import com.kuflow.rest.client.resource.DeleteElementDocumentCommandResource;
+import com.kuflow.rest.client.resource.DeleteElementValueDocumentCommandResource;
 import com.kuflow.rest.client.resource.LogResource;
 import com.kuflow.rest.client.resource.ProcessResource;
-import com.kuflow.rest.client.resource.SaveElementDocumentCommandResource;
+import com.kuflow.rest.client.resource.SaveElementValueDocumentCommandResource;
 import com.kuflow.rest.client.resource.TaskElementValueOrArrayValueResource;
 import com.kuflow.rest.client.resource.TaskResource;
 import java.io.File;
@@ -76,15 +76,15 @@ public class KuFlowService {
         @Nullable Boolean valid,
         @Nonnull File file
     ) {
-        SaveElementDocumentCommandResource command = new SaveElementDocumentCommandResource();
+        SaveElementValueDocumentCommandResource command = new SaveElementValueDocumentCommandResource();
         command.setCode(code);
         command.setValid(valid);
 
-        return this.taskApi.actionsSaveElementDocument(taskId, command, file);
+        return this.taskApi.actionsSaveElementValueDocument(taskId, command, file);
     }
 
-    public TaskResource actionsSaveElementDocument(@Nonnull UUID taskId, SaveElementDocumentCommandResource json, File file) {
-        return this.taskApi.actionsSaveElementDocument(taskId, json, file);
+    public TaskResource actionsSaveElementDocument(@Nonnull UUID taskId, SaveElementValueDocumentCommandResource json, File file) {
+        return this.taskApi.actionsSaveElementValueDocument(taskId, json, file);
     }
 
     public TaskResource actionsDeleteElement(@Nonnull UUID taskId, @Nonnull String code) {
@@ -95,10 +95,10 @@ public class KuFlowService {
     }
 
     public TaskResource actionsDeleteDocument(@Nonnull UUID taskId, @Nonnull String documentId) {
-        DeleteElementDocumentCommandResource command = new DeleteElementDocumentCommandResource();
+        DeleteElementValueDocumentCommandResource command = new DeleteElementValueDocumentCommandResource();
         command.setDocumentId(documentId);
 
-        return this.taskApi.actionsDeleteDocument(taskId, command);
+        return this.taskApi.actionsDeleteValueDocument(taskId, command);
     }
 
     public TaskResource completeTask(@Nonnull UUID taskId) {
