@@ -47,7 +47,7 @@
     <spring-boot.version>2.6.7</spring-boot.version>
 
     <!-- Application dependencies -->
-    <kuflow-rest-client.version>1.0.2-SNAPSHOT</kuflow-rest-client.version>
+    <kuflow-rest-client.version>1.1.0-SNAPSHOT</kuflow-rest-client.version>
     <temporal-sdk.version>1.7.1</temporal-sdk.version>
     <awssdk.version>2.16.3</awssdk.version>
     <commons-io.version>2.11.0</commons-io.version>
