@@ -12,7 +12,7 @@ import com.kuflow.engine.client.activity.s3.resource.CopyTaskElementFilesRequest
 import com.kuflow.engine.client.activity.s3.resource.CopyTaskElementFilesResponseResource;
 import com.kuflow.engine.client.common.error.KuFlowEngineClientException;
 import com.kuflow.rest.client.controller.TaskApi;
-import com.kuflow.rest.client.resource.TaskElementValueDocumentResource;
+import com.kuflow.rest.client.resource.TaskElementValueDocumentItemResource;
 import com.kuflow.rest.client.resource.TaskElementValueWrapperResource;
 import com.kuflow.rest.client.resource.TaskResource;
 import feign.Response;
@@ -63,7 +63,7 @@ public class S3ActivitiesImpl implements S3Activities {
             return result;
         }
 
-        List<TaskElementValueDocumentResource> elementValues = elementValue.getValueAsDocumentList();
+        List<TaskElementValueDocumentItemResource> elementValues = elementValue.getValueAsDocumentList();
 
         String targetBucket = this.getTargetBucket(request);
 
@@ -86,7 +86,7 @@ public class S3ActivitiesImpl implements S3Activities {
 
     private void putObject(
         TaskResource task,
-        TaskElementValueDocumentResource elementValueDocument,
+        TaskElementValueDocumentItemResource elementValueDocument,
         String targetBucket,
         String targetKey
     ) {
@@ -118,8 +118,8 @@ public class S3ActivitiesImpl implements S3Activities {
 
     private String getTargetKey(
         CopyTaskElementFilesRequestResource request,
-        List<TaskElementValueDocumentResource> elementValues,
-        TaskElementValueDocumentResource elementValueDocument
+        List<TaskElementValueDocumentItemResource> elementValues,
+        TaskElementValueDocumentItemResource elementValueDocument
     ) {
         String targetKey = elementValueDocument.getContentPath();
         if (request.getTargetKey() != null) {
