@@ -25,7 +25,6 @@ import com.kuflow.engine.client.activity.kuflow.resource.TaskCompleteResponseRes
 import com.kuflow.engine.client.common.service.KuFlowService;
 import com.kuflow.engine.client.common.util.TemporalUtils;
 import com.kuflow.rest.client.resource.LogResource;
-import com.kuflow.rest.client.resource.PrincipalResource;
 import com.kuflow.rest.client.resource.ProcessResource;
 import com.kuflow.rest.client.resource.TaskResource;
 import com.kuflow.rest.client.resource.TasksDefinitionSummaryResource;
@@ -96,6 +95,7 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
         taskResource.setTaskDefinition(taskDefinition);
         taskResource.setId(request.getTaskId());
         taskResource.setElementValues(request.getElementValues());
+        taskResource.setOwner(request.getOwner());
 
         taskResource = this.kuFlowService.createTask(taskResource);
 
@@ -123,11 +123,7 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
         taskResource.setActivityToken(temporalToken);
         taskResource.setActivityResponseVersion("v1.0");
         taskResource.setElementValues(request.getElementValues());
-        if (request.getOwnerId() != null) {
-            PrincipalResource ownerResource = new PrincipalResource();
-            ownerResource.setId(request.getOwnerId());
-            taskResource.setOwner(ownerResource);
-        }
+        taskResource.setOwner(request.getOwner());
 
         this.kuFlowService.createTask(taskResource);
 
