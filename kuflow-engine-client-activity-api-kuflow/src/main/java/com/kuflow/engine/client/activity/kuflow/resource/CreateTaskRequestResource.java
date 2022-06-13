@@ -7,6 +7,7 @@
 package com.kuflow.engine.client.activity.kuflow.resource;
 
 import com.kuflow.engine.client.common.resource.AbstractResource;
+import com.kuflow.rest.client.resource.PrincipalResource;
 import com.kuflow.rest.client.resource.TaskElementValueWrapperResource;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +23,7 @@ public class CreateTaskRequestResource extends AbstractResource {
 
     private Map<String, TaskElementValueWrapperResource> elementValues = new HashMap<>();
 
-    private UUID ownerId;
+    private PrincipalResource owner;
 
     public UUID getTaskId() {
         return this.taskId;
@@ -64,11 +65,11 @@ public class CreateTaskRequestResource extends AbstractResource {
         this.elementValues.put(key, elementValue);
     }
 
-    public UUID getOwnerId() {
-        return this.ownerId;
+    public PrincipalResource getOwner() {
+        return this.owner;
     }
 
-    public void setOwnerId(UUID ownerId) {
-        this.ownerId = ownerId;
+    public void setOwner(PrincipalResource owner) {
+        this.owner = owner;
     }
 }
