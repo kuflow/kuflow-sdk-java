@@ -49,7 +49,6 @@ public class S3ActivitiesImpl implements S3Activities {
         List<CopyElementFileResource> targetFiles = new LinkedList<>();
 
         CopyTaskElementFilesResponseResource result = new CopyTaskElementFilesResponseResource();
-        result.setFiles(targetFiles);
 
         TaskResource task = this.taskApi.retrieveTask(request.getSourceTaskId());
         if (task.getElementValues() == null) {
@@ -80,6 +79,8 @@ public class S3ActivitiesImpl implements S3Activities {
 
             targetFiles.add(targetFile);
         });
+
+        result.setFiles(targetFiles);
 
         return result;
     }
