@@ -6,6 +6,8 @@
 
 package com.kuflow.engine.client.activity.s3;
 
+import static java.util.stream.Collectors.toList;
+
 import com.kuflow.engine.client.activity.s3.config.S3ActivitiesProperties;
 import com.kuflow.engine.client.activity.s3.resource.CopyElementFileResource;
 import com.kuflow.engine.client.activity.s3.resource.CopyTaskElementFilesRequestResource;
@@ -19,7 +21,6 @@ import feign.Response;
 import io.temporal.failure.ApplicationFailure;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Nonnull;
 import org.apache.commons.io.FilenameUtils;
@@ -46,10 +47,7 @@ public class S3ActivitiesImpl implements S3Activities {
     @Nonnull
     @Override
     public CopyTaskElementFilesResponseResource copyTaskElementFiles(@Nonnull CopyTaskElementFilesRequestResource request) {
-        List<CopyElementFileResource> targetFiles = new LinkedList<>();
-
         CopyTaskElementFilesResponseResource result = new CopyTaskElementFilesResponseResource();
-        result.setFiles(targetFiles);
 
         TaskResource task = this.taskApi.retrieveTask(request.getSourceTaskId());
         if (task.getElementValues() == null) {
@@ -67,19 +65,24 @@ public class S3ActivitiesImpl implements S3Activities {
 
         String targetBucket = this.getTargetBucket(request);
 
-        elementValues.forEach(elementValueDocument -> {
-            String targetKey = this.getTargetKey(request, elementValues, elementValueDocument);
+        List<CopyElementFileResource> targetFiles = elementValues
+            .stream()
+            .map(elementValueDocument -> {
+                String targetKey = this.getTargetKey(request, elementValues, elementValueDocument);
 
-            this.putObject(task, elementValueDocument, targetBucket, targetKey);
+                this.putObject(task, elementValueDocument, targetBucket, targetKey);
 
-            CopyElementFileResource targetFile = new CopyElementFileResource();
-            targetFile.setElementValueId(elementValueDocument.getId());
-            targetFile.setElementDefinitionCode(elementDefinitionCode);
-            targetFile.setBucket(targetBucket);
-            targetFile.setKey(targetKey);
+                CopyElementFileResource targetFile = new CopyElementFileResource();
+                targetFile.setElementValueId(elementValueDocument.getId());
+                targetFile.setElementDefinitionCode(elementDefinitionCode);
+                targetFile.setBucket(targetBucket);
+                targetFile.setKey(targetKey);
 
-            targetFiles.add(targetFile);
-        });
+                return targetFile;
+            })
+            .collect(toList());
+
+        result.setFiles(targetFiles);
 
         return result;
     }
