@@ -173,7 +173,7 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
     @Nonnull
     @Override
-    public LogResponseResource appendLog(@Nonnull LogRequestResource request) {
+    public LogResponseResource appendTaskLog(@Nonnull LogRequestResource request) {
         this.validateLogRequest(request);
 
         LogResource logResource = new LogResource();
@@ -181,7 +181,7 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
         logResource.setLevel(request.getLevel());
         logResource.setMessage(request.getMessage());
 
-        TaskResource taskResource = this.kuFlowService.appendLog(request.getTaskId(), logResource);
+        TaskResource taskResource = this.kuFlowService.appendTaskLog(request.getTaskId(), logResource);
 
         LogResponseResource response = new LogResponseResource();
         response.setTask(taskResource);

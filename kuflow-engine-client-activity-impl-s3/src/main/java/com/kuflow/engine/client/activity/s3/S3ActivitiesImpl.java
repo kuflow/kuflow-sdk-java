@@ -101,7 +101,7 @@ public class S3ActivitiesImpl implements S3Activities {
         }
 
         try (
-            Response sourceFile = this.taskApi.actionsDownloadElementValueDocument(task.getId(), elementValueDocument.getId());
+            Response sourceFile = this.taskApi.actionsDownloadTaskElementValueDocument(task.getId(), elementValueDocument.getId());
             InputStream sourceInputStream = sourceFile.body().asInputStream()
         ) {
             RequestBody requestBody = RequestBody.fromInputStream(sourceInputStream, elementValueDocument.getContentLength());
