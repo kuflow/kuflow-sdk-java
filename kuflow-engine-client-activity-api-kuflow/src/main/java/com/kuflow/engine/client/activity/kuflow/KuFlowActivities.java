@@ -43,7 +43,7 @@ public interface KuFlowActivities {
     RetrieveProcessResponseResource retrieveProcess(@Nonnull RetrieveProcessRequestResource request);
 
     /**
-     * Complete a Process. The state of Process is setted to completed.
+     * Complete a Process. The state of Process is set to "COMPLETED".
      *
      * @param request must not be {@literal null}.
      * @return process completed
@@ -130,5 +130,5 @@ public interface KuFlowActivities {
      */
     @ActivityMethod
     @Nonnull
-    LogResponseResource appendLog(@Nonnull LogRequestResource request);
+    LogResponseResource appendTaskLog(@Nonnull LogRequestResource request);
 }

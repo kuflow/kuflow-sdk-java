@@ -14,8 +14,8 @@ import com.kuflow.rest.client.resource.DeleteElementValueDocumentCommandResource
 import com.kuflow.rest.client.resource.LogResource;
 import com.kuflow.rest.client.resource.ProcessResource;
 import com.kuflow.rest.client.resource.SaveElementValueDocumentCommandResource;
-import com.kuflow.rest.client.resource.TaskElementValueOrArrayValueResource;
 import com.kuflow.rest.client.resource.TaskResource;
+import com.kuflow.rest.client.resource.TaskSaveElementCommandResource;
 import java.io.File;
 import java.util.UUID;
 import javax.annotation.Nonnull;
@@ -62,15 +62,15 @@ public class KuFlowService {
         return this.taskApi.actionsAssignTask(taskId, command);
     }
 
-    public TaskResource actionsSaveElement(@Nonnull UUID taskId, TaskElementValueOrArrayValueResource elementValueOrArrayValueResource) {
-        return this.taskApi.actionsSaveElement(taskId, elementValueOrArrayValueResource);
+    public TaskResource saveTaskElement(@Nonnull UUID taskId, TaskSaveElementCommandResource command) {
+        return this.taskApi.actionsSaveTaskElement(taskId, command);
     }
 
-    public TaskResource actionsSaveElementDocument(@Nonnull UUID taskId, @Nonnull String code, @Nonnull File file) {
-        return this.actionsSaveElementDocument(taskId, code, Boolean.TRUE, file);
+    public TaskResource saveTaskElementValueDocument(@Nonnull UUID taskId, @Nonnull String code, @Nonnull File file) {
+        return this.saveTaskElementValueDocument(taskId, code, Boolean.TRUE, file);
     }
 
-    public TaskResource actionsSaveElementDocument(
+    public TaskResource saveTaskElementValueDocument(
         @Nonnull UUID taskId,
         @Nonnull String code,
         @Nullable Boolean valid,
@@ -80,32 +80,32 @@ public class KuFlowService {
         command.setCode(code);
         command.setValid(valid);
 
-        return this.taskApi.actionsSaveElementValueDocument(taskId, command, file);
+        return this.taskApi.actionsSaveTaskElementValueDocument(taskId, command, file);
     }
 
-    public TaskResource actionsSaveElementDocument(@Nonnull UUID taskId, SaveElementValueDocumentCommandResource json, File file) {
-        return this.taskApi.actionsSaveElementValueDocument(taskId, json, file);
+    public TaskResource saveTaskElementValueDocument(@Nonnull UUID taskId, SaveElementValueDocumentCommandResource json, File file) {
+        return this.taskApi.actionsSaveTaskElementValueDocument(taskId, json, file);
     }
 
-    public TaskResource actionsDeleteElement(@Nonnull UUID taskId, @Nonnull String code) {
+    public TaskResource deleteTaskElement(@Nonnull UUID taskId, @Nonnull String code) {
         DeleteElementCommandResource command = new DeleteElementCommandResource();
         command.setCode(code);
 
-        return this.taskApi.actionsDeleteElement(taskId, command);
+        return this.taskApi.actionsDeleteTaskElement(taskId, command);
     }
 
-    public TaskResource actionsDeleteDocument(@Nonnull UUID taskId, @Nonnull UUID documentId) {
+    public TaskResource deleteTaskElementValueDocument(@Nonnull UUID taskId, @Nonnull UUID documentId) {
         DeleteElementValueDocumentCommandResource command = new DeleteElementValueDocumentCommandResource();
         command.setDocumentId(documentId);
 
-        return this.taskApi.actionsDeleteValueDocument(taskId, command);
+        return this.taskApi.actionsDeleteTaskElementValueDocument(taskId, command);
     }
 
     public TaskResource completeTask(@Nonnull UUID taskId) {
         return this.taskApi.actionsCompleteTask(taskId);
     }
 
-    public TaskResource appendLog(UUID taskId, LogResource logResource) {
-        return this.taskApi.actionsAppendLog(taskId, logResource);
+    public TaskResource appendTaskLog(UUID taskId, LogResource logResource) {
+        return this.taskApi.actionsAppendTaskLog(taskId, logResource);
     }
 }
