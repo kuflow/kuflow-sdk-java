@@ -9,12 +9,13 @@ package com.kuflow.engine.client.common.service;
 import com.kuflow.rest.client.controller.ProcessApi;
 import com.kuflow.rest.client.controller.TaskApi;
 import com.kuflow.rest.client.resource.AssignTaskCommandResource;
+import com.kuflow.rest.client.resource.ChangeProcessInitiatorCommandResource;
 import com.kuflow.rest.client.resource.DeleteElementCommandResource;
 import com.kuflow.rest.client.resource.DeleteElementValueDocumentCommandResource;
 import com.kuflow.rest.client.resource.LogResource;
 import com.kuflow.rest.client.resource.ProcessResource;
 import com.kuflow.rest.client.resource.SaveElementValueDocumentCommandResource;
-import com.kuflow.rest.client.resource.SaveUserActionValueDocumentCommandResource;
+import com.kuflow.rest.client.resource.SaveProcessUserActionValueDocumentCommandResource;
 import com.kuflow.rest.client.resource.TaskResource;
 import com.kuflow.rest.client.resource.TaskSaveElementCommandResource;
 import java.io.File;
@@ -43,9 +44,17 @@ public class KuFlowService {
         return this.processApi.actionsCompleteProcess(processId);
     }
 
+    public ProcessResource changeProcessInitiator(@Nonnull UUID processId, @Nullable String email, @Nullable UUID principalId) {
+        ChangeProcessInitiatorCommandResource command = new ChangeProcessInitiatorCommandResource();
+        command.setEmail(email);
+        command.setPrincipalId(principalId);
+
+        return this.processApi.actionsChangeProcessInitiator(processId, command);
+    }
+
     public ProcessResource saveProcessUserActionValueDocument(
         @Nonnull UUID processId,
-        @Nonnull SaveUserActionValueDocumentCommandResource json,
+        @Nonnull SaveProcessUserActionValueDocumentCommandResource json,
         @Nonnull File file
     ) {
         return this.processApi.actionsSaveProcessUserActionValueDocument(processId, json, file);
