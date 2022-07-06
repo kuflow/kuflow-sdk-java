@@ -6,6 +6,8 @@
 
 package com.kuflow.engine.client.activity.kuflow;
 
+import com.kuflow.engine.client.activity.kuflow.resource.ChangeProcessInitiatorRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.ChangeProcessInitiatorResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.CompleteProcessRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.CompleteProcessResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.CreateTaskRequestResource;
@@ -51,6 +53,17 @@ public interface KuFlowActivities {
     @ActivityMethod
     @Nonnull
     CompleteProcessResponseResource completeProcess(@Nonnull CompleteProcessRequestResource request);
+
+    /**
+     * Change the current initiator of a process. Allows you to choose a user (by email or principal
+     * identifier) or an application (principal identifier).
+     *
+     * @param request must not be {@literal null}.
+     * @return task assigned
+     */
+    @ActivityMethod
+    @Nonnull
+    ChangeProcessInitiatorResponseResource changeProcessInitiator(@Nonnull ChangeProcessInitiatorRequestResource request);
 
     /**
      * Retrieve a Task.

@@ -6,6 +6,8 @@
 
 package com.kuflow.engine.client.activity.kuflow;
 
+import com.kuflow.engine.client.activity.kuflow.resource.ChangeProcessInitiatorRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.ChangeProcessInitiatorResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.CompleteProcessRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.CompleteProcessResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.CreateTaskRequestResource;
@@ -65,6 +67,19 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
         CompleteProcessResponseResource response = new CompleteProcessResponseResource();
         response.setMessage(String.format("Workflow for the process %s completed", request.getProcessId()));
+
+        return response;
+    }
+
+    @Nonnull
+    @Override
+    public ChangeProcessInitiatorResponseResource changeProcessInitiator(@Nonnull ChangeProcessInitiatorRequestResource request) {
+        this.validateChangeProcessInitiatorRequest(request);
+
+        this.kuFlowService.changeProcessInitiator(request.getProcessId(), request.getEmail(), request.getPrincipalId());
+
+        ChangeProcessInitiatorResponseResource response = new ChangeProcessInitiatorResponseResource();
+        response.setProcessId(request.getProcessId());
 
         return response;
     }
@@ -198,6 +213,15 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
     private void validateCompleteProcessRequest(CompleteProcessRequestResource request) {
         if (request.getProcessId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("processId is required", "KuFlowActivities.validation");
+        }
+    }
+
+    private void validateChangeProcessInitiatorRequest(ChangeProcessInitiatorRequestResource request) {
+        if (request.getProcessId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("processId is required", "KuFlowActivities.validation");
+        }
+        if (request.getEmail() == null && request.getPrincipalId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("email or principalId is required", "KuFlowActivities.validation");
         }
     }
 
