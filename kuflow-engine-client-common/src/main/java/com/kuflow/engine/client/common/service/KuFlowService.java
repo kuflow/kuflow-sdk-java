@@ -14,6 +14,7 @@ import com.kuflow.rest.client.resource.DeleteElementCommandResource;
 import com.kuflow.rest.client.resource.DeleteElementValueDocumentCommandResource;
 import com.kuflow.rest.client.resource.LogResource;
 import com.kuflow.rest.client.resource.ProcessResource;
+import com.kuflow.rest.client.resource.ProcessSaveElementCommandResource;
 import com.kuflow.rest.client.resource.SaveElementValueDocumentCommandResource;
 import com.kuflow.rest.client.resource.SaveProcessUserActionValueDocumentCommandResource;
 import com.kuflow.rest.client.resource.TaskResource;
@@ -58,6 +59,17 @@ public class KuFlowService {
         @Nonnull File file
     ) {
         return this.processApi.actionsSaveProcessUserActionValueDocument(processId, json, file);
+    }
+
+    public ProcessResource saveProcessElement(@Nonnull UUID processId, @Nonnull ProcessSaveElementCommandResource command) {
+        return this.processApi.actionsSaveProcessElement(processId, command);
+    }
+
+    public ProcessResource deleteProcessElement(@Nonnull UUID processId, @Nonnull String code) {
+        DeleteElementCommandResource command = new DeleteElementCommandResource();
+        command.setCode(code);
+
+        return this.processApi.actionsDeleteProcessElement(processId, command);
     }
 
     public TaskResource retrieveTask(@Nonnull UUID taskId) {
