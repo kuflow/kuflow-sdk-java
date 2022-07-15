@@ -7,19 +7,30 @@
 package com.kuflow.engine.client.common.service;
 
 import com.kuflow.rest.client.controller.ProcessApi;
+import com.kuflow.rest.client.controller.ProcessApi.FindProcessesQueryParams;
 import com.kuflow.rest.client.controller.TaskApi;
+import com.kuflow.rest.client.controller.TaskApi.ActionsDownloadTaskElementValueDocumentQueryParams;
+import com.kuflow.rest.client.controller.TaskApi.ActionsDownloadTaskElementValueRenderedQueryParams;
+import com.kuflow.rest.client.controller.TaskApi.FindTasksQueryParams;
 import com.kuflow.rest.client.resource.AssignTaskCommandResource;
 import com.kuflow.rest.client.resource.ChangeProcessInitiatorCommandResource;
 import com.kuflow.rest.client.resource.DeleteElementCommandResource;
 import com.kuflow.rest.client.resource.DeleteElementValueDocumentCommandResource;
 import com.kuflow.rest.client.resource.LogResource;
+import com.kuflow.rest.client.resource.ProcessPageResource;
 import com.kuflow.rest.client.resource.ProcessResource;
 import com.kuflow.rest.client.resource.ProcessSaveElementCommandResource;
 import com.kuflow.rest.client.resource.SaveElementValueDocumentCommandResource;
 import com.kuflow.rest.client.resource.SaveProcessUserActionValueDocumentCommandResource;
+import com.kuflow.rest.client.resource.TaskPageResource;
 import com.kuflow.rest.client.resource.TaskResource;
 import com.kuflow.rest.client.resource.TaskSaveElementCommandResource;
+import com.kuflow.rest.client.resource.TaskStateResource;
+import feign.Response;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -35,6 +46,23 @@ public class KuFlowService {
     public KuFlowService(TaskApi taskApi, ProcessApi processApi) {
         this.taskApi = taskApi;
         this.processApi = processApi;
+    }
+
+    public ProcessPageResource findProcesses(@Nullable Integer page, @Nullable Integer size, @Nullable List<String> sort) {
+        FindProcessesQueryParams queryParams = new FindProcessesQueryParams();
+        if (page != null) {
+            queryParams.page(page);
+        }
+
+        if (size != null) {
+            queryParams.size(size);
+        }
+
+        if (sort != null && !sort.isEmpty()) {
+            queryParams.sort(sort);
+        }
+
+        return this.processApi.findProcesses(queryParams);
     }
 
     public ProcessResource retrieveProcess(@Nonnull UUID processId) {
@@ -70,6 +98,42 @@ public class KuFlowService {
         command.setCode(code);
 
         return this.processApi.actionsDeleteProcessElement(processId, command);
+    }
+
+    public TaskPageResource findTasks(
+        @Nullable Integer page,
+        @Nullable Integer size,
+        @Nullable List<String> sort,
+        List<UUID> processIds,
+        List<TaskStateResource> states,
+        List<String> taskDefinitionCodes
+    ) {
+        FindTasksQueryParams queryParams = new FindTasksQueryParams();
+        if (page != null) {
+            queryParams.page(page);
+        }
+
+        if (size != null) {
+            queryParams.size(size);
+        }
+
+        if (sort != null && !sort.isEmpty()) {
+            queryParams.sort(sort);
+        }
+
+        if (processIds != null && !processIds.isEmpty()) {
+            queryParams.processId(processIds);
+        }
+
+        if (states != null && !states.isEmpty()) {
+            queryParams.state(states);
+        }
+
+        if (taskDefinitionCodes != null && !taskDefinitionCodes.isEmpty()) {
+            queryParams.taskDefinitionCode(taskDefinitionCodes);
+        }
+
+        return this.taskApi.findTasks(queryParams);
     }
 
     public TaskResource retrieveTask(@Nonnull UUID taskId) {
@@ -129,6 +193,23 @@ public class KuFlowService {
         command.setDocumentId(documentId);
 
         return this.taskApi.actionsDeleteTaskElementValueDocument(taskId, command);
+    }
+
+    public InputStream downloadTaskDocument(@Nonnull UUID taskId, @Nonnull UUID documentId) throws IOException {
+        ActionsDownloadTaskElementValueDocumentQueryParams queryParams = new ActionsDownloadTaskElementValueDocumentQueryParams()
+            .documentId(documentId);
+        Response reponse = this.taskApi.actionsDownloadTaskElementValueDocument(taskId, queryParams);
+
+        return reponse.body().asInputStream();
+    }
+
+    public InputStream downloadTaskElementForm(@Nonnull UUID taskId, @Nonnull String code) throws IOException {
+        ActionsDownloadTaskElementValueRenderedQueryParams queryParams = new ActionsDownloadTaskElementValueRenderedQueryParams()
+            .code(code);
+
+        Response reponse = this.taskApi.actionsDownloadTaskElementValueRendered(taskId, queryParams);
+
+        return reponse.body().asInputStream();
     }
 
     public TaskResource completeTask(@Nonnull UUID taskId) {

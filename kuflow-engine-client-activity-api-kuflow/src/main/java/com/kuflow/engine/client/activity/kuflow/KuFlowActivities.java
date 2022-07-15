@@ -12,6 +12,10 @@ import com.kuflow.engine.client.activity.kuflow.resource.CompleteProcessRequestR
 import com.kuflow.engine.client.activity.kuflow.resource.CompleteProcessResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.CreateTaskRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.CreateTaskResponseResource;
+import com.kuflow.engine.client.activity.kuflow.resource.FindProcesseResponseResource;
+import com.kuflow.engine.client.activity.kuflow.resource.FindProcessesRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.FindTaskRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.FindTaskResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.LogRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.LogResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.RetrieveProcessRequestResource;
@@ -34,6 +38,16 @@ import javax.annotation.Nonnull;
  */
 @ActivityInterface(namePrefix = "KuFlow_Engine_")
 public interface KuFlowActivities {
+    /**
+     * Find all accessible Processes
+     *
+     * @param request must not be {@literal null}.
+     * @return
+     */
+    @ActivityMethod
+    @Nonnull
+    FindProcesseResponseResource findProcesses(FindProcessesRequestResource request);
+
     /**
      * Retrieve a Process.
      *
@@ -64,6 +78,16 @@ public interface KuFlowActivities {
     @ActivityMethod
     @Nonnull
     ChangeProcessInitiatorResponseResource changeProcessInitiator(@Nonnull ChangeProcessInitiatorRequestResource request);
+
+    /**
+     * List all the Processes that have been created and the the credentials has access.
+     *
+     * @param request must not be {@literal null}.
+     * @return Processes found paginated
+     */
+    @ActivityMethod
+    @Nonnull
+    public FindTaskResponseResource findTasks(FindTaskRequestResource request);
 
     /**
      * Retrieve a Task.

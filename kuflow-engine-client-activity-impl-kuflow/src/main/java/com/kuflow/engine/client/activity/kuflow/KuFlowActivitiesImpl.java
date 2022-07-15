@@ -12,6 +12,10 @@ import com.kuflow.engine.client.activity.kuflow.resource.CompleteProcessRequestR
 import com.kuflow.engine.client.activity.kuflow.resource.CompleteProcessResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.CreateTaskRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.CreateTaskResponseResource;
+import com.kuflow.engine.client.activity.kuflow.resource.FindProcesseResponseResource;
+import com.kuflow.engine.client.activity.kuflow.resource.FindProcessesRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.FindTaskRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.FindTaskResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.LogRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.LogResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.RetrieveProcessRequestResource;
@@ -27,7 +31,9 @@ import com.kuflow.engine.client.activity.kuflow.resource.TaskCompleteResponseRes
 import com.kuflow.engine.client.common.service.KuFlowService;
 import com.kuflow.engine.client.common.util.TemporalUtils;
 import com.kuflow.rest.client.resource.LogResource;
+import com.kuflow.rest.client.resource.ProcessPageResource;
 import com.kuflow.rest.client.resource.ProcessResource;
+import com.kuflow.rest.client.resource.TaskPageResource;
 import com.kuflow.rest.client.resource.TaskResource;
 import com.kuflow.rest.client.resource.TasksDefinitionSummaryResource;
 import io.temporal.activity.Activity;
@@ -43,6 +49,17 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
     public KuFlowActivitiesImpl(KuFlowService kuflowService) {
         this.kuFlowService = kuflowService;
+    }
+
+    @Nonnull
+    @Override
+    public FindProcesseResponseResource findProcesses(FindProcessesRequestResource request) {
+        ProcessPageResource taskPage = this.kuFlowService.findProcesses(request.getPage(), request.getSize(), request.getSort());
+
+        FindProcesseResponseResource response = new FindProcesseResponseResource();
+        response.setProcessPage(taskPage);
+
+        return response;
     }
 
     @Nonnull
@@ -80,6 +97,25 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
         ChangeProcessInitiatorResponseResource response = new ChangeProcessInitiatorResponseResource();
         response.setProcessId(request.getProcessId());
+
+        return response;
+    }
+
+    @Nonnull
+    @Override
+    public FindTaskResponseResource findTasks(FindTaskRequestResource request) {
+        TaskPageResource taskPage =
+            this.kuFlowService.findTasks(
+                    request.getPage(),
+                    request.getSize(),
+                    request.getSort(),
+                    request.getProcessIds(),
+                    request.getStates(),
+                    request.getTaskDefinitionCodes()
+                );
+
+        FindTaskResponseResource response = new FindTaskResponseResource();
+        response.setTaskPage(taskPage);
 
         return response;
     }
