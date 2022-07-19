@@ -12,6 +12,10 @@ import java.util.Map;
 
 public final class MapUtils {
 
+    private MapUtils() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static Map<String, Serializable> toMapSerializable(Map<String, Object> d) {
         Map<String, Serializable> values = new HashMap<>();
         for (Map.Entry<String, Object> entry : d.entrySet()) {

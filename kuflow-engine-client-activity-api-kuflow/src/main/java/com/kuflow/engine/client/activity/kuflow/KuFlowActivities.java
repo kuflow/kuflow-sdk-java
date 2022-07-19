@@ -12,12 +12,20 @@ import com.kuflow.engine.client.activity.kuflow.resource.CompleteProcessRequestR
 import com.kuflow.engine.client.activity.kuflow.resource.CompleteProcessResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.CreateTaskRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.CreateTaskResponseResource;
+import com.kuflow.engine.client.activity.kuflow.resource.DeleteProcessElementRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.DeleteProcessElementResponseResource;
+import com.kuflow.engine.client.activity.kuflow.resource.FindProcesseResponseResource;
+import com.kuflow.engine.client.activity.kuflow.resource.FindProcessesRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.FindTaskRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.FindTaskResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.LogRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.LogResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.RetrieveProcessRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.RetrieveProcessResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.RetrieveTaskRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.RetrieveTaskResponseResource;
+import com.kuflow.engine.client.activity.kuflow.resource.SaveProcessElementRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.SaveProcessElementResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskAssignRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskAssignResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskClaimRequestResource;
@@ -35,6 +43,16 @@ import javax.annotation.Nonnull;
 @ActivityInterface(namePrefix = "KuFlow_Engine_")
 public interface KuFlowActivities {
     /**
+     * Find all accessible Processes
+     *
+     * @param request must not be {@literal null}.
+     * @return
+     */
+    @ActivityMethod
+    @Nonnull
+    FindProcesseResponseResource findProcesses(FindProcessesRequestResource request);
+
+    /**
      * Retrieve a Process.
      *
      * @param request must not be {@literal null}.
@@ -43,6 +61,26 @@ public interface KuFlowActivities {
     @ActivityMethod
     @Nonnull
     RetrieveProcessResponseResource retrieveProcess(@Nonnull RetrieveProcessRequestResource request);
+
+    /**
+     *  Allow to save an element.
+     *  If values already exist for the provided element code, it replaces them with the new ones, otherwise it creates them.
+     *  The values of the previous elements that no longer exist will be deleted.
+     *
+     *  If the process is already finished the invocations fails with an error.
+     * @param request must not be {@literal null}.
+     * @return process completed
+     */
+    SaveProcessElementResponseResource saveProcessElement(@Nonnull SaveProcessElementRequestResource request);
+
+    /**
+     *  Allow to delete a process element by specifying the item definition code.
+     *  Remove all the element values.
+     *
+     * @param request
+     * @return
+     */
+    DeleteProcessElementResponseResource deleteProcessElement(@Nonnull DeleteProcessElementRequestResource request);
 
     /**
      * Complete a Process. The state of Process is set to "COMPLETED".
@@ -64,6 +102,16 @@ public interface KuFlowActivities {
     @ActivityMethod
     @Nonnull
     ChangeProcessInitiatorResponseResource changeProcessInitiator(@Nonnull ChangeProcessInitiatorRequestResource request);
+
+    /**
+     * List all the Processes that have been created and the the credentials has access.
+     *
+     * @param request must not be {@literal null}.
+     * @return Processes found paginated
+     */
+    @ActivityMethod
+    @Nonnull
+    FindTaskResponseResource findTasks(FindTaskRequestResource request);
 
     /**
      * Retrieve a Task.

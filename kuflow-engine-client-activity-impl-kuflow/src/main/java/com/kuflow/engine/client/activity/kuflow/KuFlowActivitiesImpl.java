@@ -12,12 +12,20 @@ import com.kuflow.engine.client.activity.kuflow.resource.CompleteProcessRequestR
 import com.kuflow.engine.client.activity.kuflow.resource.CompleteProcessResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.CreateTaskRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.CreateTaskResponseResource;
+import com.kuflow.engine.client.activity.kuflow.resource.DeleteProcessElementRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.DeleteProcessElementResponseResource;
+import com.kuflow.engine.client.activity.kuflow.resource.FindProcesseResponseResource;
+import com.kuflow.engine.client.activity.kuflow.resource.FindProcessesRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.FindTaskRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.FindTaskResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.LogRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.LogResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.RetrieveProcessRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.RetrieveProcessResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.RetrieveTaskRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.RetrieveTaskResponseResource;
+import com.kuflow.engine.client.activity.kuflow.resource.SaveProcessElementRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.SaveProcessElementResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskAssignRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskAssignResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskClaimRequestResource;
@@ -27,12 +35,16 @@ import com.kuflow.engine.client.activity.kuflow.resource.TaskCompleteResponseRes
 import com.kuflow.engine.client.common.service.KuFlowService;
 import com.kuflow.engine.client.common.util.TemporalUtils;
 import com.kuflow.rest.client.resource.LogResource;
+import com.kuflow.rest.client.resource.ProcessPageResource;
 import com.kuflow.rest.client.resource.ProcessResource;
+import com.kuflow.rest.client.resource.ProcessSaveElementCommandResource;
+import com.kuflow.rest.client.resource.TaskPageResource;
 import com.kuflow.rest.client.resource.TaskResource;
 import com.kuflow.rest.client.resource.TasksDefinitionSummaryResource;
 import io.temporal.activity.Activity;
 import io.temporal.activity.ActivityExecutionContext;
 import io.temporal.failure.ApplicationFailure;
+import java.util.UUID;
 import javax.annotation.Nonnull;
 import org.springframework.stereotype.Component;
 
@@ -47,12 +59,49 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
     @Nonnull
     @Override
+    public FindProcesseResponseResource findProcesses(FindProcessesRequestResource request) {
+        ProcessPageResource taskPage = this.kuFlowService.findProcesses(request.getPage(), request.getSize(), request.getSort());
+
+        FindProcesseResponseResource response = new FindProcesseResponseResource();
+        response.setProcessPage(taskPage);
+
+        return response;
+    }
+
+    @Nonnull
+    @Override
     public RetrieveProcessResponseResource retrieveProcess(@Nonnull RetrieveProcessRequestResource request) {
         this.validateRetrieveProcessRequest(request);
 
         ProcessResource process = this.kuFlowService.retrieveProcess(request.getProcessId());
 
         RetrieveProcessResponseResource response = new RetrieveProcessResponseResource();
+        response.setProcess(process);
+
+        return response;
+    }
+
+    @Nonnull
+    @Override
+    public SaveProcessElementResponseResource saveProcessElement(@Nonnull SaveProcessElementRequestResource request) {
+        ProcessSaveElementCommandResource command = new ProcessSaveElementCommandResource();
+        command.setCode(request.getElementDefinitioCode());
+        command.setValue(request.getValue());
+
+        ProcessResource process = this.kuFlowService.saveProcessElement(request.getProcessId(), command);
+
+        SaveProcessElementResponseResource response = new SaveProcessElementResponseResource();
+        response.setProcess(process);
+
+        return response;
+    }
+
+    @Nonnull
+    @Override
+    public DeleteProcessElementResponseResource deleteProcessElement(@Nonnull DeleteProcessElementRequestResource request) {
+        ProcessResource process = this.kuFlowService.deleteProcessElement(request.getProcessId(), request.getElementDefinitioCode());
+
+        DeleteProcessElementResponseResource response = new DeleteProcessElementResponseResource();
         response.setProcess(process);
 
         return response;
@@ -80,6 +129,25 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
         ChangeProcessInitiatorResponseResource response = new ChangeProcessInitiatorResponseResource();
         response.setProcessId(request.getProcessId());
+
+        return response;
+    }
+
+    @Nonnull
+    @Override
+    public FindTaskResponseResource findTasks(FindTaskRequestResource request) {
+        TaskPageResource taskPage =
+            this.kuFlowService.findTasks(
+                    request.getPage(),
+                    request.getSize(),
+                    request.getSort(),
+                    request.getProcessIds(),
+                    request.getStates(),
+                    request.getTaskDefinitionCodes()
+                );
+
+        FindTaskResponseResource response = new FindTaskResponseResource();
+        response.setTaskPage(taskPage);
 
         return response;
     }
