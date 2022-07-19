@@ -6,6 +6,9 @@
 
 package com.kuflow.engine.client.common.service;
 
+import com.kuflow.engine.client.common.error.KuFlowEngineClientException;
+import com.kuflow.engine.client.common.resource.FileResource;
+import com.kuflow.engine.client.common.util.HeaderUtils;
 import com.kuflow.rest.client.controller.ProcessApi;
 import com.kuflow.rest.client.controller.ProcessApi.FindProcessesQueryParams;
 import com.kuflow.rest.client.controller.TaskApi;
@@ -29,15 +32,20 @@ import com.kuflow.rest.client.resource.TaskStateResource;
 import feign.Response;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StreamUtils;
 
 @Service
 public class KuFlowService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(KuFlowService.class);
 
     private final ProcessApi processApi;
 
@@ -195,21 +203,36 @@ public class KuFlowService {
         return this.taskApi.actionsDeleteTaskElementValueDocument(taskId, command);
     }
 
-    public InputStream downloadTaskDocument(@Nonnull UUID taskId, @Nonnull UUID documentId) throws IOException {
+    public FileResource downloadTaskDocument(@Nonnull UUID taskId, @Nonnull UUID documentId) throws IOException {
         ActionsDownloadTaskElementValueDocumentQueryParams queryParams = new ActionsDownloadTaskElementValueDocumentQueryParams()
             .documentId(documentId);
-        Response reponse = this.taskApi.actionsDownloadTaskElementValueDocument(taskId, queryParams);
 
-        return reponse.body().asInputStream();
+        Response response = this.taskApi.actionsDownloadTaskElementValueDocument(taskId, queryParams);
+        this.checkResponse(response);
+
+        FileResource result = new FileResource();
+        result.setContentType(HeaderUtils.extractContentType(response));
+        result.setContentLength(HeaderUtils.extractContentLength(response));
+        result.setName(HeaderUtils.extractFileName(response));
+        result.setInputStream(response.body().asInputStream());
+
+        return result;
     }
 
-    public InputStream downloadTaskElementForm(@Nonnull UUID taskId, @Nonnull String code) throws IOException {
+    public FileResource downloadTaskElementForm(@Nonnull UUID taskId, @Nonnull String code) throws IOException {
         ActionsDownloadTaskElementValueRenderedQueryParams queryParams = new ActionsDownloadTaskElementValueRenderedQueryParams()
             .code(code);
 
-        Response reponse = this.taskApi.actionsDownloadTaskElementValueRendered(taskId, queryParams);
+        Response response = this.taskApi.actionsDownloadTaskElementValueRendered(taskId, queryParams);
+        this.checkResponse(response);
 
-        return reponse.body().asInputStream();
+        FileResource result = new FileResource();
+        result.setContentType(HeaderUtils.extractContentType(response));
+        result.setContentLength(HeaderUtils.extractContentLength(response));
+        result.setName(HeaderUtils.extractFileName(response));
+        result.setInputStream(response.body().asInputStream());
+
+        return result;
     }
 
     public TaskResource completeTask(@Nonnull UUID taskId) {
@@ -218,5 +241,24 @@ public class KuFlowService {
 
     public TaskResource appendTaskLog(UUID taskId, LogResource logResource) {
         return this.taskApi.actionsAppendTaskLog(taskId, logResource);
+    }
+
+    private void checkResponse(Response response) {
+        if (response.status() >= 400) {
+            if (LOGGER.isDebugEnabled()) {
+                String body = this.getResponseBodyString(response);
+                LOGGER.error("Http response body received: {}", body);
+            }
+            String message = String.format("Unexpected API response. [Status: %s]", response.status());
+            throw new KuFlowEngineClientException(message);
+        }
+    }
+
+    private String getResponseBodyString(Response response) {
+        try {
+            return StreamUtils.copyToString(response.body().asInputStream(), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            return "error read response body. " + e.getMessage();
+        }
     }
 }

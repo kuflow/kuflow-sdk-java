@@ -87,7 +87,7 @@ public interface KuFlowActivities {
      */
     @ActivityMethod
     @Nonnull
-    public FindTaskResponseResource findTasks(FindTaskRequestResource request);
+    FindTaskResponseResource findTasks(FindTaskRequestResource request);
 
     /**
      * Retrieve a Task.

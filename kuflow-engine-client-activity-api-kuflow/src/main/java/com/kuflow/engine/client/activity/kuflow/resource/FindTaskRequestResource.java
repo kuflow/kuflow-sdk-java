@@ -9,6 +9,7 @@ package com.kuflow.engine.client.activity.kuflow.resource;
 import com.kuflow.engine.client.common.resource.AbstractResource;
 import com.kuflow.rest.client.resource.TaskStateResource;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.util.Assert;
@@ -19,13 +20,13 @@ public class FindTaskRequestResource extends AbstractResource {
 
     private Integer size;
 
-    private List<String> sort;
+    private List<String> sort = new LinkedList<>();
 
-    private List<UUID> processIds;
+    private List<UUID> processIds = new LinkedList<>();
 
-    private List<TaskStateResource> states;
+    private List<TaskStateResource> states = new LinkedList<>();
 
-    private List<String> taskDefinitionCodes;
+    private List<String> taskDefinitionCodes = new LinkedList<>();
 
     public Integer getPage() {
         return this.page;

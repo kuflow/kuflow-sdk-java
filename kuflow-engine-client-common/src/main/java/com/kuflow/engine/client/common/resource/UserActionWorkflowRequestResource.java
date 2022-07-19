@@ -12,6 +12,8 @@ public class UserActionWorkflowRequestResource extends AbstractResource {
 
     private UUID processId;
 
+    private String userActionDefinitionCode;
+
     private UUID userActionId;
 
     public UUID getProcessId() {
@@ -20,6 +22,14 @@ public class UserActionWorkflowRequestResource extends AbstractResource {
 
     public void setProcessId(UUID processId) {
         this.processId = processId;
+    }
+
+    public String getUserActionDefinitionCode() {
+        return this.userActionDefinitionCode;
+    }
+
+    public void setUserActionDefinitionCode(String userActionDefinitionCode) {
+        this.userActionDefinitionCode = userActionDefinitionCode;
     }
 
     public UUID getUserActionId() {
