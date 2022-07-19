@@ -44,7 +44,6 @@ import com.kuflow.rest.client.resource.TasksDefinitionSummaryResource;
 import io.temporal.activity.Activity;
 import io.temporal.activity.ActivityExecutionContext;
 import io.temporal.failure.ApplicationFailure;
-import java.util.UUID;
 import javax.annotation.Nonnull;
 import org.springframework.stereotype.Component;
 
