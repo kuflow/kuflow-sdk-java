@@ -14,8 +14,8 @@ import com.kuflow.engine.client.activity.kuflow.resource.CreateTaskRequestResour
 import com.kuflow.engine.client.activity.kuflow.resource.CreateTaskResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.DeleteProcessElementRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.DeleteProcessElementResponseResource;
-import com.kuflow.engine.client.activity.kuflow.resource.FindProcesseResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.FindProcessesRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.FindProcessesResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.FindTaskRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.FindTaskResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.LogRequestResource;
@@ -46,11 +46,11 @@ public interface KuFlowActivities {
      * Find all accessible Processes
      *
      * @param request must not be {@literal null}.
-     * @return
+     * @return processes
      */
     @ActivityMethod
     @Nonnull
-    FindProcesseResponseResource findProcesses(FindProcessesRequestResource request);
+    FindProcessesResponseResource findProcesses(FindProcessesRequestResource request);
 
     /**
      * Retrieve a Process.
@@ -67,7 +67,8 @@ public interface KuFlowActivities {
      *  If values already exist for the provided element code, it replaces them with the new ones, otherwise it creates them.
      *  The values of the previous elements that no longer exist will be deleted.
      *
-     *  If the process is already finished the invocations fails with an error.
+     *  <p>If the process is already finished the invocations fails with an error.
+     *
      * @param request must not be {@literal null}.
      * @return process completed
      */
@@ -77,8 +78,8 @@ public interface KuFlowActivities {
      *  Allow to delete a process element by specifying the item definition code.
      *  Remove all the element values.
      *
-     * @param request
-     * @return
+     * @param request must not be {@literal null}.
+     * @return process deleted
      */
     DeleteProcessElementResponseResource deleteProcessElement(@Nonnull DeleteProcessElementRequestResource request);
 
@@ -126,7 +127,7 @@ public interface KuFlowActivities {
     /**
      * Create a Task and optionally fill its elements.
      *
-     * If you want the method to be idempotent, please specify the id field in {@link TaskCompleteRequestResource}.
+     * <p>If you want the method to be idempotent, please specify the id field in {@link TaskCompleteRequestResource}.
      *
      * @param request must not be {@literal null}.
      * @return task created
@@ -140,7 +141,7 @@ public interface KuFlowActivities {
      * <strong>"CANCELLED"</strong> event is received from KuFlow. This is useful in KuFlow tasks where you have to wait for an external
      * agent, usually a human, to complete it.
      *
-     * If you want the method to be idempotent, please specify the id field in {@link TaskCompleteRequestResource}.
+     * <p>If you want the method to be idempotent, please specify the id field in {@link TaskCompleteRequestResource}.
      *
      * @param request must not be {@literal null}.
      * @return task created
@@ -152,7 +153,7 @@ public interface KuFlowActivities {
     /**
      * Complete a task.
      *
-     * Allow to complete a claimed task by the principal.
+     * <p>Allow to complete a claimed task by the principal.
      *
      * @param request must not be {@literal null}.
      * @return task completed
@@ -184,7 +185,7 @@ public interface KuFlowActivities {
     /**
      * Append a log to the task.
      *
-     * A log entry is added to the task. If the number of log entries is reached, the oldest log entry is removed.
+     * <p>A log entry is added to the task. If the number of log entries is reached, the oldest log entry is removed.
      *
      * @param request must not be {@literal null}.
      * @return log appended
