@@ -9,7 +9,7 @@ package com.kuflow.engine.client.activity.kuflow.resource;
 import com.kuflow.engine.client.common.resource.AbstractResource;
 import com.kuflow.rest.client.resource.ProcessPageResource;
 
-public class FindProcesseResponseResource extends AbstractResource {
+public class FindProcessesResponseResource extends AbstractResource {
 
     private ProcessPageResource processPage;
 

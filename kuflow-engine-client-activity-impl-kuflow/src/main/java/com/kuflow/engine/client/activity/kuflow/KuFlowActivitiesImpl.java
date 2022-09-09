@@ -14,8 +14,8 @@ import com.kuflow.engine.client.activity.kuflow.resource.CreateTaskRequestResour
 import com.kuflow.engine.client.activity.kuflow.resource.CreateTaskResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.DeleteProcessElementRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.DeleteProcessElementResponseResource;
-import com.kuflow.engine.client.activity.kuflow.resource.FindProcesseResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.FindProcessesRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.FindProcessesResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.FindTaskRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.FindTaskResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.LogRequestResource;
@@ -58,10 +58,10 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
     @Nonnull
     @Override
-    public FindProcesseResponseResource findProcesses(FindProcessesRequestResource request) {
+    public FindProcessesResponseResource findProcesses(FindProcessesRequestResource request) {
         ProcessPageResource taskPage = this.kuFlowService.findProcesses(request.getPage(), request.getSize(), request.getSort());
 
-        FindProcesseResponseResource response = new FindProcesseResponseResource();
+        FindProcessesResponseResource response = new FindProcessesResponseResource();
         response.setProcessPage(taskPage);
 
         return response;
