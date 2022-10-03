@@ -190,6 +190,17 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
     @Nonnull
     @Override
     public CreateTaskResponseResource createTaskAndWaitTermination(@Nonnull CreateTaskRequestResource request) {
+        this.createTaskAndWait(request, "v1.0");
+
+        return null;
+    }
+
+    @Override
+    public void createTaskAndWaitFinished(@Nonnull CreateTaskRequestResource request) {
+        this.createTaskAndWait(request, "v1.1");
+    }
+
+    private void createTaskAndWait(@Nonnull CreateTaskRequestResource request, @Nonnull String activityResponseVersion) {
         this.validateTaskRequest(request);
 
         ActivityExecutionContext context = Activity.getExecutionContext();
@@ -203,15 +214,13 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
         taskResource.setTaskDefinition(taskDefinition);
         taskResource.setId(request.getTaskId());
         taskResource.setActivityToken(temporalToken);
-        taskResource.setActivityResponseVersion("v1.0");
+        taskResource.setActivityResponseVersion(activityResponseVersion);
         taskResource.setElementValues(request.getElementValues());
         taskResource.setOwner(request.getOwner());
 
         this.kuFlowService.createTask(taskResource);
 
         context.doNotCompleteOnReturn();
-
-        return null;
     }
 
     @Nonnull
@@ -294,11 +303,14 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
     private void validateRetrieveTaskRequest(RetrieveTaskRequestResource request) {
         if (request.getTaskId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("TaskId is required", "KuFlowActivities.validation");
+            throw ApplicationFailure.newNonRetryableFailure("taskId is required", "KuFlowActivities.validation");
         }
     }
 
     private void validateTaskRequest(CreateTaskRequestResource request) {
+        if (request.getTaskId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("taskId is required", "KuFlowActivities.validation");
+        }
         if (request.getProcessId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("processId is required", "KuFlowActivities.validation");
         }

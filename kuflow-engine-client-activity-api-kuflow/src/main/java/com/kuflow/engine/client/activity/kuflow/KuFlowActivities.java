@@ -105,7 +105,7 @@ public interface KuFlowActivities {
     ChangeProcessInitiatorResponseResource changeProcessInitiator(@Nonnull ChangeProcessInitiatorRequestResource request);
 
     /**
-     * List all the Processes that have been created and the the credentials has access.
+     * List all the Processes that have been created and the credentials has access.
      *
      * @param request must not be {@literal null}.
      * @return Processes found paginated
@@ -127,8 +127,6 @@ public interface KuFlowActivities {
     /**
      * Create a Task and optionally fill its elements.
      *
-     * <p>If you want the method to be idempotent, please specify the id field in {@link TaskCompleteRequestResource}.
-     *
      * @param request must not be {@literal null}.
      * @return task created
      */
@@ -137,18 +135,29 @@ public interface KuFlowActivities {
     CreateTaskResponseResource createTask(@Nonnull CreateTaskRequestResource request);
 
     /**
-     * Create a Task and optionally fill its elements. The activity is not completed until the <strong>"COMPLETED"</strong> or
+     * Create a Task and optionally fill its elements. The activity is terminated when the <strong>"COMPLETED"</strong> or
      * <strong>"CANCELLED"</strong> event is received from KuFlow. This is useful in KuFlow tasks where you have to wait for an external
      * agent, usually a human, to complete it.
      *
-     * <p>If you want the method to be idempotent, please specify the id field in {@link TaskCompleteRequestResource}.
+     * @deprecated Use {@link #createTaskAndWaitFinished(CreateTaskRequestResource)}.
      *
      * @param request must not be {@literal null}.
      * @return task created
      */
     @ActivityMethod
     @Nonnull
+    @Deprecated
     CreateTaskResponseResource createTaskAndWaitTermination(@Nonnull CreateTaskRequestResource request);
+
+    /**
+     * Create a Task and optionally fill its elements. The activity is finished when the <strong>"COMPLETED"</strong> or
+     * <strong>"CANCELLED"</strong> event is received from KuFlow. This is useful in KuFlow tasks where you have to wait for an external
+     * agent, usually a human, to complete it.
+     *
+     * @param request must not be {@literal null}.
+     */
+    @ActivityMethod
+    void createTaskAndWaitFinished(@Nonnull CreateTaskRequestResource request);
 
     /**
      * Complete a task.
