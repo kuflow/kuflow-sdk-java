@@ -20,6 +20,8 @@ import com.kuflow.engine.client.activity.kuflow.resource.FindTaskRequestResource
 import com.kuflow.engine.client.activity.kuflow.resource.FindTaskResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.LogRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.LogResponseResource;
+import com.kuflow.engine.client.activity.kuflow.resource.RetrievePrincipalRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.RetrievePrincipalResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.RetrieveProcessRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.RetrieveProcessResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.RetrieveTaskRequestResource;
@@ -43,6 +45,16 @@ import javax.annotation.Nonnull;
 @ActivityInterface(namePrefix = "KuFlow_Engine_")
 public interface KuFlowActivities {
     /**
+     * Retrieve a Principal.
+     *
+     * @param request must not be {@literal null}.
+     * @return principal
+     */
+    @ActivityMethod
+    @Nonnull
+    RetrievePrincipalResponseResource retrievePrincipal(@Nonnull RetrievePrincipalRequestResource request);
+
+    /**
      * Find all accessible Processes
      *
      * @param request must not be {@literal null}.
@@ -56,7 +68,7 @@ public interface KuFlowActivities {
      * Retrieve a Process.
      *
      * @param request must not be {@literal null}.
-     * @return process completed
+     * @return process
      */
     @ActivityMethod
     @Nonnull
