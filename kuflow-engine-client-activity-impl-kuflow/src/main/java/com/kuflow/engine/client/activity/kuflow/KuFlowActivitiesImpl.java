@@ -20,6 +20,8 @@ import com.kuflow.engine.client.activity.kuflow.resource.FindTaskRequestResource
 import com.kuflow.engine.client.activity.kuflow.resource.FindTaskResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.LogRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.LogResponseResource;
+import com.kuflow.engine.client.activity.kuflow.resource.RetrievePrincipalRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.RetrievePrincipalResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.RetrieveProcessRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.RetrieveProcessResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.RetrieveTaskRequestResource;
@@ -35,6 +37,7 @@ import com.kuflow.engine.client.activity.kuflow.resource.TaskCompleteResponseRes
 import com.kuflow.engine.client.common.service.KuFlowService;
 import com.kuflow.engine.client.common.util.TemporalUtils;
 import com.kuflow.rest.client.resource.LogResource;
+import com.kuflow.rest.client.resource.PrincipalResource;
 import com.kuflow.rest.client.resource.ProcessPageResource;
 import com.kuflow.rest.client.resource.ProcessResource;
 import com.kuflow.rest.client.resource.ProcessSaveElementCommandResource;
@@ -54,6 +57,19 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
     public KuFlowActivitiesImpl(KuFlowService kuflowService) {
         this.kuFlowService = kuflowService;
+    }
+
+    @Nonnull
+    @Override
+    public RetrievePrincipalResponseResource retrievePrincipal(@Nonnull RetrievePrincipalRequestResource request) {
+        this.validateRetrievePrincipalRequest(request);
+
+        PrincipalResource principal = this.kuFlowService.retrievePrincipal(request.getPrincipalId());
+
+        RetrievePrincipalResponseResource response = new RetrievePrincipalResponseResource();
+        response.setPrincipal(principal);
+
+        return response;
     }
 
     @Nonnull
@@ -278,6 +294,12 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
         response.setTask(taskResource);
 
         return response;
+    }
+
+    private void validateRetrievePrincipalRequest(RetrievePrincipalRequestResource request) {
+        if (request.getPrincipalId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("principalId is required", "KuFlowActivities.validation");
+        }
     }
 
     private void validateRetrieveProcessRequest(RetrieveProcessRequestResource request) {

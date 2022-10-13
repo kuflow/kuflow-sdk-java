@@ -9,6 +9,7 @@ package com.kuflow.engine.client.common.service;
 import com.kuflow.engine.client.common.error.KuFlowEngineClientException;
 import com.kuflow.engine.client.common.resource.FileResource;
 import com.kuflow.engine.client.common.util.HeaderUtils;
+import com.kuflow.rest.client.controller.PrincipalApi;
 import com.kuflow.rest.client.controller.ProcessApi;
 import com.kuflow.rest.client.controller.ProcessApi.FindProcessesQueryParams;
 import com.kuflow.rest.client.controller.TaskApi;
@@ -20,6 +21,7 @@ import com.kuflow.rest.client.resource.ChangeProcessInitiatorCommandResource;
 import com.kuflow.rest.client.resource.DeleteElementCommandResource;
 import com.kuflow.rest.client.resource.DeleteElementValueDocumentCommandResource;
 import com.kuflow.rest.client.resource.LogResource;
+import com.kuflow.rest.client.resource.PrincipalResource;
 import com.kuflow.rest.client.resource.ProcessPageResource;
 import com.kuflow.rest.client.resource.ProcessResource;
 import com.kuflow.rest.client.resource.ProcessSaveElementCommandResource;
@@ -47,13 +49,20 @@ public class KuFlowService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KuFlowService.class);
 
-    private final ProcessApi processApi;
+    private final PrincipalApi principalApi;
 
     private final TaskApi taskApi;
 
-    public KuFlowService(TaskApi taskApi, ProcessApi processApi) {
-        this.taskApi = taskApi;
+    private final ProcessApi processApi;
+
+    public KuFlowService(PrincipalApi principalApi, ProcessApi processApi, TaskApi taskApi) {
+        this.principalApi = principalApi;
         this.processApi = processApi;
+        this.taskApi = taskApi;
+    }
+
+    public PrincipalResource retrievePrincipal(@Nonnull UUID principalId) {
+        return this.principalApi.retrievePrincipal(principalId);
     }
 
     public ProcessPageResource findProcesses(@Nullable Integer page, @Nullable Integer size, @Nullable List<String> sort) {

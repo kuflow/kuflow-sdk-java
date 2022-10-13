@@ -8,6 +8,7 @@ package com.kuflow.engine.client.common.config;
 
 import com.kuflow.rest.client.KuFlowRestClient;
 import com.kuflow.rest.client.controller.AuthenticationApi;
+import com.kuflow.rest.client.controller.PrincipalApi;
 import com.kuflow.rest.client.controller.ProcessApi;
 import com.kuflow.rest.client.controller.TaskApi;
 import org.springframework.context.annotation.Bean;
@@ -33,6 +34,11 @@ public class KuFlowRestClientConfiguration {
     @Bean
     public AuthenticationApi kuflowRestClientAuthenticationApi() {
         return this.kuFlowRestClient.getAuthenticationApi();
+    }
+
+    @Bean
+    public PrincipalApi kuflowRestClientPrincipalApi() {
+        return this.kuFlowRestClient.getPrincipalApi();
     }
 
     @Bean
