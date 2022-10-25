@@ -23,7 +23,7 @@ public class KuFlowGenerator {
      * Replay safe way to generate UUID.
      *
      * We recommend using this method to create UUIDs instead of the one provided by Temporal
-     * ({@link io.temporal.workflow#randomUUID()}) because the generation remains consistent
+     * ({@see io.temporal.workflow#randomUUID()}) because the generation remains consistent
      * in new executions of the same WorkFlow. To do this you simply have to initialize the
      * seed with the same value, for example we recommend the ProcessId of the process in KuFlow.
      *
