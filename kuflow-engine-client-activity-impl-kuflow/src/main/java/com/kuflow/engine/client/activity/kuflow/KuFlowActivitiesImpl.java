@@ -28,6 +28,8 @@ import com.kuflow.engine.client.activity.kuflow.resource.RetrieveTaskRequestReso
 import com.kuflow.engine.client.activity.kuflow.resource.RetrieveTaskResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.SaveProcessElementRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.SaveProcessElementResponseResource;
+import com.kuflow.engine.client.activity.kuflow.resource.SaveTaskElementRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.SaveTaskElementResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskAssignRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskAssignResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskClaimRequestResource;
@@ -43,6 +45,7 @@ import com.kuflow.rest.client.resource.ProcessResource;
 import com.kuflow.rest.client.resource.ProcessSaveElementCommandResource;
 import com.kuflow.rest.client.resource.TaskPageResource;
 import com.kuflow.rest.client.resource.TaskResource;
+import com.kuflow.rest.client.resource.TaskSaveElementCommandResource;
 import com.kuflow.rest.client.resource.TasksDefinitionSummaryResource;
 import io.temporal.activity.Activity;
 import io.temporal.activity.ActivityExecutionContext;
@@ -99,6 +102,8 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
     @Nonnull
     @Override
     public SaveProcessElementResponseResource saveProcessElement(@Nonnull SaveProcessElementRequestResource request) {
+        this.validateSaveProcessElementRequest(request);
+
         ProcessSaveElementCommandResource command = new ProcessSaveElementCommandResource();
         command.setCode(request.getElementDefinitioCode());
         command.setValue(request.getValue());
@@ -280,6 +285,23 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
     @Nonnull
     @Override
+    public SaveTaskElementResponseResource saveTaskElement(@Nonnull SaveTaskElementRequestResource request) {
+        this.validateSaveTaskelementRequest(request);
+
+        TaskSaveElementCommandResource command = new TaskSaveElementCommandResource();
+        command.setCode(request.getElementDefinitioCode());
+        command.setValue(request.getValue());
+
+        TaskResource task = this.kuFlowService.saveTaskElement(request.getTaskId(), command);
+
+        SaveTaskElementResponseResource response = new SaveTaskElementResponseResource();
+        response.setTask(task);
+
+        return response;
+    }
+
+    @Nonnull
+    @Override
     public LogResponseResource appendTaskLog(@Nonnull LogRequestResource request) {
         this.validateLogRequest(request);
 
@@ -305,6 +327,15 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
     private void validateRetrieveProcessRequest(RetrieveProcessRequestResource request) {
         if (request.getProcessId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("processId is required", "KuFlowActivities.validation");
+        }
+    }
+
+    private void validateSaveProcessElementRequest(SaveProcessElementRequestResource request) {
+        if (request.getProcessId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("processId is required", "KuFlowActivities.validation");
+        }
+        if (request.getElementDefinitioCode() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("elementDefinitionCode is required", "KuFlowActivities.validation");
         }
     }
 
@@ -359,6 +390,15 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
         }
         if (request.getEmail() == null && request.getPrincipalId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("email or principalId is required", "KuFlowActivities.validation");
+        }
+    }
+
+    private void validateSaveTaskelementRequest(SaveTaskElementRequestResource request) {
+        if (request.getTaskId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("taskId is required", "KuFlowActivities.validation");
+        }
+        if (request.getElementDefinitioCode() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("elementDefinitionCode is required", "KuFlowActivities.validation");
         }
     }
 

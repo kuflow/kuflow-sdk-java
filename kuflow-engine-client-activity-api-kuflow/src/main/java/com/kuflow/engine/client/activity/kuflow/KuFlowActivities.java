@@ -28,6 +28,8 @@ import com.kuflow.engine.client.activity.kuflow.resource.RetrieveTaskRequestReso
 import com.kuflow.engine.client.activity.kuflow.resource.RetrieveTaskResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.SaveProcessElementRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.SaveProcessElementResponseResource;
+import com.kuflow.engine.client.activity.kuflow.resource.SaveTaskElementRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.SaveTaskElementResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskAssignRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskAssignResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskClaimRequestResource;
@@ -202,6 +204,24 @@ public interface KuFlowActivities {
     @ActivityMethod
     @Nonnull
     TaskAssignResponseResource assignTask(@Nonnull TaskAssignRequestResource request);
+
+    /**
+     * Allow to save an element i.e., a field, a decision, a form, a principal or document.
+     *
+     * In the case of document type elements, this method only allows references to be made to other existing document
+     * type elements for the purpose of copying that file into the element. To do this you need to pass a reference to the
+     * document using the 'uri' attribute. In case you want to add a new document, you should create a Temporal activity
+     * specific to your needs and use our rest client to upload the document. This is because it is not recommended to save
+     * binaries in the history of Temporal.
+     *
+     * If values already exist for the provided element code, it replaces them with the new ones, otherwise it
+     * creates them. The values of the previous elements that no longer exist will be deleted. To remove an element, use
+     * the appropriate API method.
+     *
+     * @param request
+     * @return
+     */
+    SaveTaskElementResponseResource saveTaskElement(@Nonnull SaveTaskElementRequestResource request);
 
     /**
      * Append a log to the task.
