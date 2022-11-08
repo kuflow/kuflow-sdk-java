@@ -14,6 +14,10 @@ import com.kuflow.engine.client.activity.kuflow.resource.CreateTaskRequestResour
 import com.kuflow.engine.client.activity.kuflow.resource.CreateTaskResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.DeleteProcessElementRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.DeleteProcessElementResponseResource;
+import com.kuflow.engine.client.activity.kuflow.resource.DeleteTaskElementRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.DeleteTaskElementResponseResource;
+import com.kuflow.engine.client.activity.kuflow.resource.DeleteTaskElementValueDocumentRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.DeleteTaskElementValueDocumentResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.FindProcessesRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.FindProcessesResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.FindTaskRequestResource;
@@ -28,6 +32,8 @@ import com.kuflow.engine.client.activity.kuflow.resource.RetrieveTaskRequestReso
 import com.kuflow.engine.client.activity.kuflow.resource.RetrieveTaskResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.SaveProcessElementRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.SaveProcessElementResponseResource;
+import com.kuflow.engine.client.activity.kuflow.resource.SaveTaskElementRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.SaveTaskElementResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskAssignRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskAssignResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.TaskClaimRequestResource;
@@ -43,6 +49,7 @@ import com.kuflow.rest.client.resource.ProcessResource;
 import com.kuflow.rest.client.resource.ProcessSaveElementCommandResource;
 import com.kuflow.rest.client.resource.TaskPageResource;
 import com.kuflow.rest.client.resource.TaskResource;
+import com.kuflow.rest.client.resource.TaskSaveElementCommandResource;
 import com.kuflow.rest.client.resource.TasksDefinitionSummaryResource;
 import io.temporal.activity.Activity;
 import io.temporal.activity.ActivityExecutionContext;
@@ -99,6 +106,8 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
     @Nonnull
     @Override
     public SaveProcessElementResponseResource saveProcessElement(@Nonnull SaveProcessElementRequestResource request) {
+        this.validateSaveProcessElementRequest(request);
+
         ProcessSaveElementCommandResource command = new ProcessSaveElementCommandResource();
         command.setCode(request.getElementDefinitioCode());
         command.setValue(request.getValue());
@@ -280,6 +289,49 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
     @Nonnull
     @Override
+    public SaveTaskElementResponseResource saveTaskElement(@Nonnull SaveTaskElementRequestResource request) {
+        this.validateSaveTaskElementRequest(request);
+
+        TaskSaveElementCommandResource command = new TaskSaveElementCommandResource();
+        command.setCode(request.getElementDefinitioCode());
+        command.setValue(request.getValue());
+
+        TaskResource task = this.kuFlowService.saveTaskElement(request.getTaskId(), command);
+
+        SaveTaskElementResponseResource response = new SaveTaskElementResponseResource();
+        response.setTask(task);
+
+        return response;
+    }
+
+    @Override
+    public DeleteTaskElementResponseResource deleteTaskElement(@Nonnull DeleteTaskElementRequestResource request) {
+        this.validateDeleteTaskElementRequest(request);
+
+        TaskResource task = this.kuFlowService.deleteTaskElement(request.getTaskId(), request.getElementDefinitioCode());
+
+        DeleteTaskElementResponseResource response = new DeleteTaskElementResponseResource();
+        response.setTask(task);
+
+        return response;
+    }
+
+    @Override
+    public DeleteTaskElementValueDocumentResponseResource deleteTaskElementValueDocument(
+        @Nonnull DeleteTaskElementValueDocumentRequestResource request
+    ) {
+        this.validateDeleteTaskElementValueDocumentRequest(request);
+
+        TaskResource task = this.kuFlowService.deleteTaskElementValueDocument(request.getTaskId(), request.getDocumentId());
+
+        DeleteTaskElementValueDocumentResponseResource response = new DeleteTaskElementValueDocumentResponseResource();
+        response.setTask(task);
+
+        return response;
+    }
+
+    @Nonnull
+    @Override
     public LogResponseResource appendTaskLog(@Nonnull LogRequestResource request) {
         this.validateLogRequest(request);
 
@@ -305,6 +357,15 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
     private void validateRetrieveProcessRequest(RetrieveProcessRequestResource request) {
         if (request.getProcessId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("processId is required", "KuFlowActivities.validation");
+        }
+    }
+
+    private void validateSaveProcessElementRequest(SaveProcessElementRequestResource request) {
+        if (request.getProcessId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("processId is required", "KuFlowActivities.validation");
+        }
+        if (request.getElementDefinitioCode() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("elementDefinitionCode is required", "KuFlowActivities.validation");
         }
     }
 
@@ -359,6 +420,33 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
         }
         if (request.getEmail() == null && request.getPrincipalId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("email or principalId is required", "KuFlowActivities.validation");
+        }
+    }
+
+    private void validateSaveTaskElementRequest(SaveTaskElementRequestResource request) {
+        if (request.getTaskId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("taskId is required", "KuFlowActivities.validation");
+        }
+        if (request.getElementDefinitioCode() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("elementDefinitionCode is required", "KuFlowActivities.validation");
+        }
+    }
+
+    private void validateDeleteTaskElementRequest(DeleteTaskElementRequestResource request) {
+        if (request.getTaskId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("taskId is required", "KuFlowActivities.validation");
+        }
+        if (request.getElementDefinitioCode() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("elementDefinitionCode is required", "KuFlowActivities.validation");
+        }
+    }
+
+    private void validateDeleteTaskElementValueDocumentRequest(DeleteTaskElementValueDocumentRequestResource request) {
+        if (request.getTaskId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("taskId is required", "KuFlowActivities.validation");
+        }
+        if (request.getDocumentId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("documentId is required", "KuFlowActivities.validation");
         }
     }
 
