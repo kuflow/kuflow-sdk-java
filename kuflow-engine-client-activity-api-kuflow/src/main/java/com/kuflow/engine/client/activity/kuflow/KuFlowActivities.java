@@ -14,6 +14,10 @@ import com.kuflow.engine.client.activity.kuflow.resource.CreateTaskRequestResour
 import com.kuflow.engine.client.activity.kuflow.resource.CreateTaskResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.DeleteProcessElementRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.DeleteProcessElementResponseResource;
+import com.kuflow.engine.client.activity.kuflow.resource.DeleteTaskElementRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.DeleteTaskElementResponseResource;
+import com.kuflow.engine.client.activity.kuflow.resource.DeleteTaskElementValueDocumentRequestResource;
+import com.kuflow.engine.client.activity.kuflow.resource.DeleteTaskElementValueDocumentResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.FindProcessesRequestResource;
 import com.kuflow.engine.client.activity.kuflow.resource.FindProcessesResponseResource;
 import com.kuflow.engine.client.activity.kuflow.resource.FindTaskRequestResource;
@@ -218,10 +222,32 @@ public interface KuFlowActivities {
      * creates them. The values of the previous elements that no longer exist will be deleted. To remove an element, use
      * the appropriate API method.
      *
-     * @param request
-     * @return
+     * @param request must not be {@literal null}.
+     * @return task updated
      */
     SaveTaskElementResponseResource saveTaskElement(@Nonnull SaveTaskElementRequestResource request);
+
+    /**
+     * Allow to delete task element by specifying the item definition code.
+     *
+     * Remove all the element values.
+     *
+     * @param request must not be {@literal null}.
+     * @return task updated
+     */
+    DeleteTaskElementResponseResource deleteTaskElement(@Nonnull DeleteTaskElementRequestResource request);
+
+    /**
+     * Allow to delete a specific document from an element of document type using its id.
+     *
+     * Note: If it is a multiple item, it will only delete the specified document. If it is a single element, in addition to the document, it will also delete the element.
+     *
+     * @param request must not be {@literal null}.
+     * @return task updated
+     */
+    DeleteTaskElementValueDocumentResponseResource deleteTaskElementValueDocument(
+        @Nonnull DeleteTaskElementValueDocumentRequestResource request
+    );
 
     /**
      * Append a log to the task.
