@@ -16,6 +16,8 @@ public class UserActionWorkflowRequestResource extends AbstractResource {
 
     private UUID userActionId;
 
+    private UUID requestorPrincipalId;
+
     public UUID getProcessId() {
         return this.processId;
     }
@@ -38,5 +40,13 @@ public class UserActionWorkflowRequestResource extends AbstractResource {
 
     public void setUserActionId(UUID userActionId) {
         this.userActionId = userActionId;
+    }
+
+    public UUID getRequestorPrincipalId() {
+        return this.requestorPrincipalId;
+    }
+
+    public void setRequestorPrincipalId(UUID requestorPrincipalId) {
+        this.requestorPrincipalId = requestorPrincipalId;
     }
 }
