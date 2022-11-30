@@ -1,4 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    The MIT License
+    Copyright © 2021-present KuFlow S.L.
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
+
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                              https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
@@ -6,26 +30,25 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.7.4</version>
+    <version>2.7.6</version>
     <relativePath /> <!-- lookup parent from repository -->
   </parent>
 
-  <groupId>com.kuflow.engine.client</groupId>
-  <artifactId>kuflow-engine-client</artifactId>
-  <version>1.5.1</version>
+  <groupId>com.kuflow</groupId>
+  <artifactId>kuflow-sdk</artifactId>
+  <version>2.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>KuFlow Engine Client</name>
-  <description>Client components to use in KuFlow server engine.</description>
+  <name>KuFlow SDK</name>
+  <description>Components to use in KuFlow.</description>
 
   <modules>
-    <module>kuflow-engine-client-common</module>
-    <module>kuflow-engine-client-activity-api-email</module>
-    <module>kuflow-engine-client-activity-api-s3</module>
-    <module>kuflow-engine-client-activity-api-kuflow</module>
-    <module>kuflow-engine-client-activity-impl-email</module>
-    <module>kuflow-engine-client-activity-impl-s3</module>
-    <module>kuflow-engine-client-activity-impl-kuflow</module>
+    <module>kuflow-rest</module>
+    <module>kuflow-temporal-common</module>
+    <module>kuflow-temporal-activity-email</module>
+    <module>kuflow-temporal-activity-kuflow</module>
+    <module>kuflow-temporal-activity-s3</module>
+    <module>kuflow-spring-boot-autoconfigure</module>
   </modules>
 
   <properties>
@@ -42,15 +65,21 @@
     <checkstyle.version>10.3.3</checkstyle.version>
     <prettier-maven-plugin.version>0.18</prettier-maven-plugin.version>
     <prettier-java.version>1.6.2</prettier-java.version>
+    <build-helper-maven-plugin.version>3.2.0</build-helper-maven-plugin.version>
+    <license-maven-plugin.version>4.1</license-maven-plugin.version>
 
     <!-- Spring dependencies -->
-    <spring-boot.version>2.7.4</spring-boot.version>
+    <spring-boot.version>2.7.6</spring-boot.version>
 
     <!-- Application dependencies -->
-    <kuflow-rest-client.version>1.4.2</kuflow-rest-client.version>
-    <temporal-sdk.version>1.16.0</temporal-sdk.version>
-    <awssdk.version>2.16.3</awssdk.version>
+    <temporal-sdk.version>1.17.0</temporal-sdk.version>
+    <awssdk.version>2.18.25</awssdk.version>
     <commons-io.version>2.11.0</commons-io.version>
+    <azure-core.version>1.34.0</azure-core.version>
+    <azure-communication-common.version>1.2.3</azure-communication-common.version>
+    <jsr305.version>3.0.2</jsr305.version>
+
+    <wiremock.version>2.35.0</wiremock.version>
   </properties>
 
   <dependencyManagement>
@@ -76,51 +105,58 @@
       </dependency>
 
       <dependency>
-        <groupId>com.kuflow.engine.client</groupId>
-        <artifactId>kuflow-engine-client-common</artifactId>
+        <groupId>com.kuflow</groupId>
+        <artifactId>kuflow-temporal-common</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.kuflow.engine.client</groupId>
-        <artifactId>kuflow-engine-client-activity-api-kuflow</artifactId>
+        <groupId>com.kuflow</groupId>
+        <artifactId>kuflow-temporal-activity-kuflow</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.kuflow.engine.client</groupId>
-        <artifactId>kuflow-engine-client-activity-impl-kuflow</artifactId>
+        <groupId>com.kuflow</groupId>
+        <artifactId>kuflow-temporal-activity-email</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.kuflow.engine.client</groupId>
-        <artifactId>kuflow-engine-client-activity-api-email</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.kuflow.engine.client</groupId>
-        <artifactId>kuflow-engine-client-activity-impl-email</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.kuflow.engine.client</groupId>
-        <artifactId>kuflow-engine-client-activity-api-s3</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.kuflow.engine.client</groupId>
-        <artifactId>kuflow-engine-client-activity-impl-s3</artifactId>
+        <groupId>com.kuflow</groupId>
+        <artifactId>kuflow-temporal-activity-s3</artifactId>
         <version>${project.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>com.kuflow.rest.client</groupId>
-        <artifactId>kuflow-rest-client</artifactId>
-        <version>${kuflow-rest-client.version}</version>
+        <groupId>com.kuflow</groupId>
+        <artifactId>kuflow-rest</artifactId>
+        <version>${project.version}</version>
       </dependency>
 
       <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
         <version>${commons-io.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core</artifactId>
+        <version>${azure-core.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-communication-common</artifactId>
+        <version>${azure-communication-common.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.code.findbugs</groupId>
+        <artifactId>jsr305</artifactId>
+        <version>${jsr305.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.github.tomakehurst</groupId>
+        <artifactId>wiremock-jre8</artifactId>
+        <version>${wiremock.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -150,10 +186,9 @@
               <configuration>
                 <consoleOutput>true</consoleOutput>
                 <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                <!-- maven.multiModuleProjectDirectory -->
-                <configLocation>${project.parent.basedir}/etc/checkstyle/checkstyle.xml</configLocation>
-                <headerLocation>${project.parent.basedir}/etc/checkstyle/checkstyle-header.txt</headerLocation>
-                <suppressionsLocation>${project.parent.basedir}/etc/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+                <configLocation>${maven.multiModuleProjectDirectory}/etc/checkstyle/checkstyle.xml</configLocation>
+                <headerLocation>${maven.multiModuleProjectDirectory}/etc/checkstyle/checkstyle-header.txt</headerLocation>
+                <suppressionsLocation>${maven.multiModuleProjectDirectory}/etc/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
                 <suppressionsFileExpression>checkstyle.suppressions.location</suppressionsFileExpression>
               </configuration>
             </execution>
@@ -166,6 +201,36 @@
           <configuration>
             <prettierJavaVersion>${prettier-java.version}</prettierJavaVersion>
             <ignoreEditorConfig>false</ignoreEditorConfig>
+          </configuration>
+          <executions>
+            <execution>
+              <goals>
+                <goal>check</goal>
+              </goals>
+              <phase>validate</phase>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>com.mycila</groupId>
+          <artifactId>license-maven-plugin</artifactId>
+          <version>${license-maven-plugin.version}</version>
+          <configuration>
+            <properties>
+              <owner>KuFlow S.L.</owner>
+              <email>kuflow@kuflow.com</email>
+              <year>2021-present</year>
+            </properties>
+            <licenseSets>
+              <licenseSet>
+                <header>com/mycila/maven/plugin/license/templates/MIT.txt</header>
+                <excludes>
+                  <exclude>**/README</exclude>
+                  <exclude>src/test/resources/**</exclude>
+                  <exclude>src/main/resources/**</exclude>
+                </excludes>
+              </licenseSet>
+            </licenseSets>
           </configuration>
           <executions>
             <execution>
@@ -191,6 +256,11 @@
           <artifactId>flatten-maven-plugin</artifactId>
           <version>${flatten-maven-plugin.version}</version>
         </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>${build-helper-maven-plugin.version}</version>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
@@ -201,8 +271,8 @@
           <updatePomFile>true</updatePomFile>
           <flattenMode>ossrh</flattenMode>
           <pomElements>
-            <organization></organization>
-            <issueManagement></issueManagement>
+            <organization/>
+            <issueManagement/>
           </pomElements>
         </configuration>
         <executions>
@@ -222,10 +292,22 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
-  <url>https://github.com/kuflow/kuflow-engine-client-java</url>
+  <url>https://github.com/kuflow/kuflow-temporal-java</url>
 
   <organization>
     <name>KuFlow S.L.</name>
@@ -249,15 +331,15 @@
   </developers>
 
   <scm>
-    <connection>scm:git:git@github.com:kuflow/kuflow-engine-client-java.git</connection>
-    <developerConnection>scm:git:git@github.com:kuflow/kuflow-engine-client-java.git</developerConnection>
-    <url>https://github.com/kuflow/kuflow-engine-client-java</url>
+    <connection>scm:git:git@github.com:kuflow/kuflow-temporal-java.git</connection>
+    <developerConnection>scm:git:git@github.com:kuflow/kuflow-temporal-java.git</developerConnection>
+    <url>https://github.com/kuflow/kuflow-temporal-java</url>
     <tag>HEAD</tag>
   </scm>
 
   <issueManagement>
     <system>GitHub</system>
-    <url>https://github.com/kuflow/kuflow-engine-client-java/issues</url>
+    <url>https://github.com/kuflow/kuflow-temporal-java/issues</url>
   </issueManagement>
 
   <repositories>
@@ -286,18 +368,6 @@
       <id>release</id>
       <build>
         <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-source-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>attach-sources</id>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>

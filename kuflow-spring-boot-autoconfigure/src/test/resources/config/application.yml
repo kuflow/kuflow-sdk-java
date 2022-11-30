@@ -1,0 +1,33 @@
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
+spring:
+  mail:
+    host: 127.0.0.1
+    port: 3025
+    username: username
+    password: password
+    test-connection: false
+
+kuflow:
+  api:
+    application-id: app1
+    token: token
+    endpoint: http://localhost:8080/api
+
+  activity:
+    email:
+      template-variables:
+        template1:
+          var1: value1
+
+    s3:
+      endpoint: http://localhost:9000
+      access-key-id: key-id
+      secret-access-key: password
+      region: us-east-1
+      path-style-access-enabled: true
+      default-bucket: default

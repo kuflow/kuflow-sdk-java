@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2021-present KuFlow S.L.
+  ~
+  ~ All rights reserved.
+  -->
+<configuration>
+  <property name="CONSOLE_LOG_CHARSET" value="UTF-8" />
+  <include resource="org/springframework/boot/logging/logback/base.xml" />
+</configuration>
