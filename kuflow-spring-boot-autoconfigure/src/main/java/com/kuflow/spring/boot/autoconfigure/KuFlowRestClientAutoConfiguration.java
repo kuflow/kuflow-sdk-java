@@ -45,8 +45,11 @@ public class KuFlowRestClientAutoConfiguration {
         KuFlowRestClientBuilder builder = new KuFlowRestClientBuilder()
             .clientId(kuFlowRestClientProperties.getClientId())
             .clientSecret(kuFlowRestClientProperties.getClientSecret())
-            .endpoint(kuFlowRestClientProperties.getEndpoint())
             .allowInsecureConnection(kuFlowRestClientProperties.getEndpoint().startsWith("http://"));
+
+        if (kuFlowRestClientProperties.getEndpoint() != null) {
+            builder.endpoint(kuFlowRestClientProperties.getEndpoint());
+        }
 
         if (kuFlowRestClientProperties.getLoggerLevel() != null) {
             HttpLogOptions httpLogOptions = new HttpLogOptions();

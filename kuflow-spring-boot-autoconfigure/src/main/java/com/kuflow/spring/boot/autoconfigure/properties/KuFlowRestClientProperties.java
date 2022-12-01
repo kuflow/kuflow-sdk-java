@@ -35,7 +35,6 @@ import org.springframework.validation.annotation.Validated;
 @NotFillMeAttributesValues
 public class KuFlowRestClientProperties {
 
-    @NotNull
     @URL
     private String endpoint;
 
