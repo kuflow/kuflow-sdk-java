@@ -50,8 +50,6 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.kuflow.rest.KuFlowRestClientException;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -327,7 +325,7 @@ public final class Process extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
-     * @throws KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
      */
     public String getElementValueAsString(String elementDefinitionCode) {
         return getElementValueOfAsString(of(this, elementDefinitionCode));
@@ -410,7 +408,7 @@ public final class Process extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
-     * @throws KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
      */
     public Double getElementValueAsDouble(String elementDefinitionCode) {
         return getElementValueOfAsDouble(of(this, elementDefinitionCode));
@@ -493,7 +491,7 @@ public final class Process extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
-     * @throws KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
      */
     public LocalDate getElementValueAsLocalDate(String elementDefinitionCode) {
         return getElementValueOfAsLocalDate(of(this, elementDefinitionCode));

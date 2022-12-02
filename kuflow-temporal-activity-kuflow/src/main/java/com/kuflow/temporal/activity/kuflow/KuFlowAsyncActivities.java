@@ -20,28 +20,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.spring.boot.autoconfigure;
+package com.kuflow.temporal.activity.kuflow;
 
-import com.kuflow.rest.KuFlowRestClient;
-import com.kuflow.temporal.activity.kuflow.KuFlowAsyncActivities;
-import com.kuflow.temporal.activity.kuflow.KuFlowAsyncActivitiesImpl;
-import com.kuflow.temporal.activity.kuflow.KuFlowSyncActivities;
-import com.kuflow.temporal.activity.kuflow.KuFlowSyncActivitiesImpl;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.context.annotation.Bean;
+import com.kuflow.temporal.activity.kuflow.model.CreateTaskRequest;
+import io.temporal.activity.ActivityInterface;
+import io.temporal.activity.ActivityMethod;
+import javax.annotation.Nonnull;
 
-@AutoConfiguration
-@ConditionalOnClass(KuFlowSyncActivitiesImpl.class)
-public class KuFlowActivitiesAutoConfiguration {
-
-    @Bean
-    public KuFlowSyncActivities kuFlowSyncActivities(KuFlowRestClient kuFlowRestClient) {
-        return new KuFlowSyncActivitiesImpl(kuFlowRestClient);
-    }
-
-    @Bean
-    public KuFlowAsyncActivities kuFlowAsyncActivities(KuFlowRestClient kuFlowRestClient) {
-        return new KuFlowAsyncActivitiesImpl(kuFlowRestClient);
-    }
+/**
+ * KuFlow activities to be used in Temporal.
+ *
+ */
+@ActivityInterface(namePrefix = "KuFlow_Engine_")
+public interface KuFlowAsyncActivities {
+    /**
+     * Create a Task and optionally fill its elements. The activity is finished when the <strong>"COMPLETED"</strong> or
+     * <strong>"CANCELLED"</strong> event is received from KuFlow. This is useful in KuFlow tasks where you have to wait for an external
+     * agent, usually a human, to complete it.
+     *
+     * @param request must not be {@literal null}.
+     */
+    @ActivityMethod
+    void createTaskAndWaitFinished(@Nonnull CreateTaskRequest request);
 }

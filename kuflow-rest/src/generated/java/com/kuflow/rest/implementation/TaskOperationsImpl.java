@@ -40,7 +40,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
@@ -140,7 +139,7 @@ public final class TaskOperationsImpl {
 
         @Get("/tasks/{id}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<Task>> retrieveTask(
                 @HostParam("$host") String host,
                 @PathParam("id") UUID id,
@@ -149,7 +148,7 @@ public final class TaskOperationsImpl {
 
         @Get("/tasks/{id}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<Task> retrieveTaskSync(
                 @HostParam("$host") String host,
                 @PathParam("id") UUID id,
@@ -216,7 +215,7 @@ public final class TaskOperationsImpl {
 
         @Post("/tasks/{id}/~actions/save-element-value-document")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<Task>> actionsTaskSaveElementValueDocument(
                 @HostParam("$host") String host,
                 @PathParam("id") UUID id,
@@ -232,7 +231,7 @@ public final class TaskOperationsImpl {
 
         @Post("/tasks/{id}/~actions/save-element-value-document")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<Task>> actionsTaskSaveElementValueDocument(
                 @HostParam("$host") String host,
                 @PathParam("id") UUID id,
@@ -248,7 +247,7 @@ public final class TaskOperationsImpl {
 
         @Post("/tasks/{id}/~actions/save-element-value-document")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<Task> actionsTaskSaveElementValueDocumentSync(
                 @HostParam("$host") String host,
                 @PathParam("id") UUID id,
@@ -304,7 +303,7 @@ public final class TaskOperationsImpl {
 
         @Get("/tasks/{id}/~actions/download-element-value-document")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<BinaryData>> actionsTaskDownloadElementValueDocument(
                 @HostParam("$host") String host,
                 @PathParam("id") UUID id,
@@ -314,7 +313,7 @@ public final class TaskOperationsImpl {
 
         @Get("/tasks/{id}/~actions/download-element-value-document")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<BinaryData> actionsTaskDownloadElementValueDocumentSync(
                 @HostParam("$host") String host,
                 @PathParam("id") UUID id,
@@ -324,7 +323,7 @@ public final class TaskOperationsImpl {
 
         @Get("/tasks/{id}/~actions/download-element-value-form-rendered")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<BinaryData>> actionsTaskDownloadElementValueRendered(
                 @HostParam("$host") String host,
                 @PathParam("id") UUID id,
@@ -334,7 +333,7 @@ public final class TaskOperationsImpl {
 
         @Get("/tasks/{id}/~actions/download-element-value-form-rendered")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<BinaryData> actionsTaskDownloadElementValueRenderedSync(
                 @HostParam("$host") String host,
                 @PathParam("id") UUID id,
@@ -344,7 +343,7 @@ public final class TaskOperationsImpl {
 
         @Post("/tasks/{id}/~actions/complete")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<Task>> actionsTaskComplete(
                 @HostParam("$host") String host,
                 @PathParam("id") UUID id,
@@ -353,7 +352,7 @@ public final class TaskOperationsImpl {
 
         @Post("/tasks/{id}/~actions/complete")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<Task> actionsTaskCompleteSync(
                 @HostParam("$host") String host,
                 @PathParam("id") UUID id,
@@ -362,7 +361,7 @@ public final class TaskOperationsImpl {
 
         @Post("/tasks/{id}/~actions/append-log")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<Task>> actionsTaskAppendLog(
                 @HostParam("$host") String host,
                 @PathParam("id") UUID id,
@@ -372,7 +371,7 @@ public final class TaskOperationsImpl {
 
         @Post("/tasks/{id}/~actions/append-log")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<Task> actionsTaskAppendLogSync(
                 @HostParam("$host") String host,
                 @PathParam("id") UUID id,
@@ -951,7 +950,7 @@ public final class TaskOperationsImpl {
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -969,7 +968,7 @@ public final class TaskOperationsImpl {
      * @param id The resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -986,7 +985,7 @@ public final class TaskOperationsImpl {
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -1003,7 +1002,7 @@ public final class TaskOperationsImpl {
      * @param id The resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -1020,7 +1019,7 @@ public final class TaskOperationsImpl {
      * @param id The resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
@@ -1037,7 +1036,7 @@ public final class TaskOperationsImpl {
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1430,7 +1429,7 @@ public final class TaskOperationsImpl {
      * @param elementValueId Element Value ID.
      * @param elementValueValid Element Value ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -1480,7 +1479,7 @@ public final class TaskOperationsImpl {
      * @param elementValueValid Element Value ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -1528,7 +1527,7 @@ public final class TaskOperationsImpl {
      * @param elementValueId Element Value ID.
      * @param elementValueValid Element Value ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -1570,7 +1569,7 @@ public final class TaskOperationsImpl {
      * @param file Command to save a document element value.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -1615,7 +1614,7 @@ public final class TaskOperationsImpl {
      * @param elementValueValid Element Value ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -1661,7 +1660,7 @@ public final class TaskOperationsImpl {
      * @param elementValueId Element Value ID.
      * @param elementValueValid Element Value ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -1711,7 +1710,7 @@ public final class TaskOperationsImpl {
      * @param elementValueValid Element Value ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -1759,7 +1758,7 @@ public final class TaskOperationsImpl {
      * @param elementValueId Element Value ID.
      * @param elementValueValid Element Value ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -1801,7 +1800,7 @@ public final class TaskOperationsImpl {
      * @param file Command to save a document element value.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -1846,7 +1845,7 @@ public final class TaskOperationsImpl {
      * @param elementValueValid Element Value ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -1893,7 +1892,7 @@ public final class TaskOperationsImpl {
      * @param elementValueValid Element Value ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
@@ -1941,7 +1940,7 @@ public final class TaskOperationsImpl {
      * @param elementValueId Element Value ID.
      * @param elementValueValid Element Value ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1984,7 +1983,7 @@ public final class TaskOperationsImpl {
      * @param file Command to save a document element value.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2279,14 +2278,14 @@ public final class TaskOperationsImpl {
      * @param id The resource ID.
      * @param documentId Document ID to download.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> actionsTaskDownloadElementValueDocumentWithResponseAsync(
             UUID id, UUID documentId) {
-        final String accept = "application/octet-stream";
+        final String accept = "application/octet-stream, application/json";
         return FluxUtil.withContext(
                 context ->
                         service.actionsTaskDownloadElementValueDocument(
@@ -2302,14 +2301,14 @@ public final class TaskOperationsImpl {
      * @param documentId Document ID to download.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> actionsTaskDownloadElementValueDocumentWithResponseAsync(
             UUID id, UUID documentId, Context context) {
-        final String accept = "application/octet-stream";
+        final String accept = "application/octet-stream, application/json";
         return service.actionsTaskDownloadElementValueDocument(this.client.getHost(), id, documentId, accept, context);
     }
 
@@ -2321,7 +2320,7 @@ public final class TaskOperationsImpl {
      * @param id The resource ID.
      * @param documentId Document ID to download.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -2340,7 +2339,7 @@ public final class TaskOperationsImpl {
      * @param documentId Document ID to download.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -2359,14 +2358,14 @@ public final class TaskOperationsImpl {
      * @param documentId Document ID to download.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> actionsTaskDownloadElementValueDocumentWithResponse(
             UUID id, UUID documentId, Context context) {
-        final String accept = "application/octet-stream";
+        final String accept = "application/octet-stream, application/json";
         return service.actionsTaskDownloadElementValueDocumentSync(
                 this.client.getHost(), id, documentId, accept, context);
     }
@@ -2379,7 +2378,7 @@ public final class TaskOperationsImpl {
      * @param id The resource ID.
      * @param documentId Document ID to download.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2399,14 +2398,14 @@ public final class TaskOperationsImpl {
      * @param id The resource ID.
      * @param elementDefinitionCode Element definition code of a Form Element to download.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> actionsTaskDownloadElementValueRenderedWithResponseAsync(
             UUID id, String elementDefinitionCode) {
-        final String accept = "application/pdf, application/zip";
+        final String accept = "application/pdf, application/zip, application/json";
         return FluxUtil.withContext(
                 context ->
                         service.actionsTaskDownloadElementValueRendered(
@@ -2425,14 +2424,14 @@ public final class TaskOperationsImpl {
      * @param elementDefinitionCode Element definition code of a Form Element to download.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> actionsTaskDownloadElementValueRenderedWithResponseAsync(
             UUID id, String elementDefinitionCode, Context context) {
-        final String accept = "application/pdf, application/zip";
+        final String accept = "application/pdf, application/zip, application/json";
         return service.actionsTaskDownloadElementValueRendered(
                 this.client.getHost(), id, elementDefinitionCode, accept, context);
     }
@@ -2448,7 +2447,7 @@ public final class TaskOperationsImpl {
      * @param id The resource ID.
      * @param elementDefinitionCode Element definition code of a Form Element to download.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -2470,7 +2469,7 @@ public final class TaskOperationsImpl {
      * @param elementDefinitionCode Element definition code of a Form Element to download.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -2493,14 +2492,14 @@ public final class TaskOperationsImpl {
      * @param elementDefinitionCode Element definition code of a Form Element to download.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> actionsTaskDownloadElementValueRenderedWithResponse(
             UUID id, String elementDefinitionCode, Context context) {
-        final String accept = "application/pdf, application/zip";
+        final String accept = "application/pdf, application/zip, application/json";
         return service.actionsTaskDownloadElementValueRenderedSync(
                 this.client.getHost(), id, elementDefinitionCode, accept, context);
     }
@@ -2516,7 +2515,7 @@ public final class TaskOperationsImpl {
      * @param id The resource ID.
      * @param elementDefinitionCode Element definition code of a Form Element to download.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2532,7 +2531,7 @@ public final class TaskOperationsImpl {
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -2550,7 +2549,7 @@ public final class TaskOperationsImpl {
      * @param id The resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -2567,7 +2566,7 @@ public final class TaskOperationsImpl {
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -2584,7 +2583,7 @@ public final class TaskOperationsImpl {
      * @param id The resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -2601,7 +2600,7 @@ public final class TaskOperationsImpl {
      * @param id The resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
@@ -2618,7 +2617,7 @@ public final class TaskOperationsImpl {
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2635,7 +2634,7 @@ public final class TaskOperationsImpl {
      * @param id The resource ID.
      * @param log Log to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -2655,7 +2654,7 @@ public final class TaskOperationsImpl {
      * @param log Log to be created.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -2673,7 +2672,7 @@ public final class TaskOperationsImpl {
      * @param id The resource ID.
      * @param log Log to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -2691,7 +2690,7 @@ public final class TaskOperationsImpl {
      * @param log Log to be created.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -2709,7 +2708,7 @@ public final class TaskOperationsImpl {
      * @param log Log to be created.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
@@ -2727,7 +2726,7 @@ public final class TaskOperationsImpl {
      * @param id The resource ID.
      * @param log Log to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */

@@ -65,7 +65,7 @@ import javax.annotation.Nonnull;
  *
  */
 @ActivityInterface(namePrefix = "KuFlow_Engine_")
-public interface KuFlowActivities {
+public interface KuFlowSyncActivities {
     /**
      * Retrieve a Principal.
      *
@@ -167,16 +167,6 @@ public interface KuFlowActivities {
     @ActivityMethod
     @Nonnull
     CreateTaskResponse createTask(@Nonnull CreateTaskRequest request);
-
-    /**
-     * Create a Task and optionally fill its elements. The activity is finished when the <strong>"COMPLETED"</strong> or
-     * <strong>"CANCELLED"</strong> event is received from KuFlow. This is useful in KuFlow tasks where you have to wait for an external
-     * agent, usually a human, to complete it.
-     *
-     * @param request must not be {@literal null}.
-     */
-    @ActivityMethod
-    void createTaskAndWaitFinished(@Nonnull CreateTaskRequest request);
 
     /**
      * Complete a task.

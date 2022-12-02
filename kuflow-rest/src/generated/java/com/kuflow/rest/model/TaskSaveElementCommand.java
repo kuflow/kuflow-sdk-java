@@ -57,8 +57,6 @@ import static com.kuflow.rest.util.TaskHelper.setElementValuesOf;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.kuflow.rest.KuFlowRestClientException;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -218,7 +216,7 @@ public final class TaskSaveElementCommand {
      * Get an element as String
      *
      * @return the element value.
-     * @throws KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
      */
     public String getElementValueAsString() {
         return getElementValueOfAsString(of(this));
@@ -294,7 +292,7 @@ public final class TaskSaveElementCommand {
      * Get an element as Double
      *
      * @return the element value.
-     * @throws KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
      */
     public Double getElementValueAsDouble() {
         return getElementValueOfAsDouble(of(this));
@@ -370,7 +368,7 @@ public final class TaskSaveElementCommand {
      * Get an element as LocalDate
      *
      * @return the element value.
-     * @throws KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
      */
     public LocalDate getElementValueAsLocalDate() {
         return getElementValueOfAsLocalDate(of(this));
@@ -446,7 +444,7 @@ public final class TaskSaveElementCommand {
      * Get an element as Map
      *
      * @return the element value.
-     * @throws KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
      */
     public Map<String, Object> getElementValueAsMap() {
         return getElementValueOfAsMap(of(this));
@@ -522,7 +520,7 @@ public final class TaskSaveElementCommand {
      * Get an element as Document
      *
      * @return the element value.
-     * @throws KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
      */
     public TaskElementValueDocumentItem getElementValueAsDocument() {
         return getElementValueOfAsDocument(of(this));
@@ -598,7 +596,7 @@ public final class TaskSaveElementCommand {
      * Get an element as Principal
      *
      * @return the element value.
-     * @throws KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
      */
     public TaskElementValuePrincipalItem getElementValueAsPrincipal() {
         return getElementValueOfAsPrincipal(of(this));

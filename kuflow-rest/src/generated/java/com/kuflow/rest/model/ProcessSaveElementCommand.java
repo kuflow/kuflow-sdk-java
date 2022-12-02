@@ -48,8 +48,6 @@ import static com.kuflow.rest.util.ProcessHelper.setElementValuesOf;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.kuflow.rest.KuFlowRestClientException;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -208,7 +206,7 @@ public final class ProcessSaveElementCommand {
      * Get an element as String
      *
      * @return the element value.
-     * @throws KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
      */
     public String getElementValueAsString() {
         return getElementValueOfAsString(of(this));
@@ -284,7 +282,7 @@ public final class ProcessSaveElementCommand {
      * Get an element as Double
      *
      * @return the element value.
-     * @throws KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
      */
     public Double getElementValueAsDouble() {
         return getElementValueOfAsDouble(of(this));
@@ -360,7 +358,7 @@ public final class ProcessSaveElementCommand {
      * Get an element as LocalDate
      *
      * @return the element value.
-     * @throws KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
      */
     public LocalDate getElementValueAsLocalDate() {
         return getElementValueOfAsLocalDate(of(this));
