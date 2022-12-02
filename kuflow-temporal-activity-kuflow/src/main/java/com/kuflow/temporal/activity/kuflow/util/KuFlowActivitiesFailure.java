@@ -20,16 +20,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.kuflow.temporal.activity.kuflow.util;
 
+import static com.kuflow.temporal.activity.kuflow.KuFlowFailureType.ACTIVITIES_REST_FAILURE;
+
 import com.kuflow.rest.model.DefaultErrorException;
+import com.kuflow.temporal.activity.kuflow.KuFlowFailureType;
 import io.temporal.failure.ApplicationFailure;
 
 public abstract class KuFlowActivitiesFailure {
-
-    public static final String KUFLOW_ACTIVITIES_NON_RETRYABLE_FAILURE = "KuFlowActivities.NonRetryableFailure";
-    public static final String KUFLOW_ACTIVITIES_FAILURE = "KuFlowActivities.Failure";
 
     public static RuntimeException createApplicationFailure(Exception e) {
         if (e instanceof ApplicationFailure) {
@@ -42,21 +41,21 @@ public abstract class KuFlowActivitiesFailure {
                 defaultErrorException.getResponse().getStatusCode() != 429
             ) {
                 return ApplicationFailure.newNonRetryableFailureWithCause(
-                    "Invocation error",
-                    KUFLOW_ACTIVITIES_NON_RETRYABLE_FAILURE,
+                    "Rest Invocation error",
+                    ACTIVITIES_REST_FAILURE.getType(),
                     e,
                     defaultErrorException.getValue()
                 );
             } else {
                 return ApplicationFailure.newFailureWithCause(
-                    "Invocation error",
-                    KUFLOW_ACTIVITIES_FAILURE,
+                    "Rest Invocation error",
+                    ACTIVITIES_REST_FAILURE.getType(),
                     e,
                     defaultErrorException.getValue()
                 );
             }
         }
 
-        return ApplicationFailure.newFailureWithCause("Invocation error", KUFLOW_ACTIVITIES_FAILURE, e);
+        return ApplicationFailure.newFailureWithCause("Invocation error", KuFlowFailureType.ACTIVITIES_FAILURE.getType(), e);
     }
 }

@@ -23,20 +23,21 @@
 package com.kuflow.temporal.activity.kuflow;
 
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesFailure.createApplicationFailure;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateAppendTaskLogRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateAssignTaskRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateChangeProcessInitiatorRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateClaimTaskRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateCompleteProcessRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateCompleteTaskRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateCreateTaskRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateDeleteProcessElementRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateDeleteTaskElementRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateDeleteTaskElementValueDocumentRequest;
-import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateLogRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateRetrievePrincipalRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateRetrieveProcessRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateRetrieveTaskRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateSaveProcessElementRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateSaveTaskElementRequest;
-import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateTaskAssignRequest;
-import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateTaskClaimRequest;
-import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateTaskCompleteRequest;
-import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateTaskRequest;
 
 import com.kuflow.rest.KuFlowRestClient;
 import com.kuflow.rest.model.FindProcessesOptions;
@@ -185,6 +186,8 @@ public class KuFlowSyncActivitiesImpl implements KuFlowSyncActivities {
     @Override
     public DeleteProcessElementResponse deleteProcessElement(@Nonnull DeleteProcessElementRequest request) {
         try {
+            validateDeleteProcessElementRequest(request);
+
             ProcessDeleteElementCommand command = new ProcessDeleteElementCommand()
                 .setElementDefinitionCode(request.getElementDefinitionCode());
 
@@ -281,7 +284,7 @@ public class KuFlowSyncActivitiesImpl implements KuFlowSyncActivities {
     @Override
     public CreateTaskResponse createTask(@Nonnull CreateTaskRequest request) {
         try {
-            validateTaskRequest(request);
+            validateCreateTaskRequest(request);
 
             Task task = this.taskOperations.createTask(request.getTask());
 
@@ -298,7 +301,7 @@ public class KuFlowSyncActivitiesImpl implements KuFlowSyncActivities {
     @Override
     public CompleteTaskResponse completeTask(@Nonnull CompleteTaskRequest request) {
         try {
-            validateTaskCompleteRequest(request);
+            validateCompleteTaskRequest(request);
 
             Task task = this.taskOperations.actionsTaskComplete(request.getTaskId());
 
@@ -315,7 +318,7 @@ public class KuFlowSyncActivitiesImpl implements KuFlowSyncActivities {
     @Override
     public ClaimTaskResponse claimTask(@Nonnull ClaimTaskRequest request) {
         try {
-            validateTaskClaimRequest(request);
+            validateClaimTaskRequest(request);
 
             Task task = this.taskOperations.actionsTaskClaim(request.getTaskId());
 
@@ -332,7 +335,7 @@ public class KuFlowSyncActivitiesImpl implements KuFlowSyncActivities {
     @Override
     public AssignTaskResponse assignTask(@Nonnull AssignTaskRequest request) {
         try {
-            validateTaskAssignRequest(request);
+            validateAssignTaskRequest(request);
 
             TaskAssignCommand command = new TaskAssignCommand().setEmail(request.getEmail()).setPrincipalId(request.getPrincipalId());
 
@@ -409,7 +412,7 @@ public class KuFlowSyncActivitiesImpl implements KuFlowSyncActivities {
     @Override
     public AppendTaskLogResponse appendTaskLog(@Nonnull AppendTaskLogRequest request) {
         try {
-            validateLogRequest(request);
+            validateAppendTaskLogRequest(request);
 
             Task task = this.taskOperations.actionsTaskAppendLog(request.getTaskId(), request.getLog());
 

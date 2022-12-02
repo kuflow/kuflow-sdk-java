@@ -23,6 +23,8 @@
 
 package com.kuflow.temporal.activity.kuflow.util;
 
+import static com.kuflow.temporal.activity.kuflow.KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE;
+
 import com.kuflow.temporal.activity.kuflow.model.AppendTaskLogRequest;
 import com.kuflow.temporal.activity.kuflow.model.AssignTaskRequest;
 import com.kuflow.temporal.activity.kuflow.model.ChangeProcessInitiatorRequest;
@@ -30,6 +32,7 @@ import com.kuflow.temporal.activity.kuflow.model.ClaimTaskRequest;
 import com.kuflow.temporal.activity.kuflow.model.CompleteProcessRequest;
 import com.kuflow.temporal.activity.kuflow.model.CompleteTaskRequest;
 import com.kuflow.temporal.activity.kuflow.model.CreateTaskRequest;
+import com.kuflow.temporal.activity.kuflow.model.DeleteProcessElementRequest;
 import com.kuflow.temporal.activity.kuflow.model.DeleteTaskElementRequest;
 import com.kuflow.temporal.activity.kuflow.model.DeleteTaskElementValueDocumentRequest;
 import com.kuflow.temporal.activity.kuflow.model.RetrievePrincipalRequest;
@@ -43,115 +46,133 @@ public class KuFlowActivitiesValidation {
 
     public static void validateRetrievePrincipalRequest(RetrievePrincipalRequest request) {
         if (request.getPrincipalId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("principalId is required", "KuFlowActivities.validation");
+            throw ApplicationFailure.newNonRetryableFailure("'principalId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 
     public static void validateRetrieveProcessRequest(RetrieveProcessRequest request) {
         if (request.getProcessId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("processId is required", "KuFlowActivities.validation");
+            throw ApplicationFailure.newNonRetryableFailure("'processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 
     public static void validateSaveProcessElementRequest(SaveProcessElementRequest request) {
         if (request.getProcessId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("processId is required", "KuFlowActivities.validation");
+            throw ApplicationFailure.newNonRetryableFailure("'processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
         if (request.getElementDefinitionCode() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("elementDefinitionCode is required", "KuFlowActivities.validation");
+            throw ApplicationFailure.newNonRetryableFailure("'elementDefinitionCode' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+    }
+
+    public static void validateDeleteProcessElementRequest(DeleteProcessElementRequest request) {
+        if (request.getProcessId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+        if (request.getElementDefinitionCode() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'elementDefinitionCode' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 
     public static void validateCompleteProcessRequest(CompleteProcessRequest request) {
         if (request.getProcessId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("processId is required", "KuFlowActivities.validation");
+            throw ApplicationFailure.newNonRetryableFailure("'processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 
     public static void validateChangeProcessInitiatorRequest(ChangeProcessInitiatorRequest request) {
         if (request.getProcessId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("processId is required", "KuFlowActivities.validation");
+            throw ApplicationFailure.newNonRetryableFailure("'processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
         if (request.getEmail() == null && request.getPrincipalId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("email or principalId is required", "KuFlowActivities.validation");
+            throw ApplicationFailure.newNonRetryableFailure(
+                "'email' or 'principalId' is required",
+                ACTIVITIES_VALIDATION_FAILURE.getType()
+            );
         }
     }
 
     public static void validateRetrieveTaskRequest(RetrieveTaskRequest request) {
         if (request.getTaskId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("taskId is required", "KuFlowActivities.validation");
+            throw ApplicationFailure.newNonRetryableFailure("'taskId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 
-    public static void validateTaskRequest(CreateTaskRequest request) {
+    public static void validateCreateTaskRequest(CreateTaskRequest request) {
         if (request.getTask().getId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("task.id is required", "KuFlowActivities.validation");
+            throw ApplicationFailure.newNonRetryableFailure("'task.id' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
         if (request.getTask().getProcessId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("task.processId is required", "KuFlowActivities.validation");
+            throw ApplicationFailure.newNonRetryableFailure("'task.processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
         if (request.getTask().getTaskDefinition().getCode() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("task.taskDefinition.code is required", "KuFlowActivities.validation");
+            throw ApplicationFailure.newNonRetryableFailure(
+                "'task.taskDefinition.code' is required",
+                ACTIVITIES_VALIDATION_FAILURE.getType()
+            );
         }
     }
 
-    public static void validateTaskCompleteRequest(CompleteTaskRequest request) {
+    public static void validateCompleteTaskRequest(CompleteTaskRequest request) {
         if (request.getTaskId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("taskId is required", "KuFlowActivities.validation");
+            throw ApplicationFailure.newNonRetryableFailure("'taskId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 
-    public static void validateTaskClaimRequest(ClaimTaskRequest request) {
+    public static void validateClaimTaskRequest(ClaimTaskRequest request) {
         if (request.getTaskId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("taskId is required", "KuFlowActivities.validation");
+            throw ApplicationFailure.newNonRetryableFailure("'taskId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 
-    public static void validateTaskAssignRequest(AssignTaskRequest request) {
+    public static void validateAssignTaskRequest(AssignTaskRequest request) {
         if (request.getTaskId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("taskId is required", "KuFlowActivities.validation");
+            throw ApplicationFailure.newNonRetryableFailure("'taskId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
         if (request.getEmail() == null && request.getPrincipalId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("email or principalId is required", "KuFlowActivities.validation");
+            throw ApplicationFailure.newNonRetryableFailure(
+                "'email' or 'principalId' is required",
+                ACTIVITIES_VALIDATION_FAILURE.getType()
+            );
         }
     }
 
     public static void validateSaveTaskElementRequest(SaveTaskElementRequest request) {
         if (request.getTaskId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("taskId is required", "KuFlowActivities.validation");
+            throw ApplicationFailure.newNonRetryableFailure("'taskId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
         if (request.getElementDefinitionCode() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("elementDefinitionCode is required", "KuFlowActivities.validation");
+            throw ApplicationFailure.newNonRetryableFailure("'elementDefinitionCode' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 
     public static void validateDeleteTaskElementRequest(DeleteTaskElementRequest request) {
         if (request.getTaskId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("taskId is required", "KuFlowActivities.validation");
+            throw ApplicationFailure.newNonRetryableFailure("'taskId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
         if (request.getElementDefinitionCode() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("elementDefinitionCode is required", "KuFlowActivities.validation");
+            throw ApplicationFailure.newNonRetryableFailure("'elementDefinitionCode' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 
     public static void validateDeleteTaskElementValueDocumentRequest(DeleteTaskElementValueDocumentRequest request) {
         if (request.getTaskId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("taskId is required", "KuFlowActivities.validation");
+            throw ApplicationFailure.newNonRetryableFailure("'taskId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
         if (request.getDocumentId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("documentId is required", "KuFlowActivities.validation");
+            throw ApplicationFailure.newNonRetryableFailure("'documentId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 
-    public static void validateLogRequest(AppendTaskLogRequest request) {
+    public static void validateAppendTaskLogRequest(AppendTaskLogRequest request) {
         if (request.getTaskId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("processId is required", "KuFlowActivities.validation");
+            throw ApplicationFailure.newNonRetryableFailure("'processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
         if (request.getLog().getLevel() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("log.level is required", "KuFlowActivities.validation");
+            throw ApplicationFailure.newNonRetryableFailure("'log.level' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
         if (request.getLog().getMessage() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("log.message is required", "KuFlowActivities.validation");
+            throw ApplicationFailure.newNonRetryableFailure("'log.message' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 }

@@ -23,7 +23,7 @@
 package com.kuflow.temporal.activity.kuflow;
 
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesFailure.createApplicationFailure;
-import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateTaskRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateCreateTaskRequest;
 
 import com.kuflow.rest.KuFlowRestClient;
 import com.kuflow.rest.operation.TaskOperations;
@@ -44,7 +44,7 @@ public class KuFlowAsyncActivitiesImpl implements KuFlowAsyncActivities {
     @Override
     public void createTaskAndWaitFinished(@Nonnull CreateTaskRequest request) {
         try {
-            validateTaskRequest(request);
+            validateCreateTaskRequest(request);
 
             ActivityExecutionContext context = Activity.getExecutionContext();
             String activityToken = TemporalUtils.getTemporalTokenAsString(context);
