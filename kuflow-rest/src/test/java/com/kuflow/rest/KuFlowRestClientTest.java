@@ -87,8 +87,8 @@ public class KuFlowRestClientTest {
 
         TaskSaveElementValueDocumentCommand command4 = new TaskSaveElementValueDocumentCommand().setElementDefinitionCode("DOC_001");
 
-        BinaryData file = BinaryData.fromStream(this.getClass().getResourceAsStream("bugs-bunny.png"));
-        Document document = new Document().setFileContent(file).setFileName("bugs-bunny.png").setContentType("image/png");
+        BinaryData file = BinaryData.fromStream(this.getClass().getResourceAsStream("kuflow.png"));
+        Document document = new Document().setFileContent(file).setFileName("kuflow.png").setContentType("image/png");
         kuFlowRestClient.getTaskOperations().actionsTaskSaveElementValueDocument(taskCreated.getId(), command4, document);
     }
     //
