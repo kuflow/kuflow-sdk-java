@@ -32,19 +32,19 @@ public final class Principal {
     /*
      * The id property.
      */
-    @JsonProperty(value = "id", required = true)
+    @JsonProperty(value = "id")
     private UUID id;
 
     /*
      * The type property.
      */
-    @JsonProperty(value = "type", required = true)
+    @JsonProperty(value = "type")
     private PrincipalType type;
 
     /*
      * The name property.
      */
-    @JsonProperty(value = "name", required = true)
+    @JsonProperty(value = "name")
     private String name;
 
     /*
