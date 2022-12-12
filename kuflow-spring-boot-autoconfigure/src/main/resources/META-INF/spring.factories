@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.kuflow.spring.boot.autoconfigure.EmailActivitiesAutoConfiguration,\
+com.kuflow.spring.boot.autoconfigure.KuFlowActivitiesAutoConfiguration,\
+com.kuflow.spring.boot.autoconfigure.KuFlowRestClientAutoConfiguration,\
+com.kuflow.spring.boot.autoconfigure.S3ActivitiesAutoConfiguration

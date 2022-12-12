@@ -1,0 +1,20 @@
+{
+  "name": "@kuflow/kuflow-rest-generator",
+  "version": "0.0.1",
+  "private": true,
+  "devDependencies": {
+    "autorest": "3.6.2",
+    "shx": "0.3.4"
+  },
+  "scripts": {
+    "autorest": "autorest",
+    "generate": "npm run generate:autorest && npm run generate:move && npm run generate:prettier && npm run generate:license",
+    "generate:autorest": "autorest --version=3.9.3 readme.md",
+    "generate:move": "npm run generate:move:mkdir && npm run generate:move:cp && npm run generate:move:rm",
+    "generate:move:mkdir": "shx mkdir -p ../src/generated/",
+    "generate:move:cp": "shx cp -r ../target/openapi-generated/src/main/* ../src/generated/",
+    "generate:move:rm": "shx rm -rf ../target/openapi-generated",
+    "generate:prettier": "cd .. && mvn prettier:write",
+    "generate:license": "cd .. && mvn license:format"
+  }
+}
