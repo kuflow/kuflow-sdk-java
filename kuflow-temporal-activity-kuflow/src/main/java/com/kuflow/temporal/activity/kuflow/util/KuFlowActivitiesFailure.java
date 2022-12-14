@@ -36,24 +36,12 @@ public abstract class KuFlowActivitiesFailure {
         }
         if (e instanceof DefaultErrorException) {
             DefaultErrorException defaultErrorException = (DefaultErrorException) e;
-            if (
-                (defaultErrorException.getResponse().getStatusCode() >= 400 && defaultErrorException.getResponse().getStatusCode() < 500) &&
-                defaultErrorException.getResponse().getStatusCode() != 429
-            ) {
-                return ApplicationFailure.newNonRetryableFailureWithCause(
-                    "Rest Invocation error",
-                    ACTIVITIES_REST_FAILURE.getType(),
-                    e,
-                    defaultErrorException.getValue()
-                );
-            } else {
-                return ApplicationFailure.newFailureWithCause(
-                    "Rest Invocation error",
-                    ACTIVITIES_REST_FAILURE.getType(),
-                    e,
-                    defaultErrorException.getValue()
-                );
-            }
+            return ApplicationFailure.newFailureWithCause(
+                "Rest Invocation error",
+                ACTIVITIES_REST_FAILURE.getType(),
+                e,
+                defaultErrorException.getValue()
+            );
         }
 
         return ApplicationFailure.newFailureWithCause("Invocation error", KuFlowFailureType.ACTIVITIES_FAILURE.getType(), e);
