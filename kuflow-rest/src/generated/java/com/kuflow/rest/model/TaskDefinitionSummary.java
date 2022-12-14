@@ -28,7 +28,7 @@ import java.util.UUID;
 
 /** In creation task, one of 'id, version or code' is mandatory. */
 @Fluent
-public final class TasksDefinitionSummary {
+public final class TaskDefinitionSummary {
     /*
      * The id property.
      */
@@ -53,8 +53,8 @@ public final class TasksDefinitionSummary {
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
-    /** Creates an instance of TasksDefinitionSummary class. */
-    public TasksDefinitionSummary() {}
+    /** Creates an instance of TaskDefinitionSummary class. */
+    public TaskDefinitionSummary() {}
 
     /**
      * Get the id property: The id property.
@@ -69,9 +69,9 @@ public final class TasksDefinitionSummary {
      * Set the id property: The id property.
      *
      * @param id the id value to set.
-     * @return the TasksDefinitionSummary object itself.
+     * @return the TaskDefinitionSummary object itself.
      */
-    public TasksDefinitionSummary setId(UUID id) {
+    public TaskDefinitionSummary setId(UUID id) {
         this.id = id;
         return this;
     }
@@ -89,9 +89,9 @@ public final class TasksDefinitionSummary {
      * Set the version property: The version property.
      *
      * @param version the version value to set.
-     * @return the TasksDefinitionSummary object itself.
+     * @return the TaskDefinitionSummary object itself.
      */
-    public TasksDefinitionSummary setVersion(UUID version) {
+    public TaskDefinitionSummary setVersion(UUID version) {
         this.version = version;
         return this;
     }
@@ -109,9 +109,9 @@ public final class TasksDefinitionSummary {
      * Set the code property: The code property.
      *
      * @param code the code value to set.
-     * @return the TasksDefinitionSummary object itself.
+     * @return the TaskDefinitionSummary object itself.
      */
-    public TasksDefinitionSummary setCode(String code) {
+    public TaskDefinitionSummary setCode(String code) {
         this.code = code;
         return this;
     }

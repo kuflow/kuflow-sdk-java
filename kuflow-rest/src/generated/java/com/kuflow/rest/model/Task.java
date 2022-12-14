@@ -81,7 +81,7 @@ public final class Task extends AbstractAudited {
      * In creation task, one of 'id, version or code' is mandatory.
      */
     @JsonProperty(value = "taskDefinition", required = true)
-    private TasksDefinitionSummary taskDefinition;
+    private TaskDefinitionSummary taskDefinition;
 
     /*
      * The processId property.
@@ -155,7 +155,7 @@ public final class Task extends AbstractAudited {
      *
      * @return the taskDefinition value.
      */
-    public TasksDefinitionSummary getTaskDefinition() {
+    public TaskDefinitionSummary getTaskDefinition() {
         return this.taskDefinition;
     }
 
@@ -165,7 +165,7 @@ public final class Task extends AbstractAudited {
      * @param taskDefinition the taskDefinition value to set.
      * @return the Task object itself.
      */
-    public Task setTaskDefinition(TasksDefinitionSummary taskDefinition) {
+    public Task setTaskDefinition(TaskDefinitionSummary taskDefinition) {
         this.taskDefinition = taskDefinition;
         return this;
     }
