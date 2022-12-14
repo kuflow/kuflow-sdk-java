@@ -29,9 +29,9 @@ import com.kuflow.rest.model.Document;
 import com.kuflow.rest.model.Process;
 import com.kuflow.rest.model.ProcessDefinitionSummary;
 import com.kuflow.rest.model.Task;
+import com.kuflow.rest.model.TaskDefinitionSummary;
 import com.kuflow.rest.model.TaskSaveElementCommand;
 import com.kuflow.rest.model.TaskSaveElementValueDocumentCommand;
-import com.kuflow.rest.model.TasksDefinitionSummary;
 import java.util.UUID;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -62,7 +62,7 @@ public class KuFlowRestClientTest {
         Task task = new Task()
             .setId(UUID.fromString("a81b7d61-9619-4e1c-b2f4-e0e7de03d310"))
             .setProcessId(processCreated.getId())
-            .setTaskDefinition(new TasksDefinitionSummary().setCode("TASK_0001"));
+            .setTaskDefinition(new TaskDefinitionSummary().setCode("TASK_0001"));
 
         Task taskCreated = kuFlowRestClient.getTaskOperations().createTask(task);
 
