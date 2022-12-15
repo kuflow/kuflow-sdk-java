@@ -41,7 +41,7 @@ public class ProcessOperationTest extends AbstractOperationTest {
 
     @Test
     @DisplayName("GIVEN an authenticated user WHEN list processes THEN authentication header is added")
-    public void givenAnAuthenticatedUserWhenListPrincipalsThenAuthenticationHeaderIsAdded() {
+    public void givenAnAuthenticatedUserWhenListProcessesThenAuthenticationHeaderIsAdded() {
         givenThat(
             get("/apis/external/v2022-10-08/processes")
                 .withHeader("Authorization", equalTo("Bearer Q0xJRU5UX0lEOkNMSUVOVF9TRUNSRVQ="))
