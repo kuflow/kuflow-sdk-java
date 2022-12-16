@@ -43,7 +43,7 @@ public class ProcessOperationTest extends AbstractOperationTest {
     @DisplayName("GIVEN an authenticated user WHEN list processes THEN authentication header is added")
     public void givenAnAuthenticatedUserWhenListProcessesThenAuthenticationHeaderIsAdded() {
         givenThat(
-            get("/apis/external/v2022-10-08/processes")
+            get("/v2022-10-08/processes")
                 .withHeader("Authorization", equalTo("Bearer Q0xJRU5UX0lEOkNMSUVOVF9TRUNSRVQ="))
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.list.ok.json"))
         );
@@ -55,7 +55,7 @@ public class ProcessOperationTest extends AbstractOperationTest {
     @DisplayName("GIVEN an authenticated user WHEN list processes THEN body is parsed correctly")
     public void givenAnAuthenticatedUserWhenListProcessesThenBodyIsParsedCorrectly() {
         givenThat(
-            get("/apis/external/v2022-10-08/processes")
+            get("/v2022-10-08/processes")
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.list.ok.json"))
         );
 
@@ -71,7 +71,7 @@ public class ProcessOperationTest extends AbstractOperationTest {
     @DisplayName("GIVEN an authenticated user WHEN list processes using query params THEN the query parameters are send")
     public void givenAnAuthenticatedUserWhenListProcessesUsingQueryParamsThenTheQueryParametersAreSend() {
         givenThat(
-            get(urlPathEqualTo("/apis/external/v2022-10-08/processes"))
+            get(urlPathEqualTo("/v2022-10-08/processes"))
                 .withQueryParam("size", equalTo("30"))
                 .withQueryParam("page", equalTo("2"))
                 .withQueryParam("sort", equalTo("order1"))
@@ -87,7 +87,7 @@ public class ProcessOperationTest extends AbstractOperationTest {
     @DisplayName("GIVEN an authenticated user WHEN list processes using query params multivalues THEN the query parameters are send")
     public void givenAnAuthenticatedUserWhenListProcessesUsingQueryParamsMultivaluesThenTheQueryParametersAreSend() {
         givenThat(
-            get(urlPathEqualTo("/apis/external/v2022-10-08/processes"))
+            get(urlPathEqualTo("/v2022-10-08/processes"))
                 .withQueryParam("size", equalTo("30"))
                 .withQueryParam("page", equalTo("2"))
                 .withQueryParam("sort", equalTo("order1"))
@@ -106,7 +106,7 @@ public class ProcessOperationTest extends AbstractOperationTest {
         UUID processId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
 
         givenThat(
-            get("/apis/external/v2022-10-08/processes/" + processId)
+            get("/v2022-10-08/processes/" + processId)
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.retrieve.ok.json"))
         );
 

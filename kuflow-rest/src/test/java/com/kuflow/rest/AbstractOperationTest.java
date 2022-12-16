@@ -59,7 +59,7 @@ public abstract class AbstractOperationTest {
 
     private KuFlowRestClient getKuFlowClient() {
         WireMockRuntimeInfo wmRuntimeInfo = WIRE_MOCK_EXTENSION.getRuntimeInfo();
-        String endpoint = String.format("http://localhost:%d/apis/external/v2022-10-08", wmRuntimeInfo.getHttpPort());
+        String endpoint = String.format("http://localhost:%d/", wmRuntimeInfo.getHttpPort());
 
         HttpLogOptions logOptions = new HttpLogOptions();
         logOptions.setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS);

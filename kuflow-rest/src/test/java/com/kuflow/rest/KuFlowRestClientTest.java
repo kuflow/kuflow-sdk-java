@@ -47,8 +47,6 @@ public class KuFlowRestClientTest {
         KuFlowRestClient kuFlowRestClient = new KuFlowRestClientBuilder()
             .clientId("CLIENT_ID")
             .clientSecret("CLIENT_SECRET")
-            .endpoint("http://localhost:8080/apis/external/v2022-10-08")
-            .allowInsecureConnection(true)
             .httpLogOptions(logOptions)
             .buildClient();
 

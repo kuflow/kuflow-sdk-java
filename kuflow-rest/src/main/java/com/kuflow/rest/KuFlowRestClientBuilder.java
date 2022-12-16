@@ -62,6 +62,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.kuflow.rest.implementation.KuFlowClientImpl;
 import com.kuflow.rest.implementation.KuFlowClientImplBuilder;
+import com.kuflow.rest.util.Validation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -106,7 +107,9 @@ public final class KuFlowRestClientBuilder
      */
     @Override
     public KuFlowRestClientBuilder endpoint(String endpoint) {
-        this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+        Validation.checkValidURL(endpoint, "'endpoint' must be an url");
+        this.endpoint = endpoint.trim();
+        this.endpoint = this.endpoint.replaceAll("/*$", "");
         return this;
     }
 
@@ -320,12 +323,19 @@ public final class KuFlowRestClientBuilder
     }
 
     private KuFlowClientImpl createServiceImpl() {
-        Objects.requireNonNull(this.endpoint, "'endpoint' is required");
-
         HttpPipeline builderPipeline = this.createHttpPipeline();
 
-        KuFlowClientImplBuilder clientBuilder = new KuFlowClientImplBuilder();
-        clientBuilder.host(this.endpoint).serializerAdapter(this.serializerAdapter).pipeline(builderPipeline);
+        KuFlowClientImplBuilder clientBuilder = new KuFlowClientImplBuilder()
+            .serializerAdapter(this.serializerAdapter)
+            .pipeline(builderPipeline);
+
+        if (this.endpoint != null) {
+            String host = this.endpoint;
+            if (!host.endsWith("/" + KuFlowRestClient.API_VERSION)) {
+                host = host + "/" + KuFlowRestClient.API_VERSION;
+            }
+            clientBuilder.host(host);
+        }
 
         return clientBuilder.buildClient();
     }
@@ -387,7 +397,7 @@ public final class KuFlowRestClientBuilder
         boolean allowInsecureConnection = this.allowInsecureConnection;
 
         BasicAuthenticationCredential tokenCredential = new BasicAuthenticationCredential(this.clientId, this.clientSecret);
-        return new BearerTokenAuthenticationPolicy(tokenCredential, "https://api.kuflow.com//v2022-10-08/.default") {
+        return new BearerTokenAuthenticationPolicy(tokenCredential, "https://api.kuflow.com/v2022-10-08/.default") {
             @Override
             public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
                 if ("http".equals(context.getHttpRequest().getUrl().getProtocol()) && !allowInsecureConnection) {
