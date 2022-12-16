@@ -27,18 +27,11 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
 import static com.github.tomakehurst.wiremock.client.WireMock.ok;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
-import static org.assertj.core.api.Assertions.assertThat;
 
-import com.kuflow.rest.model.FindProcessesOptions;
-import com.kuflow.rest.model.Process;
-import com.kuflow.rest.model.ProcessPage;
-import com.kuflow.rest.model.ProcessState;
 import com.kuflow.rest.model.TaskSaveElementCommand;
+import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.util.UUID;
 
 public class TaskOperationTest extends AbstractOperationTest {
 
@@ -46,7 +39,7 @@ public class TaskOperationTest extends AbstractOperationTest {
     @DisplayName("GIVEN an authenticated user WHEN list tasks THEN authentication header is added")
     public void givenAnAuthenticatedUserWhenListTaksThenAuthenticationHeaderIsAdded() {
         givenThat(
-            get("/apis/external/v2022-10-08/tasks")
+            get("/v2022-10-08/tasks")
                 .withHeader("Authorization", equalTo("Bearer Q0xJRU5UX0lEOkNMSUVOVF9TRUNSRVQ="))
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("tasks-api.list.ok.json"))
         );
@@ -60,15 +53,12 @@ public class TaskOperationTest extends AbstractOperationTest {
         UUID taskId = UUID.fromString("e2d0fdf9-0aae-4eed-9e07-8e4b76df733c");
 
         givenThat(
-            post("/apis/external/v2022-10-08/tasks/" + taskId + "/~actions/save-element")
+            post("/v2022-10-08/tasks/" + taskId + "/~actions/save-element")
                 .withHeader("Authorization", equalTo("Bearer Q0xJRU5UX0lEOkNMSUVOVF9TRUNSRVQ="))
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("tasks-api.retrieve.ok.json"))
         );
-        TaskSaveElementCommand command = new TaskSaveElementCommand()
-            .setElementDefinitionCode("CODE")
-            .setElementValueAsString("value");
+        TaskSaveElementCommand command = new TaskSaveElementCommand().setElementDefinitionCode("CODE").setElementValueAsString("value");
 
         this.kuFlowRestClient.getTaskOperations().actionsTaskSaveElement(taskId, command);
     }
-
 }

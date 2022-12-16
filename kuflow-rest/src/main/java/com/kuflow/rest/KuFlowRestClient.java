@@ -38,6 +38,8 @@ import java.nio.charset.StandardCharsets;
 @ServiceClient(builder = KuFlowRestClientBuilder.class)
 public class KuFlowRestClient {
 
+    public static final String API_VERSION = "v2022-10-08";
+
     private final KuFlowClientImpl client;
     private final PrincipalOperations principalOperations;
     private final AuthenticationOperations authenticationOperations;

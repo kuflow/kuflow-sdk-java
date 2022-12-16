@@ -42,7 +42,7 @@ public class AuthenticationOperationTest extends AbstractOperationTest {
     @DisplayName("GIVEN an authenticated user WHEN create a authentication THEN authentication header is added")
     public void givenAnAuthenticatedUserWhenCreateAAuthenticationThenAuthenticationHeaderIsAdded() {
         givenThat(
-            post("/apis/external/v2022-10-08/authentications")
+            post("/v2022-10-08/authentications")
                 .withHeader("Authorization", equalTo("Bearer Q0xJRU5UX0lEOkNMSUVOVF9TRUNSRVQ="))
                 .withHeader("Content-Type", containing("application/json"))
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("authentication-api.ok.json"))
@@ -57,7 +57,7 @@ public class AuthenticationOperationTest extends AbstractOperationTest {
     @DisplayName("GIVEN an authenticated user WHEN create a authentication THEN authentication is created")
     public void givenAnAuthenticatedUserWhenCreateAAuthenticationThenAuthenticationIsCreated() {
         givenThat(
-            post("/apis/external/v2022-10-08/authentications")
+            post("/v2022-10-08/authentications")
                 .withHeader("Content-Type", containing("application/json"))
                 .withRequestBody(matchingJsonPath("$.type", equalTo(AuthenticationType.ENGINE.toString())))
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("authentication-api.ok.json"))

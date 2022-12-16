@@ -43,7 +43,7 @@ public class PrincipalOperationTest extends AbstractOperationTest {
     @DisplayName("GIVEN an authenticated user WHEN list principals THEN authentication header is added")
     public void givenAnAuthenticatedUserWhenListPrincipalsThenAuthenticationHeaderIsAdded() {
         givenThat(
-            get("/apis/external/v2022-10-08/principals")
+            get("/v2022-10-08/principals")
                 .withHeader("Authorization", equalTo("Bearer Q0xJRU5UX0lEOkNMSUVOVF9TRUNSRVQ="))
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("principals-api.list.ok.json"))
         );
@@ -55,7 +55,7 @@ public class PrincipalOperationTest extends AbstractOperationTest {
     @DisplayName("GIVEN an authenticated user WHEN list principals THEN result is correctly parsed")
     public void givenAnAuthenticatedUserWhenListPrincipalsThenResultIsCorrectlyParsed() {
         givenThat(
-            get("/apis/external/v2022-10-08/principals")
+            get("/v2022-10-08/principals")
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("principals-api.list.ok.json"))
         );
 
@@ -73,7 +73,7 @@ public class PrincipalOperationTest extends AbstractOperationTest {
         UUID groupId = UUID.randomUUID();
 
         givenThat(
-            get(urlPathEqualTo("/apis/external/v2022-10-08/principals"))
+            get(urlPathEqualTo("/v2022-10-08/principals"))
                 .withQueryParam("size", equalTo("30"))
                 .withQueryParam("page", equalTo("2"))
                 .withQueryParam("sort", equalTo("order1"))
@@ -99,7 +99,7 @@ public class PrincipalOperationTest extends AbstractOperationTest {
         UUID groupId2 = UUID.randomUUID();
 
         givenThat(
-            get(urlPathEqualTo("/apis/external/v2022-10-08/principals"))
+            get(urlPathEqualTo("/v2022-10-08/principals"))
                 .withQueryParam("size", equalTo("30"))
                 .withQueryParam("page", equalTo("2"))
                 .withQueryParam("sort", equalTo("order1"))
@@ -128,7 +128,7 @@ public class PrincipalOperationTest extends AbstractOperationTest {
         UUID principalId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
 
         givenThat(
-            get("/apis/external/v2022-10-08/principals/" + principalId)
+            get("/v2022-10-08/principals/" + principalId)
                 .withHeader("Authorization", equalTo("Bearer Q0xJRU5UX0lEOkNMSUVOVF9TRUNSRVQ="))
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("principals-api.retrieve.ok.json"))
         );
@@ -142,7 +142,7 @@ public class PrincipalOperationTest extends AbstractOperationTest {
         UUID principalId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
 
         givenThat(
-            get("/apis/external/v2022-10-08/principals/" + principalId)
+            get("/v2022-10-08/principals/" + principalId)
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("principals-api.retrieve.ok.json"))
         );
 
