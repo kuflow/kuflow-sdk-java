@@ -30,7 +30,7 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
-@ConfigurationProperties(prefix = "kuflow.activity.uivision")
+@ConfigurationProperties(prefix = "kuflow.activity.ui-vision")
 @Validated
 @NotFillMeAttributesValues
 public class UIVisionProperties {

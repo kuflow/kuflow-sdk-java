@@ -93,10 +93,25 @@ public class UIVisionService {
         uriVariables.put("cmd_var3", uiVisionEnvironment.getCmdVar3());
 
         StringSubstitutor sub = new StringSubstitutor(uriVariables);
-        String templateString =
-            "file:///{autoRunHtml}?macro={macro}&direct=1&savelog={pathToLog}&closeBrowser={closeBrowser}&closeRPA={closeRPA}&cmd_var1={cmd_var1}&cmd_var2={cmd_var2}&cmd_var3={cmd_var3}";
 
-        return sub.replace(templateString);
+        StringBuilder templateStringBuilder = new StringBuilder("file:///${autoRunHtml}?macro=${macro}&direct=1&savelog=${pathToLog}");
+        if (StringUtils.isNotBlank(uiVisionEnvironment.getCloseBrowser())) {
+            templateStringBuilder.append("&closeBrowser=${closeBrowser}");
+        }
+        if (StringUtils.isNotBlank(uiVisionEnvironment.getCloseRpa())) {
+            templateStringBuilder.append("&closeRPA=${closeRPA}");
+        }
+        if (StringUtils.isNotBlank(uiVisionEnvironment.getCmdVar1())) {
+            templateStringBuilder.append("&cmd_var1=${cmd_var1}");
+        }
+        if (StringUtils.isNotBlank(uiVisionEnvironment.getCmdVar2())) {
+            templateStringBuilder.append("&cmd_var2=${cmd_var2}");
+        }
+        if (StringUtils.isNotBlank(uiVisionEnvironment.getCmdVar3())) {
+            templateStringBuilder.append("&cmd_var3=${cmd_var3}");
+        }
+
+        return sub.replace(templateStringBuilder.toString());
     }
 
     private void checkProcess(Process process, Path logFilePath, Duration executionTimeout) throws IOException {

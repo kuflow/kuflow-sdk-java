@@ -32,7 +32,7 @@ kuflow:
       path-style-access-enabled: true
       default-bucket: default
 
-    uivision:
+    ui-vision:
       launch-command: /usr/bin/google-chrome
 
       log-directory: /tmp

@@ -27,7 +27,7 @@ import com.kuflow.temporal.activity.uivision.model.ExecuteUIVisionMacroResponse;
 import io.temporal.activity.ActivityInterface;
 import io.temporal.activity.ActivityMethod;
 
-@ActivityInterface(namePrefix = "KuFlow_UiVision_")
+@ActivityInterface(namePrefix = "KuFlow_UIVision_")
 public interface UIVisionActivities {
     /**
      * Execute a UiVision macro (RPA).

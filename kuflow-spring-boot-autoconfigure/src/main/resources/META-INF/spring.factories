@@ -3,4 +3,4 @@ com.kuflow.spring.boot.autoconfigure.EmailActivitiesAutoConfiguration,\
 com.kuflow.spring.boot.autoconfigure.KuFlowActivitiesAutoConfiguration,\
 com.kuflow.spring.boot.autoconfigure.KuFlowRestClientAutoConfiguration,\
 com.kuflow.spring.boot.autoconfigure.S3ActivitiesAutoConfiguration,\
-com.kuflow.spring.boot.autoconfigure.UiVisionActivitiesAutoConfiguration
+com.kuflow.spring.boot.autoconfigure.UIVisionActivitiesAutoConfiguration

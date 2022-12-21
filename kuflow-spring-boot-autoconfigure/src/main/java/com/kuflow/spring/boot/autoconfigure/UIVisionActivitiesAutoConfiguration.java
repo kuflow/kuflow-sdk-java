@@ -35,7 +35,7 @@ import org.springframework.context.annotation.Bean;
 @AutoConfiguration
 @ConditionalOnClass(UIVisionActivitiesImpl.class)
 @EnableConfigurationProperties(UIVisionProperties.class)
-public class UiVisionActivitiesAutoConfiguration {
+public class UIVisionActivitiesAutoConfiguration {
 
     @Bean
     public UIVisionService uIVisionService() {
