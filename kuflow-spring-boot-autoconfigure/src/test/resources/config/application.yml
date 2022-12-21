@@ -14,8 +14,8 @@ spring:
 
 kuflow:
   api:
-    application-id: app1
-    token: token
+    client-id: app1
+    client-secret: token
     endpoint: http://localhost:8080/api
 
   activity:
@@ -31,3 +31,20 @@ kuflow:
       region: us-east-1
       path-style-access-enabled: true
       default-bucket: default
+
+    uivision:
+      launch-command: /usr/bin/google-chrome
+
+      log-directory: /tmp
+
+      auto-run-html: /tmp/ui.vision.html
+
+      macro: MyMacro.json
+
+      # Optional:
+      close-browser: false
+
+      # Optional:
+      close-rpa: true
+
+      execution-timeout: 10m

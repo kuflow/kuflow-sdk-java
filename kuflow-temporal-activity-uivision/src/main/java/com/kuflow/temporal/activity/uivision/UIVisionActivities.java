@@ -22,8 +22,8 @@
  */
 package com.kuflow.temporal.activity.uivision;
 
-import com.kuflow.temporal.activity.uivision.model.ExecuteUIVisionMacroRequestResource;
-import com.kuflow.temporal.activity.uivision.model.ExecuteUIVisionMacroResponseResource;
+import com.kuflow.temporal.activity.uivision.model.ExecuteUIVisionMacroRequest;
+import com.kuflow.temporal.activity.uivision.model.ExecuteUIVisionMacroResponse;
 import io.temporal.activity.ActivityInterface;
 import io.temporal.activity.ActivityMethod;
 
@@ -36,5 +36,5 @@ public interface UIVisionActivities {
      * @return
      */
     @ActivityMethod
-    ExecuteUIVisionMacroResponseResource executeUIVisionMacro(ExecuteUIVisionMacroRequestResource request);
+    ExecuteUIVisionMacroResponse executeUIVisionMacro(ExecuteUIVisionMacroRequest request);
 }

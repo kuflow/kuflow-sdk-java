@@ -22,24 +22,72 @@
  */
 package com.kuflow.temporal.activity.uivision;
 
-import com.kuflow.temporal.activity.uivision.model.ExecuteUIVisionMacroRequestResource;
-import com.kuflow.temporal.activity.uivision.model.ExecuteUIVisionMacroResponseResource;
+import com.kuflow.temporal.activity.uivision.dto.UIVisionArgumentDto;
+import com.kuflow.temporal.activity.uivision.model.ExecuteUIVisionMacroRequest;
+import com.kuflow.temporal.activity.uivision.model.ExecuteUIVisionMacroResponse;
 import com.kuflow.temporal.activity.uivision.service.UIVisionService;
 
 public class UIVisionActivitiesImpl implements UIVisionActivities {
 
     private final UIVisionService uiVisionService;
 
-    public UIVisionActivitiesImpl(UIVisionService uiVisionService) {
+    private final UIVisionActivityConfiguration uiVisionActivityConfiguration;
+
+    public UIVisionActivitiesImpl(UIVisionService uiVisionService, UIVisionActivityConfiguration uiVisionActivityConfiguration) {
         this.uiVisionService = uiVisionService;
+        this.uiVisionActivityConfiguration = uiVisionActivityConfiguration;
     }
 
     @Override
-    public ExecuteUIVisionMacroResponseResource executeUIVisionMacro(ExecuteUIVisionMacroRequestResource request) {
-        this.uiVisionService.runMacro(request.getCommand(), request.getArguments(), request.getExecutionTimeout());
+    public ExecuteUIVisionMacroResponse executeUIVisionMacro(ExecuteUIVisionMacroRequest request) {
+        UIVisionArgumentDto arguments = UIVisionArgumentDto
+            .newBuilder()
+            .setAutoRunHtml(this.uiVisionActivityConfiguration.getAutoRunHtml())
+            .setMacro(this.uiVisionActivityConfiguration.getMacro())
+            .setLogDirectory(this.uiVisionActivityConfiguration.getLogDirectory())
+            .setCloseBrowser(String.valueOf(this.uiVisionActivityConfiguration.getCloseBrowser()))
+            .setCloseRpa(String.valueOf(this.uiVisionActivityConfiguration.getCloseRpa()))
+            .setCmdVar1(request.getTaskId().toString())
+            .setCmdVar2(request.getExtraCommandVariable2())
+            .setCmdVar3(request.getExtraCommandVariable3())
+            .build();
 
-        ExecuteUIVisionMacroResponseResource response = new ExecuteUIVisionMacroResponseResource();
+        this.uiVisionService.runMacro(
+                this.uiVisionActivityConfiguration.getLaunchCommand(),
+                arguments,
+                this.uiVisionActivityConfiguration.getExecutionTimeout()
+            );
+
+        ExecuteUIVisionMacroResponse response = new ExecuteUIVisionMacroResponse();
 
         return response;
+    }
+
+    public static final class UIVisionActivitiesImplBuilder {
+
+        private UIVisionService uIVisionService;
+
+        private UIVisionActivityConfiguration uIVisionActivityConfiguration;
+
+        public UIVisionActivitiesImplBuilder(UIVisionService uIVisionService, UIVisionActivityConfiguration uIVisionActivityConfiguration) {
+            this.uIVisionService = uIVisionService;
+            this.uIVisionActivityConfiguration = uIVisionActivityConfiguration;
+        }
+
+        public UIVisionActivitiesImplBuilder withUIVisionService(UIVisionService uIVisionService) {
+            this.uIVisionService = uIVisionService;
+            return this;
+        }
+
+        public UIVisionActivitiesImplBuilder withUIVisionActivityConfiguration(
+            UIVisionActivityConfiguration uIVisionActivityConfiguration
+        ) {
+            this.uIVisionActivityConfiguration = uIVisionActivityConfiguration;
+            return this;
+        }
+
+        public UIVisionActivitiesImplBuilder build() {
+            return new UIVisionActivitiesImplBuilder(this.uIVisionService, this.uIVisionActivityConfiguration);
+        }
     }
 }

@@ -50,10 +50,7 @@ public class UIVisionService {
     public void runMacro(String command, UIVisionArgumentDto uiVisionArgument, Duration executionTimeout) {
         Objects.requireNonNull(command, "command is required");
 
-        Path logFilePath = Paths.get(
-            uiVisionArgument.getUiVisionLogDirectory(),
-            String.format("uivision-%s.log", Instant.now().toEpochMilli())
-        );
+        Path logFilePath = Paths.get(uiVisionArgument.getLogDirectory(), String.format("uivision-%s.log", Instant.now().toEpochMilli()));
 
         String processArguments = this.buildProcessArguments(uiVisionArgument, logFilePath);
 
@@ -86,14 +83,14 @@ public class UIVisionService {
      */
     private String buildProcessArguments(UIVisionArgumentDto uiVisionEnvironment, Path logFilePath) {
         Map<String, String> uriVariables = new HashMap<>();
-        uriVariables.put("autoRunHtml", uiVisionEnvironment.getUiVisionAutoRunHtml());
+        uriVariables.put("autoRunHtml", uiVisionEnvironment.getAutoRunHtml());
         uriVariables.put("pathToLog", logFilePath.toString());
-        uriVariables.put("macro", uiVisionEnvironment.getUiVisionMacro());
-        uriVariables.put("closeBrowser", uiVisionEnvironment.getUiVisionCloseBrowser());
-        uriVariables.put("closeRPA", uiVisionEnvironment.getUiVisionCloseRPA());
-        uriVariables.put("cmd_var1", uiVisionEnvironment.getUiVisionCmdVar1());
-        uriVariables.put("cmd_var2", uiVisionEnvironment.getUiVisionCmdVar2());
-        uriVariables.put("cmd_var3", uiVisionEnvironment.getUiVisionCmdVar3());
+        uriVariables.put("macro", uiVisionEnvironment.getMacro());
+        uriVariables.put("closeBrowser", uiVisionEnvironment.getCloseBrowser());
+        uriVariables.put("closeRPA", uiVisionEnvironment.getCloseRpa());
+        uriVariables.put("cmd_var1", uiVisionEnvironment.getCmdVar1());
+        uriVariables.put("cmd_var2", uiVisionEnvironment.getCmdVar2());
+        uriVariables.put("cmd_var3", uiVisionEnvironment.getCmdVar3());
 
         StringSubstitutor sub = new StringSubstitutor(uriVariables);
         String templateString =

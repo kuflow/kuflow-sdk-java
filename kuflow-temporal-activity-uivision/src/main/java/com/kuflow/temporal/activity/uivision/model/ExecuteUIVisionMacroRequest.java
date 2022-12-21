@@ -23,5 +23,47 @@
 package com.kuflow.temporal.activity.uivision.model;
 
 import com.kuflow.temporal.common.model.AbstractModel;
+import java.util.UUID;
 
-public class ExecuteUIVisionMacroResponseResource extends AbstractModel {}
+public class ExecuteUIVisionMacroRequest extends AbstractModel {
+
+    private UUID taskId;
+
+    /**
+     * UI.Vision Internal Variable #2
+     * (The internal variable #1 is reserved to pass KuFlow taskId)
+     * See https://ui.vision/rpa/docs#cmd-src
+     */
+    private String extraCommandVariable2;
+
+    /**
+     * UI.Vision Internal Variable #3
+     * (The internal variable #1 is reserved to pass KuFlow taskId)
+     * See https://ui.vision/rpa/docs#cmd-src
+     */
+    private String extraCommandVariable3;
+
+    public UUID getTaskId() {
+        return this.taskId;
+    }
+
+    public void setTaskId(UUID taskId) {
+        this.taskId = taskId;
+    }
+
+    public String getExtraCommandVariable2() {
+        return this.extraCommandVariable2;
+    }
+
+    public void setExtraCommandVariable2(String extraCommandVariable2) {
+        this.extraCommandVariable2 = extraCommandVariable2;
+    }
+
+    public String getExtraCommandVariable3() {
+        return this.extraCommandVariable3;
+    }
+
+    public void setExtraCommandVariable3(String extraCommandVariable3) {
+        this.extraCommandVariable3 = extraCommandVariable3;
+    }
+}

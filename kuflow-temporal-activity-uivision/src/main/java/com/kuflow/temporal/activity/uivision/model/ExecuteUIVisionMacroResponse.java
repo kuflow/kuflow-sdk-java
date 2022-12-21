@@ -22,50 +22,6 @@
  */
 package com.kuflow.temporal.activity.uivision.model;
 
-import com.kuflow.temporal.activity.uivision.dto.UIVisionArgumentDto;
 import com.kuflow.temporal.common.model.AbstractModel;
-import java.time.Duration;
-import java.util.UUID;
 
-public class ExecuteUIVisionMacroRequestResource extends AbstractModel {
-
-    private UUID taskId;
-
-    private String command;
-
-    private UIVisionArgumentDto arguments;
-
-    private Duration executionTimeout;
-
-    public UUID getTaskId() {
-        return this.taskId;
-    }
-
-    public void setTaskId(UUID taskId) {
-        this.taskId = taskId;
-    }
-
-    public String getCommand() {
-        return this.command;
-    }
-
-    public void setCommand(String command) {
-        this.command = command;
-    }
-
-    public UIVisionArgumentDto getArguments() {
-        return this.arguments;
-    }
-
-    public void setArguments(UIVisionArgumentDto arguments) {
-        this.arguments = arguments;
-    }
-
-    public Duration getExecutionTimeout() {
-        return this.executionTimeout;
-    }
-
-    public void setExecutionTimeout(Duration executionTimeout) {
-        this.executionTimeout = executionTimeout;
-    }
-}
+public class ExecuteUIVisionMacroResponse extends AbstractModel {}
