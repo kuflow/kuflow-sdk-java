@@ -28,6 +28,7 @@ import com.kuflow.spring.boot.autoconfigure.properties.EmailActivitiesProperties
 import com.kuflow.temporal.activity.email.EmailActivities;
 import com.kuflow.temporal.activity.kuflow.KuFlowSyncActivities;
 import com.kuflow.temporal.activity.s3.S3Activities;
+import com.kuflow.temporal.activity.uivision.UIVisionActivities;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,9 @@ public class StartupTest {
     @Autowired
     private KuFlowSyncActivities kuFlowSyncActivities;
 
+    @Autowired
+    private UIVisionActivities uIVisionActivities;
+
     @Test
     public void testThatEveryThingStartWell() {
         assertThat(this.emailActivities).isNotNull();
@@ -58,5 +62,7 @@ public class StartupTest {
         assertThat(this.s3Activities).isNotNull();
 
         assertThat(this.kuFlowSyncActivities).isNotNull();
+
+        assertThat(this.uIVisionActivities).isNotNull();
     }
 }

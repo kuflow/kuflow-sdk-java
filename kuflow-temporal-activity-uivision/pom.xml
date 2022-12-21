@@ -34,66 +34,23 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>kuflow-spring-boot-autoconfigure</artifactId>
+  <artifactId>kuflow-temporal-activity-uivision</artifactId>
   <packaging>jar</packaging>
 
-  <name>KuFlow SDK :: Spring Boot Autoconfigure</name>
+  <name>KuFlow SDK :: Temporal :: Activity :: UiVision</name>
 
   <dependencies>
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-validation</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>com.kuflow</groupId>
-      <artifactId>kuflow-rest</artifactId>
-      <optional>true</optional>
+      <artifactId>kuflow-temporal-common</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.kuflow</groupId>
-      <artifactId>kuflow-temporal-activity-email</artifactId>
-      <optional>true</optional>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.kuflow</groupId>
-      <artifactId>kuflow-temporal-activity-kuflow</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>com.kuflow</groupId>
-      <artifactId>kuflow-temporal-activity-s3</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>com.kuflow</groupId>
-      <artifactId>kuflow-temporal-activity-uivision</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-mail</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-thymeleaf</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-configuration-processor</artifactId>
-      <optional>true</optional>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <scope>test</scope>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
     </dependency>
   </dependencies>
 
