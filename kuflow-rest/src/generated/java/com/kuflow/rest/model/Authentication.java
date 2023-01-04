@@ -107,4 +107,32 @@ public final class Authentication extends AbstractAudited {
     public OffsetDateTime getExpiredAt() {
         return this.expiredAt;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public Authentication setCreatedBy(UUID createdBy) {
+        super.setCreatedBy(createdBy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Authentication setCreatedAt(OffsetDateTime createdAt) {
+        super.setCreatedAt(createdAt);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Authentication setLastModifiedBy(UUID lastModifiedBy) {
+        super.setLastModifiedBy(lastModifiedBy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Authentication setLastModifiedAt(OffsetDateTime lastModifiedAt) {
+        super.setLastModifiedAt(lastModifiedAt);
+        return this;
+    }
 }

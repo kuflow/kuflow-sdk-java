@@ -55,6 +55,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -98,7 +99,7 @@ public final class Task extends AbstractAudited {
     /*
      * The logs property.
      */
-    @JsonProperty(value = "logs", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "logs")
     private List<Log> logs;
 
     /*
@@ -220,6 +221,17 @@ public final class Task extends AbstractAudited {
     }
 
     /**
+     * Set the logs property: The logs property.
+     *
+     * @param logs the logs value to set.
+     * @return the Task object itself.
+     */
+    public Task setLogs(List<Log> logs) {
+        this.logs = logs;
+        return this;
+    }
+
+    /**
      * Get the owner property: The owner property.
      *
      * @return the owner value.
@@ -236,6 +248,34 @@ public final class Task extends AbstractAudited {
      */
     public Task setOwner(Principal owner) {
         this.owner = owner;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Task setCreatedBy(UUID createdBy) {
+        super.setCreatedBy(createdBy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Task setCreatedAt(OffsetDateTime createdAt) {
+        super.setCreatedAt(createdAt);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Task setLastModifiedBy(UUID lastModifiedBy) {
+        super.setLastModifiedBy(lastModifiedBy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Task setLastModifiedAt(OffsetDateTime lastModifiedAt) {
+        super.setLastModifiedAt(lastModifiedAt);
         return this;
     }
 

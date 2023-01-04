@@ -41,6 +41,7 @@ import static com.kuflow.rest.util.ProcessHelper.setElementValueOfValidAt;
 import static com.kuflow.rest.util.ProcessHelper.setElementValuesOf;
 import static java.util.Collections.unmodifiableList;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kuflow.rest.KuFlowRestClientException;
 import com.kuflow.rest.model.ProcessElementValue;
 import com.kuflow.temporal.activity.kuflow.util.ProcessElementValueAccessorSaveProcessElementRequest;
@@ -120,6 +121,7 @@ public class SaveProcessElementRequest extends AbstractModel {
      *
      * @return TRUE if all related valid values are TRUE else FALSE.
      */
+    @JsonIgnore
     public Boolean getElementValueValid() {
         return getElementValueOfValid(ProcessElementValueAccessorSaveProcessElementRequest.of(this));
     }
@@ -130,6 +132,7 @@ public class SaveProcessElementRequest extends AbstractModel {
      * @param index Element value index
      * @return The requested valid value
      */
+    @JsonIgnore
     public Boolean getElementValueValidAt(int index) {
         return getElementValueOfValidAt(ProcessElementValueAccessorSaveProcessElementRequest.of(this), index);
     }
@@ -140,6 +143,7 @@ public class SaveProcessElementRequest extends AbstractModel {
      * @param valid Valid value
      * @return the Task object itself.
      */
+    @JsonIgnore
     public SaveProcessElementRequest setElementValueValid(Boolean valid) {
         setElementValueOfValid(ProcessElementValueAccessorSaveProcessElementRequest.of(this), valid);
 
@@ -153,6 +157,7 @@ public class SaveProcessElementRequest extends AbstractModel {
      * @param index Element value index
      * @return the Task object itself.
      */
+    @JsonIgnore
     public SaveProcessElementRequest setElementValueValidAt(Boolean valid, int index) {
         setElementValueOfValidAt(ProcessElementValueAccessorSaveProcessElementRequest.of(this), valid, index);
 
@@ -165,6 +170,7 @@ public class SaveProcessElementRequest extends AbstractModel {
      * @param elementValue Element value, if the value is null all current values are removed
      * @return the Task object itself.
      */
+    @JsonIgnore
     public SaveProcessElementRequest setElementValueAsString(String elementValue) {
         setElementValueOf(ProcessElementValueAccessorSaveProcessElementRequest.of(this), elementValue);
 
@@ -177,6 +183,7 @@ public class SaveProcessElementRequest extends AbstractModel {
      * @param elementValues Element values, if the values are null all current values are removed
      * @return the Task object itself.
      */
+    @JsonIgnore
     public SaveProcessElementRequest setElementValueAsStringList(List<String> elementValues) {
         setElementValuesOf(ProcessElementValueAccessorSaveProcessElementRequest.of(this), elementValues);
 
@@ -189,6 +196,7 @@ public class SaveProcessElementRequest extends AbstractModel {
      * @param elementValue Element value, if the values is null the value is not added
      * @return the Task object itself.
      */
+    @JsonIgnore
     public SaveProcessElementRequest addElementValueAsString(String elementValue) {
         addElementValueOf(ProcessElementValueAccessorSaveProcessElementRequest.of(this), elementValue);
 
@@ -201,6 +209,7 @@ public class SaveProcessElementRequest extends AbstractModel {
      * @param elementValues Element values
      * @return the Task object itself.
      */
+    @JsonIgnore
     public SaveProcessElementRequest addElementValueAsStringList(List<String> elementValues) {
         addElementValuesOf(ProcessElementValueAccessorSaveProcessElementRequest.of(this), elementValues);
 
@@ -213,6 +222,7 @@ public class SaveProcessElementRequest extends AbstractModel {
      * @return the element value.
      * @throws KuFlowRestClientException If element value doesn't exists
      */
+    @JsonIgnore
     public String getElementValueAsString() {
         return getElementValueOfAsString(ProcessElementValueAccessorSaveProcessElementRequest.of(this));
     }
@@ -222,6 +232,7 @@ public class SaveProcessElementRequest extends AbstractModel {
      *
      * @return the elements values.
      */
+    @JsonIgnore
     public List<String> getElementValueAsStringList() {
         return getElementValueOfAsStringList(ProcessElementValueAccessorSaveProcessElementRequest.of(this));
     }
@@ -231,6 +242,7 @@ public class SaveProcessElementRequest extends AbstractModel {
      *
      * @return the element value if exists.
      */
+    @JsonIgnore
     public Optional<String> findElementValueAsString() {
         return findElementValueOfAsString(ProcessElementValueAccessorSaveProcessElementRequest.of(this));
     }
@@ -241,6 +253,7 @@ public class SaveProcessElementRequest extends AbstractModel {
      * @param elementValue Element value, if the value is null all current values are removed
      * @return the Task object itself.
      */
+    @JsonIgnore
     public SaveProcessElementRequest setElementValueAsDouble(Double elementValue) {
         setElementValueOf(ProcessElementValueAccessorSaveProcessElementRequest.of(this), elementValue);
 
@@ -253,6 +266,7 @@ public class SaveProcessElementRequest extends AbstractModel {
      * @param elementValues Element values, if the values are null all current values are removed
      * @return the Task object itself.
      */
+    @JsonIgnore
     public SaveProcessElementRequest setElementValueAsDoubleList(List<Double> elementValues) {
         setElementValuesOf(ProcessElementValueAccessorSaveProcessElementRequest.of(this), elementValues);
 
@@ -265,6 +279,7 @@ public class SaveProcessElementRequest extends AbstractModel {
      * @param elementValue Element value, if the values is null the value is not added
      * @return the Task object itself.
      */
+    @JsonIgnore
     public SaveProcessElementRequest addElementValueAsDouble(Double elementValue) {
         addElementValueOf(ProcessElementValueAccessorSaveProcessElementRequest.of(this), elementValue);
 
@@ -277,6 +292,7 @@ public class SaveProcessElementRequest extends AbstractModel {
      * @param elementValues Element values
      * @return the Task object itself.
      */
+    @JsonIgnore
     public SaveProcessElementRequest addElementValueAsDoubleList(List<Double> elementValues) {
         addElementValuesOf(ProcessElementValueAccessorSaveProcessElementRequest.of(this), elementValues);
 
@@ -289,6 +305,7 @@ public class SaveProcessElementRequest extends AbstractModel {
      * @return the element value.
      * @throws KuFlowRestClientException If element value doesn't exists
      */
+    @JsonIgnore
     public Double getElementValueAsDouble() {
         return getElementValueOfAsDouble(ProcessElementValueAccessorSaveProcessElementRequest.of(this));
     }
@@ -298,6 +315,7 @@ public class SaveProcessElementRequest extends AbstractModel {
      *
      * @return the elements values.
      */
+    @JsonIgnore
     public List<Double> getElementValueAsDoubleList() {
         return getElementValueOfAsDoubleList(ProcessElementValueAccessorSaveProcessElementRequest.of(this));
     }
@@ -307,6 +325,7 @@ public class SaveProcessElementRequest extends AbstractModel {
      *
      * @return the element value if exists.
      */
+    @JsonIgnore
     public Optional<Double> findElementValueAsDouble() {
         return findElementValueOfAsDouble(ProcessElementValueAccessorSaveProcessElementRequest.of(this));
     }
@@ -317,6 +336,7 @@ public class SaveProcessElementRequest extends AbstractModel {
      * @param elementValue Element value, if the value is null all current values are removed
      * @return the Task object itself.
      */
+    @JsonIgnore
     public SaveProcessElementRequest setElementValueAsLocalDate(LocalDate elementValue) {
         setElementValueOf(ProcessElementValueAccessorSaveProcessElementRequest.of(this), elementValue);
 
@@ -329,6 +349,7 @@ public class SaveProcessElementRequest extends AbstractModel {
      * @param elementValues Element values, if the values are null all current values are removed
      * @return the Task object itself.
      */
+    @JsonIgnore
     public SaveProcessElementRequest setElementValueAsLocalDateList(List<LocalDate> elementValues) {
         setElementValuesOf(ProcessElementValueAccessorSaveProcessElementRequest.of(this), elementValues);
 
@@ -341,6 +362,7 @@ public class SaveProcessElementRequest extends AbstractModel {
      * @param elementValue Element value, if the values is null the value is not added
      * @return the Task object itself.
      */
+    @JsonIgnore
     public SaveProcessElementRequest addElementValueAsLocalDate(LocalDate elementValue) {
         addElementValueOf(ProcessElementValueAccessorSaveProcessElementRequest.of(this), elementValue);
 
@@ -353,6 +375,7 @@ public class SaveProcessElementRequest extends AbstractModel {
      * @param elementValues Element values
      * @return the Task object itself.
      */
+    @JsonIgnore
     public SaveProcessElementRequest addElementValueAsLocalDateList(List<LocalDate> elementValues) {
         addElementValuesOf(ProcessElementValueAccessorSaveProcessElementRequest.of(this), elementValues);
 
@@ -365,6 +388,7 @@ public class SaveProcessElementRequest extends AbstractModel {
      * @return the element value.
      * @throws KuFlowRestClientException If element value doesn't exists
      */
+    @JsonIgnore
     public LocalDate getElementValueAsLocalDate() {
         return getElementValueOfAsLocalDate(ProcessElementValueAccessorSaveProcessElementRequest.of(this));
     }
@@ -374,6 +398,7 @@ public class SaveProcessElementRequest extends AbstractModel {
      *
      * @return the elements values.
      */
+    @JsonIgnore
     public List<LocalDate> getElementValueAsLocalDateList() {
         return getElementValueOfAsLocalDateList(ProcessElementValueAccessorSaveProcessElementRequest.of(this));
     }
@@ -383,6 +408,7 @@ public class SaveProcessElementRequest extends AbstractModel {
      *
      * @return the element value if exists.
      */
+    @JsonIgnore
     public Optional<LocalDate> findElementValueAsLocalDate() {
         return findElementValueOfAsLocalDate(ProcessElementValueAccessorSaveProcessElementRequest.of(this));
     }

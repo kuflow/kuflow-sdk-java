@@ -39,7 +39,7 @@ public final class Log {
     /*
      * When this model was created.
      */
-    @JsonProperty(value = "createdAt", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "createdAt")
     private OffsetDateTime createdAt;
 
     /*
@@ -84,6 +84,17 @@ public final class Log {
      */
     public OffsetDateTime getCreatedAt() {
         return this.createdAt;
+    }
+
+    /**
+     * Set the createdAt property: When this model was created.
+     *
+     * @param createdAt the createdAt value to set.
+     * @return the Log object itself.
+     */
+    public Log setCreatedAt(OffsetDateTime createdAt) {
+        this.createdAt = createdAt;
+        return this;
     }
 
     /**
