@@ -61,7 +61,7 @@ public class FindTaskRequestModel extends AbstractModel {
         this.size = size;
     }
 
-    public List<String> getSort() {
+    public List<String> getSorts() {
         return unmodifiableList(this.sorts);
     }
 

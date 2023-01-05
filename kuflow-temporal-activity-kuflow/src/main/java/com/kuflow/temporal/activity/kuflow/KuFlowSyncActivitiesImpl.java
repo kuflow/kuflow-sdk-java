@@ -247,7 +247,7 @@ public class KuFlowSyncActivitiesImpl implements KuFlowSyncActivities {
             FindTasksOptions options = new FindTasksOptions()
                 .setSize(request.getSize())
                 .setPage(request.getPage())
-                .setSorts(request.getSort())
+                .setSorts(request.getSorts())
                 .setProcessIds(request.getProcessIds())
                 .setStates(request.getStates())
                 .setTaskDefinitionCodes(request.getTaskDefinitionCodes());
