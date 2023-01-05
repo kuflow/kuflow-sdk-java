@@ -50,7 +50,7 @@ public final class TaskDefinitionSummary {
     /*
      * The name property.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "name")
     private String name;
 
     /** Creates an instance of TaskDefinitionSummary class. */
@@ -123,5 +123,16 @@ public final class TaskDefinitionSummary {
      */
     public String getName() {
         return this.name;
+    }
+
+    /**
+     * Set the name property: The name property.
+     *
+     * @param name the name value to set.
+     * @return the TaskDefinitionSummary object itself.
+     */
+    public TaskDefinitionSummary setName(String name) {
+        this.name = name;
+        return this;
     }
 }

@@ -46,6 +46,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -212,6 +213,34 @@ public final class Process extends AbstractAudited {
      */
     public Process setInitiator(Principal initiator) {
         this.initiator = initiator;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Process setCreatedBy(UUID createdBy) {
+        super.setCreatedBy(createdBy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Process setCreatedAt(OffsetDateTime createdAt) {
+        super.setCreatedAt(createdAt);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Process setLastModifiedBy(UUID lastModifiedBy) {
+        super.setLastModifiedBy(lastModifiedBy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Process setLastModifiedAt(OffsetDateTime lastModifiedAt) {
+        super.setLastModifiedAt(lastModifiedAt);
         return this;
     }
 

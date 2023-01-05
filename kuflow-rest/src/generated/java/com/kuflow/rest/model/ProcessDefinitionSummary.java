@@ -44,7 +44,7 @@ public final class ProcessDefinitionSummary {
     /*
      * The name property.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "name")
     private String name;
 
     /** Creates an instance of ProcessDefinitionSummary class. */
@@ -97,5 +97,16 @@ public final class ProcessDefinitionSummary {
      */
     public String getName() {
         return this.name;
+    }
+
+    /**
+     * Set the name property: The name property.
+     *
+     * @param name the name value to set.
+     * @return the ProcessDefinitionSummary object itself.
+     */
+    public ProcessDefinitionSummary setName(String name) {
+        this.name = name;
+        return this;
     }
 }

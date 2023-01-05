@@ -22,7 +22,7 @@
  */
 package com.kuflow.rest.model;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -42,30 +42,30 @@ import java.util.UUID;
     @JsonSubTypes.Type(name = "PROCESS", value = Process.class),
     @JsonSubTypes.Type(name = "TASK", value = Task.class)
 })
-@Immutable
+@Fluent
 public class AbstractAudited {
     /*
      * Who create this model.
      */
-    @JsonProperty(value = "createdBy", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "createdBy")
     private UUID createdBy;
 
     /*
      * When this model was created.
      */
-    @JsonProperty(value = "createdAt", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "createdAt")
     private OffsetDateTime createdAt;
 
     /*
      * Who was last update this model.
      */
-    @JsonProperty(value = "lastModifiedBy", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "lastModifiedBy")
     private UUID lastModifiedBy;
 
     /*
      * When this model type was last updated.
      */
-    @JsonProperty(value = "lastModifiedAt", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "lastModifiedAt")
     private OffsetDateTime lastModifiedAt;
 
     /** Creates an instance of AbstractAudited class. */
@@ -81,12 +81,34 @@ public class AbstractAudited {
     }
 
     /**
+     * Set the createdBy property: Who create this model.
+     *
+     * @param createdBy the createdBy value to set.
+     * @return the AbstractAudited object itself.
+     */
+    public AbstractAudited setCreatedBy(UUID createdBy) {
+        this.createdBy = createdBy;
+        return this;
+    }
+
+    /**
      * Get the createdAt property: When this model was created.
      *
      * @return the createdAt value.
      */
     public OffsetDateTime getCreatedAt() {
         return this.createdAt;
+    }
+
+    /**
+     * Set the createdAt property: When this model was created.
+     *
+     * @param createdAt the createdAt value to set.
+     * @return the AbstractAudited object itself.
+     */
+    public AbstractAudited setCreatedAt(OffsetDateTime createdAt) {
+        this.createdAt = createdAt;
+        return this;
     }
 
     /**
@@ -99,11 +121,33 @@ public class AbstractAudited {
     }
 
     /**
+     * Set the lastModifiedBy property: Who was last update this model.
+     *
+     * @param lastModifiedBy the lastModifiedBy value to set.
+     * @return the AbstractAudited object itself.
+     */
+    public AbstractAudited setLastModifiedBy(UUID lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+        return this;
+    }
+
+    /**
      * Get the lastModifiedAt property: When this model type was last updated.
      *
      * @return the lastModifiedAt value.
      */
     public OffsetDateTime getLastModifiedAt() {
         return this.lastModifiedAt;
+    }
+
+    /**
+     * Set the lastModifiedAt property: When this model type was last updated.
+     *
+     * @param lastModifiedAt the lastModifiedAt value to set.
+     * @return the AbstractAudited object itself.
+     */
+    public AbstractAudited setLastModifiedAt(OffsetDateTime lastModifiedAt) {
+        this.lastModifiedAt = lastModifiedAt;
+        return this;
     }
 }
