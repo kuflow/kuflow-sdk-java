@@ -7,7 +7,7 @@
     "totalPages": 1
   },
   "content": [{
-    "objectType": "PROCESS",
+    "objectType": "PROCESS_PAGE_ITEM",
     "id": "80d8c9a1-e3d2-4c35-a0a9-77ec21d28950",
     "subject": "Subject 1",
     "state": "RUNNING",
@@ -46,7 +46,7 @@
       }
     }
   }, {
-    "objectType": "PROCESS",
+    "objectType": "PROCESS_PAGE_ITEM",
     "id": "c98dcbf3-2d64-475f-a6f2-bcc7b5c1a524",
     "subject": "Subject 2",
     "state": "COMPLETED",

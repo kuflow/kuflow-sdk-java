@@ -239,6 +239,7 @@
                 <header>com/mycila/maven/plugin/license/templates/MIT.txt</header>
                 <excludes>
                   <exclude>**/README</exclude>
+                  <exclude>**/fix-discriminators.js</exclude>
                   <exclude>src/test/resources/**</exclude>
                   <exclude>src/main/resources/**</exclude>
                 </excludes>

@@ -37,7 +37,7 @@ public final class TaskPage extends Page {
      * The content property.
      */
     @JsonProperty(value = "content", required = true)
-    private List<Task> content;
+    private List<TaskPageItem> content;
 
     /** Creates an instance of TaskPage class. */
     public TaskPage() {}
@@ -47,7 +47,7 @@ public final class TaskPage extends Page {
      *
      * @return the content value.
      */
-    public List<Task> getContent() {
+    public List<TaskPageItem> getContent() {
         return this.content;
     }
 
@@ -57,7 +57,7 @@ public final class TaskPage extends Page {
      * @param content the content value to set.
      * @return the TaskPage object itself.
      */
-    public TaskPage setContent(List<Task> content) {
+    public TaskPage setContent(List<TaskPageItem> content) {
         this.content = content;
         return this;
     }
