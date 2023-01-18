@@ -12,7 +12,7 @@ function removeUnnecessaryUnionOptions() {
     let fileAsStr = fileData.toString('utf8')
 
     fileAsStr = fileAsStr.replace(/name = "Process"/, 'name = "PROCESS"')
-    fileAsStr = fileAsStr.replace(/name = "Process"/, 'name = "PROCESS"')
+    fileAsStr = fileAsStr.replace(/name = "Task"/, 'name = "TASK"')
     fileAsStr = fileAsStr.replace(/name = "Authentication"/, 'name = "AUTHENTICATION"')
 
     fs.writeFileSync(file, fileAsStr, 'utf8')

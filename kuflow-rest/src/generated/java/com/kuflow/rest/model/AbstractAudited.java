@@ -42,7 +42,7 @@ import java.util.UUID;
     @JsonSubTypes.Type(name = "PROCESS_PAGE_ITEM", value = ProcessPageItem.class),
     @JsonSubTypes.Type(name = "PROCESS", value = Process.class),
     @JsonSubTypes.Type(name = "TASK_PAGE_ITEM", value = TaskPageItem.class),
-    @JsonSubTypes.Type(name = "Task", value = Task.class)
+    @JsonSubTypes.Type(name = "TASK", value = Task.class)
 })
 @Fluent
 public class AbstractAudited {
