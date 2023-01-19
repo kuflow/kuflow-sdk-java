@@ -7,7 +7,7 @@
     "totalPages": 1
   },
   "content": [{
-    "objectType": "TASK",
+    "objectType": "TASK_PAGE_ITEM",
     "id": "e2d0fdf9-0aae-4eed-9e07-8e4b76df733c",
     "state": "CLAIMED",
     "taskDefinition": {
@@ -17,7 +17,7 @@
       "name": "Task 001 Definition"
     }
   }, {
-    "objectType": "TASK",
+    "objectType": "TASK_PAGE_ITEM",
     "id": "0d7eb24e-f574-40a3-9a17-6b984e97e04a",
     "state": "READY",
     "taskDefinition": {

@@ -3,18 +3,19 @@
   "version": "0.0.1",
   "private": true,
   "devDependencies": {
-    "autorest": "3.6.2",
+    "autorest": "3.6.3",
     "shx": "0.3.4"
   },
   "scripts": {
     "autorest": "autorest",
-    "generate": "npm run generate:autorest && npm run generate:move && npm run generate:prettier && npm run generate:license",
+    "generate": "npm run generate:autorest && npm run generate:move && npm run generate:workaround && npm run generate:prettier && npm run generate:license",
     "generate:autorest": "autorest --version=3.9.3 readme.md",
     "generate:move": "npm run generate:move:mkdir && npm run generate:move:cp && npm run generate:move:rm",
     "generate:move:mkdir": "shx mkdir -p ../src/generated/",
     "generate:move:cp": "shx cp -r ../target/openapi-generated/src/main/java/* ../src/generated/java/",
     "generate:move:rm": "shx rm -rf ../target/openapi-generated",
     "generate:prettier": "cd .. && mvn prettier:write",
-    "generate:license": "cd .. && mvn license:format"
+    "generate:license": "cd .. && mvn license:format",
+    "generate:workaround": "scripts/fix-discriminators.js"
   }
 }

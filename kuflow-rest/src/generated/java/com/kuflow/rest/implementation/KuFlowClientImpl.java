@@ -68,18 +68,6 @@ public final class KuFlowClientImpl {
         return this.serializerAdapter;
     }
 
-    /** The EchoOperationsImpl object to access its operations. */
-    private final EchoOperationsImpl echoOperations;
-
-    /**
-     * Gets the EchoOperationsImpl object to access its operations.
-     *
-     * @return the EchoOperationsImpl object.
-     */
-    public EchoOperationsImpl getEchoOperations() {
-        return this.echoOperations;
-    }
-
     /** The AuthenticationOperationsImpl object to access its operations. */
     private final AuthenticationOperationsImpl authenticationOperations;
 
@@ -163,7 +151,6 @@ public final class KuFlowClientImpl {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.host = host;
-        this.echoOperations = new EchoOperationsImpl(this);
         this.authenticationOperations = new AuthenticationOperationsImpl(this);
         this.principalOperations = new PrincipalOperationsImpl(this);
         this.processOperations = new ProcessOperationsImpl(this);

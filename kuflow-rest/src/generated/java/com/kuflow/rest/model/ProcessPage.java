@@ -37,7 +37,7 @@ public final class ProcessPage extends Page {
      * The content property.
      */
     @JsonProperty(value = "content", required = true)
-    private List<Process> content;
+    private List<ProcessPageItem> content;
 
     /** Creates an instance of ProcessPage class. */
     public ProcessPage() {}
@@ -47,7 +47,7 @@ public final class ProcessPage extends Page {
      *
      * @return the content value.
      */
-    public List<Process> getContent() {
+    public List<ProcessPageItem> getContent() {
         return this.content;
     }
 
@@ -57,7 +57,7 @@ public final class ProcessPage extends Page {
      * @param content the content value to set.
      * @return the ProcessPage object itself.
      */
-    public ProcessPage setContent(List<Process> content) {
+    public ProcessPage setContent(List<ProcessPageItem> content) {
         this.content = content;
         return this;
     }

@@ -39,7 +39,9 @@ import java.util.UUID;
 @JsonTypeName("AbstractAudited")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AUTHENTICATION", value = Authentication.class),
+    @JsonSubTypes.Type(name = "PROCESS_PAGE_ITEM", value = ProcessPageItem.class),
     @JsonSubTypes.Type(name = "PROCESS", value = Process.class),
+    @JsonSubTypes.Type(name = "TASK_PAGE_ITEM", value = TaskPageItem.class),
     @JsonSubTypes.Type(name = "TASK", value = Task.class)
 })
 @Fluent

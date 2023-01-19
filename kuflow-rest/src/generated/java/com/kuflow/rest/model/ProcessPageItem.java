@@ -22,7 +22,7 @@
  */
 package com.kuflow.rest.model;
 
-import static com.kuflow.rest.util.ProcessElementValueAccessorProcess.of;
+import static com.kuflow.rest.util.ProcessElementValueAccessorProcessPageItem.of;
 import static com.kuflow.rest.util.ProcessHelper.addElementValueOf;
 import static com.kuflow.rest.util.ProcessHelper.addElementValuesOf;
 import static com.kuflow.rest.util.ProcessHelper.findElementValueOfAsDouble;
@@ -52,11 +52,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-/** The Process model. */
+/** The ProcessPageItem model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("PROCESS")
+@JsonTypeName("PROCESS_PAGE_ITEM")
 @Fluent
-public final class Process extends AbstractAudited {
+public final class ProcessPageItem extends AbstractAudited {
     /*
      * Process ID.
      */
@@ -93,14 +93,8 @@ public final class Process extends AbstractAudited {
     @JsonProperty(value = "initiator")
     private Principal initiator;
 
-    /*
-     * The relatedProcess property.
-     */
-    @JsonProperty(value = "relatedProcess")
-    private RelatedProcess relatedProcess;
-
-    /** Creates an instance of Process class. */
-    public Process() {}
+    /** Creates an instance of ProcessPageItem class. */
+    public ProcessPageItem() {}
 
     /**
      * Get the id property: Process ID.
@@ -115,9 +109,9 @@ public final class Process extends AbstractAudited {
      * Set the id property: Process ID.
      *
      * @param id the id value to set.
-     * @return the Process object itself.
+     * @return the ProcessPageItem object itself.
      */
-    public Process setId(UUID id) {
+    public ProcessPageItem setId(UUID id) {
         this.id = id;
         return this;
     }
@@ -135,9 +129,9 @@ public final class Process extends AbstractAudited {
      * Set the subject property: Process subject.
      *
      * @param subject the subject value to set.
-     * @return the Process object itself.
+     * @return the ProcessPageItem object itself.
      */
-    public Process setSubject(String subject) {
+    public ProcessPageItem setSubject(String subject) {
         this.subject = subject;
         return this;
     }
@@ -155,9 +149,9 @@ public final class Process extends AbstractAudited {
      * Set the state property: Process state.
      *
      * @param state the state value to set.
-     * @return the Process object itself.
+     * @return the ProcessPageItem object itself.
      */
-    public Process setState(ProcessState state) {
+    public ProcessPageItem setState(ProcessState state) {
         this.state = state;
         return this;
     }
@@ -175,9 +169,9 @@ public final class Process extends AbstractAudited {
      * Set the processDefinition property: The processDefinition property.
      *
      * @param processDefinition the processDefinition value to set.
-     * @return the Process object itself.
+     * @return the ProcessPageItem object itself.
      */
-    public Process setProcessDefinition(ProcessDefinitionSummary processDefinition) {
+    public ProcessPageItem setProcessDefinition(ProcessDefinitionSummary processDefinition) {
         this.processDefinition = processDefinition;
         return this;
     }
@@ -195,9 +189,9 @@ public final class Process extends AbstractAudited {
      * Set the elementValues property: Process element values, an ElementValueDocument is not allowed.
      *
      * @param elementValues the elementValues value to set.
-     * @return the Process object itself.
+     * @return the ProcessPageItem object itself.
      */
-    public Process setElementValues(Map<String, List<ProcessElementValue>> elementValues) {
+    public ProcessPageItem setElementValues(Map<String, List<ProcessElementValue>> elementValues) {
         this.elementValues = elementValues;
         return this;
     }
@@ -215,57 +209,37 @@ public final class Process extends AbstractAudited {
      * Set the initiator property: The initiator property.
      *
      * @param initiator the initiator value to set.
-     * @return the Process object itself.
+     * @return the ProcessPageItem object itself.
      */
-    public Process setInitiator(Principal initiator) {
+    public ProcessPageItem setInitiator(Principal initiator) {
         this.initiator = initiator;
-        return this;
-    }
-
-    /**
-     * Get the relatedProcess property: The relatedProcess property.
-     *
-     * @return the relatedProcess value.
-     */
-    public RelatedProcess getRelatedProcess() {
-        return this.relatedProcess;
-    }
-
-    /**
-     * Set the relatedProcess property: The relatedProcess property.
-     *
-     * @param relatedProcess the relatedProcess value to set.
-     * @return the Process object itself.
-     */
-    public Process setRelatedProcess(RelatedProcess relatedProcess) {
-        this.relatedProcess = relatedProcess;
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public Process setCreatedBy(UUID createdBy) {
+    public ProcessPageItem setCreatedBy(UUID createdBy) {
         super.setCreatedBy(createdBy);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public Process setCreatedAt(OffsetDateTime createdAt) {
+    public ProcessPageItem setCreatedAt(OffsetDateTime createdAt) {
         super.setCreatedAt(createdAt);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public Process setLastModifiedBy(UUID lastModifiedBy) {
+    public ProcessPageItem setLastModifiedBy(UUID lastModifiedBy) {
         super.setLastModifiedBy(lastModifiedBy);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public Process setLastModifiedAt(OffsetDateTime lastModifiedAt) {
+    public ProcessPageItem setLastModifiedAt(OffsetDateTime lastModifiedAt) {
         super.setLastModifiedAt(lastModifiedAt);
         return this;
     }
@@ -298,7 +272,7 @@ public final class Process extends AbstractAudited {
      * @param valid Valid value
      * @return the Task object itself.
      */
-    public Process setElementValueValid(String elementDefinitionCode, Boolean valid) {
+    public ProcessPageItem setElementValueValid(String elementDefinitionCode, Boolean valid) {
         setElementValueOfValid(of(this, elementDefinitionCode), valid);
 
         return this;
@@ -312,7 +286,7 @@ public final class Process extends AbstractAudited {
      * @param index Element value index
      * @return the Task object itself.
      */
-    public Process setElementValueValidAt(String elementDefinitionCode, Boolean valid, int index) {
+    public ProcessPageItem setElementValueValidAt(String elementDefinitionCode, Boolean valid, int index) {
         setElementValueOfValidAt(of(this, elementDefinitionCode), valid, index);
 
         return this;
@@ -325,7 +299,7 @@ public final class Process extends AbstractAudited {
      * @param elementValue Element value, if the value is null all current values are removed
      * @return the Task object itself.
      */
-    public Process setElementValueAsString(String elementDefinitionCode, String elementValue) {
+    public ProcessPageItem setElementValueAsString(String elementDefinitionCode, String elementValue) {
         setElementValueOf(of(this, elementDefinitionCode), elementValue);
 
         return this;
@@ -338,7 +312,7 @@ public final class Process extends AbstractAudited {
      * @param elementValues Element values, if the values are null all current values are removed
      * @return the Task object itself.
      */
-    public Process setElementValueAsStringList(String elementDefinitionCode, List<String> elementValues) {
+    public ProcessPageItem setElementValueAsStringList(String elementDefinitionCode, List<String> elementValues) {
         setElementValuesOf(of(this, elementDefinitionCode), elementValues);
 
         return this;
@@ -351,7 +325,7 @@ public final class Process extends AbstractAudited {
      * @param elementValue Element value, if the values is null the value is not added
      * @return the Task object itself.
      */
-    public Process addElementValueAsString(String elementDefinitionCode, String elementValue) {
+    public ProcessPageItem addElementValueAsString(String elementDefinitionCode, String elementValue) {
         addElementValueOf(of(this, elementDefinitionCode), elementValue);
 
         return this;
@@ -364,7 +338,7 @@ public final class Process extends AbstractAudited {
      * @param elementValues Element values
      * @return the Task object itself.
      */
-    public Process addElementValueAsStringList(String elementDefinitionCode, List<String> elementValues) {
+    public ProcessPageItem addElementValueAsStringList(String elementDefinitionCode, List<String> elementValues) {
         addElementValuesOf(of(this, elementDefinitionCode), elementValues);
 
         return this;
@@ -408,7 +382,7 @@ public final class Process extends AbstractAudited {
      * @param elementValue Element value, if the value is null all current values are removed
      * @return the Task object itself.
      */
-    public Process setElementValueAsDouble(String elementDefinitionCode, Double elementValue) {
+    public ProcessPageItem setElementValueAsDouble(String elementDefinitionCode, Double elementValue) {
         setElementValueOf(of(this, elementDefinitionCode), elementValue);
 
         return this;
@@ -421,7 +395,7 @@ public final class Process extends AbstractAudited {
      * @param elementValues Element values, if the values are null all current values are removed
      * @return the Task object itself.
      */
-    public Process setElementValueAsDoubleList(String elementDefinitionCode, List<Double> elementValues) {
+    public ProcessPageItem setElementValueAsDoubleList(String elementDefinitionCode, List<Double> elementValues) {
         setElementValuesOf(of(this, elementDefinitionCode), elementValues);
 
         return this;
@@ -434,7 +408,7 @@ public final class Process extends AbstractAudited {
      * @param elementValue Element value, if the values is null the value is not added
      * @return the Task object itself.
      */
-    public Process addElementValueAsDouble(String elementDefinitionCode, Double elementValue) {
+    public ProcessPageItem addElementValueAsDouble(String elementDefinitionCode, Double elementValue) {
         addElementValueOf(of(this, elementDefinitionCode), elementValue);
 
         return this;
@@ -447,7 +421,7 @@ public final class Process extends AbstractAudited {
      * @param elementValues Element values
      * @return the Task object itself.
      */
-    public Process addElementValueAsDoubleList(String elementDefinitionCode, List<Double> elementValues) {
+    public ProcessPageItem addElementValueAsDoubleList(String elementDefinitionCode, List<Double> elementValues) {
         addElementValuesOf(of(this, elementDefinitionCode), elementValues);
 
         return this;
@@ -491,7 +465,7 @@ public final class Process extends AbstractAudited {
      * @param elementValue Element value, if the value is null all current values are removed
      * @return the Task object itself.
      */
-    public Process setElementValueAsLocalDate(String elementDefinitionCode, LocalDate elementValue) {
+    public ProcessPageItem setElementValueAsLocalDate(String elementDefinitionCode, LocalDate elementValue) {
         setElementValueOf(of(this, elementDefinitionCode), elementValue);
 
         return this;
@@ -504,7 +478,7 @@ public final class Process extends AbstractAudited {
      * @param elementValues Element values, if the values are null all current values are removed
      * @return the Task object itself.
      */
-    public Process setElementValueAsLocalDateList(String elementDefinitionCode, List<LocalDate> elementValues) {
+    public ProcessPageItem setElementValueAsLocalDateList(String elementDefinitionCode, List<LocalDate> elementValues) {
         setElementValuesOf(of(this, elementDefinitionCode), elementValues);
 
         return this;
@@ -517,7 +491,7 @@ public final class Process extends AbstractAudited {
      * @param elementValue Element value, if the values is null the value is not added
      * @return the Task object itself.
      */
-    public Process addElementValueAsLocalDate(String elementDefinitionCode, LocalDate elementValue) {
+    public ProcessPageItem addElementValueAsLocalDate(String elementDefinitionCode, LocalDate elementValue) {
         addElementValueOf(of(this, elementDefinitionCode), elementValue);
 
         return this;
@@ -530,7 +504,7 @@ public final class Process extends AbstractAudited {
      * @param elementValues Element values
      * @return the Task object itself.
      */
-    public Process addElementValueAsLocalDateList(String elementDefinitionCode, List<LocalDate> elementValues) {
+    public ProcessPageItem addElementValueAsLocalDateList(String elementDefinitionCode, List<LocalDate> elementValues) {
         addElementValuesOf(of(this, elementDefinitionCode), elementValues);
 
         return this;

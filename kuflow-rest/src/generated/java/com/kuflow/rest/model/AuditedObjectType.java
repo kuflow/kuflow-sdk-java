@@ -30,8 +30,14 @@ public enum AuditedObjectType {
     /** Enum value PROCESS. */
     PROCESS("PROCESS"),
 
+    /** Enum value PROCESS_PAGE_ITEM. */
+    PROCESS_PAGE_ITEM("PROCESS_PAGE_ITEM"),
+
     /** Enum value TASK. */
     TASK("TASK"),
+
+    /** Enum value TASK_PAGE_ITEM. */
+    TASK_PAGE_ITEM("TASK_PAGE_ITEM"),
 
     /** Enum value AUTHENTICATION. */
     AUTHENTICATION("AUTHENTICATION");
