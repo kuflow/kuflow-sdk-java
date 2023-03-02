@@ -166,7 +166,7 @@ public class KuFlowActivitiesValidation {
 
     public static void validateAppendTaskLogRequest(AppendTaskLogRequest request) {
         if (request.getTaskId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("'processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+            throw ApplicationFailure.newNonRetryableFailure("'taskId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
         if (request.getLog().getLevel() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'log.level' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
