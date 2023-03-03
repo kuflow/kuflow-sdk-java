@@ -23,7 +23,7 @@
     THE SOFTWARE.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                              https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" child.project.url.inherit.append.path="false" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
@@ -131,7 +131,6 @@
         <artifactId>kuflow-temporal-activity-uivision</artifactId>
         <version>${project.version}</version>
       </dependency>
-
 
       <dependency>
         <groupId>com.kuflow</groupId>
@@ -285,8 +284,9 @@
           <updatePomFile>true</updatePomFile>
           <flattenMode>ossrh</flattenMode>
           <pomElements>
-            <organization/>
-            <issueManagement/>
+            <organization>expand</organization>
+            <issueManagement>expand</issueManagement>
+            <repositories>remove</repositories>
           </pomElements>
         </configuration>
         <executions>
@@ -344,7 +344,7 @@
     </developer>
   </developers>
 
-  <scm>
+  <scm child.scm.connection.inherit.append.path="false" child.scm.developerConnection.inherit.append.path="false" child.scm.url.inherit.append.path="false">
     <connection>scm:git:git@github.com:kuflow/kuflow-sdk-java.git</connection>
     <developerConnection>scm:git:git@github.com:kuflow/kuflow-sdk-java.git</developerConnection>
     <url>https://github.com/kuflow/kuflow-sdk-java</url>
