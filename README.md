@@ -1,5 +1,5 @@
 [![GitHub](https://img.shields.io/github/license/kuflow/kuflow-sdk-java?label=License)](https://github.com/kuflow/kuflow-sdk-java/blob/master/LICENSE)
-[![Maven Central](https://img.shields.io/maven-central/v/com.kuflow/kuflow-sdk?label=Maven%20Central)](https://search.maven.org/search?q=g:com.kuflow)
+[![Maven Central](https://img.shields.io/maven-central/v/com.kuflow/kuflow-sdk?label=Maven%20Central)](https://central.sonatype.com/namespace/com.kuflow)
 
 # KuFlow SDK for Java
 
