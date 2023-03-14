@@ -70,7 +70,7 @@
     <license-maven-plugin.version>4.1</license-maven-plugin.version>
 
     <!-- Spring dependencies -->
-    <spring-boot.version>2.7.6</spring-boot.version>
+    <spring-boot.version>2.7.9</spring-boot.version>
 
     <!-- Application dependencies -->
     <temporal-sdk.version>1.17.0</temporal-sdk.version>

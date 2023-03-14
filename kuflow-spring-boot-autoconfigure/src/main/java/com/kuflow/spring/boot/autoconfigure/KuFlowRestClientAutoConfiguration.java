@@ -44,11 +44,11 @@ public class KuFlowRestClientAutoConfiguration {
     public KuFlowRestClient kuFlowRestClient(KuFlowRestClientProperties kuFlowRestClientProperties) {
         KuFlowRestClientBuilder builder = new KuFlowRestClientBuilder()
             .clientId(kuFlowRestClientProperties.getClientId())
-            .clientSecret(kuFlowRestClientProperties.getClientSecret())
-            .allowInsecureConnection(kuFlowRestClientProperties.getEndpoint().startsWith("http://"));
+            .clientSecret(kuFlowRestClientProperties.getClientSecret());
 
         if (kuFlowRestClientProperties.getEndpoint() != null) {
             builder.endpoint(kuFlowRestClientProperties.getEndpoint());
+            builder.allowInsecureConnection(kuFlowRestClientProperties.getEndpoint().startsWith("http://"));
         }
 
         if (kuFlowRestClientProperties.getLoggerLevel() != null) {
