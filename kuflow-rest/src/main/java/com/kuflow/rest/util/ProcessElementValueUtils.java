@@ -36,10 +36,17 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-public class ProcessHelper {
+/**
+ * Utility class for {@link ProcessElementValue}
+ */
+public final class ProcessElementValueUtils {
 
-    public static Boolean getElementValueOfValid(ProcessElementValueAccessor processElementValueAccessor) {
-        List<ProcessElementValue> elementValues = getElementValuesOf(processElementValueAccessor);
+    private ProcessElementValueUtils() {
+        throw new RuntimeException("Utility class");
+    }
+
+    public static Boolean getElementValueValid(ProcessElementValueAccessor processElementValueAccessor) {
+        List<ProcessElementValue> elementValues = getElementValues(processElementValueAccessor);
         if (elementValues.isEmpty()) {
             return null;
         }
@@ -47,32 +54,32 @@ public class ProcessHelper {
         return elementValues.stream().filter(v -> Boolean.FALSE.equals(v.isValid())).findAny().isEmpty();
     }
 
-    public static Boolean getElementValueOfValidAt(ProcessElementValueAccessor processElementValueAccessor, int index) {
-        List<ProcessElementValue> elementValues = getElementValuesOf(processElementValueAccessor);
+    public static Boolean getElementValueValidAt(ProcessElementValueAccessor processElementValueAccessor, int index) {
+        List<ProcessElementValue> elementValues = getElementValues(processElementValueAccessor);
 
         return elementValues.get(index).isValid();
     }
 
-    public static void setElementValueOfValid(ProcessElementValueAccessor processElementValueAccessor, Boolean valid) {
-        List<ProcessElementValue> elementValues = getElementValuesOf(processElementValueAccessor);
+    public static void setElementValueValid(ProcessElementValueAccessor processElementValueAccessor, Boolean valid) {
+        List<ProcessElementValue> elementValues = getElementValues(processElementValueAccessor);
         elementValues.forEach(it -> it.setValid(valid));
     }
 
-    public static void setElementValueOfValidAt(ProcessElementValueAccessor processElementValueAccessor, Boolean valid, int index) {
-        List<ProcessElementValue> elementValues = getElementValuesOf(processElementValueAccessor);
+    public static void setElementValueValidAt(ProcessElementValueAccessor processElementValueAccessor, Boolean valid, int index) {
+        List<ProcessElementValue> elementValues = getElementValues(processElementValueAccessor);
         elementValues.get(index).setValid(valid);
     }
 
-    public static void addElementValueOf(ProcessElementValueAccessor processElementValueAccessor, Object elementValue) {
+    public static void addElementValue(ProcessElementValueAccessor processElementValueAccessor, Object elementValue) {
         List<Object> elementValueList = new LinkedList<>();
         if (elementValue != null) {
             elementValueList.add(elementValue);
         }
 
-        addElementValuesOf(processElementValueAccessor, elementValueList);
+        addElementValues(processElementValueAccessor, elementValueList);
     }
 
-    public static void addElementValuesOf(ProcessElementValueAccessor processElementValueAccessor, List<?> elementValues) {
+    public static void addElementValues(ProcessElementValueAccessor processElementValueAccessor, List<?> elementValues) {
         List<Object> elementValueList = new LinkedList<>();
         if (elementValues != null) {
             elementValueList.addAll(elementValues);
@@ -80,7 +87,7 @@ public class ProcessHelper {
 
         List<ProcessElementValue> processElementValues = elementValueList
             .stream()
-            .map(ProcessHelper::toProcessElementValue)
+            .map(ProcessElementValueUtils::toProcessElementValue)
             .collect(toList());
 
         List<ProcessElementValue> taskElementValueList = processElementValueAccessor.getElementValues();
@@ -93,21 +100,24 @@ public class ProcessHelper {
         processElementValueAccessor.setElementValues(taskElementValueList);
     }
 
-    public static void setElementValueOf(ProcessElementValueAccessor processElementValueAccessor, Object elementValue) {
+    public static void setElementValue(ProcessElementValueAccessor processElementValueAccessor, Object elementValue) {
         List<Object> valueList = new LinkedList<>();
         if (elementValue != null) {
             valueList.add(elementValue);
         }
 
-        setElementValuesOf(processElementValueAccessor, valueList);
+        setElementValues(processElementValueAccessor, valueList);
     }
 
-    public static void setElementValuesOf(ProcessElementValueAccessor processElementValueAccessor, List<?> elementValues) {
+    public static void setElementValues(ProcessElementValueAccessor processElementValueAccessor, List<?> elementValues) {
         if (elementValues == null) {
             elementValues = new LinkedList<>();
         }
 
-        List<ProcessElementValue> processElementValues = elementValues.stream().map(ProcessHelper::toProcessElementValue).collect(toList());
+        List<ProcessElementValue> processElementValues = elementValues
+            .stream()
+            .map(ProcessElementValueUtils::toProcessElementValue)
+            .collect(toList());
 
         processElementValueAccessor.setElementValues(processElementValues);
     }
@@ -132,24 +142,24 @@ public class ProcessHelper {
         return new ProcessElementValueNumber().setValue(value);
     }
 
-    public static String getElementValueOfAsString(ProcessElementValueAccessor processElementValueAccessor) {
-        return findElementValueOfAsString(processElementValueAccessor)
+    public static String getElementValueAsString(ProcessElementValueAccessor processElementValueAccessor) {
+        return findElementValueAsString(processElementValueAccessor)
             .orElseThrow(() -> new KuFlowRestClientException("Element value doesn't exist"));
     }
 
-    public static Optional<String> findElementValueOfAsString(ProcessElementValueAccessor processElementValueAccessor) {
-        Optional<ProcessElementValue> taskElementValue = findElementValueOf(processElementValueAccessor);
+    public static Optional<String> findElementValueAsString(ProcessElementValueAccessor processElementValueAccessor) {
+        Optional<ProcessElementValue> taskElementValue = findElementValue(processElementValueAccessor);
 
-        return taskElementValue.map(ProcessHelper::getElementValueOfAsString);
+        return taskElementValue.map(ProcessElementValueUtils::getElementValueAsString);
     }
 
-    public static List<String> getElementValueOfAsStringList(ProcessElementValueAccessor processElementValueAccessor) {
-        List<ProcessElementValue> processElementValues = getElementValuesOf(processElementValueAccessor);
+    public static List<String> getElementValueAsStringList(ProcessElementValueAccessor processElementValueAccessor) {
+        List<ProcessElementValue> processElementValues = getElementValues(processElementValueAccessor);
 
-        return processElementValues.stream().map(ProcessHelper::getElementValueOfAsString).collect(toList());
+        return processElementValues.stream().map(ProcessElementValueUtils::getElementValueAsString).collect(toList());
     }
 
-    private static String getElementValueOfAsString(ProcessElementValue elementValue) {
+    private static String getElementValueAsString(ProcessElementValue elementValue) {
         if (elementValue instanceof ProcessElementValueString) {
             ProcessElementValueString valueString = (ProcessElementValueString) elementValue;
 
@@ -165,24 +175,24 @@ public class ProcessHelper {
         throw new KuFlowRestClientException(String.format("elementValue %s is not a String", elementValue));
     }
 
-    public static Optional<Double> findElementValueOfAsDouble(ProcessElementValueAccessor processElementValueAccessor) {
-        Optional<ProcessElementValue> taskElementValue = findElementValueOf(processElementValueAccessor);
+    public static Optional<Double> findElementValueAsDouble(ProcessElementValueAccessor processElementValueAccessor) {
+        Optional<ProcessElementValue> taskElementValue = findElementValue(processElementValueAccessor);
 
-        return taskElementValue.map(ProcessHelper::getElementValueOfAsDouble);
+        return taskElementValue.map(ProcessElementValueUtils::getElementValueAsDouble);
     }
 
-    public static Double getElementValueOfAsDouble(ProcessElementValueAccessor processElementValueAccessor) {
-        return findElementValueOfAsDouble(processElementValueAccessor)
+    public static Double getElementValueAsDouble(ProcessElementValueAccessor processElementValueAccessor) {
+        return findElementValueAsDouble(processElementValueAccessor)
             .orElseThrow(() -> new KuFlowRestClientException("Element value doesn't exist"));
     }
 
-    public static List<Double> getElementValueOfAsDoubleList(ProcessElementValueAccessor processElementValueAccessor) {
-        List<ProcessElementValue> processElementValues = getElementValuesOf(processElementValueAccessor);
+    public static List<Double> getElementValueAsDoubleList(ProcessElementValueAccessor processElementValueAccessor) {
+        List<ProcessElementValue> processElementValues = getElementValues(processElementValueAccessor);
 
-        return processElementValues.stream().map(ProcessHelper::getElementValueOfAsDouble).collect(toList());
+        return processElementValues.stream().map(ProcessElementValueUtils::getElementValueAsDouble).collect(toList());
     }
 
-    private static Double getElementValueOfAsDouble(ProcessElementValue elementValue) {
+    private static Double getElementValueAsDouble(ProcessElementValue elementValue) {
         if (elementValue instanceof ProcessElementValueNumber) {
             ProcessElementValueNumber valueNumber = (ProcessElementValueNumber) elementValue;
 
@@ -205,25 +215,25 @@ public class ProcessHelper {
         throw new KuFlowRestClientException(String.format("elementValue %s is not a Number", elementValue));
     }
 
-    public static Optional<LocalDate> findElementValueOfAsLocalDate(ProcessElementValueAccessor processElementValueAccessor) {
-        Optional<ProcessElementValue> taskElementValue = findElementValueOf(processElementValueAccessor);
+    public static Optional<LocalDate> findElementValueAsLocalDate(ProcessElementValueAccessor processElementValueAccessor) {
+        Optional<ProcessElementValue> taskElementValue = findElementValue(processElementValueAccessor);
 
-        return taskElementValue.map(ProcessHelper::getElementValueOfAsLocalDate);
+        return taskElementValue.map(ProcessElementValueUtils::getElementValueAsLocalDate);
     }
 
-    public static LocalDate getElementValueOfAsLocalDate(ProcessElementValueAccessor processElementValueAccessor) {
-        return findElementValueOfAsLocalDate(processElementValueAccessor)
+    public static LocalDate getElementValueAsLocalDate(ProcessElementValueAccessor processElementValueAccessor) {
+        return findElementValueAsLocalDate(processElementValueAccessor)
             .orElseThrow(() -> new KuFlowRestClientException("Element value doesn't exist"));
     }
 
-    public static List<LocalDate> getElementValueOfAsLocalDateList(ProcessElementValueAccessor processElementValueAccessor) {
-        List<ProcessElementValue> processElementValues = getElementValuesOf(processElementValueAccessor);
+    public static List<LocalDate> getElementValueAsLocalDateList(ProcessElementValueAccessor processElementValueAccessor) {
+        List<ProcessElementValue> processElementValues = getElementValues(processElementValueAccessor);
 
-        return processElementValues.stream().map(ProcessHelper::getElementValueOfAsLocalDate).collect(toList());
+        return processElementValues.stream().map(ProcessElementValueUtils::getElementValueAsLocalDate).collect(toList());
     }
 
-    private static LocalDate getElementValueOfAsLocalDate(ProcessElementValue elementValue) {
-        String valueString = getElementValueOfAsString(elementValue);
+    private static LocalDate getElementValueAsLocalDate(ProcessElementValue elementValue) {
+        String valueString = getElementValueAsString(elementValue);
 
         if (valueString == null) {
             return null;
@@ -236,7 +246,7 @@ public class ProcessHelper {
         }
     }
 
-    private static Optional<ProcessElementValue> findElementValueOf(ProcessElementValueAccessor processElementValueAccessor) {
+    private static Optional<ProcessElementValue> findElementValue(ProcessElementValueAccessor processElementValueAccessor) {
         List<ProcessElementValue> processElementValues = processElementValueAccessor.getElementValues();
         if (processElementValues == null || processElementValues.isEmpty()) {
             return Optional.empty();
@@ -245,7 +255,7 @@ public class ProcessHelper {
         return Optional.of(processElementValues.get(0));
     }
 
-    private static List<ProcessElementValue> getElementValuesOf(ProcessElementValueAccessor processElementValueAccessor) {
+    private static List<ProcessElementValue> getElementValues(ProcessElementValueAccessor processElementValueAccessor) {
         List<ProcessElementValue> processElementValues = processElementValueAccessor.getElementValues();
         if (processElementValues == null || processElementValues.isEmpty()) {
             return new ArrayList<>();

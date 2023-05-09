@@ -22,38 +22,11 @@
  */
 package com.kuflow.rest.model;
 
-import static com.kuflow.rest.util.TaskElementValueAccessorTask.of;
-import static com.kuflow.rest.util.TaskHelper.addElementValueOf;
-import static com.kuflow.rest.util.TaskHelper.addElementValuesOf;
-import static com.kuflow.rest.util.TaskHelper.findElementValueOfAsDocument;
-import static com.kuflow.rest.util.TaskHelper.findElementValueOfAsDouble;
-import static com.kuflow.rest.util.TaskHelper.findElementValueOfAsLocalDate;
-import static com.kuflow.rest.util.TaskHelper.findElementValueOfAsMap;
-import static com.kuflow.rest.util.TaskHelper.findElementValueOfAsPrincipal;
-import static com.kuflow.rest.util.TaskHelper.findElementValueOfAsString;
-import static com.kuflow.rest.util.TaskHelper.getElementValueOfAsDocument;
-import static com.kuflow.rest.util.TaskHelper.getElementValueOfAsDocumentList;
-import static com.kuflow.rest.util.TaskHelper.getElementValueOfAsDouble;
-import static com.kuflow.rest.util.TaskHelper.getElementValueOfAsDoubleList;
-import static com.kuflow.rest.util.TaskHelper.getElementValueOfAsLocalDate;
-import static com.kuflow.rest.util.TaskHelper.getElementValueOfAsLocalDateList;
-import static com.kuflow.rest.util.TaskHelper.getElementValueOfAsMap;
-import static com.kuflow.rest.util.TaskHelper.getElementValueOfAsMapList;
-import static com.kuflow.rest.util.TaskHelper.getElementValueOfAsPrincipal;
-import static com.kuflow.rest.util.TaskHelper.getElementValueOfAsPrincipalList;
-import static com.kuflow.rest.util.TaskHelper.getElementValueOfAsString;
-import static com.kuflow.rest.util.TaskHelper.getElementValueOfAsStringList;
-import static com.kuflow.rest.util.TaskHelper.getElementValueOfValid;
-import static com.kuflow.rest.util.TaskHelper.getElementValueOfValidAt;
-import static com.kuflow.rest.util.TaskHelper.setElementValueOf;
-import static com.kuflow.rest.util.TaskHelper.setElementValueOfValid;
-import static com.kuflow.rest.util.TaskHelper.setElementValueOfValidAt;
-import static com.kuflow.rest.util.TaskHelper.setElementValuesOf;
-
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.kuflow.rest.util.TaskUtils;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -91,10 +64,19 @@ public final class Task extends AbstractAudited {
     private UUID processId;
 
     /*
-     * Task element values, en ElementValueDocument is not allowed.
+     * Task element values, en ElementValueDocument is not allowed, used when the task render type selected is
+     * JSON Forms
+     *
      */
     @JsonProperty(value = "elementValues")
     private Map<String, List<TaskElementValue>> elementValues;
+
+    /*
+     * Json form values, used when the render type selected is JSON Forms.
+     *
+     */
+    @JsonProperty(value = "jsonFormsValue")
+    private JsonFormsValue jsonFormsValue;
 
     /*
      * The logs property.
@@ -192,7 +174,8 @@ public final class Task extends AbstractAudited {
     }
 
     /**
-     * Get the elementValues property: Task element values, en ElementValueDocument is not allowed.
+     * Get the elementValues property: Task element values, en ElementValueDocument is not allowed, used when the task
+     * render type selected is JSON Forms.
      *
      * @return the elementValues value.
      */
@@ -201,13 +184,34 @@ public final class Task extends AbstractAudited {
     }
 
     /**
-     * Set the elementValues property: Task element values, en ElementValueDocument is not allowed.
+     * Set the elementValues property: Task element values, en ElementValueDocument is not allowed, used when the task
+     * render type selected is JSON Forms.
      *
      * @param elementValues the elementValues value to set.
      * @return the Task object itself.
      */
     public Task setElementValues(Map<String, List<TaskElementValue>> elementValues) {
         this.elementValues = elementValues;
+        return this;
+    }
+
+    /**
+     * Get the jsonFormsValue property: Json form values, used when the render type selected is JSON Forms.
+     *
+     * @return the jsonFormsValue value.
+     */
+    public JsonFormsValue getJsonFormsValue() {
+        return this.jsonFormsValue;
+    }
+
+    /**
+     * Set the jsonFormsValue property: Json form values, used when the render type selected is JSON Forms.
+     *
+     * @param jsonFormsValue the jsonFormsValue value to set.
+     * @return the Task object itself.
+     */
+    public Task setJsonFormsValue(JsonFormsValue jsonFormsValue) {
+        this.jsonFormsValue = jsonFormsValue;
         return this;
     }
 
@@ -284,9 +288,11 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return TRUE if all related valid values are TRUE else FALSE.
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Boolean getElementValueValid(String elementDefinitionCode) {
-        return getElementValueOfValid(of(this, elementDefinitionCode));
+        return TaskUtils.getElementValueValid(this, elementDefinitionCode);
     }
 
     /**
@@ -295,9 +301,11 @@ public final class Task extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @param index Element value index
      * @return The requested valid value
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Boolean getElementValueValidAt(String elementDefinitionCode, int index) {
-        return getElementValueOfValidAt(of(this, elementDefinitionCode), index);
+        return TaskUtils.getElementValueValidAt(this, elementDefinitionCode, index);
     }
 
     /**
@@ -305,10 +313,12 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param valid Valid value
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Task setElementValueValid(String elementDefinitionCode, Boolean valid) {
-        setElementValueOfValid(of(this, elementDefinitionCode), valid);
+        TaskUtils.setElementValueValid(this, elementDefinitionCode, valid);
 
         return this;
     }
@@ -319,10 +329,12 @@ public final class Task extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @param valid Valid value
      * @param index Element value index
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Task setElementValueValidAt(String elementDefinitionCode, Boolean valid, int index) {
-        setElementValueOfValidAt(of(this, elementDefinitionCode), valid, index);
+        TaskUtils.setElementValueValidAt(this, elementDefinitionCode, valid, index);
 
         return this;
     }
@@ -332,10 +344,12 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValue Element value, if the value is null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Task setElementValueAsString(String elementDefinitionCode, String elementValue) {
-        setElementValueOf(of(this, elementDefinitionCode), elementValue);
+        TaskUtils.setElementValueAsString(this, elementDefinitionCode, elementValue);
 
         return this;
     }
@@ -345,10 +359,12 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValues Element values, if the values are null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Task setElementValueAsStringList(String elementDefinitionCode, List<String> elementValues) {
-        setElementValuesOf(of(this, elementDefinitionCode), elementValues);
+        TaskUtils.setElementValueAsStringList(this, elementDefinitionCode, elementValues);
 
         return this;
     }
@@ -358,10 +374,12 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValue Element value, if the values is null the value is not added
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Task addElementValueAsString(String elementDefinitionCode, String elementValue) {
-        addElementValueOf(of(this, elementDefinitionCode), elementValue);
+        TaskUtils.addElementValueAsString(this, elementDefinitionCode, elementValue);
 
         return this;
     }
@@ -371,10 +389,12 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValues Element values
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Task addElementValueAsStringList(String elementDefinitionCode, List<String> elementValues) {
-        addElementValuesOf(of(this, elementDefinitionCode), elementValues);
+        TaskUtils.addElementValueAsStringList(this, elementDefinitionCode, elementValues);
 
         return this;
     }
@@ -384,10 +404,13 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
-     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public String getElementValueAsString(String elementDefinitionCode) {
-        return getElementValueOfAsString(of(this, elementDefinitionCode));
+        return TaskUtils.getElementValueAsString(this, elementDefinitionCode);
     }
 
     /**
@@ -395,9 +418,13 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the elements values.
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public List<String> getElementValueAsStringList(String elementDefinitionCode) {
-        return getElementValueOfAsStringList(of(this, elementDefinitionCode));
+        return TaskUtils.getElementValueAsStringList(this, elementDefinitionCode);
     }
 
     /**
@@ -405,9 +432,11 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the element value if exists.
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Optional<String> findElementValueAsString(String elementDefinitionCode) {
-        return findElementValueOfAsString(of(this, elementDefinitionCode));
+        return TaskUtils.findElementValueAsString(this, elementDefinitionCode);
     }
 
     /**
@@ -415,10 +444,12 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValue Element value, if the value is null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Task setElementValueAsDouble(String elementDefinitionCode, Double elementValue) {
-        setElementValueOf(of(this, elementDefinitionCode), elementValue);
+        TaskUtils.setElementValueAsDouble(this, elementDefinitionCode, elementValue);
 
         return this;
     }
@@ -428,10 +459,12 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValues Element values, if the values are null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Task setElementValueAsDoubleList(String elementDefinitionCode, List<Double> elementValues) {
-        setElementValuesOf(of(this, elementDefinitionCode), elementValues);
+        TaskUtils.setElementValueAsDoubleList(this, elementDefinitionCode, elementValues);
 
         return this;
     }
@@ -441,10 +474,12 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValue Element value, if the values is null the value is not added
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Task addElementValueAsDouble(String elementDefinitionCode, Double elementValue) {
-        addElementValueOf(of(this, elementDefinitionCode), elementValue);
+        TaskUtils.addElementValueAsDouble(this, elementDefinitionCode, elementValue);
 
         return this;
     }
@@ -454,10 +489,12 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValues Element values
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Task addElementValueAsDoubleList(String elementDefinitionCode, List<Double> elementValues) {
-        addElementValuesOf(of(this, elementDefinitionCode), elementValues);
+        TaskUtils.addElementValueAsDoubleList(this, elementDefinitionCode, elementValues);
 
         return this;
     }
@@ -467,10 +504,13 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
-     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Double getElementValueAsDouble(String elementDefinitionCode) {
-        return getElementValueOfAsDouble(of(this, elementDefinitionCode));
+        return TaskUtils.getElementValueAsDouble(this, elementDefinitionCode);
     }
 
     /**
@@ -478,9 +518,13 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the elements values.
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public List<Double> getElementValueAsDoubleList(String elementDefinitionCode) {
-        return getElementValueOfAsDoubleList(of(this, elementDefinitionCode));
+        return TaskUtils.getElementValueAsDoubleList(this, elementDefinitionCode);
     }
 
     /**
@@ -488,9 +532,11 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the element value if exists.
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Optional<Double> findElementValueAsDouble(String elementDefinitionCode) {
-        return findElementValueOfAsDouble(of(this, elementDefinitionCode));
+        return TaskUtils.findElementValueAsDouble(this, elementDefinitionCode);
     }
 
     /**
@@ -498,10 +544,12 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValue Element value, if the value is null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Task setElementValueAsLocalDate(String elementDefinitionCode, LocalDate elementValue) {
-        setElementValueOf(of(this, elementDefinitionCode), elementValue);
+        TaskUtils.setElementValueAsLocalDate(this, elementDefinitionCode, elementValue);
 
         return this;
     }
@@ -511,10 +559,12 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValues Element values, if the values are null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Task setElementValueAsLocalDateList(String elementDefinitionCode, List<LocalDate> elementValues) {
-        setElementValuesOf(of(this, elementDefinitionCode), elementValues);
+        TaskUtils.setElementValueAsLocalDateList(this, elementDefinitionCode, elementValues);
 
         return this;
     }
@@ -524,10 +574,12 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValue Element value, if the values is null the value is not added
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Task addElementValueAsLocalDate(String elementDefinitionCode, LocalDate elementValue) {
-        addElementValueOf(of(this, elementDefinitionCode), elementValue);
+        TaskUtils.addElementValueAsLocalDate(this, elementDefinitionCode, elementValue);
 
         return this;
     }
@@ -537,10 +589,12 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValues Element values
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Task addElementValueAsLocalDateList(String elementDefinitionCode, List<LocalDate> elementValues) {
-        addElementValuesOf(of(this, elementDefinitionCode), elementValues);
+        TaskUtils.addElementValueAsLocalDateList(this, elementDefinitionCode, elementValues);
 
         return this;
     }
@@ -550,10 +604,13 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
-     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public LocalDate getElementValueAsLocalDate(String elementDefinitionCode) {
-        return getElementValueOfAsLocalDate(of(this, elementDefinitionCode));
+        return TaskUtils.getElementValueAsLocalDate(this, elementDefinitionCode);
     }
 
     /**
@@ -561,9 +618,13 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the elements values.
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public List<LocalDate> getElementValueAsLocalDateList(String elementDefinitionCode) {
-        return getElementValueOfAsLocalDateList(of(this, elementDefinitionCode));
+        return TaskUtils.getElementValueAsLocalDateList(this, elementDefinitionCode);
     }
 
     /**
@@ -571,9 +632,11 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the element value if exists.
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Optional<LocalDate> findElementValueAsLocalDate(String elementDefinitionCode) {
-        return findElementValueOfAsLocalDate(of(this, elementDefinitionCode));
+        return TaskUtils.findElementValueAsLocalDate(this, elementDefinitionCode);
     }
 
     /**
@@ -581,10 +644,12 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValue Element value, if the value is null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Task setElementValueAsMap(String elementDefinitionCode, Map<String, Object> elementValue) {
-        setElementValueOf(of(this, elementDefinitionCode), elementValue);
+        TaskUtils.setElementValueAsMap(this, elementDefinitionCode, elementValue);
 
         return this;
     }
@@ -594,10 +659,12 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValues Element values, if the values are null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Task setElementValueAsMapList(String elementDefinitionCode, List<Map<String, Object>> elementValues) {
-        setElementValuesOf(of(this, elementDefinitionCode), elementValues);
+        TaskUtils.setElementValueAsMapList(this, elementDefinitionCode, elementValues);
 
         return this;
     }
@@ -607,10 +674,12 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValue Element value, if the values is null the value is not added
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Task addElementValueAsMap(String elementDefinitionCode, Map<String, Object> elementValue) {
-        addElementValueOf(of(this, elementDefinitionCode), elementValue);
+        TaskUtils.addElementValueAsMap(this, elementDefinitionCode, elementValue);
 
         return this;
     }
@@ -620,10 +689,12 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValues Element values
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Task addElementValueAsMapList(String elementDefinitionCode, List<Map<String, Object>> elementValues) {
-        addElementValuesOf(of(this, elementDefinitionCode), elementValues);
+        TaskUtils.addElementValueAsMapList(this, elementDefinitionCode, elementValues);
 
         return this;
     }
@@ -633,10 +704,13 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
-     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Map<String, Object> getElementValueAsMap(String elementDefinitionCode) {
-        return getElementValueOfAsMap(of(this, elementDefinitionCode));
+        return TaskUtils.getElementValueAsMap(this, elementDefinitionCode);
     }
 
     /**
@@ -644,9 +718,13 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the elements values.
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public List<Map<String, Object>> getElementValueAsMapList(String elementDefinitionCode) {
-        return getElementValueOfAsMapList(of(this, elementDefinitionCode));
+        return TaskUtils.getElementValueAsMapList(this, elementDefinitionCode);
     }
 
     /**
@@ -654,9 +732,11 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the element value if exists.
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Optional<Map<String, Object>> findElementValueAsMap(String elementDefinitionCode) {
-        return findElementValueOfAsMap(of(this, elementDefinitionCode));
+        return TaskUtils.findElementValueAsMap(this, elementDefinitionCode);
     }
 
     /**
@@ -664,10 +744,12 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValue Element value, if the value is null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Task setElementValueAsDocument(String elementDefinitionCode, TaskElementValueDocumentItem elementValue) {
-        setElementValueOf(of(this, elementDefinitionCode), elementValue);
+        TaskUtils.setElementValueAsDocument(this, elementDefinitionCode, elementValue);
 
         return this;
     }
@@ -677,11 +759,13 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValues Element values, if the values are null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Task setElementValueAsDocumentList(
             String elementDefinitionCode, List<TaskElementValueDocumentItem> elementValues) {
-        setElementValuesOf(of(this, elementDefinitionCode), elementValues);
+        TaskUtils.setElementValueAsDocumentList(this, elementDefinitionCode, elementValues);
 
         return this;
     }
@@ -691,10 +775,12 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValue Element value, if the values is null the value is not added
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Task addElementValueAsDocument(String elementDefinitionCode, TaskElementValueDocumentItem elementValue) {
-        addElementValueOf(of(this, elementDefinitionCode), elementValue);
+        TaskUtils.addElementValueAsDocument(this, elementDefinitionCode, elementValue);
 
         return this;
     }
@@ -704,11 +790,13 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValues Element values
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Task addElementValueAsDocumentList(
             String elementDefinitionCode, List<TaskElementValueDocumentItem> elementValues) {
-        addElementValuesOf(of(this, elementDefinitionCode), elementValues);
+        TaskUtils.addElementValueAsDocumentList(this, elementDefinitionCode, elementValues);
 
         return this;
     }
@@ -718,10 +806,13 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
-     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public TaskElementValueDocumentItem getElementValueAsDocument(String elementDefinitionCode) {
-        return getElementValueOfAsDocument(of(this, elementDefinitionCode));
+        return TaskUtils.getElementValueAsDocument(this, elementDefinitionCode);
     }
 
     /**
@@ -729,9 +820,13 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the elements values.
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public List<TaskElementValueDocumentItem> getElementValueAsDocumentList(String elementDefinitionCode) {
-        return getElementValueOfAsDocumentList(of(this, elementDefinitionCode));
+        return TaskUtils.getElementValueAsDocumentList(this, elementDefinitionCode);
     }
 
     /**
@@ -739,9 +834,11 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the element value if exists.
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Optional<TaskElementValueDocumentItem> findElementValueAsDocument(String elementDefinitionCode) {
-        return findElementValueOfAsDocument(of(this, elementDefinitionCode));
+        return TaskUtils.findElementValueAsDocument(this, elementDefinitionCode);
     }
 
     /**
@@ -749,10 +846,12 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValue Element value, if the value is null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Task setElementValueAsPrincipal(String elementDefinitionCode, TaskElementValuePrincipalItem elementValue) {
-        setElementValueOf(of(this, elementDefinitionCode), elementValue);
+        TaskUtils.setElementValueAsPrincipal(this, elementDefinitionCode, elementValue);
 
         return this;
     }
@@ -762,11 +861,13 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValues Element values, if the values are null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Task setElementValueAsPrincipalList(
             String elementDefinitionCode, List<TaskElementValuePrincipalItem> elementValues) {
-        setElementValuesOf(of(this, elementDefinitionCode), elementValues);
+        TaskUtils.setElementValueAsPrincipalList(this, elementDefinitionCode, elementValues);
 
         return this;
     }
@@ -776,10 +877,12 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValue Element value, if the values is null the value is not added
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Task addElementValueAsPrincipal(String elementDefinitionCode, TaskElementValuePrincipalItem elementValue) {
-        addElementValueOf(of(this, elementDefinitionCode), elementValue);
+        TaskUtils.addElementValueAsPrincipal(this, elementDefinitionCode, elementValue);
 
         return this;
     }
@@ -789,11 +892,13 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValues Element values
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Task addElementValueAsPrincipalList(
             String elementDefinitionCode, List<TaskElementValuePrincipalItem> elementValues) {
-        addElementValuesOf(of(this, elementDefinitionCode), elementValues);
+        TaskUtils.addElementValueAsPrincipalList(this, elementDefinitionCode, elementValues);
 
         return this;
     }
@@ -803,10 +908,13 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
-     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public TaskElementValuePrincipalItem getElementValueAsPrincipal(String elementDefinitionCode) {
-        return getElementValueOfAsPrincipal(of(this, elementDefinitionCode));
+        return TaskUtils.getElementValueAsPrincipal(this, elementDefinitionCode);
     }
 
     /**
@@ -814,9 +922,13 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the elements values.
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public List<TaskElementValuePrincipalItem> getElementValueAsPrincipalList(String elementDefinitionCode) {
-        return getElementValueOfAsPrincipalList(of(this, elementDefinitionCode));
+        return TaskUtils.getElementValueAsPrincipalList(this, elementDefinitionCode);
     }
 
     /**
@@ -824,8 +936,10 @@ public final class Task extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the element value if exists.
+     * @deprecated in favor of {@link TaskUtils}
      */
+    @Deprecated
     public Optional<TaskElementValuePrincipalItem> findElementValueAsPrincipal(String elementDefinitionCode) {
-        return findElementValueOfAsPrincipal(of(this, elementDefinitionCode));
+        return TaskUtils.findElementValueAsPrincipal(this, elementDefinitionCode);
     }
 }

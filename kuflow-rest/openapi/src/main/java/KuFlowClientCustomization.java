@@ -56,470 +56,417 @@ public class KuFlowClientCustomization extends Customization {
     private void customizeProcessModel(PackageCustomization modelPackageCustomization) {
         ClassCustomization modelClassCustomization = modelPackageCustomization.getClass("Process");
 
+        this.addMethodGetElementValueValid(modelClassCustomization, "ProcessUtils", true);
+        this.addMethodGetElementValueValidAt(modelClassCustomization, "ProcessUtils", true);
+        this.addMethodSetElementValueValid(modelClassCustomization, "ProcessUtils", true);
+        this.addMethodSetElementValueValidAt(modelClassCustomization, "ProcessUtils", true);
+
+        this.addMethodsElementValuesByType(modelClassCustomization, "ProcessUtils", true, "String", "String");
+        this.addMethodsElementValuesByType(modelClassCustomization, "ProcessUtils", true, "Double", "Double");
+        this.addMethodsElementValuesByType(modelClassCustomization, "ProcessUtils", true, "LocalDate", "LocalDate");
+
         modelClassCustomization.addImports(
-                "static com.kuflow.rest.util.ProcessElementValueAccessorProcess.of",
-                "static com.kuflow.rest.util.ProcessHelper.addElementValueOf",
-                "static com.kuflow.rest.util.ProcessHelper.addElementValuesOf",
-                "static com.kuflow.rest.util.ProcessHelper.findElementValueOfAsDouble",
-                "static com.kuflow.rest.util.ProcessHelper.findElementValueOfAsLocalDate",
-                "static com.kuflow.rest.util.ProcessHelper.findElementValueOfAsString",
-                "static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsDouble",
-                "static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsDoubleList",
-                "static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsLocalDate",
-                "static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsLocalDateList",
-                "static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsString",
-                "static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsStringList",
-                "static com.kuflow.rest.util.ProcessHelper.getElementValueOfValid",
-                "static com.kuflow.rest.util.ProcessHelper.getElementValueOfValidAt",
-                "static com.kuflow.rest.util.ProcessHelper.setElementValueOf",
-                "static com.kuflow.rest.util.ProcessHelper.setElementValuesOf",
-                "static com.kuflow.rest.util.ProcessHelper.setElementValueOfValid",
-                "static com.kuflow.rest.util.ProcessHelper.setElementValueOfValidAt",
-                "java.time.LocalDate",
-                "java.util.Map",
-                "java.util.Optional");
-
-        this.addMethodGetElementValueValid(modelClassCustomization, true);
-        this.addMethodGetElementValueValidAt(modelClassCustomization, true);
-        this.addMethodSetElementValueValid(modelClassCustomization, true);
-        this.addMethodSetElementValueValidAt(modelClassCustomization, true);
-
-        this.addMethodsElementValuesByType(modelClassCustomization, true, "String", "String");
-        this.addMethodsElementValuesByType(modelClassCustomization, true, "Double", "Double");
-        this.addMethodsElementValuesByType(modelClassCustomization, true, "LocalDate", "LocalDate");
+            "com.kuflow.rest.util.ProcessUtils",
+            "java.time.LocalDate",
+            "java.util.Map",
+            "java.util.Optional"
+        );
     }
 
     private void customizeProcessPageItemModel(PackageCustomization modelPackageCustomization) {
         ClassCustomization modelClassCustomization = modelPackageCustomization.getClass("ProcessPageItem");
 
+        this.addMethodGetElementValueValid(modelClassCustomization, "ProcessPageItemUtils", true);
+        this.addMethodGetElementValueValidAt(modelClassCustomization, "ProcessPageItemUtils", true);
+        this.addMethodSetElementValueValid(modelClassCustomization, "ProcessPageItemUtils", true);
+        this.addMethodSetElementValueValidAt(modelClassCustomization, "ProcessPageItemUtils", true);
+
+        this.addMethodsElementValuesByType(modelClassCustomization, "ProcessPageItemUtils", true, "String", "String");
+        this.addMethodsElementValuesByType(modelClassCustomization, "ProcessPageItemUtils", true, "Double", "Double");
+        this.addMethodsElementValuesByType(modelClassCustomization, "ProcessPageItemUtils", true, "LocalDate", "LocalDate");
+
         modelClassCustomization.addImports(
-                "static com.kuflow.rest.util.ProcessElementValueAccessorProcessPageItem.of",
-                "static com.kuflow.rest.util.ProcessHelper.addElementValueOf",
-                "static com.kuflow.rest.util.ProcessHelper.addElementValuesOf",
-                "static com.kuflow.rest.util.ProcessHelper.findElementValueOfAsDouble",
-                "static com.kuflow.rest.util.ProcessHelper.findElementValueOfAsLocalDate",
-                "static com.kuflow.rest.util.ProcessHelper.findElementValueOfAsString",
-                "static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsDouble",
-                "static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsDoubleList",
-                "static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsLocalDate",
-                "static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsLocalDateList",
-                "static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsString",
-                "static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsStringList",
-                "static com.kuflow.rest.util.ProcessHelper.getElementValueOfValid",
-                "static com.kuflow.rest.util.ProcessHelper.getElementValueOfValidAt",
-                "static com.kuflow.rest.util.ProcessHelper.setElementValueOf",
-                "static com.kuflow.rest.util.ProcessHelper.setElementValuesOf",
-                "static com.kuflow.rest.util.ProcessHelper.setElementValueOfValid",
-                "static com.kuflow.rest.util.ProcessHelper.setElementValueOfValidAt",
-                "java.time.LocalDate",
-                "java.util.Map",
-                "java.util.Optional");
-
-        this.addMethodGetElementValueValid(modelClassCustomization, true);
-        this.addMethodGetElementValueValidAt(modelClassCustomization, true);
-        this.addMethodSetElementValueValid(modelClassCustomization, true);
-        this.addMethodSetElementValueValidAt(modelClassCustomization, true);
-
-        this.addMethodsElementValuesByType(modelClassCustomization, true, "String", "String");
-        this.addMethodsElementValuesByType(modelClassCustomization, true, "Double", "Double");
-        this.addMethodsElementValuesByType(modelClassCustomization, true, "LocalDate", "LocalDate");
+            "com.kuflow.rest.util.ProcessPageItemUtils",
+            "java.time.LocalDate",
+            "java.util.Map",
+            "java.util.Optional"
+        );
     }
 
     private void customizeProcessProcessSaveElementCommand(PackageCustomization modelPackageCustomization) {
         ClassCustomization modelClassCustomization = modelPackageCustomization.getClass("ProcessSaveElementCommand");
 
+        this.addMethodGetElementValueValid(modelClassCustomization, "ProcessSaveElementCommandUtils", false);
+        this.addMethodGetElementValueValidAt(modelClassCustomization, "ProcessSaveElementCommandUtils", false);
+        this.addMethodSetElementValueValid(modelClassCustomization, "ProcessSaveElementCommandUtils", false);
+        this.addMethodSetElementValueValidAt(modelClassCustomization, "ProcessSaveElementCommandUtils", false);
+
+        this.addMethodsElementValuesByType(modelClassCustomization, "ProcessSaveElementCommandUtils", false, "String", "String");
+        this.addMethodsElementValuesByType(modelClassCustomization, "ProcessSaveElementCommandUtils", false, "Double", "Double");
+        this.addMethodsElementValuesByType(modelClassCustomization, "ProcessSaveElementCommandUtils", false, "LocalDate", "LocalDate");
+
         modelClassCustomization.addImports(
-                "static com.kuflow.rest.util.ProcessElementValueAccessorProcessSaveElementCommand.of",
-                "static com.kuflow.rest.util.ProcessHelper.addElementValueOf",
-                "static com.kuflow.rest.util.ProcessHelper.addElementValuesOf",
-                "static com.kuflow.rest.util.ProcessHelper.findElementValueOfAsDouble",
-                "static com.kuflow.rest.util.ProcessHelper.findElementValueOfAsLocalDate",
-                "static com.kuflow.rest.util.ProcessHelper.findElementValueOfAsString",
-                "static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsDouble",
-                "static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsDoubleList",
-                "static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsLocalDate",
-                "static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsLocalDateList",
-                "static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsString",
-                "static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsStringList",
-                "static com.kuflow.rest.util.ProcessHelper.getElementValueOfValid",
-                "static com.kuflow.rest.util.ProcessHelper.getElementValueOfValidAt",
-                "static com.kuflow.rest.util.ProcessHelper.setElementValueOf",
-                "static com.kuflow.rest.util.ProcessHelper.setElementValuesOf",
-                "static com.kuflow.rest.util.ProcessHelper.setElementValueOfValid",
-                "static com.kuflow.rest.util.ProcessHelper.setElementValueOfValidAt",
-                "java.time.LocalDate",
-                "java.util.Map",
-                "java.util.Optional");
-
-        this.addMethodGetElementValueValid(modelClassCustomization, false);
-        this.addMethodGetElementValueValidAt(modelClassCustomization, false);
-        this.addMethodSetElementValueValid(modelClassCustomization, false);
-        this.addMethodSetElementValueValidAt(modelClassCustomization, false);
-
-        this.addMethodsElementValuesByType(modelClassCustomization, false, "String", "String");
-        this.addMethodsElementValuesByType(modelClassCustomization, false, "Double", "Double");
-        this.addMethodsElementValuesByType(modelClassCustomization, false, "LocalDate", "LocalDate");
+            "com.kuflow.rest.util.ProcessSaveElementCommandUtils",
+            "java.time.LocalDate",
+            "java.util.Map",
+            "java.util.Optional"
+        );
     }
 
     private void customizeTaskSaveElementCommandModel(PackageCustomization modelPackageCustomization) {
         ClassCustomization modelClassCustomization = modelPackageCustomization.getClass("TaskSaveElementCommand");
+
+        this.addMethodGetElementValueValid(modelClassCustomization, "TaskSaveElementCommandUtils", false);
+        this.addMethodGetElementValueValidAt(modelClassCustomization, "TaskSaveElementCommandUtils", false);
+        this.addMethodSetElementValueValid(modelClassCustomization, "TaskSaveElementCommandUtils", false);
+        this.addMethodSetElementValueValidAt(modelClassCustomization, "TaskSaveElementCommandUtils", false);
+
+        this.addMethodsElementValuesByType(modelClassCustomization, "TaskSaveElementCommandUtils", false, "String", "String");
+        this.addMethodsElementValuesByType(modelClassCustomization, "TaskSaveElementCommandUtils", false, "Double", "Double");
+        this.addMethodsElementValuesByType(modelClassCustomization, "TaskSaveElementCommandUtils", false, "LocalDate", "LocalDate");
+        this.addMethodsElementValuesByType(modelClassCustomization, "TaskSaveElementCommandUtils", false, "Map<String, Object>", "Map");
+        this.addMethodsElementValuesByType(modelClassCustomization, "TaskSaveElementCommandUtils", false, "TaskElementValueDocumentItem", "Document");
+        this.addMethodsElementValuesByType(modelClassCustomization, "TaskSaveElementCommandUtils", false, "TaskElementValuePrincipalItem", "Principal");
+
         modelClassCustomization.addImports(
-                "static com.kuflow.rest.util.TaskElementValueAccessorTaskSaveElementCommand.of",
-                "static com.kuflow.rest.util.TaskHelper.addElementValueOf",
-                "static com.kuflow.rest.util.TaskHelper.addElementValuesOf",
-                "static com.kuflow.rest.util.TaskHelper.findElementValueOfAsDocument",
-                "static com.kuflow.rest.util.TaskHelper.findElementValueOfAsDouble",
-                "static com.kuflow.rest.util.TaskHelper.findElementValueOfAsLocalDate",
-                "static com.kuflow.rest.util.TaskHelper.findElementValueOfAsMap",
-                "static com.kuflow.rest.util.TaskHelper.findElementValueOfAsPrincipal",
-                "static com.kuflow.rest.util.TaskHelper.findElementValueOfAsString",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsDocument",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsDocumentList",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsDouble",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsDoubleList",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsLocalDate",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsLocalDateList",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsMap",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsMapList",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsPrincipal",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsPrincipalList",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsString",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsStringList",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfValid",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfValidAt",
-                "static com.kuflow.rest.util.TaskHelper.setElementValueOf",
-                "static com.kuflow.rest.util.TaskHelper.setElementValuesOf",
-                "static com.kuflow.rest.util.TaskHelper.setElementValueOfValid",
-                "static com.kuflow.rest.util.TaskHelper.setElementValueOfValidAt",
+                "com.kuflow.rest.util.TaskSaveElementCommandUtils",
                 "java.time.LocalDate",
                 "java.util.Map",
-                "java.util.Optional");
-
-        this.addMethodGetElementValueValid(modelClassCustomization, false);
-        this.addMethodGetElementValueValidAt(modelClassCustomization, false);
-        this.addMethodSetElementValueValid(modelClassCustomization, false);
-        this.addMethodSetElementValueValidAt(modelClassCustomization, false);
-
-        this.addMethodsElementValuesByType(modelClassCustomization, false, "String", "String");
-        this.addMethodsElementValuesByType(modelClassCustomization, false, "Double", "Double");
-        this.addMethodsElementValuesByType(modelClassCustomization, false, "LocalDate", "LocalDate");
-        this.addMethodsElementValuesByType(modelClassCustomization, false, "Map<String, Object>", "Map");
-        this.addMethodsElementValuesByType(modelClassCustomization, false, "TaskElementValueDocumentItem", "Document");
-        this.addMethodsElementValuesByType(modelClassCustomization, false, "TaskElementValuePrincipalItem",
-                "Principal");
+                "java.util.Optional"
+        );
     }
 
     private void customizeTaskModel(PackageCustomization modelPackageCustomization) {
         ClassCustomization modelClassCustomization = modelPackageCustomization.getClass("Task");
 
+        this.addMethodGetElementValueValid(modelClassCustomization, "TaskUtils", true);
+        this.addMethodGetElementValueValidAt(modelClassCustomization, "TaskUtils", true);
+        this.addMethodSetElementValueValid(modelClassCustomization, "TaskUtils", true);
+        this.addMethodSetElementValueValidAt(modelClassCustomization, "TaskUtils", true);
+
+        this.addMethodsElementValuesByType(modelClassCustomization, "TaskUtils", true, "String", "String");
+        this.addMethodsElementValuesByType(modelClassCustomization, "TaskUtils", true, "Double", "Double");
+        this.addMethodsElementValuesByType(modelClassCustomization, "TaskUtils", true, "LocalDate", "LocalDate");
+        this.addMethodsElementValuesByType(modelClassCustomization, "TaskUtils", true, "Map<String, Object>", "Map");
+        this.addMethodsElementValuesByType(modelClassCustomization, "TaskUtils", true, "TaskElementValueDocumentItem", "Document");
+        this.addMethodsElementValuesByType(modelClassCustomization, "TaskUtils", true, "TaskElementValuePrincipalItem", "Principal");
+
         modelClassCustomization.addImports(
-                "static com.kuflow.rest.util.TaskElementValueAccessorTask.of",
-                "static com.kuflow.rest.util.TaskHelper.addElementValueOf",
-                "static com.kuflow.rest.util.TaskHelper.addElementValuesOf",
-                "static com.kuflow.rest.util.TaskHelper.findElementValueOfAsDocument",
-                "static com.kuflow.rest.util.TaskHelper.findElementValueOfAsDouble",
-                "static com.kuflow.rest.util.TaskHelper.findElementValueOfAsLocalDate",
-                "static com.kuflow.rest.util.TaskHelper.findElementValueOfAsMap",
-                "static com.kuflow.rest.util.TaskHelper.findElementValueOfAsPrincipal",
-                "static com.kuflow.rest.util.TaskHelper.findElementValueOfAsString",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsDocument",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsDocumentList",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsDouble",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsDoubleList",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsLocalDate",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsLocalDateList",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsMap",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsMapList",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsPrincipal",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsPrincipalList",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsString",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsStringList",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfValid",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfValidAt",
-                "static com.kuflow.rest.util.TaskHelper.setElementValueOf",
-                "static com.kuflow.rest.util.TaskHelper.setElementValuesOf",
-                "static com.kuflow.rest.util.TaskHelper.setElementValueOfValid",
-                "static com.kuflow.rest.util.TaskHelper.setElementValueOfValidAt",
+                "com.kuflow.rest.util.TaskUtils",
                 "java.time.LocalDate",
                 "java.util.Map",
-                "java.util.Optional");
-
-        this.addMethodGetElementValueValid(modelClassCustomization, true);
-        this.addMethodGetElementValueValidAt(modelClassCustomization, true);
-        this.addMethodSetElementValueValid(modelClassCustomization, true);
-        this.addMethodSetElementValueValidAt(modelClassCustomization, true);
-
-        this.addMethodsElementValuesByType(modelClassCustomization, true, "String", "String");
-        this.addMethodsElementValuesByType(modelClassCustomization, true, "Double", "Double");
-        this.addMethodsElementValuesByType(modelClassCustomization, true, "LocalDate", "LocalDate");
-        this.addMethodsElementValuesByType(modelClassCustomization, true, "Map<String, Object>", "Map");
-        this.addMethodsElementValuesByType(modelClassCustomization, true, "TaskElementValueDocumentItem", "Document");
-        this.addMethodsElementValuesByType(modelClassCustomization, true, "TaskElementValuePrincipalItem", "Principal");
+                "java.util.Optional"
+        );
     }
 
     private void customizeTaskPageItemModel(PackageCustomization modelPackageCustomization) {
         ClassCustomization modelClassCustomization = modelPackageCustomization.getClass("TaskPageItem");
 
+        this.addMethodGetElementValueValid(modelClassCustomization, "TaskPageItemUtils", true);
+        this.addMethodGetElementValueValidAt(modelClassCustomization, "TaskPageItemUtils", true);
+        this.addMethodSetElementValueValid(modelClassCustomization, "TaskPageItemUtils", true);
+        this.addMethodSetElementValueValidAt(modelClassCustomization, "TaskPageItemUtils", true);
+
+        this.addMethodsElementValuesByType(modelClassCustomization, "TaskPageItemUtils", true, "String", "String");
+        this.addMethodsElementValuesByType(modelClassCustomization, "TaskPageItemUtils", true, "Double", "Double");
+        this.addMethodsElementValuesByType(modelClassCustomization, "TaskPageItemUtils", true, "LocalDate", "LocalDate");
+        this.addMethodsElementValuesByType(modelClassCustomization, "TaskPageItemUtils", true, "Map<String, Object>", "Map");
+        this.addMethodsElementValuesByType(modelClassCustomization, "TaskPageItemUtils", true, "TaskElementValueDocumentItem", "Document");
+        this.addMethodsElementValuesByType(modelClassCustomization, "TaskPageItemUtils", true, "TaskElementValuePrincipalItem", "Principal");
+
         modelClassCustomization.addImports(
-                "static com.kuflow.rest.util.TaskElementValueAccessorTaskPageItem.of",
-                "static com.kuflow.rest.util.TaskHelper.addElementValueOf",
-                "static com.kuflow.rest.util.TaskHelper.addElementValuesOf",
-                "static com.kuflow.rest.util.TaskHelper.findElementValueOfAsDocument",
-                "static com.kuflow.rest.util.TaskHelper.findElementValueOfAsDouble",
-                "static com.kuflow.rest.util.TaskHelper.findElementValueOfAsLocalDate",
-                "static com.kuflow.rest.util.TaskHelper.findElementValueOfAsMap",
-                "static com.kuflow.rest.util.TaskHelper.findElementValueOfAsPrincipal",
-                "static com.kuflow.rest.util.TaskHelper.findElementValueOfAsString",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsDocument",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsDocumentList",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsDouble",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsDoubleList",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsLocalDate",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsLocalDateList",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsMap",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsMapList",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsPrincipal",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsPrincipalList",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsString",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfAsStringList",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfValid",
-                "static com.kuflow.rest.util.TaskHelper.getElementValueOfValidAt",
-                "static com.kuflow.rest.util.TaskHelper.setElementValueOf",
-                "static com.kuflow.rest.util.TaskHelper.setElementValuesOf",
-                "static com.kuflow.rest.util.TaskHelper.setElementValueOfValid",
-                "static com.kuflow.rest.util.TaskHelper.setElementValueOfValidAt",
+                "com.kuflow.rest.util.TaskPageItemUtils",
                 "java.time.LocalDate",
                 "java.util.Map",
-                "java.util.Optional");
-
-        this.addMethodGetElementValueValid(modelClassCustomization, true);
-        this.addMethodGetElementValueValidAt(modelClassCustomization, true);
-        this.addMethodSetElementValueValid(modelClassCustomization, true);
-        this.addMethodSetElementValueValidAt(modelClassCustomization, true);
-
-        this.addMethodsElementValuesByType(modelClassCustomization, true, "String", "String");
-        this.addMethodsElementValuesByType(modelClassCustomization, true, "Double", "Double");
-        this.addMethodsElementValuesByType(modelClassCustomization, true, "LocalDate", "LocalDate");
-        this.addMethodsElementValuesByType(modelClassCustomization, true, "Map<String, Object>", "Map");
-        this.addMethodsElementValuesByType(modelClassCustomization, true, "TaskElementValueDocumentItem", "Document");
-        this.addMethodsElementValuesByType(modelClassCustomization, true, "TaskElementValuePrincipalItem", "Principal");
+                "java.util.Optional"
+        );
     }
 
-    private void addMethodsElementValuesByType(ClassCustomization modelClassCustomization, boolean userCode,
-            String elementValueType, String elementValueTypeName) {
-        this.addMethodPutElementValueAs(modelClassCustomization, userCode, elementValueType, elementValueTypeName);
-        this.addMethodPutElementValueAsList(modelClassCustomization, userCode, elementValueType, elementValueTypeName);
-        this.addMethodAddElementValueAs(modelClassCustomization, userCode, elementValueType, elementValueTypeName);
-        this.addMethodAddElementValueAsList(modelClassCustomization, userCode, elementValueType, elementValueTypeName);
-        this.addMethodGetElementValueAs(modelClassCustomization, userCode, elementValueType, elementValueTypeName);
-        this.addMethodGetElementValueAsList(modelClassCustomization, userCode, elementValueType, elementValueTypeName);
-        this.addMethodFindElementValueAs(modelClassCustomization, userCode, elementValueType, elementValueTypeName);
+    private void addMethodsElementValuesByType(
+        ClassCustomization modelClassCustomization,
+        String helperClass,
+        boolean userCode,
+        String elementValueType,
+        String elementValueTypeName
+    ) {
+        this.addMethodPutElementValueAs(modelClassCustomization, helperClass, userCode, elementValueType, elementValueTypeName);
+        this.addMethodPutElementValueAsList(modelClassCustomization, helperClass, userCode, elementValueType, elementValueTypeName);
+        this.addMethodAddElementValueAs(modelClassCustomization, helperClass, userCode, elementValueType, elementValueTypeName);
+        this.addMethodAddElementValueAsList(modelClassCustomization, helperClass, userCode, elementValueType, elementValueTypeName);
+        this.addMethodGetElementValueAs(modelClassCustomization, helperClass, userCode, elementValueType, elementValueTypeName);
+        this.addMethodGetElementValueAsList(modelClassCustomization, helperClass, userCode, elementValueType, elementValueTypeName);
+        this.addMethodFindElementValueAs(modelClassCustomization, helperClass, userCode, elementValueType, elementValueTypeName);
     }
 
-    private void addMethodGetElementValueValid(ClassCustomization modelClassCustomization, boolean userCode) {
+    private void addMethodGetElementValueValid(ClassCustomization modelClassCustomization, String helperClass, boolean userCode) {
         MethodCustomization methodCustomization = modelClassCustomization.addMethod(joinWithNewline("",
                 "public Boolean getElementValueValid(" + (userCode ? "String elementDefinitionCode" : "") + ") {",
-                "    return getElementValueOfValid(of(this" + (userCode ? ", elementDefinitionCode" : "") + "));",
+                "    return " + helperClass + ".getElementValueValid(this" + (userCode ? ", elementDefinitionCode" : "") + ");",
                 "}"));
+
+        methodCustomization = methodCustomization.addAnnotation("@Deprecated");
 
         JavadocCustomization javadocCustomization = methodCustomization.getJavadoc()
                 .setDescription("Check if all related valid values are TRUE")
                 .setReturn("TRUE if all related valid values are TRUE else FALSE.");
         if (userCode) {
-            javadocCustomization.setParam("elementDefinitionCode", "Element Definition Code");
+            javadocCustomization = javadocCustomization.setParam("elementDefinitionCode", "Element Definition Code");
         }
+        javadocCustomization.setDeprecated("in favor of {@link " + helperClass + "}");
     }
 
-    private void addMethodGetElementValueValidAt(ClassCustomization modelClassCustomization, boolean userCode) {
+    private void addMethodGetElementValueValidAt(ClassCustomization modelClassCustomization, String helperClass, boolean userCode) {
         MethodCustomization methodCustomization = modelClassCustomization.addMethod(joinWithNewline("",
-                "public Boolean getElementValueValidAt(" + (userCode ? "String elementDefinitionCode, " : "")
-                        + "int index) {",
-                "    return getElementValueOfValidAt(of(this" + (userCode ? ", elementDefinitionCode" : "")
-                        + "), index);",
+                "public Boolean getElementValueValidAt(" + (userCode ? "String elementDefinitionCode, " : "") + "int index) {",
+                "    return " + helperClass + ".getElementValueValidAt(this" + (userCode ? ", elementDefinitionCode" : "") + ", index);",
                 "}"));
+
+        methodCustomization = methodCustomization.addAnnotation("@Deprecated");
 
         JavadocCustomization javadocCustomization = methodCustomization.getJavadoc()
                 .setDescription("Check if all related valid values are TRUE")
                 .setReturn("The requested valid value");
         if (userCode) {
-            javadocCustomization.setParam("elementDefinitionCode", "Element Definition Code");
+            javadocCustomization = javadocCustomization.setParam("elementDefinitionCode", "Element Definition Code");
         }
-        javadocCustomization.setParam("index", "Element value index");
+        javadocCustomization
+                .setParam("index", "Element value index")
+                .setDeprecated("in favor of {@link " + helperClass + "}");
     }
 
-    private void addMethodSetElementValueValid(ClassCustomization modelClassCustomization, boolean userCode) {
+    private void addMethodSetElementValueValid(ClassCustomization modelClassCustomization, String helperClass, boolean userCode) {
         String className = modelClassCustomization.getClassName();
         MethodCustomization methodCustomization = modelClassCustomization.addMethod(joinWithNewline("",
-                "public " + className + " setElementValueValid(" + (userCode ? "String elementDefinitionCode, " : "")
-                        + "Boolean valid) {",
-                "    setElementValueOfValid(of(this" + (userCode ? ", elementDefinitionCode" : "") + "), valid);",
+                "public " + className + " setElementValueValid(" + (userCode ? "String elementDefinitionCode, " : "") + "Boolean valid) {",
+                "    " + helperClass + ".setElementValueValid(this" + (userCode ? ", elementDefinitionCode" : "") + ", valid);",
                 "    ",
                 "    return this;",
                 "}"));
+
+        methodCustomization = methodCustomization.addAnnotation("@Deprecated");
 
         JavadocCustomization javadocCustomization = methodCustomization.getJavadoc()
                 .setDescription("Set valid to all values")
-                .setReturn("the Task object itself.");
+                .setReturn("the object itself");
         if (userCode) {
-            javadocCustomization.setParam("elementDefinitionCode", "Element Definition Code");
+            javadocCustomization = javadocCustomization.setParam("elementDefinitionCode", "Element Definition Code");
         }
-        javadocCustomization.setParam("valid", "Valid value");
+        javadocCustomization
+            .setParam("valid", "Valid value")
+            .setDeprecated("in favor of {@link " + helperClass + "}");
     }
 
-    private void addMethodSetElementValueValidAt(ClassCustomization modelClassCustomization, boolean userCode) {
+    private void addMethodSetElementValueValidAt(ClassCustomization modelClassCustomization, String helperClass, boolean userCode) {
         String className = modelClassCustomization.getClassName();
         MethodCustomization methodCustomization = modelClassCustomization.addMethod(joinWithNewline("",
-                "public " + className + " setElementValueValidAt(" + (userCode ? "String elementDefinitionCode, " : "")
-                        + "Boolean valid, int index) {",
-                "    setElementValueOfValidAt(of(this" + (userCode ? ", elementDefinitionCode" : "")
-                        + "), valid, index);",
+                "public " + className + " setElementValueValidAt(" + (userCode ? "String elementDefinitionCode, " : "") + "Boolean valid, int index) {",
+                "    " + helperClass + ".setElementValueValidAt(this" + (userCode ? ", elementDefinitionCode" : "") + ", valid, index);",
                 "    ",
                 "    return this;",
                 "}"));
 
+        methodCustomization = methodCustomization.addAnnotation("@Deprecated");
+
         JavadocCustomization javadocCustomization = methodCustomization.getJavadoc()
                 .setDescription("Set valid to the selected value")
-                .setReturn("the Task object itself.");
+                .setReturn("the object itself");
         if (userCode) {
             javadocCustomization
                     .setParam("elementDefinitionCode", "Element Definition Code");
         }
         javadocCustomization
                 .setParam("valid", "Valid value")
-                .setParam("index", "Element value index");
-
+                .setParam("index", "Element value index")
+                .setDeprecated("in favor of {@link " + helperClass + "}");
     }
 
-    private void addMethodPutElementValueAs(ClassCustomization modelClassCustomization, boolean userCode,
-            String elementValueType, String elementValueTypeName) {
+    private void addMethodPutElementValueAs(
+        ClassCustomization modelClassCustomization,
+        String helperClass,
+        boolean userCode,
+        String elementValueType,
+        String elementValueTypeName
+    ) {
         String className = modelClassCustomization.getClassName();
 
         MethodCustomization methodCustomization = modelClassCustomization.addMethod(joinWithNewline("",
-                "public " + className + " setElementValueAs" + elementValueTypeName + "("
-                        + (userCode ? "String elementDefinitionCode, " : "") + elementValueType + " elementValue) {",
-                "    setElementValueOf(of(this" + (userCode ? ", elementDefinitionCode" : "") + "), elementValue);",
+                "public " + className + " setElementValueAs" + elementValueTypeName + "(" + (userCode ? "String elementDefinitionCode, " : "")
+                    + elementValueType + " elementValue) {",
+                "    " + helperClass + ".setElementValueAs" + elementValueTypeName + "(this" + (userCode ? ", elementDefinitionCode" : "") + ", elementValue);",
                 "    ",
                 "    return this;",
                 "}"));
 
+        methodCustomization = methodCustomization.addAnnotation("@Deprecated");
+
         JavadocCustomization javadocCustomization = methodCustomization.getJavadoc()
                 .setDescription("Set an element value")
-                .setReturn("the Task object itself.");
+                .setReturn("the object itself");
         if (userCode) {
-            javadocCustomization.setParam("elementDefinitionCode", "Element Definition Code");
+            javadocCustomization = javadocCustomization.setParam("elementDefinitionCode", "Element Definition Code");
         }
-        javadocCustomization.setParam("elementValue",
-                "Element value, if the value is null all current values are removed");
+        javadocCustomization
+                .setParam("elementValue", "Element value, if the value is null all current values are removed")
+                .setDeprecated("in favor of {@link " + helperClass + "}");
     }
 
-    private void addMethodPutElementValueAsList(ClassCustomization modelClassCustomization, boolean userCode,
-            String elementValueType, String elementValueTypeName) {
+    private void addMethodPutElementValueAsList(
+        ClassCustomization modelClassCustomization,
+        String helperClass,
+        boolean userCode,
+        String elementValueType,
+        String elementValueTypeName
+    ) {
         String className = modelClassCustomization.getClassName();
 
         MethodCustomization methodCustomization = modelClassCustomization.addMethod(joinWithNewline("",
                 "public " + className + " setElementValueAs" + elementValueTypeName + "List("
-                        + (userCode ? "String elementDefinitionCode, " : "") + "List<" + elementValueType
-                        + "> elementValues) {",
-                "    setElementValuesOf(of(this" + (userCode ? ", elementDefinitionCode" : "") + "), elementValues);",
+                    + (userCode ? "String elementDefinitionCode, " : "") + "List<" + elementValueType
+                    + "> elementValues) {",
+                "    " + helperClass + ".setElementValueAs" + elementValueTypeName + "List(this" + (userCode ? ", elementDefinitionCode" : "") + ", elementValues);",
                 "    ",
                 "    return this;",
                 "}"));
 
+        methodCustomization = methodCustomization.addAnnotation("@Deprecated");
+
         JavadocCustomization javadocCustomization = methodCustomization.getJavadoc()
                 .setDescription("Set all element values passed, previews values will be removed")
-                .setReturn("the Task object itself.");
+                .setReturn("the object itself");
         if (userCode) {
-            javadocCustomization.setParam("elementDefinitionCode", "Element Definition Code");
+            javadocCustomization = javadocCustomization.setParam("elementDefinitionCode", "Element Definition Code");
         }
-        javadocCustomization.setParam("elementValues",
-                "Element values, if the values are null all current values are removed");
+        javadocCustomization
+                .setParam("elementValues", "Element values, if the values are null all current values are removed")
+                .setDeprecated("in favor of {@link " + helperClass + "}");
     }
 
-    private void addMethodAddElementValueAs(ClassCustomization modelClassCustomization, boolean userCode,
-            String elementValueType, String elementValueTypeName) {
+    private void addMethodAddElementValueAs(
+        ClassCustomization modelClassCustomization,
+        String helperClass,
+        boolean userCode,
+        String elementValueType,
+        String elementValueTypeName
+    ) {
         String className = modelClassCustomization.getClassName();
         MethodCustomization methodCustomization = modelClassCustomization.addMethod(joinWithNewline("",
                 "public " + className + " addElementValueAs" + elementValueTypeName + "("
                         + (userCode ? "String elementDefinitionCode, " : "") + elementValueType + " elementValue) {",
-                "    addElementValueOf(of(this" + (userCode ? ", elementDefinitionCode" : "") + "), elementValue);",
+                "    " + helperClass + ".addElementValueAs" + elementValueTypeName + "(this" + (userCode ? ", elementDefinitionCode" : "") + ", elementValue);",
                 "    ",
                 "    return this;",
                 "}"));
 
+        methodCustomization = methodCustomization.addAnnotation("@Deprecated");
+
         JavadocCustomization javadocCustomization = methodCustomization.getJavadoc()
                 .setDescription("Add a new element value")
-                .setReturn("the Task object itself.");
+                .setReturn("the object itself");
         if (userCode) {
-            javadocCustomization.setParam("elementDefinitionCode", "Element Definition Code");
+            javadocCustomization = javadocCustomization.setParam("elementDefinitionCode", "Element Definition Code");
         }
-        javadocCustomization.setParam("elementValue", "Element value, if the values is null the value is not added");
+        javadocCustomization
+                .setParam("elementValue", "Element value, if the values is null the value is not added")
+                .setDeprecated("in favor of {@link " + helperClass + "}");
     }
 
-    private void addMethodAddElementValueAsList(ClassCustomization modelClassCustomization, boolean userCode,
-            String elementValueType, String elementValueTypeName) {
+    private void addMethodAddElementValueAsList(
+        ClassCustomization modelClassCustomization,
+        String helperClass,
+        boolean userCode,
+        String elementValueType,
+        String elementValueTypeName
+    ) {
         String className = modelClassCustomization.getClassName();
 
         MethodCustomization methodCustomization = modelClassCustomization.addMethod(joinWithNewline("",
                 "public " + className + " addElementValueAs" + elementValueTypeName + "List("
                         + (userCode ? "String elementDefinitionCode, " : "") + "List<" + elementValueType
                         + "> elementValues) {",
-                "    addElementValuesOf(of(this" + (userCode ? ", elementDefinitionCode" : "") + "), elementValues);",
+                "    " + helperClass + ".addElementValueAs" + elementValueTypeName + "List(this" + (userCode ? ", elementDefinitionCode" : "") + ", elementValues);",
                 "    ",
                 "    return this;",
                 "}"));
 
+        methodCustomization = methodCustomization.addAnnotation("@Deprecated");
+
         JavadocCustomization javadocCustomization = methodCustomization.getJavadoc()
                 .setDescription("Add all element values passed")
-                .setReturn("the Task object itself.");
+                .setReturn("the object itself");
         if (userCode) {
-            javadocCustomization.setParam("elementDefinitionCode", "Element Definition Code");
+            javadocCustomization = javadocCustomization.setParam("elementDefinitionCode", "Element Definition Code");
         }
-        javadocCustomization.setParam("elementValues", "Element values");
+        javadocCustomization
+                .setParam("elementValues", "Element values")
+                .setDeprecated("in favor of {@link " + helperClass + "}");
     }
 
-    private void addMethodGetElementValueAs(ClassCustomization modelClassCustomization, boolean userCode,
-            String elementValueType, String elementValueTypeName) {
+    private void addMethodGetElementValueAs(
+        ClassCustomization modelClassCustomization,
+        String helperClass,
+        boolean userCode,
+        String elementValueType,
+        String elementValueTypeName
+    ) {
         MethodCustomization methodCustomization = modelClassCustomization.addMethod(joinWithNewline("",
                 "public " + elementValueType + " getElementValueAs" + elementValueTypeName + "("
                         + (userCode ? "String elementDefinitionCode" : "") + ") {",
-                "    return getElementValueOfAs" + elementValueTypeName + "(of(this"
-                        + (userCode ? ", elementDefinitionCode" : "") + "));",
+                "    return " + helperClass + ".getElementValueAs" + elementValueTypeName + "(this" + (userCode ? ", elementDefinitionCode" : "") + ");",
                 "}"));
+
+        methodCustomization = methodCustomization.addAnnotation("@Deprecated");
 
         JavadocCustomization javadocCustomization = methodCustomization.getJavadoc()
                 .setDescription("Get an element as " + elementValueTypeName)
                 .setReturn("the element value.");
         if (userCode) {
-            javadocCustomization.setParam("elementDefinitionCode", "Element Definition Code");
+            javadocCustomization = javadocCustomization.setParam("elementDefinitionCode", "Element Definition Code");
         }
-        javadocCustomization.addThrows("com.kuflow.rest.KuFlowRestClientException", "If element value doesn't exists");
+        javadocCustomization
+                .addThrows("com.kuflow.rest.KuFlowRestClientException", "If element value doesn't exist")
+                .setDeprecated("in favor of {@link " + helperClass + "}");
     }
 
-    private void addMethodGetElementValueAsList(ClassCustomization modelClassCustomization, boolean userCode,
-            String elementValueType, String elementValueTypeName) {
+    private void addMethodGetElementValueAsList(
+        ClassCustomization modelClassCustomization,
+        String helperClass,
+        boolean userCode,
+        String elementValueType,
+        String elementValueTypeName
+    ) {
         MethodCustomization methodCustomization = modelClassCustomization.addMethod(joinWithNewline("",
                 "public List<" + elementValueType + "> getElementValueAs" + elementValueTypeName + "List("
                         + (userCode ? "String elementDefinitionCode" : "") + ") {",
-                "    return getElementValueOfAs" + elementValueTypeName + "List(of(this"
-                        + (userCode ? ", elementDefinitionCode" : "") + "));",
+                "    return " + helperClass + ".getElementValueAs" + elementValueTypeName + "List(this" + (userCode ? ", elementDefinitionCode" : "") + ");",
                 "}"));
+
+        methodCustomization = methodCustomization.addAnnotation("@Deprecated");
 
         JavadocCustomization javadocCustomization = methodCustomization.getJavadoc()
                 .setDescription("Get all elements as " + elementValueTypeName)
                 .setReturn("the elements values.");
         if (userCode) {
-            javadocCustomization.setParam("elementDefinitionCode", "Element Definition Code");
+            javadocCustomization = javadocCustomization.setParam("elementDefinitionCode", "Element Definition Code");
         }
+        javadocCustomization
+            .addThrows("com.kuflow.rest.KuFlowRestClientException", "If element value doesn't exist")
+            .setDeprecated("in favor of {@link " + helperClass + "}");
     }
 
-    private void addMethodFindElementValueAs(ClassCustomization modelClassCustomization, boolean userCode,
-            String elementValueType, String elementValueTypeName) {
+    private void addMethodFindElementValueAs(
+        ClassCustomization modelClassCustomization,
+        String helperClass,
+        boolean userCode,
+        String elementValueType,
+        String elementValueTypeName
+    ) {
         MethodCustomization methodCustomization = modelClassCustomization.addMethod(joinWithNewline("",
                 "public Optional<" + elementValueType + "> findElementValueAs" + elementValueTypeName + "("
                         + (userCode ? "String elementDefinitionCode" : "") + ") {",
-                "    return findElementValueOfAs" + elementValueTypeName + "(of(this"
-                        + (userCode ? ", elementDefinitionCode" : "") + "));",
+                "    return " + helperClass + ".findElementValueAs" + elementValueTypeName + "(this" + (userCode ? ", elementDefinitionCode" : "") + ");",
                 "}"));
+
+        methodCustomization = methodCustomization.addAnnotation("@Deprecated");
 
         JavadocCustomization javadocCustomization = methodCustomization.getJavadoc()
                 .setDescription("Try to get an element as " + elementValueTypeName)
@@ -527,6 +474,7 @@ public class KuFlowClientCustomization extends Customization {
         if (userCode) {
             javadocCustomization.setParam("elementDefinitionCode", "Element Definition Code");
         }
+        javadocCustomization.setDeprecated("in favor of {@link " + helperClass + "}");
     }
 
     private String joinWithNewline(String... lines) {

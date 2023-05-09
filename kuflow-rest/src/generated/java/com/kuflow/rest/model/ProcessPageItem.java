@@ -22,29 +22,11 @@
  */
 package com.kuflow.rest.model;
 
-import static com.kuflow.rest.util.ProcessElementValueAccessorProcessPageItem.of;
-import static com.kuflow.rest.util.ProcessHelper.addElementValueOf;
-import static com.kuflow.rest.util.ProcessHelper.addElementValuesOf;
-import static com.kuflow.rest.util.ProcessHelper.findElementValueOfAsDouble;
-import static com.kuflow.rest.util.ProcessHelper.findElementValueOfAsLocalDate;
-import static com.kuflow.rest.util.ProcessHelper.findElementValueOfAsString;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsDouble;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsDoubleList;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsLocalDate;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsLocalDateList;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsString;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsStringList;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfValid;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfValidAt;
-import static com.kuflow.rest.util.ProcessHelper.setElementValueOf;
-import static com.kuflow.rest.util.ProcessHelper.setElementValueOfValid;
-import static com.kuflow.rest.util.ProcessHelper.setElementValueOfValidAt;
-import static com.kuflow.rest.util.ProcessHelper.setElementValuesOf;
-
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.kuflow.rest.util.ProcessPageItemUtils;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -249,9 +231,11 @@ public final class ProcessPageItem extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return TRUE if all related valid values are TRUE else FALSE.
+     * @deprecated in favor of {@link ProcessPageItemUtils}
      */
+    @Deprecated
     public Boolean getElementValueValid(String elementDefinitionCode) {
-        return getElementValueOfValid(of(this, elementDefinitionCode));
+        return ProcessPageItemUtils.getElementValueValid(this, elementDefinitionCode);
     }
 
     /**
@@ -260,9 +244,11 @@ public final class ProcessPageItem extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @param index Element value index
      * @return The requested valid value
+     * @deprecated in favor of {@link ProcessPageItemUtils}
      */
+    @Deprecated
     public Boolean getElementValueValidAt(String elementDefinitionCode, int index) {
-        return getElementValueOfValidAt(of(this, elementDefinitionCode), index);
+        return ProcessPageItemUtils.getElementValueValidAt(this, elementDefinitionCode, index);
     }
 
     /**
@@ -270,10 +256,12 @@ public final class ProcessPageItem extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param valid Valid value
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessPageItemUtils}
      */
+    @Deprecated
     public ProcessPageItem setElementValueValid(String elementDefinitionCode, Boolean valid) {
-        setElementValueOfValid(of(this, elementDefinitionCode), valid);
+        ProcessPageItemUtils.setElementValueValid(this, elementDefinitionCode, valid);
 
         return this;
     }
@@ -284,10 +272,12 @@ public final class ProcessPageItem extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @param valid Valid value
      * @param index Element value index
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessPageItemUtils}
      */
+    @Deprecated
     public ProcessPageItem setElementValueValidAt(String elementDefinitionCode, Boolean valid, int index) {
-        setElementValueOfValidAt(of(this, elementDefinitionCode), valid, index);
+        ProcessPageItemUtils.setElementValueValidAt(this, elementDefinitionCode, valid, index);
 
         return this;
     }
@@ -297,10 +287,12 @@ public final class ProcessPageItem extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValue Element value, if the value is null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessPageItemUtils}
      */
+    @Deprecated
     public ProcessPageItem setElementValueAsString(String elementDefinitionCode, String elementValue) {
-        setElementValueOf(of(this, elementDefinitionCode), elementValue);
+        ProcessPageItemUtils.setElementValueAsString(this, elementDefinitionCode, elementValue);
 
         return this;
     }
@@ -310,10 +302,12 @@ public final class ProcessPageItem extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValues Element values, if the values are null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessPageItemUtils}
      */
+    @Deprecated
     public ProcessPageItem setElementValueAsStringList(String elementDefinitionCode, List<String> elementValues) {
-        setElementValuesOf(of(this, elementDefinitionCode), elementValues);
+        ProcessPageItemUtils.setElementValueAsStringList(this, elementDefinitionCode, elementValues);
 
         return this;
     }
@@ -323,10 +317,12 @@ public final class ProcessPageItem extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValue Element value, if the values is null the value is not added
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessPageItemUtils}
      */
+    @Deprecated
     public ProcessPageItem addElementValueAsString(String elementDefinitionCode, String elementValue) {
-        addElementValueOf(of(this, elementDefinitionCode), elementValue);
+        ProcessPageItemUtils.addElementValueAsString(this, elementDefinitionCode, elementValue);
 
         return this;
     }
@@ -336,10 +332,12 @@ public final class ProcessPageItem extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValues Element values
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessPageItemUtils}
      */
+    @Deprecated
     public ProcessPageItem addElementValueAsStringList(String elementDefinitionCode, List<String> elementValues) {
-        addElementValuesOf(of(this, elementDefinitionCode), elementValues);
+        ProcessPageItemUtils.addElementValueAsStringList(this, elementDefinitionCode, elementValues);
 
         return this;
     }
@@ -349,10 +347,13 @@ public final class ProcessPageItem extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
-     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link ProcessPageItemUtils}
      */
+    @Deprecated
     public String getElementValueAsString(String elementDefinitionCode) {
-        return getElementValueOfAsString(of(this, elementDefinitionCode));
+        return ProcessPageItemUtils.getElementValueAsString(this, elementDefinitionCode);
     }
 
     /**
@@ -360,9 +361,13 @@ public final class ProcessPageItem extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the elements values.
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link ProcessPageItemUtils}
      */
+    @Deprecated
     public List<String> getElementValueAsStringList(String elementDefinitionCode) {
-        return getElementValueOfAsStringList(of(this, elementDefinitionCode));
+        return ProcessPageItemUtils.getElementValueAsStringList(this, elementDefinitionCode);
     }
 
     /**
@@ -370,9 +375,11 @@ public final class ProcessPageItem extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the element value if exists.
+     * @deprecated in favor of {@link ProcessPageItemUtils}
      */
+    @Deprecated
     public Optional<String> findElementValueAsString(String elementDefinitionCode) {
-        return findElementValueOfAsString(of(this, elementDefinitionCode));
+        return ProcessPageItemUtils.findElementValueAsString(this, elementDefinitionCode);
     }
 
     /**
@@ -380,10 +387,12 @@ public final class ProcessPageItem extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValue Element value, if the value is null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessPageItemUtils}
      */
+    @Deprecated
     public ProcessPageItem setElementValueAsDouble(String elementDefinitionCode, Double elementValue) {
-        setElementValueOf(of(this, elementDefinitionCode), elementValue);
+        ProcessPageItemUtils.setElementValueAsDouble(this, elementDefinitionCode, elementValue);
 
         return this;
     }
@@ -393,10 +402,12 @@ public final class ProcessPageItem extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValues Element values, if the values are null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessPageItemUtils}
      */
+    @Deprecated
     public ProcessPageItem setElementValueAsDoubleList(String elementDefinitionCode, List<Double> elementValues) {
-        setElementValuesOf(of(this, elementDefinitionCode), elementValues);
+        ProcessPageItemUtils.setElementValueAsDoubleList(this, elementDefinitionCode, elementValues);
 
         return this;
     }
@@ -406,10 +417,12 @@ public final class ProcessPageItem extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValue Element value, if the values is null the value is not added
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessPageItemUtils}
      */
+    @Deprecated
     public ProcessPageItem addElementValueAsDouble(String elementDefinitionCode, Double elementValue) {
-        addElementValueOf(of(this, elementDefinitionCode), elementValue);
+        ProcessPageItemUtils.addElementValueAsDouble(this, elementDefinitionCode, elementValue);
 
         return this;
     }
@@ -419,10 +432,12 @@ public final class ProcessPageItem extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValues Element values
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessPageItemUtils}
      */
+    @Deprecated
     public ProcessPageItem addElementValueAsDoubleList(String elementDefinitionCode, List<Double> elementValues) {
-        addElementValuesOf(of(this, elementDefinitionCode), elementValues);
+        ProcessPageItemUtils.addElementValueAsDoubleList(this, elementDefinitionCode, elementValues);
 
         return this;
     }
@@ -432,10 +447,13 @@ public final class ProcessPageItem extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
-     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link ProcessPageItemUtils}
      */
+    @Deprecated
     public Double getElementValueAsDouble(String elementDefinitionCode) {
-        return getElementValueOfAsDouble(of(this, elementDefinitionCode));
+        return ProcessPageItemUtils.getElementValueAsDouble(this, elementDefinitionCode);
     }
 
     /**
@@ -443,9 +461,13 @@ public final class ProcessPageItem extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the elements values.
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link ProcessPageItemUtils}
      */
+    @Deprecated
     public List<Double> getElementValueAsDoubleList(String elementDefinitionCode) {
-        return getElementValueOfAsDoubleList(of(this, elementDefinitionCode));
+        return ProcessPageItemUtils.getElementValueAsDoubleList(this, elementDefinitionCode);
     }
 
     /**
@@ -453,9 +475,11 @@ public final class ProcessPageItem extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the element value if exists.
+     * @deprecated in favor of {@link ProcessPageItemUtils}
      */
+    @Deprecated
     public Optional<Double> findElementValueAsDouble(String elementDefinitionCode) {
-        return findElementValueOfAsDouble(of(this, elementDefinitionCode));
+        return ProcessPageItemUtils.findElementValueAsDouble(this, elementDefinitionCode);
     }
 
     /**
@@ -463,10 +487,12 @@ public final class ProcessPageItem extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValue Element value, if the value is null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessPageItemUtils}
      */
+    @Deprecated
     public ProcessPageItem setElementValueAsLocalDate(String elementDefinitionCode, LocalDate elementValue) {
-        setElementValueOf(of(this, elementDefinitionCode), elementValue);
+        ProcessPageItemUtils.setElementValueAsLocalDate(this, elementDefinitionCode, elementValue);
 
         return this;
     }
@@ -476,10 +502,12 @@ public final class ProcessPageItem extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValues Element values, if the values are null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessPageItemUtils}
      */
+    @Deprecated
     public ProcessPageItem setElementValueAsLocalDateList(String elementDefinitionCode, List<LocalDate> elementValues) {
-        setElementValuesOf(of(this, elementDefinitionCode), elementValues);
+        ProcessPageItemUtils.setElementValueAsLocalDateList(this, elementDefinitionCode, elementValues);
 
         return this;
     }
@@ -489,10 +517,12 @@ public final class ProcessPageItem extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValue Element value, if the values is null the value is not added
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessPageItemUtils}
      */
+    @Deprecated
     public ProcessPageItem addElementValueAsLocalDate(String elementDefinitionCode, LocalDate elementValue) {
-        addElementValueOf(of(this, elementDefinitionCode), elementValue);
+        ProcessPageItemUtils.addElementValueAsLocalDate(this, elementDefinitionCode, elementValue);
 
         return this;
     }
@@ -502,10 +532,12 @@ public final class ProcessPageItem extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValues Element values
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessPageItemUtils}
      */
+    @Deprecated
     public ProcessPageItem addElementValueAsLocalDateList(String elementDefinitionCode, List<LocalDate> elementValues) {
-        addElementValuesOf(of(this, elementDefinitionCode), elementValues);
+        ProcessPageItemUtils.addElementValueAsLocalDateList(this, elementDefinitionCode, elementValues);
 
         return this;
     }
@@ -515,10 +547,13 @@ public final class ProcessPageItem extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
-     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link ProcessPageItemUtils}
      */
+    @Deprecated
     public LocalDate getElementValueAsLocalDate(String elementDefinitionCode) {
-        return getElementValueOfAsLocalDate(of(this, elementDefinitionCode));
+        return ProcessPageItemUtils.getElementValueAsLocalDate(this, elementDefinitionCode);
     }
 
     /**
@@ -526,9 +561,13 @@ public final class ProcessPageItem extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the elements values.
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link ProcessPageItemUtils}
      */
+    @Deprecated
     public List<LocalDate> getElementValueAsLocalDateList(String elementDefinitionCode) {
-        return getElementValueOfAsLocalDateList(of(this, elementDefinitionCode));
+        return ProcessPageItemUtils.getElementValueAsLocalDateList(this, elementDefinitionCode);
     }
 
     /**
@@ -536,8 +575,10 @@ public final class ProcessPageItem extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the element value if exists.
+     * @deprecated in favor of {@link ProcessPageItemUtils}
      */
+    @Deprecated
     public Optional<LocalDate> findElementValueAsLocalDate(String elementDefinitionCode) {
-        return findElementValueOfAsLocalDate(of(this, elementDefinitionCode));
+        return ProcessPageItemUtils.findElementValueAsLocalDate(this, elementDefinitionCode);
     }
 }

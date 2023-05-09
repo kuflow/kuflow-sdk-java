@@ -38,6 +38,7 @@ import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidatio
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateRetrieveTaskRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateSaveProcessElementRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateSaveTaskElementRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateSaveTaskJsonFormsDataRequest;
 
 import com.kuflow.rest.KuFlowRestClient;
 import com.kuflow.rest.model.FindProcessesOptions;
@@ -54,6 +55,7 @@ import com.kuflow.rest.model.TaskDeleteElementCommand;
 import com.kuflow.rest.model.TaskDeleteElementValueDocumentCommand;
 import com.kuflow.rest.model.TaskPage;
 import com.kuflow.rest.model.TaskSaveElementCommand;
+import com.kuflow.rest.model.TaskSaveJsonFormsValueCommand;
 import com.kuflow.rest.operation.PrincipalOperations;
 import com.kuflow.rest.operation.ProcessOperations;
 import com.kuflow.rest.operation.TaskOperations;
@@ -91,6 +93,8 @@ import com.kuflow.temporal.activity.kuflow.model.SaveProcessElementRequest;
 import com.kuflow.temporal.activity.kuflow.model.SaveProcessElementResponse;
 import com.kuflow.temporal.activity.kuflow.model.SaveTaskElementRequest;
 import com.kuflow.temporal.activity.kuflow.model.SaveTaskElementResponse;
+import com.kuflow.temporal.activity.kuflow.model.SaveTaskJsonFormsDataRequest;
+import com.kuflow.temporal.activity.kuflow.model.SaveTaskJsonFormsDataResponse;
 import javax.annotation.Nonnull;
 
 public class KuFlowSyncActivitiesImpl implements KuFlowSyncActivities {
@@ -400,6 +404,24 @@ public class KuFlowSyncActivitiesImpl implements KuFlowSyncActivities {
             Task task = this.taskOperations.actionsTaskDeleteElementValueDocument(request.getTaskId(), command);
 
             DeleteTaskElementValueDocumentResponse response = new DeleteTaskElementValueDocumentResponse();
+            response.setTask(task);
+
+            return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Override
+    public SaveTaskJsonFormsDataResponse saveTaskJsonFormsData(@Nonnull SaveTaskJsonFormsDataRequest request) {
+        try {
+            validateSaveTaskJsonFormsDataRequest(request);
+
+            TaskSaveJsonFormsValueCommand command = new TaskSaveJsonFormsValueCommand().setData(request.getData());
+
+            Task task = this.taskOperations.actionsTaskSaveJsonFormsData(request.getTaskId(), command);
+
+            SaveTaskJsonFormsDataResponse response = new SaveTaskJsonFormsDataResponse();
             response.setTask(task);
 
             return response;

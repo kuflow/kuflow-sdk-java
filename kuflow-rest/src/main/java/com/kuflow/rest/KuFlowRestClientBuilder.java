@@ -23,7 +23,6 @@
 package com.kuflow.rest;
 
 import static com.azure.core.util.AuthorizationChallengeHandler.WWW_AUTHENTICATE;
-import static java.util.stream.Collectors.toList;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -37,6 +36,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.AddDatePolicy;
@@ -67,7 +67,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
@@ -82,7 +81,12 @@ public final class KuFlowRestClientBuilder
 
     private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("kuflow-rest-client.properties");
 
-    private final ClientLogger logger = new ClientLogger(KuFlowRestClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(KuFlowRestClientBuilder.class);
+
+    // From the design guidelines, the platform info format is:
+    // <language runtime>; <os name> <os version>
+    private static final String PLATFORM_INFO_FORMAT = "%s; %s; %s";
+
     private String endpoint;
     private String clientId;
     private String clientSecret;
@@ -345,9 +349,9 @@ public final class KuFlowRestClientBuilder
             return this.pipeline;
         }
 
-        Configuration buildConfiguration = (this.configuration == null) ? Configuration.getGlobalConfiguration() : this.configuration;
-        ClientOptions buildClientOptions = (this.clientOptions == null) ? new ClientOptions() : this.clientOptions;
-        HttpLogOptions buildLogOptions = (this.httpLogOptions == null) ? new HttpLogOptions() : this.httpLogOptions;
+        Configuration localConfiguration = (this.configuration == null) ? Configuration.getGlobalConfiguration() : this.configuration;
+        ClientOptions localClientOptions = (this.clientOptions == null) ? new ClientOptions() : this.clientOptions;
+        HttpLogOptions localLogOptions = (this.httpLogOptions == null) ? new HttpLogOptions() : this.httpLogOptions;
 
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
@@ -355,18 +359,16 @@ public final class KuFlowRestClientBuilder
         String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
 
-        policies.add(new UserAgentPolicy("", clientName, clientVersion, buildConfiguration));
+        policies.add(new UserAgentPolicy(this.toUserAgentString(clientName, clientVersion, localConfiguration)));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
         HttpHeaders headers = new HttpHeaders();
-        buildClientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
+        localClientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
         // Add additional policies
-        policies.addAll(
-            this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL).collect(toList())
-        );
+        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL).forEach(policies::add);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(this.retryPolicy, this.retryOptions));
@@ -376,22 +378,22 @@ public final class KuFlowRestClientBuilder
         policies.add(new CookiePolicy());
 
         // Add additional policies
-        policies.addAll(
-            this.pipelinePolicies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                .collect(Collectors.toList())
-        );
+        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY).forEach(policies::add);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
         // Add logging policy
-        policies.add(new HttpLoggingPolicy(buildLogOptions));
+        policies.add(new HttpLoggingPolicy(localLogOptions));
 
-        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0])).httpClient(this.httpClient).build();
+        return new HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(this.httpClient)
+            .clientOptions(localClientOptions)
+            .build();
     }
 
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
         if (this.clientId == null || this.clientSecret == null) {
-            throw this.logger.logExceptionAsError(new IllegalArgumentException("Both 'clientId' and 'clientSecret' are required."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Both 'clientId' and 'clientSecret' are required."));
         }
 
         boolean allowInsecureConnection = this.allowInsecureConnection;
@@ -430,6 +432,70 @@ public final class KuFlowRestClientBuilder
                         return Mono.just(httpResponse);
                     });
             }
+
+            @Override
+            public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+                if ("http".equals(context.getHttpRequest().getUrl().getProtocol()) && !allowInsecureConnection) {
+                    throw LOGGER.logExceptionAsError(
+                        new RuntimeException("token credentials require a URL using the HTTPS protocol scheme")
+                    );
+                }
+                HttpPipelineNextSyncPolicy nextPolicy = next.clone();
+
+                authorizeRequestSync(context);
+                HttpResponse httpResponse = next.processSync();
+                String authHeader = httpResponse.getHeaderValue(WWW_AUTHENTICATE);
+                if (httpResponse.getStatusCode() == 401 && authHeader != null) {
+                    if (authorizeRequestOnChallengeSync(context, httpResponse)) {
+                        // Both Netty and OkHttp expect the requestBody to be closed after the response has been read.
+                        // Failure to do so results in memory leak.
+                        // In case of StreamResponse (or other scenarios where we do not eagerly read the response)
+                        // the response body may not be consumed.
+                        // This can cause potential leaks in the scenarios like above, where the policy
+                        // may intercept the response and it may never be read.
+                        // Forcing the read here - so that the memory can be released.
+                        return nextPolicy.processSync();
+                    } else {
+                        return httpResponse;
+                    }
+                }
+                return httpResponse;
+            }
         };
+    }
+
+    private String toUserAgentString(String sdkName, String sdkVersion, Configuration configuration) {
+        StringBuilder userAgentBuilder = new StringBuilder();
+
+        // Add the required default User-Agent string.
+        userAgentBuilder.append("sdk-js").append("-").append(sdkName).append("/").append(sdkVersion);
+
+        // Only add the platform telemetry if it is allowed as it is optional.
+        if (!isTelemetryDisabled(configuration)) {
+            userAgentBuilder.append(" ").append("(").append(getPlatformInfo()).append(")");
+        }
+
+        return userAgentBuilder.toString();
+    }
+
+    /**
+     * Retrieves the telemetry disabled flag from the passed configuration if it isn't {@code null} otherwise it will
+     * check in the global configuration.
+     */
+    private static boolean isTelemetryDisabled(Configuration configuration) {
+        return (configuration == null)
+            ? Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, false)
+            : configuration.get(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, false);
+    }
+
+    /**
+     * Retrieves the platform information telemetry that is appended to the User-Agent header.
+     */
+    private static String getPlatformInfo() {
+        String javaVersion = Configuration.getGlobalConfiguration().get("java.version");
+        String osName = Configuration.getGlobalConfiguration().get("os.name");
+        String osVersion = Configuration.getGlobalConfiguration().get("os.version");
+
+        return String.format(PLATFORM_INFO_FORMAT, javaVersion, osName, osVersion);
     }
 }

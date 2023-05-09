@@ -1,0 +1,27 @@
+{
+  "objectType": "TASK",
+  "id": "e2d0fdf9-0aae-4eed-9e07-8e4b76df733c",
+  "state": "CLAIMED",
+  "taskDefinition": {
+    "id": "5279a366-2401-4c3e-8eb6-2d2c71d74f0e",
+    "version": "022311ae-ce15-460c-90ba-0469c61f959b",
+    "code": "TASK_001",
+    "name": "Task 001 Definition"
+  },
+  "jsonFormsValue": {
+    "valid": true,
+    "data": {
+      "key1": "value1",
+      "key2": [ "value2_0", "value2_1", 505 ],
+      "key3": [{ "key3_0":  "value3_0" }, { "key3_1":  "value3_1" } ],
+      "key4": {
+        "key4_child1": "value4_child1",
+        "key4_child2": [ "key4_child2_0", "key4_child2_1" ]
+      },
+      "key5": "2022-05-05",
+      "key6": "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;",
+      "key7": "kuflow-principal-user:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Hommer Simpsons;",
+      "key8": [ true, false ]
+    }
+  }
+}
