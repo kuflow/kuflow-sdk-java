@@ -40,7 +40,7 @@ import com.kuflow.temporal.activity.kuflow.model.RetrieveProcessRequest;
 import com.kuflow.temporal.activity.kuflow.model.RetrieveTaskRequest;
 import com.kuflow.temporal.activity.kuflow.model.SaveProcessElementRequest;
 import com.kuflow.temporal.activity.kuflow.model.SaveTaskElementRequest;
-import com.kuflow.temporal.activity.kuflow.model.SaveTaskJsonFormsDataRequest;
+import com.kuflow.temporal.activity.kuflow.model.SaveTaskJsonFormsValueDataRequest;
 import io.temporal.failure.ApplicationFailure;
 
 public class KuFlowActivitiesValidation {
@@ -165,7 +165,7 @@ public class KuFlowActivitiesValidation {
         }
     }
 
-    public static void validateSaveTaskJsonFormsDataRequest(SaveTaskJsonFormsDataRequest request) {
+    public static void validateSaveTaskJsonFormsDataRequest(SaveTaskJsonFormsValueDataRequest request) {
         if (request.getTaskId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'taskId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }

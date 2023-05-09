@@ -55,7 +55,7 @@ import com.kuflow.rest.model.TaskDeleteElementCommand;
 import com.kuflow.rest.model.TaskDeleteElementValueDocumentCommand;
 import com.kuflow.rest.model.TaskPage;
 import com.kuflow.rest.model.TaskSaveElementCommand;
-import com.kuflow.rest.model.TaskSaveJsonFormsValueCommand;
+import com.kuflow.rest.model.TaskSaveJsonFormsValueDataCommand;
 import com.kuflow.rest.operation.PrincipalOperations;
 import com.kuflow.rest.operation.ProcessOperations;
 import com.kuflow.rest.operation.TaskOperations;
@@ -93,8 +93,8 @@ import com.kuflow.temporal.activity.kuflow.model.SaveProcessElementRequest;
 import com.kuflow.temporal.activity.kuflow.model.SaveProcessElementResponse;
 import com.kuflow.temporal.activity.kuflow.model.SaveTaskElementRequest;
 import com.kuflow.temporal.activity.kuflow.model.SaveTaskElementResponse;
-import com.kuflow.temporal.activity.kuflow.model.SaveTaskJsonFormsDataRequest;
-import com.kuflow.temporal.activity.kuflow.model.SaveTaskJsonFormsDataResponse;
+import com.kuflow.temporal.activity.kuflow.model.SaveTaskJsonFormsValueDataRequest;
+import com.kuflow.temporal.activity.kuflow.model.SaveTaskJsonFormsValueDataResponse;
 import javax.annotation.Nonnull;
 
 public class KuFlowSyncActivitiesImpl implements KuFlowSyncActivities {
@@ -413,15 +413,15 @@ public class KuFlowSyncActivitiesImpl implements KuFlowSyncActivities {
     }
 
     @Override
-    public SaveTaskJsonFormsDataResponse saveTaskJsonFormsData(@Nonnull SaveTaskJsonFormsDataRequest request) {
+    public SaveTaskJsonFormsValueDataResponse saveTaskJsonFormsValueData(@Nonnull SaveTaskJsonFormsValueDataRequest request) {
         try {
             validateSaveTaskJsonFormsDataRequest(request);
 
-            TaskSaveJsonFormsValueCommand command = new TaskSaveJsonFormsValueCommand().setData(request.getData());
+            TaskSaveJsonFormsValueDataCommand command = new TaskSaveJsonFormsValueDataCommand().setData(request.getData());
 
-            Task task = this.taskOperations.actionsTaskSaveJsonFormsData(request.getTaskId(), command);
+            Task task = this.taskOperations.actionsTaskSaveJsonFormsValueData(request.getTaskId(), command);
 
-            SaveTaskJsonFormsDataResponse response = new SaveTaskJsonFormsDataResponse();
+            SaveTaskJsonFormsValueDataResponse response = new SaveTaskJsonFormsValueDataResponse();
             response.setTask(task);
 
             return response;

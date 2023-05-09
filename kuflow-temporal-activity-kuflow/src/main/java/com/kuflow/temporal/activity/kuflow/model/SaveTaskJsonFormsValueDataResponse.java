@@ -25,7 +25,7 @@ package com.kuflow.temporal.activity.kuflow.model;
 import com.kuflow.rest.model.Task;
 import com.kuflow.temporal.common.model.AbstractModel;
 
-public class SaveTaskJsonFormsDataResponse extends AbstractModel {
+public class SaveTaskJsonFormsValueDataResponse extends AbstractModel {
 
     private Task task;
 

@@ -45,9 +45,9 @@ import com.kuflow.rest.model.TaskDeleteElementValueDocumentCommand;
 import com.kuflow.rest.model.TaskPage;
 import com.kuflow.rest.model.TaskSaveElementCommand;
 import com.kuflow.rest.model.TaskSaveElementValueDocumentCommand;
-import com.kuflow.rest.model.TaskSaveJsonFormsDocumentRequestCommand;
-import com.kuflow.rest.model.TaskSaveJsonFormsDocumentResponseCommand;
-import com.kuflow.rest.model.TaskSaveJsonFormsValueCommand;
+import com.kuflow.rest.model.TaskSaveJsonFormsValueDataCommand;
+import com.kuflow.rest.model.TaskSaveJsonFormsValueDocumentRequestCommand;
+import com.kuflow.rest.model.TaskSaveJsonFormsValueDocumentResponseCommand;
 import com.kuflow.rest.model.TaskState;
 import java.util.List;
 import java.util.Objects;
@@ -622,8 +622,12 @@ public final class TaskOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Task> actionsTaskSaveJsonFormsDataWithResponse(UUID id, TaskSaveJsonFormsValueCommand command, Context context) {
-        return this.service.actionsTaskSaveJsonFormsDataWithResponse(id, command, context);
+    public Response<Task> actionsTaskSaveJsonFormsValueDataWithResponse(
+        UUID id,
+        TaskSaveJsonFormsValueDataCommand command,
+        Context context
+    ) {
+        return this.service.actionsTaskSaveJsonFormsValueDataWithResponse(id, command, context);
     }
 
     /**
@@ -640,8 +644,8 @@ public final class TaskOperations {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Task actionsTaskSaveJsonFormsData(UUID id, TaskSaveJsonFormsValueCommand command) {
-        return this.actionsTaskSaveJsonFormsDataWithResponse(id, command, Context.NONE).getValue();
+    public Task actionsTaskSaveJsonFormsValueData(UUID id, TaskSaveJsonFormsValueDataCommand command) {
+        return this.actionsTaskSaveJsonFormsValueDataWithResponse(id, command, Context.NONE).getValue();
     }
 
     /**
@@ -659,9 +663,9 @@ public final class TaskOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TaskSaveJsonFormsDocumentResponseCommand> actionsTaskSaveJsonFormsDocumentWithResponse(
+    public Response<TaskSaveJsonFormsValueDocumentResponseCommand> actionsTaskSaveJsonFormsValueDocumentWithResponse(
         UUID id,
-        TaskSaveJsonFormsDocumentRequestCommand command,
+        TaskSaveJsonFormsValueDocumentRequestCommand command,
         Document document,
         Context context
     ) {
@@ -680,7 +684,7 @@ public final class TaskOperations {
         BinaryData file = document.getFileContent();
         long contentLength = file.getLength();
 
-        return this.service.actionsTaskSaveJsonFormsDocumentWithResponse(
+        return this.service.actionsTaskSaveJsonFormsValueDocumentWithResponse(
                 id,
                 fileContentType,
                 fileName,
@@ -705,12 +709,12 @@ public final class TaskOperations {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TaskSaveJsonFormsDocumentResponseCommand actionsTaskSaveJsonFormsDocument(
+    public TaskSaveJsonFormsValueDocumentResponseCommand actionsTaskSaveJsonFormsValueDocument(
         UUID id,
-        TaskSaveJsonFormsDocumentRequestCommand command,
+        TaskSaveJsonFormsValueDocumentRequestCommand command,
         Document document
     ) {
-        return this.actionsTaskSaveJsonFormsDocumentWithResponse(id, command, document, Context.NONE).getValue();
+        return this.actionsTaskSaveJsonFormsValueDocumentWithResponse(id, command, document, Context.NONE).getValue();
     }
 
     /**
@@ -727,8 +731,8 @@ public final class TaskOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> actionsTaskDownloadJsonFormsDocumentWithResponse(UUID id, String documentUri, Context context) {
-        return this.service.actionsTaskDownloadJsonFormsDocumentWithResponse(id, documentUri, context);
+    public Response<BinaryData> actionsTaskDownloadJsonFormsValueDocumentWithResponse(UUID id, String documentUri, Context context) {
+        return this.service.actionsTaskDownloadJsonFormsValueDocumentWithResponse(id, documentUri, context);
     }
 
     /**
@@ -744,8 +748,8 @@ public final class TaskOperations {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData actionsTaskDownloadJsonFormsDocument(UUID id, String documentUri) {
-        return this.actionsTaskDownloadJsonFormsDocumentWithResponse(id, documentUri, Context.NONE).getValue();
+    public BinaryData actionsTaskDownloadJsonFormsValueDocument(UUID id, String documentUri) {
+        return this.actionsTaskDownloadJsonFormsValueDocumentWithResponse(id, documentUri, Context.NONE).getValue();
     }
 
     /**

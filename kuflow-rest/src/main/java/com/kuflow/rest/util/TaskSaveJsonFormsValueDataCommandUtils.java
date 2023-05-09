@@ -20,14 +20,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.temporal.activity.kuflow.util;
+package com.kuflow.rest.util;
 
 import com.kuflow.rest.KuFlowRestClientException;
 import com.kuflow.rest.model.JsonFormsFile;
 import com.kuflow.rest.model.JsonFormsPrincipalUser;
 import com.kuflow.rest.model.JsonFormsValue;
-import com.kuflow.rest.util.JsonFormsValueUtils;
-import com.kuflow.temporal.activity.kuflow.model.SaveTaskJsonFormsDataRequest;
+import com.kuflow.rest.model.TaskSaveJsonFormsValueDataCommand;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -35,162 +34,165 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Utility class for {@link SaveTaskJsonFormsDataRequest}
+ * Utility class for {@link TaskSaveJsonFormsValueDataCommand}
  */
-public final class SaveTaskJsonFormsDataRequestUtils {
+public final class TaskSaveJsonFormsValueDataCommandUtils {
 
-    private SaveTaskJsonFormsDataRequestUtils() {
+    private TaskSaveJsonFormsValueDataCommandUtils() {
         throw new RuntimeException("Utility class");
     }
 
     /**
      * Get a json property as String following the 'propertyPath' passed.
      *
-     * @param command Request command
+     * @param command TaskSaveJsonFormsValueDataCommand
      * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
      * @return the property value if exists.
      * @throws KuFlowRestClientException If property value doesn't exist
      */
-    public static String getJsonFormsPropertyAsString(SaveTaskJsonFormsDataRequest command, String propertyPath) {
+    public static String getJsonFormsPropertyAsString(TaskSaveJsonFormsValueDataCommand command, String propertyPath) {
         return JsonFormsValueUtils.getJsonFormsPropertyAsString(of(command), propertyPath);
     }
 
     /**
      * Try to find a json property as String following the 'propertyPath' passed.
      *
-     * @param command Request command
+     * @param command TaskSaveJsonFormsValueDataCommand
      * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
      * @return the property value if exists.
      */
-    public static Optional<String> findJsonFormsPropertyAsString(SaveTaskJsonFormsDataRequest command, String propertyPath) {
+    public static Optional<String> findJsonFormsPropertyAsString(TaskSaveJsonFormsValueDataCommand command, String propertyPath) {
         return JsonFormsValueUtils.findJsonFormsPropertyAsString(of(command), propertyPath);
     }
 
     /**
      * Get a json property as Integer following the 'propertyPath' passed.
      *
-     * @param command Request command
+     * @param command TaskSaveJsonFormsValueDataCommand
      * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
      * @return the property value if exists.
      * @throws KuFlowRestClientException If property value doesn't exist
      */
-    public static Integer getJsonFormsPropertyAsInteger(SaveTaskJsonFormsDataRequest command, String propertyPath) {
+    public static Integer getJsonFormsPropertyAsInteger(TaskSaveJsonFormsValueDataCommand command, String propertyPath) {
         return JsonFormsValueUtils.getJsonFormsPropertyAsInteger(of(command), propertyPath);
     }
 
     /**
      * Try to find a json property as Integer following the 'propertyPath' passed.
      *
-     * @param command Request command
+     * @param command TaskSaveJsonFormsValueDataCommand
      * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
      * @return the property value if exists.
      */
-    public static Optional<Integer> findJsonFormsPropertyAsInteger(SaveTaskJsonFormsDataRequest command, String propertyPath) {
+    public static Optional<Integer> findJsonFormsPropertyAsInteger(TaskSaveJsonFormsValueDataCommand command, String propertyPath) {
         return JsonFormsValueUtils.findJsonFormsPropertyAsInteger(of(command), propertyPath);
     }
 
     /**
      * Get a json property as Double following the 'propertyPath' passed.
      *
-     * @param command Request command
+     * @param command TaskSaveJsonFormsValueDataCommand
      * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
      * @return the property value if exists.
      * @throws KuFlowRestClientException If property value doesn't exist
      */
-    public static Double getJsonFormsPropertyAsDouble(SaveTaskJsonFormsDataRequest command, String propertyPath) {
+    public static Double getJsonFormsPropertyAsDouble(TaskSaveJsonFormsValueDataCommand command, String propertyPath) {
         return JsonFormsValueUtils.getJsonFormsPropertyAsDouble(of(command), propertyPath);
     }
 
     /**
      * Try to find a json property as Double following the 'propertyPath' passed.
      *
-     * @param command Request command
+     * @param command TaskSaveJsonFormsValueDataCommand
      * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
      * @return the property value if exists.
      */
-    public static Optional<Double> findJsonFormsPropertyAsDouble(SaveTaskJsonFormsDataRequest command, String propertyPath) {
+    public static Optional<Double> findJsonFormsPropertyAsDouble(TaskSaveJsonFormsValueDataCommand command, String propertyPath) {
         return JsonFormsValueUtils.findJsonFormsPropertyAsDouble(of(command), propertyPath);
     }
 
     /**
      * Get a json property as Boolean following the 'propertyPath' passed.
      *
-     * @param command Request command
+     * @param command TaskSaveJsonFormsValueDataCommand
      * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
      * @return the property value if exists.
      * @throws KuFlowRestClientException If property value doesn't exist
      */
-    public static Boolean getJsonFormsPropertyAsBoolean(SaveTaskJsonFormsDataRequest command, String propertyPath) {
+    public static Boolean getJsonFormsPropertyAsBoolean(TaskSaveJsonFormsValueDataCommand command, String propertyPath) {
         return JsonFormsValueUtils.getJsonFormsPropertyAsBoolean(of(command), propertyPath);
     }
 
     /**
      * Try to find a json property as Double following the 'propertyPath' passed.
      *
-     * @param command Request command
+     * @param command TaskSaveJsonFormsValueDataCommand
      * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
      * @return the property value if exists.
      */
-    public static Optional<Boolean> findJsonFormsPropertyAsBoolean(SaveTaskJsonFormsDataRequest command, String propertyPath) {
+    public static Optional<Boolean> findJsonFormsPropertyAsBoolean(TaskSaveJsonFormsValueDataCommand command, String propertyPath) {
         return JsonFormsValueUtils.findJsonFormsPropertyAsBoolean(of(command), propertyPath);
     }
 
     /**
      * Get a json property as LocalDate following the 'propertyPath' passed.
      *
-     * @param command Request command
+     * @param command TaskSaveJsonFormsValueDataCommand
      * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
      * @return the property value if exists.
      * @throws KuFlowRestClientException If property value doesn't exist
      */
-    public static LocalDate getJsonFormsPropertyAsLocalDate(SaveTaskJsonFormsDataRequest command, String propertyPath) {
+    public static LocalDate getJsonFormsPropertyAsLocalDate(TaskSaveJsonFormsValueDataCommand command, String propertyPath) {
         return JsonFormsValueUtils.getJsonFormsPropertyAsLocalDate(of(command), propertyPath);
     }
 
     /**
      * Try to find a json property as LocalDate following the 'propertyPath' passed.
      *
-     * @param command Request command
+     * @param command TaskSaveJsonFormsValueDataCommand
      * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
      * @return the property value if exists.
      */
-    public static Optional<LocalDate> findJsonFormsPropertyAsLocalDate(SaveTaskJsonFormsDataRequest command, String propertyPath) {
+    public static Optional<LocalDate> findJsonFormsPropertyAsLocalDate(TaskSaveJsonFormsValueDataCommand command, String propertyPath) {
         return JsonFormsValueUtils.findJsonFormsPropertyAsLocalDate(of(command), propertyPath);
     }
 
     /**
      * Get a json property as JsonFormsFile following the 'propertyPath' passed.
      *
-     * @param command Request command
+     * @param command TaskSaveJsonFormsValueDataCommand
      * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
      * @return the property value if exists.
      * @throws KuFlowRestClientException If property value doesn't exist
      */
-    public static JsonFormsFile getJsonFormsPropertyAsJsonFormsFile(SaveTaskJsonFormsDataRequest command, String propertyPath) {
+    public static JsonFormsFile getJsonFormsPropertyAsJsonFormsFile(TaskSaveJsonFormsValueDataCommand command, String propertyPath) {
         return JsonFormsValueUtils.getJsonFormsPropertyAsJsonFormsFile(of(command), propertyPath);
     }
 
     /**
      * Try to find a json property as JsonFormsFile following the 'propertyPath' passed.
      *
-     * @param command Request command
+     * @param command TaskSaveJsonFormsValueDataCommand
      * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
      * @return the property value if exists.
      */
-    public static Optional<JsonFormsFile> findJsonFormsPropertyAsJsonFormsFile(SaveTaskJsonFormsDataRequest command, String propertyPath) {
+    public static Optional<JsonFormsFile> findJsonFormsPropertyAsJsonFormsFile(
+        TaskSaveJsonFormsValueDataCommand command,
+        String propertyPath
+    ) {
         return JsonFormsValueUtils.findJsonFormsPropertyAsJsonFormsFile(of(command), propertyPath);
     }
 
     /**
      * Get a json property as JsonFormsPrincipalUser following the 'propertyPath' passed.
      *
-     * @param command Request command
+     * @param command TaskSaveJsonFormsValueDataCommand
      * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
      * @return the property value if exists.
      * @throws KuFlowRestClientException If property value doesn't exist
      */
     public static JsonFormsPrincipalUser getJsonFormsPropertyAsJsonFormsPrincipalUser(
-        SaveTaskJsonFormsDataRequest command,
+        TaskSaveJsonFormsValueDataCommand command,
         String propertyPath
     ) {
         return JsonFormsValueUtils.getJsonFormsPropertyAsJsonFormsPrincipalUser(of(command), propertyPath);
@@ -199,12 +201,12 @@ public final class SaveTaskJsonFormsDataRequestUtils {
     /**
      * Try to find a json property as JsonFormsPrincipalUser following the 'propertyPath' passed.
      *
-     * @param command Request command
+     * @param command TaskSaveJsonFormsValueDataCommand
      * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
      * @return the property value if exists.
      */
     public static Optional<JsonFormsPrincipalUser> findJsonFormsPropertyAsJsonFormsPrincipalUser(
-        SaveTaskJsonFormsDataRequest command,
+        TaskSaveJsonFormsValueDataCommand command,
         String propertyPath
     ) {
         return JsonFormsValueUtils.findJsonFormsPropertyAsJsonFormsPrincipalUser(of(command), propertyPath);
@@ -213,81 +215,81 @@ public final class SaveTaskJsonFormsDataRequestUtils {
     /**
      * Get a json property as List following the 'propertyPath' passed.
      *
-     * @param command Request command
+     * @param command TaskSaveJsonFormsValueDataCommand
      * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
      * @return the property value if exists.
      * @throws KuFlowRestClientException If property value doesn't exist or is not a List
      */
-    public static List<Object> getJsonFormsPropertyAsList(SaveTaskJsonFormsDataRequest command, String propertyPath) {
+    public static List<Object> getJsonFormsPropertyAsList(TaskSaveJsonFormsValueDataCommand command, String propertyPath) {
         return JsonFormsValueUtils.getJsonFormsPropertyAsList(of(command), propertyPath);
     }
 
     /**
      * Try to find a json property as List following the 'propertyPath' passed.
      *
-     * @param command Request command
+     * @param command TaskSaveJsonFormsValueDataCommand
      * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
      * @return the property value if exists.
      */
-    public static Optional<List<Object>> findJsonFormsPropertyAsList(SaveTaskJsonFormsDataRequest command, String propertyPath) {
+    public static Optional<List<Object>> findJsonFormsPropertyAsList(TaskSaveJsonFormsValueDataCommand command, String propertyPath) {
         return JsonFormsValueUtils.findJsonFormsPropertyAsList(of(command), propertyPath);
     }
 
     /**
      * Get a json property as Map following the 'propertyPath' passed.
      *
-     * @param command Request command
+     * @param command TaskSaveJsonFormsValueDataCommand
      * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
      * @return the property value if exists.
      * @throws KuFlowRestClientException If property value doesn't exist or is not a List
      */
-    public static Map<String, Object> getJsonFormsPropertyAsMap(SaveTaskJsonFormsDataRequest command, String propertyPath) {
+    public static Map<String, Object> getJsonFormsPropertyAsMap(TaskSaveJsonFormsValueDataCommand command, String propertyPath) {
         return JsonFormsValueUtils.getJsonFormsPropertyAsMap(of(command), propertyPath);
     }
 
     /**
      * Try to find a json property as Map following the 'propertyPath' passed.
      *
-     * @param command Request command
+     * @param command TaskSaveJsonFormsValueDataCommand
      * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
      * @return the property value if exists.
      */
-    public static Optional<Map<String, Object>> findJsonFormsPropertyAsMap(SaveTaskJsonFormsDataRequest command, String propertyPath) {
+    public static Optional<Map<String, Object>> findJsonFormsPropertyAsMap(TaskSaveJsonFormsValueDataCommand command, String propertyPath) {
         return JsonFormsValueUtils.findJsonFormsPropertyAsMap(of(command), propertyPath);
     }
 
     /**
      * Get a json property following the 'propertyPath' passed.
      *
-     * @param command Request command
+     * @param command TaskSaveJsonFormsValueDataCommand
      * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
      * @return the property value if exists.
      * @throws KuFlowRestClientException If property value doesn't exist
      */
-    public static Object getJsonFormsProperty(SaveTaskJsonFormsDataRequest command, String propertyPath) {
+    public static Object getJsonFormsProperty(TaskSaveJsonFormsValueDataCommand command, String propertyPath) {
         return JsonFormsValueUtils.getJsonFormsProperty(of(command), propertyPath);
     }
 
     /**
      * Try to find a json property following the 'propertyPath' passed.
      *
-     * @param command Request command
+     * @param command TaskSaveJsonFormsValueDataCommand
      * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
      * @return the property value if exists.
      */
-    public static Optional<Object> findJsonFormsProperty(SaveTaskJsonFormsDataRequest command, String propertyPath) {
+    public static Optional<Object> findJsonFormsProperty(TaskSaveJsonFormsValueDataCommand command, String propertyPath) {
         return JsonFormsValueUtils.findJsonFormsProperty(of(command), propertyPath);
     }
 
     /**
      * Update a json forms data property in the task passed following the 'propertyPath'.
      *
-     * @param command Request command
+     * @param command TaskSaveJsonFormsValueDataCommand
      * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
      * @param value Value to update
      * @throws KuFlowRestClientException If property parent path doesn't exist
      */
-    public static void updateJsonFormsProperty(SaveTaskJsonFormsDataRequest command, String propertyPath, Object value) {
+    public static void updateJsonFormsProperty(TaskSaveJsonFormsValueDataCommand command, String propertyPath, Object value) {
         if (command.getData() == null) {
             command.setData(new HashMap<>());
         }
@@ -295,7 +297,7 @@ public final class SaveTaskJsonFormsDataRequestUtils {
         JsonFormsValueUtils.updateJsonFormsProperty(of(command), propertyPath, value);
     }
 
-    private static JsonFormsValue of(SaveTaskJsonFormsDataRequest command) {
+    private static JsonFormsValue of(TaskSaveJsonFormsValueDataCommand command) {
         return new JsonFormsValue().setData(command.getData());
     }
 }

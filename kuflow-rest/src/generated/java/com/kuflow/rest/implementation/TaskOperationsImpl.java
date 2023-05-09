@@ -48,8 +48,8 @@ import com.kuflow.rest.model.TaskDeleteElementCommand;
 import com.kuflow.rest.model.TaskDeleteElementValueDocumentCommand;
 import com.kuflow.rest.model.TaskPage;
 import com.kuflow.rest.model.TaskSaveElementCommand;
-import com.kuflow.rest.model.TaskSaveJsonFormsDocumentResponseCommand;
-import com.kuflow.rest.model.TaskSaveJsonFormsValueCommand;
+import com.kuflow.rest.model.TaskSaveJsonFormsValueDataCommand;
+import com.kuflow.rest.model.TaskSaveJsonFormsValueDocumentResponseCommand;
 import com.kuflow.rest.model.TaskState;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -338,30 +338,30 @@ public final class TaskOperationsImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/tasks/{id}/~actions/save-json-forms-data")
+        @Post("/tasks/{id}/~actions/save-json-forms-value-data")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<Task>> actionsTaskSaveJsonFormsData(
+        Mono<Response<Task>> actionsTaskSaveJsonFormsValueData(
                 @HostParam("$host") String host,
                 @PathParam("id") UUID id,
-                @BodyParam("application/json") TaskSaveJsonFormsValueCommand command,
+                @BodyParam("application/json") TaskSaveJsonFormsValueDataCommand command,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/tasks/{id}/~actions/save-json-forms-data")
+        @Post("/tasks/{id}/~actions/save-json-forms-value-data")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Response<Task> actionsTaskSaveJsonFormsDataSync(
+        Response<Task> actionsTaskSaveJsonFormsValueDataSync(
                 @HostParam("$host") String host,
                 @PathParam("id") UUID id,
-                @BodyParam("application/json") TaskSaveJsonFormsValueCommand command,
+                @BodyParam("application/json") TaskSaveJsonFormsValueDataCommand command,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/tasks/{id}/~actions/save-json-forms-document")
+        @Post("/tasks/{id}/~actions/save-json-forms-value-document")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<TaskSaveJsonFormsDocumentResponseCommand>> actionsTaskSaveJsonFormsDocument(
+        Mono<Response<TaskSaveJsonFormsValueDocumentResponseCommand>> actionsTaskSaveJsonFormsValueDocument(
                 @HostParam("$host") String host,
                 @PathParam("id") UUID id,
                 @QueryParam("fileContentType") String fileContentType,
@@ -372,10 +372,10 @@ public final class TaskOperationsImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/tasks/{id}/~actions/save-json-forms-document")
+        @Post("/tasks/{id}/~actions/save-json-forms-value-document")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<TaskSaveJsonFormsDocumentResponseCommand>> actionsTaskSaveJsonFormsDocument(
+        Mono<Response<TaskSaveJsonFormsValueDocumentResponseCommand>> actionsTaskSaveJsonFormsValueDocument(
                 @HostParam("$host") String host,
                 @PathParam("id") UUID id,
                 @QueryParam("fileContentType") String fileContentType,
@@ -386,10 +386,10 @@ public final class TaskOperationsImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/tasks/{id}/~actions/save-json-forms-document")
+        @Post("/tasks/{id}/~actions/save-json-forms-value-document")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Response<TaskSaveJsonFormsDocumentResponseCommand> actionsTaskSaveJsonFormsDocumentSync(
+        Response<TaskSaveJsonFormsValueDocumentResponseCommand> actionsTaskSaveJsonFormsValueDocumentSync(
                 @HostParam("$host") String host,
                 @PathParam("id") UUID id,
                 @QueryParam("fileContentType") String fileContentType,
@@ -400,20 +400,20 @@ public final class TaskOperationsImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Get("/tasks/{id}/~actions/download-json-forms-document")
+        @Get("/tasks/{id}/~actions/download-json-forms-value-document")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<BinaryData>> actionsTaskDownloadJsonFormsDocument(
+        Mono<Response<BinaryData>> actionsTaskDownloadJsonFormsValueDocument(
                 @HostParam("$host") String host,
                 @PathParam("id") UUID id,
                 @QueryParam("documentUri") String documentUri,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Get("/tasks/{id}/~actions/download-json-forms-document")
+        @Get("/tasks/{id}/~actions/download-json-forms-value-document")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Response<BinaryData> actionsTaskDownloadJsonFormsDocumentSync(
+        Response<BinaryData> actionsTaskDownloadJsonFormsValueDocumentSync(
                 @HostParam("$host") String host,
                 @PathParam("id") UUID id,
                 @QueryParam("documentUri") String documentUri,
@@ -2617,11 +2617,12 @@ public final class TaskOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Task>> actionsTaskSaveJsonFormsDataWithResponseAsync(
-            UUID id, TaskSaveJsonFormsValueCommand command) {
+    public Mono<Response<Task>> actionsTaskSaveJsonFormsValueDataWithResponseAsync(
+            UUID id, TaskSaveJsonFormsValueDataCommand command) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.actionsTaskSaveJsonFormsData(this.client.getHost(), id, command, accept, context));
+                context ->
+                        service.actionsTaskSaveJsonFormsValueData(this.client.getHost(), id, command, accept, context));
     }
 
     /**
@@ -2639,10 +2640,10 @@ public final class TaskOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Task>> actionsTaskSaveJsonFormsDataWithResponseAsync(
-            UUID id, TaskSaveJsonFormsValueCommand command, Context context) {
+    public Mono<Response<Task>> actionsTaskSaveJsonFormsValueDataWithResponseAsync(
+            UUID id, TaskSaveJsonFormsValueDataCommand command, Context context) {
         final String accept = "application/json";
-        return service.actionsTaskSaveJsonFormsData(this.client.getHost(), id, command, accept, context);
+        return service.actionsTaskSaveJsonFormsValueData(this.client.getHost(), id, command, accept, context);
     }
 
     /**
@@ -2659,8 +2660,8 @@ public final class TaskOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Task> actionsTaskSaveJsonFormsDataAsync(UUID id, TaskSaveJsonFormsValueCommand command) {
-        return actionsTaskSaveJsonFormsDataWithResponseAsync(id, command)
+    public Mono<Task> actionsTaskSaveJsonFormsValueDataAsync(UUID id, TaskSaveJsonFormsValueDataCommand command) {
+        return actionsTaskSaveJsonFormsValueDataWithResponseAsync(id, command)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -2679,9 +2680,9 @@ public final class TaskOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Task> actionsTaskSaveJsonFormsDataAsync(
-            UUID id, TaskSaveJsonFormsValueCommand command, Context context) {
-        return actionsTaskSaveJsonFormsDataWithResponseAsync(id, command, context)
+    public Mono<Task> actionsTaskSaveJsonFormsValueDataAsync(
+            UUID id, TaskSaveJsonFormsValueDataCommand command, Context context) {
+        return actionsTaskSaveJsonFormsValueDataWithResponseAsync(id, command, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -2700,10 +2701,10 @@ public final class TaskOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Task> actionsTaskSaveJsonFormsDataWithResponse(
-            UUID id, TaskSaveJsonFormsValueCommand command, Context context) {
+    public Response<Task> actionsTaskSaveJsonFormsValueDataWithResponse(
+            UUID id, TaskSaveJsonFormsValueDataCommand command, Context context) {
         final String accept = "application/json";
-        return service.actionsTaskSaveJsonFormsDataSync(this.client.getHost(), id, command, accept, context);
+        return service.actionsTaskSaveJsonFormsValueDataSync(this.client.getHost(), id, command, accept, context);
     }
 
     /**
@@ -2720,8 +2721,8 @@ public final class TaskOperationsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Task actionsTaskSaveJsonFormsData(UUID id, TaskSaveJsonFormsValueCommand command) {
-        return actionsTaskSaveJsonFormsDataWithResponse(id, command, Context.NONE).getValue();
+    public Task actionsTaskSaveJsonFormsValueData(UUID id, TaskSaveJsonFormsValueDataCommand command) {
+        return actionsTaskSaveJsonFormsValueDataWithResponse(id, command, Context.NONE).getValue();
     }
 
     /**
@@ -2742,17 +2743,18 @@ public final class TaskOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TaskSaveJsonFormsDocumentResponseCommand>> actionsTaskSaveJsonFormsDocumentWithResponseAsync(
-            UUID id,
-            String fileContentType,
-            String fileName,
-            String schemaPath,
-            Flux<ByteBuffer> file,
-            long contentLength) {
+    public Mono<Response<TaskSaveJsonFormsValueDocumentResponseCommand>>
+            actionsTaskSaveJsonFormsValueDocumentWithResponseAsync(
+                    UUID id,
+                    String fileContentType,
+                    String fileName,
+                    String schemaPath,
+                    Flux<ByteBuffer> file,
+                    long contentLength) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.actionsTaskSaveJsonFormsDocument(
+                        service.actionsTaskSaveJsonFormsValueDocument(
                                 this.client.getHost(),
                                 id,
                                 fileContentType,
@@ -2783,16 +2785,17 @@ public final class TaskOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TaskSaveJsonFormsDocumentResponseCommand>> actionsTaskSaveJsonFormsDocumentWithResponseAsync(
-            UUID id,
-            String fileContentType,
-            String fileName,
-            String schemaPath,
-            Flux<ByteBuffer> file,
-            long contentLength,
-            Context context) {
+    public Mono<Response<TaskSaveJsonFormsValueDocumentResponseCommand>>
+            actionsTaskSaveJsonFormsValueDocumentWithResponseAsync(
+                    UUID id,
+                    String fileContentType,
+                    String fileName,
+                    String schemaPath,
+                    Flux<ByteBuffer> file,
+                    long contentLength,
+                    Context context) {
         final String accept = "application/json";
-        return service.actionsTaskSaveJsonFormsDocument(
+        return service.actionsTaskSaveJsonFormsValueDocument(
                 this.client.getHost(), id, fileContentType, fileName, schemaPath, file, contentLength, accept, context);
     }
 
@@ -2814,14 +2817,14 @@ public final class TaskOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TaskSaveJsonFormsDocumentResponseCommand> actionsTaskSaveJsonFormsDocumentAsync(
+    public Mono<TaskSaveJsonFormsValueDocumentResponseCommand> actionsTaskSaveJsonFormsValueDocumentAsync(
             UUID id,
             String fileContentType,
             String fileName,
             String schemaPath,
             Flux<ByteBuffer> file,
             long contentLength) {
-        return actionsTaskSaveJsonFormsDocumentWithResponseAsync(
+        return actionsTaskSaveJsonFormsValueDocumentWithResponseAsync(
                         id, fileContentType, fileName, schemaPath, file, contentLength)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -2845,7 +2848,7 @@ public final class TaskOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TaskSaveJsonFormsDocumentResponseCommand> actionsTaskSaveJsonFormsDocumentAsync(
+    public Mono<TaskSaveJsonFormsValueDocumentResponseCommand> actionsTaskSaveJsonFormsValueDocumentAsync(
             UUID id,
             String fileContentType,
             String fileName,
@@ -2853,7 +2856,7 @@ public final class TaskOperationsImpl {
             Flux<ByteBuffer> file,
             long contentLength,
             Context context) {
-        return actionsTaskSaveJsonFormsDocumentWithResponseAsync(
+        return actionsTaskSaveJsonFormsValueDocumentWithResponseAsync(
                         id, fileContentType, fileName, schemaPath, file, contentLength, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -2876,12 +2879,18 @@ public final class TaskOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TaskSaveJsonFormsDocumentResponseCommand>> actionsTaskSaveJsonFormsDocumentWithResponseAsync(
-            UUID id, String fileContentType, String fileName, String schemaPath, BinaryData file, long contentLength) {
+    public Mono<Response<TaskSaveJsonFormsValueDocumentResponseCommand>>
+            actionsTaskSaveJsonFormsValueDocumentWithResponseAsync(
+                    UUID id,
+                    String fileContentType,
+                    String fileName,
+                    String schemaPath,
+                    BinaryData file,
+                    long contentLength) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.actionsTaskSaveJsonFormsDocument(
+                        service.actionsTaskSaveJsonFormsValueDocument(
                                 this.client.getHost(),
                                 id,
                                 fileContentType,
@@ -2912,16 +2921,17 @@ public final class TaskOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TaskSaveJsonFormsDocumentResponseCommand>> actionsTaskSaveJsonFormsDocumentWithResponseAsync(
-            UUID id,
-            String fileContentType,
-            String fileName,
-            String schemaPath,
-            BinaryData file,
-            long contentLength,
-            Context context) {
+    public Mono<Response<TaskSaveJsonFormsValueDocumentResponseCommand>>
+            actionsTaskSaveJsonFormsValueDocumentWithResponseAsync(
+                    UUID id,
+                    String fileContentType,
+                    String fileName,
+                    String schemaPath,
+                    BinaryData file,
+                    long contentLength,
+                    Context context) {
         final String accept = "application/json";
-        return service.actionsTaskSaveJsonFormsDocument(
+        return service.actionsTaskSaveJsonFormsValueDocument(
                 this.client.getHost(), id, fileContentType, fileName, schemaPath, file, contentLength, accept, context);
     }
 
@@ -2943,9 +2953,9 @@ public final class TaskOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TaskSaveJsonFormsDocumentResponseCommand> actionsTaskSaveJsonFormsDocumentAsync(
+    public Mono<TaskSaveJsonFormsValueDocumentResponseCommand> actionsTaskSaveJsonFormsValueDocumentAsync(
             UUID id, String fileContentType, String fileName, String schemaPath, BinaryData file, long contentLength) {
-        return actionsTaskSaveJsonFormsDocumentWithResponseAsync(
+        return actionsTaskSaveJsonFormsValueDocumentWithResponseAsync(
                         id, fileContentType, fileName, schemaPath, file, contentLength)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -2969,7 +2979,7 @@ public final class TaskOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TaskSaveJsonFormsDocumentResponseCommand> actionsTaskSaveJsonFormsDocumentAsync(
+    public Mono<TaskSaveJsonFormsValueDocumentResponseCommand> actionsTaskSaveJsonFormsValueDocumentAsync(
             UUID id,
             String fileContentType,
             String fileName,
@@ -2977,7 +2987,7 @@ public final class TaskOperationsImpl {
             BinaryData file,
             long contentLength,
             Context context) {
-        return actionsTaskSaveJsonFormsDocumentWithResponseAsync(
+        return actionsTaskSaveJsonFormsValueDocumentWithResponseAsync(
                         id, fileContentType, fileName, schemaPath, file, contentLength, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -3001,7 +3011,7 @@ public final class TaskOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TaskSaveJsonFormsDocumentResponseCommand> actionsTaskSaveJsonFormsDocumentWithResponse(
+    public Response<TaskSaveJsonFormsValueDocumentResponseCommand> actionsTaskSaveJsonFormsValueDocumentWithResponse(
             UUID id,
             String fileContentType,
             String fileName,
@@ -3010,7 +3020,7 @@ public final class TaskOperationsImpl {
             long contentLength,
             Context context) {
         final String accept = "application/json";
-        return service.actionsTaskSaveJsonFormsDocumentSync(
+        return service.actionsTaskSaveJsonFormsValueDocumentSync(
                 this.client.getHost(), id, fileContentType, fileName, schemaPath, file, contentLength, accept, context);
     }
 
@@ -3032,9 +3042,9 @@ public final class TaskOperationsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TaskSaveJsonFormsDocumentResponseCommand actionsTaskSaveJsonFormsDocument(
+    public TaskSaveJsonFormsValueDocumentResponseCommand actionsTaskSaveJsonFormsValueDocument(
             UUID id, String fileContentType, String fileName, String schemaPath, BinaryData file, long contentLength) {
-        return actionsTaskSaveJsonFormsDocumentWithResponse(
+        return actionsTaskSaveJsonFormsValueDocumentWithResponse(
                         id, fileContentType, fileName, schemaPath, file, contentLength, Context.NONE)
                 .getValue();
     }
@@ -3052,12 +3062,12 @@ public final class TaskOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> actionsTaskDownloadJsonFormsDocumentWithResponseAsync(
+    public Mono<Response<BinaryData>> actionsTaskDownloadJsonFormsValueDocumentWithResponseAsync(
             UUID id, String documentUri) {
         final String accept = "application/octet-stream, application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.actionsTaskDownloadJsonFormsDocument(
+                        service.actionsTaskDownloadJsonFormsValueDocument(
                                 this.client.getHost(), id, documentUri, accept, context));
     }
 
@@ -3075,10 +3085,11 @@ public final class TaskOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> actionsTaskDownloadJsonFormsDocumentWithResponseAsync(
+    public Mono<Response<BinaryData>> actionsTaskDownloadJsonFormsValueDocumentWithResponseAsync(
             UUID id, String documentUri, Context context) {
         final String accept = "application/octet-stream, application/json";
-        return service.actionsTaskDownloadJsonFormsDocument(this.client.getHost(), id, documentUri, accept, context);
+        return service.actionsTaskDownloadJsonFormsValueDocument(
+                this.client.getHost(), id, documentUri, accept, context);
     }
 
     /**
@@ -3094,8 +3105,8 @@ public final class TaskOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> actionsTaskDownloadJsonFormsDocumentAsync(UUID id, String documentUri) {
-        return actionsTaskDownloadJsonFormsDocumentWithResponseAsync(id, documentUri)
+    public Mono<BinaryData> actionsTaskDownloadJsonFormsValueDocumentAsync(UUID id, String documentUri) {
+        return actionsTaskDownloadJsonFormsValueDocumentWithResponseAsync(id, documentUri)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -3113,8 +3124,9 @@ public final class TaskOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> actionsTaskDownloadJsonFormsDocumentAsync(UUID id, String documentUri, Context context) {
-        return actionsTaskDownloadJsonFormsDocumentWithResponseAsync(id, documentUri, context)
+    public Mono<BinaryData> actionsTaskDownloadJsonFormsValueDocumentAsync(
+            UUID id, String documentUri, Context context) {
+        return actionsTaskDownloadJsonFormsValueDocumentWithResponseAsync(id, documentUri, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -3132,10 +3144,10 @@ public final class TaskOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> actionsTaskDownloadJsonFormsDocumentWithResponse(
+    public Response<BinaryData> actionsTaskDownloadJsonFormsValueDocumentWithResponse(
             UUID id, String documentUri, Context context) {
         final String accept = "application/octet-stream, application/json";
-        return service.actionsTaskDownloadJsonFormsDocumentSync(
+        return service.actionsTaskDownloadJsonFormsValueDocumentSync(
                 this.client.getHost(), id, documentUri, accept, context);
     }
 
@@ -3152,8 +3164,8 @@ public final class TaskOperationsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData actionsTaskDownloadJsonFormsDocument(UUID id, String documentUri) {
-        return actionsTaskDownloadJsonFormsDocumentWithResponse(id, documentUri, Context.NONE).getValue();
+    public BinaryData actionsTaskDownloadJsonFormsValueDocument(UUID id, String documentUri) {
+        return actionsTaskDownloadJsonFormsValueDocumentWithResponse(id, documentUri, Context.NONE).getValue();
     }
 
     /**

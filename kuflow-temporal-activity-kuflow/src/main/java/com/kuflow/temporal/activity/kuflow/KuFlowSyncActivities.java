@@ -56,8 +56,8 @@ import com.kuflow.temporal.activity.kuflow.model.SaveProcessElementRequest;
 import com.kuflow.temporal.activity.kuflow.model.SaveProcessElementResponse;
 import com.kuflow.temporal.activity.kuflow.model.SaveTaskElementRequest;
 import com.kuflow.temporal.activity.kuflow.model.SaveTaskElementResponse;
-import com.kuflow.temporal.activity.kuflow.model.SaveTaskJsonFormsDataRequest;
-import com.kuflow.temporal.activity.kuflow.model.SaveTaskJsonFormsDataResponse;
+import com.kuflow.temporal.activity.kuflow.model.SaveTaskJsonFormsValueDataRequest;
+import com.kuflow.temporal.activity.kuflow.model.SaveTaskJsonFormsValueDataResponse;
 import io.temporal.activity.ActivityInterface;
 import io.temporal.activity.ActivityMethod;
 import javax.annotation.Nonnull;
@@ -249,7 +249,7 @@ public interface KuFlowSyncActivities {
      * @param request must not be {@literal null}.
      * @return task updated
      */
-    SaveTaskJsonFormsDataResponse saveTaskJsonFormsData(@Nonnull SaveTaskJsonFormsDataRequest request);
+    SaveTaskJsonFormsValueDataResponse saveTaskJsonFormsValueData(@Nonnull SaveTaskJsonFormsValueDataRequest request);
 
     /**
      * Append a log to the task.

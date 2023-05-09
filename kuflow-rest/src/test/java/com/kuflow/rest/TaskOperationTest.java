@@ -34,10 +34,10 @@ import com.kuflow.rest.model.JsonFormsPrincipalUser;
 import com.kuflow.rest.model.Task;
 import com.kuflow.rest.model.TaskPageItem;
 import com.kuflow.rest.model.TaskSaveElementCommand;
-import com.kuflow.rest.model.TaskSaveJsonFormsValueCommand;
+import com.kuflow.rest.model.TaskSaveJsonFormsValueDataCommand;
 import com.kuflow.rest.util.TaskPageItemUtils;
 import com.kuflow.rest.util.TaskSaveElementCommandUtils;
-import com.kuflow.rest.util.TaskSaveJsonFormsValueCommandUtils;
+import com.kuflow.rest.util.TaskSaveJsonFormsValueDataCommandUtils;
 import com.kuflow.rest.util.TaskUtils;
 import java.util.List;
 import java.util.Map;
@@ -81,13 +81,13 @@ public class TaskOperationTest extends AbstractOperationTest {
         UUID taskId = UUID.fromString("e2d0fdf9-0aae-4eed-9e07-8e4b76df733c");
 
         givenThat(
-            post("/v2022-10-08/tasks/" + taskId + "/~actions/save-json-forms-data")
+            post("/v2022-10-08/tasks/" + taskId + "/~actions/save-json-forms-value-data")
                 .withHeader("Authorization", equalTo("Bearer Q0xJRU5UX0lEOkNMSUVOVF9TRUNSRVQ="))
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("tasks-api.retrieve.ok.json"))
         );
-        TaskSaveJsonFormsValueCommand command = new TaskSaveJsonFormsValueCommand().setData(Map.of("key", "value"));
+        TaskSaveJsonFormsValueDataCommand command = new TaskSaveJsonFormsValueDataCommand().setData(Map.of("key", "value"));
 
-        this.kuFlowRestClient.getTaskOperations().actionsTaskSaveJsonFormsData(taskId, command);
+        this.kuFlowRestClient.getTaskOperations().actionsTaskSaveJsonFormsValueData(taskId, command);
     }
 
     @Test
@@ -176,7 +176,7 @@ public class TaskOperationTest extends AbstractOperationTest {
     @Test
     @DisplayName("GIVEN a taskSaveJsonFormsValueCommand WHEN update values THEN values are updated correctly")
     public void givenATaskSaveJsonFormsValueCommandWhenUpdateValuesThenValuesAreUpdatedCorrectly() {
-        TaskSaveJsonFormsValueCommand command = new TaskSaveJsonFormsValueCommand();
+        TaskSaveJsonFormsValueDataCommand command = new TaskSaveJsonFormsValueDataCommand();
 
         JsonFormsFile file = JsonFormsFile
             .from("kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;")
@@ -185,20 +185,21 @@ public class TaskOperationTest extends AbstractOperationTest {
             .from("kuflow-principal-user:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;")
             .orElseThrow();
 
-        TaskSaveJsonFormsValueCommandUtils.updateJsonFormsProperty(command, "new_1.0.new_2.2.new_1", "value");
-        TaskSaveJsonFormsValueCommandUtils.updateJsonFormsProperty(command, "new_1.0.new_2.2.new_2", true);
-        TaskSaveJsonFormsValueCommandUtils.updateJsonFormsProperty(command, "new_1.0.new_2.2.new_3", 100);
-        TaskSaveJsonFormsValueCommandUtils.updateJsonFormsProperty(command, "new_1.0.new_2.2.new_4", file);
-        TaskSaveJsonFormsValueCommandUtils.updateJsonFormsProperty(command, "new_1.0.new_2.2.new_5", principalUser);
+        TaskSaveJsonFormsValueDataCommandUtils.updateJsonFormsProperty(command, "new_1.0.new_2.2.new_1", "value");
+        TaskSaveJsonFormsValueDataCommandUtils.updateJsonFormsProperty(command, "new_1.0.new_2.2.new_2", true);
+        TaskSaveJsonFormsValueDataCommandUtils.updateJsonFormsProperty(command, "new_1.0.new_2.2.new_3", 100);
+        TaskSaveJsonFormsValueDataCommandUtils.updateJsonFormsProperty(command, "new_1.0.new_2.2.new_4", file);
+        TaskSaveJsonFormsValueDataCommandUtils.updateJsonFormsProperty(command, "new_1.0.new_2.2.new_5", principalUser);
 
-        assertThat(TaskSaveJsonFormsValueCommandUtils.getJsonFormsPropertyAsList(command, "new_1")).hasSize(1);
-        assertThat(TaskSaveJsonFormsValueCommandUtils.getJsonFormsPropertyAsList(command, "new_1.0.new_2")).hasSize(3);
-        assertThat(TaskSaveJsonFormsValueCommandUtils.getJsonFormsPropertyAsString(command, "new_1.0.new_2.2.new_1")).isEqualTo("value");
-        assertThat(TaskSaveJsonFormsValueCommandUtils.getJsonFormsPropertyAsBoolean(command, "new_1.0.new_2.2.new_2")).isTrue();
-        assertThat(TaskSaveJsonFormsValueCommandUtils.getJsonFormsPropertyAsInteger(command, "new_1.0.new_2.2.new_3")).isEqualTo(100);
-        assertThat(TaskSaveJsonFormsValueCommandUtils.getJsonFormsPropertyAsJsonFormsFile(command, "new_1.0.new_2.2.new_4"))
+        assertThat(TaskSaveJsonFormsValueDataCommandUtils.getJsonFormsPropertyAsList(command, "new_1")).hasSize(1);
+        assertThat(TaskSaveJsonFormsValueDataCommandUtils.getJsonFormsPropertyAsList(command, "new_1.0.new_2")).hasSize(3);
+        assertThat(TaskSaveJsonFormsValueDataCommandUtils.getJsonFormsPropertyAsString(command, "new_1.0.new_2.2.new_1"))
+            .isEqualTo("value");
+        assertThat(TaskSaveJsonFormsValueDataCommandUtils.getJsonFormsPropertyAsBoolean(command, "new_1.0.new_2.2.new_2")).isTrue();
+        assertThat(TaskSaveJsonFormsValueDataCommandUtils.getJsonFormsPropertyAsInteger(command, "new_1.0.new_2.2.new_3")).isEqualTo(100);
+        assertThat(TaskSaveJsonFormsValueDataCommandUtils.getJsonFormsPropertyAsJsonFormsFile(command, "new_1.0.new_2.2.new_4"))
             .isEqualTo(file);
-        assertThat(TaskSaveJsonFormsValueCommandUtils.getJsonFormsPropertyAsJsonFormsPrincipalUser(command, "new_1.0.new_2.2.new_5"))
+        assertThat(TaskSaveJsonFormsValueDataCommandUtils.getJsonFormsPropertyAsJsonFormsPrincipalUser(command, "new_1.0.new_2.2.new_5"))
             .isEqualTo(principalUser);
     }
 }

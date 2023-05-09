@@ -20,32 +20,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.temporal.activity.kuflow.model;
+package com.kuflow.rest.model;
 
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.kuflow.temporal.activity.kuflow.util.SaveTaskJsonFormsDataRequestUtils;
-import com.kuflow.temporal.common.model.AbstractModel;
 import java.util.Map;
-import java.util.UUID;
 
-/**
- * Command allowing to save a JSON data in a task.
- * For a utility class see {@link SaveTaskJsonFormsDataRequestUtils}
- */
-public class SaveTaskJsonFormsDataRequest extends AbstractModel {
-
-    private UUID taskId;
-
+/** The TaskSaveJsonFormsValueDataCommand model. */
+@Fluent
+public final class TaskSaveJsonFormsValueDataCommand {
+    /*
+     * json value filled that complain with the related json schema.
+     */
     @JsonProperty(value = "data")
     private Map<String, Object> data;
 
-    public UUID getTaskId() {
-        return this.taskId;
-    }
-
-    public void setTaskId(UUID taskId) {
-        this.taskId = taskId;
-    }
+    /** Creates an instance of TaskSaveJsonFormsValueDataCommand class. */
+    public TaskSaveJsonFormsValueDataCommand() {}
 
     /**
      * Get the data property: json value filled that complain with the related json schema.
@@ -60,8 +51,10 @@ public class SaveTaskJsonFormsDataRequest extends AbstractModel {
      * Set the data property: json value filled that complain with the related json schema.
      *
      * @param data the data value to set.
+     * @return the TaskSaveJsonFormsValueDataCommand object itself.
      */
-    public void setData(Map<String, Object> data) {
+    public TaskSaveJsonFormsValueDataCommand setData(Map<String, Object> data) {
         this.data = data;
+        return this;
     }
 }
