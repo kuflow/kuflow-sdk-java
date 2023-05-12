@@ -74,6 +74,11 @@ public class JsonFormsPrincipalUser {
     }
 
     @Override
+    public String toString() {
+        return this.generateValue();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

@@ -27,6 +27,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
 import static com.github.tomakehurst.wiremock.client.WireMock.ok;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.kuflow.rest.util.TaskSaveJsonFormsValueDataCommandUtils.updateJsonFormsProperty;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.kuflow.rest.model.JsonFormsFile;
@@ -37,8 +38,10 @@ import com.kuflow.rest.model.TaskSaveElementCommand;
 import com.kuflow.rest.model.TaskSaveJsonFormsValueDataCommand;
 import com.kuflow.rest.util.TaskPageItemUtils;
 import com.kuflow.rest.util.TaskSaveElementCommandUtils;
-import com.kuflow.rest.util.TaskSaveJsonFormsValueDataCommandUtils;
 import com.kuflow.rest.util.TaskUtils;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -118,6 +121,8 @@ public class TaskOperationTest extends AbstractOperationTest {
         assertThat(TaskUtils.findJsonFormsPropertyAsBoolean(task, "key8.1")).contains(false);
     }
 
+    // HACER UN TEST CON FECHAS PARA VER QUE SE HACE BIEN LAS CONVERSIONES
+
     @Test
     @DisplayName("GIVEN a task WHEN update values THEN values are updated correctly")
     public void givenATaskWhenUpdateValuesThenValuesAreUpdatedCorrectly() {
@@ -130,19 +135,37 @@ public class TaskOperationTest extends AbstractOperationTest {
             .from("kuflow-principal-user:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;")
             .orElseThrow();
 
-        TaskUtils.updateJsonFormsProperty(task, "new_1.0.new_2.2.new_1", "value");
-        TaskUtils.updateJsonFormsProperty(task, "new_1.0.new_2.2.new_2", true);
-        TaskUtils.updateJsonFormsProperty(task, "new_1.0.new_2.2.new_3", 100);
-        TaskUtils.updateJsonFormsProperty(task, "new_1.0.new_2.2.new_4", file);
-        TaskUtils.updateJsonFormsProperty(task, "new_1.0.new_2.2.new_5", principalUser);
+        TaskUtils.updateJsonFormsProperty(task, "key_1.0.key_2.0.key_1", "value");
+        TaskUtils.updateJsonFormsProperty(task, "key_1.0.key_2.0.key_2", true);
+        TaskUtils.updateJsonFormsProperty(task, "key_1.0.key_2.0.key_3", 100);
+        TaskUtils.updateJsonFormsProperty(task, "key_1.0.key_2.0.key_4", file);
+        TaskUtils.updateJsonFormsProperty(task, "key_1.0.key_2.0.key_5", principalUser);
 
-        assertThat(TaskUtils.getJsonFormsPropertyAsList(task, "new_1")).hasSize(1);
-        assertThat(TaskUtils.getJsonFormsPropertyAsList(task, "new_1.0.new_2")).hasSize(3);
-        assertThat(TaskUtils.getJsonFormsPropertyAsString(task, "new_1.0.new_2.2.new_1")).isEqualTo("value");
-        assertThat(TaskUtils.getJsonFormsPropertyAsBoolean(task, "new_1.0.new_2.2.new_2")).isTrue();
-        assertThat(TaskUtils.getJsonFormsPropertyAsInteger(task, "new_1.0.new_2.2.new_3")).isEqualTo(100);
-        assertThat(TaskUtils.getJsonFormsPropertyAsJsonFormsFile(task, "new_1.0.new_2.2.new_4")).isEqualTo(file);
-        assertThat(TaskUtils.getJsonFormsPropertyAsJsonFormsPrincipalUser(task, "new_1.0.new_2.2.new_5")).isEqualTo(principalUser);
+        assertThat(task.getJsonFormsValue().getData())
+            .isEqualTo(
+                Map.of(
+                    "key_1",
+                    List.of(
+                        Map.of(
+                            "key_2",
+                            List.of(
+                                Map.of(
+                                    "key_1",
+                                    "value",
+                                    "key_2",
+                                    true,
+                                    "key_3",
+                                    100,
+                                    "key_4",
+                                    "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;",
+                                    "key_5",
+                                    "kuflow-principal-user:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;"
+                                )
+                            )
+                        )
+                    )
+                )
+            );
     }
 
     @Test
@@ -157,20 +180,31 @@ public class TaskOperationTest extends AbstractOperationTest {
             .from("kuflow-principal-user:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;")
             .orElseThrow();
 
-        TaskPageItemUtils.updateJsonFormsProperty(taskPageItem, "new_1.0.new_2.2.new_1", "value");
-        TaskPageItemUtils.updateJsonFormsProperty(taskPageItem, "new_1.0.new_2.2.new_2", true);
-        TaskPageItemUtils.updateJsonFormsProperty(taskPageItem, "new_1.0.new_2.2.new_3", 100);
-        TaskPageItemUtils.updateJsonFormsProperty(taskPageItem, "new_1.0.new_2.2.new_4", file);
-        TaskPageItemUtils.updateJsonFormsProperty(taskPageItem, "new_1.0.new_2.2.new_5", principalUser);
+        TaskPageItemUtils.updateJsonFormsProperty(taskPageItem, "key_1.0.key_2.0.key_1", "value");
+        TaskPageItemUtils.updateJsonFormsProperty(taskPageItem, "key_1.0.key_2.0.key_2", true);
+        TaskPageItemUtils.updateJsonFormsProperty(taskPageItem, "key_1.0.key_2.0.key_3", 100);
+        TaskPageItemUtils.updateJsonFormsProperty(taskPageItem, "key_1.1.key_4", file);
+        TaskPageItemUtils.updateJsonFormsProperty(taskPageItem, "key_1.1.key_5", principalUser);
+        TaskPageItemUtils.updateJsonFormsProperty(taskPageItem, "key_2.0", LocalDate.parse("3000-01-01"));
+        TaskPageItemUtils.updateJsonFormsProperty(taskPageItem, "key_2.1", Instant.parse("3003-01-01T00:00:00Z"));
 
-        assertThat(TaskPageItemUtils.getJsonFormsPropertyAsList(taskPageItem, "new_1")).hasSize(1);
-        assertThat(TaskPageItemUtils.getJsonFormsPropertyAsList(taskPageItem, "new_1.0.new_2")).hasSize(3);
-        assertThat(TaskPageItemUtils.getJsonFormsPropertyAsString(taskPageItem, "new_1.0.new_2.2.new_1")).isEqualTo("value");
-        assertThat(TaskPageItemUtils.getJsonFormsPropertyAsBoolean(taskPageItem, "new_1.0.new_2.2.new_2")).isTrue();
-        assertThat(TaskPageItemUtils.getJsonFormsPropertyAsInteger(taskPageItem, "new_1.0.new_2.2.new_3")).isEqualTo(100);
-        assertThat(TaskPageItemUtils.getJsonFormsPropertyAsJsonFormsFile(taskPageItem, "new_1.0.new_2.2.new_4")).isEqualTo(file);
-        assertThat(TaskPageItemUtils.getJsonFormsPropertyAsJsonFormsPrincipalUser(taskPageItem, "new_1.0.new_2.2.new_5"))
-            .isEqualTo(principalUser);
+        assertThat(taskPageItem.getJsonFormsValue().getData())
+            .isEqualTo(
+                Map.of(
+                    "key_1",
+                    List.of(
+                        Map.of("key_2", List.of(Map.of("key_1", "value", "key_2", true, "key_3", 100))),
+                        Map.of(
+                            "key_4",
+                            "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;",
+                            "key_5",
+                            "kuflow-principal-user:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;"
+                        )
+                    ),
+                    "key_2",
+                    List.of("3000-01-01", "3003-01-01T00:00:00Z")
+                )
+            );
     }
 
     @Test
@@ -185,21 +219,91 @@ public class TaskOperationTest extends AbstractOperationTest {
             .from("kuflow-principal-user:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;")
             .orElseThrow();
 
-        TaskSaveJsonFormsValueDataCommandUtils.updateJsonFormsProperty(command, "new_1.0.new_2.2.new_1", "value");
-        TaskSaveJsonFormsValueDataCommandUtils.updateJsonFormsProperty(command, "new_1.0.new_2.2.new_2", true);
-        TaskSaveJsonFormsValueDataCommandUtils.updateJsonFormsProperty(command, "new_1.0.new_2.2.new_3", 100);
-        TaskSaveJsonFormsValueDataCommandUtils.updateJsonFormsProperty(command, "new_1.0.new_2.2.new_4", file);
-        TaskSaveJsonFormsValueDataCommandUtils.updateJsonFormsProperty(command, "new_1.0.new_2.2.new_5", principalUser);
+        updateJsonFormsProperty(command, "key_1.0.key_2.0.key_1", "value");
+        updateJsonFormsProperty(command, "key_1.0.key_2.0.key_2", true);
+        updateJsonFormsProperty(command, "key_1.0.key_2.0.key_3", 100);
+        updateJsonFormsProperty(command, "key_1.1.key_4", file);
+        updateJsonFormsProperty(command, "key_1.1.key_5", principalUser);
+        updateJsonFormsProperty(command, "key_2.0", LocalDate.parse("3000-01-01"));
+        updateJsonFormsProperty(command, "key_2.1", OffsetDateTime.parse("3001-01-01T01:00:00+05:05"));
+        updateJsonFormsProperty(command, "key_2.2", Instant.parse("3002-01-01T02:00:00Z"));
 
-        assertThat(TaskSaveJsonFormsValueDataCommandUtils.getJsonFormsPropertyAsList(command, "new_1")).hasSize(1);
-        assertThat(TaskSaveJsonFormsValueDataCommandUtils.getJsonFormsPropertyAsList(command, "new_1.0.new_2")).hasSize(3);
-        assertThat(TaskSaveJsonFormsValueDataCommandUtils.getJsonFormsPropertyAsString(command, "new_1.0.new_2.2.new_1"))
-            .isEqualTo("value");
-        assertThat(TaskSaveJsonFormsValueDataCommandUtils.getJsonFormsPropertyAsBoolean(command, "new_1.0.new_2.2.new_2")).isTrue();
-        assertThat(TaskSaveJsonFormsValueDataCommandUtils.getJsonFormsPropertyAsInteger(command, "new_1.0.new_2.2.new_3")).isEqualTo(100);
-        assertThat(TaskSaveJsonFormsValueDataCommandUtils.getJsonFormsPropertyAsJsonFormsFile(command, "new_1.0.new_2.2.new_4"))
-            .isEqualTo(file);
-        assertThat(TaskSaveJsonFormsValueDataCommandUtils.getJsonFormsPropertyAsJsonFormsPrincipalUser(command, "new_1.0.new_2.2.new_5"))
-            .isEqualTo(principalUser);
+        assertThat(command.getData())
+            .isEqualTo(
+                Map.of(
+                    "key_1",
+                    List.of(
+                        Map.of("key_2", List.of(Map.of("key_1", "value", "key_2", true, "key_3", 100))),
+                        Map.of(
+                            "key_4",
+                            "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;",
+                            "key_5",
+                            "kuflow-principal-user:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;"
+                        )
+                    ),
+                    "key_2",
+                    List.of("3000-01-01", "3001-01-01T01:00:00+05:05", "3002-01-01T02:00:00Z")
+                )
+            );
+
+        updateJsonFormsProperty(command, "key_1.0", null);
+
+        assertThat(command.getData())
+            .isEqualTo(
+                Map.of(
+                    "key_1",
+                    List.of(
+                        Map.of(
+                            "key_4",
+                            "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;",
+                            "key_5",
+                            "kuflow-principal-user:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;"
+                        )
+                    ),
+                    "key_2",
+                    List.of("3000-01-01", "3001-01-01T01:00:00+05:05", "3002-01-01T02:00:00Z")
+                )
+            );
+
+        updateJsonFormsProperty(command, "key_2.1", null);
+
+        assertThat(command.getData())
+            .isEqualTo(
+                Map.of(
+                    "key_1",
+                    List.of(
+                        Map.of(
+                            "key_4",
+                            "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;",
+                            "key_5",
+                            "kuflow-principal-user:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;"
+                        )
+                    ),
+                    "key_2",
+                    List.of("3000-01-01", "3002-01-01T02:00:00Z")
+                )
+            );
+    }
+
+    @Test
+    @DisplayName("GIVEN a task WHEN get date values THEN date are transformed correctly")
+    public void givenATaskWhenGetDateValuesThenDateAreTransformedCorrectly() {
+        Task task = new Task();
+
+        TaskUtils.updateJsonFormsProperty(task, "key_1", LocalDate.parse("3000-01-01"));
+        TaskUtils.updateJsonFormsProperty(task, "key_2", OffsetDateTime.parse("3001-01-01T01:00:00+05:05"));
+        TaskUtils.updateJsonFormsProperty(task, "key_3", Instant.parse("3002-01-01T00:01:00Z"));
+
+        LocalDate value1 = TaskUtils.getJsonFormsPropertyAsLocalDate(task, "key_1");
+        assertThat(value1).isEqualTo(LocalDate.parse("3000-01-01"));
+
+        OffsetDateTime value2 = TaskUtils.getJsonFormsPropertyAsOffsetDateTime(task, "key_2");
+        assertThat(value2).isEqualTo(OffsetDateTime.parse("3001-01-01T01:00:00+05:05"));
+
+        Instant value3 = TaskUtils.getJsonFormsPropertyAsInstant(task, "key_2");
+        assertThat(value3).isEqualTo(Instant.parse("3001-01-01T01:00:00+05:05"));
+
+        Instant value4 = TaskUtils.getJsonFormsPropertyAsInstant(task, "key_3");
+        assertThat(value4).isEqualTo(Instant.parse("3002-01-01T00:01:00Z"));
     }
 }

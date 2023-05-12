@@ -31,7 +31,9 @@ import com.kuflow.rest.model.JsonFormsValue;
 import com.kuflow.rest.model.TaskElementValueDocumentItem;
 import com.kuflow.rest.model.TaskElementValuePrincipalItem;
 import com.kuflow.rest.model.TaskPageItem;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -709,6 +711,52 @@ public final class TaskPageItemUtils {
      */
     public static Optional<Boolean> findJsonFormsPropertyAsBoolean(TaskPageItem taskPageItem, String propertyPath) {
         return JsonFormsValueUtils.findJsonFormsPropertyAsBoolean(taskPageItem.getJsonFormsValue(), propertyPath);
+    }
+
+    /**
+     * Get a json property as Instant following the 'propertyPath' passed.
+     *
+     * @param taskPageItem TaskPageItem
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     * @throws KuFlowRestClientException If property value doesn't exist
+     */
+    public static Instant getJsonFormsPropertyAsInstant(TaskPageItem taskPageItem, String propertyPath) {
+        return JsonFormsValueUtils.getJsonFormsPropertyAsInstant(taskPageItem.getJsonFormsValue(), propertyPath);
+    }
+
+    /**
+     * Try to find a json property as Instant following the 'propertyPath' passed.
+     *
+     * @param taskPageItem TaskPageItem
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     */
+    public static Optional<Instant> findJsonFormsPropertyAsInstant(TaskPageItem taskPageItem, String propertyPath) {
+        return JsonFormsValueUtils.findJsonFormsPropertyAsInstant(taskPageItem.getJsonFormsValue(), propertyPath);
+    }
+
+    /**
+     * Get a json property as OffsetDateTime following the 'propertyPath' passed.
+     *
+     * @param taskPageItem TaskPageItem
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     * @throws KuFlowRestClientException If property value doesn't exist
+     */
+    public static OffsetDateTime getJsonFormsPropertyAsOffsetDateTime(TaskPageItem taskPageItem, String propertyPath) {
+        return JsonFormsValueUtils.getJsonFormsPropertyAsOffsetDateTime(taskPageItem.getJsonFormsValue(), propertyPath);
+    }
+
+    /**
+     * Try to find a json property as OffsetDateTime following the 'propertyPath' passed.
+     *
+     * @param taskPageItem TaskPageItem
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     */
+    public static Optional<OffsetDateTime> findJsonFormsPropertyAsOffsetDateTime(TaskPageItem taskPageItem, String propertyPath) {
+        return JsonFormsValueUtils.findJsonFormsPropertyAsOffsetDateTime(taskPageItem.getJsonFormsValue(), propertyPath);
     }
 
     /**

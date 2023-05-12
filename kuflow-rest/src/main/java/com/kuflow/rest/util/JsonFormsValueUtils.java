@@ -29,7 +29,12 @@ import com.kuflow.rest.KuFlowRestClientException;
 import com.kuflow.rest.model.JsonFormsFile;
 import com.kuflow.rest.model.JsonFormsPrincipalUser;
 import com.kuflow.rest.model.JsonFormsValue;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -153,6 +158,72 @@ public final class JsonFormsValueUtils {
     }
 
     /**
+     * Get a json property as Instant following the 'propertyPath' passed.
+     *
+     * @param jsonFormsValue JsonFormsValue
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     * @throws KuFlowRestClientException If property value doesn't exist
+     */
+    public static Instant getJsonFormsPropertyAsInstant(JsonFormsValue jsonFormsValue, String propertyPath) {
+        return findJsonFormsPropertyAsInstant(jsonFormsValue, propertyPath)
+            .orElseThrow(() -> new KuFlowRestClientException("Property value doesn't exist"));
+    }
+
+    /**
+     * Try to find a json property as Instant following the 'propertyPath' passed.
+     *
+     * @param jsonFormsValue JsonFormsValue
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     */
+    public static Optional<Instant> findJsonFormsPropertyAsInstant(JsonFormsValue jsonFormsValue, String propertyPath) {
+        return findJsonFormsProperty(jsonFormsValue, propertyPath)
+            .map(value -> {
+                try {
+                    return Instant.parse(value.toString());
+                } catch (DateTimeParseException e) {
+                    throw new KuFlowRestClientException(
+                        String.format("Wrong value format, expected something like '2007-12-03T10:15:30.00Z' but was %s", value)
+                    );
+                }
+            });
+    }
+
+    /**
+     * Get a json property as OffsetDateTime following the 'propertyPath' passed.
+     *
+     * @param jsonFormsValue JsonFormsValue
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     * @throws KuFlowRestClientException If property value doesn't exist
+     */
+    public static OffsetDateTime getJsonFormsPropertyAsOffsetDateTime(JsonFormsValue jsonFormsValue, String propertyPath) {
+        return findJsonFormsPropertyAsOffsetDateTime(jsonFormsValue, propertyPath)
+            .orElseThrow(() -> new KuFlowRestClientException("Property value doesn't exist"));
+    }
+
+    /**
+     * Try to find a json property as OffsetDateTime following the 'propertyPath' passed.
+     *
+     * @param jsonFormsValue JsonFormsValue
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     */
+    public static Optional<OffsetDateTime> findJsonFormsPropertyAsOffsetDateTime(JsonFormsValue jsonFormsValue, String propertyPath) {
+        return findJsonFormsProperty(jsonFormsValue, propertyPath)
+            .map(value -> {
+                try {
+                    return OffsetDateTime.parse(value.toString());
+                } catch (DateTimeParseException e) {
+                    throw new KuFlowRestClientException(
+                        String.format("Wrong value format, expected something like '2007-12-03T10:15:30+01:00' but was %s", value)
+                    );
+                }
+            });
+    }
+
+    /**
      * Get a json property as LocalDate following the 'propertyPath' passed.
      *
      * @param jsonFormsValue JsonFormsValue
@@ -173,7 +244,16 @@ public final class JsonFormsValueUtils {
      * @return the property value if exists.
      */
     public static Optional<LocalDate> findJsonFormsPropertyAsLocalDate(JsonFormsValue jsonFormsValue, String propertyPath) {
-        return findJsonFormsProperty(jsonFormsValue, propertyPath).map(value -> LocalDate.parse(value.toString()));
+        return findJsonFormsProperty(jsonFormsValue, propertyPath)
+            .map(value -> {
+                try {
+                    return LocalDate.parse(value.toString());
+                } catch (DateTimeParseException e) {
+                    throw new KuFlowRestClientException(
+                        String.format("Wrong value format, expected something like '2011-12-03' but was %s", value)
+                    );
+                }
+            });
     }
 
     /**
@@ -328,6 +408,8 @@ public final class JsonFormsValueUtils {
         Objects.requireNonNull(jsonFormsValue, "jsonFormsValue is required");
         Objects.requireNonNull(propertyPath, "propertyPath is required");
 
+        value = transformJsonFormsPropertyValue(value);
+
         if (jsonFormsValue.getData() == null) {
             jsonFormsValue.setData(new HashMap<>());
         }
@@ -337,34 +419,39 @@ public final class JsonFormsValueUtils {
             throw new KuFlowRestClientException(String.format("Property %s doesn't exist", propertyPath));
         }
 
-        if (value instanceof JsonFormsPrincipalUser) {
-            value = ((JsonFormsPrincipalUser) value).generateValue();
-        } else if (value instanceof JsonFormsFile) {
-            value = ((JsonFormsFile) value).generateValue();
-        }
-
         Object jsonFormsPropertyContainer = property.get().getContainer();
         String jsonFormsPropertyPath = property.get().getPath();
         if (jsonFormsPropertyContainer instanceof List) {
             List<Object> jsonFormsPropertyContainerList = (List<Object>) jsonFormsPropertyContainer;
             if (!isNumeric(jsonFormsPropertyPath)) {
                 throw new KuFlowRestClientException(
-                    String.format(
-                        "Incorrect property path %s, parent %s path is not a List",
-                        jsonFormsPropertyPath,
-                        jsonFormsPropertyContainerList
-                    )
+                    String.format("Incorrect property path %s, parent path is not a List", jsonFormsPropertyPath)
                 );
             }
 
-            int propertyPathChildIndex = Integer.parseInt(jsonFormsPropertyPath);
-            while (jsonFormsPropertyContainerList.size() <= propertyPathChildIndex) {
-                jsonFormsPropertyContainerList.add(null);
+            int jsonFormsPropertyPathIndex = Integer.parseInt(jsonFormsPropertyPath);
+            if (value != null) {
+                if (jsonFormsPropertyPathIndex < jsonFormsPropertyContainerList.size()) {
+                    jsonFormsPropertyContainerList.set(jsonFormsPropertyPathIndex, value);
+                } else if (jsonFormsPropertyPathIndex == jsonFormsPropertyContainerList.size()) {
+                    jsonFormsPropertyContainerList.add(value);
+                } else {
+                    throw new KuFlowRestClientException(String.format("Wrong list index %s", jsonFormsPropertyPath));
+                }
+            } else {
+                if (jsonFormsPropertyPathIndex >= 0 && jsonFormsPropertyPathIndex < jsonFormsPropertyContainerList.size()) {
+                    jsonFormsPropertyContainerList.remove(jsonFormsPropertyPathIndex);
+                } else {
+                    throw new KuFlowRestClientException(String.format("Wrong list index %s", jsonFormsPropertyPath));
+                }
             }
-            jsonFormsPropertyContainerList.set(propertyPathChildIndex, value);
         } else if (jsonFormsPropertyContainer instanceof Map) {
             Map<String, Object> jsonFormsPropertyContainerMap = (Map<String, Object>) jsonFormsPropertyContainer;
-            jsonFormsPropertyContainerMap.put(jsonFormsPropertyPath, value);
+            if (value != null) {
+                jsonFormsPropertyContainerMap.put(jsonFormsPropertyPath, value);
+            } else {
+                jsonFormsPropertyContainerMap.remove(jsonFormsPropertyPath);
+            }
         } else {
             throw new KuFlowRestClientException(String.format("Incorrect property path %s", jsonFormsPropertyPath));
         }
@@ -411,16 +498,15 @@ public final class JsonFormsValueUtils {
                 }
 
                 jsonFormsPropertyPathAsInteger = Integer.parseInt(jsonFormsPropertyPath);
-                if (jsonFormsPropertyPathAsInteger < 0) {
-                    throw new KuFlowRestClientException(String.format("Wrong list index %s", jsonFormsPropertyPath));
-                }
-
-                if (jsonFormsPropertyPathAsInteger > propertyContainerList.size()) {
+                if (jsonFormsPropertyPathAsInteger < 0 || jsonFormsPropertyPathAsInteger > propertyContainerList.size()) {
+                    return Optional.empty();
+                } else if (jsonFormsPropertyPathAsInteger == propertyContainerList.size()) {
                     if (!createMissingParents) {
                         return Optional.empty();
                     }
-                }
-                if (jsonFormsPropertyPathAsInteger < propertyContainerList.size()) {
+
+                    jsonFormsPropertyValue = null;
+                } else {
                     jsonFormsPropertyValue = propertyContainerList.get(jsonFormsPropertyPathAsInteger);
                 }
             } else if (jsonFormsPropertyContainer instanceof Map) {
@@ -447,18 +533,18 @@ public final class JsonFormsValueUtils {
                     } else {
                         jsonFormsPropertyValue = new HashMap<>();
                     }
-                }
 
-                if (jsonFormsPropertyContainer instanceof List) {
-                    List<Object> propertyContainerList = (List<Object>) jsonFormsPropertyContainer;
-                    while (propertyContainerList.size() <= jsonFormsPropertyPathAsInteger) {
-                        propertyContainerList.add(null);
+                    if (jsonFormsPropertyContainer instanceof List) {
+                        List<Object> propertyContainerList = (List<Object>) jsonFormsPropertyContainer;
+                        if (jsonFormsPropertyPathAsInteger != propertyContainerList.size()) {
+                            throw new KuFlowRestClientException(String.format("Wrong list index %s", jsonFormsPropertyPath));
+                        }
+
+                        propertyContainerList.add(jsonFormsPropertyPathAsInteger, jsonFormsPropertyValue);
+                    } else if (jsonFormsPropertyContainer instanceof Map) {
+                        Map<String, Object> propertyContainerMap = (Map<String, Object>) jsonFormsPropertyContainer;
+                        propertyContainerMap.put(jsonFormsPropertyPath, jsonFormsPropertyValue);
                     }
-
-                    propertyContainerList.set(jsonFormsPropertyPathAsInteger, jsonFormsPropertyValue);
-                } else if (jsonFormsPropertyContainer instanceof Map) {
-                    Map<String, Object> propertyContainerMap = (Map<String, Object>) jsonFormsPropertyContainer;
-                    propertyContainerMap.put(jsonFormsPropertyPath, jsonFormsPropertyValue);
                 }
             }
 
@@ -481,6 +567,24 @@ public final class JsonFormsValueUtils {
         }
 
         return Optional.of(jsonFormsValue.getData());
+    }
+
+    private static Object transformJsonFormsPropertyValue(Object value) {
+        if (value == null) {
+            return null;
+        } else if (value instanceof JsonFormsPrincipalUser || value instanceof JsonFormsFile) {
+            return value.toString();
+        } else if (value instanceof LocalDate) {
+            return DateTimeFormatter.ISO_LOCAL_DATE.format((TemporalAccessor) value);
+        } else if (value instanceof Instant) {
+            return value.toString();
+        } else if (value instanceof OffsetDateTime) {
+            return DateTimeFormatter.ISO_OFFSET_DATE_TIME.format((TemporalAccessor) value);
+        } else if (value instanceof Number || value instanceof String || value instanceof Boolean) {
+            return value;
+        }
+
+        throw new KuFlowRestClientException(String.format("Unsupported value '%s' of class '%s'", value, value.getClass()));
     }
 
     public static class JsonFormsProperty {

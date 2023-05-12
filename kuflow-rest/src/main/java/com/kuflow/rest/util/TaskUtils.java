@@ -31,7 +31,9 @@ import com.kuflow.rest.model.JsonFormsValue;
 import com.kuflow.rest.model.Task;
 import com.kuflow.rest.model.TaskElementValueDocumentItem;
 import com.kuflow.rest.model.TaskElementValuePrincipalItem;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -665,6 +667,52 @@ public final class TaskUtils {
      */
     public static Optional<Boolean> findJsonFormsPropertyAsBoolean(Task task, String propertyPath) {
         return JsonFormsValueUtils.findJsonFormsPropertyAsBoolean(task.getJsonFormsValue(), propertyPath);
+    }
+
+    /**
+     * Get a json property as Instant following the 'propertyPath' passed.
+     *
+     * @param task Task
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     * @throws KuFlowRestClientException If property value doesn't exist
+     */
+    public static Instant getJsonFormsPropertyAsInstant(Task task, String propertyPath) {
+        return JsonFormsValueUtils.getJsonFormsPropertyAsInstant(task.getJsonFormsValue(), propertyPath);
+    }
+
+    /**
+     * Try to find a json property as Instant following the 'propertyPath' passed.
+     *
+     * @param task Task
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     */
+    public static Optional<Instant> findJsonFormsPropertyAsInstant(Task task, String propertyPath) {
+        return JsonFormsValueUtils.findJsonFormsPropertyAsInstant(task.getJsonFormsValue(), propertyPath);
+    }
+
+    /**
+     * Get a json property as OffsetDateTime following the 'propertyPath' passed.
+     *
+     * @param task Task
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     * @throws KuFlowRestClientException If property value doesn't exist
+     */
+    public static OffsetDateTime getJsonFormsPropertyAsOffsetDateTime(Task task, String propertyPath) {
+        return JsonFormsValueUtils.getJsonFormsPropertyAsOffsetDateTime(task.getJsonFormsValue(), propertyPath);
+    }
+
+    /**
+     * Try to find a json property as OffsetDateTime following the 'propertyPath' passed.
+     *
+     * @param task Task
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     */
+    public static Optional<OffsetDateTime> findJsonFormsPropertyAsOffsetDateTime(Task task, String propertyPath) {
+        return JsonFormsValueUtils.findJsonFormsPropertyAsOffsetDateTime(task.getJsonFormsValue(), propertyPath);
     }
 
     /**
