@@ -42,16 +42,16 @@ public class JsonFormsPrincipal {
         String type = matcher.group(2);
         String name = matcher.group(3);
 
-        return Optional.of(new JsonFormsPrincipal(id, type, name));
+        return Optional.of(new JsonFormsPrincipal(id, PrincipalType.fromString(type), name));
     }
 
     private final UUID id;
 
-    private final String type;
+    private final PrincipalType type;
 
     private final String name;
 
-    public JsonFormsPrincipal(UUID id, String type, String name) {
+    public JsonFormsPrincipal(UUID id, PrincipalType type, String name) {
         this.id = id;
         this.type = type;
         this.name = name;
@@ -61,7 +61,7 @@ public class JsonFormsPrincipal {
         return this.id;
     }
 
-    public String getType() {
+    public PrincipalType getType() {
         return this.type;
     }
 
