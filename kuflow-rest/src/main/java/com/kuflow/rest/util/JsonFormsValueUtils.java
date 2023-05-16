@@ -27,7 +27,7 @@ import static java.util.Collections.unmodifiableMap;
 
 import com.kuflow.rest.KuFlowRestClientException;
 import com.kuflow.rest.model.JsonFormsFile;
-import com.kuflow.rest.model.JsonFormsPrincipalUser;
+import com.kuflow.rest.model.JsonFormsPrincipal;
 import com.kuflow.rest.model.JsonFormsValue;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -281,30 +281,30 @@ public final class JsonFormsValueUtils {
     }
 
     /**
-     * Get a json property as JsonFormsPrincipalUser following the 'propertyPath' passed.
+     * Get a json property as JsonFormsPrincipal following the 'propertyPath' passed.
      *
      * @param jsonFormsValue JsonFormsValue
      * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
      * @return the property value if exists.
      * @throws KuFlowRestClientException If property value doesn't exist
      */
-    public static JsonFormsPrincipalUser getJsonFormsPropertyAsJsonFormsPrincipalUser(JsonFormsValue jsonFormsValue, String propertyPath) {
-        return findJsonFormsPropertyAsJsonFormsPrincipalUser(jsonFormsValue, propertyPath)
+    public static JsonFormsPrincipal getJsonFormsPropertyAsJsonFormsPrincipal(JsonFormsValue jsonFormsValue, String propertyPath) {
+        return findJsonFormsPropertyAsJsonFormsPrincipal(jsonFormsValue, propertyPath)
             .orElseThrow(() -> new KuFlowRestClientException("Property value doesn't exist"));
     }
 
     /**
-     * Try to find a json property as JsonFormsPrincipalUser following the 'propertyPath' passed.
+     * Try to find a json property as JsonFormsPrincipal following the 'propertyPath' passed.
      *
      * @param jsonFormsValue JsonFormsValue
      * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
      * @return the property value if exists.
      */
-    public static Optional<JsonFormsPrincipalUser> findJsonFormsPropertyAsJsonFormsPrincipalUser(
+    public static Optional<JsonFormsPrincipal> findJsonFormsPropertyAsJsonFormsPrincipal(
         JsonFormsValue jsonFormsValue,
         String propertyPath
     ) {
-        return findJsonFormsProperty(jsonFormsValue, propertyPath).flatMap(value -> JsonFormsPrincipalUser.from(value.toString()));
+        return findJsonFormsProperty(jsonFormsValue, propertyPath).flatMap(value -> JsonFormsPrincipal.from(value.toString()));
     }
 
     /**
@@ -572,7 +572,7 @@ public final class JsonFormsValueUtils {
     private static Object transformJsonFormsPropertyValue(Object value) {
         if (value == null) {
             return null;
-        } else if (value instanceof JsonFormsPrincipalUser || value instanceof JsonFormsFile) {
+        } else if (value instanceof JsonFormsPrincipal || value instanceof JsonFormsFile) {
             return value.toString();
         } else if (value instanceof LocalDate) {
             return DateTimeFormatter.ISO_LOCAL_DATE.format((TemporalAccessor) value);

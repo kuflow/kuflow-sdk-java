@@ -26,7 +26,7 @@ import static com.kuflow.rest.util.TaskElementValueAccessorTaskPageItem.of;
 
 import com.kuflow.rest.KuFlowRestClientException;
 import com.kuflow.rest.model.JsonFormsFile;
-import com.kuflow.rest.model.JsonFormsPrincipalUser;
+import com.kuflow.rest.model.JsonFormsPrincipal;
 import com.kuflow.rest.model.JsonFormsValue;
 import com.kuflow.rest.model.TaskElementValueDocumentItem;
 import com.kuflow.rest.model.TaskElementValuePrincipalItem;
@@ -806,29 +806,26 @@ public final class TaskPageItemUtils {
     }
 
     /**
-     * Get a json property as JsonFormsPrincipalUser following the 'propertyPath' passed.
+     * Get a json property as JsonFormsPrincipal following the 'propertyPath' passed.
      *
      * @param taskPageItem TaskPageItem
      * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
      * @return the property value if exists.
      * @throws KuFlowRestClientException If property value doesn't exist
      */
-    public static JsonFormsPrincipalUser getJsonFormsPropertyAsJsonFormsPrincipalUser(TaskPageItem taskPageItem, String propertyPath) {
-        return JsonFormsValueUtils.getJsonFormsPropertyAsJsonFormsPrincipalUser(taskPageItem.getJsonFormsValue(), propertyPath);
+    public static JsonFormsPrincipal getJsonFormsPropertyAsJsonFormsPrincipal(TaskPageItem taskPageItem, String propertyPath) {
+        return JsonFormsValueUtils.getJsonFormsPropertyAsJsonFormsPrincipal(taskPageItem.getJsonFormsValue(), propertyPath);
     }
 
     /**
-     * Try to find a json property as JsonFormsPrincipalUser following the 'propertyPath' passed.
+     * Try to find a json property as JsonFormsPrincipal following the 'propertyPath' passed.
      *
      * @param taskPageItem TaskPageItem
      * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
      * @return the property value if exists.
      */
-    public static Optional<JsonFormsPrincipalUser> findJsonFormsPropertyAsJsonFormsPrincipalUser(
-        TaskPageItem taskPageItem,
-        String propertyPath
-    ) {
-        return JsonFormsValueUtils.findJsonFormsPropertyAsJsonFormsPrincipalUser(taskPageItem.getJsonFormsValue(), propertyPath);
+    public static Optional<JsonFormsPrincipal> findJsonFormsPropertyAsJsonFormsPrincipal(TaskPageItem taskPageItem, String propertyPath) {
+        return JsonFormsValueUtils.findJsonFormsPropertyAsJsonFormsPrincipal(taskPageItem.getJsonFormsValue(), propertyPath);
     }
 
     /**

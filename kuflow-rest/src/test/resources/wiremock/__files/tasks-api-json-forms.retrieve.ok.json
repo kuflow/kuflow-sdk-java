@@ -20,7 +20,7 @@
       },
       "key5": "2022-05-05",
       "key6": "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;",
-      "key7": "kuflow-principal-user:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Hommer Simpsons;",
+      "key7": "kuflow-principal:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;",
       "key8": [ true, false ]
     }
   }

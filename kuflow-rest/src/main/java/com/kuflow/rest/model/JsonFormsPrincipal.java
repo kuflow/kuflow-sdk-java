@@ -28,11 +28,11 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class JsonFormsPrincipalUser {
+public class JsonFormsPrincipal {
 
-    private static final Pattern PATTERN = Pattern.compile("kuflow-principal-user:id=([0-9a-f-]+);type=([a-zA-Z]+);name=(.*);");
+    private static final Pattern PATTERN = Pattern.compile("kuflow-principal:id=([0-9a-f-]+);type=([a-zA-Z]+);name=(.*);");
 
-    public static Optional<JsonFormsPrincipalUser> from(String value) {
+    public static Optional<JsonFormsPrincipal> from(String value) {
         Matcher matcher = PATTERN.matcher(value);
         if (!matcher.matches()) {
             return Optional.empty();
@@ -42,7 +42,7 @@ public class JsonFormsPrincipalUser {
         String type = matcher.group(2);
         String name = matcher.group(3);
 
-        return Optional.of(new JsonFormsPrincipalUser(id, type, name));
+        return Optional.of(new JsonFormsPrincipal(id, type, name));
     }
 
     private final UUID id;
@@ -51,7 +51,7 @@ public class JsonFormsPrincipalUser {
 
     private final String name;
 
-    public JsonFormsPrincipalUser(UUID id, String type, String name) {
+    public JsonFormsPrincipal(UUID id, String type, String name) {
         this.id = id;
         this.type = type;
         this.name = name;
@@ -70,7 +70,7 @@ public class JsonFormsPrincipalUser {
     }
 
     public String generateValue() {
-        return String.format("kuflow-principal-user:id=%s;type=%s;name=%s;", this.id, this.type, this.name);
+        return String.format("kuflow-principal:id=%s;type=%s;name=%s;", this.id, this.type, this.name);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class JsonFormsPrincipalUser {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        JsonFormsPrincipalUser that = (JsonFormsPrincipalUser) o;
+        JsonFormsPrincipal that = (JsonFormsPrincipal) o;
 
         return Objects.equals(this.id, that.id) && Objects.equals(this.type, that.type) && Objects.equals(this.name, that.name);
     }

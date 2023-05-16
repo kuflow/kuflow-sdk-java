@@ -31,7 +31,7 @@ import static com.kuflow.rest.util.TaskSaveJsonFormsValueDataCommandUtils.update
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.kuflow.rest.model.JsonFormsFile;
-import com.kuflow.rest.model.JsonFormsPrincipalUser;
+import com.kuflow.rest.model.JsonFormsPrincipal;
 import com.kuflow.rest.model.Task;
 import com.kuflow.rest.model.TaskPageItem;
 import com.kuflow.rest.model.TaskSaveElementCommand;
@@ -115,7 +115,7 @@ public class TaskOperationTest extends AbstractOperationTest {
         assertThat(TaskUtils.findJsonFormsPropertyAsString(task, "key3.0.key3_0")).contains("value3_0");
         assertThat(TaskUtils.findJsonFormsPropertyAsJsonFormsFile(task, "key6"))
             .hasValueSatisfying(value -> assertThat(value.getUri()).isEqualTo("ku:dummy/xxx-ssss-yyyy"));
-        assertThat(TaskUtils.findJsonFormsPropertyAsJsonFormsPrincipalUser(task, "key7"))
+        assertThat(TaskUtils.findJsonFormsPropertyAsJsonFormsPrincipal(task, "key7"))
             .hasValueSatisfying(value -> assertThat(value.getId()).isEqualTo(UUID.fromString("0e30a29f-469e-4c03-a3c5-f3286a7ac5c2")));
         assertThat(TaskUtils.findJsonFormsPropertyAsBoolean(task, "key8.0")).contains(true);
         assertThat(TaskUtils.findJsonFormsPropertyAsBoolean(task, "key8.1")).contains(false);
@@ -131,8 +131,8 @@ public class TaskOperationTest extends AbstractOperationTest {
         JsonFormsFile file = JsonFormsFile
             .from("kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;")
             .orElseThrow();
-        JsonFormsPrincipalUser principalUser = JsonFormsPrincipalUser
-            .from("kuflow-principal-user:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;")
+        JsonFormsPrincipal principalUser = JsonFormsPrincipal
+            .from("kuflow-principal:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;")
             .orElseThrow();
 
         TaskUtils.updateJsonFormsProperty(task, "key_1.0.key_2.0.key_1", "value");
@@ -159,7 +159,7 @@ public class TaskOperationTest extends AbstractOperationTest {
                                     "key_4",
                                     "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;",
                                     "key_5",
-                                    "kuflow-principal-user:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;"
+                                    "kuflow-principal:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;"
                                 )
                             )
                         )
@@ -176,8 +176,8 @@ public class TaskOperationTest extends AbstractOperationTest {
         JsonFormsFile file = JsonFormsFile
             .from("kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;")
             .orElseThrow();
-        JsonFormsPrincipalUser principalUser = JsonFormsPrincipalUser
-            .from("kuflow-principal-user:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;")
+        JsonFormsPrincipal principalUser = JsonFormsPrincipal
+            .from("kuflow-principal:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;")
             .orElseThrow();
 
         TaskPageItemUtils.updateJsonFormsProperty(taskPageItem, "key_1.0.key_2.0.key_1", "value");
@@ -198,7 +198,7 @@ public class TaskOperationTest extends AbstractOperationTest {
                             "key_4",
                             "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;",
                             "key_5",
-                            "kuflow-principal-user:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;"
+                            "kuflow-principal:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;"
                         )
                     ),
                     "key_2",
@@ -215,8 +215,8 @@ public class TaskOperationTest extends AbstractOperationTest {
         JsonFormsFile file = JsonFormsFile
             .from("kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;")
             .orElseThrow();
-        JsonFormsPrincipalUser principalUser = JsonFormsPrincipalUser
-            .from("kuflow-principal-user:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;")
+        JsonFormsPrincipal principalUser = JsonFormsPrincipal
+            .from("kuflow-principal:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;")
             .orElseThrow();
 
         updateJsonFormsProperty(command, "key_1.0.key_2.0.key_1", "value");
@@ -238,7 +238,7 @@ public class TaskOperationTest extends AbstractOperationTest {
                             "key_4",
                             "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;",
                             "key_5",
-                            "kuflow-principal-user:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;"
+                            "kuflow-principal:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;"
                         )
                     ),
                     "key_2",
@@ -257,7 +257,7 @@ public class TaskOperationTest extends AbstractOperationTest {
                             "key_4",
                             "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;",
                             "key_5",
-                            "kuflow-principal-user:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;"
+                            "kuflow-principal:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;"
                         )
                     ),
                     "key_2",
@@ -276,7 +276,7 @@ public class TaskOperationTest extends AbstractOperationTest {
                             "key_4",
                             "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;",
                             "key_5",
-                            "kuflow-principal-user:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;"
+                            "kuflow-principal:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;"
                         )
                     ),
                     "key_2",
