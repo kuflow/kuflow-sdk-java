@@ -53,20 +53,26 @@
   </modules>
 
   <properties>
-    <maven.version>3.9.1</maven.version>
+    <maven.version>3.9.2</maven.version>
     <java.version>11</java.version>
     <resource.delimiter>#</resource.delimiter>
     <argLine>-Djava.security.egd=file:/dev/./urandom -Xmx256m</argLine>
 
     <!-- Maven plugin dependencies -->
+    <maven-install-plugin.version>3.1.1</maven-install-plugin.version>
+    <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
+    <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
+    <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+    <maven-surefire-plugin.version>3.1.0</maven-surefire-plugin.version>
+
     <maven-gpg-plugin.version>3.1.0</maven-gpg-plugin.version>
     <maven-checkstyle.version>3.2.2</maven-checkstyle.version>
-    <flatten-maven-plugin.version>1.4.1</flatten-maven-plugin.version>
+    <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
     <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
-    <checkstyle.version>10.10.0</checkstyle.version>
+    <checkstyle.version>10.11.0</checkstyle.version>
     <prettier-maven-plugin.version>0.19</prettier-maven-plugin.version>
     <prettier-java.version>2.1.0</prettier-java.version>
-    <build-helper-maven-plugin.version>3.3.0</build-helper-maven-plugin.version>
+    <build-helper-maven-plugin.version>3.4.0</build-helper-maven-plugin.version>
     <license-maven-plugin.version>4.2</license-maven-plugin.version>
 
     <!-- Spring dependencies -->
