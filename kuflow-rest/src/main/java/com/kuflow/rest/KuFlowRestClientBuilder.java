@@ -468,7 +468,7 @@ public final class KuFlowRestClientBuilder
         StringBuilder userAgentBuilder = new StringBuilder();
 
         // Add the required default User-Agent string.
-        userAgentBuilder.append("sdk-js").append("-").append(sdkName).append("/").append(sdkVersion);
+        userAgentBuilder.append("sdk-java").append("-").append(sdkName).append("/").append(sdkVersion);
 
         // Only add the platform telemetry if it is allowed as it is optional.
         if (!isTelemetryDisabled(configuration)) {
