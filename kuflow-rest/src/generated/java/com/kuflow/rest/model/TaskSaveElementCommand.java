@@ -22,36 +22,9 @@
  */
 package com.kuflow.rest.model;
 
-import static com.kuflow.rest.util.TaskElementValueAccessorTaskSaveElementCommand.of;
-import static com.kuflow.rest.util.TaskHelper.addElementValueOf;
-import static com.kuflow.rest.util.TaskHelper.addElementValuesOf;
-import static com.kuflow.rest.util.TaskHelper.findElementValueOfAsDocument;
-import static com.kuflow.rest.util.TaskHelper.findElementValueOfAsDouble;
-import static com.kuflow.rest.util.TaskHelper.findElementValueOfAsLocalDate;
-import static com.kuflow.rest.util.TaskHelper.findElementValueOfAsMap;
-import static com.kuflow.rest.util.TaskHelper.findElementValueOfAsPrincipal;
-import static com.kuflow.rest.util.TaskHelper.findElementValueOfAsString;
-import static com.kuflow.rest.util.TaskHelper.getElementValueOfAsDocument;
-import static com.kuflow.rest.util.TaskHelper.getElementValueOfAsDocumentList;
-import static com.kuflow.rest.util.TaskHelper.getElementValueOfAsDouble;
-import static com.kuflow.rest.util.TaskHelper.getElementValueOfAsDoubleList;
-import static com.kuflow.rest.util.TaskHelper.getElementValueOfAsLocalDate;
-import static com.kuflow.rest.util.TaskHelper.getElementValueOfAsLocalDateList;
-import static com.kuflow.rest.util.TaskHelper.getElementValueOfAsMap;
-import static com.kuflow.rest.util.TaskHelper.getElementValueOfAsMapList;
-import static com.kuflow.rest.util.TaskHelper.getElementValueOfAsPrincipal;
-import static com.kuflow.rest.util.TaskHelper.getElementValueOfAsPrincipalList;
-import static com.kuflow.rest.util.TaskHelper.getElementValueOfAsString;
-import static com.kuflow.rest.util.TaskHelper.getElementValueOfAsStringList;
-import static com.kuflow.rest.util.TaskHelper.getElementValueOfValid;
-import static com.kuflow.rest.util.TaskHelper.getElementValueOfValidAt;
-import static com.kuflow.rest.util.TaskHelper.setElementValueOf;
-import static com.kuflow.rest.util.TaskHelper.setElementValueOfValid;
-import static com.kuflow.rest.util.TaskHelper.setElementValueOfValidAt;
-import static com.kuflow.rest.util.TaskHelper.setElementValuesOf;
-
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.kuflow.rest.util.TaskSaveElementCommandUtils;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -119,9 +92,11 @@ public final class TaskSaveElementCommand {
      * Check if all related valid values are TRUE
      *
      * @return TRUE if all related valid values are TRUE else FALSE.
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public Boolean getElementValueValid() {
-        return getElementValueOfValid(of(this));
+        return TaskSaveElementCommandUtils.getElementValueValid(this);
     }
 
     /**
@@ -129,19 +104,23 @@ public final class TaskSaveElementCommand {
      *
      * @param index Element value index
      * @return The requested valid value
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public Boolean getElementValueValidAt(int index) {
-        return getElementValueOfValidAt(of(this), index);
+        return TaskSaveElementCommandUtils.getElementValueValidAt(this, index);
     }
 
     /**
      * Set valid to all values
      *
      * @param valid Valid value
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public TaskSaveElementCommand setElementValueValid(Boolean valid) {
-        setElementValueOfValid(of(this), valid);
+        TaskSaveElementCommandUtils.setElementValueValid(this, valid);
 
         return this;
     }
@@ -151,10 +130,12 @@ public final class TaskSaveElementCommand {
      *
      * @param valid Valid value
      * @param index Element value index
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public TaskSaveElementCommand setElementValueValidAt(Boolean valid, int index) {
-        setElementValueOfValidAt(of(this), valid, index);
+        TaskSaveElementCommandUtils.setElementValueValidAt(this, valid, index);
 
         return this;
     }
@@ -163,10 +144,12 @@ public final class TaskSaveElementCommand {
      * Set an element value
      *
      * @param elementValue Element value, if the value is null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public TaskSaveElementCommand setElementValueAsString(String elementValue) {
-        setElementValueOf(of(this), elementValue);
+        TaskSaveElementCommandUtils.setElementValueAsString(this, elementValue);
 
         return this;
     }
@@ -175,10 +158,12 @@ public final class TaskSaveElementCommand {
      * Set all element values passed, previews values will be removed
      *
      * @param elementValues Element values, if the values are null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public TaskSaveElementCommand setElementValueAsStringList(List<String> elementValues) {
-        setElementValuesOf(of(this), elementValues);
+        TaskSaveElementCommandUtils.setElementValueAsStringList(this, elementValues);
 
         return this;
     }
@@ -187,10 +172,12 @@ public final class TaskSaveElementCommand {
      * Add a new element value
      *
      * @param elementValue Element value, if the values is null the value is not added
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public TaskSaveElementCommand addElementValueAsString(String elementValue) {
-        addElementValueOf(of(this), elementValue);
+        TaskSaveElementCommandUtils.addElementValueAsString(this, elementValue);
 
         return this;
     }
@@ -199,10 +186,12 @@ public final class TaskSaveElementCommand {
      * Add all element values passed
      *
      * @param elementValues Element values
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public TaskSaveElementCommand addElementValueAsStringList(List<String> elementValues) {
-        addElementValuesOf(of(this), elementValues);
+        TaskSaveElementCommandUtils.addElementValueAsStringList(this, elementValues);
 
         return this;
     }
@@ -211,38 +200,49 @@ public final class TaskSaveElementCommand {
      * Get an element as String
      *
      * @return the element value.
-     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public String getElementValueAsString() {
-        return getElementValueOfAsString(of(this));
+        return TaskSaveElementCommandUtils.getElementValueAsString(this);
     }
 
     /**
      * Get all elements as String
      *
      * @return the elements values.
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public List<String> getElementValueAsStringList() {
-        return getElementValueOfAsStringList(of(this));
+        return TaskSaveElementCommandUtils.getElementValueAsStringList(this);
     }
 
     /**
      * Try to get an element as String
      *
      * @return the element value if exists.
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public Optional<String> findElementValueAsString() {
-        return findElementValueOfAsString(of(this));
+        return TaskSaveElementCommandUtils.findElementValueAsString(this);
     }
 
     /**
      * Set an element value
      *
      * @param elementValue Element value, if the value is null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public TaskSaveElementCommand setElementValueAsDouble(Double elementValue) {
-        setElementValueOf(of(this), elementValue);
+        TaskSaveElementCommandUtils.setElementValueAsDouble(this, elementValue);
 
         return this;
     }
@@ -251,10 +251,12 @@ public final class TaskSaveElementCommand {
      * Set all element values passed, previews values will be removed
      *
      * @param elementValues Element values, if the values are null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public TaskSaveElementCommand setElementValueAsDoubleList(List<Double> elementValues) {
-        setElementValuesOf(of(this), elementValues);
+        TaskSaveElementCommandUtils.setElementValueAsDoubleList(this, elementValues);
 
         return this;
     }
@@ -263,10 +265,12 @@ public final class TaskSaveElementCommand {
      * Add a new element value
      *
      * @param elementValue Element value, if the values is null the value is not added
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public TaskSaveElementCommand addElementValueAsDouble(Double elementValue) {
-        addElementValueOf(of(this), elementValue);
+        TaskSaveElementCommandUtils.addElementValueAsDouble(this, elementValue);
 
         return this;
     }
@@ -275,10 +279,12 @@ public final class TaskSaveElementCommand {
      * Add all element values passed
      *
      * @param elementValues Element values
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public TaskSaveElementCommand addElementValueAsDoubleList(List<Double> elementValues) {
-        addElementValuesOf(of(this), elementValues);
+        TaskSaveElementCommandUtils.addElementValueAsDoubleList(this, elementValues);
 
         return this;
     }
@@ -287,38 +293,49 @@ public final class TaskSaveElementCommand {
      * Get an element as Double
      *
      * @return the element value.
-     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public Double getElementValueAsDouble() {
-        return getElementValueOfAsDouble(of(this));
+        return TaskSaveElementCommandUtils.getElementValueAsDouble(this);
     }
 
     /**
      * Get all elements as Double
      *
      * @return the elements values.
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public List<Double> getElementValueAsDoubleList() {
-        return getElementValueOfAsDoubleList(of(this));
+        return TaskSaveElementCommandUtils.getElementValueAsDoubleList(this);
     }
 
     /**
      * Try to get an element as Double
      *
      * @return the element value if exists.
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public Optional<Double> findElementValueAsDouble() {
-        return findElementValueOfAsDouble(of(this));
+        return TaskSaveElementCommandUtils.findElementValueAsDouble(this);
     }
 
     /**
      * Set an element value
      *
      * @param elementValue Element value, if the value is null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public TaskSaveElementCommand setElementValueAsLocalDate(LocalDate elementValue) {
-        setElementValueOf(of(this), elementValue);
+        TaskSaveElementCommandUtils.setElementValueAsLocalDate(this, elementValue);
 
         return this;
     }
@@ -327,10 +344,12 @@ public final class TaskSaveElementCommand {
      * Set all element values passed, previews values will be removed
      *
      * @param elementValues Element values, if the values are null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public TaskSaveElementCommand setElementValueAsLocalDateList(List<LocalDate> elementValues) {
-        setElementValuesOf(of(this), elementValues);
+        TaskSaveElementCommandUtils.setElementValueAsLocalDateList(this, elementValues);
 
         return this;
     }
@@ -339,10 +358,12 @@ public final class TaskSaveElementCommand {
      * Add a new element value
      *
      * @param elementValue Element value, if the values is null the value is not added
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public TaskSaveElementCommand addElementValueAsLocalDate(LocalDate elementValue) {
-        addElementValueOf(of(this), elementValue);
+        TaskSaveElementCommandUtils.addElementValueAsLocalDate(this, elementValue);
 
         return this;
     }
@@ -351,10 +372,12 @@ public final class TaskSaveElementCommand {
      * Add all element values passed
      *
      * @param elementValues Element values
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public TaskSaveElementCommand addElementValueAsLocalDateList(List<LocalDate> elementValues) {
-        addElementValuesOf(of(this), elementValues);
+        TaskSaveElementCommandUtils.addElementValueAsLocalDateList(this, elementValues);
 
         return this;
     }
@@ -363,38 +386,49 @@ public final class TaskSaveElementCommand {
      * Get an element as LocalDate
      *
      * @return the element value.
-     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public LocalDate getElementValueAsLocalDate() {
-        return getElementValueOfAsLocalDate(of(this));
+        return TaskSaveElementCommandUtils.getElementValueAsLocalDate(this);
     }
 
     /**
      * Get all elements as LocalDate
      *
      * @return the elements values.
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public List<LocalDate> getElementValueAsLocalDateList() {
-        return getElementValueOfAsLocalDateList(of(this));
+        return TaskSaveElementCommandUtils.getElementValueAsLocalDateList(this);
     }
 
     /**
      * Try to get an element as LocalDate
      *
      * @return the element value if exists.
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public Optional<LocalDate> findElementValueAsLocalDate() {
-        return findElementValueOfAsLocalDate(of(this));
+        return TaskSaveElementCommandUtils.findElementValueAsLocalDate(this);
     }
 
     /**
      * Set an element value
      *
      * @param elementValue Element value, if the value is null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public TaskSaveElementCommand setElementValueAsMap(Map<String, Object> elementValue) {
-        setElementValueOf(of(this), elementValue);
+        TaskSaveElementCommandUtils.setElementValueAsMap(this, elementValue);
 
         return this;
     }
@@ -403,10 +437,12 @@ public final class TaskSaveElementCommand {
      * Set all element values passed, previews values will be removed
      *
      * @param elementValues Element values, if the values are null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public TaskSaveElementCommand setElementValueAsMapList(List<Map<String, Object>> elementValues) {
-        setElementValuesOf(of(this), elementValues);
+        TaskSaveElementCommandUtils.setElementValueAsMapList(this, elementValues);
 
         return this;
     }
@@ -415,10 +451,12 @@ public final class TaskSaveElementCommand {
      * Add a new element value
      *
      * @param elementValue Element value, if the values is null the value is not added
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public TaskSaveElementCommand addElementValueAsMap(Map<String, Object> elementValue) {
-        addElementValueOf(of(this), elementValue);
+        TaskSaveElementCommandUtils.addElementValueAsMap(this, elementValue);
 
         return this;
     }
@@ -427,10 +465,12 @@ public final class TaskSaveElementCommand {
      * Add all element values passed
      *
      * @param elementValues Element values
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public TaskSaveElementCommand addElementValueAsMapList(List<Map<String, Object>> elementValues) {
-        addElementValuesOf(of(this), elementValues);
+        TaskSaveElementCommandUtils.addElementValueAsMapList(this, elementValues);
 
         return this;
     }
@@ -439,38 +479,49 @@ public final class TaskSaveElementCommand {
      * Get an element as Map
      *
      * @return the element value.
-     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public Map<String, Object> getElementValueAsMap() {
-        return getElementValueOfAsMap(of(this));
+        return TaskSaveElementCommandUtils.getElementValueAsMap(this);
     }
 
     /**
      * Get all elements as Map
      *
      * @return the elements values.
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public List<Map<String, Object>> getElementValueAsMapList() {
-        return getElementValueOfAsMapList(of(this));
+        return TaskSaveElementCommandUtils.getElementValueAsMapList(this);
     }
 
     /**
      * Try to get an element as Map
      *
      * @return the element value if exists.
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public Optional<Map<String, Object>> findElementValueAsMap() {
-        return findElementValueOfAsMap(of(this));
+        return TaskSaveElementCommandUtils.findElementValueAsMap(this);
     }
 
     /**
      * Set an element value
      *
      * @param elementValue Element value, if the value is null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public TaskSaveElementCommand setElementValueAsDocument(TaskElementValueDocumentItem elementValue) {
-        setElementValueOf(of(this), elementValue);
+        TaskSaveElementCommandUtils.setElementValueAsDocument(this, elementValue);
 
         return this;
     }
@@ -479,10 +530,12 @@ public final class TaskSaveElementCommand {
      * Set all element values passed, previews values will be removed
      *
      * @param elementValues Element values, if the values are null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public TaskSaveElementCommand setElementValueAsDocumentList(List<TaskElementValueDocumentItem> elementValues) {
-        setElementValuesOf(of(this), elementValues);
+        TaskSaveElementCommandUtils.setElementValueAsDocumentList(this, elementValues);
 
         return this;
     }
@@ -491,10 +544,12 @@ public final class TaskSaveElementCommand {
      * Add a new element value
      *
      * @param elementValue Element value, if the values is null the value is not added
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public TaskSaveElementCommand addElementValueAsDocument(TaskElementValueDocumentItem elementValue) {
-        addElementValueOf(of(this), elementValue);
+        TaskSaveElementCommandUtils.addElementValueAsDocument(this, elementValue);
 
         return this;
     }
@@ -503,10 +558,12 @@ public final class TaskSaveElementCommand {
      * Add all element values passed
      *
      * @param elementValues Element values
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public TaskSaveElementCommand addElementValueAsDocumentList(List<TaskElementValueDocumentItem> elementValues) {
-        addElementValuesOf(of(this), elementValues);
+        TaskSaveElementCommandUtils.addElementValueAsDocumentList(this, elementValues);
 
         return this;
     }
@@ -515,38 +572,49 @@ public final class TaskSaveElementCommand {
      * Get an element as Document
      *
      * @return the element value.
-     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public TaskElementValueDocumentItem getElementValueAsDocument() {
-        return getElementValueOfAsDocument(of(this));
+        return TaskSaveElementCommandUtils.getElementValueAsDocument(this);
     }
 
     /**
      * Get all elements as Document
      *
      * @return the elements values.
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public List<TaskElementValueDocumentItem> getElementValueAsDocumentList() {
-        return getElementValueOfAsDocumentList(of(this));
+        return TaskSaveElementCommandUtils.getElementValueAsDocumentList(this);
     }
 
     /**
      * Try to get an element as Document
      *
      * @return the element value if exists.
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public Optional<TaskElementValueDocumentItem> findElementValueAsDocument() {
-        return findElementValueOfAsDocument(of(this));
+        return TaskSaveElementCommandUtils.findElementValueAsDocument(this);
     }
 
     /**
      * Set an element value
      *
      * @param elementValue Element value, if the value is null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public TaskSaveElementCommand setElementValueAsPrincipal(TaskElementValuePrincipalItem elementValue) {
-        setElementValueOf(of(this), elementValue);
+        TaskSaveElementCommandUtils.setElementValueAsPrincipal(this, elementValue);
 
         return this;
     }
@@ -555,10 +623,12 @@ public final class TaskSaveElementCommand {
      * Set all element values passed, previews values will be removed
      *
      * @param elementValues Element values, if the values are null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public TaskSaveElementCommand setElementValueAsPrincipalList(List<TaskElementValuePrincipalItem> elementValues) {
-        setElementValuesOf(of(this), elementValues);
+        TaskSaveElementCommandUtils.setElementValueAsPrincipalList(this, elementValues);
 
         return this;
     }
@@ -567,10 +637,12 @@ public final class TaskSaveElementCommand {
      * Add a new element value
      *
      * @param elementValue Element value, if the values is null the value is not added
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public TaskSaveElementCommand addElementValueAsPrincipal(TaskElementValuePrincipalItem elementValue) {
-        addElementValueOf(of(this), elementValue);
+        TaskSaveElementCommandUtils.addElementValueAsPrincipal(this, elementValue);
 
         return this;
     }
@@ -579,10 +651,12 @@ public final class TaskSaveElementCommand {
      * Add all element values passed
      *
      * @param elementValues Element values
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public TaskSaveElementCommand addElementValueAsPrincipalList(List<TaskElementValuePrincipalItem> elementValues) {
-        addElementValuesOf(of(this), elementValues);
+        TaskSaveElementCommandUtils.addElementValueAsPrincipalList(this, elementValues);
 
         return this;
     }
@@ -591,27 +665,36 @@ public final class TaskSaveElementCommand {
      * Get an element as Principal
      *
      * @return the element value.
-     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public TaskElementValuePrincipalItem getElementValueAsPrincipal() {
-        return getElementValueOfAsPrincipal(of(this));
+        return TaskSaveElementCommandUtils.getElementValueAsPrincipal(this);
     }
 
     /**
      * Get all elements as Principal
      *
      * @return the elements values.
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public List<TaskElementValuePrincipalItem> getElementValueAsPrincipalList() {
-        return getElementValueOfAsPrincipalList(of(this));
+        return TaskSaveElementCommandUtils.getElementValueAsPrincipalList(this);
     }
 
     /**
      * Try to get an element as Principal
      *
      * @return the element value if exists.
+     * @deprecated in favor of {@link TaskSaveElementCommandUtils}
      */
+    @Deprecated
     public Optional<TaskElementValuePrincipalItem> findElementValueAsPrincipal() {
-        return findElementValueOfAsPrincipal(of(this));
+        return TaskSaveElementCommandUtils.findElementValueAsPrincipal(this);
     }
 }

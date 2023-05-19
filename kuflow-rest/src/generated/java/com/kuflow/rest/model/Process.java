@@ -22,29 +22,11 @@
  */
 package com.kuflow.rest.model;
 
-import static com.kuflow.rest.util.ProcessElementValueAccessorProcess.of;
-import static com.kuflow.rest.util.ProcessHelper.addElementValueOf;
-import static com.kuflow.rest.util.ProcessHelper.addElementValuesOf;
-import static com.kuflow.rest.util.ProcessHelper.findElementValueOfAsDouble;
-import static com.kuflow.rest.util.ProcessHelper.findElementValueOfAsLocalDate;
-import static com.kuflow.rest.util.ProcessHelper.findElementValueOfAsString;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsDouble;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsDoubleList;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsLocalDate;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsLocalDateList;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsString;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsStringList;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfValid;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfValidAt;
-import static com.kuflow.rest.util.ProcessHelper.setElementValueOf;
-import static com.kuflow.rest.util.ProcessHelper.setElementValueOfValid;
-import static com.kuflow.rest.util.ProcessHelper.setElementValueOfValidAt;
-import static com.kuflow.rest.util.ProcessHelper.setElementValuesOf;
-
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.kuflow.rest.util.ProcessUtils;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -275,9 +257,11 @@ public final class Process extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return TRUE if all related valid values are TRUE else FALSE.
+     * @deprecated in favor of {@link ProcessUtils}
      */
+    @Deprecated
     public Boolean getElementValueValid(String elementDefinitionCode) {
-        return getElementValueOfValid(of(this, elementDefinitionCode));
+        return ProcessUtils.getElementValueValid(this, elementDefinitionCode);
     }
 
     /**
@@ -286,9 +270,11 @@ public final class Process extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @param index Element value index
      * @return The requested valid value
+     * @deprecated in favor of {@link ProcessUtils}
      */
+    @Deprecated
     public Boolean getElementValueValidAt(String elementDefinitionCode, int index) {
-        return getElementValueOfValidAt(of(this, elementDefinitionCode), index);
+        return ProcessUtils.getElementValueValidAt(this, elementDefinitionCode, index);
     }
 
     /**
@@ -296,10 +282,12 @@ public final class Process extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param valid Valid value
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessUtils}
      */
+    @Deprecated
     public Process setElementValueValid(String elementDefinitionCode, Boolean valid) {
-        setElementValueOfValid(of(this, elementDefinitionCode), valid);
+        ProcessUtils.setElementValueValid(this, elementDefinitionCode, valid);
 
         return this;
     }
@@ -310,10 +298,12 @@ public final class Process extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @param valid Valid value
      * @param index Element value index
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessUtils}
      */
+    @Deprecated
     public Process setElementValueValidAt(String elementDefinitionCode, Boolean valid, int index) {
-        setElementValueOfValidAt(of(this, elementDefinitionCode), valid, index);
+        ProcessUtils.setElementValueValidAt(this, elementDefinitionCode, valid, index);
 
         return this;
     }
@@ -323,10 +313,12 @@ public final class Process extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValue Element value, if the value is null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessUtils}
      */
+    @Deprecated
     public Process setElementValueAsString(String elementDefinitionCode, String elementValue) {
-        setElementValueOf(of(this, elementDefinitionCode), elementValue);
+        ProcessUtils.setElementValueAsString(this, elementDefinitionCode, elementValue);
 
         return this;
     }
@@ -336,10 +328,12 @@ public final class Process extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValues Element values, if the values are null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessUtils}
      */
+    @Deprecated
     public Process setElementValueAsStringList(String elementDefinitionCode, List<String> elementValues) {
-        setElementValuesOf(of(this, elementDefinitionCode), elementValues);
+        ProcessUtils.setElementValueAsStringList(this, elementDefinitionCode, elementValues);
 
         return this;
     }
@@ -349,10 +343,12 @@ public final class Process extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValue Element value, if the values is null the value is not added
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessUtils}
      */
+    @Deprecated
     public Process addElementValueAsString(String elementDefinitionCode, String elementValue) {
-        addElementValueOf(of(this, elementDefinitionCode), elementValue);
+        ProcessUtils.addElementValueAsString(this, elementDefinitionCode, elementValue);
 
         return this;
     }
@@ -362,10 +358,12 @@ public final class Process extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValues Element values
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessUtils}
      */
+    @Deprecated
     public Process addElementValueAsStringList(String elementDefinitionCode, List<String> elementValues) {
-        addElementValuesOf(of(this, elementDefinitionCode), elementValues);
+        ProcessUtils.addElementValueAsStringList(this, elementDefinitionCode, elementValues);
 
         return this;
     }
@@ -375,10 +373,13 @@ public final class Process extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
-     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link ProcessUtils}
      */
+    @Deprecated
     public String getElementValueAsString(String elementDefinitionCode) {
-        return getElementValueOfAsString(of(this, elementDefinitionCode));
+        return ProcessUtils.getElementValueAsString(this, elementDefinitionCode);
     }
 
     /**
@@ -386,9 +387,13 @@ public final class Process extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the elements values.
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link ProcessUtils}
      */
+    @Deprecated
     public List<String> getElementValueAsStringList(String elementDefinitionCode) {
-        return getElementValueOfAsStringList(of(this, elementDefinitionCode));
+        return ProcessUtils.getElementValueAsStringList(this, elementDefinitionCode);
     }
 
     /**
@@ -396,9 +401,11 @@ public final class Process extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the element value if exists.
+     * @deprecated in favor of {@link ProcessUtils}
      */
+    @Deprecated
     public Optional<String> findElementValueAsString(String elementDefinitionCode) {
-        return findElementValueOfAsString(of(this, elementDefinitionCode));
+        return ProcessUtils.findElementValueAsString(this, elementDefinitionCode);
     }
 
     /**
@@ -406,10 +413,12 @@ public final class Process extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValue Element value, if the value is null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessUtils}
      */
+    @Deprecated
     public Process setElementValueAsDouble(String elementDefinitionCode, Double elementValue) {
-        setElementValueOf(of(this, elementDefinitionCode), elementValue);
+        ProcessUtils.setElementValueAsDouble(this, elementDefinitionCode, elementValue);
 
         return this;
     }
@@ -419,10 +428,12 @@ public final class Process extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValues Element values, if the values are null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessUtils}
      */
+    @Deprecated
     public Process setElementValueAsDoubleList(String elementDefinitionCode, List<Double> elementValues) {
-        setElementValuesOf(of(this, elementDefinitionCode), elementValues);
+        ProcessUtils.setElementValueAsDoubleList(this, elementDefinitionCode, elementValues);
 
         return this;
     }
@@ -432,10 +443,12 @@ public final class Process extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValue Element value, if the values is null the value is not added
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessUtils}
      */
+    @Deprecated
     public Process addElementValueAsDouble(String elementDefinitionCode, Double elementValue) {
-        addElementValueOf(of(this, elementDefinitionCode), elementValue);
+        ProcessUtils.addElementValueAsDouble(this, elementDefinitionCode, elementValue);
 
         return this;
     }
@@ -445,10 +458,12 @@ public final class Process extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValues Element values
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessUtils}
      */
+    @Deprecated
     public Process addElementValueAsDoubleList(String elementDefinitionCode, List<Double> elementValues) {
-        addElementValuesOf(of(this, elementDefinitionCode), elementValues);
+        ProcessUtils.addElementValueAsDoubleList(this, elementDefinitionCode, elementValues);
 
         return this;
     }
@@ -458,10 +473,13 @@ public final class Process extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
-     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link ProcessUtils}
      */
+    @Deprecated
     public Double getElementValueAsDouble(String elementDefinitionCode) {
-        return getElementValueOfAsDouble(of(this, elementDefinitionCode));
+        return ProcessUtils.getElementValueAsDouble(this, elementDefinitionCode);
     }
 
     /**
@@ -469,9 +487,13 @@ public final class Process extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the elements values.
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link ProcessUtils}
      */
+    @Deprecated
     public List<Double> getElementValueAsDoubleList(String elementDefinitionCode) {
-        return getElementValueOfAsDoubleList(of(this, elementDefinitionCode));
+        return ProcessUtils.getElementValueAsDoubleList(this, elementDefinitionCode);
     }
 
     /**
@@ -479,9 +501,11 @@ public final class Process extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the element value if exists.
+     * @deprecated in favor of {@link ProcessUtils}
      */
+    @Deprecated
     public Optional<Double> findElementValueAsDouble(String elementDefinitionCode) {
-        return findElementValueOfAsDouble(of(this, elementDefinitionCode));
+        return ProcessUtils.findElementValueAsDouble(this, elementDefinitionCode);
     }
 
     /**
@@ -489,10 +513,12 @@ public final class Process extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValue Element value, if the value is null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessUtils}
      */
+    @Deprecated
     public Process setElementValueAsLocalDate(String elementDefinitionCode, LocalDate elementValue) {
-        setElementValueOf(of(this, elementDefinitionCode), elementValue);
+        ProcessUtils.setElementValueAsLocalDate(this, elementDefinitionCode, elementValue);
 
         return this;
     }
@@ -502,10 +528,12 @@ public final class Process extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValues Element values, if the values are null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessUtils}
      */
+    @Deprecated
     public Process setElementValueAsLocalDateList(String elementDefinitionCode, List<LocalDate> elementValues) {
-        setElementValuesOf(of(this, elementDefinitionCode), elementValues);
+        ProcessUtils.setElementValueAsLocalDateList(this, elementDefinitionCode, elementValues);
 
         return this;
     }
@@ -515,10 +543,12 @@ public final class Process extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValue Element value, if the values is null the value is not added
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessUtils}
      */
+    @Deprecated
     public Process addElementValueAsLocalDate(String elementDefinitionCode, LocalDate elementValue) {
-        addElementValueOf(of(this, elementDefinitionCode), elementValue);
+        ProcessUtils.addElementValueAsLocalDate(this, elementDefinitionCode, elementValue);
 
         return this;
     }
@@ -528,10 +558,12 @@ public final class Process extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @param elementValues Element values
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessUtils}
      */
+    @Deprecated
     public Process addElementValueAsLocalDateList(String elementDefinitionCode, List<LocalDate> elementValues) {
-        addElementValuesOf(of(this, elementDefinitionCode), elementValues);
+        ProcessUtils.addElementValueAsLocalDateList(this, elementDefinitionCode, elementValues);
 
         return this;
     }
@@ -541,10 +573,13 @@ public final class Process extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
-     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link ProcessUtils}
      */
+    @Deprecated
     public LocalDate getElementValueAsLocalDate(String elementDefinitionCode) {
-        return getElementValueOfAsLocalDate(of(this, elementDefinitionCode));
+        return ProcessUtils.getElementValueAsLocalDate(this, elementDefinitionCode);
     }
 
     /**
@@ -552,9 +587,13 @@ public final class Process extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the elements values.
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link ProcessUtils}
      */
+    @Deprecated
     public List<LocalDate> getElementValueAsLocalDateList(String elementDefinitionCode) {
-        return getElementValueOfAsLocalDateList(of(this, elementDefinitionCode));
+        return ProcessUtils.getElementValueAsLocalDateList(this, elementDefinitionCode);
     }
 
     /**
@@ -562,8 +601,10 @@ public final class Process extends AbstractAudited {
      *
      * @param elementDefinitionCode Element Definition Code
      * @return the element value if exists.
+     * @deprecated in favor of {@link ProcessUtils}
      */
+    @Deprecated
     public Optional<LocalDate> findElementValueAsLocalDate(String elementDefinitionCode) {
-        return findElementValueOfAsLocalDate(of(this, elementDefinitionCode));
+        return ProcessUtils.findElementValueAsLocalDate(this, elementDefinitionCode);
     }
 }

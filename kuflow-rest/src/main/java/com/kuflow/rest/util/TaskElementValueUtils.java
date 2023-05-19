@@ -42,10 +42,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class TaskHelper {
+/**
+ * Utility class for {@link TaskElementValue}
+ */
+public final class TaskElementValueUtils {
 
-    public static Boolean getElementValueOfValid(TaskElementValueAccessor taskElementValueAccessor) {
-        List<TaskElementValue> elementValues = getElementValuesOf(taskElementValueAccessor);
+    private TaskElementValueUtils() {
+        throw new RuntimeException("Utility class");
+    }
+
+    public static Boolean getElementValueValid(TaskElementValueAccessor taskElementValueAccessor) {
+        List<TaskElementValue> elementValues = getElementValues(taskElementValueAccessor);
         if (elementValues.isEmpty()) {
             return null;
         }
@@ -53,38 +60,41 @@ public class TaskHelper {
         return elementValues.stream().filter(v -> Boolean.FALSE.equals(v.isValid())).findAny().isEmpty();
     }
 
-    public static Boolean getElementValueOfValidAt(TaskElementValueAccessor taskElementValueAccessor, int index) {
-        List<TaskElementValue> elementValues = getElementValuesOf(taskElementValueAccessor);
+    public static Boolean getElementValueValidAt(TaskElementValueAccessor taskElementValueAccessor, int index) {
+        List<TaskElementValue> elementValues = getElementValues(taskElementValueAccessor);
 
         return elementValues.get(index).isValid();
     }
 
-    public static void setElementValueOfValid(TaskElementValueAccessor taskElementValueAccessor, Boolean valid) {
-        List<TaskElementValue> elementValues = getElementValuesOf(taskElementValueAccessor);
+    public static void setElementValueValid(TaskElementValueAccessor taskElementValueAccessor, Boolean valid) {
+        List<TaskElementValue> elementValues = getElementValues(taskElementValueAccessor);
         elementValues.forEach(it -> it.setValid(valid));
     }
 
-    public static void setElementValueOfValidAt(TaskElementValueAccessor taskElementValueAccessor, Boolean valid, int index) {
-        List<TaskElementValue> elementValues = getElementValuesOf(taskElementValueAccessor);
+    public static void setElementValueValidAt(TaskElementValueAccessor taskElementValueAccessor, Boolean valid, int index) {
+        List<TaskElementValue> elementValues = getElementValues(taskElementValueAccessor);
         elementValues.get(index).setValid(valid);
     }
 
-    public static void addElementValueOf(TaskElementValueAccessor taskElementValueAccessor, Object elementValue) {
+    public static void addElementValue(TaskElementValueAccessor taskElementValueAccessor, Object elementValue) {
         List<Object> elementValueList = new LinkedList<>();
         if (elementValue != null) {
             elementValueList.add(elementValue);
         }
 
-        addElementValuesOf(taskElementValueAccessor, elementValueList);
+        addElementValues(taskElementValueAccessor, elementValueList);
     }
 
-    public static void addElementValuesOf(TaskElementValueAccessor taskElementValueAccessor, List<?> elementValues) {
+    public static void addElementValues(TaskElementValueAccessor taskElementValueAccessor, List<?> elementValues) {
         List<Object> elementValueList = new LinkedList<>();
         if (elementValues != null) {
             elementValueList.addAll(elementValues);
         }
 
-        List<TaskElementValue> taskElementValues = elementValueList.stream().map(TaskHelper::toTaskElementValue).collect(toList());
+        List<TaskElementValue> taskElementValues = elementValueList
+            .stream()
+            .map(TaskElementValueUtils::toTaskElementValue)
+            .collect(toList());
 
         List<TaskElementValue> taskElementValueList = taskElementValueAccessor.getElementValues();
 
@@ -96,21 +106,21 @@ public class TaskHelper {
         taskElementValueAccessor.setElementValues(taskElementValueList);
     }
 
-    public static void setElementValueOf(TaskElementValueAccessor taskElementValueAccessor, Object elementValue) {
+    public static void setElementValue(TaskElementValueAccessor taskElementValueAccessor, Object elementValue) {
         List<Object> valueList = new LinkedList<>();
         if (elementValue != null) {
             valueList.add(elementValue);
         }
 
-        setElementValuesOf(taskElementValueAccessor, valueList);
+        setElementValues(taskElementValueAccessor, valueList);
     }
 
-    public static void setElementValuesOf(TaskElementValueAccessor taskElementValueAccessor, List<?> elementValues) {
+    public static void setElementValues(TaskElementValueAccessor taskElementValueAccessor, List<?> elementValues) {
         if (elementValues == null) {
             elementValues = new LinkedList<>();
         }
 
-        List<TaskElementValue> taskElementValues = elementValues.stream().map(TaskHelper::toTaskElementValue).collect(toList());
+        List<TaskElementValue> taskElementValues = elementValues.stream().map(TaskElementValueUtils::toTaskElementValue).collect(toList());
 
         taskElementValueAccessor.setElementValues(taskElementValues);
     }
@@ -154,24 +164,24 @@ public class TaskHelper {
         return new TaskElementValuePrincipal().setValue(value);
     }
 
-    public static String getElementValueOfAsString(TaskElementValueAccessor taskElementValueAccessor) {
-        return findElementValueOfAsString(taskElementValueAccessor)
+    public static String getElementValueAsString(TaskElementValueAccessor taskElementValueAccessor) {
+        return findElementValueAsString(taskElementValueAccessor)
             .orElseThrow(() -> new KuFlowRestClientException("Element value doesn't exist"));
     }
 
-    public static Optional<String> findElementValueOfAsString(TaskElementValueAccessor taskElementValueAccessor) {
-        Optional<TaskElementValue> taskElementValue = findElementValueOf(taskElementValueAccessor);
+    public static Optional<String> findElementValueAsString(TaskElementValueAccessor taskElementValueAccessor) {
+        Optional<TaskElementValue> taskElementValue = findElementValue(taskElementValueAccessor);
 
-        return taskElementValue.map(TaskHelper::getElementValueOfAsString);
+        return taskElementValue.map(TaskElementValueUtils::getElementValueAsString);
     }
 
-    public static List<String> getElementValueOfAsStringList(TaskElementValueAccessor taskElementValueAccessor) {
-        List<TaskElementValue> taskElementValues = getElementValuesOf(taskElementValueAccessor);
+    public static List<String> getElementValueAsStringList(TaskElementValueAccessor taskElementValueAccessor) {
+        List<TaskElementValue> taskElementValues = getElementValues(taskElementValueAccessor);
 
-        return taskElementValues.stream().map(TaskHelper::getElementValueOfAsString).collect(toList());
+        return taskElementValues.stream().map(TaskElementValueUtils::getElementValueAsString).collect(toList());
     }
 
-    private static String getElementValueOfAsString(TaskElementValue elementValue) {
+    private static String getElementValueAsString(TaskElementValue elementValue) {
         if (elementValue instanceof TaskElementValueString) {
             TaskElementValueString valueString = (TaskElementValueString) elementValue;
 
@@ -187,24 +197,24 @@ public class TaskHelper {
         throw new KuFlowRestClientException(String.format("elementValue %s is not a String", elementValue));
     }
 
-    public static Optional<Double> findElementValueOfAsDouble(TaskElementValueAccessor taskElementValueAccessor) {
-        Optional<TaskElementValue> taskElementValue = findElementValueOf(taskElementValueAccessor);
+    public static Optional<Double> findElementValueAsDouble(TaskElementValueAccessor taskElementValueAccessor) {
+        Optional<TaskElementValue> taskElementValue = findElementValue(taskElementValueAccessor);
 
-        return taskElementValue.map(TaskHelper::getElementValueOfAsDouble);
+        return taskElementValue.map(TaskElementValueUtils::getElementValueAsDouble);
     }
 
-    public static Double getElementValueOfAsDouble(TaskElementValueAccessor taskElementValueAccessor) {
-        return findElementValueOfAsDouble(taskElementValueAccessor)
+    public static Double getElementValueAsDouble(TaskElementValueAccessor taskElementValueAccessor) {
+        return findElementValueAsDouble(taskElementValueAccessor)
             .orElseThrow(() -> new KuFlowRestClientException("Element value doesn't exist"));
     }
 
-    public static List<Double> getElementValueOfAsDoubleList(TaskElementValueAccessor taskElementValueAccessor) {
-        List<TaskElementValue> taskElementValues = getElementValuesOf(taskElementValueAccessor);
+    public static List<Double> getElementValueAsDoubleList(TaskElementValueAccessor taskElementValueAccessor) {
+        List<TaskElementValue> taskElementValues = getElementValues(taskElementValueAccessor);
 
-        return taskElementValues.stream().map(TaskHelper::getElementValueOfAsDouble).collect(toList());
+        return taskElementValues.stream().map(TaskElementValueUtils::getElementValueAsDouble).collect(toList());
     }
 
-    private static Double getElementValueOfAsDouble(TaskElementValue elementValue) {
+    private static Double getElementValueAsDouble(TaskElementValue elementValue) {
         if (elementValue instanceof TaskElementValueNumber) {
             TaskElementValueNumber valueNumber = (TaskElementValueNumber) elementValue;
 
@@ -227,25 +237,25 @@ public class TaskHelper {
         throw new KuFlowRestClientException(String.format("elementValue %s is not a Number", elementValue));
     }
 
-    public static Optional<LocalDate> findElementValueOfAsLocalDate(TaskElementValueAccessor taskElementValueAccessor) {
-        Optional<TaskElementValue> taskElementValue = findElementValueOf(taskElementValueAccessor);
+    public static Optional<LocalDate> findElementValueAsLocalDate(TaskElementValueAccessor taskElementValueAccessor) {
+        Optional<TaskElementValue> taskElementValue = findElementValue(taskElementValueAccessor);
 
-        return taskElementValue.map(TaskHelper::getElementValueOfAsLocalDate);
+        return taskElementValue.map(TaskElementValueUtils::getElementValueAsLocalDate);
     }
 
-    public static LocalDate getElementValueOfAsLocalDate(TaskElementValueAccessor taskElementValueAccessor) {
-        return findElementValueOfAsLocalDate(taskElementValueAccessor)
+    public static LocalDate getElementValueAsLocalDate(TaskElementValueAccessor taskElementValueAccessor) {
+        return findElementValueAsLocalDate(taskElementValueAccessor)
             .orElseThrow(() -> new KuFlowRestClientException("Element value doesn't exist"));
     }
 
-    public static List<LocalDate> getElementValueOfAsLocalDateList(TaskElementValueAccessor taskElementValueAccessor) {
-        List<TaskElementValue> taskElementValues = getElementValuesOf(taskElementValueAccessor);
+    public static List<LocalDate> getElementValueAsLocalDateList(TaskElementValueAccessor taskElementValueAccessor) {
+        List<TaskElementValue> taskElementValues = getElementValues(taskElementValueAccessor);
 
-        return taskElementValues.stream().map(TaskHelper::getElementValueOfAsLocalDate).collect(toList());
+        return taskElementValues.stream().map(TaskElementValueUtils::getElementValueAsLocalDate).collect(toList());
     }
 
-    private static LocalDate getElementValueOfAsLocalDate(TaskElementValue elementValue) {
-        String valueString = getElementValueOfAsString(elementValue);
+    private static LocalDate getElementValueAsLocalDate(TaskElementValue elementValue) {
+        String valueString = getElementValueAsString(elementValue);
 
         if (valueString == null) {
             return null;
@@ -258,24 +268,24 @@ public class TaskHelper {
         }
     }
 
-    public static Optional<Map<String, Object>> findElementValueOfAsMap(TaskElementValueAccessor taskElementValueAccessor) {
-        Optional<TaskElementValue> taskElementValue = findElementValueOf(taskElementValueAccessor);
+    public static Optional<Map<String, Object>> findElementValueAsMap(TaskElementValueAccessor taskElementValueAccessor) {
+        Optional<TaskElementValue> taskElementValue = findElementValue(taskElementValueAccessor);
 
-        return taskElementValue.map(TaskHelper::getElementValueOfAsMap);
+        return taskElementValue.map(TaskElementValueUtils::getElementValueAsMap);
     }
 
-    public static Map<String, Object> getElementValueOfAsMap(TaskElementValueAccessor taskElementValueAccessor) {
-        return findElementValueOfAsMap(taskElementValueAccessor)
+    public static Map<String, Object> getElementValueAsMap(TaskElementValueAccessor taskElementValueAccessor) {
+        return findElementValueAsMap(taskElementValueAccessor)
             .orElseThrow(() -> new KuFlowRestClientException("Element value doesn't exist"));
     }
 
-    public static List<Map<String, Object>> getElementValueOfAsMapList(TaskElementValueAccessor taskElementValueAccessor) {
-        List<TaskElementValue> taskElementValues = getElementValuesOf(taskElementValueAccessor);
+    public static List<Map<String, Object>> getElementValueAsMapList(TaskElementValueAccessor taskElementValueAccessor) {
+        List<TaskElementValue> taskElementValues = getElementValues(taskElementValueAccessor);
 
-        return taskElementValues.stream().map(TaskHelper::getElementValueOfAsMap).collect(toList());
+        return taskElementValues.stream().map(TaskElementValueUtils::getElementValueAsMap).collect(toList());
     }
 
-    private static Map<String, Object> getElementValueOfAsMap(TaskElementValue elementValue) {
+    private static Map<String, Object> getElementValueAsMap(TaskElementValue elementValue) {
         if (!(elementValue instanceof TaskElementValueObject)) {
             throw new KuFlowRestClientException(String.format("elementValue %s is not an Object", elementValue));
         }
@@ -289,24 +299,24 @@ public class TaskHelper {
         return elementValueObject.getValue();
     }
 
-    public static Optional<TaskElementValueDocumentItem> findElementValueOfAsDocument(TaskElementValueAccessor taskElementValueAccessor) {
-        Optional<TaskElementValue> taskElementValue = findElementValueOf(taskElementValueAccessor);
+    public static Optional<TaskElementValueDocumentItem> findElementValueAsDocument(TaskElementValueAccessor taskElementValueAccessor) {
+        Optional<TaskElementValue> taskElementValue = findElementValue(taskElementValueAccessor);
 
-        return taskElementValue.map(TaskHelper::getElementValueOfAsDocument);
+        return taskElementValue.map(TaskElementValueUtils::getElementValueAsDocument);
     }
 
-    public static TaskElementValueDocumentItem getElementValueOfAsDocument(TaskElementValueAccessor taskElementValueAccessor) {
-        return findElementValueOfAsDocument(taskElementValueAccessor)
+    public static TaskElementValueDocumentItem getElementValueAsDocument(TaskElementValueAccessor taskElementValueAccessor) {
+        return findElementValueAsDocument(taskElementValueAccessor)
             .orElseThrow(() -> new KuFlowRestClientException("Element value doesn't exist"));
     }
 
-    public static List<TaskElementValueDocumentItem> getElementValueOfAsDocumentList(TaskElementValueAccessor taskElementValueAccessor) {
-        List<TaskElementValue> taskElementValues = getElementValuesOf(taskElementValueAccessor);
+    public static List<TaskElementValueDocumentItem> getElementValueAsDocumentList(TaskElementValueAccessor taskElementValueAccessor) {
+        List<TaskElementValue> taskElementValues = getElementValues(taskElementValueAccessor);
 
-        return taskElementValues.stream().map(TaskHelper::getElementValueOfAsDocument).collect(toList());
+        return taskElementValues.stream().map(TaskElementValueUtils::getElementValueAsDocument).collect(toList());
     }
 
-    private static TaskElementValueDocumentItem getElementValueOfAsDocument(TaskElementValue elementValue) {
+    private static TaskElementValueDocumentItem getElementValueAsDocument(TaskElementValue elementValue) {
         if (!(elementValue instanceof TaskElementValueDocument)) {
             throw new KuFlowRestClientException(String.format("elementValue %s is not a Document", elementValue));
         }
@@ -316,24 +326,24 @@ public class TaskHelper {
         return elementValueDocument.getValue();
     }
 
-    public static Optional<TaskElementValuePrincipalItem> findElementValueOfAsPrincipal(TaskElementValueAccessor taskElementValueAccessor) {
-        Optional<TaskElementValue> taskElementValue = findElementValueOf(taskElementValueAccessor);
+    public static Optional<TaskElementValuePrincipalItem> findElementValueAsPrincipal(TaskElementValueAccessor taskElementValueAccessor) {
+        Optional<TaskElementValue> taskElementValue = findElementValue(taskElementValueAccessor);
 
-        return taskElementValue.map(TaskHelper::getElementValueOfAsPrincipal);
+        return taskElementValue.map(TaskElementValueUtils::getElementValueAsPrincipal);
     }
 
-    public static TaskElementValuePrincipalItem getElementValueOfAsPrincipal(TaskElementValueAccessor taskElementValueAccessor) {
-        return findElementValueOfAsPrincipal(taskElementValueAccessor)
+    public static TaskElementValuePrincipalItem getElementValueAsPrincipal(TaskElementValueAccessor taskElementValueAccessor) {
+        return findElementValueAsPrincipal(taskElementValueAccessor)
             .orElseThrow(() -> new KuFlowRestClientException("Element value doesn't exist"));
     }
 
-    public static List<TaskElementValuePrincipalItem> getElementValueOfAsPrincipalList(TaskElementValueAccessor taskElementValueAccessor) {
-        List<TaskElementValue> taskElementValues = getElementValuesOf(taskElementValueAccessor);
+    public static List<TaskElementValuePrincipalItem> getElementValueAsPrincipalList(TaskElementValueAccessor taskElementValueAccessor) {
+        List<TaskElementValue> taskElementValues = getElementValues(taskElementValueAccessor);
 
-        return taskElementValues.stream().map(TaskHelper::getElementValueOfAsPrincipal).collect(toList());
+        return taskElementValues.stream().map(TaskElementValueUtils::getElementValueAsPrincipal).collect(toList());
     }
 
-    private static TaskElementValuePrincipalItem getElementValueOfAsPrincipal(TaskElementValue elementValue) {
+    private static TaskElementValuePrincipalItem getElementValueAsPrincipal(TaskElementValue elementValue) {
         if (!(elementValue instanceof TaskElementValuePrincipal)) {
             throw new KuFlowRestClientException(String.format("elementValue %s is not a Principal", elementValue));
         }
@@ -343,7 +353,7 @@ public class TaskHelper {
         return elementValuePrincipal.getValue();
     }
 
-    private static Optional<TaskElementValue> findElementValueOf(TaskElementValueAccessor taskElementValueAccessor) {
+    private static Optional<TaskElementValue> findElementValue(TaskElementValueAccessor taskElementValueAccessor) {
         List<TaskElementValue> taskElementValues = taskElementValueAccessor.getElementValues();
         if (taskElementValues == null || taskElementValues.isEmpty()) {
             return Optional.empty();
@@ -352,7 +362,7 @@ public class TaskHelper {
         return Optional.of(taskElementValues.get(0));
     }
 
-    private static List<TaskElementValue> getElementValuesOf(TaskElementValueAccessor taskElementValueAccessor) {
+    private static List<TaskElementValue> getElementValues(TaskElementValueAccessor taskElementValueAccessor) {
         List<TaskElementValue> taskElementValues = taskElementValueAccessor.getElementValues();
         if (taskElementValues == null || taskElementValues.isEmpty()) {
             return new ArrayList<>();

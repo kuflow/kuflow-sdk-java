@@ -30,7 +30,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.7.9</version>
+    <version>2.7.11</version>
     <relativePath /> <!-- lookup parent from repository -->
   </parent>
 
@@ -53,32 +53,38 @@
   </modules>
 
   <properties>
-    <maven.version>3.9.1</maven.version>
+    <maven.version>3.9.2</maven.version>
     <java.version>11</java.version>
     <resource.delimiter>#</resource.delimiter>
     <argLine>-Djava.security.egd=file:/dev/./urandom -Xmx256m</argLine>
 
     <!-- Maven plugin dependencies -->
-    <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
-    <maven-checkstyle.version>3.2.0</maven-checkstyle.version>
-    <flatten-maven-plugin.version>1.3.0</flatten-maven-plugin.version>
-    <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
-    <checkstyle.version>10.3.3</checkstyle.version>
-    <prettier-maven-plugin.version>0.18</prettier-maven-plugin.version>
-    <prettier-java.version>1.6.2</prettier-java.version>
-    <build-helper-maven-plugin.version>3.2.0</build-helper-maven-plugin.version>
-    <license-maven-plugin.version>4.1</license-maven-plugin.version>
+    <maven-install-plugin.version>3.1.1</maven-install-plugin.version>
+    <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
+    <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
+    <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+    <maven-surefire-plugin.version>3.1.0</maven-surefire-plugin.version>
+
+    <maven-gpg-plugin.version>3.1.0</maven-gpg-plugin.version>
+    <maven-checkstyle.version>3.2.2</maven-checkstyle.version>
+    <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
+    <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
+    <checkstyle.version>10.11.0</checkstyle.version>
+    <prettier-maven-plugin.version>0.19</prettier-maven-plugin.version>
+    <prettier-java.version>2.1.0</prettier-java.version>
+    <build-helper-maven-plugin.version>3.4.0</build-helper-maven-plugin.version>
+    <license-maven-plugin.version>4.2</license-maven-plugin.version>
 
     <!-- Spring dependencies -->
-    <spring-boot.version>2.7.9</spring-boot.version>
+    <spring-boot.version>2.7.11</spring-boot.version>
 
     <!-- Application dependencies -->
     <temporal-sdk.version>1.17.0</temporal-sdk.version>
     <awssdk.version>2.18.25</awssdk.version>
     <commons-io.version>2.11.0</commons-io.version>
     <commons-text.version>1.10.0</commons-text.version>
-    <azure-core.version>1.34.0</azure-core.version>
-    <azure-communication-common.version>1.2.3</azure-communication-common.version>
+    <azure-core.version>1.38.0</azure-core.version>
+    <azure-communication-common.version>1.2.6</azure-communication-common.version>
     <jsr305.version>3.0.2</jsr305.version>
 
     <wiremock.version>2.35.0</wiremock.version>
@@ -331,7 +337,7 @@
   <licenses>
     <license>
       <name>MIT License</name>
-      <url>http://www.opensource.org/licenses/mit-license.php</url>
+      <url>https://www.opensource.org/licenses/mit-license.php</url>
     </license>
   </licenses>
 

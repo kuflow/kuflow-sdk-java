@@ -48,6 +48,8 @@ import com.kuflow.rest.model.TaskDeleteElementCommand;
 import com.kuflow.rest.model.TaskDeleteElementValueDocumentCommand;
 import com.kuflow.rest.model.TaskPage;
 import com.kuflow.rest.model.TaskSaveElementCommand;
+import com.kuflow.rest.model.TaskSaveJsonFormsValueDataCommand;
+import com.kuflow.rest.model.TaskSaveJsonFormsValueDocumentResponseCommand;
 import com.kuflow.rest.model.TaskState;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -333,6 +335,88 @@ public final class TaskOperationsImpl {
                 @HostParam("$host") String host,
                 @PathParam("id") UUID id,
                 @QueryParam("elementDefinitionCode") String elementDefinitionCode,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/tasks/{id}/~actions/save-json-forms-value-data")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<Task>> actionsTaskSaveJsonFormsValueData(
+                @HostParam("$host") String host,
+                @PathParam("id") UUID id,
+                @BodyParam("application/json") TaskSaveJsonFormsValueDataCommand command,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/tasks/{id}/~actions/save-json-forms-value-data")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<Task> actionsTaskSaveJsonFormsValueDataSync(
+                @HostParam("$host") String host,
+                @PathParam("id") UUID id,
+                @BodyParam("application/json") TaskSaveJsonFormsValueDataCommand command,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/tasks/{id}/~actions/save-json-forms-value-document")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<TaskSaveJsonFormsValueDocumentResponseCommand>> actionsTaskSaveJsonFormsValueDocument(
+                @HostParam("$host") String host,
+                @PathParam("id") UUID id,
+                @QueryParam("fileContentType") String fileContentType,
+                @QueryParam("fileName") String fileName,
+                @QueryParam("schemaPath") String schemaPath,
+                @BodyParam("application/octet-stream") Flux<ByteBuffer> file,
+                @HeaderParam("Content-Length") long contentLength,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/tasks/{id}/~actions/save-json-forms-value-document")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<TaskSaveJsonFormsValueDocumentResponseCommand>> actionsTaskSaveJsonFormsValueDocument(
+                @HostParam("$host") String host,
+                @PathParam("id") UUID id,
+                @QueryParam("fileContentType") String fileContentType,
+                @QueryParam("fileName") String fileName,
+                @QueryParam("schemaPath") String schemaPath,
+                @BodyParam("application/octet-stream") BinaryData file,
+                @HeaderParam("Content-Length") long contentLength,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/tasks/{id}/~actions/save-json-forms-value-document")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<TaskSaveJsonFormsValueDocumentResponseCommand> actionsTaskSaveJsonFormsValueDocumentSync(
+                @HostParam("$host") String host,
+                @PathParam("id") UUID id,
+                @QueryParam("fileContentType") String fileContentType,
+                @QueryParam("fileName") String fileName,
+                @QueryParam("schemaPath") String schemaPath,
+                @BodyParam("application/octet-stream") BinaryData file,
+                @HeaderParam("Content-Length") long contentLength,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/tasks/{id}/~actions/download-json-forms-value-document")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<BinaryData>> actionsTaskDownloadJsonFormsValueDocument(
+                @HostParam("$host") String host,
+                @PathParam("id") UUID id,
+                @QueryParam("documentUri") String documentUri,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/tasks/{id}/~actions/download-json-forms-value-document")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<BinaryData> actionsTaskDownloadJsonFormsValueDocumentSync(
+                @HostParam("$host") String host,
+                @PathParam("id") UUID id,
+                @QueryParam("documentUri") String documentUri,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -2138,7 +2222,7 @@ public final class TaskOperationsImpl {
      * addition to the document, it will also delete the element.
      *
      * @param id The resource ID.
-     * @param command Command to delete a document elemente value.
+     * @param command Command to delete a document element value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2163,7 +2247,7 @@ public final class TaskOperationsImpl {
      * addition to the document, it will also delete the element.
      *
      * @param id The resource ID.
-     * @param command Command to delete a document elemente value.
+     * @param command Command to delete a document element value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -2186,7 +2270,7 @@ public final class TaskOperationsImpl {
      * addition to the document, it will also delete the element.
      *
      * @param id The resource ID.
-     * @param command Command to delete a document elemente value.
+     * @param command Command to delete a document element value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2208,7 +2292,7 @@ public final class TaskOperationsImpl {
      * addition to the document, it will also delete the element.
      *
      * @param id The resource ID.
-     * @param command Command to delete a document elemente value.
+     * @param command Command to delete a document element value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -2231,7 +2315,7 @@ public final class TaskOperationsImpl {
      * addition to the document, it will also delete the element.
      *
      * @param id The resource ID.
-     * @param command Command to delete a document elemente value.
+     * @param command Command to delete a document element value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -2254,7 +2338,7 @@ public final class TaskOperationsImpl {
      * addition to the document, it will also delete the element.
      *
      * @param id The resource ID.
-     * @param command Command to delete a document elemente value.
+     * @param command Command to delete a document element value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2517,6 +2601,571 @@ public final class TaskOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData actionsTaskDownloadElementValueRendered(UUID id, String elementDefinitionCode) {
         return actionsTaskDownloadElementValueRenderedWithResponse(id, elementDefinitionCode, Context.NONE).getValue();
+    }
+
+    /**
+     * Save JSON data
+     *
+     * <p>Allow to save a JSON data validating that the data follow the related schema. If the data is invalid, then the
+     * json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param command Command to save the JSON value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Task>> actionsTaskSaveJsonFormsValueDataWithResponseAsync(
+            UUID id, TaskSaveJsonFormsValueDataCommand command) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.actionsTaskSaveJsonFormsValueData(this.client.getHost(), id, command, accept, context));
+    }
+
+    /**
+     * Save JSON data
+     *
+     * <p>Allow to save a JSON data validating that the data follow the related schema. If the data is invalid, then the
+     * json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param command Command to save the JSON value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Task>> actionsTaskSaveJsonFormsValueDataWithResponseAsync(
+            UUID id, TaskSaveJsonFormsValueDataCommand command, Context context) {
+        final String accept = "application/json";
+        return service.actionsTaskSaveJsonFormsValueData(this.client.getHost(), id, command, accept, context);
+    }
+
+    /**
+     * Save JSON data
+     *
+     * <p>Allow to save a JSON data validating that the data follow the related schema. If the data is invalid, then the
+     * json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param command Command to save the JSON value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Task> actionsTaskSaveJsonFormsValueDataAsync(UUID id, TaskSaveJsonFormsValueDataCommand command) {
+        return actionsTaskSaveJsonFormsValueDataWithResponseAsync(id, command)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Save JSON data
+     *
+     * <p>Allow to save a JSON data validating that the data follow the related schema. If the data is invalid, then the
+     * json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param command Command to save the JSON value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Task> actionsTaskSaveJsonFormsValueDataAsync(
+            UUID id, TaskSaveJsonFormsValueDataCommand command, Context context) {
+        return actionsTaskSaveJsonFormsValueDataWithResponseAsync(id, command, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Save JSON data
+     *
+     * <p>Allow to save a JSON data validating that the data follow the related schema. If the data is invalid, then the
+     * json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param command Command to save the JSON value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Task> actionsTaskSaveJsonFormsValueDataWithResponse(
+            UUID id, TaskSaveJsonFormsValueDataCommand command, Context context) {
+        final String accept = "application/json";
+        return service.actionsTaskSaveJsonFormsValueDataSync(this.client.getHost(), id, command, accept, context);
+    }
+
+    /**
+     * Save JSON data
+     *
+     * <p>Allow to save a JSON data validating that the data follow the related schema. If the data is invalid, then the
+     * json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param command Command to save the JSON value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Task actionsTaskSaveJsonFormsValueData(UUID id, TaskSaveJsonFormsValueDataCommand command) {
+        return actionsTaskSaveJsonFormsValueDataWithResponse(id, command, Context.NONE).getValue();
+    }
+
+    /**
+     * Save a JSON Forms document
+     *
+     * <p>Save a document in the task to later be linked into the JSON data.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param schemaPath JSON Schema path related to the document. The uploaded document must be validated by the passed
+     *     schema path.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TaskSaveJsonFormsValueDocumentResponseCommand>>
+            actionsTaskSaveJsonFormsValueDocumentWithResponseAsync(
+                    UUID id,
+                    String fileContentType,
+                    String fileName,
+                    String schemaPath,
+                    Flux<ByteBuffer> file,
+                    long contentLength) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.actionsTaskSaveJsonFormsValueDocument(
+                                this.client.getHost(),
+                                id,
+                                fileContentType,
+                                fileName,
+                                schemaPath,
+                                file,
+                                contentLength,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Save a JSON Forms document
+     *
+     * <p>Save a document in the task to later be linked into the JSON data.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param schemaPath JSON Schema path related to the document. The uploaded document must be validated by the passed
+     *     schema path.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TaskSaveJsonFormsValueDocumentResponseCommand>>
+            actionsTaskSaveJsonFormsValueDocumentWithResponseAsync(
+                    UUID id,
+                    String fileContentType,
+                    String fileName,
+                    String schemaPath,
+                    Flux<ByteBuffer> file,
+                    long contentLength,
+                    Context context) {
+        final String accept = "application/json";
+        return service.actionsTaskSaveJsonFormsValueDocument(
+                this.client.getHost(), id, fileContentType, fileName, schemaPath, file, contentLength, accept, context);
+    }
+
+    /**
+     * Save a JSON Forms document
+     *
+     * <p>Save a document in the task to later be linked into the JSON data.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param schemaPath JSON Schema path related to the document. The uploaded document must be validated by the passed
+     *     schema path.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TaskSaveJsonFormsValueDocumentResponseCommand> actionsTaskSaveJsonFormsValueDocumentAsync(
+            UUID id,
+            String fileContentType,
+            String fileName,
+            String schemaPath,
+            Flux<ByteBuffer> file,
+            long contentLength) {
+        return actionsTaskSaveJsonFormsValueDocumentWithResponseAsync(
+                        id, fileContentType, fileName, schemaPath, file, contentLength)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Save a JSON Forms document
+     *
+     * <p>Save a document in the task to later be linked into the JSON data.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param schemaPath JSON Schema path related to the document. The uploaded document must be validated by the passed
+     *     schema path.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TaskSaveJsonFormsValueDocumentResponseCommand> actionsTaskSaveJsonFormsValueDocumentAsync(
+            UUID id,
+            String fileContentType,
+            String fileName,
+            String schemaPath,
+            Flux<ByteBuffer> file,
+            long contentLength,
+            Context context) {
+        return actionsTaskSaveJsonFormsValueDocumentWithResponseAsync(
+                        id, fileContentType, fileName, schemaPath, file, contentLength, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Save a JSON Forms document
+     *
+     * <p>Save a document in the task to later be linked into the JSON data.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param schemaPath JSON Schema path related to the document. The uploaded document must be validated by the passed
+     *     schema path.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TaskSaveJsonFormsValueDocumentResponseCommand>>
+            actionsTaskSaveJsonFormsValueDocumentWithResponseAsync(
+                    UUID id,
+                    String fileContentType,
+                    String fileName,
+                    String schemaPath,
+                    BinaryData file,
+                    long contentLength) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.actionsTaskSaveJsonFormsValueDocument(
+                                this.client.getHost(),
+                                id,
+                                fileContentType,
+                                fileName,
+                                schemaPath,
+                                file,
+                                contentLength,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Save a JSON Forms document
+     *
+     * <p>Save a document in the task to later be linked into the JSON data.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param schemaPath JSON Schema path related to the document. The uploaded document must be validated by the passed
+     *     schema path.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TaskSaveJsonFormsValueDocumentResponseCommand>>
+            actionsTaskSaveJsonFormsValueDocumentWithResponseAsync(
+                    UUID id,
+                    String fileContentType,
+                    String fileName,
+                    String schemaPath,
+                    BinaryData file,
+                    long contentLength,
+                    Context context) {
+        final String accept = "application/json";
+        return service.actionsTaskSaveJsonFormsValueDocument(
+                this.client.getHost(), id, fileContentType, fileName, schemaPath, file, contentLength, accept, context);
+    }
+
+    /**
+     * Save a JSON Forms document
+     *
+     * <p>Save a document in the task to later be linked into the JSON data.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param schemaPath JSON Schema path related to the document. The uploaded document must be validated by the passed
+     *     schema path.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TaskSaveJsonFormsValueDocumentResponseCommand> actionsTaskSaveJsonFormsValueDocumentAsync(
+            UUID id, String fileContentType, String fileName, String schemaPath, BinaryData file, long contentLength) {
+        return actionsTaskSaveJsonFormsValueDocumentWithResponseAsync(
+                        id, fileContentType, fileName, schemaPath, file, contentLength)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Save a JSON Forms document
+     *
+     * <p>Save a document in the task to later be linked into the JSON data.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param schemaPath JSON Schema path related to the document. The uploaded document must be validated by the passed
+     *     schema path.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TaskSaveJsonFormsValueDocumentResponseCommand> actionsTaskSaveJsonFormsValueDocumentAsync(
+            UUID id,
+            String fileContentType,
+            String fileName,
+            String schemaPath,
+            BinaryData file,
+            long contentLength,
+            Context context) {
+        return actionsTaskSaveJsonFormsValueDocumentWithResponseAsync(
+                        id, fileContentType, fileName, schemaPath, file, contentLength, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Save a JSON Forms document
+     *
+     * <p>Save a document in the task to later be linked into the JSON data.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param schemaPath JSON Schema path related to the document. The uploaded document must be validated by the passed
+     *     schema path.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TaskSaveJsonFormsValueDocumentResponseCommand> actionsTaskSaveJsonFormsValueDocumentWithResponse(
+            UUID id,
+            String fileContentType,
+            String fileName,
+            String schemaPath,
+            BinaryData file,
+            long contentLength,
+            Context context) {
+        final String accept = "application/json";
+        return service.actionsTaskSaveJsonFormsValueDocumentSync(
+                this.client.getHost(), id, fileContentType, fileName, schemaPath, file, contentLength, accept, context);
+    }
+
+    /**
+     * Save a JSON Forms document
+     *
+     * <p>Save a document in the task to later be linked into the JSON data.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param schemaPath JSON Schema path related to the document. The uploaded document must be validated by the passed
+     *     schema path.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TaskSaveJsonFormsValueDocumentResponseCommand actionsTaskSaveJsonFormsValueDocument(
+            UUID id, String fileContentType, String fileName, String schemaPath, BinaryData file, long contentLength) {
+        return actionsTaskSaveJsonFormsValueDocumentWithResponse(
+                        id, fileContentType, fileName, schemaPath, file, contentLength, Context.NONE)
+                .getValue();
+    }
+
+    /**
+     * Download document
+     *
+     * <p>Given a task, download a document from a json form data.
+     *
+     * @param id The resource ID.
+     * @param documentUri Document URI to download.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> actionsTaskDownloadJsonFormsValueDocumentWithResponseAsync(
+            UUID id, String documentUri) {
+        final String accept = "application/octet-stream, application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.actionsTaskDownloadJsonFormsValueDocument(
+                                this.client.getHost(), id, documentUri, accept, context));
+    }
+
+    /**
+     * Download document
+     *
+     * <p>Given a task, download a document from a json form data.
+     *
+     * @param id The resource ID.
+     * @param documentUri Document URI to download.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> actionsTaskDownloadJsonFormsValueDocumentWithResponseAsync(
+            UUID id, String documentUri, Context context) {
+        final String accept = "application/octet-stream, application/json";
+        return service.actionsTaskDownloadJsonFormsValueDocument(
+                this.client.getHost(), id, documentUri, accept, context);
+    }
+
+    /**
+     * Download document
+     *
+     * <p>Given a task, download a document from a json form data.
+     *
+     * @param id The resource ID.
+     * @param documentUri Document URI to download.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> actionsTaskDownloadJsonFormsValueDocumentAsync(UUID id, String documentUri) {
+        return actionsTaskDownloadJsonFormsValueDocumentWithResponseAsync(id, documentUri)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Download document
+     *
+     * <p>Given a task, download a document from a json form data.
+     *
+     * @param id The resource ID.
+     * @param documentUri Document URI to download.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> actionsTaskDownloadJsonFormsValueDocumentAsync(
+            UUID id, String documentUri, Context context) {
+        return actionsTaskDownloadJsonFormsValueDocumentWithResponseAsync(id, documentUri, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Download document
+     *
+     * <p>Given a task, download a document from a json form data.
+     *
+     * @param id The resource ID.
+     * @param documentUri Document URI to download.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> actionsTaskDownloadJsonFormsValueDocumentWithResponse(
+            UUID id, String documentUri, Context context) {
+        final String accept = "application/octet-stream, application/json";
+        return service.actionsTaskDownloadJsonFormsValueDocumentSync(
+                this.client.getHost(), id, documentUri, accept, context);
+    }
+
+    /**
+     * Download document
+     *
+     * <p>Given a task, download a document from a json form data.
+     *
+     * @param id The resource ID.
+     * @param documentUri Document URI to download.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData actionsTaskDownloadJsonFormsValueDocument(UUID id, String documentUri) {
+        return actionsTaskDownloadJsonFormsValueDocumentWithResponse(id, documentUri, Context.NONE).getValue();
     }
 
     /**

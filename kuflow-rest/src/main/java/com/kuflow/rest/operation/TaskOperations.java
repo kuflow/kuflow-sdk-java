@@ -45,6 +45,9 @@ import com.kuflow.rest.model.TaskDeleteElementValueDocumentCommand;
 import com.kuflow.rest.model.TaskPage;
 import com.kuflow.rest.model.TaskSaveElementCommand;
 import com.kuflow.rest.model.TaskSaveElementValueDocumentCommand;
+import com.kuflow.rest.model.TaskSaveJsonFormsValueDataCommand;
+import com.kuflow.rest.model.TaskSaveJsonFormsValueDocumentRequestCommand;
+import com.kuflow.rest.model.TaskSaveJsonFormsValueDocumentResponseCommand;
 import com.kuflow.rest.model.TaskState;
 import java.util.List;
 import java.util.Objects;
@@ -488,7 +491,7 @@ public final class TaskOperations {
      * addition to the document, it will also delete the element.
      *
      * @param id The resource ID.
-     * @param command Command to delete a document elemente value.
+     * @param command Command to delete a document element value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -513,7 +516,7 @@ public final class TaskOperations {
      * addition to the document, it will also delete the element.
      *
      * @param id The resource ID.
-     * @param command Command to delete a document elemente value.
+     * @param command Command to delete a document element value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -602,6 +605,151 @@ public final class TaskOperations {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData actionsTaskDownloadElementValueRendered(UUID id, String elementDefinitionCode) {
         return this.actionsTaskDownloadElementValueRenderedWithResponse(id, elementDefinitionCode, Context.NONE).getValue();
+    }
+
+    /**
+     * Save JSON data
+     *
+     * <p>Allow to save a JSON data validating that the data follow the related schema. If the data is invalid, then the
+     * json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param command Command to save the JSON value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Task> actionsTaskSaveJsonFormsValueDataWithResponse(
+        UUID id,
+        TaskSaveJsonFormsValueDataCommand command,
+        Context context
+    ) {
+        return this.service.actionsTaskSaveJsonFormsValueDataWithResponse(id, command, context);
+    }
+
+    /**
+     * Save JSON data
+     *
+     * <p>Allow to save a JSON data validating that the data follow the related schema. If the data is invalid, then the
+     * json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param command Command to save the JSON value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Task actionsTaskSaveJsonFormsValueData(UUID id, TaskSaveJsonFormsValueDataCommand command) {
+        return this.actionsTaskSaveJsonFormsValueDataWithResponse(id, command, Context.NONE).getValue();
+    }
+
+    /**
+     * Save a JSON Forms document
+     *
+     * <p>Save a document in the task to later be linked into the JSON data.
+     *
+     * @param id The resource ID.
+     * @param command Command info.
+     * @param document Document to upload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TaskSaveJsonFormsValueDocumentResponseCommand> actionsTaskSaveJsonFormsValueDocumentWithResponse(
+        UUID id,
+        TaskSaveJsonFormsValueDocumentRequestCommand command,
+        Document document,
+        Context context
+    ) {
+        Objects.requireNonNull(document, "'document' is required");
+        Objects.requireNonNull(document.getFileContent(), "'document.fileContent' is required");
+        Objects.requireNonNull(document.getFileContent().getLength(), "'document.fileContent.length' is required");
+        Objects.requireNonNull(document.getFileName(), "'document.fileName' is required");
+        Objects.requireNonNull(document.getContentType(), "'document.contentType' is required");
+        if (document.getFileContent().getLength() == 0) {
+            throw new IllegalArgumentException("File size must be greater that 0");
+        }
+
+        String fileContentType = document.getContentType();
+        String fileName = document.getFileName();
+        String schemaPath = command.getSchemaPath();
+        BinaryData file = document.getFileContent();
+        long contentLength = file.getLength();
+
+        return this.service.actionsTaskSaveJsonFormsValueDocumentWithResponse(
+                id,
+                fileContentType,
+                fileName,
+                schemaPath,
+                file,
+                contentLength,
+                context
+            );
+    }
+
+    /**
+     * Save a JSON Forms document
+     *
+     * <p>Save a document in the task to later be linked into the JSON data.
+     *
+     * @param id The resource ID.
+     * @param command Document content type.
+     * @param document Document name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TaskSaveJsonFormsValueDocumentResponseCommand actionsTaskSaveJsonFormsValueDocument(
+        UUID id,
+        TaskSaveJsonFormsValueDocumentRequestCommand command,
+        Document document
+    ) {
+        return this.actionsTaskSaveJsonFormsValueDocumentWithResponse(id, command, document, Context.NONE).getValue();
+    }
+
+    /**
+     * Download document
+     *
+     * <p>Given a task, download a document from a json form data.
+     *
+     * @param id The resource ID.
+     * @param documentUri Document URI to download.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> actionsTaskDownloadJsonFormsValueDocumentWithResponse(UUID id, String documentUri, Context context) {
+        return this.service.actionsTaskDownloadJsonFormsValueDocumentWithResponse(id, documentUri, context);
+    }
+
+    /**
+     * Download document
+     *
+     * <p>Given a task, download a document from a json form data.
+     *
+     * @param id The resource ID.
+     * @param documentUri Document URI to download.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData actionsTaskDownloadJsonFormsValueDocument(UUID id, String documentUri) {
+        return this.actionsTaskDownloadJsonFormsValueDocumentWithResponse(id, documentUri, Context.NONE).getValue();
     }
 
     /**

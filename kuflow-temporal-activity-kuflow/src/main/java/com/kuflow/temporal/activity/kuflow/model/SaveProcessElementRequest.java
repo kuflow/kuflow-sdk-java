@@ -22,29 +22,12 @@
  */
 package com.kuflow.temporal.activity.kuflow.model;
 
-import static com.kuflow.rest.util.ProcessHelper.addElementValueOf;
-import static com.kuflow.rest.util.ProcessHelper.addElementValuesOf;
-import static com.kuflow.rest.util.ProcessHelper.findElementValueOfAsDouble;
-import static com.kuflow.rest.util.ProcessHelper.findElementValueOfAsLocalDate;
-import static com.kuflow.rest.util.ProcessHelper.findElementValueOfAsString;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsDouble;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsDoubleList;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsLocalDate;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsLocalDateList;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsString;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsStringList;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfValid;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfValidAt;
-import static com.kuflow.rest.util.ProcessHelper.setElementValueOf;
-import static com.kuflow.rest.util.ProcessHelper.setElementValueOfValid;
-import static com.kuflow.rest.util.ProcessHelper.setElementValueOfValidAt;
-import static com.kuflow.rest.util.ProcessHelper.setElementValuesOf;
 import static java.util.Collections.unmodifiableList;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kuflow.rest.KuFlowRestClientException;
 import com.kuflow.rest.model.ProcessElementValue;
-import com.kuflow.temporal.activity.kuflow.util.ProcessElementValueAccessorSaveProcessElementRequest;
+import com.kuflow.temporal.activity.kuflow.util.SaveProcessElementRequestUtils;
 import com.kuflow.temporal.common.model.AbstractModel;
 import java.time.LocalDate;
 import java.util.List;
@@ -120,10 +103,12 @@ public class SaveProcessElementRequest extends AbstractModel {
      * Check if all related valid values are TRUE
      *
      * @return TRUE if all related valid values are TRUE else FALSE.
+     * @deprecated in favor of {@link SaveProcessElementRequestUtils}
      */
     @JsonIgnore
+    @Deprecated(since = "2.1.2", forRemoval = true)
     public Boolean getElementValueValid() {
-        return getElementValueOfValid(ProcessElementValueAccessorSaveProcessElementRequest.of(this));
+        return SaveProcessElementRequestUtils.getElementValueValid(this);
     }
 
     /**
@@ -131,10 +116,12 @@ public class SaveProcessElementRequest extends AbstractModel {
      *
      * @param index Element value index
      * @return The requested valid value
+     * @deprecated in favor of {@link SaveProcessElementRequestUtils}
      */
     @JsonIgnore
+    @Deprecated(since = "2.1.2", forRemoval = true)
     public Boolean getElementValueValidAt(int index) {
-        return getElementValueOfValidAt(ProcessElementValueAccessorSaveProcessElementRequest.of(this), index);
+        return SaveProcessElementRequestUtils.getElementValueValidAt(this, index);
     }
 
     /**
@@ -142,10 +129,12 @@ public class SaveProcessElementRequest extends AbstractModel {
      *
      * @param valid Valid value
      * @return the Task object itself.
+     * @deprecated in favor of {@link SaveProcessElementRequestUtils}
      */
     @JsonIgnore
+    @Deprecated(since = "2.1.2", forRemoval = true)
     public SaveProcessElementRequest setElementValueValid(Boolean valid) {
-        setElementValueOfValid(ProcessElementValueAccessorSaveProcessElementRequest.of(this), valid);
+        SaveProcessElementRequestUtils.setElementValueValid(this, valid);
 
         return this;
     }
@@ -156,10 +145,12 @@ public class SaveProcessElementRequest extends AbstractModel {
      * @param valid Valid value
      * @param index Element value index
      * @return the Task object itself.
+     * @deprecated in favor of {@link SaveProcessElementRequestUtils}
      */
     @JsonIgnore
+    @Deprecated(since = "2.1.2", forRemoval = true)
     public SaveProcessElementRequest setElementValueValidAt(Boolean valid, int index) {
-        setElementValueOfValidAt(ProcessElementValueAccessorSaveProcessElementRequest.of(this), valid, index);
+        SaveProcessElementRequestUtils.setElementValueValidAt(this, valid, index);
 
         return this;
     }
@@ -169,10 +160,12 @@ public class SaveProcessElementRequest extends AbstractModel {
      *
      * @param elementValue Element value, if the value is null all current values are removed
      * @return the Task object itself.
+     * @deprecated in favor of {@link SaveProcessElementRequestUtils}
      */
     @JsonIgnore
+    @Deprecated(since = "2.1.2", forRemoval = true)
     public SaveProcessElementRequest setElementValueAsString(String elementValue) {
-        setElementValueOf(ProcessElementValueAccessorSaveProcessElementRequest.of(this), elementValue);
+        SaveProcessElementRequestUtils.setElementValueAsString(this, elementValue);
 
         return this;
     }
@@ -182,10 +175,12 @@ public class SaveProcessElementRequest extends AbstractModel {
      *
      * @param elementValues Element values, if the values are null all current values are removed
      * @return the Task object itself.
+     * @deprecated in favor of {@link SaveProcessElementRequestUtils}
      */
     @JsonIgnore
+    @Deprecated(since = "2.1.2", forRemoval = true)
     public SaveProcessElementRequest setElementValueAsStringList(List<String> elementValues) {
-        setElementValuesOf(ProcessElementValueAccessorSaveProcessElementRequest.of(this), elementValues);
+        SaveProcessElementRequestUtils.setElementValueAsStringList(this, elementValues);
 
         return this;
     }
@@ -195,10 +190,12 @@ public class SaveProcessElementRequest extends AbstractModel {
      *
      * @param elementValue Element value, if the values is null the value is not added
      * @return the Task object itself.
+     * @deprecated in favor of {@link SaveProcessElementRequestUtils}
      */
     @JsonIgnore
+    @Deprecated(since = "2.1.2", forRemoval = true)
     public SaveProcessElementRequest addElementValueAsString(String elementValue) {
-        addElementValueOf(ProcessElementValueAccessorSaveProcessElementRequest.of(this), elementValue);
+        SaveProcessElementRequestUtils.addElementValueAsString(this, elementValue);
 
         return this;
     }
@@ -208,10 +205,12 @@ public class SaveProcessElementRequest extends AbstractModel {
      *
      * @param elementValues Element values
      * @return the Task object itself.
+     * @deprecated in favor of {@link SaveProcessElementRequestUtils}
      */
     @JsonIgnore
+    @Deprecated(since = "2.1.2", forRemoval = true)
     public SaveProcessElementRequest addElementValueAsStringList(List<String> elementValues) {
-        addElementValuesOf(ProcessElementValueAccessorSaveProcessElementRequest.of(this), elementValues);
+        SaveProcessElementRequestUtils.addElementValueAsStringList(this, elementValues);
 
         return this;
     }
@@ -221,30 +220,36 @@ public class SaveProcessElementRequest extends AbstractModel {
      *
      * @return the element value.
      * @throws KuFlowRestClientException If element value doesn't exists
+     * @deprecated in favor of {@link SaveProcessElementRequestUtils}
      */
     @JsonIgnore
+    @Deprecated(since = "2.1.2", forRemoval = true)
     public String getElementValueAsString() {
-        return getElementValueOfAsString(ProcessElementValueAccessorSaveProcessElementRequest.of(this));
+        return SaveProcessElementRequestUtils.getElementValueAsString(this);
     }
 
     /**
      * Get all elements as String
      *
      * @return the elements values.
+     * @deprecated in favor of {@link SaveProcessElementRequestUtils}
      */
     @JsonIgnore
+    @Deprecated(since = "2.1.2", forRemoval = true)
     public List<String> getElementValueAsStringList() {
-        return getElementValueOfAsStringList(ProcessElementValueAccessorSaveProcessElementRequest.of(this));
+        return SaveProcessElementRequestUtils.getElementValueAsStringList(this);
     }
 
     /**
      * Try to get an element as String
      *
      * @return the element value if exists.
+     * @deprecated in favor of {@link SaveProcessElementRequestUtils}
      */
     @JsonIgnore
+    @Deprecated(since = "2.1.2", forRemoval = true)
     public Optional<String> findElementValueAsString() {
-        return findElementValueOfAsString(ProcessElementValueAccessorSaveProcessElementRequest.of(this));
+        return SaveProcessElementRequestUtils.findElementValueAsString(this);
     }
 
     /**
@@ -252,10 +257,12 @@ public class SaveProcessElementRequest extends AbstractModel {
      *
      * @param elementValue Element value, if the value is null all current values are removed
      * @return the Task object itself.
+     * @deprecated in favor of {@link SaveProcessElementRequestUtils}
      */
     @JsonIgnore
+    @Deprecated(since = "2.1.2", forRemoval = true)
     public SaveProcessElementRequest setElementValueAsDouble(Double elementValue) {
-        setElementValueOf(ProcessElementValueAccessorSaveProcessElementRequest.of(this), elementValue);
+        SaveProcessElementRequestUtils.setElementValueAsDouble(this, elementValue);
 
         return this;
     }
@@ -265,10 +272,12 @@ public class SaveProcessElementRequest extends AbstractModel {
      *
      * @param elementValues Element values, if the values are null all current values are removed
      * @return the Task object itself.
+     * @deprecated in favor of {@link SaveProcessElementRequestUtils}
      */
     @JsonIgnore
+    @Deprecated(since = "2.1.2", forRemoval = true)
     public SaveProcessElementRequest setElementValueAsDoubleList(List<Double> elementValues) {
-        setElementValuesOf(ProcessElementValueAccessorSaveProcessElementRequest.of(this), elementValues);
+        SaveProcessElementRequestUtils.setElementValueAsDoubleList(this, elementValues);
 
         return this;
     }
@@ -278,10 +287,12 @@ public class SaveProcessElementRequest extends AbstractModel {
      *
      * @param elementValue Element value, if the values is null the value is not added
      * @return the Task object itself.
+     * @deprecated in favor of {@link SaveProcessElementRequestUtils}
      */
     @JsonIgnore
+    @Deprecated(since = "2.1.2", forRemoval = true)
     public SaveProcessElementRequest addElementValueAsDouble(Double elementValue) {
-        addElementValueOf(ProcessElementValueAccessorSaveProcessElementRequest.of(this), elementValue);
+        SaveProcessElementRequestUtils.addElementValueAsDouble(this, elementValue);
 
         return this;
     }
@@ -291,10 +302,12 @@ public class SaveProcessElementRequest extends AbstractModel {
      *
      * @param elementValues Element values
      * @return the Task object itself.
+     * @deprecated in favor of {@link SaveProcessElementRequestUtils}
      */
     @JsonIgnore
+    @Deprecated(since = "2.1.2", forRemoval = true)
     public SaveProcessElementRequest addElementValueAsDoubleList(List<Double> elementValues) {
-        addElementValuesOf(ProcessElementValueAccessorSaveProcessElementRequest.of(this), elementValues);
+        SaveProcessElementRequestUtils.addElementValueAsDoubleList(this, elementValues);
 
         return this;
     }
@@ -304,30 +317,36 @@ public class SaveProcessElementRequest extends AbstractModel {
      *
      * @return the element value.
      * @throws KuFlowRestClientException If element value doesn't exists
+     * @deprecated in favor of {@link SaveProcessElementRequestUtils}
      */
     @JsonIgnore
+    @Deprecated(since = "2.1.2", forRemoval = true)
     public Double getElementValueAsDouble() {
-        return getElementValueOfAsDouble(ProcessElementValueAccessorSaveProcessElementRequest.of(this));
+        return SaveProcessElementRequestUtils.getElementValueAsDouble(this);
     }
 
     /**
      * Get all elements as Double
      *
      * @return the elements values.
+     * @deprecated in favor of {@link SaveProcessElementRequestUtils}
      */
     @JsonIgnore
+    @Deprecated(since = "2.1.2", forRemoval = true)
     public List<Double> getElementValueAsDoubleList() {
-        return getElementValueOfAsDoubleList(ProcessElementValueAccessorSaveProcessElementRequest.of(this));
+        return SaveProcessElementRequestUtils.getElementValueAsDoubleList(this);
     }
 
     /**
      * Try to get an element as Double
      *
      * @return the element value if exists.
+     * @deprecated in favor of {@link SaveProcessElementRequestUtils}
      */
     @JsonIgnore
+    @Deprecated(since = "2.1.2", forRemoval = true)
     public Optional<Double> findElementValueAsDouble() {
-        return findElementValueOfAsDouble(ProcessElementValueAccessorSaveProcessElementRequest.of(this));
+        return SaveProcessElementRequestUtils.findElementValueAsDouble(this);
     }
 
     /**
@@ -335,10 +354,12 @@ public class SaveProcessElementRequest extends AbstractModel {
      *
      * @param elementValue Element value, if the value is null all current values are removed
      * @return the Task object itself.
+     * @deprecated in favor of {@link SaveProcessElementRequestUtils}
      */
     @JsonIgnore
+    @Deprecated(since = "2.1.2", forRemoval = true)
     public SaveProcessElementRequest setElementValueAsLocalDate(LocalDate elementValue) {
-        setElementValueOf(ProcessElementValueAccessorSaveProcessElementRequest.of(this), elementValue);
+        SaveProcessElementRequestUtils.setElementValueAsLocalDate(this, elementValue);
 
         return this;
     }
@@ -348,10 +369,12 @@ public class SaveProcessElementRequest extends AbstractModel {
      *
      * @param elementValues Element values, if the values are null all current values are removed
      * @return the Task object itself.
+     * @deprecated in favor of {@link SaveProcessElementRequestUtils}
      */
     @JsonIgnore
+    @Deprecated(since = "2.1.2", forRemoval = true)
     public SaveProcessElementRequest setElementValueAsLocalDateList(List<LocalDate> elementValues) {
-        setElementValuesOf(ProcessElementValueAccessorSaveProcessElementRequest.of(this), elementValues);
+        SaveProcessElementRequestUtils.setElementValueAsLocalDateList(this, elementValues);
 
         return this;
     }
@@ -361,10 +384,12 @@ public class SaveProcessElementRequest extends AbstractModel {
      *
      * @param elementValue Element value, if the values is null the value is not added
      * @return the Task object itself.
+     * @deprecated in favor of {@link SaveProcessElementRequestUtils}
      */
     @JsonIgnore
+    @Deprecated(since = "2.1.2", forRemoval = true)
     public SaveProcessElementRequest addElementValueAsLocalDate(LocalDate elementValue) {
-        addElementValueOf(ProcessElementValueAccessorSaveProcessElementRequest.of(this), elementValue);
+        SaveProcessElementRequestUtils.addElementValueAsLocalDate(this, elementValue);
 
         return this;
     }
@@ -374,10 +399,12 @@ public class SaveProcessElementRequest extends AbstractModel {
      *
      * @param elementValues Element values
      * @return the Task object itself.
+     * @deprecated in favor of {@link SaveProcessElementRequestUtils}
      */
     @JsonIgnore
+    @Deprecated(since = "2.1.2", forRemoval = true)
     public SaveProcessElementRequest addElementValueAsLocalDateList(List<LocalDate> elementValues) {
-        addElementValuesOf(ProcessElementValueAccessorSaveProcessElementRequest.of(this), elementValues);
+        SaveProcessElementRequestUtils.addElementValueAsLocalDateList(this, elementValues);
 
         return this;
     }
@@ -387,29 +414,35 @@ public class SaveProcessElementRequest extends AbstractModel {
      *
      * @return the element value.
      * @throws KuFlowRestClientException If element value doesn't exists
+     * @deprecated in favor of {@link SaveProcessElementRequestUtils}
      */
     @JsonIgnore
+    @Deprecated(since = "2.1.2", forRemoval = true)
     public LocalDate getElementValueAsLocalDate() {
-        return getElementValueOfAsLocalDate(ProcessElementValueAccessorSaveProcessElementRequest.of(this));
+        return SaveProcessElementRequestUtils.getElementValueAsLocalDate(this);
     }
 
     /**
      * Get all elements as LocalDate
      *
      * @return the elements values.
+     * @deprecated in favor of {@link SaveProcessElementRequestUtils}
      */
     @JsonIgnore
+    @Deprecated(since = "2.1.2", forRemoval = true)
     public List<LocalDate> getElementValueAsLocalDateList() {
-        return getElementValueOfAsLocalDateList(ProcessElementValueAccessorSaveProcessElementRequest.of(this));
+        return SaveProcessElementRequestUtils.getElementValueAsLocalDateList(this);
     }
 
     /**
      * Try to get an element as LocalDate
      *
      * @return the element value if exists.
+     * @deprecated in favor of {@link SaveProcessElementRequestUtils}
      */
     @JsonIgnore
+    @Deprecated(since = "2.1.2", forRemoval = true)
     public Optional<LocalDate> findElementValueAsLocalDate() {
-        return findElementValueOfAsLocalDate(ProcessElementValueAccessorSaveProcessElementRequest.of(this));
+        return SaveProcessElementRequestUtils.findElementValueAsLocalDate(this);
     }
 }

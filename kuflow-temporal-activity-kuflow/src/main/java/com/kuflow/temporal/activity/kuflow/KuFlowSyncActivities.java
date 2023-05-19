@@ -56,6 +56,8 @@ import com.kuflow.temporal.activity.kuflow.model.SaveProcessElementRequest;
 import com.kuflow.temporal.activity.kuflow.model.SaveProcessElementResponse;
 import com.kuflow.temporal.activity.kuflow.model.SaveTaskElementRequest;
 import com.kuflow.temporal.activity.kuflow.model.SaveTaskElementResponse;
+import com.kuflow.temporal.activity.kuflow.model.SaveTaskJsonFormsValueDataRequest;
+import com.kuflow.temporal.activity.kuflow.model.SaveTaskJsonFormsValueDataResponse;
 import io.temporal.activity.ActivityInterface;
 import io.temporal.activity.ActivityMethod;
 import javax.annotation.Nonnull;
@@ -237,6 +239,17 @@ public interface KuFlowSyncActivities {
      * @return task updated
      */
     DeleteTaskElementValueDocumentResponse deleteTaskElementValueDocument(@Nonnull DeleteTaskElementValueDocumentRequest request);
+
+    /**
+     * Save JSON data
+     *
+     * <p>Allow to save a JSON data validating that the data follow the related schema. If the data is invalid, then the
+     * json form is marked as invalid.
+     *
+     * @param request must not be {@literal null}.
+     * @return task updated
+     */
+    SaveTaskJsonFormsValueDataResponse saveTaskJsonFormsValueData(@Nonnull SaveTaskJsonFormsValueDataRequest request);
 
     /**
      * Append a log to the task.

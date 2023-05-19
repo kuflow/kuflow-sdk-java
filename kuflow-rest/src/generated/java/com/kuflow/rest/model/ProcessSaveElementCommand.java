@@ -22,27 +22,9 @@
  */
 package com.kuflow.rest.model;
 
-import static com.kuflow.rest.util.ProcessElementValueAccessorProcessSaveElementCommand.of;
-import static com.kuflow.rest.util.ProcessHelper.addElementValueOf;
-import static com.kuflow.rest.util.ProcessHelper.addElementValuesOf;
-import static com.kuflow.rest.util.ProcessHelper.findElementValueOfAsDouble;
-import static com.kuflow.rest.util.ProcessHelper.findElementValueOfAsLocalDate;
-import static com.kuflow.rest.util.ProcessHelper.findElementValueOfAsString;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsDouble;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsDoubleList;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsLocalDate;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsLocalDateList;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsString;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfAsStringList;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfValid;
-import static com.kuflow.rest.util.ProcessHelper.getElementValueOfValidAt;
-import static com.kuflow.rest.util.ProcessHelper.setElementValueOf;
-import static com.kuflow.rest.util.ProcessHelper.setElementValueOfValid;
-import static com.kuflow.rest.util.ProcessHelper.setElementValueOfValidAt;
-import static com.kuflow.rest.util.ProcessHelper.setElementValuesOf;
-
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.kuflow.rest.util.ProcessSaveElementCommandUtils;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -109,9 +91,11 @@ public final class ProcessSaveElementCommand {
      * Check if all related valid values are TRUE
      *
      * @return TRUE if all related valid values are TRUE else FALSE.
+     * @deprecated in favor of {@link ProcessSaveElementCommandUtils}
      */
+    @Deprecated
     public Boolean getElementValueValid() {
-        return getElementValueOfValid(of(this));
+        return ProcessSaveElementCommandUtils.getElementValueValid(this);
     }
 
     /**
@@ -119,19 +103,23 @@ public final class ProcessSaveElementCommand {
      *
      * @param index Element value index
      * @return The requested valid value
+     * @deprecated in favor of {@link ProcessSaveElementCommandUtils}
      */
+    @Deprecated
     public Boolean getElementValueValidAt(int index) {
-        return getElementValueOfValidAt(of(this), index);
+        return ProcessSaveElementCommandUtils.getElementValueValidAt(this, index);
     }
 
     /**
      * Set valid to all values
      *
      * @param valid Valid value
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessSaveElementCommandUtils}
      */
+    @Deprecated
     public ProcessSaveElementCommand setElementValueValid(Boolean valid) {
-        setElementValueOfValid(of(this), valid);
+        ProcessSaveElementCommandUtils.setElementValueValid(this, valid);
 
         return this;
     }
@@ -141,10 +129,12 @@ public final class ProcessSaveElementCommand {
      *
      * @param valid Valid value
      * @param index Element value index
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessSaveElementCommandUtils}
      */
+    @Deprecated
     public ProcessSaveElementCommand setElementValueValidAt(Boolean valid, int index) {
-        setElementValueOfValidAt(of(this), valid, index);
+        ProcessSaveElementCommandUtils.setElementValueValidAt(this, valid, index);
 
         return this;
     }
@@ -153,10 +143,12 @@ public final class ProcessSaveElementCommand {
      * Set an element value
      *
      * @param elementValue Element value, if the value is null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessSaveElementCommandUtils}
      */
+    @Deprecated
     public ProcessSaveElementCommand setElementValueAsString(String elementValue) {
-        setElementValueOf(of(this), elementValue);
+        ProcessSaveElementCommandUtils.setElementValueAsString(this, elementValue);
 
         return this;
     }
@@ -165,10 +157,12 @@ public final class ProcessSaveElementCommand {
      * Set all element values passed, previews values will be removed
      *
      * @param elementValues Element values, if the values are null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessSaveElementCommandUtils}
      */
+    @Deprecated
     public ProcessSaveElementCommand setElementValueAsStringList(List<String> elementValues) {
-        setElementValuesOf(of(this), elementValues);
+        ProcessSaveElementCommandUtils.setElementValueAsStringList(this, elementValues);
 
         return this;
     }
@@ -177,10 +171,12 @@ public final class ProcessSaveElementCommand {
      * Add a new element value
      *
      * @param elementValue Element value, if the values is null the value is not added
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessSaveElementCommandUtils}
      */
+    @Deprecated
     public ProcessSaveElementCommand addElementValueAsString(String elementValue) {
-        addElementValueOf(of(this), elementValue);
+        ProcessSaveElementCommandUtils.addElementValueAsString(this, elementValue);
 
         return this;
     }
@@ -189,10 +185,12 @@ public final class ProcessSaveElementCommand {
      * Add all element values passed
      *
      * @param elementValues Element values
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessSaveElementCommandUtils}
      */
+    @Deprecated
     public ProcessSaveElementCommand addElementValueAsStringList(List<String> elementValues) {
-        addElementValuesOf(of(this), elementValues);
+        ProcessSaveElementCommandUtils.addElementValueAsStringList(this, elementValues);
 
         return this;
     }
@@ -201,38 +199,49 @@ public final class ProcessSaveElementCommand {
      * Get an element as String
      *
      * @return the element value.
-     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link ProcessSaveElementCommandUtils}
      */
+    @Deprecated
     public String getElementValueAsString() {
-        return getElementValueOfAsString(of(this));
+        return ProcessSaveElementCommandUtils.getElementValueAsString(this);
     }
 
     /**
      * Get all elements as String
      *
      * @return the elements values.
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link ProcessSaveElementCommandUtils}
      */
+    @Deprecated
     public List<String> getElementValueAsStringList() {
-        return getElementValueOfAsStringList(of(this));
+        return ProcessSaveElementCommandUtils.getElementValueAsStringList(this);
     }
 
     /**
      * Try to get an element as String
      *
      * @return the element value if exists.
+     * @deprecated in favor of {@link ProcessSaveElementCommandUtils}
      */
+    @Deprecated
     public Optional<String> findElementValueAsString() {
-        return findElementValueOfAsString(of(this));
+        return ProcessSaveElementCommandUtils.findElementValueAsString(this);
     }
 
     /**
      * Set an element value
      *
      * @param elementValue Element value, if the value is null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessSaveElementCommandUtils}
      */
+    @Deprecated
     public ProcessSaveElementCommand setElementValueAsDouble(Double elementValue) {
-        setElementValueOf(of(this), elementValue);
+        ProcessSaveElementCommandUtils.setElementValueAsDouble(this, elementValue);
 
         return this;
     }
@@ -241,10 +250,12 @@ public final class ProcessSaveElementCommand {
      * Set all element values passed, previews values will be removed
      *
      * @param elementValues Element values, if the values are null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessSaveElementCommandUtils}
      */
+    @Deprecated
     public ProcessSaveElementCommand setElementValueAsDoubleList(List<Double> elementValues) {
-        setElementValuesOf(of(this), elementValues);
+        ProcessSaveElementCommandUtils.setElementValueAsDoubleList(this, elementValues);
 
         return this;
     }
@@ -253,10 +264,12 @@ public final class ProcessSaveElementCommand {
      * Add a new element value
      *
      * @param elementValue Element value, if the values is null the value is not added
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessSaveElementCommandUtils}
      */
+    @Deprecated
     public ProcessSaveElementCommand addElementValueAsDouble(Double elementValue) {
-        addElementValueOf(of(this), elementValue);
+        ProcessSaveElementCommandUtils.addElementValueAsDouble(this, elementValue);
 
         return this;
     }
@@ -265,10 +278,12 @@ public final class ProcessSaveElementCommand {
      * Add all element values passed
      *
      * @param elementValues Element values
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessSaveElementCommandUtils}
      */
+    @Deprecated
     public ProcessSaveElementCommand addElementValueAsDoubleList(List<Double> elementValues) {
-        addElementValuesOf(of(this), elementValues);
+        ProcessSaveElementCommandUtils.addElementValueAsDoubleList(this, elementValues);
 
         return this;
     }
@@ -277,38 +292,49 @@ public final class ProcessSaveElementCommand {
      * Get an element as Double
      *
      * @return the element value.
-     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link ProcessSaveElementCommandUtils}
      */
+    @Deprecated
     public Double getElementValueAsDouble() {
-        return getElementValueOfAsDouble(of(this));
+        return ProcessSaveElementCommandUtils.getElementValueAsDouble(this);
     }
 
     /**
      * Get all elements as Double
      *
      * @return the elements values.
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link ProcessSaveElementCommandUtils}
      */
+    @Deprecated
     public List<Double> getElementValueAsDoubleList() {
-        return getElementValueOfAsDoubleList(of(this));
+        return ProcessSaveElementCommandUtils.getElementValueAsDoubleList(this);
     }
 
     /**
      * Try to get an element as Double
      *
      * @return the element value if exists.
+     * @deprecated in favor of {@link ProcessSaveElementCommandUtils}
      */
+    @Deprecated
     public Optional<Double> findElementValueAsDouble() {
-        return findElementValueOfAsDouble(of(this));
+        return ProcessSaveElementCommandUtils.findElementValueAsDouble(this);
     }
 
     /**
      * Set an element value
      *
      * @param elementValue Element value, if the value is null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessSaveElementCommandUtils}
      */
+    @Deprecated
     public ProcessSaveElementCommand setElementValueAsLocalDate(LocalDate elementValue) {
-        setElementValueOf(of(this), elementValue);
+        ProcessSaveElementCommandUtils.setElementValueAsLocalDate(this, elementValue);
 
         return this;
     }
@@ -317,10 +343,12 @@ public final class ProcessSaveElementCommand {
      * Set all element values passed, previews values will be removed
      *
      * @param elementValues Element values, if the values are null all current values are removed
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessSaveElementCommandUtils}
      */
+    @Deprecated
     public ProcessSaveElementCommand setElementValueAsLocalDateList(List<LocalDate> elementValues) {
-        setElementValuesOf(of(this), elementValues);
+        ProcessSaveElementCommandUtils.setElementValueAsLocalDateList(this, elementValues);
 
         return this;
     }
@@ -329,10 +357,12 @@ public final class ProcessSaveElementCommand {
      * Add a new element value
      *
      * @param elementValue Element value, if the values is null the value is not added
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessSaveElementCommandUtils}
      */
+    @Deprecated
     public ProcessSaveElementCommand addElementValueAsLocalDate(LocalDate elementValue) {
-        addElementValueOf(of(this), elementValue);
+        ProcessSaveElementCommandUtils.addElementValueAsLocalDate(this, elementValue);
 
         return this;
     }
@@ -341,10 +371,12 @@ public final class ProcessSaveElementCommand {
      * Add all element values passed
      *
      * @param elementValues Element values
-     * @return the Task object itself.
+     * @return the object itself
+     * @deprecated in favor of {@link ProcessSaveElementCommandUtils}
      */
+    @Deprecated
     public ProcessSaveElementCommand addElementValueAsLocalDateList(List<LocalDate> elementValues) {
-        addElementValuesOf(of(this), elementValues);
+        ProcessSaveElementCommandUtils.addElementValueAsLocalDateList(this, elementValues);
 
         return this;
     }
@@ -353,27 +385,36 @@ public final class ProcessSaveElementCommand {
      * Get an element as LocalDate
      *
      * @return the element value.
-     * @throws com.kuflow.rest.KuFlowRestClientException If element value doesn't exists
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link ProcessSaveElementCommandUtils}
      */
+    @Deprecated
     public LocalDate getElementValueAsLocalDate() {
-        return getElementValueOfAsLocalDate(of(this));
+        return ProcessSaveElementCommandUtils.getElementValueAsLocalDate(this);
     }
 
     /**
      * Get all elements as LocalDate
      *
      * @return the elements values.
+     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
+     *     doesn't exist
+     * @deprecated in favor of {@link ProcessSaveElementCommandUtils}
      */
+    @Deprecated
     public List<LocalDate> getElementValueAsLocalDateList() {
-        return getElementValueOfAsLocalDateList(of(this));
+        return ProcessSaveElementCommandUtils.getElementValueAsLocalDateList(this);
     }
 
     /**
      * Try to get an element as LocalDate
      *
      * @return the element value if exists.
+     * @deprecated in favor of {@link ProcessSaveElementCommandUtils}
      */
+    @Deprecated
     public Optional<LocalDate> findElementValueAsLocalDate() {
-        return findElementValueOfAsLocalDate(of(this));
+        return ProcessSaveElementCommandUtils.findElementValueAsLocalDate(this);
     }
 }
