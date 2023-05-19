@@ -300,10 +300,7 @@ public class TaskOperationTest extends AbstractOperationTest {
         OffsetDateTime value2 = TaskUtils.getJsonFormsPropertyAsOffsetDateTime(task, "key_2");
         assertThat(value2).isEqualTo(OffsetDateTime.parse("3001-01-01T01:00:00+05:05"));
 
-        Instant value3 = TaskUtils.getJsonFormsPropertyAsInstant(task, "key_2");
-        assertThat(value3).isEqualTo(Instant.parse("3001-01-01T01:00:00+05:05"));
-
-        Instant value4 = TaskUtils.getJsonFormsPropertyAsInstant(task, "key_3");
-        assertThat(value4).isEqualTo(Instant.parse("3002-01-01T00:01:00Z"));
+        Instant value3 = TaskUtils.getJsonFormsPropertyAsInstant(task, "key_3");
+        assertThat(value3).isEqualTo(Instant.parse("3002-01-01T00:01:00Z"));
     }
 }

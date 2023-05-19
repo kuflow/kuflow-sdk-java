@@ -87,6 +87,7 @@ public class KuFlowRestClientProperties {
      * @deprecated use {@link #clientSecret}
      * @param token the client secret
      */
+    @Deprecated
     public void setToken(String token) {
         this.clientSecret = token;
     }
