@@ -110,9 +110,14 @@ public final class KuFlowRestClientBuilder
      */
     @Override
     public KuFlowRestClientBuilder endpoint(String endpoint) {
-        Validation.checkValidURL(endpoint, "'endpoint' must be an url");
-        this.endpoint = endpoint.trim();
-        this.endpoint = this.endpoint.replaceAll("/*$", "");
+        if (endpoint != null) {
+            Validation.checkValidURL(endpoint, "'endpoint' must be an url");
+            this.endpoint = endpoint.trim();
+            this.endpoint = this.endpoint.replaceAll("/*$", "");
+        } else {
+            this.endpoint = null;
+        }
+
         return this;
     }
 

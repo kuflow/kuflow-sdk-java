@@ -44,27 +44,27 @@ public class KuFlowTemporalConnectionTest {
     @DisplayName("GIVEN KuFlowTemporalConnection WHEN getWorkflowTypes or getActivityTypes THEN get all the register types")
     public void givenKuFlowTemporalConnectionWhenGetWorkflowTypesOrGetActivityTypesThenGetAllTheRegisterTypes() {
         KuFlowTemporalConnection kuFlowTemporalConnection = KuFlowTemporalConnection
-            .newBuilder()
-            .withKuFlowRestClient(this.kuFlowRestClient)
+            .instance(this.kuFlowRestClient)
             .configureWorkflowServiceStubs(builder -> {
                 // do nothing
             })
             .configureWorkflowClient(builder -> {
                 // do nothing
             })
-            .configureWorker(builder -> {
+            .configureWorker(builder ->
                 builder
                     .withTaskQueue("TASK_QUEUE")
                     .withWorkflowImplementationTypes(Test1WorkflowImpl.class)
                     .withWorkflowImplementationTypes(Test2WorkflowImpl.class)
                     .withActivitiesImplementations(new Test1ActivitiesImpl())
-                    .withActivitiesImplementations(new Test2ActivitiesImpl());
-            })
-            .build();
+                    .withActivitiesImplementations(new Test2ActivitiesImpl())
+            );
 
-        assertThat(kuFlowTemporalConnection.getWorkflowTypes()).containsOnly("Test1Workflow", "Test2Workflow_name");
-        assertThat(kuFlowTemporalConnection.getActivityTypes())
-            .containsOnly("Test1_Activity1", "Test1_Activity2", "Activity1", "Activity2");
+        assertThat(kuFlowTemporalConnection.getWorkersInfo()).hasSize(1);
+
+        WorkerInfo workerInfo = kuFlowTemporalConnection.getWorkersInfo().get(0);
+        assertThat(workerInfo.getWorkflowTypes()).containsOnly("Test1Workflow", "Test2Workflow_name");
+        assertThat(workerInfo.getActivityTypes()).containsOnly("Test1_Activity1", "Test1_Activity2", "Activity1", "Activity2");
     }
 
     @WorkflowInterface

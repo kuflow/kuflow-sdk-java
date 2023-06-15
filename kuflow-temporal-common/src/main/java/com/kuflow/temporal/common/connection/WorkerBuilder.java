@@ -24,10 +24,8 @@ package com.kuflow.temporal.common.connection;
 
 import io.temporal.worker.WorkerOptions;
 import io.temporal.worker.WorkflowImplementationOptions;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
 public class WorkerBuilder {
 
@@ -116,39 +114,6 @@ public class WorkerBuilder {
         public Class<?>[] getWorkflowImplementationClasses() {
             return this.workflowImplementationClasses;
         }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (obj == this) {
-                return true;
-            }
-            if (obj == null || obj.getClass() != this.getClass()) {
-                return false;
-            }
-            var that = (WorkflowImplementationRegister) obj;
-            return (
-                Objects.equals(this.options, that.options) &&
-                Arrays.equals(this.workflowImplementationClasses, that.workflowImplementationClasses)
-            );
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(this.options, Arrays.hashCode(this.workflowImplementationClasses));
-        }
-
-        @Override
-        public String toString() {
-            return (
-                "WorkflowImplementationRegister[" +
-                "options=" +
-                this.options +
-                ", " +
-                "workflowImplementationClasses=" +
-                Arrays.toString(this.workflowImplementationClasses) +
-                ']'
-            );
-        }
     }
 
     static final class ActivityImplementationRegister {
@@ -165,28 +130,6 @@ public class WorkerBuilder {
 
         public Object[] getActivityImplementations() {
             return this.activityImplementations;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (obj == this) {
-                return true;
-            }
-            if (obj == null || obj.getClass() != this.getClass()) {
-                return false;
-            }
-            var that = (ActivityImplementationRegister) obj;
-            return Arrays.equals(this.activityImplementations, that.activityImplementations);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(this.activityImplementations);
-        }
-
-        @Override
-        public String toString() {
-            return "ActivityImplementationRegister[" + "activityImplementations=" + Arrays.toString(this.activityImplementations) + ']';
         }
     }
 }

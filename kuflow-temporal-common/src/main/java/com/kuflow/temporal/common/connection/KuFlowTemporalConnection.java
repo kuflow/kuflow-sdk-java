@@ -22,13 +22,19 @@
  */
 package com.kuflow.temporal.common.connection;
 
-import static java.util.Collections.unmodifiableSet;
+import static java.util.Collections.unmodifiableList;
 import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Collectors.toUnmodifiableList;
+import static java.util.stream.Collectors.toUnmodifiableSet;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kuflow.rest.KuFlowRestClient;
 import com.kuflow.temporal.common.authorization.KuFlowAuthorizationTokenSupplier;
+import com.kuflow.temporal.common.connection.WorkerBuilder.ActivityImplementationRegister;
+import com.kuflow.temporal.common.connection.WorkerBuilder.WorkflowImplementationRegister;
+import com.kuflow.temporal.common.error.KuFlowTemporalException;
 import com.kuflow.temporal.common.tracing.MDCContextPropagator;
 import io.temporal.authorization.AuthorizationGrpcMetadataProvider;
 import io.temporal.client.WorkflowClient;
@@ -46,339 +52,298 @@ import io.temporal.serviceclient.WorkflowServiceStubsOptions;
 import io.temporal.worker.Worker;
 import io.temporal.worker.WorkerFactory;
 import java.util.Arrays;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 /**
  * Configure a temporal client and worker with KuFlow requirements.
  */
 public class KuFlowTemporalConnection {
 
-    public static KuFlowTemporalConnectionBuilder newBuilder() {
-        return new KuFlowTemporalConnectionBuilder();
+    public static KuFlowTemporalConnection instance(KuFlowRestClient kuFlowRestClient) {
+        return new KuFlowTemporalConnection(kuFlowRestClient);
     }
 
-    private final WorkflowServiceStubs workflowServiceStubs;
-    private final WorkflowClient workflowClient;
-    private final WorkerFactory workerFactory;
-    private final Worker worker;
-    private final Set<String> workflowTypes;
-    private final Set<String> activityTypes;
+    private final KuFlowRestClient kuFlowRestClient;
+
+    private final WorkflowServiceStubsOptions.Builder workflowServiceStubsBuilder = WorkflowServiceStubsOptions.newBuilder();
+
+    private final WorkflowClientOptions.Builder workflowClientBuilder = WorkflowClientOptions.newBuilder();
+
+    private final List<WorkerBuilder> workersBuilder = new LinkedList<>();
+
+    private final List<WorkerInfo> workersInfo = new LinkedList<>();
+
+    private WorkflowServiceStubs workflowServiceStubs;
+
+    private WorkflowClient workflowClient;
+
+    private WorkerFactory workerFactory;
 
     /**
      * Hold all the temporal connection objects.
      *
-     * @param workflowServiceStubs service to hold gRPC blocking and future stubs.
-     * @param workflowClient client to the Temporal Service endpoint.
-     * @param workerFactory factory maintaining worker creation and lifecycle.
-     * @param worker worker hosting activity and workflow implementations.
-     * @param workflowTypes workflows types registered
-     * @param activityTypes activityTypes types registered
+     * @param kuFlowRestClient rest client to connect to KuFlow service.
      */
-    public KuFlowTemporalConnection(
-        WorkflowServiceStubs workflowServiceStubs,
-        WorkflowClient workflowClient,
-        WorkerFactory workerFactory,
-        Worker worker,
-        Set<String> workflowTypes,
-        Set<String> activityTypes
-    ) {
-        this.workflowServiceStubs = workflowServiceStubs;
-        this.workflowClient = workflowClient;
-        this.workerFactory = workerFactory;
-        this.worker = worker;
-        this.workflowTypes = workflowTypes != null ? unmodifiableSet(workflowTypes) : null;
-        this.activityTypes = activityTypes != null ? unmodifiableSet(activityTypes) : null;
+    public KuFlowTemporalConnection(KuFlowRestClient kuFlowRestClient) {
+        this.kuFlowRestClient = kuFlowRestClient;
     }
 
     public WorkflowServiceStubs getWorkflowServiceStubs() {
         return this.workflowServiceStubs;
     }
 
+    public WorkflowServiceStubs getOrCreateWorkflowServiceStubs() {
+        if (this.workflowServiceStubs != null) {
+            return this.workflowServiceStubs;
+        }
+
+        return this.createWorkflowServiceStubs();
+    }
+
     public WorkflowClient getWorkflowClient() {
         return this.workflowClient;
+    }
+
+    public WorkflowClient getOrCreateWorkflowClient() {
+        if (this.workflowClient != null) {
+            return this.workflowClient;
+        }
+
+        return this.createWorkflowClient();
     }
 
     public WorkerFactory getWorkerFactory() {
         return this.workerFactory;
     }
 
-    public Worker getWorker() {
-        return this.worker;
+    public WorkerFactory getOrCreateWorkerFactory() {
+        if (this.workerFactory != null) {
+            return this.workerFactory;
+        }
+
+        return this.createWorkerFactory();
     }
 
-    public Set<String> getWorkflowTypes() {
-        return this.workflowTypes;
+    public List<Worker> getWorkers() {
+        return this.workersInfo.stream().map(WorkerInfo::getWorker).collect(toUnmodifiableList());
     }
 
-    public Set<String> getActivityTypes() {
-        return this.activityTypes;
+    public List<WorkerInfo> getWorkersInfo() {
+        return unmodifiableList(this.workersInfo);
+    }
+
+    /**
+     * Configure a {@link WorkflowServiceStubs}
+     */
+    public synchronized KuFlowTemporalConnection configureWorkflowServiceStubs(Consumer<WorkflowServiceStubsOptions.Builder> configurer) {
+        configurer.accept(this.workflowServiceStubsBuilder);
+
+        return this;
+    }
+
+    /**
+     * Configure a {@link WorkflowClient}
+     */
+    public synchronized KuFlowTemporalConnection configureWorkflowClient(Consumer<WorkflowClientOptions.Builder> configurer) {
+        configurer.accept(this.workflowClientBuilder);
+
+        return this;
+    }
+
+    /**
+     * Configure a new {@link Worker} to be started
+     */
+    public synchronized KuFlowTemporalConnection configureWorker(Consumer<WorkerBuilder> configurer) {
+        WorkerBuilder workerBuilder = WorkerBuilder.instance();
+        configurer.accept(workerBuilder);
+
+        if (this.workersInfo.stream().anyMatch(it -> it.getTaskQueue().equals(workerBuilder.getTaskQueue()))) {
+            throw new KuFlowTemporalException("Duplicate task queue");
+        }
+
+        this.workersBuilder.add(workerBuilder);
+
+        Set<String> workflowTypes = workerBuilder
+            .getWorkflowImplementationClasses()
+            .stream()
+            .flatMap(workflowImplementationRegister -> this.computeWorkflowTypes(workflowImplementationRegister).stream())
+            .collect(toUnmodifiableSet());
+
+        Set<String> activityTypes = workerBuilder
+            .getActivityImplementations()
+            .stream()
+            .flatMap(activityImplementationRegister -> this.computeActivityTypes(activityImplementationRegister).stream())
+            .collect(toUnmodifiableSet());
+
+        this.workersInfo.add(new WorkerInfo(workerBuilder.getTaskQueue(), workflowTypes, activityTypes));
+
+        return this;
     }
 
     /**
      * Starts the workers created by the {@link #workerFactory}.
      */
-    public void startWorker() {
-        Objects.requireNonNull(this.workerFactory, "A worker factory is require");
-        this.workerFactory.start();
+    public synchronized void start() {
+        WorkerFactory workerFactory = this.getOrCreateWorkerFactory();
+        workerFactory.start();
     }
 
     /**
      * Initiates an orderly shutdown of the temporal connection.
      */
-    public void shutdownWorker() {
+    public void shutdown() {
+        this.shutdown(-1, null);
+    }
+
+    /**
+     * Initiates an orderly shutdown of the temporal connection.
+     * Blocks until all tasks have completed execution after a shutdown request, or the timeout occurs.
+     */
+    public synchronized void shutdown(long timeout, TimeUnit unit) {
+        Objects.requireNonNull(this.workflowServiceStubs, "A worker factory is require");
         Objects.requireNonNull(this.workerFactory, "A worker factory is require");
+
         this.workerFactory.shutdown();
+        if (timeout > 0 && unit != null) {
+            this.workerFactory.awaitTermination(timeout, unit);
+        }
+        this.workflowServiceStubs.shutdown();
+    }
+
+    /**
+     * Blocks until all tasks have completed execution after a shutdown request, or the timeout occurs.
+     */
+    public void awaitTermination(long timeout, TimeUnit unit) {
+        this.workerFactory.awaitTermination(timeout, unit);
     }
 
     /**
      * Initiates an orderly shutdown of the temporal connection.
      */
-    public void shutdownNowWorker() {
+    public synchronized void shutdownNowWorkers() {
         Objects.requireNonNull(this.workerFactory, "A worker factory is require");
         this.workerFactory.shutdownNow();
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
+    private synchronized WorkflowServiceStubs createWorkflowServiceStubs() {
+        if (this.workflowServiceStubs != null) {
+            return this.workflowServiceStubs;
         }
-        if (obj == null || obj.getClass() != this.getClass()) {
-            return false;
-        }
-        var that = (KuFlowTemporalConnection) obj;
-        return (
-            Objects.equals(this.workflowServiceStubs, that.workflowServiceStubs) &&
-            Objects.equals(this.workflowClient, that.workflowClient) &&
-            Objects.equals(this.workerFactory, that.workerFactory) &&
-            Objects.equals(this.worker, that.worker) &&
-            Objects.equals(this.workflowTypes, that.workflowTypes) &&
-            Objects.equals(this.activityTypes, that.activityTypes)
+
+        AuthorizationGrpcMetadataProvider authorizationGrpcMetadataProvider = new AuthorizationGrpcMetadataProvider(
+            new KuFlowAuthorizationTokenSupplier(this.kuFlowRestClient)
         );
+
+        WorkflowServiceStubsOptions options =
+            this.workflowServiceStubsBuilder.addGrpcMetadataProvider(authorizationGrpcMetadataProvider).validateAndBuildWithDefaults();
+
+        this.workflowServiceStubs = WorkflowServiceStubs.newServiceStubs(options);
+
+        return this.workflowServiceStubs;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(
-            this.workflowServiceStubs,
-            this.workflowClient,
-            this.workerFactory,
-            this.worker,
-            this.workflowTypes,
-            this.activityTypes
-        );
+    private synchronized WorkflowClient createWorkflowClient() {
+        if (this.workflowClient != null) {
+            return this.workflowClient;
+        }
+
+        WorkflowServiceStubs workflowServiceStubs = this.getOrCreateWorkflowServiceStubs();
+
+        DataConverter dataConverter = this.dataConverter();
+
+        WorkflowClientOptions workflowClientOptions =
+            this.workflowClientBuilder.setContextPropagators(List.of(new MDCContextPropagator())).setDataConverter(dataConverter).build();
+
+        this.workflowClient = WorkflowClient.newInstance(workflowServiceStubs, workflowClientOptions);
+
+        return this.workflowClient;
     }
 
-    @Override
-    public String toString() {
-        return (
-            "KuFlowTemporalConnection[" +
-            "workflowServiceStubs=" +
-            this.workflowServiceStubs +
-            ", " +
-            "workflowClient=" +
-            this.workflowClient +
-            ", " +
-            "workerFactory=" +
-            this.workerFactory +
-            ", " +
-            "worker=" +
-            this.worker +
-            ", " +
-            "workflowTypes=" +
-            this.workflowTypes +
-            ", " +
-            "activityTypes=" +
-            this.activityTypes +
-            ']'
-        );
+    private synchronized WorkerFactory createWorkerFactory() {
+        if (this.workerFactory != null) {
+            return this.workerFactory;
+        }
+
+        WorkflowClient workflowClient = this.getOrCreateWorkflowClient();
+
+        this.workerFactory = WorkerFactory.newInstance(workflowClient);
+
+        this.workersBuilder.forEach(this::newWorker);
+
+        return this.workerFactory;
     }
 
-    /**
-     * KuFlowTemporalConnectionBuilder is the builder for {@link KuFlowTemporalConnection}.
-     */
-    public static final class KuFlowTemporalConnectionBuilder {
+    private void newWorker(WorkerBuilder workerBuilder) {
+        Worker worker = this.workerFactory.newWorker(workerBuilder.getTaskQueue(), workerBuilder.getWorkerOptions());
 
-        private KuFlowRestClient kuFlowRestClient;
+        workerBuilder
+            .getWorkflowImplementationClasses()
+            .forEach(workflowImplementationRegister -> this.configureWorker(worker, workflowImplementationRegister));
 
-        private WorkflowServiceStubs workflowServiceStubs;
+        workerBuilder
+            .getActivityImplementations()
+            .forEach(activityImplementationRegister -> this.configureWorker(worker, activityImplementationRegister));
 
-        private WorkflowServiceStubsOptions.Builder workflowServiceStubsBuilder;
+        WorkerInfo workerInfo =
+            this.workersInfo.stream().filter(it -> it.getTaskQueue().equals(workerBuilder.getTaskQueue())).findFirst().orElseThrow();
 
-        private WorkflowClientOptions.Builder workflowClientBuilder;
+        workerInfo.registerWorker(worker);
+    }
 
-        private WorkflowClient workflowClient;
-
-        private WorkerBuilder workerBuilder;
-
-        private WorkerFactory workerFactory;
-
-        private Worker worker;
-
-        private Set<String> workflowTypes;
-
-        private Set<String> activityTypes;
-
-        private KuFlowTemporalConnectionBuilder() {}
-
-        /**
-         * Register the {@link KuFlowRestClient} required
-         */
-        public KuFlowTemporalConnectionBuilder withKuFlowRestClient(KuFlowRestClient kuFlowRestClient) {
-            this.kuFlowRestClient = kuFlowRestClient;
-
-            return this;
-        }
-
-        /**
-         * Configure a {@link WorkflowServiceStubs}
-         */
-        public KuFlowTemporalConnectionBuilder configureWorkflowServiceStubs(Configurer<WorkflowServiceStubsOptions.Builder> configurer) {
-            this.workflowServiceStubsBuilder = WorkflowServiceStubsOptions.newBuilder();
-            configurer.configure(this.workflowServiceStubsBuilder);
-
-            return this;
-        }
-
-        /**
-         * Configure a {@link WorkflowClient}
-         */
-        public KuFlowTemporalConnectionBuilder configureWorkflowClient(Configurer<WorkflowClientOptions.Builder> configurer) {
-            this.workflowClientBuilder = WorkflowClientOptions.newBuilder();
-            configurer.configure(this.workflowClientBuilder);
-
-            return this;
-        }
-
-        /**
-         * Configure a {@link Worker}
-         */
-        public KuFlowTemporalConnectionBuilder configureWorker(Configurer<WorkerBuilder> configurer) {
-            this.workerBuilder = WorkerBuilder.instance();
-            configurer.configure(this.workerBuilder);
-
-            return this;
-        }
-
-        /**
-         * Builds and returns a {@link KuFlowTemporalConnection} object.
-         *
-         * @return KuFlowTemporalConnection object.
-         */
-        public KuFlowTemporalConnection build() {
-            this.buildWorkflowServiceStubs();
-            this.buildWorkflowClient();
-            this.buildWorker();
-
-            return new KuFlowTemporalConnection(
-                this.workflowServiceStubs,
-                this.workflowClient,
-                this.workerFactory,
-                this.worker,
-                this.workflowTypes,
-                this.activityTypes
+    private void configureWorker(Worker worker, WorkflowImplementationRegister workflowImplementationRegister) {
+        if (workflowImplementationRegister.getOptions() == null) {
+            worker.registerWorkflowImplementationTypes(workflowImplementationRegister.getWorkflowImplementationClasses());
+        } else {
+            worker.registerWorkflowImplementationTypes(
+                workflowImplementationRegister.getOptions(),
+                workflowImplementationRegister.getWorkflowImplementationClasses()
             );
         }
+    }
 
-        private void buildWorkflowServiceStubs() {
-            if (this.workflowServiceStubsBuilder != null) {
-                Objects.requireNonNull(this.kuFlowRestClient, "kuFlowRestClient is required");
+    private Set<String> computeWorkflowTypes(WorkflowImplementationRegister workflowImplementationRegister) {
+        return Arrays
+            .stream(workflowImplementationRegister.getWorkflowImplementationClasses())
+            .flatMap(workflowImplementationClass -> {
+                POJOWorkflowImplMetadata workflowMetadata = POJOWorkflowImplMetadata.newInstance(workflowImplementationClass);
+                return workflowMetadata.getWorkflowMethods().stream();
+            })
+            .map(POJOWorkflowMethodMetadata::getName)
+            .collect(toSet());
+    }
 
-                AuthorizationGrpcMetadataProvider authorizationGrpcMetadataProvider = new AuthorizationGrpcMetadataProvider(
-                    new KuFlowAuthorizationTokenSupplier(this.kuFlowRestClient)
-                );
+    private void configureWorker(Worker worker, ActivityImplementationRegister activityImplementationRegister) {
+        worker.registerActivitiesImplementations(activityImplementationRegister.getActivityImplementations());
+    }
 
-                WorkflowServiceStubsOptions options =
-                    this.workflowServiceStubsBuilder.addGrpcMetadataProvider(authorizationGrpcMetadataProvider)
-                        .validateAndBuildWithDefaults();
+    private Set<String> computeActivityTypes(ActivityImplementationRegister activityImplementationRegister) {
+        return Arrays
+            .stream(activityImplementationRegister.getActivityImplementations())
+            .flatMap(activityImplementation -> {
+                Class<?> cls = activityImplementation.getClass();
+                POJOActivityImplMetadata activityImplMetadata = POJOActivityImplMetadata.newInstance(cls);
+                return activityImplMetadata.getActivityMethods().stream();
+            })
+            .map(POJOActivityMethodMetadata::getActivityTypeName)
+            .collect(toSet());
+    }
 
-                this.workflowServiceStubs = WorkflowServiceStubs.newServiceStubs(options);
-            }
-        }
+    private DataConverter dataConverter() {
+        // Customize Temporal's default Jackson object mapper to support unknown properties
+        ObjectMapper objectMapper = JacksonJsonPayloadConverter.newDefaultObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        private void buildWorkflowClient() {
-            if (this.workflowClientBuilder != null) {
-                Objects.requireNonNull(this.workflowServiceStubs, "workflowServiceStubs is required");
+        List<PayloadConverter> converters = Arrays
+            .stream(DefaultDataConverter.STANDARD_PAYLOAD_CONVERTERS)
+            .filter(it -> !(it instanceof JacksonJsonPayloadConverter))
+            .collect(toCollection(LinkedList::new));
+        converters.add(new JacksonJsonPayloadConverter(objectMapper));
 
-                DataConverter dataConverter = this.dataConverter();
-
-                WorkflowClientOptions workflowClientOptions =
-                    this.workflowClientBuilder.setContextPropagators(List.of(new MDCContextPropagator()))
-                        .setDataConverter(dataConverter)
-                        .build();
-
-                this.workflowClient = WorkflowClient.newInstance(this.workflowServiceStubs, workflowClientOptions);
-            }
-        }
-
-        private void buildWorker() {
-            if (this.workerBuilder != null) {
-                Objects.requireNonNull(this.workflowClient, "workflowClient is required");
-                Objects.requireNonNull(this.workerBuilder.getTaskQueue(), "worker.taskQueue is required");
-
-                this.workflowTypes = new LinkedHashSet<>();
-                this.activityTypes = new LinkedHashSet<>();
-                this.workerFactory = WorkerFactory.newInstance(this.workflowClient);
-                this.worker = this.workerFactory.newWorker(this.workerBuilder.getTaskQueue(), this.workerBuilder.getWorkerOptions());
-
-                this.workerBuilder.getWorkflowImplementationClasses().forEach(this::configureWorker);
-                this.workerBuilder.getActivityImplementations().forEach(this::configureWorker);
-            }
-        }
-
-        private void configureWorker(WorkerBuilder.WorkflowImplementationRegister workflowImplementationRegister) {
-            if (workflowImplementationRegister.getOptions() == null) {
-                this.worker.registerWorkflowImplementationTypes(workflowImplementationRegister.getWorkflowImplementationClasses());
-            } else {
-                this.worker.registerWorkflowImplementationTypes(
-                        workflowImplementationRegister.getOptions(),
-                        workflowImplementationRegister.getWorkflowImplementationClasses()
-                    );
-            }
-
-            Arrays
-                .stream(workflowImplementationRegister.getWorkflowImplementationClasses())
-                .forEach(workflowImplementationClass -> {
-                    POJOWorkflowImplMetadata workflowMetadata = POJOWorkflowImplMetadata.newInstance(workflowImplementationClass);
-                    List<POJOWorkflowMethodMetadata> workflowMethods = workflowMetadata.getWorkflowMethods();
-                    for (POJOWorkflowMethodMetadata workflowMethod : workflowMethods) {
-                        String workflowName = workflowMethod.getName();
-                        this.workflowTypes.add(workflowName);
-                    }
-                });
-        }
-
-        private void configureWorker(WorkerBuilder.ActivityImplementationRegister activityImplementationRegister) {
-            this.worker.registerActivitiesImplementations(activityImplementationRegister.getActivityImplementations());
-
-            Arrays
-                .stream(activityImplementationRegister.getActivityImplementations())
-                .forEach(activityImplementation -> {
-                    Class<?> cls = activityImplementation.getClass();
-                    POJOActivityImplMetadata activityImplMetadata = POJOActivityImplMetadata.newInstance(cls);
-                    for (POJOActivityMethodMetadata activityMetadata : activityImplMetadata.getActivityMethods()) {
-                        String activityType = activityMetadata.getActivityTypeName();
-                        this.activityTypes.add(activityType);
-                    }
-                });
-        }
-
-        private DataConverter dataConverter() {
-            // Customize Temporal's default Jackson object mapper to support unknown properties
-            ObjectMapper objectMapper = JacksonJsonPayloadConverter.newDefaultObjectMapper();
-            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-            List<PayloadConverter> converters = Arrays
-                .stream(DefaultDataConverter.STANDARD_PAYLOAD_CONVERTERS)
-                .filter(it -> !(it instanceof JacksonJsonPayloadConverter))
-                .collect(toCollection(LinkedList::new));
-            converters.add(new JacksonJsonPayloadConverter(objectMapper));
-
-            return new DefaultDataConverter(converters.toArray(new PayloadConverter[0]));
-        }
+        return new DefaultDataConverter(converters.toArray(new PayloadConverter[0]));
     }
 }

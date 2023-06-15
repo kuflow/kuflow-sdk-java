@@ -22,12 +22,42 @@
  */
 package com.kuflow.temporal.common.connection;
 
-@FunctionalInterface
-public interface Configurer<T> {
-    /**
-     * Performs this operation on the given argument.
-     *
-     * @param t the input argument
-     */
-    void configure(T t);
+import io.temporal.worker.Worker;
+import java.util.Set;
+
+public class WorkerInfo {
+
+    private final String taskQueue;
+
+    private final Set<String> workflowTypes;
+
+    private final Set<String> activityTypes;
+
+    private Worker worker;
+
+    public WorkerInfo(String taskQueue, Set<String> workflowTypes, Set<String> activityTypes) {
+        this.taskQueue = taskQueue;
+        this.workflowTypes = workflowTypes;
+        this.activityTypes = activityTypes;
+    }
+
+    public String getTaskQueue() {
+        return this.taskQueue;
+    }
+
+    public Set<String> getWorkflowTypes() {
+        return this.workflowTypes;
+    }
+
+    public Set<String> getActivityTypes() {
+        return this.activityTypes;
+    }
+
+    public Worker getWorker() {
+        return this.worker;
+    }
+
+    void registerWorker(Worker worker) {
+        this.worker = worker;
+    }
 }
