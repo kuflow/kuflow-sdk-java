@@ -20,26 +20,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.temporal.common.payload.codec.encryption;
+package com.kuflow.temporal.common.connection;
 
-import io.temporal.api.common.v1.Payload;
-
-/**
- * Service interface for symmetric data encryption.
- */
-public interface PayloadEncryptor {
+@FunctionalInterface
+public interface Configurer<T> {
     /**
-     * Get the {@link EncryptionInfo} computed for the payload passed.
+     * Performs this operation on the given argument.
+     *
+     * @param t the input argument
      */
-    EncryptionInfo getEncryptionInfo(Payload payload);
-
-    /**
-     * Encrypt the plainData byte array using the encryptionInfo passed.
-     */
-    byte[] encrypt(byte[] plainData, EncryptionInfo encryptionInfo);
-
-    /**
-     * Decrypt the encryptedData byte array using the encryptionInfo passed.
-     */
-    byte[] decrypt(byte[] encryptedData, EncryptionInfo encryptionInfo);
+    void configure(T t);
 }
