@@ -32,7 +32,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.kuflow.rest.model.FindProcessesOptions;
 import com.kuflow.rest.model.Process;
 import com.kuflow.rest.model.ProcessPage;
+import com.kuflow.rest.model.ProcessPageItem;
 import com.kuflow.rest.model.ProcessState;
+import com.kuflow.rest.util.ProcessPageItemUtils;
+import com.kuflow.rest.util.ProcessUtils;
+import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -60,11 +64,15 @@ public class ProcessOperationTest extends AbstractOperationTest {
         );
 
         ProcessPage processes = this.kuFlowRestClient.getProcessOperations().findProcesses();
+
         assertThat(processes.getMetadata().getTotalElements()).isEqualTo(2);
         assertThat(processes.getContent()).hasSize(2);
-        assertThat(processes.getContent().get(0).getElementValues()).containsOnlyKeys("CODE_001", "CODE_002");
-        assertThat(processes.getContent().get(0).getElementValueAsStringList("CODE_001"))
-            .containsOnly("Value as text 1", "Value as text 2");
+
+        ProcessPageItem processPageItem = processes.getContent().get(0);
+        List<String> code001Value = ProcessPageItemUtils.getElementValueAsStringList(processPageItem, "CODE_001");
+
+        assertThat(processPageItem.getElementValues()).containsOnlyKeys("CODE_001", "CODE_002");
+        assertThat(code001Value).containsOnly("Value as text 1", "Value as text 2");
     }
 
     @Test
@@ -111,8 +119,11 @@ public class ProcessOperationTest extends AbstractOperationTest {
         );
 
         Process process = this.kuFlowRestClient.getProcessOperations().retrieveProcess(processId);
+
         assertThat(process.getState()).isEqualTo(ProcessState.RUNNING);
         assertThat(process.getElementValues()).containsOnlyKeys("CODE_001", "CODE_002");
-        assertThat(process.getElementValueAsStringList("CODE_001")).containsOnly("Value as text 1", "Value as text 2");
+
+        List<String> code001Values = ProcessUtils.getElementValueAsStringList(process, "CODE_001");
+        assertThat(code001Values).containsOnly("Value as text 1", "Value as text 2");
     }
 }

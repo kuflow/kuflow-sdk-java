@@ -32,6 +32,7 @@ import com.kuflow.rest.model.Task;
 import com.kuflow.rest.model.TaskDefinitionSummary;
 import com.kuflow.rest.model.TaskSaveElementCommand;
 import com.kuflow.rest.model.TaskSaveElementValueDocumentCommand;
+import com.kuflow.rest.util.TaskSaveElementCommandUtils;
 import java.util.UUID;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -68,10 +69,10 @@ public class KuFlowRestClientTest {
 
         //        kuFlowRestClient.getTaskOperations().actionsTaskClaim(taskCreated.getId());
 
-        TaskSaveElementCommand command2 = new TaskSaveElementCommand()
-            .setElementDefinitionCode("TEXT_002")
-            .addElementValueAsString("Valor del bueno uno")
-            .addElementValueAsString("Valor del bueno dos");
+        TaskSaveElementCommand command2 = new TaskSaveElementCommand().setElementDefinitionCode("TEXT_002");
+
+        TaskSaveElementCommandUtils.addElementValueAsString(command2, "Valor del bueno uno");
+        TaskSaveElementCommandUtils.addElementValueAsString(command2, "Valor del bueno dos");
         kuFlowRestClient.getTaskOperations().actionsTaskSaveElement(taskCreated.getId(), command2);
 
         //        TaskSaveElementCommand command3 = new TaskSaveElementCommand()

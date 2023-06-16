@@ -22,8 +22,6 @@
  */
 package com.kuflow.rest;
 
-import static com.azure.core.util.AuthorizationChallengeHandler.WWW_AUTHENTICATE;
-
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -31,6 +29,7 @@ import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.credential.BasicAuthenticationCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -111,9 +110,14 @@ public final class KuFlowRestClientBuilder
      */
     @Override
     public KuFlowRestClientBuilder endpoint(String endpoint) {
-        Validation.checkValidURL(endpoint, "'endpoint' must be an url");
-        this.endpoint = endpoint.trim();
-        this.endpoint = this.endpoint.replaceAll("/*$", "");
+        if (endpoint != null) {
+            Validation.checkValidURL(endpoint, "'endpoint' must be an url");
+            this.endpoint = endpoint.trim();
+            this.endpoint = this.endpoint.replaceAll("/*$", "");
+        } else {
+            this.endpoint = null;
+        }
+
         return this;
     }
 
@@ -363,7 +367,7 @@ public final class KuFlowRestClientBuilder
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
         HttpHeaders headers = new HttpHeaders();
-        localClientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
+        localClientOptions.getHeaders().forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
@@ -411,7 +415,7 @@ public final class KuFlowRestClientBuilder
                 return authorizeRequest(context)
                     .then(Mono.defer(next::process))
                     .flatMap(httpResponse -> {
-                        String authHeader = httpResponse.getHeaderValue(WWW_AUTHENTICATE);
+                        String authHeader = httpResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
                         if (httpResponse.getStatusCode() == 401 && authHeader != null) {
                             return authorizeRequestOnChallenge(context, httpResponse)
                                 .flatMap(retry -> {
@@ -444,7 +448,7 @@ public final class KuFlowRestClientBuilder
 
                 authorizeRequestSync(context);
                 HttpResponse httpResponse = next.processSync();
-                String authHeader = httpResponse.getHeaderValue(WWW_AUTHENTICATE);
+                String authHeader = httpResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
                 if (httpResponse.getStatusCode() == 401 && authHeader != null) {
                     if (authorizeRequestOnChallengeSync(context, httpResponse)) {
                         // Both Netty and OkHttp expect the requestBody to be closed after the response has been read.

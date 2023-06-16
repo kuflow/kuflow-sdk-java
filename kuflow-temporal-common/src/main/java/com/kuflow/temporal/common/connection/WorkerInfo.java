@@ -20,26 +20,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.temporal.common.payload.codec.encryption;
+package com.kuflow.temporal.common.connection;
 
-import io.temporal.api.common.v1.Payload;
+import io.temporal.worker.Worker;
+import java.util.Set;
 
-/**
- * Service interface for symmetric data encryption.
- */
-public interface PayloadEncryptor {
-    /**
-     * Get the {@link EncryptionInfo} computed for the payload passed.
-     */
-    EncryptionInfo getEncryptionInfo(Payload payload);
+public class WorkerInfo {
 
-    /**
-     * Encrypt the plainData byte array using the encryptionInfo passed.
-     */
-    byte[] encrypt(byte[] plainData, EncryptionInfo encryptionInfo);
+    private final String taskQueue;
 
-    /**
-     * Decrypt the encryptedData byte array using the encryptionInfo passed.
-     */
-    byte[] decrypt(byte[] encryptedData, EncryptionInfo encryptionInfo);
+    private final Set<String> workflowTypes;
+
+    private final Set<String> activityTypes;
+
+    private Worker worker;
+
+    public WorkerInfo(String taskQueue, Set<String> workflowTypes, Set<String> activityTypes) {
+        this.taskQueue = taskQueue;
+        this.workflowTypes = workflowTypes;
+        this.activityTypes = activityTypes;
+    }
+
+    public String getTaskQueue() {
+        return this.taskQueue;
+    }
+
+    public Set<String> getWorkflowTypes() {
+        return this.workflowTypes;
+    }
+
+    public Set<String> getActivityTypes() {
+        return this.activityTypes;
+    }
+
+    public Worker getWorker() {
+        return this.worker;
+    }
+
+    void registerWorker(Worker worker) {
+        this.worker = worker;
+    }
 }

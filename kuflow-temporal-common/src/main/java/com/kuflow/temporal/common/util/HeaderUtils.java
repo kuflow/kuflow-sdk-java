@@ -22,6 +22,7 @@
  */
 package com.kuflow.temporal.common.util;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 
@@ -29,28 +30,22 @@ public final class HeaderUtils {
 
     public static final int INDEX_NOT_FOUND = -1;
 
-    private static final String CONTENT_TYPE = "Content-Type";
-
-    private static final String CONTENT_LENGTH = "Content-Length";
-
-    private static final String CONTENT_DISPOSITION = "Content-Disposition";
-
     private HeaderUtils() {
         throw new IllegalStateException("Utility class");
     }
 
     public static String extractContentType(Response<BinaryData> response) {
-        return response.getHeaders().getValue(CONTENT_TYPE);
+        return response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
     }
 
-    public static Long extractContentLength(Response response) {
-        String value = response.getHeaders().getValue(CONTENT_LENGTH);
+    public static Long extractContentLength(Response<?> response) {
+        String value = response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
 
         return value != null ? Long.parseLong(value) : null;
     }
 
-    public static String extractFileName(Response response) {
-        String value = response.getHeaders().getValue(CONTENT_DISPOSITION);
+    public static String extractFileName(Response<?> response) {
+        String value = response.getHeaders().getValue(HttpHeaderName.CONTENT_DISPOSITION);
 
         if (value != null) {
             return substringBetween(value, "filename=\"", "\"");

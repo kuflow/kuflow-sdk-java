@@ -59,6 +59,7 @@
     <argLine>-Djava.security.egd=file:/dev/./urandom -Xmx256m</argLine>
 
     <!-- Maven plugin dependencies -->
+    <maven-source-plugin.version>3.3.0</maven-source-plugin.version>
     <maven-install-plugin.version>3.1.1</maven-install-plugin.version>
     <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
     <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
@@ -66,10 +67,10 @@
     <maven-surefire-plugin.version>3.1.0</maven-surefire-plugin.version>
 
     <maven-gpg-plugin.version>3.1.0</maven-gpg-plugin.version>
-    <maven-checkstyle.version>3.2.2</maven-checkstyle.version>
+    <maven-checkstyle.version>3.3.0</maven-checkstyle.version>
     <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
     <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
-    <checkstyle.version>10.11.0</checkstyle.version>
+    <checkstyle.version>10.12.0</checkstyle.version>
     <prettier-maven-plugin.version>0.19</prettier-maven-plugin.version>
     <prettier-java.version>2.1.0</prettier-java.version>
     <build-helper-maven-plugin.version>3.4.0</build-helper-maven-plugin.version>
@@ -79,12 +80,12 @@
     <spring-boot.version>2.7.11</spring-boot.version>
 
     <!-- Application dependencies -->
-    <temporal-sdk.version>1.17.0</temporal-sdk.version>
+    <temporal-sdk.version>1.19.1</temporal-sdk.version>
     <awssdk.version>2.18.25</awssdk.version>
     <commons-io.version>2.11.0</commons-io.version>
     <commons-text.version>1.10.0</commons-text.version>
-    <azure-core.version>1.38.0</azure-core.version>
-    <azure-communication-common.version>1.2.6</azure-communication-common.version>
+    <azure-core.version>1.40.0</azure-core.version>
+    <azure-communication-common.version>1.2.9</azure-communication-common.version>
     <jsr305.version>3.0.2</jsr305.version>
 
     <wiremock.version>2.35.0</wiremock.version>
@@ -107,7 +108,7 @@
       </dependency>
       <dependency>
         <groupId>io.temporal</groupId>
-        <artifactId>temporal-testing-junit5</artifactId>
+        <artifactId>temporal-testing</artifactId>
         <version>${temporal-sdk.version}</version>
         <scope>test</scope>
       </dependency>

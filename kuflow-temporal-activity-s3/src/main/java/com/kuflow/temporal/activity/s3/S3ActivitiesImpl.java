@@ -29,6 +29,7 @@ import com.kuflow.rest.KuFlowRestClient;
 import com.kuflow.rest.model.Task;
 import com.kuflow.rest.model.TaskElementValueDocumentItem;
 import com.kuflow.rest.operation.TaskOperations;
+import com.kuflow.rest.util.TaskUtils;
 import com.kuflow.temporal.activity.s3.model.CopyElementFile;
 import com.kuflow.temporal.activity.s3.model.CopyTaskElementFilesRequest;
 import com.kuflow.temporal.activity.s3.model.CopyTaskElementFilesResponse;
@@ -75,7 +76,7 @@ public class S3ActivitiesImpl implements S3Activities {
 
         String elementDefinitionCode = request.getSourceElementDefinitionCode();
 
-        List<TaskElementValueDocumentItem> elementValues = task.getElementValueAsDocumentList(elementDefinitionCode);
+        List<TaskElementValueDocumentItem> elementValues = TaskUtils.getElementValueAsDocumentList(task, elementDefinitionCode);
 
         if (elementValues == null || elementValues.isEmpty()) {
             return result;
