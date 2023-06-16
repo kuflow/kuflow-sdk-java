@@ -43,11 +43,11 @@ import javax.net.ssl.TrustManagerFactory;
 
 public final class SslContextBuilder {
 
-    private String ca;
+    private String caFile;
     private String caData;
-    private String cert;
+    private String certFile;
     private String certData;
-    private String key;
+    private String keyFile;
     private String keyData;
 
     private SslContextBuilder() {}
@@ -56,8 +56,16 @@ public final class SslContextBuilder {
         return new SslContextBuilder();
     }
 
+    /**
+     * @deprecated user {@link #withCaFile}
+     */
+    @Deprecated
     public SslContextBuilder withCa(String ca) {
-        this.ca = ca;
+        return this.withCaFile(ca);
+    }
+
+    public SslContextBuilder withCaFile(String caFile) {
+        this.caFile = caFile;
         return this;
     }
 
@@ -66,8 +74,16 @@ public final class SslContextBuilder {
         return this;
     }
 
+    /**
+     * @deprecated user {@link #withCertFile}
+     */
+    @Deprecated
     public SslContextBuilder withCert(String cert) {
-        this.cert = cert;
+        return this.withCertFile(cert);
+    }
+
+    public SslContextBuilder withCertFile(String certFile) {
+        this.certFile = certFile;
         return this;
     }
 
@@ -76,8 +92,16 @@ public final class SslContextBuilder {
         return this;
     }
 
+    /**
+     * @deprecated user {@link #withKeyFile}
+     */
+    @Deprecated
     public SslContextBuilder withKey(String key) {
-        this.key = key;
+        return this.withKeyFile(key);
+    }
+
+    public SslContextBuilder withKeyFile(String key) {
+        this.keyFile = key;
         return this;
     }
 
@@ -87,22 +111,22 @@ public final class SslContextBuilder {
     }
 
     public SslContext build() {
-        if (this.isBlank(this.cert) && this.isBlank(this.certData)) {
+        if (this.isBlank(this.certFile) && this.isBlank(this.certData)) {
             return null;
         }
 
-        if (this.isNotBlank(this.cert) && (this.isBlank(this.key) || this.isBlank(this.ca))) {
-            throw new KuFlowTemporalException("key and ca are required");
+        if (this.isBlank(this.keyFile) && this.isBlank(this.keyData)) {
+            throw new KuFlowTemporalException("key is required");
         }
 
-        if (this.isNotBlank(this.certData) && (this.isBlank(this.keyData) || this.isBlank(this.caData))) {
-            throw new KuFlowTemporalException("keyData or caData are required");
+        if (this.isBlank(this.caFile) && this.isBlank(this.caData)) {
+            throw new KuFlowTemporalException("ca is required");
         }
 
         try (
-            InputStream certInputStream = this.openInputStream(this.cert, this.certData);
-            InputStream keyInputStream = this.openInputStream(this.key, this.keyData);
-            InputStream caInputStream = this.openInputStream(this.ca, this.caData)
+            InputStream certInputStream = this.openInputStream(this.certFile, this.certData);
+            InputStream keyInputStream = this.openInputStream(this.keyFile, this.keyData);
+            InputStream caInputStream = this.openInputStream(this.caFile, this.caData)
         ) {
             KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
             trustStore.load(null, null);
