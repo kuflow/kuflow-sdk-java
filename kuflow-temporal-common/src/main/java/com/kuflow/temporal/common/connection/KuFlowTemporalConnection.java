@@ -235,6 +235,10 @@ public class KuFlowTemporalConnection {
             return this.workflowServiceStubs;
         }
 
+        if (this.workflowServiceStubsBuilder.build().getTarget() == null) {
+            this.workflowServiceStubsBuilder.setTarget("engine.kuflow.com:443");
+        }
+
         AuthorizationGrpcMetadataProvider authorizationGrpcMetadataProvider = new AuthorizationGrpcMetadataProvider(
             new KuFlowAuthorizationTokenSupplier(this.kuFlowRestClient)
         );
