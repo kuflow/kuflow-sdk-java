@@ -30,8 +30,6 @@ import com.kuflow.temporal.activity.kuflow.model.ChangeProcessInitiatorRequest;
 import com.kuflow.temporal.activity.kuflow.model.ChangeProcessInitiatorResponse;
 import com.kuflow.temporal.activity.kuflow.model.ClaimTaskRequest;
 import com.kuflow.temporal.activity.kuflow.model.ClaimTaskResponse;
-import com.kuflow.temporal.activity.kuflow.model.CompleteProcessRequest;
-import com.kuflow.temporal.activity.kuflow.model.CompleteProcessResponse;
 import com.kuflow.temporal.activity.kuflow.model.CompleteTaskRequest;
 import com.kuflow.temporal.activity.kuflow.model.CompleteTaskResponse;
 import com.kuflow.temporal.activity.kuflow.model.CreateTaskRequest;
@@ -118,16 +116,6 @@ public interface KuFlowSyncActivities {
      * @return process deleted
      */
     DeleteProcessElementResponse deleteProcessElement(@Nonnull DeleteProcessElementRequest request);
-
-    /**
-     * Complete a Process. The state of Process is set to "COMPLETED".
-     *
-     * @param request must not be {@literal null}.
-     * @return process completed
-     */
-    @ActivityMethod
-    @Nonnull
-    CompleteProcessResponse completeProcess(@Nonnull CompleteProcessRequest request);
 
     /**
      * Change the current initiator of a process. Allows you to choose a user (by email or principal
