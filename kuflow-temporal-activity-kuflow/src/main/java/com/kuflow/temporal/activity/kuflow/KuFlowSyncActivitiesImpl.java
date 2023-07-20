@@ -27,7 +27,6 @@ import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidatio
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateAssignTaskRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateChangeProcessInitiatorRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateClaimTaskRequest;
-import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateCompleteProcessRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateCompleteTaskRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateCreateTaskRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateDeleteProcessElementRequest;
@@ -67,8 +66,6 @@ import com.kuflow.temporal.activity.kuflow.model.ChangeProcessInitiatorRequest;
 import com.kuflow.temporal.activity.kuflow.model.ChangeProcessInitiatorResponse;
 import com.kuflow.temporal.activity.kuflow.model.ClaimTaskRequest;
 import com.kuflow.temporal.activity.kuflow.model.ClaimTaskResponse;
-import com.kuflow.temporal.activity.kuflow.model.CompleteProcessRequest;
-import com.kuflow.temporal.activity.kuflow.model.CompleteProcessResponse;
 import com.kuflow.temporal.activity.kuflow.model.CompleteTaskRequest;
 import com.kuflow.temporal.activity.kuflow.model.CompleteTaskResponse;
 import com.kuflow.temporal.activity.kuflow.model.CreateTaskRequest;
@@ -198,23 +195,6 @@ public class KuFlowSyncActivitiesImpl implements KuFlowSyncActivities {
             Process process = this.processOperations.actionsProcessDeleteElement(request.getProcessId(), command);
 
             DeleteProcessElementResponse response = new DeleteProcessElementResponse();
-            response.setProcess(process);
-
-            return response;
-        } catch (Exception e) {
-            throw createApplicationFailure(e);
-        }
-    }
-
-    @Nonnull
-    @Override
-    public CompleteProcessResponse completeProcess(@Nonnull CompleteProcessRequest request) {
-        try {
-            validateCompleteProcessRequest(request);
-
-            Process process = this.processOperations.actionsProcessComplete(request.getProcessId());
-
-            CompleteProcessResponse response = new CompleteProcessResponse();
             response.setProcess(process);
 
             return response;

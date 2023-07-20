@@ -29,7 +29,6 @@ import com.kuflow.temporal.activity.kuflow.model.AppendTaskLogRequest;
 import com.kuflow.temporal.activity.kuflow.model.AssignTaskRequest;
 import com.kuflow.temporal.activity.kuflow.model.ChangeProcessInitiatorRequest;
 import com.kuflow.temporal.activity.kuflow.model.ClaimTaskRequest;
-import com.kuflow.temporal.activity.kuflow.model.CompleteProcessRequest;
 import com.kuflow.temporal.activity.kuflow.model.CompleteTaskRequest;
 import com.kuflow.temporal.activity.kuflow.model.CreateTaskRequest;
 import com.kuflow.temporal.activity.kuflow.model.DeleteProcessElementRequest;
@@ -72,12 +71,6 @@ public class KuFlowActivitiesValidation {
         }
         if (request.getElementDefinitionCode() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'elementDefinitionCode' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
-        }
-    }
-
-    public static void validateCompleteProcessRequest(CompleteProcessRequest request) {
-        if (request.getProcessId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("'processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 
