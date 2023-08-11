@@ -42,7 +42,6 @@ import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -319,7 +318,7 @@ public final class KuFlowRestClientBuilder
     }
 
     /**
-     * Create synchronous  client applying default policies.
+     * Create a synchronous client applying default policies.
      * Additional HttpPolicies specified by pipelinePolicies will be applied after them
      *
      * @return KuFlowRestClient instance
@@ -379,7 +378,6 @@ public final class KuFlowRestClientBuilder
         policies.add(new AddDatePolicy());
         // auth policy is per request, should be after retry
         policies.add(this.createHttpPipelineAuthPolicy());
-        policies.add(new CookiePolicy());
 
         // Add additional policies
         this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY).forEach(policies::add);

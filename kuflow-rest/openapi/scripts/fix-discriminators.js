@@ -2,7 +2,7 @@
 
 const fs = require('fs')
 
-function removeUnnecessaryUnionOptions() {
+function fixDiscriminators() {
 
   {
     // AbstractAudited
@@ -14,6 +14,7 @@ function removeUnnecessaryUnionOptions() {
     fileAsStr = fileAsStr.replace(/name = "Process"/, 'name = "PROCESS"')
     fileAsStr = fileAsStr.replace(/name = "Task"/, 'name = "TASK"')
     fileAsStr = fileAsStr.replace(/name = "Authentication"/, 'name = "AUTHENTICATION"')
+    fileAsStr = fileAsStr.replace(/name = "Worker"/, 'name = "WORKER"')
 
     fs.writeFileSync(file, fileAsStr, 'utf8')
   }
@@ -54,6 +55,18 @@ function removeUnnecessaryUnionOptions() {
     fs.writeFileSync(file, fileAsStr, 'utf8')
   }
 
+  {
+    // Worker
+    const file = `${process.cwd()}/../src/generated/java/com/kuflow/rest/model/Worker.java`
+
+    const fileData = fs.readFileSync(file)
+    let fileAsStr = fileData.toString('utf8')
+
+    fileAsStr = fileAsStr.replace(/@JsonTypeName\("Worker"\)/, '@JsonTypeName("WORKER")')
+
+    fs.writeFileSync(file, fileAsStr, 'utf8')
+  }
+
 }
 
-removeUnnecessaryUnionOptions()
+fixDiscriminators()

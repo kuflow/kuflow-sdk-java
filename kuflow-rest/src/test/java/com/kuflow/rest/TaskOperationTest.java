@@ -121,8 +121,6 @@ public class TaskOperationTest extends AbstractOperationTest {
         assertThat(TaskUtils.findJsonFormsPropertyAsBoolean(task, "key8.1")).contains(false);
     }
 
-    // HACER UN TEST CON FECHAS PARA VER QUE SE HACE BIEN LAS CONVERSIONES
-
     @Test
     @DisplayName("GIVEN a task WHEN update values THEN values are updated correctly")
     public void givenATaskWhenUpdateValuesThenValuesAreUpdatedCorrectly() {

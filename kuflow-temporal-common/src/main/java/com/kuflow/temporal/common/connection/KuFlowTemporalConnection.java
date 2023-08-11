@@ -58,6 +58,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Configure a temporal client and worker with KuFlow requirements.
@@ -68,6 +70,8 @@ public class KuFlowTemporalConnection {
         return new KuFlowTemporalConnection(kuFlowRestClient);
     }
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(KuFlowTemporalConnection.class);
+
     private final KuFlowRestClient kuFlowRestClient;
 
     private final WorkflowServiceStubsOptions.Builder workflowServiceStubsBuilder = WorkflowServiceStubsOptions.newBuilder();
@@ -77,6 +81,8 @@ public class KuFlowTemporalConnection {
     private final List<WorkerBuilder> workersBuilder = new LinkedList<>();
 
     private final List<WorkerInfo> workersInfo = new LinkedList<>();
+
+    private final WorkerInformationNotifier workerInformationNotifier;
 
     private WorkflowServiceStubs workflowServiceStubs;
 
@@ -91,6 +97,8 @@ public class KuFlowTemporalConnection {
      */
     public KuFlowTemporalConnection(KuFlowRestClient kuFlowRestClient) {
         this.kuFlowRestClient = kuFlowRestClient;
+
+        this.workerInformationNotifier = new WorkerInformationNotifier(this.kuFlowRestClient, this.workflowClientBuilder, this.workersInfo);
     }
 
     public WorkflowServiceStubs getWorkflowServiceStubs() {
@@ -189,8 +197,14 @@ public class KuFlowTemporalConnection {
      * Starts the workers created by the {@link #workerFactory}.
      */
     public synchronized void start() {
+        LOGGER.info("Starting KuFlowTemporal Connection");
+
+        this.workerInformationNotifier.start();
+
         WorkerFactory workerFactory = this.getOrCreateWorkerFactory();
         workerFactory.start();
+
+        LOGGER.info("Started KuFlowTemporal Connection");
     }
 
     /**
@@ -207,6 +221,8 @@ public class KuFlowTemporalConnection {
     public synchronized void shutdown(long timeout, TimeUnit unit) {
         Objects.requireNonNull(this.workflowServiceStubs, "A worker factory is require");
         Objects.requireNonNull(this.workerFactory, "A worker factory is require");
+
+        this.workerInformationNotifier.shutdown();
 
         this.workerFactory.shutdown();
         if (timeout > 0 && unit != null) {

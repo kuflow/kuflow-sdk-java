@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.UUID;
 
 /** An instance of this class provides access to all the operations defined in PrincipalOperations. */
-public final class PrincipalOperations {
+public class PrincipalOperations {
 
     /** The service. */
     private final PrincipalOperationsImpl service;

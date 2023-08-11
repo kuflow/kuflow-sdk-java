@@ -54,7 +54,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 /** An instance of this class provides access to all the operations defined in TaskOperations. */
-public final class TaskOperations {
+public class TaskOperations {
 
     /** The service. */
     private final TaskOperationsImpl service;

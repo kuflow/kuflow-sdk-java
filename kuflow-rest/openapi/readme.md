@@ -27,7 +27,8 @@ java: true
 title: KuFlow
 override-client-name: KuFlowClient
 
-input-file: https://raw.githubusercontent.com/kuflow/kuflow-openapi/1f09c227f2d5d7cfb2d9eacf376ed2b649fe2b8a/specs/api.kuflow.com/v2022-10-08/openapi.yaml
+#input-file: https://raw.githubusercontent.com/kuflow/kuflow-openapi/1f09c227f2d5d7cfb2d9eacf376ed2b649fe2b8a/specs/api.kuflow.com/v2022-10-08/openapi.yaml
+input-file: file://home/jrodped/Projects/kuflow-openapi/specs/api.kuflow.com/v2022-10-08/openapi.yaml
 output-folder: ../target/openapi-generated
 
 openapi-type: data-plane
@@ -45,7 +46,7 @@ models-subpackage: model
 customization-class: src/main/java/KuFlowClientCustomization.java
 
 use-extension:
-  "@autorest/java": "4.1.17"
+  "@autorest/java": "4.1.18"
 
 modelerfour:
   seal-single-value-enum-by-default: false

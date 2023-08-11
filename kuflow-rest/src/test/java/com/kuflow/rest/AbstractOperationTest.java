@@ -28,6 +28,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.common.Slf4jNotifier;
+import com.github.tomakehurst.wiremock.extension.responsetemplating.ResponseTemplateTransformer;
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import org.junit.jupiter.api.BeforeAll;
@@ -37,9 +38,15 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 public abstract class AbstractOperationTest {
 
     @RegisterExtension
-    private static final WireMockExtension WIRE_MOCK_EXTENSION = WireMockExtension
+    public static final WireMockExtension WIRE_MOCK_EXTENSION = WireMockExtension
         .newInstance()
-        .options(wireMockConfig().dynamicPort().notifier(new Slf4jNotifier(true)).usingFilesUnderDirectory("src/test/resources/wiremock/"))
+        .options(
+            wireMockConfig()
+                .extensions(new ResponseTemplateTransformer(false))
+                .dynamicPort()
+                .notifier(new Slf4jNotifier(true))
+                .usingFilesUnderDirectory("src/test/resources/wiremock/")
+        )
         .build();
 
     @BeforeAll
