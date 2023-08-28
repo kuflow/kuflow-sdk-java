@@ -60,12 +60,14 @@ public class WorkerInformationNotifier {
 
     private Duration delayWindow = Duration.ofMinutes(5);
 
+    private int retryCount = 0;
+
     public WorkerInformationNotifier(
         KuFlowRestClient kuFlowRestClient,
         WorkflowClientOptions.Builder workflowClientBuilder,
-        List<WorkerInfo> workersInfo
+        List<WorkerInfo> workerInfoList
     ) {
-        this.task = new WorkerInformationNotifierTask(this, kuFlowRestClient, workflowClientBuilder, workersInfo);
+        this.task = new WorkerInformationNotifierTask(this, kuFlowRestClient, workflowClientBuilder, workerInfoList);
     }
 
     public synchronized void start() {
@@ -74,8 +76,8 @@ public class WorkerInformationNotifier {
         }
 
         this.task.run();
-        this.scheduleTask();
         this.running.set(true);
+        this.scheduleTask();
     }
 
     public synchronized void shutdown() {
@@ -89,6 +91,7 @@ public class WorkerInformationNotifier {
             if (!terminated) {
                 LOGGER.warn("Worker took more than 1 minute to terminate");
             }
+            this.running.set(false);
         } catch (InterruptedException e) {
             LOGGER.error("Error stopping the worker", e);
         }
@@ -100,21 +103,30 @@ public class WorkerInformationNotifier {
         }
 
         this.delayWindow = delayWindow;
+        this.retryCount = 0;
+        this.scheduleTask();
+    }
+
+    protected void startRecoveryMode() {
+        this.retryCount++;
         this.scheduleTask();
     }
 
     private void scheduleTask() {
+        if (!this.running.get()) {
+            return;
+        }
+
         if (this.scheduledFuture != null) {
             this.scheduledFuture.cancel(false);
         }
 
-        this.scheduledFuture =
-            this.scheduledExecutorService.scheduleAtFixedRate(
-                    this.task,
-                    this.delayWindow.toMillis(),
-                    this.delayWindow.toMillis(),
-                    TimeUnit.MILLISECONDS
-                );
+        long delay = this.delayWindow.toMillis();
+        if (this.retryCount > 0) {
+            delay = Math.round(Math.min(delay, 1_000 * Math.pow(2.5, this.retryCount)));
+        }
+
+        this.scheduledFuture = this.scheduledExecutorService.scheduleAtFixedRate(this.task, delay, delay, TimeUnit.MILLISECONDS);
     }
 
     private static class WorkerInformationNotifierTask implements Runnable {
@@ -125,24 +137,24 @@ public class WorkerInformationNotifier {
 
         private final WorkflowClientOptions.Builder workflowClientBuilder;
 
-        private final List<WorkerInfo> workersInfo;
+        private final List<WorkerInfo> workerInfoList;
 
         private WorkerInformationNotifierTask(
             WorkerInformationNotifier workerInformationNotifier,
             KuFlowRestClient kuFlowRestClient,
             WorkflowClientOptions.Builder workflowClientBuilder,
-            List<WorkerInfo> workersInfo
+            List<WorkerInfo> workerInfoList
         ) {
             this.workerInformationNotifier = workerInformationNotifier;
             this.kuFlowRestClient = kuFlowRestClient;
             this.workflowClientBuilder = workflowClientBuilder;
-            this.workersInfo = workersInfo;
+            this.workerInfoList = workerInfoList;
         }
 
         @Override
         public void run() {
             InetAddress localHostInetAddress = this.getLocalHostInetAddress();
-            this.workersInfo.forEach(workerInfo -> this.crearOrUpdateWorker(workerInfo, localHostInetAddress));
+            this.workerInfoList.forEach(workerInfo -> this.crearOrUpdateWorker(workerInfo, localHostInetAddress));
         }
 
         private void crearOrUpdateWorker(WorkerInfo workerInfo, InetAddress localHostInetAddress) {
@@ -175,6 +187,7 @@ public class WorkerInformationNotifier {
                 }
             } catch (Exception e) {
                 LOGGER.error("There are some problems registering worker {}/{}", workerInfo.getTaskQueue(), workerIdentity, e);
+                this.workerInformationNotifier.startRecoveryMode();
                 throw e;
             }
         }

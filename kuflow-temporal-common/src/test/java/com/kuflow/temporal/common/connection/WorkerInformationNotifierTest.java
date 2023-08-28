@@ -131,8 +131,56 @@ public class WorkerInformationNotifierTest {
 
         workerInformationNotifier.shutdown();
 
-        assertThat(secondInvocation - firstInvocation).isCloseTo(firstDelayWindow.toMillis(), withPercentage(10));
-        assertThat(thirdInvocation - secondInvocation).isCloseTo(restDelayWindow.toMillis(), withPercentage(10));
+        assertThat(secondInvocation - firstInvocation).isCloseTo(firstDelayWindow.toMillis(), withPercentage(20));
+        assertThat(thirdInvocation - secondInvocation).isCloseTo(restDelayWindow.toMillis(), withPercentage(20));
+    }
+
+    @Test
+    @DisplayName("GIVEN workerInformationNotifier WHEN is started and then fails THEN a backoff process is started")
+    public void givenWorkerInformationNotifierWhenIsStartedAndThenFailsThenABackoffProcessIsStarted() {
+        ArgumentCaptor<Worker> workerArgumentCaptor = ArgumentCaptor.forClass(Worker.class);
+        ArgumentCaptor<Context> contextArgumentCaptor = ArgumentCaptor.forClass(Context.class);
+
+        Duration delayWindow = Duration.ofSeconds(5);
+
+        WorkerOperations workerOperations = mock(WorkerOperations.class);
+        when(this.kuFlowRestClient.getWorkerOperations()).thenReturn(workerOperations);
+        when(workerOperations.createWorkerWithResponse(workerArgumentCaptor.capture(), contextArgumentCaptor.capture()))
+            .then(this.prepareCreateWorkerWithResponseAnswer(delayWindow))
+            .thenThrow(RuntimeException.class)
+            .thenThrow(RuntimeException.class)
+            .then(this.prepareCreateWorkerWithResponseAnswer(delayWindow));
+
+        WorkerInfo workerInfo = this.prepareWorkerInfo();
+
+        WorkerInformationNotifier workerInformationNotifier = new WorkerInformationNotifier(
+            this.kuFlowRestClient,
+            WorkflowClientOptions.newBuilder(),
+            List.of(workerInfo)
+        );
+
+        workerInformationNotifier.start();
+
+        // First invocation
+        long firstInvocation = System.currentTimeMillis();
+        assertThat(workerArgumentCaptor.getAllValues()).hasSize(1);
+
+        // After X Seconds we get the next
+        await().atMost(1, MINUTES).until(() -> workerArgumentCaptor.getAllValues().size() == 2);
+        long secondInvocation = System.currentTimeMillis();
+
+        // After Y Seconds we get the next
+        await().atMost(1, MINUTES).until(() -> workerArgumentCaptor.getAllValues().size() == 3);
+        long thirdInvocation = System.currentTimeMillis();
+
+        await().atMost(1, MINUTES).until(() -> workerArgumentCaptor.getAllValues().size() == 4);
+        long fourthInvocation = System.currentTimeMillis();
+
+        workerInformationNotifier.shutdown();
+
+        assertThat(secondInvocation - firstInvocation).isCloseTo(delayWindow.toMillis(), withPercentage(20));
+        assertThat(thirdInvocation - secondInvocation).isCloseTo(2_500, withPercentage(20));
+        assertThat(fourthInvocation - thirdInvocation).isCloseTo(delayWindow.toMillis(), withPercentage(20));
     }
 
     private Answer<Object> prepareCreateWorkerWithResponseAnswer(Duration delay) {

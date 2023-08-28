@@ -85,8 +85,8 @@
     <commons-io.version>2.11.0</commons-io.version>
     <commons-text.version>1.10.0</commons-text.version>
     <jackson.version>2.14.2</jackson.version>
-    <azure-core.version>1.41.0</azure-core.version>
-    <azure-communication-common.version>1.2.9</azure-communication-common.version>
+    <azure-core.version>1.42.0</azure-core.version>
+    <azure-communication-common.version>1.2.11</azure-communication-common.version>
     <jsr305.version>3.0.2</jsr305.version>
 
     <wiremock.version>2.35.0</wiremock.version>
