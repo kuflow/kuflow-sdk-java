@@ -41,7 +41,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,14 +52,19 @@ public class WorkerInformationNotifier {
 
     private final AtomicBoolean running = new AtomicBoolean(false);
 
-    private final WorkerInformationNotifierTask task;
-
     private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 
     private final WorkerInformationNotifierConfiguration configuration;
-    private ScheduledFuture<?> scheduledFuture;
 
-    private Duration scheduledDelay;
+    private final List<WorkerInformation> workerInformationList;
+
+    private final WorkflowClientOptions workflowClientOptions;
+
+    private final KuFlowRestClient kuFlowRestClient;
+
+    private ScheduledFuture<?> scheduleCreateOrUpdateWorkerFuture;
+
+    private Duration scheduleCreateOrUpdateWorkerDelay;
 
     private Duration delayWindow = Duration.ofMinutes(5);
 
@@ -72,8 +76,10 @@ public class WorkerInformationNotifier {
         WorkerInformationNotifierConfiguration configuration,
         List<WorkerInformation> workerInformationList
     ) {
-        this.task = new WorkerInformationNotifierTask(this, kuFlowRestClient, workflowClientOptions, workerInformationList);
         this.configuration = configuration;
+        this.kuFlowRestClient = kuFlowRestClient;
+        this.workflowClientOptions = workflowClientOptions;
+        this.workerInformationList = workerInformationList;
     }
 
     public synchronized void start() {
@@ -81,9 +87,10 @@ public class WorkerInformationNotifier {
             return;
         }
 
-        this.task.run();
+        this.crearOrUpdateWorkers();
+        this.scheduleCreateOrUpdateWorkers();
+
         this.running.set(true);
-        this.scheduleTask();
     }
 
     public synchronized void shutdown() {
@@ -103,28 +110,45 @@ public class WorkerInformationNotifier {
         }
     }
 
-    protected void notificationSuccess(@Nullable Duration delayWindow) {
-        if (delayWindow != null) {
-            this.delayWindow = delayWindow;
-        }
-        this.consecutiveFailures = 0;
-        this.scheduleTask();
+    private void crearOrUpdateWorkers() {
+        InetAddress localHostInetAddress = this.getLocalHostInetAddress();
+        this.workerInformationList.forEach(workerInformation -> this.crearOrUpdateWorker(workerInformation, localHostInetAddress));
     }
 
-    protected void notificationError() {
-        this.consecutiveFailures++;
-        this.scheduleTask();
+    private void crearOrUpdateWorker(WorkerInformation workerInformation, InetAddress localHostInetAddress) {
+        String workerIdentity = this.workflowClientOptions.getIdentity();
+
+        try {
+            com.kuflow.rest.model.Worker workerRest = new com.kuflow.rest.model.Worker();
+            workerRest.setIdentity(workerIdentity);
+            workerRest.setIp(localHostInetAddress.getHostAddress());
+            workerRest.setHostname(localHostInetAddress.getHostName());
+            workerRest.setTaskQueue(workerInformation.getTaskQueue());
+            workerRest.setWorkflowTypes(this.copyOf(workerInformation.getWorkflowTypes()));
+            workerRest.setActivityTypes(this.copyOf(workerInformation.getActivityTypes()));
+
+            WorkerOperations workerOperations = this.kuFlowRestClient.getWorkerOperations();
+            Response<Worker> workerRestResponse = workerOperations.createWorkerWithResponse(workerRest, Context.NONE);
+
+            LOGGER.info(
+                "Registered worker {}/{} with id {}",
+                workerInformation.getTaskQueue(),
+                workerIdentity,
+                workerRestResponse.getValue().getId()
+            );
+            this.consecutiveFailures = 0;
+
+            HttpHeader delayWindowHeader = workerRestResponse.getHeaders().get(HttpHeaderName.fromString(HEADER_X_KF_DELAY_WINDOW));
+            if (delayWindowHeader != null) {
+                this.delayWindow = Duration.ofSeconds(Long.parseLong(delayWindowHeader.getValue()));
+            }
+        } catch (Exception e) {
+            LOGGER.error("There are some problems registering worker {}/{}", workerInformation.getTaskQueue(), workerIdentity, e);
+            this.consecutiveFailures++;
+        }
     }
 
-    private void scheduleTask() {
-        if (!this.running.get()) {
-            return;
-        }
-
-        if (this.scheduledFuture != null) {
-            this.scheduledFuture.cancel(false);
-        }
-
+    private void scheduleCreateOrUpdateWorkers() {
         long delay = this.delayWindow.toMillis();
         if (this.consecutiveFailures > 0) {
             delay =
@@ -139,89 +163,39 @@ public class WorkerInformationNotifier {
 
         Duration delayDuration = Duration.ofMillis(delay);
 
-        if (this.scheduledDelay == null || !this.scheduledDelay.equals(delayDuration)) {
-            this.scheduledDelay = delayDuration;
-            this.scheduledFuture = this.scheduledExecutorService.scheduleAtFixedRate(this.task, delay, delay, TimeUnit.MILLISECONDS);
+        if (delayDuration.equals(this.scheduleCreateOrUpdateWorkerDelay)) {
+            return;
         }
+
+        this.scheduleCreateOrUpdateWorkerDelay = delayDuration;
+        if (this.scheduleCreateOrUpdateWorkerFuture != null) {
+            this.scheduleCreateOrUpdateWorkerFuture.cancel(false);
+        }
+        this.scheduleCreateOrUpdateWorkerFuture =
+            this.scheduledExecutorService.scheduleAtFixedRate(
+                    () -> {
+                        this.crearOrUpdateWorkers();
+                        this.scheduleCreateOrUpdateWorkers();
+                    },
+                    delay,
+                    delay,
+                    TimeUnit.MILLISECONDS
+                );
     }
 
-    private static class WorkerInformationNotifierTask implements Runnable {
-
-        private final WorkerInformationNotifier workerInformationNotifier;
-
-        private final KuFlowRestClient kuFlowRestClient;
-
-        private final WorkflowClientOptions workflowClientOptions;
-
-        private final List<WorkerInformation> workerInformationList;
-
-        private WorkerInformationNotifierTask(
-            WorkerInformationNotifier workerInformationNotifier,
-            KuFlowRestClient kuFlowRestClient,
-            WorkflowClientOptions workflowClientOptions,
-            List<WorkerInformation> workerInformationList
-        ) {
-            this.workerInformationNotifier = workerInformationNotifier;
-            this.kuFlowRestClient = kuFlowRestClient;
-            this.workflowClientOptions = workflowClientOptions;
-            this.workerInformationList = workerInformationList;
+    private <E> List<E> copyOf(Collection<? extends E> coll) {
+        if (coll == null || coll.isEmpty()) {
+            return null;
         }
 
-        @Override
-        public void run() {
-            InetAddress localHostInetAddress = this.getLocalHostInetAddress();
-            this.workerInformationList.forEach(workerInformation -> this.crearOrUpdateWorker(workerInformation, localHostInetAddress));
-        }
+        return List.copyOf(coll);
+    }
 
-        private void crearOrUpdateWorker(WorkerInformation workerInformation, InetAddress localHostInetAddress) {
-            String workerIdentity = this.workflowClientOptions.getIdentity();
-
-            try {
-                com.kuflow.rest.model.Worker workerRest = new com.kuflow.rest.model.Worker();
-                workerRest.setIdentity(workerIdentity);
-                workerRest.setIp(localHostInetAddress.getHostAddress());
-                workerRest.setHostname(localHostInetAddress.getHostName());
-                workerRest.setTaskQueue(workerInformation.getTaskQueue());
-                workerRest.setWorkflowTypes(this.copyOf(workerInformation.getWorkflowTypes()));
-                workerRest.setActivityTypes(this.copyOf(workerInformation.getActivityTypes()));
-
-                WorkerOperations workerOperations = this.kuFlowRestClient.getWorkerOperations();
-                Response<Worker> workerRestResponse = workerOperations.createWorkerWithResponse(workerRest, Context.NONE);
-
-                LOGGER.info(
-                    "Registered worker {}/{} with id {}",
-                    workerInformation.getTaskQueue(),
-                    workerIdentity,
-                    workerRestResponse.getValue().getId()
-                );
-
-                HttpHeader delayWindowHeader = workerRestResponse.getHeaders().get(HttpHeaderName.fromString(HEADER_X_KF_DELAY_WINDOW));
-                Duration delayWindow = null;
-                if (delayWindowHeader != null) {
-                    delayWindow = Duration.ofSeconds(Long.parseLong(delayWindowHeader.getValue()));
-                }
-                this.workerInformationNotifier.notificationSuccess(delayWindow);
-            } catch (Exception e) {
-                LOGGER.error("There are some problems registering worker {}/{}", workerInformation.getTaskQueue(), workerIdentity, e);
-                this.workerInformationNotifier.notificationError();
-                throw e;
-            }
-        }
-
-        private <E> List<E> copyOf(Collection<? extends E> coll) {
-            if (coll == null || coll.isEmpty()) {
-                return null;
-            }
-
-            return List.copyOf(coll);
-        }
-
-        private InetAddress getLocalHostInetAddress() {
-            try {
-                return InetAddress.getLocalHost();
-            } catch (UnknownHostException e) {
-                throw new KuFlowTemporalException("Unable to resolve local address", e);
-            }
+    private InetAddress getLocalHostInetAddress() {
+        try {
+            return InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            throw new KuFlowTemporalException("Unable to resolve local address", e);
         }
     }
 }
