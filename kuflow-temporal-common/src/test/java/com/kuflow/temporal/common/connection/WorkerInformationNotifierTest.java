@@ -68,20 +68,21 @@ public class WorkerInformationNotifierTest {
         when(workerOperations.createWorkerWithResponse(workerArgumentCaptor.capture(), contextArgumentCaptor.capture()))
             .thenAnswer(this.prepareCreateWorkerWithResponseAnswer(Duration.ofMinutes(5)));
 
-        WorkerInfo workerInfo = this.prepareWorkerInfo();
+        WorkerInformation workerInformation = this.prepareWorkerInfo();
 
         WorkerInformationNotifier workerInformationNotifier = new WorkerInformationNotifier(
             this.kuFlowRestClient,
-            WorkflowClientOptions.newBuilder(),
-            List.of(workerInfo)
+            WorkflowClientOptions.newBuilder().validateAndBuildWithDefaults(),
+            WorkerInformationNotifierConfigurationBuilder.instance().build(),
+            List.of(workerInformation)
         );
 
         workerInformationNotifier.start();
 
         Worker worker = workerArgumentCaptor.getValue();
-        assertThat(worker.getTaskQueue()).isEqualTo(workerInfo.getTaskQueue());
-        assertThat(worker.getWorkflowTypes()).containsExactlyElementsOf(workerInfo.getWorkflowTypes());
-        assertThat(worker.getActivityTypes()).containsExactlyElementsOf(workerInfo.getActivityTypes());
+        assertThat(worker.getTaskQueue()).isEqualTo(workerInformation.getTaskQueue());
+        assertThat(worker.getWorkflowTypes()).containsExactlyElementsOf(workerInformation.getWorkflowTypes());
+        assertThat(worker.getActivityTypes()).containsExactlyElementsOf(workerInformation.getActivityTypes());
         assertThat(worker.getHostname()).isNotBlank();
         assertThat(worker.getIp()).isNotBlank();
 
@@ -105,12 +106,13 @@ public class WorkerInformationNotifierTest {
             .then(this.prepareCreateWorkerWithResponseAnswer(restDelayWindow))
             .thenThrow(RuntimeException.class);
 
-        WorkerInfo workerInfo = this.prepareWorkerInfo();
+        WorkerInformation workerInformation = this.prepareWorkerInfo();
 
         WorkerInformationNotifier workerInformationNotifier = new WorkerInformationNotifier(
             this.kuFlowRestClient,
-            WorkflowClientOptions.newBuilder(),
-            List.of(workerInfo)
+            WorkflowClientOptions.newBuilder().validateAndBuildWithDefaults(),
+            WorkerInformationNotifierConfigurationBuilder.instance().build(),
+            List.of(workerInformation)
         );
 
         workerInformationNotifier.start();
@@ -151,12 +153,13 @@ public class WorkerInformationNotifierTest {
             .thenThrow(RuntimeException.class)
             .then(this.prepareCreateWorkerWithResponseAnswer(delayWindow));
 
-        WorkerInfo workerInfo = this.prepareWorkerInfo();
+        WorkerInformation workerInformation = this.prepareWorkerInfo();
 
         WorkerInformationNotifier workerInformationNotifier = new WorkerInformationNotifier(
             this.kuFlowRestClient,
-            WorkflowClientOptions.newBuilder(),
-            List.of(workerInfo)
+            WorkflowClientOptions.newBuilder().validateAndBuildWithDefaults(),
+            WorkerInformationNotifierConfigurationBuilder.instance().build(),
+            List.of(workerInformation)
         );
 
         workerInformationNotifier.start();
@@ -208,11 +211,11 @@ public class WorkerInformationNotifierTest {
         };
     }
 
-    private WorkerInfo prepareWorkerInfo() {
+    private WorkerInformation prepareWorkerInfo() {
         String taskQueue = "TASK_QUEUE_" + RandomString.make();
         Set<String> workflowTypes = Set.of("Workflow_" + RandomString.make(), "Workflow_" + RandomString.make());
         Set<String> activityTypes = Set.of("Activity_" + RandomString.make(), "Activity_" + RandomString.make());
 
-        return new WorkerInfo(taskQueue, workflowTypes, activityTypes);
+        return new WorkerInformation(taskQueue, workflowTypes, activityTypes);
     }
 }

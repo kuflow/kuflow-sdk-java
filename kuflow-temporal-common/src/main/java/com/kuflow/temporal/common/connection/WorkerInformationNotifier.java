@@ -41,6 +41,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,18 +57,23 @@ public class WorkerInformationNotifier {
 
     private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 
+    private final WorkerInformationNotifierConfiguration configuration;
     private ScheduledFuture<?> scheduledFuture;
+
+    private Duration scheduledDelay;
 
     private Duration delayWindow = Duration.ofMinutes(5);
 
-    private int retryCount = 0;
+    private int consecutiveFailures = 0;
 
     public WorkerInformationNotifier(
         KuFlowRestClient kuFlowRestClient,
-        WorkflowClientOptions.Builder workflowClientBuilder,
-        List<WorkerInfo> workerInfoList
+        WorkflowClientOptions workflowClientOptions,
+        WorkerInformationNotifierConfiguration configuration,
+        List<WorkerInformation> workerInformationList
     ) {
-        this.task = new WorkerInformationNotifierTask(this, kuFlowRestClient, workflowClientBuilder, workerInfoList);
+        this.task = new WorkerInformationNotifierTask(this, kuFlowRestClient, workflowClientOptions, workerInformationList);
+        this.configuration = configuration;
     }
 
     public synchronized void start() {
@@ -97,18 +103,16 @@ public class WorkerInformationNotifier {
         }
     }
 
-    protected void updateDelayWindow(Duration delayWindow) {
-        if (this.delayWindow.equals(delayWindow)) {
-            return;
+    protected void notificationSuccess(@Nullable Duration delayWindow) {
+        if (delayWindow != null) {
+            this.delayWindow = delayWindow;
         }
-
-        this.delayWindow = delayWindow;
-        this.retryCount = 0;
+        this.consecutiveFailures = 0;
         this.scheduleTask();
     }
 
-    protected void startRecoveryMode() {
-        this.retryCount++;
+    protected void notificationError() {
+        this.consecutiveFailures++;
         this.scheduleTask();
     }
 
@@ -122,11 +126,23 @@ public class WorkerInformationNotifier {
         }
 
         long delay = this.delayWindow.toMillis();
-        if (this.retryCount > 0) {
-            delay = Math.round(Math.min(delay, 1_000 * Math.pow(2.5, this.retryCount)));
+        if (this.consecutiveFailures > 0) {
+            delay =
+                Math.round(
+                    Math.min(
+                        delay,
+                        this.configuration.getBackoffSleep().toMillis() *
+                        Math.pow(this.configuration.getBackoffExponentialRate(), this.consecutiveFailures)
+                    )
+                );
         }
 
-        this.scheduledFuture = this.scheduledExecutorService.scheduleAtFixedRate(this.task, delay, delay, TimeUnit.MILLISECONDS);
+        Duration delayDuration = Duration.ofMillis(delay);
+
+        if (this.scheduledDelay == null || !this.scheduledDelay.equals(delayDuration)) {
+            this.scheduledDelay = delayDuration;
+            this.scheduledFuture = this.scheduledExecutorService.scheduleAtFixedRate(this.task, delay, delay, TimeUnit.MILLISECONDS);
+        }
     }
 
     private static class WorkerInformationNotifierTask implements Runnable {
@@ -135,59 +151,59 @@ public class WorkerInformationNotifier {
 
         private final KuFlowRestClient kuFlowRestClient;
 
-        private final WorkflowClientOptions.Builder workflowClientBuilder;
+        private final WorkflowClientOptions workflowClientOptions;
 
-        private final List<WorkerInfo> workerInfoList;
+        private final List<WorkerInformation> workerInformationList;
 
         private WorkerInformationNotifierTask(
             WorkerInformationNotifier workerInformationNotifier,
             KuFlowRestClient kuFlowRestClient,
-            WorkflowClientOptions.Builder workflowClientBuilder,
-            List<WorkerInfo> workerInfoList
+            WorkflowClientOptions workflowClientOptions,
+            List<WorkerInformation> workerInformationList
         ) {
             this.workerInformationNotifier = workerInformationNotifier;
             this.kuFlowRestClient = kuFlowRestClient;
-            this.workflowClientBuilder = workflowClientBuilder;
-            this.workerInfoList = workerInfoList;
+            this.workflowClientOptions = workflowClientOptions;
+            this.workerInformationList = workerInformationList;
         }
 
         @Override
         public void run() {
             InetAddress localHostInetAddress = this.getLocalHostInetAddress();
-            this.workerInfoList.forEach(workerInfo -> this.crearOrUpdateWorker(workerInfo, localHostInetAddress));
+            this.workerInformationList.forEach(workerInformation -> this.crearOrUpdateWorker(workerInformation, localHostInetAddress));
         }
 
-        private void crearOrUpdateWorker(WorkerInfo workerInfo, InetAddress localHostInetAddress) {
-            String workerIdentity = this.workflowClientBuilder.validateAndBuildWithDefaults().getIdentity();
+        private void crearOrUpdateWorker(WorkerInformation workerInformation, InetAddress localHostInetAddress) {
+            String workerIdentity = this.workflowClientOptions.getIdentity();
 
             try {
                 com.kuflow.rest.model.Worker workerRest = new com.kuflow.rest.model.Worker();
                 workerRest.setIdentity(workerIdentity);
                 workerRest.setIp(localHostInetAddress.getHostAddress());
                 workerRest.setHostname(localHostInetAddress.getHostName());
-                workerRest.setTaskQueue(workerInfo.getTaskQueue());
-                workerRest.setWorkflowTypes(this.copyOf(workerInfo.getWorkflowTypes()));
-                workerRest.setActivityTypes(this.copyOf(workerInfo.getActivityTypes()));
+                workerRest.setTaskQueue(workerInformation.getTaskQueue());
+                workerRest.setWorkflowTypes(this.copyOf(workerInformation.getWorkflowTypes()));
+                workerRest.setActivityTypes(this.copyOf(workerInformation.getActivityTypes()));
 
                 WorkerOperations workerOperations = this.kuFlowRestClient.getWorkerOperations();
                 Response<Worker> workerRestResponse = workerOperations.createWorkerWithResponse(workerRest, Context.NONE);
 
                 LOGGER.info(
                     "Registered worker {}/{} with id {}",
-                    workerInfo.getTaskQueue(),
+                    workerInformation.getTaskQueue(),
                     workerIdentity,
                     workerRestResponse.getValue().getId()
                 );
 
                 HttpHeader delayWindowHeader = workerRestResponse.getHeaders().get(HttpHeaderName.fromString(HEADER_X_KF_DELAY_WINDOW));
-
+                Duration delayWindow = null;
                 if (delayWindowHeader != null) {
-                    Duration delayWindow = Duration.ofSeconds(Long.parseLong(delayWindowHeader.getValue()));
-                    this.workerInformationNotifier.updateDelayWindow(delayWindow);
+                    delayWindow = Duration.ofSeconds(Long.parseLong(delayWindowHeader.getValue()));
                 }
+                this.workerInformationNotifier.notificationSuccess(delayWindow);
             } catch (Exception e) {
-                LOGGER.error("There are some problems registering worker {}/{}", workerInfo.getTaskQueue(), workerIdentity, e);
-                this.workerInformationNotifier.startRecoveryMode();
+                LOGGER.error("There are some problems registering worker {}/{}", workerInformation.getTaskQueue(), workerIdentity, e);
+                this.workerInformationNotifier.notificationError();
                 throw e;
             }
         }
