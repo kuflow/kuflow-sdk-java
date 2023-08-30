@@ -182,7 +182,7 @@ public class WorkerInformationNotifierTest {
         workerInformationNotifier.shutdown();
 
         assertThat(secondInvocation - firstInvocation).isCloseTo(delayWindow.toMillis(), withPercentage(20));
-        assertThat(thirdInvocation - secondInvocation).isCloseTo(2_500, withPercentage(20));
+        assertThat(thirdInvocation - secondInvocation).isCloseTo(3_000, withPercentage(20));
         assertThat(fourthInvocation - thirdInvocation).isCloseTo(delayWindow.toMillis(), withPercentage(20));
     }
 
