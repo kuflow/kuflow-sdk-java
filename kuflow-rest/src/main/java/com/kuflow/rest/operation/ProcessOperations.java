@@ -48,7 +48,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 /** An instance of this class provides access to all the operations defined in ProcessOperations. */
-public final class ProcessOperations {
+public class ProcessOperations {
 
     /** The service. */
     private final ProcessOperationsImpl service;

@@ -25,7 +25,7 @@ package com.kuflow.temporal.common.connection;
 import io.temporal.worker.Worker;
 import java.util.Set;
 
-public class WorkerInfo {
+public class WorkerInformation {
 
     private final String taskQueue;
 
@@ -35,7 +35,7 @@ public class WorkerInfo {
 
     private Worker worker;
 
-    public WorkerInfo(String taskQueue, Set<String> workflowTypes, Set<String> activityTypes) {
+    public WorkerInformation(String taskQueue, Set<String> workflowTypes, Set<String> activityTypes) {
         this.taskQueue = taskQueue;
         this.workflowTypes = workflowTypes;
         this.activityTypes = activityTypes;

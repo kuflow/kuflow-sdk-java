@@ -27,6 +27,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 /** Audited object Types. */
 public enum AuditedObjectType {
+    /** Enum value AUTHENTICATION. */
+    AUTHENTICATION("AUTHENTICATION"),
+
     /** Enum value PROCESS. */
     PROCESS("PROCESS"),
 
@@ -39,8 +42,8 @@ public enum AuditedObjectType {
     /** Enum value TASK_PAGE_ITEM. */
     TASK_PAGE_ITEM("TASK_PAGE_ITEM"),
 
-    /** Enum value AUTHENTICATION. */
-    AUTHENTICATION("AUTHENTICATION");
+    /** Enum value WORKER. */
+    WORKER("WORKER");
 
     /** The actual serialized value for a AuditedObjectType instance. */
     private final String value;

@@ -58,6 +58,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Configure a temporal client and worker with KuFlow requirements.
@@ -68,21 +70,30 @@ public class KuFlowTemporalConnection {
         return new KuFlowTemporalConnection(kuFlowRestClient);
     }
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(KuFlowTemporalConnection.class);
+
     private final KuFlowRestClient kuFlowRestClient;
 
     private final WorkflowServiceStubsOptions.Builder workflowServiceStubsBuilder = WorkflowServiceStubsOptions.newBuilder();
 
     private final WorkflowClientOptions.Builder workflowClientBuilder = WorkflowClientOptions.newBuilder();
 
-    private final List<WorkerBuilder> workersBuilder = new LinkedList<>();
+    private final WorkerInformationNotifierConfigurationBuilder workerInformationNotifierConfigurationBuilder =
+        WorkerInformationNotifierConfigurationBuilder.instance();
 
-    private final List<WorkerInfo> workersInfo = new LinkedList<>();
+    private final List<WorkerBuilder> workerBuilders = new LinkedList<>();
+
+    private final List<WorkerInformation> workerInformationList = new LinkedList<>();
+
+    private WorkerInformationNotifier workerInformationNotifier;
 
     private WorkflowServiceStubs workflowServiceStubs;
 
     private WorkflowClient workflowClient;
 
     private WorkerFactory workerFactory;
+
+    private boolean started = false;
 
     /**
      * Hold all the temporal connection objects.
@@ -130,17 +141,29 @@ public class KuFlowTemporalConnection {
     }
 
     public List<Worker> getWorkers() {
-        return this.workersInfo.stream().map(WorkerInfo::getWorker).collect(toUnmodifiableList());
+        return this.workerInformationList.stream().map(WorkerInformation::getWorker).collect(toUnmodifiableList());
     }
 
-    public List<WorkerInfo> getWorkersInfo() {
-        return unmodifiableList(this.workersInfo);
+    public List<WorkerInformation> getWorkerInformationList() {
+        return unmodifiableList(this.workerInformationList);
+    }
+
+    public KuFlowTemporalConnection configureWorkerInformationNotifierConfiguration(
+        Consumer<WorkerInformationNotifierConfigurationBuilder> configurer
+    ) {
+        this.checkIsNotStarted();
+
+        configurer.accept(this.workerInformationNotifierConfigurationBuilder);
+
+        return this;
     }
 
     /**
      * Configure a {@link WorkflowServiceStubs}
      */
     public synchronized KuFlowTemporalConnection configureWorkflowServiceStubs(Consumer<WorkflowServiceStubsOptions.Builder> configurer) {
+        this.checkIsNotStarted();
+
         configurer.accept(this.workflowServiceStubsBuilder);
 
         return this;
@@ -150,6 +173,8 @@ public class KuFlowTemporalConnection {
      * Configure a {@link WorkflowClient}
      */
     public synchronized KuFlowTemporalConnection configureWorkflowClient(Consumer<WorkflowClientOptions.Builder> configurer) {
+        this.checkIsNotStarted();
+
         configurer.accept(this.workflowClientBuilder);
 
         return this;
@@ -159,14 +184,16 @@ public class KuFlowTemporalConnection {
      * Configure a new {@link Worker} to be started
      */
     public synchronized KuFlowTemporalConnection configureWorker(Consumer<WorkerBuilder> configurer) {
+        this.checkIsNotStarted();
+
         WorkerBuilder workerBuilder = WorkerBuilder.instance();
         configurer.accept(workerBuilder);
 
-        if (this.workersInfo.stream().anyMatch(it -> it.getTaskQueue().equals(workerBuilder.getTaskQueue()))) {
+        if (this.workerInformationList.stream().anyMatch(it -> it.getTaskQueue().equals(workerBuilder.getTaskQueue()))) {
             throw new KuFlowTemporalException("Duplicate task queue");
         }
 
-        this.workersBuilder.add(workerBuilder);
+        this.workerBuilders.add(workerBuilder);
 
         Set<String> workflowTypes = workerBuilder
             .getWorkflowImplementationClasses()
@@ -180,7 +207,7 @@ public class KuFlowTemporalConnection {
             .flatMap(activityImplementationRegister -> this.computeActivityTypes(activityImplementationRegister).stream())
             .collect(toUnmodifiableSet());
 
-        this.workersInfo.add(new WorkerInfo(workerBuilder.getTaskQueue(), workflowTypes, activityTypes));
+        this.workerInformationList.add(new WorkerInformation(workerBuilder.getTaskQueue(), workflowTypes, activityTypes));
 
         return this;
     }
@@ -189,8 +216,27 @@ public class KuFlowTemporalConnection {
      * Starts the workers created by the {@link #workerFactory}.
      */
     public synchronized void start() {
+        if (this.started) {
+            return;
+        }
+
+        LOGGER.info("Starting KuFlowTemporal Connection");
+
+        this.workerInformationNotifier =
+            new WorkerInformationNotifier(
+                this.kuFlowRestClient,
+                this.workflowClientBuilder.validateAndBuildWithDefaults(),
+                this.workerInformationNotifierConfigurationBuilder.build(),
+                new LinkedList<>(this.workerInformationList)
+            );
+        this.workerInformationNotifier.start();
+
         WorkerFactory workerFactory = this.getOrCreateWorkerFactory();
         workerFactory.start();
+
+        LOGGER.info("Started KuFlowTemporal Connection");
+
+        this.started = true;
     }
 
     /**
@@ -205,14 +251,22 @@ public class KuFlowTemporalConnection {
      * Blocks until all tasks have completed execution after a shutdown request, or the timeout occurs.
      */
     public synchronized void shutdown(long timeout, TimeUnit unit) {
+        if (!this.started) {
+            return;
+        }
+
         Objects.requireNonNull(this.workflowServiceStubs, "A worker factory is require");
         Objects.requireNonNull(this.workerFactory, "A worker factory is require");
+
+        this.workerInformationNotifier.shutdown();
 
         this.workerFactory.shutdown();
         if (timeout > 0 && unit != null) {
             this.workerFactory.awaitTermination(timeout, unit);
         }
         this.workflowServiceStubs.shutdown();
+
+        this.started = false;
     }
 
     /**
@@ -277,7 +331,7 @@ public class KuFlowTemporalConnection {
 
         this.workerFactory = WorkerFactory.newInstance(workflowClient);
 
-        this.workersBuilder.forEach(this::newWorker);
+        this.workerBuilders.forEach(this::newWorker);
 
         return this.workerFactory;
     }
@@ -293,10 +347,13 @@ public class KuFlowTemporalConnection {
             .getActivityImplementations()
             .forEach(activityImplementationRegister -> this.configureWorker(worker, activityImplementationRegister));
 
-        WorkerInfo workerInfo =
-            this.workersInfo.stream().filter(it -> it.getTaskQueue().equals(workerBuilder.getTaskQueue())).findFirst().orElseThrow();
+        WorkerInformation workerInformation =
+            this.workerInformationList.stream()
+                .filter(it -> it.getTaskQueue().equals(workerBuilder.getTaskQueue()))
+                .findFirst()
+                .orElseThrow();
 
-        workerInfo.registerWorker(worker);
+        workerInformation.registerWorker(worker);
     }
 
     private void configureWorker(Worker worker, WorkflowImplementationRegister workflowImplementationRegister) {
@@ -349,5 +406,11 @@ public class KuFlowTemporalConnection {
         converters.add(new JacksonJsonPayloadConverter(objectMapper));
 
         return new DefaultDataConverter(converters.toArray(new PayloadConverter[0]));
+    }
+
+    private void checkIsNotStarted() {
+        if (this.started) {
+            throw new KuFlowTemporalException("Invocation not allowed when the connection is started");
+        }
     }
 }

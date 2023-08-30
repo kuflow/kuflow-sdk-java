@@ -24,7 +24,6 @@ package com.kuflow.rest.implementation;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -116,6 +115,18 @@ public final class KuFlowClientImpl {
         return this.taskOperations;
     }
 
+    /** The WorkerOperationsImpl object to access its operations. */
+    private final WorkerOperationsImpl workerOperations;
+
+    /**
+     * Gets the WorkerOperationsImpl object to access its operations.
+     *
+     * @return the WorkerOperationsImpl object.
+     */
+    public WorkerOperationsImpl getWorkerOperations() {
+        return this.workerOperations;
+    }
+
     /**
      * Initializes an instance of KuFlowClient client.
      *
@@ -123,9 +134,7 @@ public final class KuFlowClientImpl {
      */
     KuFlowClientImpl(String host) {
         this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
+                new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
                 host);
     }
@@ -155,5 +164,6 @@ public final class KuFlowClientImpl {
         this.principalOperations = new PrincipalOperationsImpl(this);
         this.processOperations = new ProcessOperationsImpl(this);
         this.taskOperations = new TaskOperationsImpl(this);
+        this.workerOperations = new WorkerOperationsImpl(this);
     }
 }
