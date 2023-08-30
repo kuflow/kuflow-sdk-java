@@ -149,19 +149,19 @@ public class WorkerInformationNotifier {
     }
 
     private void scheduleCreateOrUpdateWorkers() {
-        long delay = this.delayWindow.toMillis();
+        long delay = this.delayWindow.toSeconds();
         if (this.consecutiveFailures > 0) {
             delay =
                 Math.round(
                     Math.min(
                         delay,
-                        this.configuration.getBackoffSleep().toMillis() *
+                        this.configuration.getBackoffSleep().toSeconds() *
                         Math.pow(this.configuration.getBackoffExponentialRate(), this.consecutiveFailures)
                     )
                 );
         }
 
-        Duration delayDuration = Duration.ofMillis(delay);
+        Duration delayDuration = Duration.ofSeconds(delay);
 
         if (delayDuration.equals(this.scheduleCreateOrUpdateWorkerDelay)) {
             return;
@@ -179,7 +179,7 @@ public class WorkerInformationNotifier {
                     },
                     delay,
                     delay,
-                    TimeUnit.MILLISECONDS
+                    TimeUnit.SECONDS
                 );
     }
 
