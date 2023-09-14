@@ -50,7 +50,7 @@ public class AuthenticationOperationTest extends AbstractOperationTest {
         );
 
         Authentication authentication = new Authentication();
-        authentication.setType(AuthenticationType.ENGINE);
+        authentication.setType(AuthenticationType.ENGINE_TOKEN);
         this.kuFlowRestClient.getAuthenticationOperations().createAuthentication(authentication);
     }
 
@@ -60,12 +60,12 @@ public class AuthenticationOperationTest extends AbstractOperationTest {
         givenThat(
             post("/v2022-10-08/authentications")
                 .withHeader("Content-Type", containing("application/json"))
-                .withRequestBody(matchingJsonPath("$.type", equalTo(AuthenticationType.ENGINE.toString())))
+                .withRequestBody(matchingJsonPath("$.type", equalTo(AuthenticationType.ENGINE_TOKEN.toString())))
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("authentication-api.ok.json"))
         );
 
         Authentication authentication = new Authentication();
-        authentication.setType(AuthenticationType.ENGINE);
+        authentication.setType(AuthenticationType.ENGINE_TOKEN);
 
         Authentication authenticationCreated = this.kuFlowRestClient.getAuthenticationOperations().createAuthentication(authentication);
         AuthenticationEngineToken authenticationEngineToken = authenticationCreated.getEngineToken();

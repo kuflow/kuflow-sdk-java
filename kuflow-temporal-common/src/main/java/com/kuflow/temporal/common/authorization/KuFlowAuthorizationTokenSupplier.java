@@ -73,7 +73,7 @@ public class KuFlowAuthorizationTokenSupplier implements AuthorizationTokenSuppl
             }
 
             Authentication authentication = new Authentication();
-            authentication.setType(AuthenticationType.ENGINE);
+            authentication.setType(AuthenticationType.ENGINE_TOKEN);
             authentication = this.authenticationOperations.createAuthentication(authentication);
             AuthenticationEngineToken authenticationEngineToken = authentication.getEngineToken();
 
