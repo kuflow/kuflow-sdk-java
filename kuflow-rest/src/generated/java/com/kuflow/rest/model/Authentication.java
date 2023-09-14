@@ -47,16 +47,32 @@ public final class Authentication extends AbstractAudited {
     private AuthenticationType type;
 
     /*
-     * The token property.
+     * Engine authentication token.
+     * @deprecated use engineConfig.token
+     *
      */
     @JsonProperty(value = "token", access = JsonProperty.Access.WRITE_ONLY)
     private String token;
 
     /*
-     * The expiredAt property.
+     * Engine authentication token expiration.
+     * @deprecated use engineConfig.expiredAt
+     *
      */
     @JsonProperty(value = "expiredAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime expiredAt;
+
+    /*
+     * The engineToken property.
+     */
+    @JsonProperty(value = "engineToken", access = JsonProperty.Access.WRITE_ONLY)
+    private AuthenticationEngineToken engineToken;
+
+    /*
+     * The engineCertificate property.
+     */
+    @JsonProperty(value = "engineCertificate", access = JsonProperty.Access.WRITE_ONLY)
+    private AuthenticationEngineCertificate engineCertificate;
 
     /** Creates an instance of Authentication class. */
     public Authentication() {}
@@ -91,8 +107,9 @@ public final class Authentication extends AbstractAudited {
     }
 
     /**
-     * Get the token property: The token property.
+     * Get the token property: Engine authentication token.
      *
+     * @deprecated use engineConfig.token.
      * @return the token value.
      */
     public String getToken() {
@@ -100,12 +117,31 @@ public final class Authentication extends AbstractAudited {
     }
 
     /**
-     * Get the expiredAt property: The expiredAt property.
+     * Get the expiredAt property: Engine authentication token expiration.
      *
+     * @deprecated use engineConfig.expiredAt.
      * @return the expiredAt value.
      */
     public OffsetDateTime getExpiredAt() {
         return this.expiredAt;
+    }
+
+    /**
+     * Get the engineToken property: The engineToken property.
+     *
+     * @return the engineToken value.
+     */
+    public AuthenticationEngineToken getEngineToken() {
+        return this.engineToken;
+    }
+
+    /**
+     * Get the engineCertificate property: The engineCertificate property.
+     *
+     * @return the engineCertificate value.
+     */
+    public AuthenticationEngineCertificate getEngineCertificate() {
+        return this.engineCertificate;
     }
 
     /** {@inheritDoc} */

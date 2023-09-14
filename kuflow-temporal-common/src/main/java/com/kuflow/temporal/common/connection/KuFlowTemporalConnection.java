@@ -31,11 +31,17 @@ import static java.util.stream.Collectors.toUnmodifiableSet;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kuflow.rest.KuFlowRestClient;
+import com.kuflow.rest.model.Authentication;
+import com.kuflow.rest.model.AuthenticationEngineCertificate;
+import com.kuflow.rest.model.AuthenticationEngineCertificateTls;
+import com.kuflow.rest.model.AuthenticationType;
 import com.kuflow.temporal.common.authorization.KuFlowAuthorizationTokenSupplier;
 import com.kuflow.temporal.common.connection.WorkerBuilder.ActivityImplementationRegister;
 import com.kuflow.temporal.common.connection.WorkerBuilder.WorkflowImplementationRegister;
 import com.kuflow.temporal.common.error.KuFlowTemporalException;
+import com.kuflow.temporal.common.ssl.SslContextBuilder;
 import com.kuflow.temporal.common.tracing.MDCContextPropagator;
+import io.grpc.netty.shaded.io.netty.handler.ssl.SslContext;
 import io.temporal.authorization.AuthorizationGrpcMetadataProvider;
 import io.temporal.client.WorkflowClient;
 import io.temporal.client.WorkflowClientOptions;
@@ -222,6 +228,8 @@ public class KuFlowTemporalConnection {
 
         LOGGER.info("Starting KuFlowTemporal Connection");
 
+        this.applyDefaultConfiguration();
+
         this.workerInformationNotifier =
             new WorkerInformationNotifier(
                 this.kuFlowRestClient,
@@ -395,7 +403,7 @@ public class KuFlowTemporalConnection {
     }
 
     private DataConverter dataConverter() {
-        // Customize Temporal's default Jackson object mapper to support unknown properties
+        // Customize Temporal default Jackson object mapper to support unknown properties
         ObjectMapper objectMapper = JacksonJsonPayloadConverter.newDefaultObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
@@ -406,6 +414,34 @@ public class KuFlowTemporalConnection {
         converters.add(new JacksonJsonPayloadConverter(objectMapper));
 
         return new DefaultDataConverter(converters.toArray(new PayloadConverter[0]));
+    }
+
+    private void applyDefaultConfiguration() {
+        Authentication authenticationRequest = new Authentication().setType(AuthenticationType.ENGINE_CERTIFICATE);
+        Authentication authenticationResponse =
+            this.kuFlowRestClient.getAuthenticationOperations().createAuthentication(authenticationRequest);
+        AuthenticationEngineCertificate authenticationEngineCertificate = authenticationResponse.getEngineCertificate();
+
+        this.configureWorkflowServiceStubs(builder -> {
+                WorkflowServiceStubsOptions stubsOptions = builder.build();
+                if (stubsOptions.getSslContext() == null) {
+                    AuthenticationEngineCertificateTls tls = authenticationEngineCertificate.getTls();
+                    SslContext sslContext = SslContextBuilder
+                        .builder()
+                        .withCaData(tls.getServerRootCaCertificate())
+                        .withCertData(tls.getClientCertificate())
+                        .withKeyData(tls.getClientPrivateKey())
+                        .build();
+
+                    builder.setSslContext(sslContext);
+                }
+            });
+
+        this.configureWorkflowClient(builder -> {
+                if (builder.build().getNamespace() == null) {
+                    builder.setNamespace(authenticationEngineCertificate.getNamespace());
+                }
+            });
     }
 
     private void checkIsNotStarted() {

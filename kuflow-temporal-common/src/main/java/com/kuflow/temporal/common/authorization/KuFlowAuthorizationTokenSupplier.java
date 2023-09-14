@@ -24,6 +24,7 @@ package com.kuflow.temporal.common.authorization;
 
 import com.kuflow.rest.KuFlowRestClient;
 import com.kuflow.rest.model.Authentication;
+import com.kuflow.rest.model.AuthenticationEngineToken;
 import com.kuflow.rest.model.AuthenticationType;
 import com.kuflow.rest.operation.AuthenticationOperations;
 import io.temporal.authorization.AuthorizationTokenSupplier;
@@ -74,14 +75,15 @@ public class KuFlowAuthorizationTokenSupplier implements AuthorizationTokenSuppl
             Authentication authentication = new Authentication();
             authentication.setType(AuthenticationType.ENGINE);
             authentication = this.authenticationOperations.createAuthentication(authentication);
+            AuthenticationEngineToken authenticationEngineToken = authentication.getEngineToken();
 
-            Duration expireDuration = Duration.between(Instant.now(), authentication.getExpiredAt());
+            Duration expireDuration = Duration.between(Instant.now(), authenticationEngineToken.getExpiredAt());
             expireDuration = Duration.ofSeconds((long) (expireDuration.getSeconds() * EXPIRE_PERCENTAGE));
             if (expireDuration.compareTo(EXPIRE_MAX_DURATION) > 0) {
                 expireDuration = EXPIRE_MAX_DURATION;
             }
 
-            this.token = token = authentication.getToken();
+            this.token = token = authenticationEngineToken.getToken();
             this.tokenExpireAt = tokenExpireAt = Instant.now().plus(expireDuration);
 
             LOGGER.debug("Regenerated JWT Temporal authorization token. Expired at: {}", tokenExpireAt);

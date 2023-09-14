@@ -28,7 +28,13 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /** Defines values for AuthenticationType. */
 public enum AuthenticationType {
     /** Enum value ENGINE. */
-    ENGINE("ENGINE");
+    ENGINE("ENGINE"),
+
+    /** Enum value ENGINE_TOKEN. */
+    ENGINE_TOKEN("ENGINE_TOKEN"),
+
+    /** Enum value ENGINE_CERTIFICATE. */
+    ENGINE_CERTIFICATE("ENGINE_CERTIFICATE");
 
     /** The actual serialized value for a AuthenticationType instance. */
     private final String value;
