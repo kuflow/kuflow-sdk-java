@@ -48,7 +48,8 @@ public final class Authentication extends AbstractAudited {
 
     /*
      * Engine authentication token.
-     * @deprecated use engineConfig.token
+     *
+     * @deprecated use engineToken.token
      *
      */
     @JsonProperty(value = "token")
@@ -56,7 +57,8 @@ public final class Authentication extends AbstractAudited {
 
     /*
      * Engine authentication token expiration.
-     * @deprecated use engineConfig.expiredAt
+     *
+     * @deprecated use engineToken.expiredAt
      *
      */
     @JsonProperty(value = "expiredAt")
@@ -120,7 +122,7 @@ public final class Authentication extends AbstractAudited {
     /**
      * Get the token property: Engine authentication token.
      *
-     * @deprecated use engineConfig.token.
+     * @deprecated use engineToken.token.
      * @return the token value.
      */
     public String getToken() {
@@ -130,7 +132,7 @@ public final class Authentication extends AbstractAudited {
     /**
      * Set the token property: Engine authentication token.
      *
-     * @deprecated use engineConfig.token.
+     * @deprecated use engineToken.token.
      * @param token the token value to set.
      * @return the Authentication object itself.
      */
@@ -142,7 +144,7 @@ public final class Authentication extends AbstractAudited {
     /**
      * Get the expiredAt property: Engine authentication token expiration.
      *
-     * @deprecated use engineConfig.expiredAt.
+     * @deprecated use engineToken.expiredAt.
      * @return the expiredAt value.
      */
     public OffsetDateTime getExpiredAt() {
@@ -152,7 +154,7 @@ public final class Authentication extends AbstractAudited {
     /**
      * Set the expiredAt property: Engine authentication token expiration.
      *
-     * @deprecated use engineConfig.expiredAt.
+     * @deprecated use engineToken.expiredAt.
      * @param expiredAt the expiredAt value to set.
      * @return the Authentication object itself.
      */
