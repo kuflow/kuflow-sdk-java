@@ -94,7 +94,7 @@ import com.kuflow.temporal.activity.kuflow.model.SaveTaskJsonFormsValueDataReque
 import com.kuflow.temporal.activity.kuflow.model.SaveTaskJsonFormsValueDataResponse;
 import javax.annotation.Nonnull;
 
-public class KuFlowSyncActivitiesImpl implements KuFlowSyncActivities {
+public class KuFlowActivitiesImpl implements KuFlowActivities {
 
     private final PrincipalOperations principalOperations;
 
@@ -102,7 +102,7 @@ public class KuFlowSyncActivitiesImpl implements KuFlowSyncActivities {
 
     private final TaskOperations taskOperations;
 
-    public KuFlowSyncActivitiesImpl(KuFlowRestClient kuFlowRestClient) {
+    public KuFlowActivitiesImpl(KuFlowRestClient kuFlowRestClient) {
         this.principalOperations = kuFlowRestClient.getPrincipalOperations();
         this.processOperations = kuFlowRestClient.getProcessOperations();
         this.taskOperations = kuFlowRestClient.getTaskOperations();

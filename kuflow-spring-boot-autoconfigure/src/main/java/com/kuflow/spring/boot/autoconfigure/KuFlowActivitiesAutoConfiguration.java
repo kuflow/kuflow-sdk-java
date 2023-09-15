@@ -23,25 +23,19 @@
 package com.kuflow.spring.boot.autoconfigure;
 
 import com.kuflow.rest.KuFlowRestClient;
-import com.kuflow.temporal.activity.kuflow.KuFlowAsyncActivities;
-import com.kuflow.temporal.activity.kuflow.KuFlowAsyncActivitiesImpl;
-import com.kuflow.temporal.activity.kuflow.KuFlowSyncActivities;
-import com.kuflow.temporal.activity.kuflow.KuFlowSyncActivitiesImpl;
+import com.kuflow.temporal.activity.kuflow.KuFlowActivities;
+import com.kuflow.temporal.activity.kuflow.KuFlowActivitiesImpl;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 
 @AutoConfiguration
-@ConditionalOnClass(KuFlowSyncActivitiesImpl.class)
+@ConditionalOnClass(KuFlowActivitiesImpl.class)
 public class KuFlowActivitiesAutoConfiguration {
 
     @Bean
-    public KuFlowSyncActivities kuFlowSyncActivities(KuFlowRestClient kuFlowRestClient) {
-        return new KuFlowSyncActivitiesImpl(kuFlowRestClient);
+    public KuFlowActivities kuFlowActivities(KuFlowRestClient kuFlowRestClient) {
+        return new KuFlowActivitiesImpl(kuFlowRestClient);
     }
 
-    @Bean
-    public KuFlowAsyncActivities kuFlowAsyncActivities(KuFlowRestClient kuFlowRestClient) {
-        return new KuFlowAsyncActivitiesImpl(kuFlowRestClient);
-    }
 }

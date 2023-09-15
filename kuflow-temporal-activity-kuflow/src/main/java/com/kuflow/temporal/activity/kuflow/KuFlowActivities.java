@@ -65,7 +65,7 @@ import javax.annotation.Nonnull;
  *
  */
 @ActivityInterface(namePrefix = "KuFlow_Engine_")
-public interface KuFlowSyncActivities {
+public interface KuFlowActivities {
     /**
      * Retrieve a Principal.
      *

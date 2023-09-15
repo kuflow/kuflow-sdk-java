@@ -801,8 +801,9 @@ public final class TaskOperationsImpl {
      * <p>If you want the method to be idempotent, please specify the `id` field in the request body.
      *
      * @param task Task to be created.
-     * @param activityToken When create a Kuflow Task backed with a Temporal.io servers, this value is required and must
-     *     be set with the context task token of Temporal.io activity.
+     * @param activityToken [DEPRECATED] When create a KuFlow Task backed with a Temporal.io servers, this value is
+     *     required and must be set with the context task token of Temporal.io activity. It is no longer necessary
+     *     because it will be never used for the latest SDKs versions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -832,8 +833,9 @@ public final class TaskOperationsImpl {
      * <p>If you want the method to be idempotent, please specify the `id` field in the request body.
      *
      * @param task Task to be created.
-     * @param activityToken When create a Kuflow Task backed with a Temporal.io servers, this value is required and must
-     *     be set with the context task token of Temporal.io activity.
+     * @param activityToken [DEPRECATED] When create a KuFlow Task backed with a Temporal.io servers, this value is
+     *     required and must be set with the context task token of Temporal.io activity. It is no longer necessary
+     *     because it will be never used for the latest SDKs versions.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -863,8 +865,9 @@ public final class TaskOperationsImpl {
      * <p>If you want the method to be idempotent, please specify the `id` field in the request body.
      *
      * @param task Task to be created.
-     * @param activityToken When create a Kuflow Task backed with a Temporal.io servers, this value is required and must
-     *     be set with the context task token of Temporal.io activity.
+     * @param activityToken [DEPRECATED] When create a KuFlow Task backed with a Temporal.io servers, this value is
+     *     required and must be set with the context task token of Temporal.io activity. It is no longer necessary
+     *     because it will be never used for the latest SDKs versions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -920,8 +923,9 @@ public final class TaskOperationsImpl {
      * <p>If you want the method to be idempotent, please specify the `id` field in the request body.
      *
      * @param task Task to be created.
-     * @param activityToken When create a Kuflow Task backed with a Temporal.io servers, this value is required and must
-     *     be set with the context task token of Temporal.io activity.
+     * @param activityToken [DEPRECATED] When create a KuFlow Task backed with a Temporal.io servers, this value is
+     *     required and must be set with the context task token of Temporal.io activity. It is no longer necessary
+     *     because it will be never used for the latest SDKs versions.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -951,8 +955,9 @@ public final class TaskOperationsImpl {
      * <p>If you want the method to be idempotent, please specify the `id` field in the request body.
      *
      * @param task Task to be created.
-     * @param activityToken When create a Kuflow Task backed with a Temporal.io servers, this value is required and must
-     *     be set with the context task token of Temporal.io activity.
+     * @param activityToken [DEPRECATED] When create a KuFlow Task backed with a Temporal.io servers, this value is
+     *     required and must be set with the context task token of Temporal.io activity. It is no longer necessary
+     *     because it will be never used for the latest SDKs versions.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -982,8 +987,9 @@ public final class TaskOperationsImpl {
      * <p>If you want the method to be idempotent, please specify the `id` field in the request body.
      *
      * @param task Task to be created.
-     * @param activityToken When create a Kuflow Task backed with a Temporal.io servers, this value is required and must
-     *     be set with the context task token of Temporal.io activity.
+     * @param activityToken [DEPRECATED] When create a KuFlow Task backed with a Temporal.io servers, this value is
+     *     required and must be set with the context task token of Temporal.io activity. It is no longer necessary
+     *     because it will be never used for the latest SDKs versions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

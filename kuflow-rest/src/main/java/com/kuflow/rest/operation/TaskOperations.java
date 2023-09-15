@@ -147,8 +147,6 @@ public class TaskOperations {
      * <p>If you want the method to be idempotent, please specify the `id` field in the request body.
      *
      * @param task Task to be created.
-     * @param activityToken When create a Kuflow Task backed with a Temporal.io servers, this value is required and must
-     *     be set with the context task token of Temporal.io activity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -156,37 +154,8 @@ public class TaskOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Task> createTaskWithResponse(Task task, String activityToken, Context context) {
-        return this.service.createTaskWithResponse(task, activityToken, context);
-    }
-
-    /**
-     * Create a new Task in the selected Process
-     *
-     * <p>Create a Task and optionally fill its elements. We can fill in any type of element except documents.
-     *
-     * <p>If you want to add document type elements, you can pass a reference to an existing document type element
-     * indicating its 'uri'. This will copy that document into the element. In case you want to add a new document,
-     * please use the corresponding API method.
-     *
-     * <p>If you want that the task created is claimed you can a valid owner using the following options: * If you know
-     * the `principal ID` you can assign it to `owner.id` * If you know the `user ID` you can assign it to
-     * `owner.user.id` * If you know the `user email` you can assign it to `owner.user.email` * If you know the
-     * `application ID` you can assign it to `owner.application.id`
-     *
-     * <p>If you want the method to be idempotent, please specify the `id` field in the request body.
-     *
-     * @param task Task to be created.
-     * @param activityToken When create a Kuflow Task backed with a Temporal.io servers, this value is required and must
-     *     be set with the context task token of Temporal.io activity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Task createTask(Task task, String activityToken) {
-        return this.createTaskWithResponse(task, activityToken, Context.NONE).getValue();
+    public Response<Task> createTaskWithResponse(Task task, Context context) {
+        return this.service.createTaskWithResponse(task, null, context);
     }
 
     /**
@@ -213,7 +182,7 @@ public class TaskOperations {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Task createTask(Task task) {
-        return this.createTaskWithResponse(task, null, Context.NONE).getValue();
+        return this.createTaskWithResponse(task, Context.NONE).getValue();
     }
 
     /**
