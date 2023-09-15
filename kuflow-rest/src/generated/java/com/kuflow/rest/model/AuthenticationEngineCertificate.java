@@ -31,13 +31,13 @@ public final class AuthenticationEngineCertificate {
     /*
      * The namespace property.
      */
-    @JsonProperty(value = "namespace")
+    @JsonProperty(value = "namespace", required = true)
     private String namespace;
 
     /*
      * The tls property.
      */
-    @JsonProperty(value = "tls")
+    @JsonProperty(value = "tls", required = true)
     private AuthenticationEngineCertificateTls tls;
 
     /** Creates an instance of AuthenticationEngineCertificate class. */

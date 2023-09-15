@@ -37,7 +37,7 @@ public final class Authentication extends AbstractAudited {
     /*
      * The id property.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id")
     private UUID id;
 
     /*
@@ -51,7 +51,7 @@ public final class Authentication extends AbstractAudited {
      * @deprecated use engineConfig.token
      *
      */
-    @JsonProperty(value = "token", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "token")
     private String token;
 
     /*
@@ -59,19 +59,19 @@ public final class Authentication extends AbstractAudited {
      * @deprecated use engineConfig.expiredAt
      *
      */
-    @JsonProperty(value = "expiredAt", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "expiredAt")
     private OffsetDateTime expiredAt;
 
     /*
      * The engineToken property.
      */
-    @JsonProperty(value = "engineToken", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "engineToken")
     private AuthenticationEngineToken engineToken;
 
     /*
      * The engineCertificate property.
      */
-    @JsonProperty(value = "engineCertificate", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "engineCertificate")
     private AuthenticationEngineCertificate engineCertificate;
 
     /** Creates an instance of Authentication class. */
@@ -84,6 +84,17 @@ public final class Authentication extends AbstractAudited {
      */
     public UUID getId() {
         return this.id;
+    }
+
+    /**
+     * Set the id property: The id property.
+     *
+     * @param id the id value to set.
+     * @return the Authentication object itself.
+     */
+    public Authentication setId(UUID id) {
+        this.id = id;
+        return this;
     }
 
     /**
@@ -117,6 +128,18 @@ public final class Authentication extends AbstractAudited {
     }
 
     /**
+     * Set the token property: Engine authentication token.
+     *
+     * @deprecated use engineConfig.token.
+     * @param token the token value to set.
+     * @return the Authentication object itself.
+     */
+    public Authentication setToken(String token) {
+        this.token = token;
+        return this;
+    }
+
+    /**
      * Get the expiredAt property: Engine authentication token expiration.
      *
      * @deprecated use engineConfig.expiredAt.
@@ -124,6 +147,18 @@ public final class Authentication extends AbstractAudited {
      */
     public OffsetDateTime getExpiredAt() {
         return this.expiredAt;
+    }
+
+    /**
+     * Set the expiredAt property: Engine authentication token expiration.
+     *
+     * @deprecated use engineConfig.expiredAt.
+     * @param expiredAt the expiredAt value to set.
+     * @return the Authentication object itself.
+     */
+    public Authentication setExpiredAt(OffsetDateTime expiredAt) {
+        this.expiredAt = expiredAt;
+        return this;
     }
 
     /**
@@ -136,12 +171,34 @@ public final class Authentication extends AbstractAudited {
     }
 
     /**
+     * Set the engineToken property: The engineToken property.
+     *
+     * @param engineToken the engineToken value to set.
+     * @return the Authentication object itself.
+     */
+    public Authentication setEngineToken(AuthenticationEngineToken engineToken) {
+        this.engineToken = engineToken;
+        return this;
+    }
+
+    /**
      * Get the engineCertificate property: The engineCertificate property.
      *
      * @return the engineCertificate value.
      */
     public AuthenticationEngineCertificate getEngineCertificate() {
         return this.engineCertificate;
+    }
+
+    /**
+     * Set the engineCertificate property: The engineCertificate property.
+     *
+     * @param engineCertificate the engineCertificate value to set.
+     * @return the Authentication object itself.
+     */
+    public Authentication setEngineCertificate(AuthenticationEngineCertificate engineCertificate) {
+        this.engineCertificate = engineCertificate;
+        return this;
     }
 
     /** {@inheritDoc} */

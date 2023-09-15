@@ -22,23 +22,23 @@
  */
 package com.kuflow.rest.model;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The AuthenticationEngineToken model. */
-@Immutable
+@Fluent
 public final class AuthenticationEngineToken {
     /*
      * Engine authentication token
      */
-    @JsonProperty(value = "token", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "token", required = true)
     private String token;
 
     /*
      * The expiredAt property.
      */
-    @JsonProperty(value = "expiredAt", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "expiredAt", required = true)
     private OffsetDateTime expiredAt;
 
     /** Creates an instance of AuthenticationEngineToken class. */
@@ -54,11 +54,33 @@ public final class AuthenticationEngineToken {
     }
 
     /**
+     * Set the token property: Engine authentication token.
+     *
+     * @param token the token value to set.
+     * @return the AuthenticationEngineToken object itself.
+     */
+    public AuthenticationEngineToken setToken(String token) {
+        this.token = token;
+        return this;
+    }
+
+    /**
      * Get the expiredAt property: The expiredAt property.
      *
      * @return the expiredAt value.
      */
     public OffsetDateTime getExpiredAt() {
         return this.expiredAt;
+    }
+
+    /**
+     * Set the expiredAt property: The expiredAt property.
+     *
+     * @param expiredAt the expiredAt value to set.
+     * @return the AuthenticationEngineToken object itself.
+     */
+    public AuthenticationEngineToken setExpiredAt(OffsetDateTime expiredAt) {
+        this.expiredAt = expiredAt;
+        return this;
     }
 }

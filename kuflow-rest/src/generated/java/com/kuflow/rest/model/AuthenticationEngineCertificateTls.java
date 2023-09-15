@@ -22,28 +22,28 @@
  */
 package com.kuflow.rest.model;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AuthenticationEngineCertificateTls model. */
-@Immutable
+@Fluent
 public final class AuthenticationEngineCertificateTls {
     /*
      * The serverRootCaCertificate property.
      */
-    @JsonProperty(value = "serverRootCaCertificate", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "serverRootCaCertificate", required = true)
     private String serverRootCaCertificate;
 
     /*
      * The clientCertificate property.
      */
-    @JsonProperty(value = "clientCertificate", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "clientCertificate", required = true)
     private String clientCertificate;
 
     /*
      * The clientPrivateKey property.
      */
-    @JsonProperty(value = "clientPrivateKey", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "clientPrivateKey", required = true)
     private String clientPrivateKey;
 
     /** Creates an instance of AuthenticationEngineCertificateTls class. */
@@ -59,6 +59,17 @@ public final class AuthenticationEngineCertificateTls {
     }
 
     /**
+     * Set the serverRootCaCertificate property: The serverRootCaCertificate property.
+     *
+     * @param serverRootCaCertificate the serverRootCaCertificate value to set.
+     * @return the AuthenticationEngineCertificateTls object itself.
+     */
+    public AuthenticationEngineCertificateTls setServerRootCaCertificate(String serverRootCaCertificate) {
+        this.serverRootCaCertificate = serverRootCaCertificate;
+        return this;
+    }
+
+    /**
      * Get the clientCertificate property: The clientCertificate property.
      *
      * @return the clientCertificate value.
@@ -68,11 +79,33 @@ public final class AuthenticationEngineCertificateTls {
     }
 
     /**
+     * Set the clientCertificate property: The clientCertificate property.
+     *
+     * @param clientCertificate the clientCertificate value to set.
+     * @return the AuthenticationEngineCertificateTls object itself.
+     */
+    public AuthenticationEngineCertificateTls setClientCertificate(String clientCertificate) {
+        this.clientCertificate = clientCertificate;
+        return this;
+    }
+
+    /**
      * Get the clientPrivateKey property: The clientPrivateKey property.
      *
      * @return the clientPrivateKey value.
      */
     public String getClientPrivateKey() {
         return this.clientPrivateKey;
+    }
+
+    /**
+     * Set the clientPrivateKey property: The clientPrivateKey property.
+     *
+     * @param clientPrivateKey the clientPrivateKey value to set.
+     * @return the AuthenticationEngineCertificateTls object itself.
+     */
+    public AuthenticationEngineCertificateTls setClientPrivateKey(String clientPrivateKey) {
+        this.clientPrivateKey = clientPrivateKey;
+        return this;
     }
 }
