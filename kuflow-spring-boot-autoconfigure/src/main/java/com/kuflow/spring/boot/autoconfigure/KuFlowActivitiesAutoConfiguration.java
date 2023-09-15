@@ -37,5 +37,4 @@ public class KuFlowActivitiesAutoConfiguration {
     public KuFlowActivities kuFlowActivities(KuFlowRestClient kuFlowRestClient) {
         return new KuFlowActivitiesImpl(kuFlowRestClient);
     }
-
 }
