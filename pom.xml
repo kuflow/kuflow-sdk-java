@@ -30,7 +30,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.7.14</version>
+    <version>2.7.15</version>
     <relativePath /> <!-- lookup parent from repository -->
   </parent>
 
@@ -72,24 +72,24 @@
     <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
     <checkstyle.version>10.12.0</checkstyle.version>
     <prettier-maven-plugin.version>0.21</prettier-maven-plugin.version>
-    <prettier-java.version>2.2.0</prettier-java.version>
+    <prettier-java.version>2.3.1</prettier-java.version>
     <build-helper-maven-plugin.version>3.4.0</build-helper-maven-plugin.version>
     <license-maven-plugin.version>4.2</license-maven-plugin.version>
 
     <!-- Spring dependencies -->
-    <spring-boot.version>2.7.14</spring-boot.version>
+    <spring-boot.version>2.7.15</spring-boot.version>
 
     <!-- Application dependencies -->
     <temporal-sdk.version>1.19.1</temporal-sdk.version>
-    <awssdk.version>2.18.25</awssdk.version>
+    <awssdk.version>2.20.145</awssdk.version>
     <commons-io.version>2.11.0</commons-io.version>
     <commons-text.version>1.10.0</commons-text.version>
     <jackson.version>2.14.2</jackson.version>
-    <azure-core.version>1.42.0</azure-core.version>
+    <azure-core.version>1.43.0</azure-core.version>
     <azure-communication-common.version>1.2.11</azure-communication-common.version>
     <jsr305.version>3.0.2</jsr305.version>
 
-    <wiremock.version>2.35.0</wiremock.version>
+    <wiremock.version>2.35.1</wiremock.version>
     <awaitility.version>4.2.0</awaitility.version>
   </properties>
 

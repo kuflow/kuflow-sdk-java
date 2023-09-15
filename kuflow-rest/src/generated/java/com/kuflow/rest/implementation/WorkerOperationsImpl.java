@@ -89,8 +89,7 @@ public final class WorkerOperationsImpl {
     /**
      * Create or update a worker
      *
-     * <p>Create o update a worker into KuFlow, this allows to the platform to have a worker catalog of all registered
-     * ones.
+     * <p>Register a worker in KuFlow, this allows the platform to have a catalogue of all registered workers.
      *
      * <p>If already exist a worker for the same identity, the worker will be updated.
      *
@@ -109,8 +108,7 @@ public final class WorkerOperationsImpl {
     /**
      * Create or update a worker
      *
-     * <p>Create o update a worker into KuFlow, this allows to the platform to have a worker catalog of all registered
-     * ones.
+     * <p>Register a worker in KuFlow, this allows the platform to have a catalogue of all registered workers.
      *
      * <p>If already exist a worker for the same identity, the worker will be updated.
      *
@@ -130,8 +128,7 @@ public final class WorkerOperationsImpl {
     /**
      * Create or update a worker
      *
-     * <p>Create o update a worker into KuFlow, this allows to the platform to have a worker catalog of all registered
-     * ones.
+     * <p>Register a worker in KuFlow, this allows the platform to have a catalogue of all registered workers.
      *
      * <p>If already exist a worker for the same identity, the worker will be updated.
      *
@@ -149,8 +146,7 @@ public final class WorkerOperationsImpl {
     /**
      * Create or update a worker
      *
-     * <p>Create o update a worker into KuFlow, this allows to the platform to have a worker catalog of all registered
-     * ones.
+     * <p>Register a worker in KuFlow, this allows the platform to have a catalogue of all registered workers.
      *
      * <p>If already exist a worker for the same identity, the worker will be updated.
      *
@@ -169,8 +165,7 @@ public final class WorkerOperationsImpl {
     /**
      * Create or update a worker
      *
-     * <p>Create o update a worker into KuFlow, this allows to the platform to have a worker catalog of all registered
-     * ones.
+     * <p>Register a worker in KuFlow, this allows the platform to have a catalogue of all registered workers.
      *
      * <p>If already exist a worker for the same identity, the worker will be updated.
      *
@@ -190,8 +185,7 @@ public final class WorkerOperationsImpl {
     /**
      * Create or update a worker
      *
-     * <p>Create o update a worker into KuFlow, this allows to the platform to have a worker catalog of all registered
-     * ones.
+     * <p>Register a worker in KuFlow, this allows the platform to have a catalogue of all registered workers.
      *
      * <p>If already exist a worker for the same identity, the worker will be updated.
      *
