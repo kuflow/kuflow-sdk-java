@@ -20,26 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.temporal.activity.kuflow;
+package com.kuflow.temporal.activity.kuflow.util;
 
-import com.kuflow.temporal.activity.kuflow.model.CreateTaskRequest;
-import io.temporal.activity.ActivityInterface;
-import io.temporal.activity.ActivityMethod;
-import javax.annotation.Nonnull;
+public class Constants {
 
-/**
- * KuFlow activities to be used in Temporal.
- *
- */
-@ActivityInterface(namePrefix = "KuFlow_Engine_")
-public interface KuFlowAsyncActivities {
-    /**
-     * Create a Task and optionally fill its elements. The activity is finished when the <strong>"COMPLETED"</strong> or
-     * <strong>"CANCELLED"</strong> event is received from KuFlow. This is useful in KuFlow tasks where you have to wait for an external
-     * agent, usually a human, to complete it.
-     *
-     * @param request must not be {@literal null}.
-     */
-    @ActivityMethod
-    void createTaskAndWaitFinished(@Nonnull CreateTaskRequest request);
+    public static final String KUFLOW_ENGINE_SIGNAL_COMPLETED_TASK = "KuFlow_Engine_Signal_Completed_Task";
 }

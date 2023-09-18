@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.kuflow.spring.boot.autoconfigure.properties.EmailActivitiesProperties;
 import com.kuflow.temporal.activity.email.EmailActivities;
-import com.kuflow.temporal.activity.kuflow.KuFlowSyncActivities;
+import com.kuflow.temporal.activity.kuflow.KuFlowActivities;
 import com.kuflow.temporal.activity.s3.S3Activities;
 import com.kuflow.temporal.activity.uivision.UIVisionActivities;
 import java.util.Map;
@@ -47,7 +47,7 @@ public class StartupTest {
     private S3Activities s3Activities;
 
     @Autowired
-    private KuFlowSyncActivities kuFlowSyncActivities;
+    private KuFlowActivities kuFlowActivities;
 
     @Autowired
     private UIVisionActivities uIVisionActivities;
@@ -61,7 +61,7 @@ public class StartupTest {
 
         assertThat(this.s3Activities).isNotNull();
 
-        assertThat(this.kuFlowSyncActivities).isNotNull();
+        assertThat(this.kuFlowActivities).isNotNull();
 
         assertThat(this.uIVisionActivities).isNotNull();
     }
