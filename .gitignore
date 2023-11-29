@@ -166,3 +166,13 @@ temp/
 # Spring
 ######################
 **/application-local.yml
+
+######################
+# Node
+######################
+node_modules/
+
+# Prettier tooling for IDE
+package.json
+package-lock.json
+.prettierrc
