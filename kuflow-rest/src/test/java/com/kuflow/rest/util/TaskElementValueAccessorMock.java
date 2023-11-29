@@ -23,6 +23,7 @@
 package com.kuflow.rest.util;
 
 import com.kuflow.rest.model.TaskElementValue;
+import java.util.Collections;
 import java.util.List;
 
 public class TaskElementValueAccessorMock implements TaskElementValueAccessor {
@@ -36,6 +37,6 @@ public class TaskElementValueAccessorMock implements TaskElementValueAccessor {
 
     @Override
     public void setElementValues(List<TaskElementValue> elementValues) {
-        this.elementValues = elementValues;
+        this.elementValues = Collections.unmodifiableList(elementValues);
     }
 }

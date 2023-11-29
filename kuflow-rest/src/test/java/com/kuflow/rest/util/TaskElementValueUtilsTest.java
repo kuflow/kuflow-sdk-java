@@ -27,7 +27,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.kuflow.rest.model.TaskElementValue;
 import com.kuflow.rest.model.TaskElementValueString;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -35,7 +34,7 @@ import org.junit.jupiter.api.Test;
 public class TaskElementValueUtilsTest {
 
     @Test
-    public void when_addElementValuesInUnmodifiableTaskElementValueAccesor_expect_newValuesAdded() {
+    public void when_addElementValues_expect_newValuesAdded() {
         // Prepare mock
         TaskElementValueAccessorMock accessorMock = new TaskElementValueAccessorMock();
         List<TaskElementValue> existingValues = new LinkedList<>();
@@ -49,7 +48,7 @@ public class TaskElementValueUtilsTest {
             tValue.setValue("existing_value2");
             existingValues.add(tValue);
         }
-        accessorMock.setElementValues(Collections.unmodifiableList(existingValues));
+        accessorMock.setElementValues(existingValues);
 
         // Do
         List<String> elementValues = Arrays.asList("new_value1", "new_value2");
