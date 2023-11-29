@@ -96,10 +96,9 @@ public final class TaskElementValueUtils {
             .map(TaskElementValueUtils::toTaskElementValue)
             .collect(toList());
 
-        List<TaskElementValue> taskElementValueList = taskElementValueAccessor.getElementValues();
-
-        if (taskElementValueList == null) {
-            taskElementValueList = new LinkedList<>();
+        List<TaskElementValue> taskElementValueList = new LinkedList<>();
+        if (taskElementValueAccessor.getElementValues() != null) {
+            taskElementValueList.addAll(taskElementValueAccessor.getElementValues());
         }
         taskElementValueList.addAll(taskElementValues);
 
