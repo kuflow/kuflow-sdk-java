@@ -24,19 +24,23 @@ package com.kuflow.rest.util;
 
 import com.kuflow.rest.model.TaskElementValue;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class TaskElementValueAccessorMock implements TaskElementValueAccessor {
 
-    private List<TaskElementValue> elementValues;
+    private List<TaskElementValue> elementValues = new LinkedList<>();
 
     @Override
     public List<TaskElementValue> getElementValues() {
-        return this.elementValues;
+        return Collections.unmodifiableList(this.elementValues);
     }
 
     @Override
     public void setElementValues(List<TaskElementValue> elementValues) {
-        this.elementValues = Collections.unmodifiableList(elementValues);
+        this.elementValues.clear();
+        if (elementValues != null) {
+            this.elementValues.addAll(elementValues);
+        }
     }
 }
