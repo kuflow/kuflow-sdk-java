@@ -35,7 +35,7 @@ import org.junit.jupiter.api.Test;
 public class TaskElementValueUtilsTest {
 
     @Test
-    public void when_addElementValuesInAUnmodifiableTaskElementValueAccesor_expect_newValuesAdded() {
+    public void when_addElementValuesInUnmodifiableTaskElementValueAccesor_expect_newValuesAdded() {
         // Prepare mock
         TaskElementValueAccessorMock accessorMock = new TaskElementValueAccessorMock();
         List<TaskElementValue> existingValues = new LinkedList<>();
