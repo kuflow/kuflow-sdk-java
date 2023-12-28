@@ -65,6 +65,7 @@ public class ExecuteRobotRequest extends AbstractModel {
 
     /**
      * See {@link ExecuteRobotRequest#tests}
+     * @return test property
      */
     public String getTests() {
         return this.tests;
@@ -79,13 +80,14 @@ public class ExecuteRobotRequest extends AbstractModel {
 
     /**
      * See {@link ExecuteRobotRequest#variables}
+     * @return variables properties
      */
     public List<Object> getVariables() {
         return unmodifiableList(this.variables);
     }
 
     /**
-     * @param tests See {@link ExecuteRobotRequest#variables}
+     * @param variables See {@link ExecuteRobotRequest#variables}
      */
     public void setVariables(List<Object> variables) {
         this.variables.clear();
@@ -96,13 +98,14 @@ public class ExecuteRobotRequest extends AbstractModel {
 
     /**
      * See {@link ExecuteRobotRequest#options}
+     * @return option properties
      */
     public Map<String, Object> getOptions() {
         return unmodifiableMap(this.options);
     }
 
     /**
-     * @param tests See {@link ExecuteRobotRequest#options}
+     * @param options See {@link ExecuteRobotRequest#options}
      */
     public void setOptions(Map<String, Object> options) {
         this.options.clear();
