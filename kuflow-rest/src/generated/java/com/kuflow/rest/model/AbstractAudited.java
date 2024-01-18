@@ -31,22 +31,21 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 
 /** The AbstractAudited model. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "objectType",
-        defaultImpl = AbstractAudited.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType", defaultImpl = AbstractAudited.class)
 @JsonTypeName("AbstractAudited")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AUTHENTICATION", value = Authentication.class),
-    @JsonSubTypes.Type(name = "PROCESS_PAGE_ITEM", value = ProcessPageItem.class),
-    @JsonSubTypes.Type(name = "PROCESS", value = Process.class),
-    @JsonSubTypes.Type(name = "TASK_PAGE_ITEM", value = TaskPageItem.class),
-    @JsonSubTypes.Type(name = "TASK", value = Task.class),
-    @JsonSubTypes.Type(name = "WORKER", value = Worker.class)
-})
+@JsonSubTypes(
+    {
+        @JsonSubTypes.Type(name = "AUTHENTICATION", value = Authentication.class),
+        @JsonSubTypes.Type(name = "PROCESS_PAGE_ITEM", value = ProcessPageItem.class),
+        @JsonSubTypes.Type(name = "PROCESS", value = Process.class),
+        @JsonSubTypes.Type(name = "TASK_PAGE_ITEM", value = TaskPageItem.class),
+        @JsonSubTypes.Type(name = "TASK", value = Task.class),
+        @JsonSubTypes.Type(name = "WORKER", value = Worker.class),
+    }
+)
 @Fluent
 public class AbstractAudited {
+
     /*
      * Who create this model.
      */

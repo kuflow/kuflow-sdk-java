@@ -42,6 +42,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in WorkerOperations. */
 public final class WorkerOperationsImpl {
+
     /** The proxy service used to perform REST calls. */
     private final WorkerOperationsService service;
 
@@ -54,9 +55,7 @@ public final class WorkerOperationsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     WorkerOperationsImpl(KuFlowClientImpl client) {
-        this.service =
-                RestProxy.create(
-                        WorkerOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(WorkerOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -68,22 +67,24 @@ public final class WorkerOperationsImpl {
     @ServiceInterface(name = "KuFlowClientWorkerOp")
     public interface WorkerOperationsService {
         @Post("/workers")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<Worker>> createWorker(
-                @HostParam("$host") String host,
-                @BodyParam("application/json") Worker worker,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @BodyParam("application/json") Worker worker,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/workers")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<Worker> createWorkerSync(
-                @HostParam("$host") String host,
-                @BodyParam("application/json") Worker worker,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @BodyParam("application/json") Worker worker,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
     }
 
     /**

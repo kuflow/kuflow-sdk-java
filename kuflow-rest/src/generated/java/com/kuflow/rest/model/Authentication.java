@@ -34,6 +34,7 @@ import java.util.UUID;
 @JsonTypeName("AUTHENTICATION")
 @Fluent
 public final class Authentication extends AbstractAudited {
+
     /*
      * The id property.
      */

@@ -32,6 +32,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("NUMBER")
 @Fluent
 public final class ProcessElementValueNumber extends ProcessElementValue {
+
     /*
      * The value property.
      */

@@ -28,6 +28,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The TaskDeleteElementCommand model. */
 @Fluent
 public final class TaskDeleteElementCommand {
+
     /*
      * Code of task element to delete.
      */

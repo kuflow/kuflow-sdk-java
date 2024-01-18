@@ -30,6 +30,7 @@ import java.util.UUID;
 /** The RelatedProcess model. */
 @Fluent
 public final class RelatedProcess {
+
     /*
      * Processes whose relationship target is the current process.
      */

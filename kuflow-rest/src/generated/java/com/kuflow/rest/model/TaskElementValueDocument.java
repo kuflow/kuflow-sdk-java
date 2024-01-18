@@ -32,6 +32,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("DOCUMENT")
 @Fluent
 public final class TaskElementValueDocument extends TaskElementValue {
+
     /*
      * The value property.
      */

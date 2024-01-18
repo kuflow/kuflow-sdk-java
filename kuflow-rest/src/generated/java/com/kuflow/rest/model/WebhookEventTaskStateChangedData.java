@@ -29,6 +29,7 @@ import java.util.UUID;
 /** The WebhookEventTaskStateChangedData model. */
 @Fluent
 public final class WebhookEventTaskStateChangedData {
+
     /*
      * The processId property.
      */

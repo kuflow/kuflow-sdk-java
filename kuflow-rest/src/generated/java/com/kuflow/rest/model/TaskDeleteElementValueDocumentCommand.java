@@ -29,6 +29,7 @@ import java.util.UUID;
 /** The TaskDeleteElementValueDocumentCommand model. */
 @Fluent
 public final class TaskDeleteElementValueDocumentCommand {
+
     /*
      * Document ID to delete.
      */

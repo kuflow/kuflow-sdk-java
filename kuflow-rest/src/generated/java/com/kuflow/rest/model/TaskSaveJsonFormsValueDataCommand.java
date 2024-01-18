@@ -29,6 +29,7 @@ import java.util.Map;
 /** The TaskSaveJsonFormsValueDataCommand model. */
 @Fluent
 public final class TaskSaveJsonFormsValueDataCommand {
+
     /*
      * json value filled that complain with the related json schema.
      */

@@ -32,6 +32,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("PRINCIPAL")
 @Fluent
 public final class TaskElementValuePrincipal extends TaskElementValue {
+
     /*
      * The value property.
      */

@@ -35,6 +35,7 @@ import java.util.UUID;
 @JsonTypeName("WORKER")
 @Fluent
 public final class Worker extends AbstractAudited {
+
     /*
      * The id property.
      */

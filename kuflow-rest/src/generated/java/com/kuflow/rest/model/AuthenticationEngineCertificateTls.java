@@ -28,6 +28,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The AuthenticationEngineCertificateTls model. */
 @Fluent
 public final class AuthenticationEngineCertificateTls {
+
     /*
      * The serverRootCaCertificate property.
      */

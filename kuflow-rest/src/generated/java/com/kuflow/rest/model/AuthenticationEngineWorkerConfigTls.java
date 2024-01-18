@@ -29,6 +29,7 @@ import java.time.OffsetDateTime;
 /** The AuthenticationEngineWorkerConfigTls model. */
 @Immutable
 public final class AuthenticationEngineWorkerConfigTls {
+
     /*
      * The serverRootCaCertificate property.
      */

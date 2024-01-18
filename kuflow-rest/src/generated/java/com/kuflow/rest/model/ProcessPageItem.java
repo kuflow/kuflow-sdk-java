@@ -39,6 +39,7 @@ import java.util.UUID;
 @JsonTypeName("PROCESS_PAGE_ITEM")
 @Fluent
 public final class ProcessPageItem extends AbstractAudited {
+
     /*
      * Process ID.
      */

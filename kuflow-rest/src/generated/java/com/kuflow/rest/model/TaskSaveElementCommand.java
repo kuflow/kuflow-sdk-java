@@ -33,6 +33,7 @@ import java.util.Optional;
 /** The TaskSaveElementCommand model. */
 @Fluent
 public final class TaskSaveElementCommand {
+
     /*
      * The elementDefinitionCode property.
      */

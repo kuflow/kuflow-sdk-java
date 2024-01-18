@@ -28,6 +28,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The AuthenticationEngineWorkerConfig model. */
 @Fluent
 public final class AuthenticationEngineWorkerConfig {
+
     /*
      * The namespace property.
      */

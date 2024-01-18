@@ -29,6 +29,7 @@ import java.time.OffsetDateTime;
 /** The AuthenticationEngineConfig model. */
 @Immutable
 public final class AuthenticationEngineConfig {
+
     /*
      * Engine authentication token
      */

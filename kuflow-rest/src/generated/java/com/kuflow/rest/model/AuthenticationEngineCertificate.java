@@ -28,6 +28,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The AuthenticationEngineCertificate model. */
 @Fluent
 public final class AuthenticationEngineCertificate {
+
     /*
      * The namespace property.
      */

@@ -29,6 +29,7 @@ import java.util.UUID;
 /** The TaskElementValuePrincipalItem model. */
 @Fluent
 public final class TaskElementValuePrincipalItem {
+
     /*
      * The id property.
      */

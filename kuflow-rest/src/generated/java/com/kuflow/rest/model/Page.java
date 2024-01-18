@@ -29,19 +29,18 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** The Page model. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "objectType",
-        defaultImpl = Page.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType", defaultImpl = Page.class)
 @JsonTypeName("Page")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "PRINCIPAL_PAGE", value = PrincipalPage.class),
-    @JsonSubTypes.Type(name = "PROCESS_PAGE", value = ProcessPage.class),
-    @JsonSubTypes.Type(name = "TASK_PAGE", value = TaskPage.class)
-})
+@JsonSubTypes(
+    {
+        @JsonSubTypes.Type(name = "PRINCIPAL_PAGE", value = PrincipalPage.class),
+        @JsonSubTypes.Type(name = "PROCESS_PAGE", value = ProcessPage.class),
+        @JsonSubTypes.Type(name = "TASK_PAGE", value = TaskPage.class),
+    }
+)
 @Fluent
 public class Page {
+
     /*
      * The metadata property.
      */

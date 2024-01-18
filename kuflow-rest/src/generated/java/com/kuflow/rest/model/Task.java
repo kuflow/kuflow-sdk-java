@@ -39,6 +39,7 @@ import java.util.UUID;
 @JsonTypeName("TASK")
 @Fluent
 public final class Task extends AbstractAudited {
+
     /*
      * The id property.
      */
@@ -763,8 +764,7 @@ public final class Task extends AbstractAudited {
      * @deprecated in favor of {@link TaskUtils}
      */
     @Deprecated
-    public Task setElementValueAsDocumentList(
-            String elementDefinitionCode, List<TaskElementValueDocumentItem> elementValues) {
+    public Task setElementValueAsDocumentList(String elementDefinitionCode, List<TaskElementValueDocumentItem> elementValues) {
         TaskUtils.setElementValueAsDocumentList(this, elementDefinitionCode, elementValues);
 
         return this;
@@ -794,8 +794,7 @@ public final class Task extends AbstractAudited {
      * @deprecated in favor of {@link TaskUtils}
      */
     @Deprecated
-    public Task addElementValueAsDocumentList(
-            String elementDefinitionCode, List<TaskElementValueDocumentItem> elementValues) {
+    public Task addElementValueAsDocumentList(String elementDefinitionCode, List<TaskElementValueDocumentItem> elementValues) {
         TaskUtils.addElementValueAsDocumentList(this, elementDefinitionCode, elementValues);
 
         return this;
@@ -865,8 +864,7 @@ public final class Task extends AbstractAudited {
      * @deprecated in favor of {@link TaskUtils}
      */
     @Deprecated
-    public Task setElementValueAsPrincipalList(
-            String elementDefinitionCode, List<TaskElementValuePrincipalItem> elementValues) {
+    public Task setElementValueAsPrincipalList(String elementDefinitionCode, List<TaskElementValuePrincipalItem> elementValues) {
         TaskUtils.setElementValueAsPrincipalList(this, elementDefinitionCode, elementValues);
 
         return this;
@@ -896,8 +894,7 @@ public final class Task extends AbstractAudited {
      * @deprecated in favor of {@link TaskUtils}
      */
     @Deprecated
-    public Task addElementValueAsPrincipalList(
-            String elementDefinitionCode, List<TaskElementValuePrincipalItem> elementValues) {
+    public Task addElementValueAsPrincipalList(String elementDefinitionCode, List<TaskElementValuePrincipalItem> elementValues) {
         TaskUtils.addElementValueAsPrincipalList(this, elementDefinitionCode, elementValues);
 
         return this;

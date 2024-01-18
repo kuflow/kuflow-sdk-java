@@ -29,6 +29,7 @@ import java.util.Map;
 /** Json form values, used when the render type selected is JSON Forms. */
 @Fluent
 public final class JsonFormsValue {
+
     /*
      * true if the data complain the related json schema.
      */

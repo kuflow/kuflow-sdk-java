@@ -39,6 +39,7 @@ import java.util.UUID;
 @JsonTypeName("PROCESS")
 @Fluent
 public final class Process extends AbstractAudited {
+
     /*
      * Process ID.
      */

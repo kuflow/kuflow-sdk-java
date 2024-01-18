@@ -28,6 +28,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The TaskSaveJsonFormsValueDocumentResponseCommand model. */
 @Fluent
 public final class TaskSaveJsonFormsValueDocumentResponseCommand {
+
     /*
      * JSON value representing the uploaded file.
      *

@@ -62,6 +62,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in TaskOperations. */
 public final class TaskOperationsImpl {
+
     /** The proxy service used to perform REST calls. */
     private final TaskOperationsService service;
 
@@ -74,8 +75,7 @@ public final class TaskOperationsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     TaskOperationsImpl(KuFlowClientImpl client) {
-        this.service =
-                RestProxy.create(TaskOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(TaskOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -87,376 +87,410 @@ public final class TaskOperationsImpl {
     @ServiceInterface(name = "KuFlowClientTaskOper")
     public interface TaskOperationsService {
         @Get("/tasks")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<TaskPage>> findTasks(
-                @HostParam("$host") String host,
-                @QueryParam("size") Integer size,
-                @QueryParam("page") Integer page,
-                @QueryParam(value = "sort", multipleQueryParams = true) List<String> sort,
-                @QueryParam(value = "processId", multipleQueryParams = true) List<String> processId,
-                @QueryParam(value = "state", multipleQueryParams = true) List<String> state,
-                @QueryParam(value = "taskDefinitionCode", multipleQueryParams = true) List<String> taskDefinitionCode,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @QueryParam("size") Integer size,
+            @QueryParam("page") Integer page,
+            @QueryParam(value = "sort", multipleQueryParams = true) List<String> sort,
+            @QueryParam(value = "processId", multipleQueryParams = true) List<String> processId,
+            @QueryParam(value = "state", multipleQueryParams = true) List<String> state,
+            @QueryParam(value = "taskDefinitionCode", multipleQueryParams = true) List<String> taskDefinitionCode,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Get("/tasks")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<TaskPage> findTasksSync(
-                @HostParam("$host") String host,
-                @QueryParam("size") Integer size,
-                @QueryParam("page") Integer page,
-                @QueryParam(value = "sort", multipleQueryParams = true) List<String> sort,
-                @QueryParam(value = "processId", multipleQueryParams = true) List<String> processId,
-                @QueryParam(value = "state", multipleQueryParams = true) List<String> state,
-                @QueryParam(value = "taskDefinitionCode", multipleQueryParams = true) List<String> taskDefinitionCode,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @QueryParam("size") Integer size,
+            @QueryParam("page") Integer page,
+            @QueryParam(value = "sort", multipleQueryParams = true) List<String> sort,
+            @QueryParam(value = "processId", multipleQueryParams = true) List<String> processId,
+            @QueryParam(value = "state", multipleQueryParams = true) List<String> state,
+            @QueryParam(value = "taskDefinitionCode", multipleQueryParams = true) List<String> taskDefinitionCode,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/tasks")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<Task>> createTask(
-                @HostParam("$host") String host,
-                @QueryParam("activityToken") String activityToken,
-                @BodyParam("application/json") Task task,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @QueryParam("activityToken") String activityToken,
+            @BodyParam("application/json") Task task,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/tasks")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<Task> createTaskSync(
-                @HostParam("$host") String host,
-                @QueryParam("activityToken") String activityToken,
-                @BodyParam("application/json") Task task,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @QueryParam("activityToken") String activityToken,
+            @BodyParam("application/json") Task task,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Get("/tasks/{id}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<Task>> retrieveTask(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Get("/tasks/{id}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<Task> retrieveTaskSync(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/tasks/{id}/~actions/claim")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<Task>> actionsTaskClaim(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/tasks/{id}/~actions/claim")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<Task> actionsTaskClaimSync(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/tasks/{id}/~actions/assign")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<Task>> actionsTaskAssign(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @BodyParam("application/json") TaskAssignCommand command,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") TaskAssignCommand command,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/tasks/{id}/~actions/assign")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<Task> actionsTaskAssignSync(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @BodyParam("application/json") TaskAssignCommand command,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") TaskAssignCommand command,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/tasks/{id}/~actions/save-element")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<Task>> actionsTaskSaveElement(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @BodyParam("application/json") TaskSaveElementCommand command,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") TaskSaveElementCommand command,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/tasks/{id}/~actions/save-element")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<Task> actionsTaskSaveElementSync(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @BodyParam("application/json") TaskSaveElementCommand command,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") TaskSaveElementCommand command,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/tasks/{id}/~actions/save-element-value-document")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<Task>> actionsTaskSaveElementValueDocument(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @QueryParam("fileContentType") String fileContentType,
-                @QueryParam("fileName") String fileName,
-                @QueryParam("elementDefinitionCode") String elementDefinitionCode,
-                @QueryParam("elementValueId") UUID elementValueId,
-                @QueryParam("elementValueValid") Boolean elementValueValid,
-                @BodyParam("application/octet-stream") Flux<ByteBuffer> file,
-                @HeaderParam("Content-Length") long contentLength,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("fileContentType") String fileContentType,
+            @QueryParam("fileName") String fileName,
+            @QueryParam("elementDefinitionCode") String elementDefinitionCode,
+            @QueryParam("elementValueId") UUID elementValueId,
+            @QueryParam("elementValueValid") Boolean elementValueValid,
+            @BodyParam("application/octet-stream") Flux<ByteBuffer> file,
+            @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/tasks/{id}/~actions/save-element-value-document")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<Task>> actionsTaskSaveElementValueDocument(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @QueryParam("fileContentType") String fileContentType,
-                @QueryParam("fileName") String fileName,
-                @QueryParam("elementDefinitionCode") String elementDefinitionCode,
-                @QueryParam("elementValueId") UUID elementValueId,
-                @QueryParam("elementValueValid") Boolean elementValueValid,
-                @BodyParam("application/octet-stream") BinaryData file,
-                @HeaderParam("Content-Length") long contentLength,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("fileContentType") String fileContentType,
+            @QueryParam("fileName") String fileName,
+            @QueryParam("elementDefinitionCode") String elementDefinitionCode,
+            @QueryParam("elementValueId") UUID elementValueId,
+            @QueryParam("elementValueValid") Boolean elementValueValid,
+            @BodyParam("application/octet-stream") BinaryData file,
+            @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/tasks/{id}/~actions/save-element-value-document")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<Task> actionsTaskSaveElementValueDocumentSync(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @QueryParam("fileContentType") String fileContentType,
-                @QueryParam("fileName") String fileName,
-                @QueryParam("elementDefinitionCode") String elementDefinitionCode,
-                @QueryParam("elementValueId") UUID elementValueId,
-                @QueryParam("elementValueValid") Boolean elementValueValid,
-                @BodyParam("application/octet-stream") BinaryData file,
-                @HeaderParam("Content-Length") long contentLength,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("fileContentType") String fileContentType,
+            @QueryParam("fileName") String fileName,
+            @QueryParam("elementDefinitionCode") String elementDefinitionCode,
+            @QueryParam("elementValueId") UUID elementValueId,
+            @QueryParam("elementValueValid") Boolean elementValueValid,
+            @BodyParam("application/octet-stream") BinaryData file,
+            @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/tasks/{id}/~actions/delete-element")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<Task>> actionsTaskDeleteElement(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @BodyParam("application/json") TaskDeleteElementCommand command,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") TaskDeleteElementCommand command,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/tasks/{id}/~actions/delete-element")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<Task> actionsTaskDeleteElementSync(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @BodyParam("application/json") TaskDeleteElementCommand command,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") TaskDeleteElementCommand command,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/tasks/{id}/~actions/delete-element-value-document")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<Task>> actionsTaskDeleteElementValueDocument(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @BodyParam("application/json") TaskDeleteElementValueDocumentCommand command,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") TaskDeleteElementValueDocumentCommand command,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/tasks/{id}/~actions/delete-element-value-document")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<Task> actionsTaskDeleteElementValueDocumentSync(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @BodyParam("application/json") TaskDeleteElementValueDocumentCommand command,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") TaskDeleteElementValueDocumentCommand command,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Get("/tasks/{id}/~actions/download-element-value-document")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<BinaryData>> actionsTaskDownloadElementValueDocument(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @QueryParam("documentId") UUID documentId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("documentId") UUID documentId,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Get("/tasks/{id}/~actions/download-element-value-document")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<BinaryData> actionsTaskDownloadElementValueDocumentSync(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @QueryParam("documentId") UUID documentId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("documentId") UUID documentId,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Get("/tasks/{id}/~actions/download-element-value-form-rendered")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<BinaryData>> actionsTaskDownloadElementValueRendered(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @QueryParam("elementDefinitionCode") String elementDefinitionCode,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("elementDefinitionCode") String elementDefinitionCode,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Get("/tasks/{id}/~actions/download-element-value-form-rendered")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<BinaryData> actionsTaskDownloadElementValueRenderedSync(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @QueryParam("elementDefinitionCode") String elementDefinitionCode,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("elementDefinitionCode") String elementDefinitionCode,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/tasks/{id}/~actions/save-json-forms-value-data")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<Task>> actionsTaskSaveJsonFormsValueData(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @BodyParam("application/json") TaskSaveJsonFormsValueDataCommand command,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") TaskSaveJsonFormsValueDataCommand command,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/tasks/{id}/~actions/save-json-forms-value-data")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<Task> actionsTaskSaveJsonFormsValueDataSync(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @BodyParam("application/json") TaskSaveJsonFormsValueDataCommand command,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") TaskSaveJsonFormsValueDataCommand command,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/tasks/{id}/~actions/save-json-forms-value-document")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<TaskSaveJsonFormsValueDocumentResponseCommand>> actionsTaskSaveJsonFormsValueDocument(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @QueryParam("fileContentType") String fileContentType,
-                @QueryParam("fileName") String fileName,
-                @QueryParam("schemaPath") String schemaPath,
-                @BodyParam("application/octet-stream") Flux<ByteBuffer> file,
-                @HeaderParam("Content-Length") long contentLength,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("fileContentType") String fileContentType,
+            @QueryParam("fileName") String fileName,
+            @QueryParam("schemaPath") String schemaPath,
+            @BodyParam("application/octet-stream") Flux<ByteBuffer> file,
+            @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/tasks/{id}/~actions/save-json-forms-value-document")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<TaskSaveJsonFormsValueDocumentResponseCommand>> actionsTaskSaveJsonFormsValueDocument(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @QueryParam("fileContentType") String fileContentType,
-                @QueryParam("fileName") String fileName,
-                @QueryParam("schemaPath") String schemaPath,
-                @BodyParam("application/octet-stream") BinaryData file,
-                @HeaderParam("Content-Length") long contentLength,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("fileContentType") String fileContentType,
+            @QueryParam("fileName") String fileName,
+            @QueryParam("schemaPath") String schemaPath,
+            @BodyParam("application/octet-stream") BinaryData file,
+            @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/tasks/{id}/~actions/save-json-forms-value-document")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<TaskSaveJsonFormsValueDocumentResponseCommand> actionsTaskSaveJsonFormsValueDocumentSync(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @QueryParam("fileContentType") String fileContentType,
-                @QueryParam("fileName") String fileName,
-                @QueryParam("schemaPath") String schemaPath,
-                @BodyParam("application/octet-stream") BinaryData file,
-                @HeaderParam("Content-Length") long contentLength,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("fileContentType") String fileContentType,
+            @QueryParam("fileName") String fileName,
+            @QueryParam("schemaPath") String schemaPath,
+            @BodyParam("application/octet-stream") BinaryData file,
+            @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Get("/tasks/{id}/~actions/download-json-forms-value-document")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<BinaryData>> actionsTaskDownloadJsonFormsValueDocument(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @QueryParam("documentUri") String documentUri,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("documentUri") String documentUri,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Get("/tasks/{id}/~actions/download-json-forms-value-document")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<BinaryData> actionsTaskDownloadJsonFormsValueDocumentSync(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @QueryParam("documentUri") String documentUri,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("documentUri") String documentUri,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/tasks/{id}/~actions/complete")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<Task>> actionsTaskComplete(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/tasks/{id}/~actions/complete")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<Task> actionsTaskCompleteSync(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/tasks/{id}/~actions/append-log")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<Task>> actionsTaskAppendLog(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @BodyParam("application/json") Log log,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") Log log,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/tasks/{id}/~actions/append-log")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<Task> actionsTaskAppendLogSync(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @BodyParam("application/json") Log log,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") Log log,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
     }
 
     /**
@@ -481,43 +515,39 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TaskPage>> findTasksWithResponseAsync(
-            Integer size,
-            Integer page,
-            List<String> sort,
-            List<UUID> processId,
-            List<TaskState> state,
-            List<String> taskDefinitionCode) {
+        Integer size,
+        Integer page,
+        List<String> sort,
+        List<UUID> processId,
+        List<TaskState> state,
+        List<String> taskDefinitionCode
+    ) {
         final String accept = "application/json";
-        List<String> sortConverted =
-                (sort == null)
-                        ? new ArrayList<>()
-                        : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> processIdConverted =
-                (processId == null)
-                        ? new ArrayList<>()
-                        : processId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> stateConverted =
-                (state == null)
-                        ? new ArrayList<>()
-                        : state.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> taskDefinitionCodeConverted =
-                (taskDefinitionCode == null)
-                        ? new ArrayList<>()
-                        : taskDefinitionCode.stream()
-                                .map(item -> Objects.toString(item, ""))
-                                .collect(Collectors.toList());
-        return FluxUtil.withContext(
-                context ->
-                        service.findTasks(
-                                this.client.getHost(),
-                                size,
-                                page,
-                                sortConverted,
-                                processIdConverted,
-                                stateConverted,
-                                taskDefinitionCodeConverted,
-                                accept,
-                                context));
+        List<String> sortConverted = (sort == null)
+            ? new ArrayList<>()
+            : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> processIdConverted = (processId == null)
+            ? new ArrayList<>()
+            : processId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> stateConverted = (state == null)
+            ? new ArrayList<>()
+            : state.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> taskDefinitionCodeConverted = (taskDefinitionCode == null)
+            ? new ArrayList<>()
+            : taskDefinitionCode.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        return FluxUtil.withContext(context ->
+            service.findTasks(
+                this.client.getHost(),
+                size,
+                page,
+                sortConverted,
+                processIdConverted,
+                stateConverted,
+                taskDefinitionCodeConverted,
+                accept,
+                context
+            )
+        );
     }
 
     /**
@@ -543,42 +573,38 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TaskPage>> findTasksWithResponseAsync(
-            Integer size,
-            Integer page,
-            List<String> sort,
-            List<UUID> processId,
-            List<TaskState> state,
-            List<String> taskDefinitionCode,
-            Context context) {
+        Integer size,
+        Integer page,
+        List<String> sort,
+        List<UUID> processId,
+        List<TaskState> state,
+        List<String> taskDefinitionCode,
+        Context context
+    ) {
         final String accept = "application/json";
-        List<String> sortConverted =
-                (sort == null)
-                        ? new ArrayList<>()
-                        : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> processIdConverted =
-                (processId == null)
-                        ? new ArrayList<>()
-                        : processId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> stateConverted =
-                (state == null)
-                        ? new ArrayList<>()
-                        : state.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> taskDefinitionCodeConverted =
-                (taskDefinitionCode == null)
-                        ? new ArrayList<>()
-                        : taskDefinitionCode.stream()
-                                .map(item -> Objects.toString(item, ""))
-                                .collect(Collectors.toList());
+        List<String> sortConverted = (sort == null)
+            ? new ArrayList<>()
+            : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> processIdConverted = (processId == null)
+            ? new ArrayList<>()
+            : processId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> stateConverted = (state == null)
+            ? new ArrayList<>()
+            : state.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> taskDefinitionCodeConverted = (taskDefinitionCode == null)
+            ? new ArrayList<>()
+            : taskDefinitionCode.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return service.findTasks(
-                this.client.getHost(),
-                size,
-                page,
-                sortConverted,
-                processIdConverted,
-                stateConverted,
-                taskDefinitionCodeConverted,
-                accept,
-                context);
+            this.client.getHost(),
+            size,
+            page,
+            sortConverted,
+            processIdConverted,
+            stateConverted,
+            taskDefinitionCodeConverted,
+            accept,
+            context
+        );
     }
 
     /**
@@ -603,14 +629,15 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TaskPage> findTasksAsync(
-            Integer size,
-            Integer page,
-            List<String> sort,
-            List<UUID> processId,
-            List<TaskState> state,
-            List<String> taskDefinitionCode) {
+        Integer size,
+        Integer page,
+        List<String> sort,
+        List<UUID> processId,
+        List<TaskState> state,
+        List<String> taskDefinitionCode
+    ) {
         return findTasksWithResponseAsync(size, page, sort, processId, state, taskDefinitionCode)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -633,7 +660,7 @@ public final class TaskOperationsImpl {
         final List<TaskState> state = null;
         final List<String> taskDefinitionCode = null;
         return findTasksWithResponseAsync(size, page, sort, processId, state, taskDefinitionCode)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -659,15 +686,16 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TaskPage> findTasksAsync(
-            Integer size,
-            Integer page,
-            List<String> sort,
-            List<UUID> processId,
-            List<TaskState> state,
-            List<String> taskDefinitionCode,
-            Context context) {
+        Integer size,
+        Integer page,
+        List<String> sort,
+        List<UUID> processId,
+        List<TaskState> state,
+        List<String> taskDefinitionCode,
+        Context context
+    ) {
         return findTasksWithResponseAsync(size, page, sort, processId, state, taskDefinitionCode, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -693,42 +721,38 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TaskPage> findTasksWithResponse(
-            Integer size,
-            Integer page,
-            List<String> sort,
-            List<UUID> processId,
-            List<TaskState> state,
-            List<String> taskDefinitionCode,
-            Context context) {
+        Integer size,
+        Integer page,
+        List<String> sort,
+        List<UUID> processId,
+        List<TaskState> state,
+        List<String> taskDefinitionCode,
+        Context context
+    ) {
         final String accept = "application/json";
-        List<String> sortConverted =
-                (sort == null)
-                        ? new ArrayList<>()
-                        : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> processIdConverted =
-                (processId == null)
-                        ? new ArrayList<>()
-                        : processId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> stateConverted =
-                (state == null)
-                        ? new ArrayList<>()
-                        : state.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> taskDefinitionCodeConverted =
-                (taskDefinitionCode == null)
-                        ? new ArrayList<>()
-                        : taskDefinitionCode.stream()
-                                .map(item -> Objects.toString(item, ""))
-                                .collect(Collectors.toList());
+        List<String> sortConverted = (sort == null)
+            ? new ArrayList<>()
+            : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> processIdConverted = (processId == null)
+            ? new ArrayList<>()
+            : processId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> stateConverted = (state == null)
+            ? new ArrayList<>()
+            : state.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> taskDefinitionCodeConverted = (taskDefinitionCode == null)
+            ? new ArrayList<>()
+            : taskDefinitionCode.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return service.findTasksSync(
-                this.client.getHost(),
-                size,
-                page,
-                sortConverted,
-                processIdConverted,
-                stateConverted,
-                taskDefinitionCodeConverted,
-                accept,
-                context);
+            this.client.getHost(),
+            size,
+            page,
+            sortConverted,
+            processIdConverted,
+            stateConverted,
+            taskDefinitionCodeConverted,
+            accept,
+            context
+        );
     }
 
     /**
@@ -753,12 +777,13 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TaskPage findTasks(
-            Integer size,
-            Integer page,
-            List<String> sort,
-            List<UUID> processId,
-            List<TaskState> state,
-            List<String> taskDefinitionCode) {
+        Integer size,
+        Integer page,
+        List<String> sort,
+        List<UUID> processId,
+        List<TaskState> state,
+        List<String> taskDefinitionCode
+    ) {
         return findTasksWithResponse(size, page, sort, processId, state, taskDefinitionCode, Context.NONE).getValue();
     }
 
@@ -812,8 +837,7 @@ public final class TaskOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Task>> createTaskWithResponseAsync(Task task, String activityToken) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.createTask(this.client.getHost(), activityToken, task, accept, context));
+        return FluxUtil.withContext(context -> service.createTask(this.client.getHost(), activityToken, task, accept, context));
     }
 
     /**
@@ -934,8 +958,7 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Task> createTaskAsync(Task task, String activityToken, Context context) {
-        return createTaskWithResponseAsync(task, activityToken, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return createTaskWithResponseAsync(task, activityToken, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1247,8 +1270,7 @@ public final class TaskOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Task>> actionsTaskAssignWithResponseAsync(UUID id, TaskAssignCommand command) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.actionsTaskAssign(this.client.getHost(), id, command, accept, context));
+        return FluxUtil.withContext(context -> service.actionsTaskAssign(this.client.getHost(), id, command, accept, context));
     }
 
     /**
@@ -1265,8 +1287,7 @@ public final class TaskOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Task>> actionsTaskAssignWithResponseAsync(
-            UUID id, TaskAssignCommand command, Context context) {
+    public Mono<Response<Task>> actionsTaskAssignWithResponseAsync(UUID id, TaskAssignCommand command, Context context) {
         final String accept = "application/json";
         return service.actionsTaskAssign(this.client.getHost(), id, command, accept, context);
     }
@@ -1303,8 +1324,7 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Task> actionsTaskAssignAsync(UUID id, TaskAssignCommand command, Context context) {
-        return actionsTaskAssignWithResponseAsync(id, command, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return actionsTaskAssignWithResponseAsync(id, command, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1365,8 +1385,7 @@ public final class TaskOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Task>> actionsTaskSaveElementWithResponseAsync(UUID id, TaskSaveElementCommand command) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.actionsTaskSaveElement(this.client.getHost(), id, command, accept, context));
+        return FluxUtil.withContext(context -> service.actionsTaskSaveElement(this.client.getHost(), id, command, accept, context));
     }
 
     /**
@@ -1390,8 +1409,7 @@ public final class TaskOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Task>> actionsTaskSaveElementWithResponseAsync(
-            UUID id, TaskSaveElementCommand command, Context context) {
+    public Mono<Response<Task>> actionsTaskSaveElementWithResponseAsync(UUID id, TaskSaveElementCommand command, Context context) {
         final String accept = "application/json";
         return service.actionsTaskSaveElement(this.client.getHost(), id, command, accept, context);
     }
@@ -1442,8 +1460,7 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Task> actionsTaskSaveElementAsync(UUID id, TaskSaveElementCommand command, Context context) {
-        return actionsTaskSaveElementWithResponseAsync(id, command, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return actionsTaskSaveElementWithResponseAsync(id, command, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1520,67 +1537,18 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Task>> actionsTaskSaveElementValueDocumentWithResponseAsync(
-            UUID id,
-            String fileContentType,
-            String fileName,
-            String elementDefinitionCode,
-            Flux<ByteBuffer> file,
-            long contentLength,
-            UUID elementValueId,
-            Boolean elementValueValid) {
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String elementDefinitionCode,
+        Flux<ByteBuffer> file,
+        long contentLength,
+        UUID elementValueId,
+        Boolean elementValueValid
+    ) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.actionsTaskSaveElementValueDocument(
-                                this.client.getHost(),
-                                id,
-                                fileContentType,
-                                fileName,
-                                elementDefinitionCode,
-                                elementValueId,
-                                elementValueValid,
-                                file,
-                                contentLength,
-                                accept,
-                                context));
-    }
-
-    /**
-     * Save an element document
-     *
-     * <p>Allow to save an element document uploading the content.
-     *
-     * <p>If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will
-     * be added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
-     * one), it updates it.
-     *
-     * @param id The resource ID.
-     * @param fileContentType Document content type.
-     * @param fileName Document name.
-     * @param elementDefinitionCode Element Definition Code.
-     * @param file Command to save a document element value.
-     * @param contentLength The Content-Length header for the request.
-     * @param elementValueId Element Value ID.
-     * @param elementValueValid Element Value ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Task>> actionsTaskSaveElementValueDocumentWithResponseAsync(
-            UUID id,
-            String fileContentType,
-            String fileName,
-            String elementDefinitionCode,
-            Flux<ByteBuffer> file,
-            long contentLength,
-            UUID elementValueId,
-            Boolean elementValueValid,
-            Context context) {
-        final String accept = "application/json";
-        return service.actionsTaskSaveElementValueDocument(
+        return FluxUtil.withContext(context ->
+            service.actionsTaskSaveElementValueDocument(
                 this.client.getHost(),
                 id,
                 fileContentType,
@@ -1591,7 +1559,60 @@ public final class TaskOperationsImpl {
                 file,
                 contentLength,
                 accept,
-                context);
+                context
+            )
+        );
+    }
+
+    /**
+     * Save an element document
+     *
+     * <p>Allow to save an element document uploading the content.
+     *
+     * <p>If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will
+     * be added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
+     * one), it updates it.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param elementDefinitionCode Element Definition Code.
+     * @param file Command to save a document element value.
+     * @param contentLength The Content-Length header for the request.
+     * @param elementValueId Element Value ID.
+     * @param elementValueValid Element Value ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Task>> actionsTaskSaveElementValueDocumentWithResponseAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String elementDefinitionCode,
+        Flux<ByteBuffer> file,
+        long contentLength,
+        UUID elementValueId,
+        Boolean elementValueValid,
+        Context context
+    ) {
+        final String accept = "application/json";
+        return service.actionsTaskSaveElementValueDocument(
+            this.client.getHost(),
+            id,
+            fileContentType,
+            fileName,
+            elementDefinitionCode,
+            elementValueId,
+            elementValueValid,
+            file,
+            contentLength,
+            accept,
+            context
+        );
     }
 
     /**
@@ -1618,24 +1639,26 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Task> actionsTaskSaveElementValueDocumentAsync(
-            UUID id,
-            String fileContentType,
-            String fileName,
-            String elementDefinitionCode,
-            Flux<ByteBuffer> file,
-            long contentLength,
-            UUID elementValueId,
-            Boolean elementValueValid) {
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String elementDefinitionCode,
+        Flux<ByteBuffer> file,
+        long contentLength,
+        UUID elementValueId,
+        Boolean elementValueValid
+    ) {
         return actionsTaskSaveElementValueDocumentWithResponseAsync(
-                        id,
-                        fileContentType,
-                        fileName,
-                        elementDefinitionCode,
-                        file,
-                        contentLength,
-                        elementValueId,
-                        elementValueValid)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            id,
+            fileContentType,
+            fileName,
+            elementDefinitionCode,
+            file,
+            contentLength,
+            elementValueId,
+            elementValueValid
+        )
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1660,24 +1683,26 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Task> actionsTaskSaveElementValueDocumentAsync(
-            UUID id,
-            String fileContentType,
-            String fileName,
-            String elementDefinitionCode,
-            Flux<ByteBuffer> file,
-            long contentLength) {
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String elementDefinitionCode,
+        Flux<ByteBuffer> file,
+        long contentLength
+    ) {
         final UUID elementValueId = null;
         final Boolean elementValueValid = null;
         return actionsTaskSaveElementValueDocumentWithResponseAsync(
-                        id,
-                        fileContentType,
-                        fileName,
-                        elementDefinitionCode,
-                        file,
-                        contentLength,
-                        elementValueId,
-                        elementValueValid)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            id,
+            fileContentType,
+            fileName,
+            elementDefinitionCode,
+            file,
+            contentLength,
+            elementValueId,
+            elementValueValid
+        )
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1705,26 +1730,28 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Task> actionsTaskSaveElementValueDocumentAsync(
-            UUID id,
-            String fileContentType,
-            String fileName,
-            String elementDefinitionCode,
-            Flux<ByteBuffer> file,
-            long contentLength,
-            UUID elementValueId,
-            Boolean elementValueValid,
-            Context context) {
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String elementDefinitionCode,
+        Flux<ByteBuffer> file,
+        long contentLength,
+        UUID elementValueId,
+        Boolean elementValueValid,
+        Context context
+    ) {
         return actionsTaskSaveElementValueDocumentWithResponseAsync(
-                        id,
-                        fileContentType,
-                        fileName,
-                        elementDefinitionCode,
-                        file,
-                        contentLength,
-                        elementValueId,
-                        elementValueValid,
-                        context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            id,
+            fileContentType,
+            fileName,
+            elementDefinitionCode,
+            file,
+            contentLength,
+            elementValueId,
+            elementValueValid,
+            context
+        )
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1751,67 +1778,18 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Task>> actionsTaskSaveElementValueDocumentWithResponseAsync(
-            UUID id,
-            String fileContentType,
-            String fileName,
-            String elementDefinitionCode,
-            BinaryData file,
-            long contentLength,
-            UUID elementValueId,
-            Boolean elementValueValid) {
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String elementDefinitionCode,
+        BinaryData file,
+        long contentLength,
+        UUID elementValueId,
+        Boolean elementValueValid
+    ) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.actionsTaskSaveElementValueDocument(
-                                this.client.getHost(),
-                                id,
-                                fileContentType,
-                                fileName,
-                                elementDefinitionCode,
-                                elementValueId,
-                                elementValueValid,
-                                file,
-                                contentLength,
-                                accept,
-                                context));
-    }
-
-    /**
-     * Save an element document
-     *
-     * <p>Allow to save an element document uploading the content.
-     *
-     * <p>If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will
-     * be added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
-     * one), it updates it.
-     *
-     * @param id The resource ID.
-     * @param fileContentType Document content type.
-     * @param fileName Document name.
-     * @param elementDefinitionCode Element Definition Code.
-     * @param file Command to save a document element value.
-     * @param contentLength The Content-Length header for the request.
-     * @param elementValueId Element Value ID.
-     * @param elementValueValid Element Value ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Task>> actionsTaskSaveElementValueDocumentWithResponseAsync(
-            UUID id,
-            String fileContentType,
-            String fileName,
-            String elementDefinitionCode,
-            BinaryData file,
-            long contentLength,
-            UUID elementValueId,
-            Boolean elementValueValid,
-            Context context) {
-        final String accept = "application/json";
-        return service.actionsTaskSaveElementValueDocument(
+        return FluxUtil.withContext(context ->
+            service.actionsTaskSaveElementValueDocument(
                 this.client.getHost(),
                 id,
                 fileContentType,
@@ -1822,7 +1800,60 @@ public final class TaskOperationsImpl {
                 file,
                 contentLength,
                 accept,
-                context);
+                context
+            )
+        );
+    }
+
+    /**
+     * Save an element document
+     *
+     * <p>Allow to save an element document uploading the content.
+     *
+     * <p>If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will
+     * be added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
+     * one), it updates it.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param elementDefinitionCode Element Definition Code.
+     * @param file Command to save a document element value.
+     * @param contentLength The Content-Length header for the request.
+     * @param elementValueId Element Value ID.
+     * @param elementValueValid Element Value ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Task>> actionsTaskSaveElementValueDocumentWithResponseAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String elementDefinitionCode,
+        BinaryData file,
+        long contentLength,
+        UUID elementValueId,
+        Boolean elementValueValid,
+        Context context
+    ) {
+        final String accept = "application/json";
+        return service.actionsTaskSaveElementValueDocument(
+            this.client.getHost(),
+            id,
+            fileContentType,
+            fileName,
+            elementDefinitionCode,
+            elementValueId,
+            elementValueValid,
+            file,
+            contentLength,
+            accept,
+            context
+        );
     }
 
     /**
@@ -1849,24 +1880,26 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Task> actionsTaskSaveElementValueDocumentAsync(
-            UUID id,
-            String fileContentType,
-            String fileName,
-            String elementDefinitionCode,
-            BinaryData file,
-            long contentLength,
-            UUID elementValueId,
-            Boolean elementValueValid) {
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String elementDefinitionCode,
+        BinaryData file,
+        long contentLength,
+        UUID elementValueId,
+        Boolean elementValueValid
+    ) {
         return actionsTaskSaveElementValueDocumentWithResponseAsync(
-                        id,
-                        fileContentType,
-                        fileName,
-                        elementDefinitionCode,
-                        file,
-                        contentLength,
-                        elementValueId,
-                        elementValueValid)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            id,
+            fileContentType,
+            fileName,
+            elementDefinitionCode,
+            file,
+            contentLength,
+            elementValueId,
+            elementValueValid
+        )
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1891,24 +1924,26 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Task> actionsTaskSaveElementValueDocumentAsync(
-            UUID id,
-            String fileContentType,
-            String fileName,
-            String elementDefinitionCode,
-            BinaryData file,
-            long contentLength) {
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String elementDefinitionCode,
+        BinaryData file,
+        long contentLength
+    ) {
         final UUID elementValueId = null;
         final Boolean elementValueValid = null;
         return actionsTaskSaveElementValueDocumentWithResponseAsync(
-                        id,
-                        fileContentType,
-                        fileName,
-                        elementDefinitionCode,
-                        file,
-                        contentLength,
-                        elementValueId,
-                        elementValueValid)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            id,
+            fileContentType,
+            fileName,
+            elementDefinitionCode,
+            file,
+            contentLength,
+            elementValueId,
+            elementValueValid
+        )
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1936,26 +1971,28 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Task> actionsTaskSaveElementValueDocumentAsync(
-            UUID id,
-            String fileContentType,
-            String fileName,
-            String elementDefinitionCode,
-            BinaryData file,
-            long contentLength,
-            UUID elementValueId,
-            Boolean elementValueValid,
-            Context context) {
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String elementDefinitionCode,
+        BinaryData file,
+        long contentLength,
+        UUID elementValueId,
+        Boolean elementValueValid,
+        Context context
+    ) {
         return actionsTaskSaveElementValueDocumentWithResponseAsync(
-                        id,
-                        fileContentType,
-                        fileName,
-                        elementDefinitionCode,
-                        file,
-                        contentLength,
-                        elementValueId,
-                        elementValueValid,
-                        context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            id,
+            fileContentType,
+            fileName,
+            elementDefinitionCode,
+            file,
+            contentLength,
+            elementValueId,
+            elementValueValid,
+            context
+        )
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1983,28 +2020,30 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Task> actionsTaskSaveElementValueDocumentWithResponse(
-            UUID id,
-            String fileContentType,
-            String fileName,
-            String elementDefinitionCode,
-            BinaryData file,
-            long contentLength,
-            UUID elementValueId,
-            Boolean elementValueValid,
-            Context context) {
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String elementDefinitionCode,
+        BinaryData file,
+        long contentLength,
+        UUID elementValueId,
+        Boolean elementValueValid,
+        Context context
+    ) {
         final String accept = "application/json";
         return service.actionsTaskSaveElementValueDocumentSync(
-                this.client.getHost(),
-                id,
-                fileContentType,
-                fileName,
-                elementDefinitionCode,
-                elementValueId,
-                elementValueValid,
-                file,
-                contentLength,
-                accept,
-                context);
+            this.client.getHost(),
+            id,
+            fileContentType,
+            fileName,
+            elementDefinitionCode,
+            elementValueId,
+            elementValueValid,
+            file,
+            contentLength,
+            accept,
+            context
+        );
     }
 
     /**
@@ -2031,25 +2070,27 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Task actionsTaskSaveElementValueDocument(
-            UUID id,
-            String fileContentType,
-            String fileName,
-            String elementDefinitionCode,
-            BinaryData file,
-            long contentLength,
-            UUID elementValueId,
-            Boolean elementValueValid) {
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String elementDefinitionCode,
+        BinaryData file,
+        long contentLength,
+        UUID elementValueId,
+        Boolean elementValueValid
+    ) {
         return actionsTaskSaveElementValueDocumentWithResponse(
-                        id,
-                        fileContentType,
-                        fileName,
-                        elementDefinitionCode,
-                        file,
-                        contentLength,
-                        elementValueId,
-                        elementValueValid,
-                        Context.NONE)
-                .getValue();
+            id,
+            fileContentType,
+            fileName,
+            elementDefinitionCode,
+            file,
+            contentLength,
+            elementValueId,
+            elementValueValid,
+            Context.NONE
+        )
+            .getValue();
     }
 
     /**
@@ -2074,25 +2115,27 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Task actionsTaskSaveElementValueDocument(
-            UUID id,
-            String fileContentType,
-            String fileName,
-            String elementDefinitionCode,
-            BinaryData file,
-            long contentLength) {
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String elementDefinitionCode,
+        BinaryData file,
+        long contentLength
+    ) {
         final UUID elementValueId = null;
         final Boolean elementValueValid = null;
         return actionsTaskSaveElementValueDocumentWithResponse(
-                        id,
-                        fileContentType,
-                        fileName,
-                        elementDefinitionCode,
-                        file,
-                        contentLength,
-                        elementValueId,
-                        elementValueValid,
-                        Context.NONE)
-                .getValue();
+            id,
+            fileContentType,
+            fileName,
+            elementDefinitionCode,
+            file,
+            contentLength,
+            elementValueId,
+            elementValueValid,
+            Context.NONE
+        )
+            .getValue();
     }
 
     /**
@@ -2112,8 +2155,7 @@ public final class TaskOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Task>> actionsTaskDeleteElementWithResponseAsync(UUID id, TaskDeleteElementCommand command) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.actionsTaskDeleteElement(this.client.getHost(), id, command, accept, context));
+        return FluxUtil.withContext(context -> service.actionsTaskDeleteElement(this.client.getHost(), id, command, accept, context));
     }
 
     /**
@@ -2132,8 +2174,7 @@ public final class TaskOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Task>> actionsTaskDeleteElementWithResponseAsync(
-            UUID id, TaskDeleteElementCommand command, Context context) {
+    public Mono<Response<Task>> actionsTaskDeleteElementWithResponseAsync(UUID id, TaskDeleteElementCommand command, Context context) {
         final String accept = "application/json";
         return service.actionsTaskDeleteElement(this.client.getHost(), id, command, accept, context);
     }
@@ -2174,8 +2215,7 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Task> actionsTaskDeleteElementAsync(UUID id, TaskDeleteElementCommand command, Context context) {
-        return actionsTaskDeleteElementWithResponseAsync(id, command, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return actionsTaskDeleteElementWithResponseAsync(id, command, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2194,8 +2234,7 @@ public final class TaskOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Task> actionsTaskDeleteElementWithResponse(
-            UUID id, TaskDeleteElementCommand command, Context context) {
+    public Response<Task> actionsTaskDeleteElementWithResponse(UUID id, TaskDeleteElementCommand command, Context context) {
         final String accept = "application/json";
         return service.actionsTaskDeleteElementSync(this.client.getHost(), id, command, accept, context);
     }
@@ -2236,12 +2275,13 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Task>> actionsTaskDeleteElementValueDocumentWithResponseAsync(
-            UUID id, TaskDeleteElementValueDocumentCommand command) {
+        UUID id,
+        TaskDeleteElementValueDocumentCommand command
+    ) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.actionsTaskDeleteElementValueDocument(
-                                this.client.getHost(), id, command, accept, context));
+        return FluxUtil.withContext(context ->
+            service.actionsTaskDeleteElementValueDocument(this.client.getHost(), id, command, accept, context)
+        );
     }
 
     /**
@@ -2262,7 +2302,10 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Task>> actionsTaskDeleteElementValueDocumentWithResponseAsync(
-            UUID id, TaskDeleteElementValueDocumentCommand command, Context context) {
+        UUID id,
+        TaskDeleteElementValueDocumentCommand command,
+        Context context
+    ) {
         final String accept = "application/json";
         return service.actionsTaskDeleteElementValueDocument(this.client.getHost(), id, command, accept, context);
     }
@@ -2283,10 +2326,8 @@ public final class TaskOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Task> actionsTaskDeleteElementValueDocumentAsync(
-            UUID id, TaskDeleteElementValueDocumentCommand command) {
-        return actionsTaskDeleteElementValueDocumentWithResponseAsync(id, command)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<Task> actionsTaskDeleteElementValueDocumentAsync(UUID id, TaskDeleteElementValueDocumentCommand command) {
+        return actionsTaskDeleteElementValueDocumentWithResponseAsync(id, command).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2306,10 +2347,9 @@ public final class TaskOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Task> actionsTaskDeleteElementValueDocumentAsync(
-            UUID id, TaskDeleteElementValueDocumentCommand command, Context context) {
+    public Mono<Task> actionsTaskDeleteElementValueDocumentAsync(UUID id, TaskDeleteElementValueDocumentCommand command, Context context) {
         return actionsTaskDeleteElementValueDocumentWithResponseAsync(id, command, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2330,7 +2370,10 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Task> actionsTaskDeleteElementValueDocumentWithResponse(
-            UUID id, TaskDeleteElementValueDocumentCommand command, Context context) {
+        UUID id,
+        TaskDeleteElementValueDocumentCommand command,
+        Context context
+    ) {
         final String accept = "application/json";
         return service.actionsTaskDeleteElementValueDocumentSync(this.client.getHost(), id, command, accept, context);
     }
@@ -2368,13 +2411,11 @@ public final class TaskOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> actionsTaskDownloadElementValueDocumentWithResponseAsync(
-            UUID id, UUID documentId) {
+    public Mono<Response<BinaryData>> actionsTaskDownloadElementValueDocumentWithResponseAsync(UUID id, UUID documentId) {
         final String accept = "application/octet-stream, application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.actionsTaskDownloadElementValueDocument(
-                                this.client.getHost(), id, documentId, accept, context));
+        return FluxUtil.withContext(context ->
+            service.actionsTaskDownloadElementValueDocument(this.client.getHost(), id, documentId, accept, context)
+        );
     }
 
     /**
@@ -2391,8 +2432,7 @@ public final class TaskOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> actionsTaskDownloadElementValueDocumentWithResponseAsync(
-            UUID id, UUID documentId, Context context) {
+    public Mono<Response<BinaryData>> actionsTaskDownloadElementValueDocumentWithResponseAsync(UUID id, UUID documentId, Context context) {
         final String accept = "application/octet-stream, application/json";
         return service.actionsTaskDownloadElementValueDocument(this.client.getHost(), id, documentId, accept, context);
     }
@@ -2411,8 +2451,7 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> actionsTaskDownloadElementValueDocumentAsync(UUID id, UUID documentId) {
-        return actionsTaskDownloadElementValueDocumentWithResponseAsync(id, documentId)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return actionsTaskDownloadElementValueDocumentWithResponseAsync(id, documentId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2431,7 +2470,7 @@ public final class TaskOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> actionsTaskDownloadElementValueDocumentAsync(UUID id, UUID documentId, Context context) {
         return actionsTaskDownloadElementValueDocumentWithResponseAsync(id, documentId, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2448,11 +2487,9 @@ public final class TaskOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> actionsTaskDownloadElementValueDocumentWithResponse(
-            UUID id, UUID documentId, Context context) {
+    public Response<BinaryData> actionsTaskDownloadElementValueDocumentWithResponse(UUID id, UUID documentId, Context context) {
         final String accept = "application/octet-stream, application/json";
-        return service.actionsTaskDownloadElementValueDocumentSync(
-                this.client.getHost(), id, documentId, accept, context);
+        return service.actionsTaskDownloadElementValueDocumentSync(this.client.getHost(), id, documentId, accept, context);
     }
 
     /**
@@ -2488,13 +2525,11 @@ public final class TaskOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> actionsTaskDownloadElementValueRenderedWithResponseAsync(
-            UUID id, String elementDefinitionCode) {
+    public Mono<Response<BinaryData>> actionsTaskDownloadElementValueRenderedWithResponseAsync(UUID id, String elementDefinitionCode) {
         final String accept = "application/pdf, application/zip, application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.actionsTaskDownloadElementValueRendered(
-                                this.client.getHost(), id, elementDefinitionCode, accept, context));
+        return FluxUtil.withContext(context ->
+            service.actionsTaskDownloadElementValueRendered(this.client.getHost(), id, elementDefinitionCode, accept, context)
+        );
     }
 
     /**
@@ -2515,10 +2550,12 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> actionsTaskDownloadElementValueRenderedWithResponseAsync(
-            UUID id, String elementDefinitionCode, Context context) {
+        UUID id,
+        String elementDefinitionCode,
+        Context context
+    ) {
         final String accept = "application/pdf, application/zip, application/json";
-        return service.actionsTaskDownloadElementValueRendered(
-                this.client.getHost(), id, elementDefinitionCode, accept, context);
+        return service.actionsTaskDownloadElementValueRendered(this.client.getHost(), id, elementDefinitionCode, accept, context);
     }
 
     /**
@@ -2539,7 +2576,7 @@ public final class TaskOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> actionsTaskDownloadElementValueRenderedAsync(UUID id, String elementDefinitionCode) {
         return actionsTaskDownloadElementValueRenderedWithResponseAsync(id, elementDefinitionCode)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2559,10 +2596,9 @@ public final class TaskOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> actionsTaskDownloadElementValueRenderedAsync(
-            UUID id, String elementDefinitionCode, Context context) {
+    public Mono<BinaryData> actionsTaskDownloadElementValueRenderedAsync(UUID id, String elementDefinitionCode, Context context) {
         return actionsTaskDownloadElementValueRenderedWithResponseAsync(id, elementDefinitionCode, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2583,10 +2619,12 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> actionsTaskDownloadElementValueRenderedWithResponse(
-            UUID id, String elementDefinitionCode, Context context) {
+        UUID id,
+        String elementDefinitionCode,
+        Context context
+    ) {
         final String accept = "application/pdf, application/zip, application/json";
-        return service.actionsTaskDownloadElementValueRenderedSync(
-                this.client.getHost(), id, elementDefinitionCode, accept, context);
+        return service.actionsTaskDownloadElementValueRenderedSync(this.client.getHost(), id, elementDefinitionCode, accept, context);
     }
 
     /**
@@ -2623,12 +2661,11 @@ public final class TaskOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Task>> actionsTaskSaveJsonFormsValueDataWithResponseAsync(
-            UUID id, TaskSaveJsonFormsValueDataCommand command) {
+    public Mono<Response<Task>> actionsTaskSaveJsonFormsValueDataWithResponseAsync(UUID id, TaskSaveJsonFormsValueDataCommand command) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.actionsTaskSaveJsonFormsValueData(this.client.getHost(), id, command, accept, context));
+        return FluxUtil.withContext(context ->
+            service.actionsTaskSaveJsonFormsValueData(this.client.getHost(), id, command, accept, context)
+        );
     }
 
     /**
@@ -2647,7 +2684,10 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Task>> actionsTaskSaveJsonFormsValueDataWithResponseAsync(
-            UUID id, TaskSaveJsonFormsValueDataCommand command, Context context) {
+        UUID id,
+        TaskSaveJsonFormsValueDataCommand command,
+        Context context
+    ) {
         final String accept = "application/json";
         return service.actionsTaskSaveJsonFormsValueData(this.client.getHost(), id, command, accept, context);
     }
@@ -2667,8 +2707,7 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Task> actionsTaskSaveJsonFormsValueDataAsync(UUID id, TaskSaveJsonFormsValueDataCommand command) {
-        return actionsTaskSaveJsonFormsValueDataWithResponseAsync(id, command)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return actionsTaskSaveJsonFormsValueDataWithResponseAsync(id, command).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2686,10 +2725,8 @@ public final class TaskOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Task> actionsTaskSaveJsonFormsValueDataAsync(
-            UUID id, TaskSaveJsonFormsValueDataCommand command, Context context) {
-        return actionsTaskSaveJsonFormsValueDataWithResponseAsync(id, command, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<Task> actionsTaskSaveJsonFormsValueDataAsync(UUID id, TaskSaveJsonFormsValueDataCommand command, Context context) {
+        return actionsTaskSaveJsonFormsValueDataWithResponseAsync(id, command, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2708,7 +2745,10 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Task> actionsTaskSaveJsonFormsValueDataWithResponse(
-            UUID id, TaskSaveJsonFormsValueDataCommand command, Context context) {
+        UUID id,
+        TaskSaveJsonFormsValueDataCommand command,
+        Context context
+    ) {
         final String accept = "application/json";
         return service.actionsTaskSaveJsonFormsValueDataSync(this.client.getHost(), id, command, accept, context);
     }
@@ -2749,27 +2789,28 @@ public final class TaskOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TaskSaveJsonFormsValueDocumentResponseCommand>>
-            actionsTaskSaveJsonFormsValueDocumentWithResponseAsync(
-                    UUID id,
-                    String fileContentType,
-                    String fileName,
-                    String schemaPath,
-                    Flux<ByteBuffer> file,
-                    long contentLength) {
+    public Mono<Response<TaskSaveJsonFormsValueDocumentResponseCommand>> actionsTaskSaveJsonFormsValueDocumentWithResponseAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String schemaPath,
+        Flux<ByteBuffer> file,
+        long contentLength
+    ) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.actionsTaskSaveJsonFormsValueDocument(
-                                this.client.getHost(),
-                                id,
-                                fileContentType,
-                                fileName,
-                                schemaPath,
-                                file,
-                                contentLength,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context ->
+            service.actionsTaskSaveJsonFormsValueDocument(
+                this.client.getHost(),
+                id,
+                fileContentType,
+                fileName,
+                schemaPath,
+                file,
+                contentLength,
+                accept,
+                context
+            )
+        );
     }
 
     /**
@@ -2791,18 +2832,27 @@ public final class TaskOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TaskSaveJsonFormsValueDocumentResponseCommand>>
-            actionsTaskSaveJsonFormsValueDocumentWithResponseAsync(
-                    UUID id,
-                    String fileContentType,
-                    String fileName,
-                    String schemaPath,
-                    Flux<ByteBuffer> file,
-                    long contentLength,
-                    Context context) {
+    public Mono<Response<TaskSaveJsonFormsValueDocumentResponseCommand>> actionsTaskSaveJsonFormsValueDocumentWithResponseAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String schemaPath,
+        Flux<ByteBuffer> file,
+        long contentLength,
+        Context context
+    ) {
         final String accept = "application/json";
         return service.actionsTaskSaveJsonFormsValueDocument(
-                this.client.getHost(), id, fileContentType, fileName, schemaPath, file, contentLength, accept, context);
+            this.client.getHost(),
+            id,
+            fileContentType,
+            fileName,
+            schemaPath,
+            file,
+            contentLength,
+            accept,
+            context
+        );
     }
 
     /**
@@ -2824,15 +2874,15 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TaskSaveJsonFormsValueDocumentResponseCommand> actionsTaskSaveJsonFormsValueDocumentAsync(
-            UUID id,
-            String fileContentType,
-            String fileName,
-            String schemaPath,
-            Flux<ByteBuffer> file,
-            long contentLength) {
-        return actionsTaskSaveJsonFormsValueDocumentWithResponseAsync(
-                        id, fileContentType, fileName, schemaPath, file, contentLength)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String schemaPath,
+        Flux<ByteBuffer> file,
+        long contentLength
+    ) {
+        return actionsTaskSaveJsonFormsValueDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2855,16 +2905,24 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TaskSaveJsonFormsValueDocumentResponseCommand> actionsTaskSaveJsonFormsValueDocumentAsync(
-            UUID id,
-            String fileContentType,
-            String fileName,
-            String schemaPath,
-            Flux<ByteBuffer> file,
-            long contentLength,
-            Context context) {
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String schemaPath,
+        Flux<ByteBuffer> file,
+        long contentLength,
+        Context context
+    ) {
         return actionsTaskSaveJsonFormsValueDocumentWithResponseAsync(
-                        id, fileContentType, fileName, schemaPath, file, contentLength, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            id,
+            fileContentType,
+            fileName,
+            schemaPath,
+            file,
+            contentLength,
+            context
+        )
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2885,27 +2943,28 @@ public final class TaskOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TaskSaveJsonFormsValueDocumentResponseCommand>>
-            actionsTaskSaveJsonFormsValueDocumentWithResponseAsync(
-                    UUID id,
-                    String fileContentType,
-                    String fileName,
-                    String schemaPath,
-                    BinaryData file,
-                    long contentLength) {
+    public Mono<Response<TaskSaveJsonFormsValueDocumentResponseCommand>> actionsTaskSaveJsonFormsValueDocumentWithResponseAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String schemaPath,
+        BinaryData file,
+        long contentLength
+    ) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.actionsTaskSaveJsonFormsValueDocument(
-                                this.client.getHost(),
-                                id,
-                                fileContentType,
-                                fileName,
-                                schemaPath,
-                                file,
-                                contentLength,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context ->
+            service.actionsTaskSaveJsonFormsValueDocument(
+                this.client.getHost(),
+                id,
+                fileContentType,
+                fileName,
+                schemaPath,
+                file,
+                contentLength,
+                accept,
+                context
+            )
+        );
     }
 
     /**
@@ -2927,18 +2986,27 @@ public final class TaskOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TaskSaveJsonFormsValueDocumentResponseCommand>>
-            actionsTaskSaveJsonFormsValueDocumentWithResponseAsync(
-                    UUID id,
-                    String fileContentType,
-                    String fileName,
-                    String schemaPath,
-                    BinaryData file,
-                    long contentLength,
-                    Context context) {
+    public Mono<Response<TaskSaveJsonFormsValueDocumentResponseCommand>> actionsTaskSaveJsonFormsValueDocumentWithResponseAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String schemaPath,
+        BinaryData file,
+        long contentLength,
+        Context context
+    ) {
         final String accept = "application/json";
         return service.actionsTaskSaveJsonFormsValueDocument(
-                this.client.getHost(), id, fileContentType, fileName, schemaPath, file, contentLength, accept, context);
+            this.client.getHost(),
+            id,
+            fileContentType,
+            fileName,
+            schemaPath,
+            file,
+            contentLength,
+            accept,
+            context
+        );
     }
 
     /**
@@ -2960,10 +3028,15 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TaskSaveJsonFormsValueDocumentResponseCommand> actionsTaskSaveJsonFormsValueDocumentAsync(
-            UUID id, String fileContentType, String fileName, String schemaPath, BinaryData file, long contentLength) {
-        return actionsTaskSaveJsonFormsValueDocumentWithResponseAsync(
-                        id, fileContentType, fileName, schemaPath, file, contentLength)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String schemaPath,
+        BinaryData file,
+        long contentLength
+    ) {
+        return actionsTaskSaveJsonFormsValueDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2986,16 +3059,24 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TaskSaveJsonFormsValueDocumentResponseCommand> actionsTaskSaveJsonFormsValueDocumentAsync(
-            UUID id,
-            String fileContentType,
-            String fileName,
-            String schemaPath,
-            BinaryData file,
-            long contentLength,
-            Context context) {
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String schemaPath,
+        BinaryData file,
+        long contentLength,
+        Context context
+    ) {
         return actionsTaskSaveJsonFormsValueDocumentWithResponseAsync(
-                        id, fileContentType, fileName, schemaPath, file, contentLength, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            id,
+            fileContentType,
+            fileName,
+            schemaPath,
+            file,
+            contentLength,
+            context
+        )
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3018,16 +3099,26 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TaskSaveJsonFormsValueDocumentResponseCommand> actionsTaskSaveJsonFormsValueDocumentWithResponse(
-            UUID id,
-            String fileContentType,
-            String fileName,
-            String schemaPath,
-            BinaryData file,
-            long contentLength,
-            Context context) {
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String schemaPath,
+        BinaryData file,
+        long contentLength,
+        Context context
+    ) {
         final String accept = "application/json";
         return service.actionsTaskSaveJsonFormsValueDocumentSync(
-                this.client.getHost(), id, fileContentType, fileName, schemaPath, file, contentLength, accept, context);
+            this.client.getHost(),
+            id,
+            fileContentType,
+            fileName,
+            schemaPath,
+            file,
+            contentLength,
+            accept,
+            context
+        );
     }
 
     /**
@@ -3049,10 +3140,23 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TaskSaveJsonFormsValueDocumentResponseCommand actionsTaskSaveJsonFormsValueDocument(
-            UUID id, String fileContentType, String fileName, String schemaPath, BinaryData file, long contentLength) {
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String schemaPath,
+        BinaryData file,
+        long contentLength
+    ) {
         return actionsTaskSaveJsonFormsValueDocumentWithResponse(
-                        id, fileContentType, fileName, schemaPath, file, contentLength, Context.NONE)
-                .getValue();
+            id,
+            fileContentType,
+            fileName,
+            schemaPath,
+            file,
+            contentLength,
+            Context.NONE
+        )
+            .getValue();
     }
 
     /**
@@ -3068,13 +3172,11 @@ public final class TaskOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> actionsTaskDownloadJsonFormsValueDocumentWithResponseAsync(
-            UUID id, String documentUri) {
+    public Mono<Response<BinaryData>> actionsTaskDownloadJsonFormsValueDocumentWithResponseAsync(UUID id, String documentUri) {
         final String accept = "application/octet-stream, application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.actionsTaskDownloadJsonFormsValueDocument(
-                                this.client.getHost(), id, documentUri, accept, context));
+        return FluxUtil.withContext(context ->
+            service.actionsTaskDownloadJsonFormsValueDocument(this.client.getHost(), id, documentUri, accept, context)
+        );
     }
 
     /**
@@ -3092,10 +3194,12 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> actionsTaskDownloadJsonFormsValueDocumentWithResponseAsync(
-            UUID id, String documentUri, Context context) {
+        UUID id,
+        String documentUri,
+        Context context
+    ) {
         final String accept = "application/octet-stream, application/json";
-        return service.actionsTaskDownloadJsonFormsValueDocument(
-                this.client.getHost(), id, documentUri, accept, context);
+        return service.actionsTaskDownloadJsonFormsValueDocument(this.client.getHost(), id, documentUri, accept, context);
     }
 
     /**
@@ -3112,8 +3216,7 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> actionsTaskDownloadJsonFormsValueDocumentAsync(UUID id, String documentUri) {
-        return actionsTaskDownloadJsonFormsValueDocumentWithResponseAsync(id, documentUri)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return actionsTaskDownloadJsonFormsValueDocumentWithResponseAsync(id, documentUri).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3130,10 +3233,9 @@ public final class TaskOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> actionsTaskDownloadJsonFormsValueDocumentAsync(
-            UUID id, String documentUri, Context context) {
+    public Mono<BinaryData> actionsTaskDownloadJsonFormsValueDocumentAsync(UUID id, String documentUri, Context context) {
         return actionsTaskDownloadJsonFormsValueDocumentWithResponseAsync(id, documentUri, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3150,11 +3252,9 @@ public final class TaskOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> actionsTaskDownloadJsonFormsValueDocumentWithResponse(
-            UUID id, String documentUri, Context context) {
+    public Response<BinaryData> actionsTaskDownloadJsonFormsValueDocumentWithResponse(UUID id, String documentUri, Context context) {
         final String accept = "application/octet-stream, application/json";
-        return service.actionsTaskDownloadJsonFormsValueDocumentSync(
-                this.client.getHost(), id, documentUri, accept, context);
+        return service.actionsTaskDownloadJsonFormsValueDocumentSync(this.client.getHost(), id, documentUri, accept, context);
     }
 
     /**
@@ -3291,8 +3391,7 @@ public final class TaskOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Task>> actionsTaskAppendLogWithResponseAsync(UUID id, Log log) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.actionsTaskAppendLog(this.client.getHost(), id, log, accept, context));
+        return FluxUtil.withContext(context -> service.actionsTaskAppendLog(this.client.getHost(), id, log, accept, context));
     }
 
     /**

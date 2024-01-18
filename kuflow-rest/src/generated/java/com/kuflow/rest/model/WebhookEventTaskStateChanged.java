@@ -34,6 +34,7 @@ import java.util.UUID;
 @JsonTypeName("TASK.STATE_CHANGED")
 @Fluent
 public final class WebhookEventTaskStateChanged extends WebhookEvent {
+
     /*
      * The data property.
      */

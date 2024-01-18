@@ -39,6 +39,7 @@ import java.util.UUID;
 @JsonTypeName("TASK_PAGE_ITEM")
 @Fluent
 public final class TaskPageItem extends AbstractAudited {
+
     /*
      * The id property.
      */
@@ -633,8 +634,7 @@ public final class TaskPageItem extends AbstractAudited {
      * @deprecated in favor of {@link TaskPageItemUtils}
      */
     @Deprecated
-    public TaskPageItem setElementValueAsMapList(
-            String elementDefinitionCode, List<Map<String, Object>> elementValues) {
+    public TaskPageItem setElementValueAsMapList(String elementDefinitionCode, List<Map<String, Object>> elementValues) {
         TaskPageItemUtils.setElementValueAsMapList(this, elementDefinitionCode, elementValues);
 
         return this;
@@ -664,8 +664,7 @@ public final class TaskPageItem extends AbstractAudited {
      * @deprecated in favor of {@link TaskPageItemUtils}
      */
     @Deprecated
-    public TaskPageItem addElementValueAsMapList(
-            String elementDefinitionCode, List<Map<String, Object>> elementValues) {
+    public TaskPageItem addElementValueAsMapList(String elementDefinitionCode, List<Map<String, Object>> elementValues) {
         TaskPageItemUtils.addElementValueAsMapList(this, elementDefinitionCode, elementValues);
 
         return this;
@@ -720,8 +719,7 @@ public final class TaskPageItem extends AbstractAudited {
      * @deprecated in favor of {@link TaskPageItemUtils}
      */
     @Deprecated
-    public TaskPageItem setElementValueAsDocument(
-            String elementDefinitionCode, TaskElementValueDocumentItem elementValue) {
+    public TaskPageItem setElementValueAsDocument(String elementDefinitionCode, TaskElementValueDocumentItem elementValue) {
         TaskPageItemUtils.setElementValueAsDocument(this, elementDefinitionCode, elementValue);
 
         return this;
@@ -736,8 +734,7 @@ public final class TaskPageItem extends AbstractAudited {
      * @deprecated in favor of {@link TaskPageItemUtils}
      */
     @Deprecated
-    public TaskPageItem setElementValueAsDocumentList(
-            String elementDefinitionCode, List<TaskElementValueDocumentItem> elementValues) {
+    public TaskPageItem setElementValueAsDocumentList(String elementDefinitionCode, List<TaskElementValueDocumentItem> elementValues) {
         TaskPageItemUtils.setElementValueAsDocumentList(this, elementDefinitionCode, elementValues);
 
         return this;
@@ -752,8 +749,7 @@ public final class TaskPageItem extends AbstractAudited {
      * @deprecated in favor of {@link TaskPageItemUtils}
      */
     @Deprecated
-    public TaskPageItem addElementValueAsDocument(
-            String elementDefinitionCode, TaskElementValueDocumentItem elementValue) {
+    public TaskPageItem addElementValueAsDocument(String elementDefinitionCode, TaskElementValueDocumentItem elementValue) {
         TaskPageItemUtils.addElementValueAsDocument(this, elementDefinitionCode, elementValue);
 
         return this;
@@ -768,8 +764,7 @@ public final class TaskPageItem extends AbstractAudited {
      * @deprecated in favor of {@link TaskPageItemUtils}
      */
     @Deprecated
-    public TaskPageItem addElementValueAsDocumentList(
-            String elementDefinitionCode, List<TaskElementValueDocumentItem> elementValues) {
+    public TaskPageItem addElementValueAsDocumentList(String elementDefinitionCode, List<TaskElementValueDocumentItem> elementValues) {
         TaskPageItemUtils.addElementValueAsDocumentList(this, elementDefinitionCode, elementValues);
 
         return this;
@@ -824,8 +819,7 @@ public final class TaskPageItem extends AbstractAudited {
      * @deprecated in favor of {@link TaskPageItemUtils}
      */
     @Deprecated
-    public TaskPageItem setElementValueAsPrincipal(
-            String elementDefinitionCode, TaskElementValuePrincipalItem elementValue) {
+    public TaskPageItem setElementValueAsPrincipal(String elementDefinitionCode, TaskElementValuePrincipalItem elementValue) {
         TaskPageItemUtils.setElementValueAsPrincipal(this, elementDefinitionCode, elementValue);
 
         return this;
@@ -840,8 +834,7 @@ public final class TaskPageItem extends AbstractAudited {
      * @deprecated in favor of {@link TaskPageItemUtils}
      */
     @Deprecated
-    public TaskPageItem setElementValueAsPrincipalList(
-            String elementDefinitionCode, List<TaskElementValuePrincipalItem> elementValues) {
+    public TaskPageItem setElementValueAsPrincipalList(String elementDefinitionCode, List<TaskElementValuePrincipalItem> elementValues) {
         TaskPageItemUtils.setElementValueAsPrincipalList(this, elementDefinitionCode, elementValues);
 
         return this;
@@ -856,8 +849,7 @@ public final class TaskPageItem extends AbstractAudited {
      * @deprecated in favor of {@link TaskPageItemUtils}
      */
     @Deprecated
-    public TaskPageItem addElementValueAsPrincipal(
-            String elementDefinitionCode, TaskElementValuePrincipalItem elementValue) {
+    public TaskPageItem addElementValueAsPrincipal(String elementDefinitionCode, TaskElementValuePrincipalItem elementValue) {
         TaskPageItemUtils.addElementValueAsPrincipal(this, elementDefinitionCode, elementValue);
 
         return this;
@@ -872,8 +864,7 @@ public final class TaskPageItem extends AbstractAudited {
      * @deprecated in favor of {@link TaskPageItemUtils}
      */
     @Deprecated
-    public TaskPageItem addElementValueAsPrincipalList(
-            String elementDefinitionCode, List<TaskElementValuePrincipalItem> elementValues) {
+    public TaskPageItem addElementValueAsPrincipalList(String elementDefinitionCode, List<TaskElementValuePrincipalItem> elementValues) {
         TaskPageItemUtils.addElementValueAsPrincipalList(this, elementDefinitionCode, elementValues);
 
         return this;
