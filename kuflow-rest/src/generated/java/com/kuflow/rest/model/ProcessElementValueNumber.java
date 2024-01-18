@@ -27,7 +27,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The ProcessElementValueNumber model. */
+/**
+ * The ProcessElementValueNumber model.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("NUMBER")
 @Fluent
@@ -39,7 +41,9 @@ public final class ProcessElementValueNumber extends ProcessElementValue {
     @JsonProperty(value = "value")
     private Double value;
 
-    /** Creates an instance of ProcessElementValueNumber class. */
+    /**
+     * Creates an instance of ProcessElementValueNumber class.
+     */
     public ProcessElementValueNumber() {}
 
     /**
@@ -62,7 +66,9 @@ public final class ProcessElementValueNumber extends ProcessElementValue {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProcessElementValueNumber setValid(Boolean valid) {
         super.setValid(valid);

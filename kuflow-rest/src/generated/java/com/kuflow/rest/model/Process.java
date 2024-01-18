@@ -34,7 +34,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-/** The Process model. */
+/**
+ * The Process model.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("PROCESS")
 @Fluent
@@ -82,7 +84,9 @@ public final class Process extends AbstractAudited {
     @JsonProperty(value = "relatedProcess")
     private RelatedProcess relatedProcess;
 
-    /** Creates an instance of Process class. */
+    /**
+     * Creates an instance of Process class.
+     */
     public Process() {}
 
     /**
@@ -225,28 +229,36 @@ public final class Process extends AbstractAudited {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Process setCreatedBy(UUID createdBy) {
         super.setCreatedBy(createdBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Process setCreatedAt(OffsetDateTime createdAt) {
         super.setCreatedAt(createdAt);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Process setLastModifiedBy(UUID lastModifiedBy) {
         super.setLastModifiedBy(lastModifiedBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Process setLastModifiedAt(OffsetDateTime lastModifiedAt) {
         super.setLastModifiedAt(lastModifiedAt);
@@ -375,7 +387,7 @@ public final class Process extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link ProcessUtils}
      */
     @Deprecated
@@ -389,7 +401,7 @@ public final class Process extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the elements values.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link ProcessUtils}
      */
     @Deprecated
@@ -475,7 +487,7 @@ public final class Process extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link ProcessUtils}
      */
     @Deprecated
@@ -489,7 +501,7 @@ public final class Process extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the elements values.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link ProcessUtils}
      */
     @Deprecated
@@ -575,7 +587,7 @@ public final class Process extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link ProcessUtils}
      */
     @Deprecated
@@ -589,7 +601,7 @@ public final class Process extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the elements values.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link ProcessUtils}
      */
     @Deprecated

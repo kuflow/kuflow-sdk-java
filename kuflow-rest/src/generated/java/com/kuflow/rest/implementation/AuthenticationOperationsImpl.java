@@ -40,13 +40,19 @@ import com.kuflow.rest.model.Authentication;
 import com.kuflow.rest.model.DefaultErrorException;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AuthenticationOperations. */
+/**
+ * An instance of this class provides access to all the operations defined in AuthenticationOperations.
+ */
 public final class AuthenticationOperationsImpl {
 
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AuthenticationOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final KuFlowClientImpl client;
 
     /**

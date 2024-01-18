@@ -30,7 +30,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
-/** The Worker model. */
+/**
+ * The Worker model.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("WORKER")
 @Fluent
@@ -78,7 +80,9 @@ public final class Worker extends AbstractAudited {
     @JsonProperty(value = "ip", required = true)
     private String ip;
 
-    /** Creates an instance of Worker class. */
+    /**
+     * Creates an instance of Worker class.
+     */
     public Worker() {}
 
     /**
@@ -221,28 +225,36 @@ public final class Worker extends AbstractAudited {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Worker setCreatedBy(UUID createdBy) {
         super.setCreatedBy(createdBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Worker setCreatedAt(OffsetDateTime createdAt) {
         super.setCreatedAt(createdAt);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Worker setLastModifiedBy(UUID lastModifiedBy) {
         super.setLastModifiedBy(lastModifiedBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Worker setLastModifiedAt(OffsetDateTime lastModifiedAt) {
         super.setLastModifiedAt(lastModifiedAt);

@@ -26,7 +26,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** The Principal model. */
+/**
+ * The Principal model.
+ */
 @Fluent
 public final class Principal {
 
@@ -60,7 +62,9 @@ public final class Principal {
     @JsonProperty(value = "application")
     private PrincipalApplication application;
 
-    /** Creates an instance of Principal class. */
+    /**
+     * Creates an instance of Principal class.
+     */
     public Principal() {}
 
     /**

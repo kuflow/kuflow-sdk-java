@@ -25,15 +25,23 @@ package com.kuflow.rest.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Type of the Event. */
+/**
+ * Type of the Event.
+ */
 public enum WebhookType {
-    /** Enum value PROCESS.STATE_CHANGED. */
+    /**
+     * Enum value PROCESS.STATE_CHANGED.
+     */
     PROCESS_STATE_CHANGED("PROCESS.STATE_CHANGED"),
 
-    /** Enum value TASK.STATE_CHANGED. */
+    /**
+     * Enum value TASK.STATE_CHANGED.
+     */
     TASK_STATE_CHANGED("TASK.STATE_CHANGED");
 
-    /** The actual serialized value for a WebhookType instance. */
+    /**
+     * The actual serialized value for a WebhookType instance.
+     */
     private final String value;
 
     WebhookType(String value) {
@@ -60,7 +68,9 @@ public enum WebhookType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

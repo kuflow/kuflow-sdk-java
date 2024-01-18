@@ -26,7 +26,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The TaskSaveJsonFormsValueDataCommand model. */
+/**
+ * The TaskSaveJsonFormsValueDataCommand model.
+ */
 @Fluent
 public final class TaskSaveJsonFormsValueDataCommand {
 
@@ -36,7 +38,9 @@ public final class TaskSaveJsonFormsValueDataCommand {
     @JsonProperty(value = "data")
     private Map<String, Object> data;
 
-    /** Creates an instance of TaskSaveJsonFormsValueDataCommand class. */
+    /**
+     * Creates an instance of TaskSaveJsonFormsValueDataCommand class.
+     */
     public TaskSaveJsonFormsValueDataCommand() {}
 
     /**

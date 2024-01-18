@@ -27,7 +27,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Default error. */
+/**
+ * Default error.
+ */
 @Fluent
 public final class DefaultError {
 
@@ -55,7 +57,9 @@ public final class DefaultError {
     @JsonProperty(value = "errors")
     private List<DefaultErrorInfo> errors;
 
-    /** Creates an instance of DefaultError class. */
+    /**
+     * Creates an instance of DefaultError class.
+     */
     public DefaultError() {}
 
     /**

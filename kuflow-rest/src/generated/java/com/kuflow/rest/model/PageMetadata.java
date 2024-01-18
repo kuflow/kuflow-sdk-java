@@ -25,7 +25,9 @@ package com.kuflow.rest.model;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PageMetadata model. */
+/**
+ * The PageMetadata model.
+ */
 @Fluent
 public final class PageMetadata {
 
@@ -53,7 +55,9 @@ public final class PageMetadata {
     @JsonProperty(value = "totalPages", required = true)
     private int totalPages;
 
-    /** Creates an instance of PageMetadata class. */
+    /**
+     * Creates an instance of PageMetadata class.
+     */
     public PageMetadata() {}
 
     /**

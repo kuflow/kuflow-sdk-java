@@ -25,18 +25,28 @@ package com.kuflow.rest.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Paged Model types. */
+/**
+ * Paged Model types.
+ */
 public enum PagedObjectType {
-    /** Enum value PRINCIPAL_PAGE. */
+    /**
+     * Enum value PRINCIPAL_PAGE.
+     */
     PRINCIPAL_PAGE("PRINCIPAL_PAGE"),
 
-    /** Enum value PROCESS_PAGE. */
+    /**
+     * Enum value PROCESS_PAGE.
+     */
     PROCESS_PAGE("PROCESS_PAGE"),
 
-    /** Enum value TASK_PAGE. */
+    /**
+     * Enum value TASK_PAGE.
+     */
     TASK_PAGE("TASK_PAGE");
 
-    /** The actual serialized value for a PagedObjectType instance. */
+    /**
+     * The actual serialized value for a PagedObjectType instance.
+     */
     private final String value;
 
     PagedObjectType(String value) {
@@ -63,7 +73,9 @@ public enum PagedObjectType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

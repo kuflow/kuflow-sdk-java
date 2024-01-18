@@ -28,7 +28,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The Page model. */
+/**
+ * The Page model.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType", defaultImpl = Page.class)
 @JsonTypeName("Page")
 @JsonSubTypes(
@@ -47,7 +49,9 @@ public class Page {
     @JsonProperty(value = "metadata", required = true)
     private PageMetadata metadata;
 
-    /** Creates an instance of Page class. */
+    /**
+     * Creates an instance of Page class.
+     */
     public Page() {}
 
     /**

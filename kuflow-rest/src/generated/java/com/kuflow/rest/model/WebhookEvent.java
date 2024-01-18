@@ -30,7 +30,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/** The WebhookEvent model. */
+/**
+ * The WebhookEvent model.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = WebhookEvent.class)
 @JsonTypeName("WebhookEvent")
 @JsonSubTypes(
@@ -54,7 +56,9 @@ public class WebhookEvent {
     @JsonProperty(value = "timestamp", required = true)
     private OffsetDateTime timestamp;
 
-    /** Creates an instance of WebhookEvent class. */
+    /**
+     * Creates an instance of WebhookEvent class.
+     */
     public WebhookEvent() {}
 
     /**

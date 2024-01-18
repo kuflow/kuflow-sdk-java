@@ -27,7 +27,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The TaskElementValueNumber model. */
+/**
+ * The TaskElementValueNumber model.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("NUMBER")
 @Fluent
@@ -39,7 +41,9 @@ public final class TaskElementValueNumber extends TaskElementValue {
     @JsonProperty(value = "value")
     private Double value;
 
-    /** Creates an instance of TaskElementValueNumber class. */
+    /**
+     * Creates an instance of TaskElementValueNumber class.
+     */
     public TaskElementValueNumber() {}
 
     /**
@@ -62,7 +66,9 @@ public final class TaskElementValueNumber extends TaskElementValue {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TaskElementValueNumber setValid(Boolean valid) {
         super.setValid(valid);

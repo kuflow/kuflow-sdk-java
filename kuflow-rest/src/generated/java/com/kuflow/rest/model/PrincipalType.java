@@ -25,18 +25,28 @@ package com.kuflow.rest.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for PrincipalType. */
+/**
+ * Defines values for PrincipalType.
+ */
 public enum PrincipalType {
-    /** Enum value USER. */
+    /**
+     * Enum value USER.
+     */
     USER("USER"),
 
-    /** Enum value APPLICATION. */
+    /**
+     * Enum value APPLICATION.
+     */
     APPLICATION("APPLICATION"),
 
-    /** Enum value SYSTEM. */
+    /**
+     * Enum value SYSTEM.
+     */
     SYSTEM("SYSTEM");
 
-    /** The actual serialized value for a PrincipalType instance. */
+    /**
+     * The actual serialized value for a PrincipalType instance.
+     */
     private final String value;
 
     PrincipalType(String value) {
@@ -63,7 +73,9 @@ public enum PrincipalType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

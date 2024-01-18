@@ -34,7 +34,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-/** The Task model. */
+/**
+ * The Task model.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("TASK")
 @Fluent
@@ -91,7 +93,9 @@ public final class Task extends AbstractAudited {
     @JsonProperty(value = "owner")
     private Principal owner;
 
-    /** Creates an instance of Task class. */
+    /**
+     * Creates an instance of Task class.
+     */
     public Task() {}
 
     /**
@@ -176,7 +180,8 @@ public final class Task extends AbstractAudited {
 
     /**
      * Get the elementValues property: Task element values, en ElementValueDocument is not allowed, used when the task
-     * render type selected is JSON Forms.
+     * render type selected is
+     * JSON Forms.
      *
      * @return the elementValues value.
      */
@@ -186,7 +191,8 @@ public final class Task extends AbstractAudited {
 
     /**
      * Set the elementValues property: Task element values, en ElementValueDocument is not allowed, used when the task
-     * render type selected is JSON Forms.
+     * render type selected is
+     * JSON Forms.
      *
      * @param elementValues the elementValues value to set.
      * @return the Task object itself.
@@ -256,28 +262,36 @@ public final class Task extends AbstractAudited {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Task setCreatedBy(UUID createdBy) {
         super.setCreatedBy(createdBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Task setCreatedAt(OffsetDateTime createdAt) {
         super.setCreatedAt(createdAt);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Task setLastModifiedBy(UUID lastModifiedBy) {
         super.setLastModifiedBy(lastModifiedBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Task setLastModifiedAt(OffsetDateTime lastModifiedAt) {
         super.setLastModifiedAt(lastModifiedAt);
@@ -406,7 +420,7 @@ public final class Task extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link TaskUtils}
      */
     @Deprecated
@@ -420,7 +434,7 @@ public final class Task extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the elements values.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link TaskUtils}
      */
     @Deprecated
@@ -506,7 +520,7 @@ public final class Task extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link TaskUtils}
      */
     @Deprecated
@@ -520,7 +534,7 @@ public final class Task extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the elements values.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link TaskUtils}
      */
     @Deprecated
@@ -606,7 +620,7 @@ public final class Task extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link TaskUtils}
      */
     @Deprecated
@@ -620,7 +634,7 @@ public final class Task extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the elements values.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link TaskUtils}
      */
     @Deprecated
@@ -706,7 +720,7 @@ public final class Task extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link TaskUtils}
      */
     @Deprecated
@@ -720,7 +734,7 @@ public final class Task extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the elements values.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link TaskUtils}
      */
     @Deprecated
@@ -806,7 +820,7 @@ public final class Task extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link TaskUtils}
      */
     @Deprecated
@@ -820,7 +834,7 @@ public final class Task extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the elements values.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link TaskUtils}
      */
     @Deprecated
@@ -906,7 +920,7 @@ public final class Task extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link TaskUtils}
      */
     @Deprecated
@@ -920,7 +934,7 @@ public final class Task extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the elements values.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link TaskUtils}
      */
     @Deprecated

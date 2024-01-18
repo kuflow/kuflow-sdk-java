@@ -28,7 +28,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The PrincipalPage model. */
+/**
+ * The PrincipalPage model.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("PRINCIPAL_PAGE")
 @Fluent
@@ -40,7 +42,9 @@ public final class PrincipalPage extends Page {
     @JsonProperty(value = "content", required = true)
     private List<Principal> content;
 
-    /** Creates an instance of PrincipalPage class. */
+    /**
+     * Creates an instance of PrincipalPage class.
+     */
     public PrincipalPage() {}
 
     /**
@@ -63,7 +67,9 @@ public final class PrincipalPage extends Page {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PrincipalPage setMetadata(PageMetadata metadata) {
         super.setMetadata(metadata);

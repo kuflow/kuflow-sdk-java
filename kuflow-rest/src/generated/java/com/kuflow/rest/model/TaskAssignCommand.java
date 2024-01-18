@@ -26,7 +26,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** Command to assign task, only one option is required. */
+/**
+ * Command to assign task, only one option is required.
+ */
 @Fluent
 public final class TaskAssignCommand {
 
@@ -42,7 +44,9 @@ public final class TaskAssignCommand {
     @JsonProperty(value = "email")
     private String email;
 
-    /** Creates an instance of TaskAssignCommand class. */
+    /**
+     * Creates an instance of TaskAssignCommand class.
+     */
     public TaskAssignCommand() {}
 
     /**

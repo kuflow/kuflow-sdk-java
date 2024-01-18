@@ -28,7 +28,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The ProcessElementValue model. */
+/**
+ * The ProcessElementValue model.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = ProcessElementValue.class)
 @JsonTypeName("ProcessElementValue")
 @JsonSubTypes(
@@ -46,7 +48,9 @@ public class ProcessElementValue {
     @JsonProperty(value = "valid")
     private Boolean valid;
 
-    /** Creates an instance of ProcessElementValue class. */
+    /**
+     * Creates an instance of ProcessElementValue class.
+     */
     public ProcessElementValue() {}
 
     /**

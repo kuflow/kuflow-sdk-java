@@ -27,7 +27,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The TaskElementValueString model. */
+/**
+ * The TaskElementValueString model.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("STRING")
 @Fluent
@@ -39,7 +41,9 @@ public final class TaskElementValueString extends TaskElementValue {
     @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of TaskElementValueString class. */
+    /**
+     * Creates an instance of TaskElementValueString class.
+     */
     public TaskElementValueString() {}
 
     /**
@@ -62,7 +66,9 @@ public final class TaskElementValueString extends TaskElementValue {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TaskElementValueString setValid(Boolean valid) {
         super.setValid(valid);

@@ -30,7 +30,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/** The AbstractAudited model. */
+/**
+ * The AbstractAudited model.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType", defaultImpl = AbstractAudited.class)
 @JsonTypeName("AbstractAudited")
 @JsonSubTypes(
@@ -70,7 +72,9 @@ public class AbstractAudited {
     @JsonProperty(value = "lastModifiedAt")
     private OffsetDateTime lastModifiedAt;
 
-    /** Creates an instance of AbstractAudited class. */
+    /**
+     * Creates an instance of AbstractAudited class.
+     */
     public AbstractAudited() {}
 
     /**

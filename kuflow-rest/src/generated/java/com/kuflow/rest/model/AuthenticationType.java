@@ -25,18 +25,28 @@ package com.kuflow.rest.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for AuthenticationType. */
+/**
+ * Defines values for AuthenticationType.
+ */
 public enum AuthenticationType {
-    /** Enum value ENGINE. */
+    /**
+     * Enum value ENGINE.
+     */
     ENGINE("ENGINE"),
 
-    /** Enum value ENGINE_TOKEN. */
+    /**
+     * Enum value ENGINE_TOKEN.
+     */
     ENGINE_TOKEN("ENGINE_TOKEN"),
 
-    /** Enum value ENGINE_CERTIFICATE. */
+    /**
+     * Enum value ENGINE_CERTIFICATE.
+     */
     ENGINE_CERTIFICATE("ENGINE_CERTIFICATE");
 
-    /** The actual serialized value for a AuthenticationType instance. */
+    /**
+     * The actual serialized value for a AuthenticationType instance.
+     */
     private final String value;
 
     AuthenticationType(String value) {
@@ -63,7 +73,9 @@ public enum AuthenticationType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

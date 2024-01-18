@@ -26,7 +26,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** In creation task, one of 'id, version or code' is mandatory. */
+/**
+ * In creation task, one of 'id, version or code' is mandatory.
+ */
 @Fluent
 public final class TaskDefinitionSummary {
 
@@ -54,7 +56,9 @@ public final class TaskDefinitionSummary {
     @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of TaskDefinitionSummary class. */
+    /**
+     * Creates an instance of TaskDefinitionSummary class.
+     */
     public TaskDefinitionSummary() {}
 
     /**

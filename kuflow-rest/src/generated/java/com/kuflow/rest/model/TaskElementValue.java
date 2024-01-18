@@ -28,7 +28,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The TaskElementValue model. */
+/**
+ * The TaskElementValue model.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = TaskElementValue.class)
 @JsonTypeName("TaskElementValue")
 @JsonSubTypes(
@@ -49,7 +51,9 @@ public class TaskElementValue {
     @JsonProperty(value = "valid")
     private Boolean valid;
 
-    /** Creates an instance of TaskElementValue class. */
+    /**
+     * Creates an instance of TaskElementValue class.
+     */
     public TaskElementValue() {}
 
     /**

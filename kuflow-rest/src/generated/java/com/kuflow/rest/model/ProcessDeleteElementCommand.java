@@ -25,7 +25,9 @@ package com.kuflow.rest.model;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ProcessDeleteElementCommand model. */
+/**
+ * The ProcessDeleteElementCommand model.
+ */
 @Fluent
 public final class ProcessDeleteElementCommand {
 
@@ -35,7 +37,9 @@ public final class ProcessDeleteElementCommand {
     @JsonProperty(value = "elementDefinitionCode", required = true)
     private String elementDefinitionCode;
 
-    /** Creates an instance of ProcessDeleteElementCommand class. */
+    /**
+     * Creates an instance of ProcessDeleteElementCommand class.
+     */
     public ProcessDeleteElementCommand() {}
 
     /**

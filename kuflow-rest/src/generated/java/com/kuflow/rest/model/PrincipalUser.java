@@ -26,7 +26,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** The PrincipalUser model. */
+/**
+ * The PrincipalUser model.
+ */
 @Fluent
 public final class PrincipalUser {
 
@@ -42,7 +44,9 @@ public final class PrincipalUser {
     @JsonProperty(value = "email")
     private String email;
 
-    /** Creates an instance of PrincipalUser class. */
+    /**
+     * Creates an instance of PrincipalUser class.
+     */
     public PrincipalUser() {}
 
     /**

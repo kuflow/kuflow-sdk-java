@@ -26,7 +26,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** The WebhookEventTaskStateChangedData model. */
+/**
+ * The WebhookEventTaskStateChangedData model.
+ */
 @Fluent
 public final class WebhookEventTaskStateChangedData {
 
@@ -54,7 +56,9 @@ public final class WebhookEventTaskStateChangedData {
     @JsonProperty(value = "taskState", required = true)
     private TaskState taskState;
 
-    /** Creates an instance of WebhookEventTaskStateChangedData class. */
+    /**
+     * Creates an instance of WebhookEventTaskStateChangedData class.
+     */
     public WebhookEventTaskStateChangedData() {}
 
     /**

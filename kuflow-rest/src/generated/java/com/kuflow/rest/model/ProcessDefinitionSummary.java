@@ -26,7 +26,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** The ProcessDefinitionSummary model. */
+/**
+ * The ProcessDefinitionSummary model.
+ */
 @Fluent
 public final class ProcessDefinitionSummary {
 
@@ -48,7 +50,9 @@ public final class ProcessDefinitionSummary {
     @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of ProcessDefinitionSummary class. */
+    /**
+     * Creates an instance of ProcessDefinitionSummary class.
+     */
     public ProcessDefinitionSummary() {}
 
     /**

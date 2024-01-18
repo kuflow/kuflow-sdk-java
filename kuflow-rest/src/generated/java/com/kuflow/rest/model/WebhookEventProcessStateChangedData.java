@@ -26,7 +26,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** The WebhookEventProcessStateChangedData model. */
+/**
+ * The WebhookEventProcessStateChangedData model.
+ */
 @Fluent
 public final class WebhookEventProcessStateChangedData {
 
@@ -42,7 +44,9 @@ public final class WebhookEventProcessStateChangedData {
     @JsonProperty(value = "processState", required = true)
     private ProcessState processState;
 
-    /** Creates an instance of WebhookEventProcessStateChangedData class. */
+    /**
+     * Creates an instance of WebhookEventProcessStateChangedData class.
+     */
     public WebhookEventProcessStateChangedData() {}
 
     /**

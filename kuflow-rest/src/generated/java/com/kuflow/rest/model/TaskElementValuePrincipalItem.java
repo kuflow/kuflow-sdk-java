@@ -26,7 +26,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** The TaskElementValuePrincipalItem model. */
+/**
+ * The TaskElementValuePrincipalItem model.
+ */
 @Fluent
 public final class TaskElementValuePrincipalItem {
 
@@ -48,7 +50,9 @@ public final class TaskElementValuePrincipalItem {
     @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of TaskElementValuePrincipalItem class. */
+    /**
+     * Creates an instance of TaskElementValuePrincipalItem class.
+     */
     public TaskElementValuePrincipalItem() {}
 
     /**

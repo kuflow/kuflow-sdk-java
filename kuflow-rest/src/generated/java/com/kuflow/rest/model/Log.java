@@ -27,7 +27,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/** The Log model. */
+/**
+ * The Log model.
+ */
 @Fluent
 public final class Log {
 
@@ -55,7 +57,9 @@ public final class Log {
     @JsonProperty(value = "level", required = true)
     private LogLevel level;
 
-    /** Creates an instance of Log class. */
+    /**
+     * Creates an instance of Log class.
+     */
     public Log() {}
 
     /**

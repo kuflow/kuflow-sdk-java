@@ -28,7 +28,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The ProcessPage model. */
+/**
+ * The ProcessPage model.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("PROCESS_PAGE")
 @Fluent
@@ -40,7 +42,9 @@ public final class ProcessPage extends Page {
     @JsonProperty(value = "content", required = true)
     private List<ProcessPageItem> content;
 
-    /** Creates an instance of ProcessPage class. */
+    /**
+     * Creates an instance of ProcessPage class.
+     */
     public ProcessPage() {}
 
     /**
@@ -63,7 +67,9 @@ public final class ProcessPage extends Page {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProcessPage setMetadata(PageMetadata metadata) {
         super.setMetadata(metadata);

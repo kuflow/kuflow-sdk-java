@@ -25,18 +25,28 @@ package com.kuflow.rest.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Process state. */
+/**
+ * Process state.
+ */
 public enum ProcessState {
-    /** Enum value RUNNING. */
+    /**
+     * Enum value RUNNING.
+     */
     RUNNING("RUNNING"),
 
-    /** Enum value COMPLETED. */
+    /**
+     * Enum value COMPLETED.
+     */
     COMPLETED("COMPLETED"),
 
-    /** Enum value CANCELLED. */
+    /**
+     * Enum value CANCELLED.
+     */
     CANCELLED("CANCELLED");
 
-    /** The actual serialized value for a ProcessState instance. */
+    /**
+     * The actual serialized value for a ProcessState instance.
+     */
     private final String value;
 
     ProcessState(String value) {
@@ -63,7 +73,9 @@ public enum ProcessState {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

@@ -40,13 +40,19 @@ import com.kuflow.rest.model.DefaultErrorException;
 import com.kuflow.rest.model.Worker;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in WorkerOperations. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkerOperations.
+ */
 public final class WorkerOperationsImpl {
 
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WorkerOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final KuFlowClientImpl client;
 
     /**
@@ -90,9 +96,9 @@ public final class WorkerOperationsImpl {
     /**
      * Create or update a worker
      *
-     * <p>Register a worker in KuFlow, this allows the platform to have a catalogue of all registered workers.
+     * Register a worker in KuFlow, this allows the platform to have a catalogue of all registered workers.
      *
-     * <p>If already exist a worker for the same identity, the worker will be updated.
+     * If already exist a worker for the same identity, the worker will be updated.
      *
      * @param worker Worker to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -109,9 +115,9 @@ public final class WorkerOperationsImpl {
     /**
      * Create or update a worker
      *
-     * <p>Register a worker in KuFlow, this allows the platform to have a catalogue of all registered workers.
+     * Register a worker in KuFlow, this allows the platform to have a catalogue of all registered workers.
      *
-     * <p>If already exist a worker for the same identity, the worker will be updated.
+     * If already exist a worker for the same identity, the worker will be updated.
      *
      * @param worker Worker to create or update.
      * @param context The context to associate with this operation.
@@ -129,9 +135,9 @@ public final class WorkerOperationsImpl {
     /**
      * Create or update a worker
      *
-     * <p>Register a worker in KuFlow, this allows the platform to have a catalogue of all registered workers.
+     * Register a worker in KuFlow, this allows the platform to have a catalogue of all registered workers.
      *
-     * <p>If already exist a worker for the same identity, the worker will be updated.
+     * If already exist a worker for the same identity, the worker will be updated.
      *
      * @param worker Worker to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -147,9 +153,9 @@ public final class WorkerOperationsImpl {
     /**
      * Create or update a worker
      *
-     * <p>Register a worker in KuFlow, this allows the platform to have a catalogue of all registered workers.
+     * Register a worker in KuFlow, this allows the platform to have a catalogue of all registered workers.
      *
-     * <p>If already exist a worker for the same identity, the worker will be updated.
+     * If already exist a worker for the same identity, the worker will be updated.
      *
      * @param worker Worker to create or update.
      * @param context The context to associate with this operation.
@@ -166,9 +172,9 @@ public final class WorkerOperationsImpl {
     /**
      * Create or update a worker
      *
-     * <p>Register a worker in KuFlow, this allows the platform to have a catalogue of all registered workers.
+     * Register a worker in KuFlow, this allows the platform to have a catalogue of all registered workers.
      *
-     * <p>If already exist a worker for the same identity, the worker will be updated.
+     * If already exist a worker for the same identity, the worker will be updated.
      *
      * @param worker Worker to create or update.
      * @param context The context to associate with this operation.
@@ -186,9 +192,9 @@ public final class WorkerOperationsImpl {
     /**
      * Create or update a worker
      *
-     * <p>Register a worker in KuFlow, this allows the platform to have a catalogue of all registered workers.
+     * Register a worker in KuFlow, this allows the platform to have a catalogue of all registered workers.
      *
-     * <p>If already exist a worker for the same identity, the worker will be updated.
+     * If already exist a worker for the same identity, the worker will be updated.
      *
      * @param worker Worker to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

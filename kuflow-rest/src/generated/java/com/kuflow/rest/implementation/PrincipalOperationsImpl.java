@@ -48,13 +48,19 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrincipalOperations. */
+/**
+ * An instance of this class provides access to all the operations defined in PrincipalOperations.
+ */
 public final class PrincipalOperationsImpl {
 
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PrincipalOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final KuFlowClientImpl client;
 
     /**
@@ -126,15 +132,17 @@ public final class PrincipalOperationsImpl {
     /**
      * Find all accessible Principals
      *
-     * <p>List all the Principals that have been created and the used credentials has access.
+     * List all the Principals that have been created and the used credentials has access.
      *
-     * <p>Available sort query values: id, name.
+     * Available sort query values: id, name.
      *
      * @param size The number of records returned within a single API call.
      * @param page The page number of the current page in the returned records, 0 is the first page.
      * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-     *     <p>Default sort order is ascending. Multiple sort criteria are supported.
-     *     <p>Please refer to the method description for supported properties.
+     *
+     * Default sort order is ascending. Multiple sort criteria are supported.
+     *
+     * Please refer to the method description for supported properties.
      * @param type Filter principals by type.
      * @param groupId Filter principals that exists in one of group ids.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -165,15 +173,17 @@ public final class PrincipalOperationsImpl {
     /**
      * Find all accessible Principals
      *
-     * <p>List all the Principals that have been created and the used credentials has access.
+     * List all the Principals that have been created and the used credentials has access.
      *
-     * <p>Available sort query values: id, name.
+     * Available sort query values: id, name.
      *
      * @param size The number of records returned within a single API call.
      * @param page The page number of the current page in the returned records, 0 is the first page.
      * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-     *     <p>Default sort order is ascending. Multiple sort criteria are supported.
-     *     <p>Please refer to the method description for supported properties.
+     *
+     * Default sort order is ascending. Multiple sort criteria are supported.
+     *
+     * Please refer to the method description for supported properties.
      * @param type Filter principals by type.
      * @param groupId Filter principals that exists in one of group ids.
      * @param context The context to associate with this operation.
@@ -204,15 +214,17 @@ public final class PrincipalOperationsImpl {
     /**
      * Find all accessible Principals
      *
-     * <p>List all the Principals that have been created and the used credentials has access.
+     * List all the Principals that have been created and the used credentials has access.
      *
-     * <p>Available sort query values: id, name.
+     * Available sort query values: id, name.
      *
      * @param size The number of records returned within a single API call.
      * @param page The page number of the current page in the returned records, 0 is the first page.
      * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-     *     <p>Default sort order is ascending. Multiple sort criteria are supported.
-     *     <p>Please refer to the method description for supported properties.
+     *
+     * Default sort order is ascending. Multiple sort criteria are supported.
+     *
+     * Please refer to the method description for supported properties.
      * @param type Filter principals by type.
      * @param groupId Filter principals that exists in one of group ids.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -228,9 +240,9 @@ public final class PrincipalOperationsImpl {
     /**
      * Find all accessible Principals
      *
-     * <p>List all the Principals that have been created and the used credentials has access.
+     * List all the Principals that have been created and the used credentials has access.
      *
-     * <p>Available sort query values: id, name.
+     * Available sort query values: id, name.
      *
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -249,15 +261,17 @@ public final class PrincipalOperationsImpl {
     /**
      * Find all accessible Principals
      *
-     * <p>List all the Principals that have been created and the used credentials has access.
+     * List all the Principals that have been created and the used credentials has access.
      *
-     * <p>Available sort query values: id, name.
+     * Available sort query values: id, name.
      *
      * @param size The number of records returned within a single API call.
      * @param page The page number of the current page in the returned records, 0 is the first page.
      * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-     *     <p>Default sort order is ascending. Multiple sort criteria are supported.
-     *     <p>Please refer to the method description for supported properties.
+     *
+     * Default sort order is ascending. Multiple sort criteria are supported.
+     *
+     * Please refer to the method description for supported properties.
      * @param type Filter principals by type.
      * @param groupId Filter principals that exists in one of group ids.
      * @param context The context to associate with this operation.
@@ -281,15 +295,17 @@ public final class PrincipalOperationsImpl {
     /**
      * Find all accessible Principals
      *
-     * <p>List all the Principals that have been created and the used credentials has access.
+     * List all the Principals that have been created and the used credentials has access.
      *
-     * <p>Available sort query values: id, name.
+     * Available sort query values: id, name.
      *
      * @param size The number of records returned within a single API call.
      * @param page The page number of the current page in the returned records, 0 is the first page.
      * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-     *     <p>Default sort order is ascending. Multiple sort criteria are supported.
-     *     <p>Please refer to the method description for supported properties.
+     *
+     * Default sort order is ascending. Multiple sort criteria are supported.
+     *
+     * Please refer to the method description for supported properties.
      * @param type Filter principals by type.
      * @param groupId Filter principals that exists in one of group ids.
      * @param context The context to associate with this operation.
@@ -320,15 +336,17 @@ public final class PrincipalOperationsImpl {
     /**
      * Find all accessible Principals
      *
-     * <p>List all the Principals that have been created and the used credentials has access.
+     * List all the Principals that have been created and the used credentials has access.
      *
-     * <p>Available sort query values: id, name.
+     * Available sort query values: id, name.
      *
      * @param size The number of records returned within a single API call.
      * @param page The page number of the current page in the returned records, 0 is the first page.
      * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-     *     <p>Default sort order is ascending. Multiple sort criteria are supported.
-     *     <p>Please refer to the method description for supported properties.
+     *
+     * Default sort order is ascending. Multiple sort criteria are supported.
+     *
+     * Please refer to the method description for supported properties.
      * @param type Filter principals by type.
      * @param groupId Filter principals that exists in one of group ids.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -344,9 +362,9 @@ public final class PrincipalOperationsImpl {
     /**
      * Find all accessible Principals
      *
-     * <p>List all the Principals that have been created and the used credentials has access.
+     * List all the Principals that have been created and the used credentials has access.
      *
-     * <p>Available sort query values: id, name.
+     * Available sort query values: id, name.
      *
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -365,7 +383,7 @@ public final class PrincipalOperationsImpl {
     /**
      * Get a Principal by ID
      *
-     * <p>Returns the requested Principal when has access to do it.
+     * Returns the requested Principal when has access to do it.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -382,7 +400,7 @@ public final class PrincipalOperationsImpl {
     /**
      * Get a Principal by ID
      *
-     * <p>Returns the requested Principal when has access to do it.
+     * Returns the requested Principal when has access to do it.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -400,7 +418,7 @@ public final class PrincipalOperationsImpl {
     /**
      * Get a Principal by ID
      *
-     * <p>Returns the requested Principal when has access to do it.
+     * Returns the requested Principal when has access to do it.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -416,7 +434,7 @@ public final class PrincipalOperationsImpl {
     /**
      * Get a Principal by ID
      *
-     * <p>Returns the requested Principal when has access to do it.
+     * Returns the requested Principal when has access to do it.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -433,7 +451,7 @@ public final class PrincipalOperationsImpl {
     /**
      * Get a Principal by ID
      *
-     * <p>Returns the requested Principal when has access to do it.
+     * Returns the requested Principal when has access to do it.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -451,7 +469,7 @@ public final class PrincipalOperationsImpl {
     /**
      * Get a Principal by ID
      *
-     * <p>Returns the requested Principal when has access to do it.
+     * Returns the requested Principal when has access to do it.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

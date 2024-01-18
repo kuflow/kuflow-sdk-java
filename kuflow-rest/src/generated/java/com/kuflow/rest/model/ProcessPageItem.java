@@ -34,7 +34,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-/** The ProcessPageItem model. */
+/**
+ * The ProcessPageItem model.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("PROCESS_PAGE_ITEM")
 @Fluent
@@ -76,7 +78,9 @@ public final class ProcessPageItem extends AbstractAudited {
     @JsonProperty(value = "initiator")
     private Principal initiator;
 
-    /** Creates an instance of ProcessPageItem class. */
+    /**
+     * Creates an instance of ProcessPageItem class.
+     */
     public ProcessPageItem() {}
 
     /**
@@ -199,28 +203,36 @@ public final class ProcessPageItem extends AbstractAudited {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProcessPageItem setCreatedBy(UUID createdBy) {
         super.setCreatedBy(createdBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProcessPageItem setCreatedAt(OffsetDateTime createdAt) {
         super.setCreatedAt(createdAt);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProcessPageItem setLastModifiedBy(UUID lastModifiedBy) {
         super.setLastModifiedBy(lastModifiedBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProcessPageItem setLastModifiedAt(OffsetDateTime lastModifiedAt) {
         super.setLastModifiedAt(lastModifiedAt);
@@ -349,7 +361,7 @@ public final class ProcessPageItem extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link ProcessPageItemUtils}
      */
     @Deprecated
@@ -363,7 +375,7 @@ public final class ProcessPageItem extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the elements values.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link ProcessPageItemUtils}
      */
     @Deprecated
@@ -449,7 +461,7 @@ public final class ProcessPageItem extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link ProcessPageItemUtils}
      */
     @Deprecated
@@ -463,7 +475,7 @@ public final class ProcessPageItem extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the elements values.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link ProcessPageItemUtils}
      */
     @Deprecated
@@ -549,7 +561,7 @@ public final class ProcessPageItem extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link ProcessPageItemUtils}
      */
     @Deprecated
@@ -563,7 +575,7 @@ public final class ProcessPageItem extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the elements values.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link ProcessPageItemUtils}
      */
     @Deprecated

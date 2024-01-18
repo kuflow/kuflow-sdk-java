@@ -25,7 +25,9 @@ package com.kuflow.rest.model;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TaskSaveJsonFormsValueDocumentResponseCommand model. */
+/**
+ * The TaskSaveJsonFormsValueDocumentResponseCommand model.
+ */
 @Fluent
 public final class TaskSaveJsonFormsValueDocumentResponseCommand {
 
@@ -38,13 +40,15 @@ public final class TaskSaveJsonFormsValueDocumentResponseCommand {
     @JsonProperty(value = "value", required = true)
     private String value;
 
-    /** Creates an instance of TaskSaveJsonFormsValueDocumentResponseCommand class. */
+    /**
+     * Creates an instance of TaskSaveJsonFormsValueDocumentResponseCommand class.
+     */
     public TaskSaveJsonFormsValueDocumentResponseCommand() {}
 
     /**
      * Get the value property: JSON value representing the uploaded file.
      *
-     * <p>Example: `kuflow-file:uri=xxx-yyy-zzz;type=application/json;size=500;name=file.json;`.
+     * Example: `kuflow-file:uri=xxx-yyy-zzz;type=application/json;size=500;name=file.json;`.
      *
      * @return the value value.
      */
@@ -55,7 +59,7 @@ public final class TaskSaveJsonFormsValueDocumentResponseCommand {
     /**
      * Set the value property: JSON value representing the uploaded file.
      *
-     * <p>Example: `kuflow-file:uri=xxx-yyy-zzz;type=application/json;size=500;name=file.json;`.
+     * Example: `kuflow-file:uri=xxx-yyy-zzz;type=application/json;size=500;name=file.json;`.
      *
      * @param value the value value to set.
      * @return the TaskSaveJsonFormsValueDocumentResponseCommand object itself.

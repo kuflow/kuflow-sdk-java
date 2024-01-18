@@ -25,7 +25,9 @@ package com.kuflow.rest.model;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TaskDeleteElementCommand model. */
+/**
+ * The TaskDeleteElementCommand model.
+ */
 @Fluent
 public final class TaskDeleteElementCommand {
 
@@ -35,7 +37,9 @@ public final class TaskDeleteElementCommand {
     @JsonProperty(value = "elementDefinitionCode", required = true)
     private String elementDefinitionCode;
 
-    /** Creates an instance of TaskDeleteElementCommand class. */
+    /**
+     * Creates an instance of TaskDeleteElementCommand class.
+     */
     public TaskDeleteElementCommand() {}
 
     /**

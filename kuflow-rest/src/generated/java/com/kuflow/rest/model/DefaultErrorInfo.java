@@ -25,7 +25,9 @@ package com.kuflow.rest.model;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DefaultErrorInfo model. */
+/**
+ * The DefaultErrorInfo model.
+ */
 @Fluent
 public final class DefaultErrorInfo {
 
@@ -53,7 +55,9 @@ public final class DefaultErrorInfo {
     @JsonProperty(value = "locationType")
     private String locationType;
 
-    /** Creates an instance of DefaultErrorInfo class. */
+    /**
+     * Creates an instance of DefaultErrorInfo class.
+     */
     public DefaultErrorInfo() {}
 
     /**

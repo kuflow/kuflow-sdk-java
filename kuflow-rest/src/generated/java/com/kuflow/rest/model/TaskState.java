@@ -25,21 +25,33 @@ package com.kuflow.rest.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Task state. */
+/**
+ * Task state.
+ */
 public enum TaskState {
-    /** Enum value READY. */
+    /**
+     * Enum value READY.
+     */
     READY("READY"),
 
-    /** Enum value CLAIMED. */
+    /**
+     * Enum value CLAIMED.
+     */
     CLAIMED("CLAIMED"),
 
-    /** Enum value COMPLETED. */
+    /**
+     * Enum value COMPLETED.
+     */
     COMPLETED("COMPLETED"),
 
-    /** Enum value CANCELLED. */
+    /**
+     * Enum value CANCELLED.
+     */
     CANCELLED("CANCELLED");
 
-    /** The actual serialized value for a TaskState instance. */
+    /**
+     * The actual serialized value for a TaskState instance.
+     */
     private final String value;
 
     TaskState(String value) {
@@ -66,7 +78,9 @@ public enum TaskState {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

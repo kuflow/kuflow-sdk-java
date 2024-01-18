@@ -26,7 +26,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** The TaskDeleteElementValueDocumentCommand model. */
+/**
+ * The TaskDeleteElementValueDocumentCommand model.
+ */
 @Fluent
 public final class TaskDeleteElementValueDocumentCommand {
 
@@ -36,7 +38,9 @@ public final class TaskDeleteElementValueDocumentCommand {
     @JsonProperty(value = "documentId", required = true)
     private UUID documentId;
 
-    /** Creates an instance of TaskDeleteElementValueDocumentCommand class. */
+    /**
+     * Creates an instance of TaskDeleteElementValueDocumentCommand class.
+     */
     public TaskDeleteElementValueDocumentCommand() {}
 
     /**

@@ -34,7 +34,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-/** The TaskPageItem model. */
+/**
+ * The TaskPageItem model.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("TASK_PAGE_ITEM")
 @Fluent
@@ -83,7 +85,9 @@ public final class TaskPageItem extends AbstractAudited {
     @JsonProperty(value = "owner")
     private Principal owner;
 
-    /** Creates an instance of TaskPageItem class. */
+    /**
+     * Creates an instance of TaskPageItem class.
+     */
     public TaskPageItem() {}
 
     /**
@@ -226,28 +230,36 @@ public final class TaskPageItem extends AbstractAudited {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TaskPageItem setCreatedBy(UUID createdBy) {
         super.setCreatedBy(createdBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TaskPageItem setCreatedAt(OffsetDateTime createdAt) {
         super.setCreatedAt(createdAt);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TaskPageItem setLastModifiedBy(UUID lastModifiedBy) {
         super.setLastModifiedBy(lastModifiedBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TaskPageItem setLastModifiedAt(OffsetDateTime lastModifiedAt) {
         super.setLastModifiedAt(lastModifiedAt);
@@ -376,7 +388,7 @@ public final class TaskPageItem extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link TaskPageItemUtils}
      */
     @Deprecated
@@ -390,7 +402,7 @@ public final class TaskPageItem extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the elements values.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link TaskPageItemUtils}
      */
     @Deprecated
@@ -476,7 +488,7 @@ public final class TaskPageItem extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link TaskPageItemUtils}
      */
     @Deprecated
@@ -490,7 +502,7 @@ public final class TaskPageItem extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the elements values.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link TaskPageItemUtils}
      */
     @Deprecated
@@ -576,7 +588,7 @@ public final class TaskPageItem extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link TaskPageItemUtils}
      */
     @Deprecated
@@ -590,7 +602,7 @@ public final class TaskPageItem extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the elements values.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link TaskPageItemUtils}
      */
     @Deprecated
@@ -676,7 +688,7 @@ public final class TaskPageItem extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link TaskPageItemUtils}
      */
     @Deprecated
@@ -690,7 +702,7 @@ public final class TaskPageItem extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the elements values.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link TaskPageItemUtils}
      */
     @Deprecated
@@ -776,7 +788,7 @@ public final class TaskPageItem extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link TaskPageItemUtils}
      */
     @Deprecated
@@ -790,7 +802,7 @@ public final class TaskPageItem extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the elements values.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link TaskPageItemUtils}
      */
     @Deprecated
@@ -876,7 +888,7 @@ public final class TaskPageItem extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the element value.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link TaskPageItemUtils}
      */
     @Deprecated
@@ -890,7 +902,7 @@ public final class TaskPageItem extends AbstractAudited {
      * @param elementDefinitionCode Element Definition Code
      * @return the elements values.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link TaskPageItemUtils}
      */
     @Deprecated

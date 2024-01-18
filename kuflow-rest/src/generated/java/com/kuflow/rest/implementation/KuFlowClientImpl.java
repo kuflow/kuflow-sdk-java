@@ -29,10 +29,14 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 
-/** Initializes a new instance of the KuFlowClient type. */
+/**
+ * Initializes a new instance of the KuFlowClient type.
+ */
 public final class KuFlowClientImpl {
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String host;
 
     /**
@@ -44,7 +48,9 @@ public final class KuFlowClientImpl {
         return this.host;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
@@ -56,7 +62,9 @@ public final class KuFlowClientImpl {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
@@ -68,7 +76,9 @@ public final class KuFlowClientImpl {
         return this.serializerAdapter;
     }
 
-    /** The AuthenticationOperationsImpl object to access its operations. */
+    /**
+     * The AuthenticationOperationsImpl object to access its operations.
+     */
     private final AuthenticationOperationsImpl authenticationOperations;
 
     /**
@@ -80,7 +90,9 @@ public final class KuFlowClientImpl {
         return this.authenticationOperations;
     }
 
-    /** The PrincipalOperationsImpl object to access its operations. */
+    /**
+     * The PrincipalOperationsImpl object to access its operations.
+     */
     private final PrincipalOperationsImpl principalOperations;
 
     /**
@@ -92,7 +104,9 @@ public final class KuFlowClientImpl {
         return this.principalOperations;
     }
 
-    /** The ProcessOperationsImpl object to access its operations. */
+    /**
+     * The ProcessOperationsImpl object to access its operations.
+     */
     private final ProcessOperationsImpl processOperations;
 
     /**
@@ -104,7 +118,9 @@ public final class KuFlowClientImpl {
         return this.processOperations;
     }
 
-    /** The TaskOperationsImpl object to access its operations. */
+    /**
+     * The TaskOperationsImpl object to access its operations.
+     */
     private final TaskOperationsImpl taskOperations;
 
     /**
@@ -116,7 +132,9 @@ public final class KuFlowClientImpl {
         return this.taskOperations;
     }
 
-    /** The WorkerOperationsImpl object to access its operations. */
+    /**
+     * The WorkerOperationsImpl object to access its operations.
+     */
     private final WorkerOperationsImpl workerOperations;
 
     /**

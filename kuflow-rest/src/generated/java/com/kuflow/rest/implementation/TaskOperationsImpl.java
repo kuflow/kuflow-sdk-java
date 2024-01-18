@@ -60,13 +60,19 @@ import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TaskOperations. */
+/**
+ * An instance of this class provides access to all the operations defined in TaskOperations.
+ */
 public final class TaskOperationsImpl {
 
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TaskOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final KuFlowClientImpl client;
 
     /**
@@ -80,8 +86,8 @@ public final class TaskOperationsImpl {
     }
 
     /**
-     * The interface defining all the services for KuFlowClientTaskOperations to be used by the proxy service to perform
-     * REST calls.
+     * The interface defining all the services for KuFlowClientTaskOperations to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "KuFlowClientTaskOper")
@@ -496,15 +502,17 @@ public final class TaskOperationsImpl {
     /**
      * Find all accessible Tasks
      *
-     * <p>List all Tasks that have been created and the credentials has access.
+     * List all Tasks that have been created and the credentials has access.
      *
-     * <p>Available sort query values: id, createdAt, lastModifiedAt, claimedAt, completedAt, cancelledAt.
+     * Available sort query values: id, createdAt, lastModifiedAt, claimedAt, completedAt, cancelledAt.
      *
      * @param size The number of records returned within a single API call.
      * @param page The page number of the current page in the returned records, 0 is the first page.
      * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-     *     <p>Default sort order is ascending. Multiple sort criteria are supported.
-     *     <p>Please refer to the method description for supported properties.
+     *
+     * Default sort order is ascending. Multiple sort criteria are supported.
+     *
+     * Please refer to the method description for supported properties.
      * @param processId Filter by an array of process ids.
      * @param state Filter by an array of task states.
      * @param taskDefinitionCode Filter by an array of task definition codes.
@@ -553,15 +561,17 @@ public final class TaskOperationsImpl {
     /**
      * Find all accessible Tasks
      *
-     * <p>List all Tasks that have been created and the credentials has access.
+     * List all Tasks that have been created and the credentials has access.
      *
-     * <p>Available sort query values: id, createdAt, lastModifiedAt, claimedAt, completedAt, cancelledAt.
+     * Available sort query values: id, createdAt, lastModifiedAt, claimedAt, completedAt, cancelledAt.
      *
      * @param size The number of records returned within a single API call.
      * @param page The page number of the current page in the returned records, 0 is the first page.
      * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-     *     <p>Default sort order is ascending. Multiple sort criteria are supported.
-     *     <p>Please refer to the method description for supported properties.
+     *
+     * Default sort order is ascending. Multiple sort criteria are supported.
+     *
+     * Please refer to the method description for supported properties.
      * @param processId Filter by an array of process ids.
      * @param state Filter by an array of task states.
      * @param taskDefinitionCode Filter by an array of task definition codes.
@@ -610,15 +620,17 @@ public final class TaskOperationsImpl {
     /**
      * Find all accessible Tasks
      *
-     * <p>List all Tasks that have been created and the credentials has access.
+     * List all Tasks that have been created and the credentials has access.
      *
-     * <p>Available sort query values: id, createdAt, lastModifiedAt, claimedAt, completedAt, cancelledAt.
+     * Available sort query values: id, createdAt, lastModifiedAt, claimedAt, completedAt, cancelledAt.
      *
      * @param size The number of records returned within a single API call.
      * @param page The page number of the current page in the returned records, 0 is the first page.
      * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-     *     <p>Default sort order is ascending. Multiple sort criteria are supported.
-     *     <p>Please refer to the method description for supported properties.
+     *
+     * Default sort order is ascending. Multiple sort criteria are supported.
+     *
+     * Please refer to the method description for supported properties.
      * @param processId Filter by an array of process ids.
      * @param state Filter by an array of task states.
      * @param taskDefinitionCode Filter by an array of task definition codes.
@@ -643,9 +655,9 @@ public final class TaskOperationsImpl {
     /**
      * Find all accessible Tasks
      *
-     * <p>List all Tasks that have been created and the credentials has access.
+     * List all Tasks that have been created and the credentials has access.
      *
-     * <p>Available sort query values: id, createdAt, lastModifiedAt, claimedAt, completedAt, cancelledAt.
+     * Available sort query values: id, createdAt, lastModifiedAt, claimedAt, completedAt, cancelledAt.
      *
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -666,15 +678,17 @@ public final class TaskOperationsImpl {
     /**
      * Find all accessible Tasks
      *
-     * <p>List all Tasks that have been created and the credentials has access.
+     * List all Tasks that have been created and the credentials has access.
      *
-     * <p>Available sort query values: id, createdAt, lastModifiedAt, claimedAt, completedAt, cancelledAt.
+     * Available sort query values: id, createdAt, lastModifiedAt, claimedAt, completedAt, cancelledAt.
      *
      * @param size The number of records returned within a single API call.
      * @param page The page number of the current page in the returned records, 0 is the first page.
      * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-     *     <p>Default sort order is ascending. Multiple sort criteria are supported.
-     *     <p>Please refer to the method description for supported properties.
+     *
+     * Default sort order is ascending. Multiple sort criteria are supported.
+     *
+     * Please refer to the method description for supported properties.
      * @param processId Filter by an array of process ids.
      * @param state Filter by an array of task states.
      * @param taskDefinitionCode Filter by an array of task definition codes.
@@ -701,15 +715,17 @@ public final class TaskOperationsImpl {
     /**
      * Find all accessible Tasks
      *
-     * <p>List all Tasks that have been created and the credentials has access.
+     * List all Tasks that have been created and the credentials has access.
      *
-     * <p>Available sort query values: id, createdAt, lastModifiedAt, claimedAt, completedAt, cancelledAt.
+     * Available sort query values: id, createdAt, lastModifiedAt, claimedAt, completedAt, cancelledAt.
      *
      * @param size The number of records returned within a single API call.
      * @param page The page number of the current page in the returned records, 0 is the first page.
      * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-     *     <p>Default sort order is ascending. Multiple sort criteria are supported.
-     *     <p>Please refer to the method description for supported properties.
+     *
+     * Default sort order is ascending. Multiple sort criteria are supported.
+     *
+     * Please refer to the method description for supported properties.
      * @param processId Filter by an array of process ids.
      * @param state Filter by an array of task states.
      * @param taskDefinitionCode Filter by an array of task definition codes.
@@ -758,15 +774,17 @@ public final class TaskOperationsImpl {
     /**
      * Find all accessible Tasks
      *
-     * <p>List all Tasks that have been created and the credentials has access.
+     * List all Tasks that have been created and the credentials has access.
      *
-     * <p>Available sort query values: id, createdAt, lastModifiedAt, claimedAt, completedAt, cancelledAt.
+     * Available sort query values: id, createdAt, lastModifiedAt, claimedAt, completedAt, cancelledAt.
      *
      * @param size The number of records returned within a single API call.
      * @param page The page number of the current page in the returned records, 0 is the first page.
      * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-     *     <p>Default sort order is ascending. Multiple sort criteria are supported.
-     *     <p>Please refer to the method description for supported properties.
+     *
+     * Default sort order is ascending. Multiple sort criteria are supported.
+     *
+     * Please refer to the method description for supported properties.
      * @param processId Filter by an array of process ids.
      * @param state Filter by an array of task states.
      * @param taskDefinitionCode Filter by an array of task definition codes.
@@ -790,9 +808,9 @@ public final class TaskOperationsImpl {
     /**
      * Find all accessible Tasks
      *
-     * <p>List all Tasks that have been created and the credentials has access.
+     * List all Tasks that have been created and the credentials has access.
      *
-     * <p>Available sort query values: id, createdAt, lastModifiedAt, claimedAt, completedAt, cancelledAt.
+     * Available sort query values: id, createdAt, lastModifiedAt, claimedAt, completedAt, cancelledAt.
      *
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -812,23 +830,25 @@ public final class TaskOperationsImpl {
     /**
      * Create a new Task in the selected Process
      *
-     * <p>Create a Task and optionally fill its elements. We can fill in any type of element except documents.
+     * Create a Task and optionally fill its elements. We can fill in any type of element except documents.
      *
-     * <p>If you want to add document type elements, you can pass a reference to an existing document type element
+     * If you want to add document type elements, you can pass a reference to an existing document type element
      * indicating its 'uri'. This will copy that document into the element. In case you want to add a new document,
      * please use the corresponding API method.
      *
-     * <p>If you want that the task created is claimed you can a valid owner using the following options: * If you know
-     * the `principal ID` you can assign it to `owner.id` * If you know the `user ID` you can assign it to
-     * `owner.user.id` * If you know the `user email` you can assign it to `owner.user.email` * If you know the
-     * `application ID` you can assign it to `owner.application.id`
+     * If you want that the task created is claimed you can a valid owner using the following options:
+     * * If you know the `principal ID` you can assign it to `owner.id`
+     * * If you know the `user ID` you can assign it to `owner.user.id`
+     * * If you know the `user email` you can assign it to `owner.user.email`
+     * * If you know the `application ID` you can assign it to `owner.application.id`
      *
-     * <p>If you want the method to be idempotent, please specify the `id` field in the request body.
+     * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
      * @param task Task to be created.
      * @param activityToken [DEPRECATED] When create a KuFlow Task backed with a Temporal.io servers, this value is
-     *     required and must be set with the context task token of Temporal.io activity. It is no longer necessary
-     *     because it will be never used for the latest SDKs versions.
+     * required and must be
+     * set with the context task token of Temporal.io activity. It is no longer necessary because it will be never
+     * used for the latest SDKs versions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -843,23 +863,25 @@ public final class TaskOperationsImpl {
     /**
      * Create a new Task in the selected Process
      *
-     * <p>Create a Task and optionally fill its elements. We can fill in any type of element except documents.
+     * Create a Task and optionally fill its elements. We can fill in any type of element except documents.
      *
-     * <p>If you want to add document type elements, you can pass a reference to an existing document type element
+     * If you want to add document type elements, you can pass a reference to an existing document type element
      * indicating its 'uri'. This will copy that document into the element. In case you want to add a new document,
      * please use the corresponding API method.
      *
-     * <p>If you want that the task created is claimed you can a valid owner using the following options: * If you know
-     * the `principal ID` you can assign it to `owner.id` * If you know the `user ID` you can assign it to
-     * `owner.user.id` * If you know the `user email` you can assign it to `owner.user.email` * If you know the
-     * `application ID` you can assign it to `owner.application.id`
+     * If you want that the task created is claimed you can a valid owner using the following options:
+     * * If you know the `principal ID` you can assign it to `owner.id`
+     * * If you know the `user ID` you can assign it to `owner.user.id`
+     * * If you know the `user email` you can assign it to `owner.user.email`
+     * * If you know the `application ID` you can assign it to `owner.application.id`
      *
-     * <p>If you want the method to be idempotent, please specify the `id` field in the request body.
+     * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
      * @param task Task to be created.
      * @param activityToken [DEPRECATED] When create a KuFlow Task backed with a Temporal.io servers, this value is
-     *     required and must be set with the context task token of Temporal.io activity. It is no longer necessary
-     *     because it will be never used for the latest SDKs versions.
+     * required and must be
+     * set with the context task token of Temporal.io activity. It is no longer necessary because it will be never
+     * used for the latest SDKs versions.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -875,23 +897,25 @@ public final class TaskOperationsImpl {
     /**
      * Create a new Task in the selected Process
      *
-     * <p>Create a Task and optionally fill its elements. We can fill in any type of element except documents.
+     * Create a Task and optionally fill its elements. We can fill in any type of element except documents.
      *
-     * <p>If you want to add document type elements, you can pass a reference to an existing document type element
+     * If you want to add document type elements, you can pass a reference to an existing document type element
      * indicating its 'uri'. This will copy that document into the element. In case you want to add a new document,
      * please use the corresponding API method.
      *
-     * <p>If you want that the task created is claimed you can a valid owner using the following options: * If you know
-     * the `principal ID` you can assign it to `owner.id` * If you know the `user ID` you can assign it to
-     * `owner.user.id` * If you know the `user email` you can assign it to `owner.user.email` * If you know the
-     * `application ID` you can assign it to `owner.application.id`
+     * If you want that the task created is claimed you can a valid owner using the following options:
+     * * If you know the `principal ID` you can assign it to `owner.id`
+     * * If you know the `user ID` you can assign it to `owner.user.id`
+     * * If you know the `user email` you can assign it to `owner.user.email`
+     * * If you know the `application ID` you can assign it to `owner.application.id`
      *
-     * <p>If you want the method to be idempotent, please specify the `id` field in the request body.
+     * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
      * @param task Task to be created.
      * @param activityToken [DEPRECATED] When create a KuFlow Task backed with a Temporal.io servers, this value is
-     *     required and must be set with the context task token of Temporal.io activity. It is no longer necessary
-     *     because it will be never used for the latest SDKs versions.
+     * required and must be
+     * set with the context task token of Temporal.io activity. It is no longer necessary because it will be never
+     * used for the latest SDKs versions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -905,18 +929,19 @@ public final class TaskOperationsImpl {
     /**
      * Create a new Task in the selected Process
      *
-     * <p>Create a Task and optionally fill its elements. We can fill in any type of element except documents.
+     * Create a Task and optionally fill its elements. We can fill in any type of element except documents.
      *
-     * <p>If you want to add document type elements, you can pass a reference to an existing document type element
+     * If you want to add document type elements, you can pass a reference to an existing document type element
      * indicating its 'uri'. This will copy that document into the element. In case you want to add a new document,
      * please use the corresponding API method.
      *
-     * <p>If you want that the task created is claimed you can a valid owner using the following options: * If you know
-     * the `principal ID` you can assign it to `owner.id` * If you know the `user ID` you can assign it to
-     * `owner.user.id` * If you know the `user email` you can assign it to `owner.user.email` * If you know the
-     * `application ID` you can assign it to `owner.application.id`
+     * If you want that the task created is claimed you can a valid owner using the following options:
+     * * If you know the `principal ID` you can assign it to `owner.id`
+     * * If you know the `user ID` you can assign it to `owner.user.id`
+     * * If you know the `user email` you can assign it to `owner.user.email`
+     * * If you know the `application ID` you can assign it to `owner.application.id`
      *
-     * <p>If you want the method to be idempotent, please specify the `id` field in the request body.
+     * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
      * @param task Task to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -933,23 +958,25 @@ public final class TaskOperationsImpl {
     /**
      * Create a new Task in the selected Process
      *
-     * <p>Create a Task and optionally fill its elements. We can fill in any type of element except documents.
+     * Create a Task and optionally fill its elements. We can fill in any type of element except documents.
      *
-     * <p>If you want to add document type elements, you can pass a reference to an existing document type element
+     * If you want to add document type elements, you can pass a reference to an existing document type element
      * indicating its 'uri'. This will copy that document into the element. In case you want to add a new document,
      * please use the corresponding API method.
      *
-     * <p>If you want that the task created is claimed you can a valid owner using the following options: * If you know
-     * the `principal ID` you can assign it to `owner.id` * If you know the `user ID` you can assign it to
-     * `owner.user.id` * If you know the `user email` you can assign it to `owner.user.email` * If you know the
-     * `application ID` you can assign it to `owner.application.id`
+     * If you want that the task created is claimed you can a valid owner using the following options:
+     * * If you know the `principal ID` you can assign it to `owner.id`
+     * * If you know the `user ID` you can assign it to `owner.user.id`
+     * * If you know the `user email` you can assign it to `owner.user.email`
+     * * If you know the `application ID` you can assign it to `owner.application.id`
      *
-     * <p>If you want the method to be idempotent, please specify the `id` field in the request body.
+     * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
      * @param task Task to be created.
      * @param activityToken [DEPRECATED] When create a KuFlow Task backed with a Temporal.io servers, this value is
-     *     required and must be set with the context task token of Temporal.io activity. It is no longer necessary
-     *     because it will be never used for the latest SDKs versions.
+     * required and must be
+     * set with the context task token of Temporal.io activity. It is no longer necessary because it will be never
+     * used for the latest SDKs versions.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -964,23 +991,25 @@ public final class TaskOperationsImpl {
     /**
      * Create a new Task in the selected Process
      *
-     * <p>Create a Task and optionally fill its elements. We can fill in any type of element except documents.
+     * Create a Task and optionally fill its elements. We can fill in any type of element except documents.
      *
-     * <p>If you want to add document type elements, you can pass a reference to an existing document type element
+     * If you want to add document type elements, you can pass a reference to an existing document type element
      * indicating its 'uri'. This will copy that document into the element. In case you want to add a new document,
      * please use the corresponding API method.
      *
-     * <p>If you want that the task created is claimed you can a valid owner using the following options: * If you know
-     * the `principal ID` you can assign it to `owner.id` * If you know the `user ID` you can assign it to
-     * `owner.user.id` * If you know the `user email` you can assign it to `owner.user.email` * If you know the
-     * `application ID` you can assign it to `owner.application.id`
+     * If you want that the task created is claimed you can a valid owner using the following options:
+     * * If you know the `principal ID` you can assign it to `owner.id`
+     * * If you know the `user ID` you can assign it to `owner.user.id`
+     * * If you know the `user email` you can assign it to `owner.user.email`
+     * * If you know the `application ID` you can assign it to `owner.application.id`
      *
-     * <p>If you want the method to be idempotent, please specify the `id` field in the request body.
+     * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
      * @param task Task to be created.
      * @param activityToken [DEPRECATED] When create a KuFlow Task backed with a Temporal.io servers, this value is
-     *     required and must be set with the context task token of Temporal.io activity. It is no longer necessary
-     *     because it will be never used for the latest SDKs versions.
+     * required and must be
+     * set with the context task token of Temporal.io activity. It is no longer necessary because it will be never
+     * used for the latest SDKs versions.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -996,23 +1025,25 @@ public final class TaskOperationsImpl {
     /**
      * Create a new Task in the selected Process
      *
-     * <p>Create a Task and optionally fill its elements. We can fill in any type of element except documents.
+     * Create a Task and optionally fill its elements. We can fill in any type of element except documents.
      *
-     * <p>If you want to add document type elements, you can pass a reference to an existing document type element
+     * If you want to add document type elements, you can pass a reference to an existing document type element
      * indicating its 'uri'. This will copy that document into the element. In case you want to add a new document,
      * please use the corresponding API method.
      *
-     * <p>If you want that the task created is claimed you can a valid owner using the following options: * If you know
-     * the `principal ID` you can assign it to `owner.id` * If you know the `user ID` you can assign it to
-     * `owner.user.id` * If you know the `user email` you can assign it to `owner.user.email` * If you know the
-     * `application ID` you can assign it to `owner.application.id`
+     * If you want that the task created is claimed you can a valid owner using the following options:
+     * * If you know the `principal ID` you can assign it to `owner.id`
+     * * If you know the `user ID` you can assign it to `owner.user.id`
+     * * If you know the `user email` you can assign it to `owner.user.email`
+     * * If you know the `application ID` you can assign it to `owner.application.id`
      *
-     * <p>If you want the method to be idempotent, please specify the `id` field in the request body.
+     * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
      * @param task Task to be created.
      * @param activityToken [DEPRECATED] When create a KuFlow Task backed with a Temporal.io servers, this value is
-     *     required and must be set with the context task token of Temporal.io activity. It is no longer necessary
-     *     because it will be never used for the latest SDKs versions.
+     * required and must be
+     * set with the context task token of Temporal.io activity. It is no longer necessary because it will be never
+     * used for the latest SDKs versions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1026,18 +1057,19 @@ public final class TaskOperationsImpl {
     /**
      * Create a new Task in the selected Process
      *
-     * <p>Create a Task and optionally fill its elements. We can fill in any type of element except documents.
+     * Create a Task and optionally fill its elements. We can fill in any type of element except documents.
      *
-     * <p>If you want to add document type elements, you can pass a reference to an existing document type element
+     * If you want to add document type elements, you can pass a reference to an existing document type element
      * indicating its 'uri'. This will copy that document into the element. In case you want to add a new document,
      * please use the corresponding API method.
      *
-     * <p>If you want that the task created is claimed you can a valid owner using the following options: * If you know
-     * the `principal ID` you can assign it to `owner.id` * If you know the `user ID` you can assign it to
-     * `owner.user.id` * If you know the `user email` you can assign it to `owner.user.email` * If you know the
-     * `application ID` you can assign it to `owner.application.id`
+     * If you want that the task created is claimed you can a valid owner using the following options:
+     * * If you know the `principal ID` you can assign it to `owner.id`
+     * * If you know the `user ID` you can assign it to `owner.user.id`
+     * * If you know the `user email` you can assign it to `owner.user.email`
+     * * If you know the `application ID` you can assign it to `owner.application.id`
      *
-     * <p>If you want the method to be idempotent, please specify the `id` field in the request body.
+     * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
      * @param task Task to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1054,7 +1086,7 @@ public final class TaskOperationsImpl {
     /**
      * Get a task given it ID
      *
-     * <p>Allow to get a task by ID.
+     * Allow to get a task by ID.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1071,7 +1103,7 @@ public final class TaskOperationsImpl {
     /**
      * Get a task given it ID
      *
-     * <p>Allow to get a task by ID.
+     * Allow to get a task by ID.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -1089,7 +1121,7 @@ public final class TaskOperationsImpl {
     /**
      * Get a task given it ID
      *
-     * <p>Allow to get a task by ID.
+     * Allow to get a task by ID.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1105,7 +1137,7 @@ public final class TaskOperationsImpl {
     /**
      * Get a task given it ID
      *
-     * <p>Allow to get a task by ID.
+     * Allow to get a task by ID.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -1122,7 +1154,7 @@ public final class TaskOperationsImpl {
     /**
      * Get a task given it ID
      *
-     * <p>Allow to get a task by ID.
+     * Allow to get a task by ID.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -1140,7 +1172,7 @@ public final class TaskOperationsImpl {
     /**
      * Get a task given it ID
      *
-     * <p>Allow to get a task by ID.
+     * Allow to get a task by ID.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1156,7 +1188,7 @@ public final class TaskOperationsImpl {
     /**
      * Claim a task
      *
-     * <p>Allow to claim a task.
+     * Allow to claim a task.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1173,7 +1205,7 @@ public final class TaskOperationsImpl {
     /**
      * Claim a task
      *
-     * <p>Allow to claim a task.
+     * Allow to claim a task.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -1191,7 +1223,7 @@ public final class TaskOperationsImpl {
     /**
      * Claim a task
      *
-     * <p>Allow to claim a task.
+     * Allow to claim a task.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1207,7 +1239,7 @@ public final class TaskOperationsImpl {
     /**
      * Claim a task
      *
-     * <p>Allow to claim a task.
+     * Allow to claim a task.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -1224,7 +1256,7 @@ public final class TaskOperationsImpl {
     /**
      * Claim a task
      *
-     * <p>Allow to claim a task.
+     * Allow to claim a task.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -1242,7 +1274,7 @@ public final class TaskOperationsImpl {
     /**
      * Claim a task
      *
-     * <p>Allow to claim a task.
+     * Allow to claim a task.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1258,7 +1290,7 @@ public final class TaskOperationsImpl {
     /**
      * Assign a task
      *
-     * <p>Allow to assign a task to a user or application. Only one option will be necessary.
+     * Allow to assign a task to a user or application. Only one option will be necessary.
      *
      * @param id The resource ID.
      * @param command Command to change the task owner.
@@ -1276,7 +1308,7 @@ public final class TaskOperationsImpl {
     /**
      * Assign a task
      *
-     * <p>Allow to assign a task to a user or application. Only one option will be necessary.
+     * Allow to assign a task to a user or application. Only one option will be necessary.
      *
      * @param id The resource ID.
      * @param command Command to change the task owner.
@@ -1295,7 +1327,7 @@ public final class TaskOperationsImpl {
     /**
      * Assign a task
      *
-     * <p>Allow to assign a task to a user or application. Only one option will be necessary.
+     * Allow to assign a task to a user or application. Only one option will be necessary.
      *
      * @param id The resource ID.
      * @param command Command to change the task owner.
@@ -1312,7 +1344,7 @@ public final class TaskOperationsImpl {
     /**
      * Assign a task
      *
-     * <p>Allow to assign a task to a user or application. Only one option will be necessary.
+     * Allow to assign a task to a user or application. Only one option will be necessary.
      *
      * @param id The resource ID.
      * @param command Command to change the task owner.
@@ -1330,7 +1362,7 @@ public final class TaskOperationsImpl {
     /**
      * Assign a task
      *
-     * <p>Allow to assign a task to a user or application. Only one option will be necessary.
+     * Allow to assign a task to a user or application. Only one option will be necessary.
      *
      * @param id The resource ID.
      * @param command Command to change the task owner.
@@ -1349,7 +1381,7 @@ public final class TaskOperationsImpl {
     /**
      * Assign a task
      *
-     * <p>Allow to assign a task to a user or application. Only one option will be necessary.
+     * Allow to assign a task to a user or application. Only one option will be necessary.
      *
      * @param id The resource ID.
      * @param command Command to change the task owner.
@@ -1366,14 +1398,14 @@ public final class TaskOperationsImpl {
     /**
      * Save an element
      *
-     * <p>Allow to save an element i.e., a field, a decision, a form, a principal or document.
+     * Allow to save an element i.e., a field, a decision, a form, a principal or document.
      *
-     * <p>In the case of document type elements, this method only allows references to be made to other existing
-     * document type elements for the purpose of copying that file into the element. To do this you need to pass a
-     * reference to the document using the 'uri' attribute. In case you want to add a new document, please use the
-     * corresponding API method. If values already exist for the provided element code, it replaces them with the new
-     * ones, otherwise it creates them. The values of the previous elements that no longer exist will be deleted. To
-     * remove an element, use the appropriate API method.
+     * In the case of document type elements, this method only allows references to be made to other existing document
+     * type elements for the purpose of copying that file into the element. To do this you need to pass a reference to
+     * the document using the 'uri' attribute. In case you want to add a new document, please use the corresponding API
+     * method. If values already exist for the provided element code, it replaces them with the new ones, otherwise it
+     * creates them. The values of the previous elements that no longer exist will be deleted. To remove an element, use
+     * the appropriate API method.
      *
      * @param id The resource ID.
      * @param command Command to save an element.
@@ -1391,14 +1423,14 @@ public final class TaskOperationsImpl {
     /**
      * Save an element
      *
-     * <p>Allow to save an element i.e., a field, a decision, a form, a principal or document.
+     * Allow to save an element i.e., a field, a decision, a form, a principal or document.
      *
-     * <p>In the case of document type elements, this method only allows references to be made to other existing
-     * document type elements for the purpose of copying that file into the element. To do this you need to pass a
-     * reference to the document using the 'uri' attribute. In case you want to add a new document, please use the
-     * corresponding API method. If values already exist for the provided element code, it replaces them with the new
-     * ones, otherwise it creates them. The values of the previous elements that no longer exist will be deleted. To
-     * remove an element, use the appropriate API method.
+     * In the case of document type elements, this method only allows references to be made to other existing document
+     * type elements for the purpose of copying that file into the element. To do this you need to pass a reference to
+     * the document using the 'uri' attribute. In case you want to add a new document, please use the corresponding API
+     * method. If values already exist for the provided element code, it replaces them with the new ones, otherwise it
+     * creates them. The values of the previous elements that no longer exist will be deleted. To remove an element, use
+     * the appropriate API method.
      *
      * @param id The resource ID.
      * @param command Command to save an element.
@@ -1417,14 +1449,14 @@ public final class TaskOperationsImpl {
     /**
      * Save an element
      *
-     * <p>Allow to save an element i.e., a field, a decision, a form, a principal or document.
+     * Allow to save an element i.e., a field, a decision, a form, a principal or document.
      *
-     * <p>In the case of document type elements, this method only allows references to be made to other existing
-     * document type elements for the purpose of copying that file into the element. To do this you need to pass a
-     * reference to the document using the 'uri' attribute. In case you want to add a new document, please use the
-     * corresponding API method. If values already exist for the provided element code, it replaces them with the new
-     * ones, otherwise it creates them. The values of the previous elements that no longer exist will be deleted. To
-     * remove an element, use the appropriate API method.
+     * In the case of document type elements, this method only allows references to be made to other existing document
+     * type elements for the purpose of copying that file into the element. To do this you need to pass a reference to
+     * the document using the 'uri' attribute. In case you want to add a new document, please use the corresponding API
+     * method. If values already exist for the provided element code, it replaces them with the new ones, otherwise it
+     * creates them. The values of the previous elements that no longer exist will be deleted. To remove an element, use
+     * the appropriate API method.
      *
      * @param id The resource ID.
      * @param command Command to save an element.
@@ -1441,14 +1473,14 @@ public final class TaskOperationsImpl {
     /**
      * Save an element
      *
-     * <p>Allow to save an element i.e., a field, a decision, a form, a principal or document.
+     * Allow to save an element i.e., a field, a decision, a form, a principal or document.
      *
-     * <p>In the case of document type elements, this method only allows references to be made to other existing
-     * document type elements for the purpose of copying that file into the element. To do this you need to pass a
-     * reference to the document using the 'uri' attribute. In case you want to add a new document, please use the
-     * corresponding API method. If values already exist for the provided element code, it replaces them with the new
-     * ones, otherwise it creates them. The values of the previous elements that no longer exist will be deleted. To
-     * remove an element, use the appropriate API method.
+     * In the case of document type elements, this method only allows references to be made to other existing document
+     * type elements for the purpose of copying that file into the element. To do this you need to pass a reference to
+     * the document using the 'uri' attribute. In case you want to add a new document, please use the corresponding API
+     * method. If values already exist for the provided element code, it replaces them with the new ones, otherwise it
+     * creates them. The values of the previous elements that no longer exist will be deleted. To remove an element, use
+     * the appropriate API method.
      *
      * @param id The resource ID.
      * @param command Command to save an element.
@@ -1466,14 +1498,14 @@ public final class TaskOperationsImpl {
     /**
      * Save an element
      *
-     * <p>Allow to save an element i.e., a field, a decision, a form, a principal or document.
+     * Allow to save an element i.e., a field, a decision, a form, a principal or document.
      *
-     * <p>In the case of document type elements, this method only allows references to be made to other existing
-     * document type elements for the purpose of copying that file into the element. To do this you need to pass a
-     * reference to the document using the 'uri' attribute. In case you want to add a new document, please use the
-     * corresponding API method. If values already exist for the provided element code, it replaces them with the new
-     * ones, otherwise it creates them. The values of the previous elements that no longer exist will be deleted. To
-     * remove an element, use the appropriate API method.
+     * In the case of document type elements, this method only allows references to be made to other existing document
+     * type elements for the purpose of copying that file into the element. To do this you need to pass a reference to
+     * the document using the 'uri' attribute. In case you want to add a new document, please use the corresponding API
+     * method. If values already exist for the provided element code, it replaces them with the new ones, otherwise it
+     * creates them. The values of the previous elements that no longer exist will be deleted. To remove an element, use
+     * the appropriate API method.
      *
      * @param id The resource ID.
      * @param command Command to save an element.
@@ -1492,14 +1524,14 @@ public final class TaskOperationsImpl {
     /**
      * Save an element
      *
-     * <p>Allow to save an element i.e., a field, a decision, a form, a principal or document.
+     * Allow to save an element i.e., a field, a decision, a form, a principal or document.
      *
-     * <p>In the case of document type elements, this method only allows references to be made to other existing
-     * document type elements for the purpose of copying that file into the element. To do this you need to pass a
-     * reference to the document using the 'uri' attribute. In case you want to add a new document, please use the
-     * corresponding API method. If values already exist for the provided element code, it replaces them with the new
-     * ones, otherwise it creates them. The values of the previous elements that no longer exist will be deleted. To
-     * remove an element, use the appropriate API method.
+     * In the case of document type elements, this method only allows references to be made to other existing document
+     * type elements for the purpose of copying that file into the element. To do this you need to pass a reference to
+     * the document using the 'uri' attribute. In case you want to add a new document, please use the corresponding API
+     * method. If values already exist for the provided element code, it replaces them with the new ones, otherwise it
+     * creates them. The values of the previous elements that no longer exist will be deleted. To remove an element, use
+     * the appropriate API method.
      *
      * @param id The resource ID.
      * @param command Command to save an element.
@@ -1516,10 +1548,10 @@ public final class TaskOperationsImpl {
     /**
      * Save an element document
      *
-     * <p>Allow to save an element document uploading the content.
+     * Allow to save an element document uploading the content.
      *
-     * <p>If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will
-     * be added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
+     * If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will be
+     * added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
      * one), it updates it.
      *
      * @param id The resource ID.
@@ -1567,10 +1599,10 @@ public final class TaskOperationsImpl {
     /**
      * Save an element document
      *
-     * <p>Allow to save an element document uploading the content.
+     * Allow to save an element document uploading the content.
      *
-     * <p>If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will
-     * be added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
+     * If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will be
+     * added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
      * one), it updates it.
      *
      * @param id The resource ID.
@@ -1618,10 +1650,10 @@ public final class TaskOperationsImpl {
     /**
      * Save an element document
      *
-     * <p>Allow to save an element document uploading the content.
+     * Allow to save an element document uploading the content.
      *
-     * <p>If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will
-     * be added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
+     * If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will be
+     * added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
      * one), it updates it.
      *
      * @param id The resource ID.
@@ -1664,10 +1696,10 @@ public final class TaskOperationsImpl {
     /**
      * Save an element document
      *
-     * <p>Allow to save an element document uploading the content.
+     * Allow to save an element document uploading the content.
      *
-     * <p>If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will
-     * be added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
+     * If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will be
+     * added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
      * one), it updates it.
      *
      * @param id The resource ID.
@@ -1708,10 +1740,10 @@ public final class TaskOperationsImpl {
     /**
      * Save an element document
      *
-     * <p>Allow to save an element document uploading the content.
+     * Allow to save an element document uploading the content.
      *
-     * <p>If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will
-     * be added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
+     * If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will be
+     * added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
      * one), it updates it.
      *
      * @param id The resource ID.
@@ -1757,10 +1789,10 @@ public final class TaskOperationsImpl {
     /**
      * Save an element document
      *
-     * <p>Allow to save an element document uploading the content.
+     * Allow to save an element document uploading the content.
      *
-     * <p>If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will
-     * be added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
+     * If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will be
+     * added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
      * one), it updates it.
      *
      * @param id The resource ID.
@@ -1808,10 +1840,10 @@ public final class TaskOperationsImpl {
     /**
      * Save an element document
      *
-     * <p>Allow to save an element document uploading the content.
+     * Allow to save an element document uploading the content.
      *
-     * <p>If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will
-     * be added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
+     * If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will be
+     * added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
      * one), it updates it.
      *
      * @param id The resource ID.
@@ -1859,10 +1891,10 @@ public final class TaskOperationsImpl {
     /**
      * Save an element document
      *
-     * <p>Allow to save an element document uploading the content.
+     * Allow to save an element document uploading the content.
      *
-     * <p>If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will
-     * be added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
+     * If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will be
+     * added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
      * one), it updates it.
      *
      * @param id The resource ID.
@@ -1905,10 +1937,10 @@ public final class TaskOperationsImpl {
     /**
      * Save an element document
      *
-     * <p>Allow to save an element document uploading the content.
+     * Allow to save an element document uploading the content.
      *
-     * <p>If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will
-     * be added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
+     * If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will be
+     * added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
      * one), it updates it.
      *
      * @param id The resource ID.
@@ -1949,10 +1981,10 @@ public final class TaskOperationsImpl {
     /**
      * Save an element document
      *
-     * <p>Allow to save an element document uploading the content.
+     * Allow to save an element document uploading the content.
      *
-     * <p>If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will
-     * be added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
+     * If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will be
+     * added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
      * one), it updates it.
      *
      * @param id The resource ID.
@@ -1998,10 +2030,10 @@ public final class TaskOperationsImpl {
     /**
      * Save an element document
      *
-     * <p>Allow to save an element document uploading the content.
+     * Allow to save an element document uploading the content.
      *
-     * <p>If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will
-     * be added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
+     * If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will be
+     * added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
      * one), it updates it.
      *
      * @param id The resource ID.
@@ -2049,10 +2081,10 @@ public final class TaskOperationsImpl {
     /**
      * Save an element document
      *
-     * <p>Allow to save an element document uploading the content.
+     * Allow to save an element document uploading the content.
      *
-     * <p>If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will
-     * be added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
+     * If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will be
+     * added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
      * one), it updates it.
      *
      * @param id The resource ID.
@@ -2096,10 +2128,10 @@ public final class TaskOperationsImpl {
     /**
      * Save an element document
      *
-     * <p>Allow to save an element document uploading the content.
+     * Allow to save an element document uploading the content.
      *
-     * <p>If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will
-     * be added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
+     * If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will be
+     * added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
      * one), it updates it.
      *
      * @param id The resource ID.
@@ -2141,9 +2173,9 @@ public final class TaskOperationsImpl {
     /**
      * Delete an element by code
      *
-     * <p>Allow to delete task element by specifying the item definition code.
+     * Allow to delete task element by specifying the item definition code.
      *
-     * <p>Remove all the element values.
+     * Remove all the element values.
      *
      * @param id The resource ID.
      * @param command Command to delete an element.
@@ -2161,9 +2193,9 @@ public final class TaskOperationsImpl {
     /**
      * Delete an element by code
      *
-     * <p>Allow to delete task element by specifying the item definition code.
+     * Allow to delete task element by specifying the item definition code.
      *
-     * <p>Remove all the element values.
+     * Remove all the element values.
      *
      * @param id The resource ID.
      * @param command Command to delete an element.
@@ -2182,9 +2214,9 @@ public final class TaskOperationsImpl {
     /**
      * Delete an element by code
      *
-     * <p>Allow to delete task element by specifying the item definition code.
+     * Allow to delete task element by specifying the item definition code.
      *
-     * <p>Remove all the element values.
+     * Remove all the element values.
      *
      * @param id The resource ID.
      * @param command Command to delete an element.
@@ -2201,9 +2233,9 @@ public final class TaskOperationsImpl {
     /**
      * Delete an element by code
      *
-     * <p>Allow to delete task element by specifying the item definition code.
+     * Allow to delete task element by specifying the item definition code.
      *
-     * <p>Remove all the element values.
+     * Remove all the element values.
      *
      * @param id The resource ID.
      * @param command Command to delete an element.
@@ -2221,9 +2253,9 @@ public final class TaskOperationsImpl {
     /**
      * Delete an element by code
      *
-     * <p>Allow to delete task element by specifying the item definition code.
+     * Allow to delete task element by specifying the item definition code.
      *
-     * <p>Remove all the element values.
+     * Remove all the element values.
      *
      * @param id The resource ID.
      * @param command Command to delete an element.
@@ -2242,9 +2274,9 @@ public final class TaskOperationsImpl {
     /**
      * Delete an element by code
      *
-     * <p>Allow to delete task element by specifying the item definition code.
+     * Allow to delete task element by specifying the item definition code.
      *
-     * <p>Remove all the element values.
+     * Remove all the element values.
      *
      * @param id The resource ID.
      * @param command Command to delete an element.
@@ -2261,9 +2293,9 @@ public final class TaskOperationsImpl {
     /**
      * Delete an element document value
      *
-     * <p>Allow to delete a specific document from an element of document type using its id.
+     * Allow to delete a specific document from an element of document type using its id.
      *
-     * <p>Note: If it is a multiple item, it will only delete the specified document. If it is a single element, in
+     * Note: If it is a multiple item, it will only delete the specified document. If it is a single element, in
      * addition to the document, it will also delete the element.
      *
      * @param id The resource ID.
@@ -2287,9 +2319,9 @@ public final class TaskOperationsImpl {
     /**
      * Delete an element document value
      *
-     * <p>Allow to delete a specific document from an element of document type using its id.
+     * Allow to delete a specific document from an element of document type using its id.
      *
-     * <p>Note: If it is a multiple item, it will only delete the specified document. If it is a single element, in
+     * Note: If it is a multiple item, it will only delete the specified document. If it is a single element, in
      * addition to the document, it will also delete the element.
      *
      * @param id The resource ID.
@@ -2313,9 +2345,9 @@ public final class TaskOperationsImpl {
     /**
      * Delete an element document value
      *
-     * <p>Allow to delete a specific document from an element of document type using its id.
+     * Allow to delete a specific document from an element of document type using its id.
      *
-     * <p>Note: If it is a multiple item, it will only delete the specified document. If it is a single element, in
+     * Note: If it is a multiple item, it will only delete the specified document. If it is a single element, in
      * addition to the document, it will also delete the element.
      *
      * @param id The resource ID.
@@ -2333,9 +2365,9 @@ public final class TaskOperationsImpl {
     /**
      * Delete an element document value
      *
-     * <p>Allow to delete a specific document from an element of document type using its id.
+     * Allow to delete a specific document from an element of document type using its id.
      *
-     * <p>Note: If it is a multiple item, it will only delete the specified document. If it is a single element, in
+     * Note: If it is a multiple item, it will only delete the specified document. If it is a single element, in
      * addition to the document, it will also delete the element.
      *
      * @param id The resource ID.
@@ -2355,9 +2387,9 @@ public final class TaskOperationsImpl {
     /**
      * Delete an element document value
      *
-     * <p>Allow to delete a specific document from an element of document type using its id.
+     * Allow to delete a specific document from an element of document type using its id.
      *
-     * <p>Note: If it is a multiple item, it will only delete the specified document. If it is a single element, in
+     * Note: If it is a multiple item, it will only delete the specified document. If it is a single element, in
      * addition to the document, it will also delete the element.
      *
      * @param id The resource ID.
@@ -2381,9 +2413,9 @@ public final class TaskOperationsImpl {
     /**
      * Delete an element document value
      *
-     * <p>Allow to delete a specific document from an element of document type using its id.
+     * Allow to delete a specific document from an element of document type using its id.
      *
-     * <p>Note: If it is a multiple item, it will only delete the specified document. If it is a single element, in
+     * Note: If it is a multiple item, it will only delete the specified document. If it is a single element, in
      * addition to the document, it will also delete the element.
      *
      * @param id The resource ID.
@@ -2401,7 +2433,7 @@ public final class TaskOperationsImpl {
     /**
      * Download document
      *
-     * <p>Given a task, download a document from an element of document type.
+     * Given a task, download a document from an element of document type.
      *
      * @param id The resource ID.
      * @param documentId Document ID to download.
@@ -2421,7 +2453,7 @@ public final class TaskOperationsImpl {
     /**
      * Download document
      *
-     * <p>Given a task, download a document from an element of document type.
+     * Given a task, download a document from an element of document type.
      *
      * @param id The resource ID.
      * @param documentId Document ID to download.
@@ -2440,7 +2472,7 @@ public final class TaskOperationsImpl {
     /**
      * Download document
      *
-     * <p>Given a task, download a document from an element of document type.
+     * Given a task, download a document from an element of document type.
      *
      * @param id The resource ID.
      * @param documentId Document ID to download.
@@ -2457,7 +2489,7 @@ public final class TaskOperationsImpl {
     /**
      * Download document
      *
-     * <p>Given a task, download a document from an element of document type.
+     * Given a task, download a document from an element of document type.
      *
      * @param id The resource ID.
      * @param documentId Document ID to download.
@@ -2476,7 +2508,7 @@ public final class TaskOperationsImpl {
     /**
      * Download document
      *
-     * <p>Given a task, download a document from an element of document type.
+     * Given a task, download a document from an element of document type.
      *
      * @param id The resource ID.
      * @param documentId Document ID to download.
@@ -2495,7 +2527,7 @@ public final class TaskOperationsImpl {
     /**
      * Download document
      *
-     * <p>Given a task, download a document from an element of document type.
+     * Given a task, download a document from an element of document type.
      *
      * @param id The resource ID.
      * @param documentId Document ID to download.
@@ -2512,10 +2544,10 @@ public final class TaskOperationsImpl {
     /**
      * Download a Form rendered as PDF or Zip of PDFs (when the element is multiple)
      *
-     * <p>Given a task, generate a PDF from a Form type element with the data filled in, if any. If there are multiple
-     * form values, they are packed into a ZIP.
+     * Given a task, generate a PDF from a Form type element with the data filled in, if any. If there are multiple form
+     * values, they are packed into a ZIP.
      *
-     * <p>Important!: To use this feature, please contact to kuflow@kuflow.com.
+     * Important!: To use this feature, please contact to kuflow@kuflow.com.
      *
      * @param id The resource ID.
      * @param elementDefinitionCode Element definition code of a Form Element to download.
@@ -2535,10 +2567,10 @@ public final class TaskOperationsImpl {
     /**
      * Download a Form rendered as PDF or Zip of PDFs (when the element is multiple)
      *
-     * <p>Given a task, generate a PDF from a Form type element with the data filled in, if any. If there are multiple
-     * form values, they are packed into a ZIP.
+     * Given a task, generate a PDF from a Form type element with the data filled in, if any. If there are multiple form
+     * values, they are packed into a ZIP.
      *
-     * <p>Important!: To use this feature, please contact to kuflow@kuflow.com.
+     * Important!: To use this feature, please contact to kuflow@kuflow.com.
      *
      * @param id The resource ID.
      * @param elementDefinitionCode Element definition code of a Form Element to download.
@@ -2561,10 +2593,10 @@ public final class TaskOperationsImpl {
     /**
      * Download a Form rendered as PDF or Zip of PDFs (when the element is multiple)
      *
-     * <p>Given a task, generate a PDF from a Form type element with the data filled in, if any. If there are multiple
-     * form values, they are packed into a ZIP.
+     * Given a task, generate a PDF from a Form type element with the data filled in, if any. If there are multiple form
+     * values, they are packed into a ZIP.
      *
-     * <p>Important!: To use this feature, please contact to kuflow@kuflow.com.
+     * Important!: To use this feature, please contact to kuflow@kuflow.com.
      *
      * @param id The resource ID.
      * @param elementDefinitionCode Element definition code of a Form Element to download.
@@ -2582,10 +2614,10 @@ public final class TaskOperationsImpl {
     /**
      * Download a Form rendered as PDF or Zip of PDFs (when the element is multiple)
      *
-     * <p>Given a task, generate a PDF from a Form type element with the data filled in, if any. If there are multiple
-     * form values, they are packed into a ZIP.
+     * Given a task, generate a PDF from a Form type element with the data filled in, if any. If there are multiple form
+     * values, they are packed into a ZIP.
      *
-     * <p>Important!: To use this feature, please contact to kuflow@kuflow.com.
+     * Important!: To use this feature, please contact to kuflow@kuflow.com.
      *
      * @param id The resource ID.
      * @param elementDefinitionCode Element definition code of a Form Element to download.
@@ -2604,10 +2636,10 @@ public final class TaskOperationsImpl {
     /**
      * Download a Form rendered as PDF or Zip of PDFs (when the element is multiple)
      *
-     * <p>Given a task, generate a PDF from a Form type element with the data filled in, if any. If there are multiple
-     * form values, they are packed into a ZIP.
+     * Given a task, generate a PDF from a Form type element with the data filled in, if any. If there are multiple form
+     * values, they are packed into a ZIP.
      *
-     * <p>Important!: To use this feature, please contact to kuflow@kuflow.com.
+     * Important!: To use this feature, please contact to kuflow@kuflow.com.
      *
      * @param id The resource ID.
      * @param elementDefinitionCode Element definition code of a Form Element to download.
@@ -2630,10 +2662,10 @@ public final class TaskOperationsImpl {
     /**
      * Download a Form rendered as PDF or Zip of PDFs (when the element is multiple)
      *
-     * <p>Given a task, generate a PDF from a Form type element with the data filled in, if any. If there are multiple
-     * form values, they are packed into a ZIP.
+     * Given a task, generate a PDF from a Form type element with the data filled in, if any. If there are multiple form
+     * values, they are packed into a ZIP.
      *
-     * <p>Important!: To use this feature, please contact to kuflow@kuflow.com.
+     * Important!: To use this feature, please contact to kuflow@kuflow.com.
      *
      * @param id The resource ID.
      * @param elementDefinitionCode Element definition code of a Form Element to download.
@@ -2650,8 +2682,8 @@ public final class TaskOperationsImpl {
     /**
      * Save JSON data
      *
-     * <p>Allow to save a JSON data validating that the data follow the related schema. If the data is invalid, then the
-     * json form is marked as invalid.
+     * Allow to save a JSON data validating that the data follow the related schema. If the data is invalid, then
+     * the json form is marked as invalid.
      *
      * @param id The resource ID.
      * @param command Command to save the JSON value.
@@ -2671,8 +2703,8 @@ public final class TaskOperationsImpl {
     /**
      * Save JSON data
      *
-     * <p>Allow to save a JSON data validating that the data follow the related schema. If the data is invalid, then the
-     * json form is marked as invalid.
+     * Allow to save a JSON data validating that the data follow the related schema. If the data is invalid, then
+     * the json form is marked as invalid.
      *
      * @param id The resource ID.
      * @param command Command to save the JSON value.
@@ -2695,8 +2727,8 @@ public final class TaskOperationsImpl {
     /**
      * Save JSON data
      *
-     * <p>Allow to save a JSON data validating that the data follow the related schema. If the data is invalid, then the
-     * json form is marked as invalid.
+     * Allow to save a JSON data validating that the data follow the related schema. If the data is invalid, then
+     * the json form is marked as invalid.
      *
      * @param id The resource ID.
      * @param command Command to save the JSON value.
@@ -2713,8 +2745,8 @@ public final class TaskOperationsImpl {
     /**
      * Save JSON data
      *
-     * <p>Allow to save a JSON data validating that the data follow the related schema. If the data is invalid, then the
-     * json form is marked as invalid.
+     * Allow to save a JSON data validating that the data follow the related schema. If the data is invalid, then
+     * the json form is marked as invalid.
      *
      * @param id The resource ID.
      * @param command Command to save the JSON value.
@@ -2732,8 +2764,8 @@ public final class TaskOperationsImpl {
     /**
      * Save JSON data
      *
-     * <p>Allow to save a JSON data validating that the data follow the related schema. If the data is invalid, then the
-     * json form is marked as invalid.
+     * Allow to save a JSON data validating that the data follow the related schema. If the data is invalid, then
+     * the json form is marked as invalid.
      *
      * @param id The resource ID.
      * @param command Command to save the JSON value.
@@ -2756,8 +2788,8 @@ public final class TaskOperationsImpl {
     /**
      * Save JSON data
      *
-     * <p>Allow to save a JSON data validating that the data follow the related schema. If the data is invalid, then the
-     * json form is marked as invalid.
+     * Allow to save a JSON data validating that the data follow the related schema. If the data is invalid, then
+     * the json form is marked as invalid.
      *
      * @param id The resource ID.
      * @param command Command to save the JSON value.
@@ -2774,13 +2806,13 @@ public final class TaskOperationsImpl {
     /**
      * Save a JSON Forms document
      *
-     * <p>Save a document in the task to later be linked into the JSON data.
+     * Save a document in the task to later be linked into the JSON data.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
      * @param fileName Document name.
      * @param schemaPath JSON Schema path related to the document. The uploaded document must be validated by the passed
-     *     schema path.
+     * schema path.
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2816,13 +2848,13 @@ public final class TaskOperationsImpl {
     /**
      * Save a JSON Forms document
      *
-     * <p>Save a document in the task to later be linked into the JSON data.
+     * Save a document in the task to later be linked into the JSON data.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
      * @param fileName Document name.
      * @param schemaPath JSON Schema path related to the document. The uploaded document must be validated by the passed
-     *     schema path.
+     * schema path.
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -2858,13 +2890,13 @@ public final class TaskOperationsImpl {
     /**
      * Save a JSON Forms document
      *
-     * <p>Save a document in the task to later be linked into the JSON data.
+     * Save a document in the task to later be linked into the JSON data.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
      * @param fileName Document name.
      * @param schemaPath JSON Schema path related to the document. The uploaded document must be validated by the passed
-     *     schema path.
+     * schema path.
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2888,13 +2920,13 @@ public final class TaskOperationsImpl {
     /**
      * Save a JSON Forms document
      *
-     * <p>Save a document in the task to later be linked into the JSON data.
+     * Save a document in the task to later be linked into the JSON data.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
      * @param fileName Document name.
      * @param schemaPath JSON Schema path related to the document. The uploaded document must be validated by the passed
-     *     schema path.
+     * schema path.
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -2928,13 +2960,13 @@ public final class TaskOperationsImpl {
     /**
      * Save a JSON Forms document
      *
-     * <p>Save a document in the task to later be linked into the JSON data.
+     * Save a document in the task to later be linked into the JSON data.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
      * @param fileName Document name.
      * @param schemaPath JSON Schema path related to the document. The uploaded document must be validated by the passed
-     *     schema path.
+     * schema path.
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2970,13 +3002,13 @@ public final class TaskOperationsImpl {
     /**
      * Save a JSON Forms document
      *
-     * <p>Save a document in the task to later be linked into the JSON data.
+     * Save a document in the task to later be linked into the JSON data.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
      * @param fileName Document name.
      * @param schemaPath JSON Schema path related to the document. The uploaded document must be validated by the passed
-     *     schema path.
+     * schema path.
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -3012,13 +3044,13 @@ public final class TaskOperationsImpl {
     /**
      * Save a JSON Forms document
      *
-     * <p>Save a document in the task to later be linked into the JSON data.
+     * Save a document in the task to later be linked into the JSON data.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
      * @param fileName Document name.
      * @param schemaPath JSON Schema path related to the document. The uploaded document must be validated by the passed
-     *     schema path.
+     * schema path.
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3042,13 +3074,13 @@ public final class TaskOperationsImpl {
     /**
      * Save a JSON Forms document
      *
-     * <p>Save a document in the task to later be linked into the JSON data.
+     * Save a document in the task to later be linked into the JSON data.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
      * @param fileName Document name.
      * @param schemaPath JSON Schema path related to the document. The uploaded document must be validated by the passed
-     *     schema path.
+     * schema path.
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -3082,13 +3114,13 @@ public final class TaskOperationsImpl {
     /**
      * Save a JSON Forms document
      *
-     * <p>Save a document in the task to later be linked into the JSON data.
+     * Save a document in the task to later be linked into the JSON data.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
      * @param fileName Document name.
      * @param schemaPath JSON Schema path related to the document. The uploaded document must be validated by the passed
-     *     schema path.
+     * schema path.
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -3124,13 +3156,13 @@ public final class TaskOperationsImpl {
     /**
      * Save a JSON Forms document
      *
-     * <p>Save a document in the task to later be linked into the JSON data.
+     * Save a document in the task to later be linked into the JSON data.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
      * @param fileName Document name.
      * @param schemaPath JSON Schema path related to the document. The uploaded document must be validated by the passed
-     *     schema path.
+     * schema path.
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3162,7 +3194,7 @@ public final class TaskOperationsImpl {
     /**
      * Download document
      *
-     * <p>Given a task, download a document from a json form data.
+     * Given a task, download a document from a json form data.
      *
      * @param id The resource ID.
      * @param documentUri Document URI to download.
@@ -3182,7 +3214,7 @@ public final class TaskOperationsImpl {
     /**
      * Download document
      *
-     * <p>Given a task, download a document from a json form data.
+     * Given a task, download a document from a json form data.
      *
      * @param id The resource ID.
      * @param documentUri Document URI to download.
@@ -3205,7 +3237,7 @@ public final class TaskOperationsImpl {
     /**
      * Download document
      *
-     * <p>Given a task, download a document from a json form data.
+     * Given a task, download a document from a json form data.
      *
      * @param id The resource ID.
      * @param documentUri Document URI to download.
@@ -3222,7 +3254,7 @@ public final class TaskOperationsImpl {
     /**
      * Download document
      *
-     * <p>Given a task, download a document from a json form data.
+     * Given a task, download a document from a json form data.
      *
      * @param id The resource ID.
      * @param documentUri Document URI to download.
@@ -3241,7 +3273,7 @@ public final class TaskOperationsImpl {
     /**
      * Download document
      *
-     * <p>Given a task, download a document from a json form data.
+     * Given a task, download a document from a json form data.
      *
      * @param id The resource ID.
      * @param documentUri Document URI to download.
@@ -3260,7 +3292,7 @@ public final class TaskOperationsImpl {
     /**
      * Download document
      *
-     * <p>Given a task, download a document from a json form data.
+     * Given a task, download a document from a json form data.
      *
      * @param id The resource ID.
      * @param documentUri Document URI to download.
@@ -3277,7 +3309,7 @@ public final class TaskOperationsImpl {
     /**
      * Complete a task
      *
-     * <p>Allow to complete a claimed task by the principal.
+     * Allow to complete a claimed task by the principal.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3294,7 +3326,7 @@ public final class TaskOperationsImpl {
     /**
      * Complete a task
      *
-     * <p>Allow to complete a claimed task by the principal.
+     * Allow to complete a claimed task by the principal.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -3312,7 +3344,7 @@ public final class TaskOperationsImpl {
     /**
      * Complete a task
      *
-     * <p>Allow to complete a claimed task by the principal.
+     * Allow to complete a claimed task by the principal.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3328,7 +3360,7 @@ public final class TaskOperationsImpl {
     /**
      * Complete a task
      *
-     * <p>Allow to complete a claimed task by the principal.
+     * Allow to complete a claimed task by the principal.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -3345,7 +3377,7 @@ public final class TaskOperationsImpl {
     /**
      * Complete a task
      *
-     * <p>Allow to complete a claimed task by the principal.
+     * Allow to complete a claimed task by the principal.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -3363,7 +3395,7 @@ public final class TaskOperationsImpl {
     /**
      * Complete a task
      *
-     * <p>Allow to complete a claimed task by the principal.
+     * Allow to complete a claimed task by the principal.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3379,7 +3411,7 @@ public final class TaskOperationsImpl {
     /**
      * Append a log to the task
      *
-     * <p>A log entry is added to the task. If the number of log entries is reached, the oldest log entry is removed.
+     * A log entry is added to the task. If the number of log entries is reached, the oldest log entry is removed.
      *
      * @param id The resource ID.
      * @param log Log to be created.
@@ -3397,7 +3429,7 @@ public final class TaskOperationsImpl {
     /**
      * Append a log to the task
      *
-     * <p>A log entry is added to the task. If the number of log entries is reached, the oldest log entry is removed.
+     * A log entry is added to the task. If the number of log entries is reached, the oldest log entry is removed.
      *
      * @param id The resource ID.
      * @param log Log to be created.
@@ -3416,7 +3448,7 @@ public final class TaskOperationsImpl {
     /**
      * Append a log to the task
      *
-     * <p>A log entry is added to the task. If the number of log entries is reached, the oldest log entry is removed.
+     * A log entry is added to the task. If the number of log entries is reached, the oldest log entry is removed.
      *
      * @param id The resource ID.
      * @param log Log to be created.
@@ -3433,7 +3465,7 @@ public final class TaskOperationsImpl {
     /**
      * Append a log to the task
      *
-     * <p>A log entry is added to the task. If the number of log entries is reached, the oldest log entry is removed.
+     * A log entry is added to the task. If the number of log entries is reached, the oldest log entry is removed.
      *
      * @param id The resource ID.
      * @param log Log to be created.
@@ -3451,7 +3483,7 @@ public final class TaskOperationsImpl {
     /**
      * Append a log to the task
      *
-     * <p>A log entry is added to the task. If the number of log entries is reached, the oldest log entry is removed.
+     * A log entry is added to the task. If the number of log entries is reached, the oldest log entry is removed.
      *
      * @param id The resource ID.
      * @param log Log to be created.
@@ -3470,7 +3502,7 @@ public final class TaskOperationsImpl {
     /**
      * Append a log to the task
      *
-     * <p>A log entry is added to the task. If the number of log entries is reached, the oldest log entry is removed.
+     * A log entry is added to the task. If the number of log entries is reached, the oldest log entry is removed.
      *
      * @param id The resource ID.
      * @param log Log to be created.

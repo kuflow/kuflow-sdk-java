@@ -26,7 +26,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** The TaskElementValueDocumentItem model. */
+/**
+ * The TaskElementValueDocumentItem model.
+ */
 @Fluent
 public final class TaskElementValueDocumentItem {
 
@@ -66,7 +68,9 @@ public final class TaskElementValueDocumentItem {
     @JsonProperty(value = "contentLength")
     private Long contentLength;
 
-    /** Creates an instance of TaskElementValueDocumentItem class. */
+    /**
+     * Creates an instance of TaskElementValueDocumentItem class.
+     */
     public TaskElementValueDocumentItem() {}
 
     /**

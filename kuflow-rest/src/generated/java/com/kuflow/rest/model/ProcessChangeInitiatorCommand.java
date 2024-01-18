@@ -26,7 +26,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** Command to change the process initiator, only one option is required. */
+/**
+ * Command to change the process initiator, only one option is required.
+ */
 @Fluent
 public final class ProcessChangeInitiatorCommand {
 
@@ -42,7 +44,9 @@ public final class ProcessChangeInitiatorCommand {
     @JsonProperty(value = "email")
     private String email;
 
-    /** Creates an instance of ProcessChangeInitiatorCommand class. */
+    /**
+     * Creates an instance of ProcessChangeInitiatorCommand class.
+     */
     public ProcessChangeInitiatorCommand() {}
 
     /**

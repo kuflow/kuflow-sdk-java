@@ -28,7 +28,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.Map;
 
-/** The TaskElementValueObject model. */
+/**
+ * The TaskElementValueObject model.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("OBJECT")
 @Fluent
@@ -40,7 +42,9 @@ public final class TaskElementValueObject extends TaskElementValue {
     @JsonProperty(value = "value")
     private Map<String, Object> value;
 
-    /** Creates an instance of TaskElementValueObject class. */
+    /**
+     * Creates an instance of TaskElementValueObject class.
+     */
     public TaskElementValueObject() {}
 
     /**
@@ -63,7 +67,9 @@ public final class TaskElementValueObject extends TaskElementValue {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TaskElementValueObject setValid(Boolean valid) {
         super.setValid(valid);

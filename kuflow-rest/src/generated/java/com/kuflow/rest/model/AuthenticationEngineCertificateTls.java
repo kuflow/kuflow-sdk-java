@@ -25,7 +25,9 @@ package com.kuflow.rest.model;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AuthenticationEngineCertificateTls model. */
+/**
+ * The AuthenticationEngineCertificateTls model.
+ */
 @Fluent
 public final class AuthenticationEngineCertificateTls {
 
@@ -47,7 +49,9 @@ public final class AuthenticationEngineCertificateTls {
     @JsonProperty(value = "clientPrivateKey", required = true)
     private String clientPrivateKey;
 
-    /** Creates an instance of AuthenticationEngineCertificateTls class. */
+    /**
+     * Creates an instance of AuthenticationEngineCertificateTls class.
+     */
     public AuthenticationEngineCertificateTls() {}
 
     /**

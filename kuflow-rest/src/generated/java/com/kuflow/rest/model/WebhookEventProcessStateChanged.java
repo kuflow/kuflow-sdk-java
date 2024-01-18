@@ -29,7 +29,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/** Process Events. */
+/**
+ * Process Events.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("PROCESS.STATE_CHANGED")
 @Fluent
@@ -41,7 +43,9 @@ public final class WebhookEventProcessStateChanged extends WebhookEvent {
     @JsonProperty(value = "data", required = true)
     private WebhookEventProcessStateChangedData data;
 
-    /** Creates an instance of WebhookEventProcessStateChanged class. */
+    /**
+     * Creates an instance of WebhookEventProcessStateChanged class.
+     */
     public WebhookEventProcessStateChanged() {}
 
     /**
@@ -64,14 +68,18 @@ public final class WebhookEventProcessStateChanged extends WebhookEvent {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebhookEventProcessStateChanged setId(UUID id) {
         super.setId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebhookEventProcessStateChanged setTimestamp(OffsetDateTime timestamp) {
         super.setTimestamp(timestamp);

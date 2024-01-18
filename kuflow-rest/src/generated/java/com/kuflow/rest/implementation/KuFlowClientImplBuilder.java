@@ -54,7 +54,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/** A builder for creating a new instance of the KuFlowClient type. */
+/**
+ * A builder for creating a new instance of the KuFlowClient type.
+ */
 @ServiceClientBuilder(serviceClients = { KuFlowClientImpl.class })
 public final class KuFlowClientImplBuilder implements HttpTrait<KuFlowClientImplBuilder>, ConfigurationTrait<KuFlowClientImplBuilder> {
 
@@ -70,7 +72,9 @@ public final class KuFlowClientImplBuilder implements HttpTrait<KuFlowClientImpl
     @Generated
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
-    /** Create an instance of the KuFlowClientImplBuilder. */
+    /**
+     * Create an instance of the KuFlowClientImplBuilder.
+     */
     @Generated
     public KuFlowClientImplBuilder() {
         this.pipelinePolicies = new ArrayList<>();
@@ -82,7 +86,9 @@ public final class KuFlowClientImplBuilder implements HttpTrait<KuFlowClientImpl
     @Generated
     private HttpPipeline pipeline;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public KuFlowClientImplBuilder pipeline(HttpPipeline pipeline) {
@@ -96,7 +102,9 @@ public final class KuFlowClientImplBuilder implements HttpTrait<KuFlowClientImpl
     @Generated
     private HttpClient httpClient;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public KuFlowClientImplBuilder httpClient(HttpClient httpClient) {
@@ -110,7 +118,9 @@ public final class KuFlowClientImplBuilder implements HttpTrait<KuFlowClientImpl
     @Generated
     private HttpLogOptions httpLogOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public KuFlowClientImplBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
@@ -124,7 +134,9 @@ public final class KuFlowClientImplBuilder implements HttpTrait<KuFlowClientImpl
     @Generated
     private ClientOptions clientOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public KuFlowClientImplBuilder clientOptions(ClientOptions clientOptions) {
@@ -138,7 +150,9 @@ public final class KuFlowClientImplBuilder implements HttpTrait<KuFlowClientImpl
     @Generated
     private RetryOptions retryOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public KuFlowClientImplBuilder retryOptions(RetryOptions retryOptions) {
@@ -146,7 +160,9 @@ public final class KuFlowClientImplBuilder implements HttpTrait<KuFlowClientImpl
         return this;
     }
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public KuFlowClientImplBuilder addPolicy(HttpPipelinePolicy customPolicy) {
@@ -161,7 +177,9 @@ public final class KuFlowClientImplBuilder implements HttpTrait<KuFlowClientImpl
     @Generated
     private Configuration configuration;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public KuFlowClientImplBuilder configuration(Configuration configuration) {

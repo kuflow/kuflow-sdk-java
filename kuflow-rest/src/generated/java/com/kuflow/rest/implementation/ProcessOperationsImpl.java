@@ -55,13 +55,19 @@ import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ProcessOperations. */
+/**
+ * An instance of this class provides access to all the operations defined in ProcessOperations.
+ */
 public final class ProcessOperationsImpl {
 
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ProcessOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final KuFlowClientImpl client;
 
     /**
@@ -300,15 +306,17 @@ public final class ProcessOperationsImpl {
     /**
      * Find all accessible Processes
      *
-     * <p>List all the Processes that have been created and the credentials has access.
+     * List all the Processes that have been created and the credentials has access.
      *
-     * <p>Available sort query values: id, createdAt, lastModifiedAt.
+     * Available sort query values: id, createdAt, lastModifiedAt.
      *
      * @param size The number of records returned within a single API call.
      * @param page The page number of the current page in the returned records, 0 is the first page.
      * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-     *     <p>Default sort order is ascending. Multiple sort criteria are supported.
-     *     <p>Please refer to the method description for supported properties.
+     *
+     * Default sort order is ascending. Multiple sort criteria are supported.
+     *
+     * Please refer to the method description for supported properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -326,15 +334,17 @@ public final class ProcessOperationsImpl {
     /**
      * Find all accessible Processes
      *
-     * <p>List all the Processes that have been created and the credentials has access.
+     * List all the Processes that have been created and the credentials has access.
      *
-     * <p>Available sort query values: id, createdAt, lastModifiedAt.
+     * Available sort query values: id, createdAt, lastModifiedAt.
      *
      * @param size The number of records returned within a single API call.
      * @param page The page number of the current page in the returned records, 0 is the first page.
      * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-     *     <p>Default sort order is ascending. Multiple sort criteria are supported.
-     *     <p>Please refer to the method description for supported properties.
+     *
+     * Default sort order is ascending. Multiple sort criteria are supported.
+     *
+     * Please refer to the method description for supported properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -353,15 +363,17 @@ public final class ProcessOperationsImpl {
     /**
      * Find all accessible Processes
      *
-     * <p>List all the Processes that have been created and the credentials has access.
+     * List all the Processes that have been created and the credentials has access.
      *
-     * <p>Available sort query values: id, createdAt, lastModifiedAt.
+     * Available sort query values: id, createdAt, lastModifiedAt.
      *
      * @param size The number of records returned within a single API call.
      * @param page The page number of the current page in the returned records, 0 is the first page.
      * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-     *     <p>Default sort order is ascending. Multiple sort criteria are supported.
-     *     <p>Please refer to the method description for supported properties.
+     *
+     * Default sort order is ascending. Multiple sort criteria are supported.
+     *
+     * Please refer to the method description for supported properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -375,9 +387,9 @@ public final class ProcessOperationsImpl {
     /**
      * Find all accessible Processes
      *
-     * <p>List all the Processes that have been created and the credentials has access.
+     * List all the Processes that have been created and the credentials has access.
      *
-     * <p>Available sort query values: id, createdAt, lastModifiedAt.
+     * Available sort query values: id, createdAt, lastModifiedAt.
      *
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -394,15 +406,17 @@ public final class ProcessOperationsImpl {
     /**
      * Find all accessible Processes
      *
-     * <p>List all the Processes that have been created and the credentials has access.
+     * List all the Processes that have been created and the credentials has access.
      *
-     * <p>Available sort query values: id, createdAt, lastModifiedAt.
+     * Available sort query values: id, createdAt, lastModifiedAt.
      *
      * @param size The number of records returned within a single API call.
      * @param page The page number of the current page in the returned records, 0 is the first page.
      * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-     *     <p>Default sort order is ascending. Multiple sort criteria are supported.
-     *     <p>Please refer to the method description for supported properties.
+     *
+     * Default sort order is ascending. Multiple sort criteria are supported.
+     *
+     * Please refer to the method description for supported properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -417,15 +431,17 @@ public final class ProcessOperationsImpl {
     /**
      * Find all accessible Processes
      *
-     * <p>List all the Processes that have been created and the credentials has access.
+     * List all the Processes that have been created and the credentials has access.
      *
-     * <p>Available sort query values: id, createdAt, lastModifiedAt.
+     * Available sort query values: id, createdAt, lastModifiedAt.
      *
      * @param size The number of records returned within a single API call.
      * @param page The page number of the current page in the returned records, 0 is the first page.
      * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-     *     <p>Default sort order is ascending. Multiple sort criteria are supported.
-     *     <p>Please refer to the method description for supported properties.
+     *
+     * Default sort order is ascending. Multiple sort criteria are supported.
+     *
+     * Please refer to the method description for supported properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -444,15 +460,17 @@ public final class ProcessOperationsImpl {
     /**
      * Find all accessible Processes
      *
-     * <p>List all the Processes that have been created and the credentials has access.
+     * List all the Processes that have been created and the credentials has access.
      *
-     * <p>Available sort query values: id, createdAt, lastModifiedAt.
+     * Available sort query values: id, createdAt, lastModifiedAt.
      *
      * @param size The number of records returned within a single API call.
      * @param page The page number of the current page in the returned records, 0 is the first page.
      * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-     *     <p>Default sort order is ascending. Multiple sort criteria are supported.
-     *     <p>Please refer to the method description for supported properties.
+     *
+     * Default sort order is ascending. Multiple sort criteria are supported.
+     *
+     * Please refer to the method description for supported properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -466,9 +484,9 @@ public final class ProcessOperationsImpl {
     /**
      * Find all accessible Processes
      *
-     * <p>List all the Processes that have been created and the credentials has access.
+     * List all the Processes that have been created and the credentials has access.
      *
-     * <p>Available sort query values: id, createdAt, lastModifiedAt.
+     * Available sort query values: id, createdAt, lastModifiedAt.
      *
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -485,17 +503,17 @@ public final class ProcessOperationsImpl {
     /**
      * Create a new process
      *
-     * <p>Creates a process. This option has direct correspondence to the action of starting a process in the Kuflow
-     * GUI.
+     * Creates a process. This option has direct correspondence to the action of starting a process in the Kuflow GUI.
      *
-     * <p>When a process is created, the current user is assigned as the process initiator, if you want to change it,
-     * you can pass a valid initiator using the following options:
+     * When a process is created, the current user is assigned as the process initiator, if you want to change it, you
+     * can pass a valid initiator using the following options:
      *
-     * <p>* If you know the `principal ID` you can assign it to `initiator.id` * If you know the `user ID` you can
-     * assign it to `initiator.user.id` * If you know the `user email` you can assign it to `initiator.user.email` * If
-     * you know the `application ID` you can assign it to `initiator.application.id`
+     * * If you know the `principal ID` you can assign it to `initiator.id`
+     * * If you know the `user ID` you can assign it to `initiator.user.id`
+     * * If you know the `user email` you can assign it to `initiator.user.email`
+     * * If you know the `application ID` you can assign it to `initiator.application.id`
      *
-     * <p>If you want the method to be idempotent, please specify the `id` field in the request body.
+     * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
      * @param process Process to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -512,17 +530,17 @@ public final class ProcessOperationsImpl {
     /**
      * Create a new process
      *
-     * <p>Creates a process. This option has direct correspondence to the action of starting a process in the Kuflow
-     * GUI.
+     * Creates a process. This option has direct correspondence to the action of starting a process in the Kuflow GUI.
      *
-     * <p>When a process is created, the current user is assigned as the process initiator, if you want to change it,
-     * you can pass a valid initiator using the following options:
+     * When a process is created, the current user is assigned as the process initiator, if you want to change it, you
+     * can pass a valid initiator using the following options:
      *
-     * <p>* If you know the `principal ID` you can assign it to `initiator.id` * If you know the `user ID` you can
-     * assign it to `initiator.user.id` * If you know the `user email` you can assign it to `initiator.user.email` * If
-     * you know the `application ID` you can assign it to `initiator.application.id`
+     * * If you know the `principal ID` you can assign it to `initiator.id`
+     * * If you know the `user ID` you can assign it to `initiator.user.id`
+     * * If you know the `user email` you can assign it to `initiator.user.email`
+     * * If you know the `application ID` you can assign it to `initiator.application.id`
      *
-     * <p>If you want the method to be idempotent, please specify the `id` field in the request body.
+     * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
      * @param process Process to create.
      * @param context The context to associate with this operation.
@@ -540,17 +558,17 @@ public final class ProcessOperationsImpl {
     /**
      * Create a new process
      *
-     * <p>Creates a process. This option has direct correspondence to the action of starting a process in the Kuflow
-     * GUI.
+     * Creates a process. This option has direct correspondence to the action of starting a process in the Kuflow GUI.
      *
-     * <p>When a process is created, the current user is assigned as the process initiator, if you want to change it,
-     * you can pass a valid initiator using the following options:
+     * When a process is created, the current user is assigned as the process initiator, if you want to change it, you
+     * can pass a valid initiator using the following options:
      *
-     * <p>* If you know the `principal ID` you can assign it to `initiator.id` * If you know the `user ID` you can
-     * assign it to `initiator.user.id` * If you know the `user email` you can assign it to `initiator.user.email` * If
-     * you know the `application ID` you can assign it to `initiator.application.id`
+     * * If you know the `principal ID` you can assign it to `initiator.id`
+     * * If you know the `user ID` you can assign it to `initiator.user.id`
+     * * If you know the `user email` you can assign it to `initiator.user.email`
+     * * If you know the `application ID` you can assign it to `initiator.application.id`
      *
-     * <p>If you want the method to be idempotent, please specify the `id` field in the request body.
+     * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
      * @param process Process to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -566,17 +584,17 @@ public final class ProcessOperationsImpl {
     /**
      * Create a new process
      *
-     * <p>Creates a process. This option has direct correspondence to the action of starting a process in the Kuflow
-     * GUI.
+     * Creates a process. This option has direct correspondence to the action of starting a process in the Kuflow GUI.
      *
-     * <p>When a process is created, the current user is assigned as the process initiator, if you want to change it,
-     * you can pass a valid initiator using the following options:
+     * When a process is created, the current user is assigned as the process initiator, if you want to change it, you
+     * can pass a valid initiator using the following options:
      *
-     * <p>* If you know the `principal ID` you can assign it to `initiator.id` * If you know the `user ID` you can
-     * assign it to `initiator.user.id` * If you know the `user email` you can assign it to `initiator.user.email` * If
-     * you know the `application ID` you can assign it to `initiator.application.id`
+     * * If you know the `principal ID` you can assign it to `initiator.id`
+     * * If you know the `user ID` you can assign it to `initiator.user.id`
+     * * If you know the `user email` you can assign it to `initiator.user.email`
+     * * If you know the `application ID` you can assign it to `initiator.application.id`
      *
-     * <p>If you want the method to be idempotent, please specify the `id` field in the request body.
+     * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
      * @param process Process to create.
      * @param context The context to associate with this operation.
@@ -593,17 +611,17 @@ public final class ProcessOperationsImpl {
     /**
      * Create a new process
      *
-     * <p>Creates a process. This option has direct correspondence to the action of starting a process in the Kuflow
-     * GUI.
+     * Creates a process. This option has direct correspondence to the action of starting a process in the Kuflow GUI.
      *
-     * <p>When a process is created, the current user is assigned as the process initiator, if you want to change it,
-     * you can pass a valid initiator using the following options:
+     * When a process is created, the current user is assigned as the process initiator, if you want to change it, you
+     * can pass a valid initiator using the following options:
      *
-     * <p>* If you know the `principal ID` you can assign it to `initiator.id` * If you know the `user ID` you can
-     * assign it to `initiator.user.id` * If you know the `user email` you can assign it to `initiator.user.email` * If
-     * you know the `application ID` you can assign it to `initiator.application.id`
+     * * If you know the `principal ID` you can assign it to `initiator.id`
+     * * If you know the `user ID` you can assign it to `initiator.user.id`
+     * * If you know the `user email` you can assign it to `initiator.user.email`
+     * * If you know the `application ID` you can assign it to `initiator.application.id`
      *
-     * <p>If you want the method to be idempotent, please specify the `id` field in the request body.
+     * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
      * @param process Process to create.
      * @param context The context to associate with this operation.
@@ -621,17 +639,17 @@ public final class ProcessOperationsImpl {
     /**
      * Create a new process
      *
-     * <p>Creates a process. This option has direct correspondence to the action of starting a process in the Kuflow
-     * GUI.
+     * Creates a process. This option has direct correspondence to the action of starting a process in the Kuflow GUI.
      *
-     * <p>When a process is created, the current user is assigned as the process initiator, if you want to change it,
-     * you can pass a valid initiator using the following options:
+     * When a process is created, the current user is assigned as the process initiator, if you want to change it, you
+     * can pass a valid initiator using the following options:
      *
-     * <p>* If you know the `principal ID` you can assign it to `initiator.id` * If you know the `user ID` you can
-     * assign it to `initiator.user.id` * If you know the `user email` you can assign it to `initiator.user.email` * If
-     * you know the `application ID` you can assign it to `initiator.application.id`
+     * * If you know the `principal ID` you can assign it to `initiator.id`
+     * * If you know the `user ID` you can assign it to `initiator.user.id`
+     * * If you know the `user email` you can assign it to `initiator.user.email`
+     * * If you know the `application ID` you can assign it to `initiator.application.id`
      *
-     * <p>If you want the method to be idempotent, please specify the `id` field in the request body.
+     * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
      * @param process Process to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -647,7 +665,7 @@ public final class ProcessOperationsImpl {
     /**
      * Get a Process by ID
      *
-     * <p>Returns the requested Process when has access to do it.
+     * Returns the requested Process when has access to do it.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -664,7 +682,7 @@ public final class ProcessOperationsImpl {
     /**
      * Get a Process by ID
      *
-     * <p>Returns the requested Process when has access to do it.
+     * Returns the requested Process when has access to do it.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -682,7 +700,7 @@ public final class ProcessOperationsImpl {
     /**
      * Get a Process by ID
      *
-     * <p>Returns the requested Process when has access to do it.
+     * Returns the requested Process when has access to do it.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -698,7 +716,7 @@ public final class ProcessOperationsImpl {
     /**
      * Get a Process by ID
      *
-     * <p>Returns the requested Process when has access to do it.
+     * Returns the requested Process when has access to do it.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -715,7 +733,7 @@ public final class ProcessOperationsImpl {
     /**
      * Get a Process by ID
      *
-     * <p>Returns the requested Process when has access to do it.
+     * Returns the requested Process when has access to do it.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -733,7 +751,7 @@ public final class ProcessOperationsImpl {
     /**
      * Get a Process by ID
      *
-     * <p>Returns the requested Process when has access to do it.
+     * Returns the requested Process when has access to do it.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -749,10 +767,10 @@ public final class ProcessOperationsImpl {
     /**
      * Change process initiator
      *
-     * <p>Change the current initiator of a process.
+     * Change the current initiator of a process.
      *
-     * <p>Allows you to choose a user (by email or principal identifier) or an application (principal identifier). Only
-     * one option will be necessary.
+     * Allows you to choose a user (by email or principal identifier) or an application (principal identifier).
+     * Only one option will be necessary.
      *
      * @param id The resource ID.
      * @param command Command to change the process initiator.
@@ -770,10 +788,10 @@ public final class ProcessOperationsImpl {
     /**
      * Change process initiator
      *
-     * <p>Change the current initiator of a process.
+     * Change the current initiator of a process.
      *
-     * <p>Allows you to choose a user (by email or principal identifier) or an application (principal identifier). Only
-     * one option will be necessary.
+     * Allows you to choose a user (by email or principal identifier) or an application (principal identifier).
+     * Only one option will be necessary.
      *
      * @param id The resource ID.
      * @param command Command to change the process initiator.
@@ -796,10 +814,10 @@ public final class ProcessOperationsImpl {
     /**
      * Change process initiator
      *
-     * <p>Change the current initiator of a process.
+     * Change the current initiator of a process.
      *
-     * <p>Allows you to choose a user (by email or principal identifier) or an application (principal identifier). Only
-     * one option will be necessary.
+     * Allows you to choose a user (by email or principal identifier) or an application (principal identifier).
+     * Only one option will be necessary.
      *
      * @param id The resource ID.
      * @param command Command to change the process initiator.
@@ -816,10 +834,10 @@ public final class ProcessOperationsImpl {
     /**
      * Change process initiator
      *
-     * <p>Change the current initiator of a process.
+     * Change the current initiator of a process.
      *
-     * <p>Allows you to choose a user (by email or principal identifier) or an application (principal identifier). Only
-     * one option will be necessary.
+     * Allows you to choose a user (by email or principal identifier) or an application (principal identifier).
+     * Only one option will be necessary.
      *
      * @param id The resource ID.
      * @param command Command to change the process initiator.
@@ -837,10 +855,10 @@ public final class ProcessOperationsImpl {
     /**
      * Change process initiator
      *
-     * <p>Change the current initiator of a process.
+     * Change the current initiator of a process.
      *
-     * <p>Allows you to choose a user (by email or principal identifier) or an application (principal identifier). Only
-     * one option will be necessary.
+     * Allows you to choose a user (by email or principal identifier) or an application (principal identifier).
+     * Only one option will be necessary.
      *
      * @param id The resource ID.
      * @param command Command to change the process initiator.
@@ -859,10 +877,10 @@ public final class ProcessOperationsImpl {
     /**
      * Change process initiator
      *
-     * <p>Change the current initiator of a process.
+     * Change the current initiator of a process.
      *
-     * <p>Allows you to choose a user (by email or principal identifier) or an application (principal identifier). Only
-     * one option will be necessary.
+     * Allows you to choose a user (by email or principal identifier) or an application (principal identifier).
+     * Only one option will be necessary.
      *
      * @param id The resource ID.
      * @param command Command to change the process initiator.
@@ -879,12 +897,12 @@ public final class ProcessOperationsImpl {
     /**
      * Save a process element, aka: metadata
      *
-     * <p>Allow to save an element.
+     * Allow to save an element.
      *
-     * <p>If values already exist for the provided element code, it replaces them with the new ones, otherwise it
-     * creates them. The values of the previous elements that no longer exist will be deleted.
+     * If values already exist for the provided element code, it replaces them with the new ones, otherwise it creates
+     * them. The values of the previous elements that no longer exist will be deleted.
      *
-     * <p>If the process is already finished the invocations fails with an error.
+     * If the process is already finished the invocations fails with an error.
      *
      * @param id The resource ID.
      * @param command Command to save an element.
@@ -902,12 +920,12 @@ public final class ProcessOperationsImpl {
     /**
      * Save a process element, aka: metadata
      *
-     * <p>Allow to save an element.
+     * Allow to save an element.
      *
-     * <p>If values already exist for the provided element code, it replaces them with the new ones, otherwise it
-     * creates them. The values of the previous elements that no longer exist will be deleted.
+     * If values already exist for the provided element code, it replaces them with the new ones, otherwise it creates
+     * them. The values of the previous elements that no longer exist will be deleted.
      *
-     * <p>If the process is already finished the invocations fails with an error.
+     * If the process is already finished the invocations fails with an error.
      *
      * @param id The resource ID.
      * @param command Command to save an element.
@@ -926,12 +944,12 @@ public final class ProcessOperationsImpl {
     /**
      * Save a process element, aka: metadata
      *
-     * <p>Allow to save an element.
+     * Allow to save an element.
      *
-     * <p>If values already exist for the provided element code, it replaces them with the new ones, otherwise it
-     * creates them. The values of the previous elements that no longer exist will be deleted.
+     * If values already exist for the provided element code, it replaces them with the new ones, otherwise it creates
+     * them. The values of the previous elements that no longer exist will be deleted.
      *
-     * <p>If the process is already finished the invocations fails with an error.
+     * If the process is already finished the invocations fails with an error.
      *
      * @param id The resource ID.
      * @param command Command to save an element.
@@ -948,12 +966,12 @@ public final class ProcessOperationsImpl {
     /**
      * Save a process element, aka: metadata
      *
-     * <p>Allow to save an element.
+     * Allow to save an element.
      *
-     * <p>If values already exist for the provided element code, it replaces them with the new ones, otherwise it
-     * creates them. The values of the previous elements that no longer exist will be deleted.
+     * If values already exist for the provided element code, it replaces them with the new ones, otherwise it creates
+     * them. The values of the previous elements that no longer exist will be deleted.
      *
-     * <p>If the process is already finished the invocations fails with an error.
+     * If the process is already finished the invocations fails with an error.
      *
      * @param id The resource ID.
      * @param command Command to save an element.
@@ -971,12 +989,12 @@ public final class ProcessOperationsImpl {
     /**
      * Save a process element, aka: metadata
      *
-     * <p>Allow to save an element.
+     * Allow to save an element.
      *
-     * <p>If values already exist for the provided element code, it replaces them with the new ones, otherwise it
-     * creates them. The values of the previous elements that no longer exist will be deleted.
+     * If values already exist for the provided element code, it replaces them with the new ones, otherwise it creates
+     * them. The values of the previous elements that no longer exist will be deleted.
      *
-     * <p>If the process is already finished the invocations fails with an error.
+     * If the process is already finished the invocations fails with an error.
      *
      * @param id The resource ID.
      * @param command Command to save an element.
@@ -995,12 +1013,12 @@ public final class ProcessOperationsImpl {
     /**
      * Save a process element, aka: metadata
      *
-     * <p>Allow to save an element.
+     * Allow to save an element.
      *
-     * <p>If values already exist for the provided element code, it replaces them with the new ones, otherwise it
-     * creates them. The values of the previous elements that no longer exist will be deleted.
+     * If values already exist for the provided element code, it replaces them with the new ones, otherwise it creates
+     * them. The values of the previous elements that no longer exist will be deleted.
      *
-     * <p>If the process is already finished the invocations fails with an error.
+     * If the process is already finished the invocations fails with an error.
      *
      * @param id The resource ID.
      * @param command Command to save an element.
@@ -1017,9 +1035,9 @@ public final class ProcessOperationsImpl {
     /**
      * Delete an element by code
      *
-     * <p>Allow to delete a process element by specifying the item definition code.
+     * Allow to delete a process element by specifying the item definition code.
      *
-     * <p>Remove all the element values.
+     * Remove all the element values.
      *
      * @param id The resource ID.
      * @param command Command to delete an element.
@@ -1037,9 +1055,9 @@ public final class ProcessOperationsImpl {
     /**
      * Delete an element by code
      *
-     * <p>Allow to delete a process element by specifying the item definition code.
+     * Allow to delete a process element by specifying the item definition code.
      *
-     * <p>Remove all the element values.
+     * Remove all the element values.
      *
      * @param id The resource ID.
      * @param command Command to delete an element.
@@ -1062,9 +1080,9 @@ public final class ProcessOperationsImpl {
     /**
      * Delete an element by code
      *
-     * <p>Allow to delete a process element by specifying the item definition code.
+     * Allow to delete a process element by specifying the item definition code.
      *
-     * <p>Remove all the element values.
+     * Remove all the element values.
      *
      * @param id The resource ID.
      * @param command Command to delete an element.
@@ -1081,9 +1099,9 @@ public final class ProcessOperationsImpl {
     /**
      * Delete an element by code
      *
-     * <p>Allow to delete a process element by specifying the item definition code.
+     * Allow to delete a process element by specifying the item definition code.
      *
-     * <p>Remove all the element values.
+     * Remove all the element values.
      *
      * @param id The resource ID.
      * @param command Command to delete an element.
@@ -1101,9 +1119,9 @@ public final class ProcessOperationsImpl {
     /**
      * Delete an element by code
      *
-     * <p>Allow to delete a process element by specifying the item definition code.
+     * Allow to delete a process element by specifying the item definition code.
      *
-     * <p>Remove all the element values.
+     * Remove all the element values.
      *
      * @param id The resource ID.
      * @param command Command to delete an element.
@@ -1122,9 +1140,9 @@ public final class ProcessOperationsImpl {
     /**
      * Delete an element by code
      *
-     * <p>Allow to delete a process element by specifying the item definition code.
+     * Allow to delete a process element by specifying the item definition code.
      *
-     * <p>Remove all the element values.
+     * Remove all the element values.
      *
      * @param id The resource ID.
      * @param command Command to delete an element.
@@ -1141,9 +1159,9 @@ public final class ProcessOperationsImpl {
     /**
      * Complete a Process
      *
-     * <p>Complete a Process. The state of Process is set to 'completed'.
+     * Complete a Process. The state of Process is set to 'completed'.
      *
-     * <p>If you are already in this state, no action is taken.
+     * If you are already in this state, no action is taken.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1160,9 +1178,9 @@ public final class ProcessOperationsImpl {
     /**
      * Complete a Process
      *
-     * <p>Complete a Process. The state of Process is set to 'completed'.
+     * Complete a Process. The state of Process is set to 'completed'.
      *
-     * <p>If you are already in this state, no action is taken.
+     * If you are already in this state, no action is taken.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -1180,9 +1198,9 @@ public final class ProcessOperationsImpl {
     /**
      * Complete a Process
      *
-     * <p>Complete a Process. The state of Process is set to 'completed'.
+     * Complete a Process. The state of Process is set to 'completed'.
      *
-     * <p>If you are already in this state, no action is taken.
+     * If you are already in this state, no action is taken.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1198,9 +1216,9 @@ public final class ProcessOperationsImpl {
     /**
      * Complete a Process
      *
-     * <p>Complete a Process. The state of Process is set to 'completed'.
+     * Complete a Process. The state of Process is set to 'completed'.
      *
-     * <p>If you are already in this state, no action is taken.
+     * If you are already in this state, no action is taken.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -1217,9 +1235,9 @@ public final class ProcessOperationsImpl {
     /**
      * Complete a Process
      *
-     * <p>Complete a Process. The state of Process is set to 'completed'.
+     * Complete a Process. The state of Process is set to 'completed'.
      *
-     * <p>If you are already in this state, no action is taken.
+     * If you are already in this state, no action is taken.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -1237,9 +1255,9 @@ public final class ProcessOperationsImpl {
     /**
      * Complete a Process
      *
-     * <p>Complete a Process. The state of Process is set to 'completed'.
+     * Complete a Process. The state of Process is set to 'completed'.
      *
-     * <p>If you are already in this state, no action is taken.
+     * If you are already in this state, no action is taken.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1255,11 +1273,11 @@ public final class ProcessOperationsImpl {
     /**
      * Cancel a Process
      *
-     * <p>Cancel a Process. The Process state is set to 'cancelled'.
+     * Cancel a Process. The Process state is set to 'cancelled'.
      *
-     * <p>All the active tasks will be marked as cancelled too.
+     * All the active tasks will be marked as cancelled too.
      *
-     * <p>If you are already in this state, no action is taken.
+     * If you are already in this state, no action is taken.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1276,11 +1294,11 @@ public final class ProcessOperationsImpl {
     /**
      * Cancel a Process
      *
-     * <p>Cancel a Process. The Process state is set to 'cancelled'.
+     * Cancel a Process. The Process state is set to 'cancelled'.
      *
-     * <p>All the active tasks will be marked as cancelled too.
+     * All the active tasks will be marked as cancelled too.
      *
-     * <p>If you are already in this state, no action is taken.
+     * If you are already in this state, no action is taken.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -1298,11 +1316,11 @@ public final class ProcessOperationsImpl {
     /**
      * Cancel a Process
      *
-     * <p>Cancel a Process. The Process state is set to 'cancelled'.
+     * Cancel a Process. The Process state is set to 'cancelled'.
      *
-     * <p>All the active tasks will be marked as cancelled too.
+     * All the active tasks will be marked as cancelled too.
      *
-     * <p>If you are already in this state, no action is taken.
+     * If you are already in this state, no action is taken.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1318,11 +1336,11 @@ public final class ProcessOperationsImpl {
     /**
      * Cancel a Process
      *
-     * <p>Cancel a Process. The Process state is set to 'cancelled'.
+     * Cancel a Process. The Process state is set to 'cancelled'.
      *
-     * <p>All the active tasks will be marked as cancelled too.
+     * All the active tasks will be marked as cancelled too.
      *
-     * <p>If you are already in this state, no action is taken.
+     * If you are already in this state, no action is taken.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -1339,11 +1357,11 @@ public final class ProcessOperationsImpl {
     /**
      * Cancel a Process
      *
-     * <p>Cancel a Process. The Process state is set to 'cancelled'.
+     * Cancel a Process. The Process state is set to 'cancelled'.
      *
-     * <p>All the active tasks will be marked as cancelled too.
+     * All the active tasks will be marked as cancelled too.
      *
-     * <p>If you are already in this state, no action is taken.
+     * If you are already in this state, no action is taken.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -1361,11 +1379,11 @@ public final class ProcessOperationsImpl {
     /**
      * Cancel a Process
      *
-     * <p>Cancel a Process. The Process state is set to 'cancelled'.
+     * Cancel a Process. The Process state is set to 'cancelled'.
      *
-     * <p>All the active tasks will be marked as cancelled too.
+     * All the active tasks will be marked as cancelled too.
      *
-     * <p>If you are already in this state, no action is taken.
+     * If you are already in this state, no action is taken.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1381,7 +1399,7 @@ public final class ProcessOperationsImpl {
     /**
      * Upload and save a document in a user action
      *
-     * <p>Allow saving a user action document uploading the content.
+     * Allow saving a user action document uploading the content.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
@@ -1422,7 +1440,7 @@ public final class ProcessOperationsImpl {
     /**
      * Upload and save a document in a user action
      *
-     * <p>Allow saving a user action document uploading the content.
+     * Allow saving a user action document uploading the content.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
@@ -1463,7 +1481,7 @@ public final class ProcessOperationsImpl {
     /**
      * Upload and save a document in a user action
      *
-     * <p>Allow saving a user action document uploading the content.
+     * Allow saving a user action document uploading the content.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
@@ -1499,7 +1517,7 @@ public final class ProcessOperationsImpl {
     /**
      * Upload and save a document in a user action
      *
-     * <p>Allow saving a user action document uploading the content.
+     * Allow saving a user action document uploading the content.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
@@ -1538,7 +1556,7 @@ public final class ProcessOperationsImpl {
     /**
      * Upload and save a document in a user action
      *
-     * <p>Allow saving a user action document uploading the content.
+     * Allow saving a user action document uploading the content.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
@@ -1579,7 +1597,7 @@ public final class ProcessOperationsImpl {
     /**
      * Upload and save a document in a user action
      *
-     * <p>Allow saving a user action document uploading the content.
+     * Allow saving a user action document uploading the content.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
@@ -1620,7 +1638,7 @@ public final class ProcessOperationsImpl {
     /**
      * Upload and save a document in a user action
      *
-     * <p>Allow saving a user action document uploading the content.
+     * Allow saving a user action document uploading the content.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
@@ -1656,7 +1674,7 @@ public final class ProcessOperationsImpl {
     /**
      * Upload and save a document in a user action
      *
-     * <p>Allow saving a user action document uploading the content.
+     * Allow saving a user action document uploading the content.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
@@ -1695,7 +1713,7 @@ public final class ProcessOperationsImpl {
     /**
      * Upload and save a document in a user action
      *
-     * <p>Allow saving a user action document uploading the content.
+     * Allow saving a user action document uploading the content.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
@@ -1736,7 +1754,7 @@ public final class ProcessOperationsImpl {
     /**
      * Upload and save a document in a user action
      *
-     * <p>Allow saving a user action document uploading the content.
+     * Allow saving a user action document uploading the content.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.

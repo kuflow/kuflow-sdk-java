@@ -26,7 +26,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The AuthenticationEngineToken model. */
+/**
+ * The AuthenticationEngineToken model.
+ */
 @Fluent
 public final class AuthenticationEngineToken {
 
@@ -42,7 +44,9 @@ public final class AuthenticationEngineToken {
     @JsonProperty(value = "expiredAt", required = true)
     private OffsetDateTime expiredAt;
 
-    /** Creates an instance of AuthenticationEngineToken class. */
+    /**
+     * Creates an instance of AuthenticationEngineToken class.
+     */
     public AuthenticationEngineToken() {}
 
     /**

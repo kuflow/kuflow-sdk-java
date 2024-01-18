@@ -26,7 +26,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Json form values, used when the render type selected is JSON Forms. */
+/**
+ * Json form values, used when the render type selected is JSON Forms.
+ */
 @Fluent
 public final class JsonFormsValue {
 
@@ -42,7 +44,9 @@ public final class JsonFormsValue {
     @JsonProperty(value = "data")
     private Map<String, Object> data;
 
-    /** Creates an instance of JsonFormsValue class. */
+    /**
+     * Creates an instance of JsonFormsValue class.
+     */
     public JsonFormsValue() {}
 
     /**

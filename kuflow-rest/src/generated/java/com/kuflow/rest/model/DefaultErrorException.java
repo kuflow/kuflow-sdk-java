@@ -25,7 +25,9 @@ package com.kuflow.rest.model;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
-/** Exception thrown for an invalid response with DefaultError information. */
+/**
+ * Exception thrown for an invalid response with DefaultError information.
+ */
 public final class DefaultErrorException extends HttpResponseException {
 
     /**
@@ -49,7 +51,9 @@ public final class DefaultErrorException extends HttpResponseException {
         super(message, response, value);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DefaultError getValue() {
         return (DefaultError) super.getValue();

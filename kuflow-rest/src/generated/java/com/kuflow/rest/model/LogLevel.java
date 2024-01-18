@@ -25,18 +25,28 @@ package com.kuflow.rest.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for LogLevel. */
+/**
+ * Defines values for LogLevel.
+ */
 public enum LogLevel {
-    /** Enum value INFO. */
+    /**
+     * Enum value INFO.
+     */
     INFO("INFO"),
 
-    /** Enum value WARN. */
+    /**
+     * Enum value WARN.
+     */
     WARN("WARN"),
 
-    /** Enum value ERROR. */
+    /**
+     * Enum value ERROR.
+     */
     ERROR("ERROR");
 
-    /** The actual serialized value for a LogLevel instance. */
+    /**
+     * The actual serialized value for a LogLevel instance.
+     */
     private final String value;
 
     LogLevel(String value) {
@@ -63,7 +73,9 @@ public enum LogLevel {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

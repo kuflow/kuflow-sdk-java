@@ -29,7 +29,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/** The Authentication model. */
+/**
+ * The Authentication model.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("AUTHENTICATION")
 @Fluent
@@ -77,7 +79,9 @@ public final class Authentication extends AbstractAudited {
     @JsonProperty(value = "engineCertificate")
     private AuthenticationEngineCertificate engineCertificate;
 
-    /** Creates an instance of Authentication class. */
+    /**
+     * Creates an instance of Authentication class.
+     */
     public Authentication() {}
 
     /**
@@ -124,6 +128,7 @@ public final class Authentication extends AbstractAudited {
      * Get the token property: Engine authentication token.
      *
      * @deprecated use engineToken.token.
+     *
      * @return the token value.
      */
     public String getToken() {
@@ -134,6 +139,7 @@ public final class Authentication extends AbstractAudited {
      * Set the token property: Engine authentication token.
      *
      * @deprecated use engineToken.token.
+     *
      * @param token the token value to set.
      * @return the Authentication object itself.
      */
@@ -146,6 +152,7 @@ public final class Authentication extends AbstractAudited {
      * Get the expiredAt property: Engine authentication token expiration.
      *
      * @deprecated use engineToken.expiredAt.
+     *
      * @return the expiredAt value.
      */
     public OffsetDateTime getExpiredAt() {
@@ -156,6 +163,7 @@ public final class Authentication extends AbstractAudited {
      * Set the expiredAt property: Engine authentication token expiration.
      *
      * @deprecated use engineToken.expiredAt.
+     *
      * @param expiredAt the expiredAt value to set.
      * @return the Authentication object itself.
      */
@@ -204,28 +212,36 @@ public final class Authentication extends AbstractAudited {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Authentication setCreatedBy(UUID createdBy) {
         super.setCreatedBy(createdBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Authentication setCreatedAt(OffsetDateTime createdAt) {
         super.setCreatedAt(createdAt);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Authentication setLastModifiedBy(UUID lastModifiedBy) {
         super.setLastModifiedBy(lastModifiedBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Authentication setLastModifiedAt(OffsetDateTime lastModifiedAt) {
         super.setLastModifiedAt(lastModifiedAt);

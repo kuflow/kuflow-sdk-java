@@ -27,7 +27,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The TaskElementValuePrincipal model. */
+/**
+ * The TaskElementValuePrincipal model.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("PRINCIPAL")
 @Fluent
@@ -39,7 +41,9 @@ public final class TaskElementValuePrincipal extends TaskElementValue {
     @JsonProperty(value = "value")
     private TaskElementValuePrincipalItem value;
 
-    /** Creates an instance of TaskElementValuePrincipal class. */
+    /**
+     * Creates an instance of TaskElementValuePrincipal class.
+     */
     public TaskElementValuePrincipal() {}
 
     /**
@@ -62,7 +66,9 @@ public final class TaskElementValuePrincipal extends TaskElementValue {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TaskElementValuePrincipal setValid(Boolean valid) {
         super.setValid(valid);

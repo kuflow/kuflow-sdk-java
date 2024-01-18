@@ -25,15 +25,23 @@ package com.kuflow.rest.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Process element value types. */
+/**
+ * Process element value types.
+ */
 public enum ProcessElementValueType {
-    /** Enum value STRING. */
+    /**
+     * Enum value STRING.
+     */
     STRING("STRING"),
 
-    /** Enum value NUMBER. */
+    /**
+     * Enum value NUMBER.
+     */
     NUMBER("NUMBER");
 
-    /** The actual serialized value for a ProcessElementValueType instance. */
+    /**
+     * The actual serialized value for a ProcessElementValueType instance.
+     */
     private final String value;
 
     ProcessElementValueType(String value) {
@@ -60,7 +68,9 @@ public enum ProcessElementValueType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

@@ -27,7 +27,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
 
-/** The RelatedProcess model. */
+/**
+ * The RelatedProcess model.
+ */
 @Fluent
 public final class RelatedProcess {
 
@@ -43,7 +45,9 @@ public final class RelatedProcess {
     @JsonProperty(value = "outcoming")
     private List<UUID> outcoming;
 
-    /** Creates an instance of RelatedProcess class. */
+    /**
+     * Creates an instance of RelatedProcess class.
+     */
     public RelatedProcess() {}
 
     /**

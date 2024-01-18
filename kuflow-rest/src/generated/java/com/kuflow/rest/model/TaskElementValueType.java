@@ -25,24 +25,38 @@ package com.kuflow.rest.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for TaskElementValueType. */
+/**
+ * Defines values for TaskElementValueType.
+ */
 public enum TaskElementValueType {
-    /** Enum value STRING. */
+    /**
+     * Enum value STRING.
+     */
     STRING("STRING"),
 
-    /** Enum value NUMBER. */
+    /**
+     * Enum value NUMBER.
+     */
     NUMBER("NUMBER"),
 
-    /** Enum value OBJECT. */
+    /**
+     * Enum value OBJECT.
+     */
     OBJECT("OBJECT"),
 
-    /** Enum value DOCUMENT. */
+    /**
+     * Enum value DOCUMENT.
+     */
     DOCUMENT("DOCUMENT"),
 
-    /** Enum value PRINCIPAL. */
+    /**
+     * Enum value PRINCIPAL.
+     */
     PRINCIPAL("PRINCIPAL");
 
-    /** The actual serialized value for a TaskElementValueType instance. */
+    /**
+     * The actual serialized value for a TaskElementValueType instance.
+     */
     private final String value;
 
     TaskElementValueType(String value) {
@@ -69,7 +83,9 @@ public enum TaskElementValueType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

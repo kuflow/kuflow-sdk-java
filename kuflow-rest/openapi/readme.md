@@ -31,7 +31,7 @@ input-file: https://raw.githubusercontent.com/kuflow/kuflow-openapi/8f8a9c05ebf2
 output-folder: ../target/openapi-generated
 
 openapi-type: data-plane
-add-credential: true
+add-credential: true  
 namespace: com.kuflow.rest
 artifact-id: kuflow-rest-client
 
@@ -45,7 +45,7 @@ models-subpackage: model
 customization-class: src/main/java/KuFlowClientCustomization.java
 
 use-extension:
-  "@autorest/java": "4.1.20"
+  "@autorest/java": "4.1.25"
 
 modelerfour:
   seal-single-value-enum-by-default: false

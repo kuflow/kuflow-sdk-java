@@ -29,7 +29,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-/** Command to save process element. */
+/**
+ * Command to save process element.
+ */
 @Fluent
 public final class ProcessSaveElementCommand {
 
@@ -45,7 +47,9 @@ public final class ProcessSaveElementCommand {
     @JsonProperty(value = "elementValues")
     private List<ProcessElementValue> elementValues;
 
-    /** Creates an instance of ProcessSaveElementCommand class. */
+    /**
+     * Creates an instance of ProcessSaveElementCommand class.
+     */
     public ProcessSaveElementCommand() {}
 
     /**
@@ -201,7 +205,7 @@ public final class ProcessSaveElementCommand {
      *
      * @return the element value.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link ProcessSaveElementCommandUtils}
      */
     @Deprecated
@@ -214,7 +218,7 @@ public final class ProcessSaveElementCommand {
      *
      * @return the elements values.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link ProcessSaveElementCommandUtils}
      */
     @Deprecated
@@ -294,7 +298,7 @@ public final class ProcessSaveElementCommand {
      *
      * @return the element value.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link ProcessSaveElementCommandUtils}
      */
     @Deprecated
@@ -307,7 +311,7 @@ public final class ProcessSaveElementCommand {
      *
      * @return the elements values.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link ProcessSaveElementCommandUtils}
      */
     @Deprecated
@@ -387,7 +391,7 @@ public final class ProcessSaveElementCommand {
      *
      * @return the element value.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link ProcessSaveElementCommandUtils}
      */
     @Deprecated
@@ -400,7 +404,7 @@ public final class ProcessSaveElementCommand {
      *
      * @return the elements values.
      * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     *     doesn't exist
+     * doesn't exist
      * @deprecated in favor of {@link ProcessSaveElementCommandUtils}
      */
     @Deprecated

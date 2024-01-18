@@ -27,7 +27,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The ProcessElementValueString model. */
+/**
+ * The ProcessElementValueString model.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("STRING")
 @Fluent
@@ -39,7 +41,9 @@ public final class ProcessElementValueString extends ProcessElementValue {
     @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of ProcessElementValueString class. */
+    /**
+     * Creates an instance of ProcessElementValueString class.
+     */
     public ProcessElementValueString() {}
 
     /**
@@ -62,7 +66,9 @@ public final class ProcessElementValueString extends ProcessElementValue {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProcessElementValueString setValid(Boolean valid) {
         super.setValid(valid);

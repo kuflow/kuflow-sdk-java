@@ -25,27 +25,43 @@ package com.kuflow.rest.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Audited object Types. */
+/**
+ * Audited object Types.
+ */
 public enum AuditedObjectType {
-    /** Enum value AUTHENTICATION. */
+    /**
+     * Enum value AUTHENTICATION.
+     */
     AUTHENTICATION("AUTHENTICATION"),
 
-    /** Enum value PROCESS. */
+    /**
+     * Enum value PROCESS.
+     */
     PROCESS("PROCESS"),
 
-    /** Enum value PROCESS_PAGE_ITEM. */
+    /**
+     * Enum value PROCESS_PAGE_ITEM.
+     */
     PROCESS_PAGE_ITEM("PROCESS_PAGE_ITEM"),
 
-    /** Enum value TASK. */
+    /**
+     * Enum value TASK.
+     */
     TASK("TASK"),
 
-    /** Enum value TASK_PAGE_ITEM. */
+    /**
+     * Enum value TASK_PAGE_ITEM.
+     */
     TASK_PAGE_ITEM("TASK_PAGE_ITEM"),
 
-    /** Enum value WORKER. */
+    /**
+     * Enum value WORKER.
+     */
     WORKER("WORKER");
 
-    /** The actual serialized value for a AuditedObjectType instance. */
+    /**
+     * The actual serialized value for a AuditedObjectType instance.
+     */
     private final String value;
 
     AuditedObjectType(String value) {
@@ -72,7 +88,9 @@ public enum AuditedObjectType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {
