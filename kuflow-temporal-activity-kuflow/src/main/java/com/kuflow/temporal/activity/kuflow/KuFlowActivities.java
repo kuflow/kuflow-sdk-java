@@ -50,6 +50,8 @@ import com.kuflow.temporal.activity.kuflow.model.RetrieveProcessRequest;
 import com.kuflow.temporal.activity.kuflow.model.RetrieveProcessResponse;
 import com.kuflow.temporal.activity.kuflow.model.RetrieveTaskRequest;
 import com.kuflow.temporal.activity.kuflow.model.RetrieveTaskResponse;
+import com.kuflow.temporal.activity.kuflow.model.RetrieveTenantUserRequest;
+import com.kuflow.temporal.activity.kuflow.model.RetrieveTenantUserResponse;
 import com.kuflow.temporal.activity.kuflow.model.SaveProcessElementRequest;
 import com.kuflow.temporal.activity.kuflow.model.SaveProcessElementResponse;
 import com.kuflow.temporal.activity.kuflow.model.SaveTaskElementRequest;
@@ -75,6 +77,16 @@ public interface KuFlowActivities {
     @ActivityMethod
     @Nonnull
     RetrievePrincipalResponse retrievePrincipal(@Nonnull RetrievePrincipalRequest request);
+
+    /**
+     * Retrieve a Tenant User.
+     *
+     * @param request must not be {@literal null}.
+     * @return tenant user
+     */
+    @ActivityMethod
+    @Nonnull
+    RetrieveTenantUserResponse retrieveTenantUser(@Nonnull RetrieveTenantUserRequest request);
 
     /**
      * Find all accessible Processes

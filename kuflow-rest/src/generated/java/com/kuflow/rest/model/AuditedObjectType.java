@@ -35,6 +35,11 @@ public enum AuditedObjectType {
     AUTHENTICATION("AUTHENTICATION"),
 
     /**
+     * Enum value TENANT_USER.
+     */
+    TENANT_USER("TENANT_USER"),
+
+    /**
      * Enum value PROCESS.
      */
     PROCESS("PROCESS"),

@@ -24,15 +24,11 @@ package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
  * The PrincipalPage model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("PRINCIPAL_PAGE")
 @Fluent
 public final class PrincipalPage extends Page {
 
@@ -64,6 +60,15 @@ public final class PrincipalPage extends Page {
      */
     public PrincipalPage setContent(List<Principal> content) {
         this.content = content;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PrincipalPage setObjectType(PagedObjectType objectType) {
+        super.setObjectType(objectType);
         return this;
     }
 

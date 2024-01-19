@@ -35,6 +35,7 @@ import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidatio
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateRetrievePrincipalRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateRetrieveProcessRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateRetrieveTaskRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateRetrieveTenantUserRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateSaveProcessElementRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateSaveTaskElementRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateSaveTaskJsonFormsDataRequest;
@@ -55,9 +56,11 @@ import com.kuflow.rest.model.TaskDeleteElementValueDocumentCommand;
 import com.kuflow.rest.model.TaskPage;
 import com.kuflow.rest.model.TaskSaveElementCommand;
 import com.kuflow.rest.model.TaskSaveJsonFormsValueDataCommand;
+import com.kuflow.rest.model.TenantUser;
 import com.kuflow.rest.operation.PrincipalOperations;
 import com.kuflow.rest.operation.ProcessOperations;
 import com.kuflow.rest.operation.TaskOperations;
+import com.kuflow.rest.operation.TenantUserOperations;
 import com.kuflow.temporal.activity.kuflow.model.AppendTaskLogRequest;
 import com.kuflow.temporal.activity.kuflow.model.AppendTaskLogResponse;
 import com.kuflow.temporal.activity.kuflow.model.AssignTaskRequest;
@@ -86,6 +89,8 @@ import com.kuflow.temporal.activity.kuflow.model.RetrieveProcessRequest;
 import com.kuflow.temporal.activity.kuflow.model.RetrieveProcessResponse;
 import com.kuflow.temporal.activity.kuflow.model.RetrieveTaskRequest;
 import com.kuflow.temporal.activity.kuflow.model.RetrieveTaskResponse;
+import com.kuflow.temporal.activity.kuflow.model.RetrieveTenantUserRequest;
+import com.kuflow.temporal.activity.kuflow.model.RetrieveTenantUserResponse;
 import com.kuflow.temporal.activity.kuflow.model.SaveProcessElementRequest;
 import com.kuflow.temporal.activity.kuflow.model.SaveProcessElementResponse;
 import com.kuflow.temporal.activity.kuflow.model.SaveTaskElementRequest;
@@ -98,12 +103,15 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
     private final PrincipalOperations principalOperations;
 
+    private final TenantUserOperations tenantUserOperations;
+
     private final ProcessOperations processOperations;
 
     private final TaskOperations taskOperations;
 
     public KuFlowActivitiesImpl(KuFlowRestClient kuFlowRestClient) {
         this.principalOperations = kuFlowRestClient.getPrincipalOperations();
+        this.tenantUserOperations = kuFlowRestClient.getTenantUserOperations();
         this.processOperations = kuFlowRestClient.getProcessOperations();
         this.taskOperations = kuFlowRestClient.getTaskOperations();
     }
@@ -118,6 +126,23 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
             RetrievePrincipalResponse response = new RetrievePrincipalResponse();
             response.setPrincipal(principal);
+
+            return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Nonnull
+    @Override
+    public RetrieveTenantUserResponse retrieveTenantUser(@Nonnull RetrieveTenantUserRequest request) {
+        try {
+            validateRetrieveTenantUserRequest(request);
+
+            TenantUser tenantUser = this.tenantUserOperations.retrieveTenantUser(request.getTenantUserId());
+
+            RetrieveTenantUserResponse response = new RetrieveTenantUserResponse();
+            response.setTenantUser(tenantUser);
 
             return response;
         } catch (Exception e) {

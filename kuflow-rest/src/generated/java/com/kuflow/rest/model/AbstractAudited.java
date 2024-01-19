@@ -24,29 +24,20 @@ package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
 /**
  * The AbstractAudited model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType", defaultImpl = AbstractAudited.class)
-@JsonTypeName("AbstractAudited")
-@JsonSubTypes(
-    {
-        @JsonSubTypes.Type(name = "AUTHENTICATION", value = Authentication.class),
-        @JsonSubTypes.Type(name = "PROCESS_PAGE_ITEM", value = ProcessPageItem.class),
-        @JsonSubTypes.Type(name = "PROCESS", value = Process.class),
-        @JsonSubTypes.Type(name = "TASK_PAGE_ITEM", value = TaskPageItem.class),
-        @JsonSubTypes.Type(name = "TASK", value = Task.class),
-        @JsonSubTypes.Type(name = "WORKER", value = Worker.class),
-    }
-)
 @Fluent
 public class AbstractAudited {
+
+    /*
+     * Audited object Types.
+     */
+    @JsonProperty(value = "objectType")
+    private AuditedObjectType objectType;
 
     /*
      * Who create this model.
@@ -76,6 +67,26 @@ public class AbstractAudited {
      * Creates an instance of AbstractAudited class.
      */
     public AbstractAudited() {}
+
+    /**
+     * Get the objectType property: Audited object Types.
+     *
+     * @return the objectType value.
+     */
+    public AuditedObjectType getObjectType() {
+        return this.objectType;
+    }
+
+    /**
+     * Set the objectType property: Audited object Types.
+     *
+     * @param objectType the objectType value to set.
+     * @return the AbstractAudited object itself.
+     */
+    public AbstractAudited setObjectType(AuditedObjectType objectType) {
+        this.objectType = objectType;
+        return this;
+    }
 
     /**
      * Get the createdBy property: Who create this model.
