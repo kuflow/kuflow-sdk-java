@@ -30,6 +30,7 @@ import com.kuflow.rest.operation.AuthenticationOperations;
 import com.kuflow.rest.operation.PrincipalOperations;
 import com.kuflow.rest.operation.ProcessOperations;
 import com.kuflow.rest.operation.TaskOperations;
+import com.kuflow.rest.operation.TenantUserOperations;
 import com.kuflow.rest.operation.WorkerOperations;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -42,27 +43,39 @@ public class KuFlowRestClient {
     public static final String API_VERSION = "v2022-10-08";
 
     private final KuFlowClientImpl client;
-    private final PrincipalOperations principalOperations;
+
     private final AuthenticationOperations authenticationOperations;
+
+    private final PrincipalOperations principalOperations;
+
+    private final TenantUserOperations tenantUserOperations;
+
     private final ProcessOperations processOperations;
+
     private final TaskOperations taskOperations;
+
     private final WorkerOperations workerOperations;
 
     public KuFlowRestClient(KuFlowClientImpl client) {
         this.client = client;
-        this.principalOperations = new PrincipalOperations(client);
         this.authenticationOperations = new AuthenticationOperations(client);
+        this.principalOperations = new PrincipalOperations(client);
+        this.tenantUserOperations = new TenantUserOperations(client);
         this.processOperations = new ProcessOperations(client);
         this.taskOperations = new TaskOperations(client);
         this.workerOperations = new WorkerOperations(client);
+    }
+
+    public AuthenticationOperations getAuthenticationOperations() {
+        return this.authenticationOperations;
     }
 
     public PrincipalOperations getPrincipalOperations() {
         return this.principalOperations;
     }
 
-    public AuthenticationOperations getAuthenticationOperations() {
-        return this.authenticationOperations;
+    public TenantUserOperations getTenantUserOperations() {
+        return this.tenantUserOperations;
     }
 
     public ProcessOperations getProcessOperations() {

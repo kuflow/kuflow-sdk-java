@@ -20,27 +20,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.rest.model;
+package com.kuflow.temporal.activity.kuflow.model;
 
-/** The TaskSaveJsonFormsValueDocumentRequestCommand model. */
-public final class TaskSaveJsonFormsValueDocumentRequestCommand {
+import com.kuflow.temporal.common.model.AbstractModel;
+import java.util.UUID;
 
-    /**
-     * The schemaPath property, JSON Schema path related to the document.
-     * The uploaded document must be validated by the passed schema path.
-     */
-    private String schemaPath;
+public class RetrieveTenantUserRequest extends AbstractModel {
 
-    /** Creates an instance of TaskSaveJsonFormsValueDocumentRequestCommand class. */
-    public TaskSaveJsonFormsValueDocumentRequestCommand() {}
+    private UUID tenantUserId;
 
-    public TaskSaveJsonFormsValueDocumentRequestCommand setSchemaPath(String schemaPath) {
-        this.schemaPath = schemaPath;
-
-        return this;
+    public UUID getTenantUserId() {
+        return this.tenantUserId;
     }
 
-    public String getSchemaPath() {
-        return this.schemaPath;
+    public void setTenantUserId(UUID tenantUserId) {
+        this.tenantUserId = tenantUserId;
     }
 }

@@ -24,8 +24,6 @@ package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kuflow.rest.util.TaskPageItemUtils;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -37,8 +35,6 @@ import java.util.UUID;
 /**
  * The TaskPageItem model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("TASK_PAGE_ITEM")
 @Fluent
 public final class TaskPageItem extends AbstractAudited {
 
@@ -227,6 +223,15 @@ public final class TaskPageItem extends AbstractAudited {
      */
     public TaskPageItem setOwner(Principal owner) {
         this.owner = owner;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TaskPageItem setObjectType(AuditedObjectType objectType) {
+        super.setObjectType(objectType);
         return this;
     }
 

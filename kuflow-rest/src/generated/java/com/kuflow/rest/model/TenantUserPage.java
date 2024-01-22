@@ -24,38 +24,60 @@ package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.UUID;
+import java.util.List;
 
-/** The ProcessSaveUserActionValueDocumentCommand model. */
+/**
+ * The TenantUserPage model.
+ */
 @Fluent
-public final class ProcessSaveUserActionValueDocumentCommand {
+public final class TenantUserPage extends Page {
 
     /*
-     * The userActionValueId property.
+     * The content property.
      */
-    @JsonProperty(value = "userActionValueId", required = true)
-    private UUID userActionValueId;
-
-    /** Creates an instance of ProcessSaveUserActionValueDocumentCommand class. */
-    public ProcessSaveUserActionValueDocumentCommand() {}
+    @JsonProperty(value = "content", required = true)
+    private List<TenantUser> content;
 
     /**
-     * Get the userActionValueId property: The userActionValueId property.
-     *
-     * @return the userActionValueId value.
+     * Creates an instance of TenantUserPage class.
      */
-    public UUID getUserActionValueId() {
-        return this.userActionValueId;
+    public TenantUserPage() {}
+
+    /**
+     * Get the content property: The content property.
+     *
+     * @return the content value.
+     */
+    public List<TenantUser> getContent() {
+        return this.content;
     }
 
     /**
-     * Set the userActionValueId property: The userActionValueId property.
+     * Set the content property: The content property.
      *
-     * @param userActionValueId the userActionValueId value to set.
-     * @return the ProcessSaveUserActionValueDocumentCommand object itself.
+     * @param content the content value to set.
+     * @return the TenantUserPage object itself.
      */
-    public ProcessSaveUserActionValueDocumentCommand setUserActionValueId(UUID userActionValueId) {
-        this.userActionValueId = userActionValueId;
+    public TenantUserPage setContent(List<TenantUser> content) {
+        this.content = content;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TenantUserPage setObjectType(PagedObjectType objectType) {
+        super.setObjectType(objectType);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TenantUserPage setMetadata(PageMetadata metadata) {
+        super.setMetadata(metadata);
         return this;
     }
 }

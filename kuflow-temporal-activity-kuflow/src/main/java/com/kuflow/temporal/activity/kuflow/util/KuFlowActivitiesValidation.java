@@ -37,6 +37,7 @@ import com.kuflow.temporal.activity.kuflow.model.DeleteTaskElementValueDocumentR
 import com.kuflow.temporal.activity.kuflow.model.RetrievePrincipalRequest;
 import com.kuflow.temporal.activity.kuflow.model.RetrieveProcessRequest;
 import com.kuflow.temporal.activity.kuflow.model.RetrieveTaskRequest;
+import com.kuflow.temporal.activity.kuflow.model.RetrieveTenantUserRequest;
 import com.kuflow.temporal.activity.kuflow.model.SaveProcessElementRequest;
 import com.kuflow.temporal.activity.kuflow.model.SaveTaskElementRequest;
 import com.kuflow.temporal.activity.kuflow.model.SaveTaskJsonFormsValueDataRequest;
@@ -47,6 +48,12 @@ public class KuFlowActivitiesValidation {
     public static void validateRetrievePrincipalRequest(RetrievePrincipalRequest request) {
         if (request.getPrincipalId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'principalId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+    }
+
+    public static void validateRetrieveTenantUserRequest(RetrieveTenantUserRequest request) {
+        if (request.getTenantUserId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'tenantUserId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 

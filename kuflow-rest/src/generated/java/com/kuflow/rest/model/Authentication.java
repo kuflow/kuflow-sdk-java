@@ -24,16 +24,12 @@ package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
 /**
  * The Authentication model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("AUTHENTICATION")
 @Fluent
 public final class Authentication extends AbstractAudited {
 
@@ -209,6 +205,15 @@ public final class Authentication extends AbstractAudited {
      */
     public Authentication setEngineCertificate(AuthenticationEngineCertificate engineCertificate) {
         this.engineCertificate = engineCertificate;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Authentication setObjectType(AuditedObjectType objectType) {
+        super.setObjectType(objectType);
         return this;
     }
 

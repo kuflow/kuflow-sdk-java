@@ -105,6 +105,20 @@ public final class KuFlowClientImpl {
     }
 
     /**
+     * The TenantUserOperationsImpl object to access its operations.
+     */
+    private final TenantUserOperationsImpl tenantUserOperations;
+
+    /**
+     * Gets the TenantUserOperationsImpl object to access its operations.
+     *
+     * @return the TenantUserOperationsImpl object.
+     */
+    public TenantUserOperationsImpl getTenantUserOperations() {
+        return this.tenantUserOperations;
+    }
+
+    /**
      * The ProcessOperationsImpl object to access its operations.
      */
     private final ProcessOperationsImpl processOperations;
@@ -182,6 +196,7 @@ public final class KuFlowClientImpl {
         this.host = host;
         this.authenticationOperations = new AuthenticationOperationsImpl(this);
         this.principalOperations = new PrincipalOperationsImpl(this);
+        this.tenantUserOperations = new TenantUserOperationsImpl(this);
         this.processOperations = new ProcessOperationsImpl(this);
         this.taskOperations = new TaskOperationsImpl(this);
         this.workerOperations = new WorkerOperationsImpl(this);

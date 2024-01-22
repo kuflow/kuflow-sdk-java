@@ -35,6 +35,11 @@ public enum PagedObjectType {
     PRINCIPAL_PAGE("PRINCIPAL_PAGE"),
 
     /**
+     * Enum value TENANT_USER_PAGE.
+     */
+    TENANT_USER_PAGE("TENANT_USER_PAGE"),
+
+    /**
      * Enum value PROCESS_PAGE.
      */
     PROCESS_PAGE("PROCESS_PAGE"),

@@ -24,38 +24,68 @@ package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.UUID;
+import java.util.Map;
 
-/** The ProcessSaveUserActionValueDocumentCommand model. */
+/**
+ * The TenantUserMetadata model.
+ */
 @Fluent
-public final class ProcessSaveUserActionValueDocumentCommand {
+public final class TenantUserMetadata {
 
     /*
-     * The userActionValueId property.
+     * The valid property.
      */
-    @JsonProperty(value = "userActionValueId", required = true)
-    private UUID userActionValueId;
+    @JsonProperty(value = "valid", required = true)
+    private boolean valid;
 
-    /** Creates an instance of ProcessSaveUserActionValueDocumentCommand class. */
-    public ProcessSaveUserActionValueDocumentCommand() {}
+    /*
+     * Dictionary of <any>
+     */
+    @JsonProperty(value = "value", required = true)
+    private Map<String, Object> value;
 
     /**
-     * Get the userActionValueId property: The userActionValueId property.
-     *
-     * @return the userActionValueId value.
+     * Creates an instance of TenantUserMetadata class.
      */
-    public UUID getUserActionValueId() {
-        return this.userActionValueId;
+    public TenantUserMetadata() {}
+
+    /**
+     * Get the valid property: The valid property.
+     *
+     * @return the valid value.
+     */
+    public boolean isValid() {
+        return this.valid;
     }
 
     /**
-     * Set the userActionValueId property: The userActionValueId property.
+     * Set the valid property: The valid property.
      *
-     * @param userActionValueId the userActionValueId value to set.
-     * @return the ProcessSaveUserActionValueDocumentCommand object itself.
+     * @param valid the valid value to set.
+     * @return the TenantUserMetadata object itself.
      */
-    public ProcessSaveUserActionValueDocumentCommand setUserActionValueId(UUID userActionValueId) {
-        this.userActionValueId = userActionValueId;
+    public TenantUserMetadata setValid(boolean valid) {
+        this.valid = valid;
+        return this;
+    }
+
+    /**
+     * Get the value property: Dictionary of &lt;any&gt;.
+     *
+     * @return the value value.
+     */
+    public Map<String, Object> getValue() {
+        return this.value;
+    }
+
+    /**
+     * Set the value property: Dictionary of &lt;any&gt;.
+     *
+     * @param value the value value to set.
+     * @return the TenantUserMetadata object itself.
+     */
+    public TenantUserMetadata setValue(Map<String, Object> value) {
+        this.value = value;
         return this;
     }
 }

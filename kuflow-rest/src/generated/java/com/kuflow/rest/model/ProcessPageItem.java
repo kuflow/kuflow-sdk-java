@@ -24,8 +24,6 @@ package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.kuflow.rest.util.ProcessPageItemUtils;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -37,8 +35,6 @@ import java.util.UUID;
 /**
  * The ProcessPageItem model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("PROCESS_PAGE_ITEM")
 @Fluent
 public final class ProcessPageItem extends AbstractAudited {
 
@@ -200,6 +196,15 @@ public final class ProcessPageItem extends AbstractAudited {
      */
     public ProcessPageItem setInitiator(Principal initiator) {
         this.initiator = initiator;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ProcessPageItem setObjectType(AuditedObjectType objectType) {
+        super.setObjectType(objectType);
         return this;
     }
 

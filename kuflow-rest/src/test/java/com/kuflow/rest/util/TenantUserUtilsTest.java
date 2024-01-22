@@ -20,27 +20,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.rest.model;
+package com.kuflow.rest.util;
 
-/** The TaskSaveJsonFormsValueDocumentRequestCommand model. */
-public final class TaskSaveJsonFormsValueDocumentRequestCommand {
+import static org.assertj.core.api.Assertions.assertThat;
 
-    /**
-     * The schemaPath property, JSON Schema path related to the document.
-     * The uploaded document must be validated by the passed schema path.
-     */
-    private String schemaPath;
+import com.kuflow.rest.model.TenantUser;
+import java.util.Optional;
+import org.junit.jupiter.api.Test;
 
-    /** Creates an instance of TaskSaveJsonFormsValueDocumentRequestCommand class. */
-    public TaskSaveJsonFormsValueDocumentRequestCommand() {}
+public class TenantUserUtilsTest {
 
-    public TaskSaveJsonFormsValueDocumentRequestCommand setSchemaPath(String schemaPath) {
-        this.schemaPath = schemaPath;
+    @Test
+    public void when_addElementValues_expect_newValuesAdded() {
+        TenantUser tenantUser = new TenantUser();
+        Optional<String> nameOptional = TenantUserUtils.findMetadataPropertyAsString(tenantUser, "name");
+        Optional<Integer> ageOptional = TenantUserUtils.findMetadataPropertyAsInteger(tenantUser, "age");
+        assertThat(nameOptional).isEmpty();
+        assertThat(ageOptional).isEmpty();
 
-        return this;
-    }
+        TenantUserUtils.updateJsonFormsProperty(tenantUser, "name", "value");
+        TenantUserUtils.updateJsonFormsProperty(tenantUser, "age", 99);
 
-    public String getSchemaPath() {
-        return this.schemaPath;
+        nameOptional = TenantUserUtils.findMetadataPropertyAsString(tenantUser, "name");
+        ageOptional = TenantUserUtils.findMetadataPropertyAsInteger(tenantUser, "age");
+        assertThat(nameOptional).contains("value");
+        assertThat(ageOptional).contains(99);
     }
 }

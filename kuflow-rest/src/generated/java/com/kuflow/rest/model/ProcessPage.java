@@ -24,15 +24,11 @@ package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
  * The ProcessPage model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("PROCESS_PAGE")
 @Fluent
 public final class ProcessPage extends Page {
 
@@ -64,6 +60,15 @@ public final class ProcessPage extends Page {
      */
     public ProcessPage setContent(List<ProcessPageItem> content) {
         this.content = content;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ProcessPage setObjectType(PagedObjectType objectType) {
+        super.setObjectType(objectType);
         return this;
     }
 

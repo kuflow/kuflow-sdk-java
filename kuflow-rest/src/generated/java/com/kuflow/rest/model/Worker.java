@@ -24,8 +24,6 @@ package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -33,8 +31,6 @@ import java.util.UUID;
 /**
  * The Worker model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("WORKER")
 @Fluent
 public final class Worker extends AbstractAudited {
 
@@ -222,6 +218,15 @@ public final class Worker extends AbstractAudited {
      */
     public Worker setIp(String ip) {
         this.ip = ip;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Worker setObjectType(AuditedObjectType objectType) {
+        super.setObjectType(objectType);
         return this;
     }
 
