@@ -107,8 +107,8 @@
   <build>
     <resources>
       <resource>
-        <filtering>true</filtering>
         <directory>${basedir}/src/main/resources</directory>
+        <filtering>true</filtering>
         <includes>
           <include>**/kuflow-rest-client.properties</include>
         </includes>

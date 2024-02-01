@@ -56,7 +56,6 @@
   <properties>
     <maven.version>3.9.6</maven.version>
     <java.version>11</java.version>
-    <resource.delimiter>#</resource.delimiter>
     <argLine>-Djava.security.egd=file:/dev/./urandom -Xmx256m</argLine>
 
     <!-- Maven plugin dependencies -->
