@@ -76,6 +76,12 @@ public final class Worker extends AbstractAudited {
     @JsonProperty(value = "ip", required = true)
     private String ip;
 
+    /*
+     * Tenant ID.
+     */
+    @JsonProperty(value = "tenantId")
+    private UUID tenantId;
+
     /**
      * Creates an instance of Worker class.
      */
@@ -218,6 +224,26 @@ public final class Worker extends AbstractAudited {
      */
     public Worker setIp(String ip) {
         this.ip = ip;
+        return this;
+    }
+
+    /**
+     * Get the tenantId property: Tenant ID.
+     *
+     * @return the tenantId value.
+     */
+    public UUID getTenantId() {
+        return this.tenantId;
+    }
+
+    /**
+     * Set the tenantId property: Tenant ID.
+     *
+     * @param tenantId the tenantId value to set.
+     * @return the Worker object itself.
+     */
+    public Worker setTenantId(UUID tenantId) {
+        this.tenantId = tenantId;
         return this;
     }
 

@@ -29,6 +29,7 @@ import com.kuflow.rest.model.WebhookEvent;
 import com.kuflow.rest.operation.AuthenticationOperations;
 import com.kuflow.rest.operation.PrincipalOperations;
 import com.kuflow.rest.operation.ProcessOperations;
+import com.kuflow.rest.operation.RobotOperations;
 import com.kuflow.rest.operation.TaskOperations;
 import com.kuflow.rest.operation.TenantUserOperations;
 import com.kuflow.rest.operation.WorkerOperations;
@@ -56,6 +57,8 @@ public class KuFlowRestClient {
 
     private final WorkerOperations workerOperations;
 
+    private final RobotOperations robotOperations;
+
     public KuFlowRestClient(KuFlowClientImpl client) {
         this.client = client;
         this.authenticationOperations = new AuthenticationOperations(client);
@@ -64,6 +67,7 @@ public class KuFlowRestClient {
         this.processOperations = new ProcessOperations(client);
         this.taskOperations = new TaskOperations(client);
         this.workerOperations = new WorkerOperations(client);
+        this.robotOperations = new RobotOperations(client);
     }
 
     public AuthenticationOperations getAuthenticationOperations() {
@@ -88,6 +92,10 @@ public class KuFlowRestClient {
 
     public WorkerOperations getWorkerOperations() {
         return this.workerOperations;
+    }
+
+    public RobotOperations getRobotOperations() {
+        return this.robotOperations;
     }
 
     public WebhookEvent parseWebhookEvent(String payload) {

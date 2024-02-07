@@ -49,6 +49,11 @@ public class FindTasksOptions {
     private List<String> sorts = new LinkedList<>();
 
     /**
+     * Filter principals that exists in one of tenant ids.
+     */
+    private final List<UUID> tenantIds = new LinkedList<>();
+
+    /**
      * Filter by an array of process ids.
      */
     private List<UUID> processIds = new LinkedList<>();
@@ -112,6 +117,41 @@ public class FindTasksOptions {
     public FindTasksOptions removeSort(String sort) {
         Objects.requireNonNull(sort, "'sort' is required");
         this.sorts.remove(sort);
+
+        return this;
+    }
+
+    public List<UUID> getTenantIds() {
+        return unmodifiableList(this.tenantIds);
+    }
+
+    public FindTasksOptions setTenantIds(List<UUID> tenantIds) {
+        this.tenantIds.clear();
+        if (tenantIds != null) {
+            this.tenantIds.addAll(tenantIds);
+        }
+
+        return this;
+    }
+
+    public FindTasksOptions setTenantId(UUID tenantId) {
+        Objects.requireNonNull(tenantId, "'tenantId' is required");
+
+        return this.setTenantIds(List.of(tenantId));
+    }
+
+    public FindTasksOptions addTenantId(UUID tenantId) {
+        Objects.requireNonNull(tenantId, "'tenantId' is required");
+        if (!this.tenantIds.contains(tenantId)) {
+            this.tenantIds.add(tenantId);
+        }
+
+        return this;
+    }
+
+    public FindTasksOptions removeTenantId(UUID tenantId) {
+        Objects.requireNonNull(tenantId, "'tenantId' is required");
+        this.tenantIds.remove(tenantId);
 
         return this;
     }

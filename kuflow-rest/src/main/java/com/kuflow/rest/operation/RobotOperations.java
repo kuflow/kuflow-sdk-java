@@ -27,112 +27,95 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.kuflow.rest.implementation.KuFlowClientImpl;
-import com.kuflow.rest.implementation.TenantUserOperationsImpl;
+import com.kuflow.rest.implementation.RobotOperationsImpl;
 import com.kuflow.rest.model.DefaultErrorException;
-import com.kuflow.rest.model.FindTenantUsersOptions;
-import com.kuflow.rest.model.TenantUser;
-import com.kuflow.rest.model.TenantUserPage;
+import com.kuflow.rest.model.FindRobotsOptions;
+import com.kuflow.rest.model.Robot;
+import com.kuflow.rest.model.RobotPage;
 import java.util.List;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in TenantUserOperations.
- */
-public class TenantUserOperations {
+/** An instance of this class provides access to all the operations defined in RobotOperations. */
+public class RobotOperations {
 
     /** The service. */
-    private final TenantUserOperationsImpl service;
+    private final RobotOperationsImpl service;
 
     /**
-     * Initializes an instance of PrincipalOperationsImpl.
+     * Initializes an instance of RobotOperationsImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public TenantUserOperations(KuFlowClientImpl client) {
-        this.service = client.getTenantUserOperations();
+    public RobotOperations(KuFlowClientImpl client) {
+        this.service = client.getRobotOperations();
     }
 
     /**
-     * Find all accessible Tenant Users
+     * Find all accessible Robots
      * <p>
-     * List all the Tenant Users that have been created and the used credentials has access.
+     * List all the Robots that have been created and the credentials has access.
      * <p>
-     * Available sort query values: id, createdAt, lastModifiedAt.
+     * Available sort query values: createdAt, lastModifiedAt.
      *
      * @param options The options parameters.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TenantUserPage> findTenantUsersWithResponse(FindTenantUsersOptions options, Context context) {
-        options = options != null ? options : new FindTenantUsersOptions();
+    public Response<RobotPage> findRobotsWithResponse(FindRobotsOptions options, Context context) {
+        options = options != null ? options : new FindRobotsOptions();
 
         Integer size = options.getSize();
         Integer page = options.getPage();
         List<String> sort = !options.getSorts().isEmpty() ? options.getSorts() : null;
-        List<UUID> groupId = !options.getGroupIds().isEmpty() ? options.getGroupIds() : null;
-        List<String> email = !options.getEmails().isEmpty() ? options.getEmails() : null;
         List<UUID> tenantId = !options.getTenantIds().isEmpty() ? options.getTenantIds() : null;
 
-        return this.service.findTenantUsersWithResponse(size, page, sort, groupId, email, tenantId, context);
+        return this.service.findRobotsWithResponse(size, page, sort, tenantId, context);
     }
 
     /**
-     * Find all accessible Tenant Users
+     * Find all accessible Robots
      * <p>
-     * List all the Tenant Users that have been created and the used credentials has access.
+     * List all the Robots that have been created and the credentials has access.
      * <p>
-     * Available sort query values: id, createdAt, lastModifiedAt.
+     * Available sort query values: createdAt, lastModifiedAt.
      *
      * @param options The options parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TenantUserPage findTenantUsers(FindTenantUsersOptions options) {
-        return this.findTenantUsersWithResponse(options, Context.NONE).getValue();
+    public RobotPage findRobots(FindRobotsOptions options) {
+        return this.findRobotsWithResponse(options, Context.NONE).getValue();
     }
 
     /**
-     * Find all accessible Tenant Users
+     * Find all accessible Robots
      * <p>
-     * List all the Tenant Users that have been created and the used credentials has access.
+     * List all the Robots that have been created and the credentials has access.
+     * <p>
+     * Available sort query values: createdAt, lastModifiedAt.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TenantUserPage findTenantUsers() {
-        return this.findTenantUsersWithResponse(null, Context.NONE).getValue();
+    public RobotPage findRobots() {
+        return this.findRobotsWithResponse(null, Context.NONE).getValue();
     }
 
     /**
-     * Get a Tenant User by ID
+     * Get a Robot by ID
      * <p>
-     * Returns the requested TenantUser when has access to do it.
-     *
-     * @param id The resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TenantUser> retrieveTenantUserWithResponse(UUID id, Context context) {
-        return this.service.retrieveTenantUserWithResponse(id, context);
-    }
-
-    /**
-     * Get a Tenant User by ID
-     * <p>
-     * Returns the requested TenantUser when has access to do it.
+     * Returns the requested Robot when has access to do it.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -141,7 +124,23 @@ public class TenantUserOperations {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TenantUser retrieveTenantUser(UUID id) {
-        return this.retrieveTenantUserWithResponse(id, Context.NONE).getValue();
+    public Response<Robot> retrieveRobotWithResponse(UUID id, Context context) {
+        return this.service.retrieveRobotWithResponse(id, context);
+    }
+
+    /**
+     * Get a Robot by ID
+     * <p>
+     * Returns the requested Robot when has access to do it.
+     *
+     * @param id The resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Robot retrieveRobot(UUID id) {
+        return this.retrieveRobotWithResponse(id, Context.NONE).getValue();
     }
 }

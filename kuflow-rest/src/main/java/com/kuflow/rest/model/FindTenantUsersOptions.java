@@ -49,6 +49,11 @@ public class FindTenantUsersOptions {
     private final List<String> sorts = new LinkedList<>();
 
     /**
+     * Filter tenant users that exists in one of tenant ids.
+     */
+    private final List<UUID> tenantIds = new LinkedList<>();
+
+    /**
      * Filter tenant users that exists in one of group ids.
      */
     private final List<UUID> groupIds = new LinkedList<>();
@@ -109,6 +114,41 @@ public class FindTenantUsersOptions {
     public FindTenantUsersOptions removeSort(String sort) {
         Objects.requireNonNull(sort, "'sort' is required");
         this.sorts.remove(sort);
+
+        return this;
+    }
+
+    public List<UUID> getTenantIds() {
+        return unmodifiableList(this.tenantIds);
+    }
+
+    public FindTenantUsersOptions setTenantIds(List<UUID> tenantIds) {
+        this.tenantIds.clear();
+        if (tenantIds != null) {
+            this.tenantIds.addAll(tenantIds);
+        }
+
+        return this;
+    }
+
+    public FindTenantUsersOptions setTenantId(UUID tenantId) {
+        Objects.requireNonNull(tenantId, "'tenantId' is required");
+
+        return this.setTenantIds(List.of(tenantId));
+    }
+
+    public FindTenantUsersOptions addTenantId(UUID tenantId) {
+        Objects.requireNonNull(tenantId, "'tenantId' is required");
+        if (!this.tenantIds.contains(tenantId)) {
+            this.tenantIds.add(tenantId);
+        }
+
+        return this;
+    }
+
+    public FindTenantUsersOptions removeTenantId(UUID tenantId) {
+        Objects.requireNonNull(tenantId, "'tenantId' is required");
+        this.tenantIds.remove(tenantId);
 
         return this;
     }

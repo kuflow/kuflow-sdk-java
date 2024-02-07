@@ -81,6 +81,12 @@ public final class TaskPageItem extends AbstractAudited {
     @JsonProperty(value = "owner")
     private Principal owner;
 
+    /*
+     * Tenant ID.
+     */
+    @JsonProperty(value = "tenantId")
+    private UUID tenantId;
+
     /**
      * Creates an instance of TaskPageItem class.
      */
@@ -223,6 +229,26 @@ public final class TaskPageItem extends AbstractAudited {
      */
     public TaskPageItem setOwner(Principal owner) {
         this.owner = owner;
+        return this;
+    }
+
+    /**
+     * Get the tenantId property: Tenant ID.
+     *
+     * @return the tenantId value.
+     */
+    public UUID getTenantId() {
+        return this.tenantId;
+    }
+
+    /**
+     * Set the tenantId property: Tenant ID.
+     *
+     * @param tenantId the tenantId value to set.
+     * @return the TaskPageItem object itself.
+     */
+    public TaskPageItem setTenantId(UUID tenantId) {
+        this.tenantId = tenantId;
         return this;
     }
 

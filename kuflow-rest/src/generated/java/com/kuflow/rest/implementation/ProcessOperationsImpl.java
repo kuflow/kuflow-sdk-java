@@ -95,6 +95,7 @@ public final class ProcessOperationsImpl {
             @QueryParam("size") Integer size,
             @QueryParam("page") Integer page,
             @QueryParam(value = "sort", multipleQueryParams = true) List<String> sort,
+            @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -107,6 +108,7 @@ public final class ProcessOperationsImpl {
             @QueryParam("size") Integer size,
             @QueryParam("page") Integer page,
             @QueryParam(value = "sort", multipleQueryParams = true) List<String> sort,
+            @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -317,18 +319,24 @@ public final class ProcessOperationsImpl {
      * Default sort order is ascending. Multiple sort criteria are supported.
      *
      * Please refer to the method description for supported properties.
+     * @param tenantId Filter by tenantId.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ProcessPage>> findProcessesWithResponseAsync(Integer size, Integer page, List<String> sort) {
+    public Mono<Response<ProcessPage>> findProcessesWithResponseAsync(Integer size, Integer page, List<String> sort, List<UUID> tenantId) {
         final String accept = "application/json";
         List<String> sortConverted = (sort == null)
             ? new ArrayList<>()
             : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        return FluxUtil.withContext(context -> service.findProcesses(this.client.getHost(), size, page, sortConverted, accept, context));
+        List<String> tenantIdConverted = (tenantId == null)
+            ? new ArrayList<>()
+            : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        return FluxUtil.withContext(context ->
+            service.findProcesses(this.client.getHost(), size, page, sortConverted, tenantIdConverted, accept, context)
+        );
     }
 
     /**
@@ -345,6 +353,7 @@ public final class ProcessOperationsImpl {
      * Default sort order is ascending. Multiple sort criteria are supported.
      *
      * Please refer to the method description for supported properties.
+     * @param tenantId Filter by tenantId.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -352,12 +361,21 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ProcessPage>> findProcessesWithResponseAsync(Integer size, Integer page, List<String> sort, Context context) {
+    public Mono<Response<ProcessPage>> findProcessesWithResponseAsync(
+        Integer size,
+        Integer page,
+        List<String> sort,
+        List<UUID> tenantId,
+        Context context
+    ) {
         final String accept = "application/json";
         List<String> sortConverted = (sort == null)
             ? new ArrayList<>()
             : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        return service.findProcesses(this.client.getHost(), size, page, sortConverted, accept, context);
+        List<String> tenantIdConverted = (tenantId == null)
+            ? new ArrayList<>()
+            : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        return service.findProcesses(this.client.getHost(), size, page, sortConverted, tenantIdConverted, accept, context);
     }
 
     /**
@@ -374,14 +392,15 @@ public final class ProcessOperationsImpl {
      * Default sort order is ascending. Multiple sort criteria are supported.
      *
      * Please refer to the method description for supported properties.
+     * @param tenantId Filter by tenantId.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProcessPage> findProcessesAsync(Integer size, Integer page, List<String> sort) {
-        return findProcessesWithResponseAsync(size, page, sort).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<ProcessPage> findProcessesAsync(Integer size, Integer page, List<String> sort, List<UUID> tenantId) {
+        return findProcessesWithResponseAsync(size, page, sort, tenantId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -400,7 +419,8 @@ public final class ProcessOperationsImpl {
         final Integer size = null;
         final Integer page = null;
         final List<String> sort = null;
-        return findProcessesWithResponseAsync(size, page, sort).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        final List<UUID> tenantId = null;
+        return findProcessesWithResponseAsync(size, page, sort, tenantId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -417,6 +437,7 @@ public final class ProcessOperationsImpl {
      * Default sort order is ascending. Multiple sort criteria are supported.
      *
      * Please refer to the method description for supported properties.
+     * @param tenantId Filter by tenantId.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -424,8 +445,8 @@ public final class ProcessOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProcessPage> findProcessesAsync(Integer size, Integer page, List<String> sort, Context context) {
-        return findProcessesWithResponseAsync(size, page, sort, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<ProcessPage> findProcessesAsync(Integer size, Integer page, List<String> sort, List<UUID> tenantId, Context context) {
+        return findProcessesWithResponseAsync(size, page, sort, tenantId, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -442,6 +463,7 @@ public final class ProcessOperationsImpl {
      * Default sort order is ascending. Multiple sort criteria are supported.
      *
      * Please refer to the method description for supported properties.
+     * @param tenantId Filter by tenantId.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -449,12 +471,21 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProcessPage> findProcessesWithResponse(Integer size, Integer page, List<String> sort, Context context) {
+    public Response<ProcessPage> findProcessesWithResponse(
+        Integer size,
+        Integer page,
+        List<String> sort,
+        List<UUID> tenantId,
+        Context context
+    ) {
         final String accept = "application/json";
         List<String> sortConverted = (sort == null)
             ? new ArrayList<>()
             : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        return service.findProcessesSync(this.client.getHost(), size, page, sortConverted, accept, context);
+        List<String> tenantIdConverted = (tenantId == null)
+            ? new ArrayList<>()
+            : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        return service.findProcessesSync(this.client.getHost(), size, page, sortConverted, tenantIdConverted, accept, context);
     }
 
     /**
@@ -471,14 +502,15 @@ public final class ProcessOperationsImpl {
      * Default sort order is ascending. Multiple sort criteria are supported.
      *
      * Please refer to the method description for supported properties.
+     * @param tenantId Filter by tenantId.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProcessPage findProcesses(Integer size, Integer page, List<String> sort) {
-        return findProcessesWithResponse(size, page, sort, Context.NONE).getValue();
+    public ProcessPage findProcesses(Integer size, Integer page, List<String> sort, List<UUID> tenantId) {
+        return findProcessesWithResponse(size, page, sort, tenantId, Context.NONE).getValue();
     }
 
     /**
@@ -497,7 +529,8 @@ public final class ProcessOperationsImpl {
         final Integer size = null;
         final Integer page = null;
         final List<String> sort = null;
-        return findProcessesWithResponse(size, page, sort, Context.NONE).getValue();
+        final List<UUID> tenantId = null;
+        return findProcessesWithResponse(size, page, sort, tenantId, Context.NONE).getValue();
     }
 
     /**

@@ -87,8 +87,9 @@ public class TaskOperations {
         List<UUID> processId = !options.getProcessIds().isEmpty() ? options.getProcessIds() : null;
         List<TaskState> state = !options.getStates().isEmpty() ? options.getStates() : null;
         List<String> taskDefinitionCode = !options.getTaskDefinitionCodes().isEmpty() ? options.getTaskDefinitionCodes() : null;
+        List<UUID> tenantId = !options.getTenantIds().isEmpty() ? options.getTenantIds() : null;
 
-        return this.service.findTasksWithResponse(size, page, sort, processId, state, taskDefinitionCode, context);
+        return this.service.findTasksWithResponse(size, page, sort, processId, state, taskDefinitionCode, tenantId, context);
     }
 
     /**

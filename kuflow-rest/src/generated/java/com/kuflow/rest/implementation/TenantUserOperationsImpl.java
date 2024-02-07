@@ -88,7 +88,8 @@ public final class TenantUserOperationsImpl {
             @QueryParam("page") Integer page,
             @QueryParam(value = "sort", multipleQueryParams = true) List<String> sort,
             @QueryParam(value = "groupId", multipleQueryParams = true) List<String> groupId,
-            @QueryParam("email") String email,
+            @QueryParam(value = "email", multipleQueryParams = true) List<String> email,
+            @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -102,7 +103,8 @@ public final class TenantUserOperationsImpl {
             @QueryParam("page") Integer page,
             @QueryParam(value = "sort", multipleQueryParams = true) List<String> sort,
             @QueryParam(value = "groupId", multipleQueryParams = true) List<String> groupId,
-            @QueryParam("email") String email,
+            @QueryParam(value = "email", multipleQueryParams = true) List<String> email,
+            @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -142,8 +144,9 @@ public final class TenantUserOperationsImpl {
      * Default sort order is ascending. Multiple sort criteria are supported.
      *
      * Please refer to the method description for supported properties.
-     * @param groupId Filter tenant users that exists in one of the group ids.
-     * @param email Filter tenant users that have one of the emails.
+     * @param groupId Filter by group ids.
+     * @param email Filter by email.
+     * @param tenantId Filter by tenantId.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -155,7 +158,8 @@ public final class TenantUserOperationsImpl {
         Integer page,
         List<String> sort,
         List<UUID> groupId,
-        List<String> email
+        List<String> email,
+        List<UUID> tenantId
     ) {
         final String accept = "application/json";
         List<String> sortConverted = (sort == null)
@@ -164,11 +168,24 @@ public final class TenantUserOperationsImpl {
         List<String> groupIdConverted = (groupId == null)
             ? new ArrayList<>()
             : groupId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        String emailConverted = (email == null)
-            ? null
-            : email.stream().map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        List<String> emailConverted = (email == null)
+            ? new ArrayList<>()
+            : email.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> tenantIdConverted = (tenantId == null)
+            ? new ArrayList<>()
+            : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil.withContext(context ->
-            service.findTenantUsers(this.client.getHost(), size, page, sortConverted, groupIdConverted, emailConverted, accept, context)
+            service.findTenantUsers(
+                this.client.getHost(),
+                size,
+                page,
+                sortConverted,
+                groupIdConverted,
+                emailConverted,
+                tenantIdConverted,
+                accept,
+                context
+            )
         );
     }
 
@@ -186,8 +203,9 @@ public final class TenantUserOperationsImpl {
      * Default sort order is ascending. Multiple sort criteria are supported.
      *
      * Please refer to the method description for supported properties.
-     * @param groupId Filter tenant users that exists in one of the group ids.
-     * @param email Filter tenant users that have one of the emails.
+     * @param groupId Filter by group ids.
+     * @param email Filter by email.
+     * @param tenantId Filter by tenantId.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -201,6 +219,7 @@ public final class TenantUserOperationsImpl {
         List<String> sort,
         List<UUID> groupId,
         List<String> email,
+        List<UUID> tenantId,
         Context context
     ) {
         final String accept = "application/json";
@@ -210,10 +229,23 @@ public final class TenantUserOperationsImpl {
         List<String> groupIdConverted = (groupId == null)
             ? new ArrayList<>()
             : groupId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        String emailConverted = (email == null)
-            ? null
-            : email.stream().map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return service.findTenantUsers(this.client.getHost(), size, page, sortConverted, groupIdConverted, emailConverted, accept, context);
+        List<String> emailConverted = (email == null)
+            ? new ArrayList<>()
+            : email.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> tenantIdConverted = (tenantId == null)
+            ? new ArrayList<>()
+            : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        return service.findTenantUsers(
+            this.client.getHost(),
+            size,
+            page,
+            sortConverted,
+            groupIdConverted,
+            emailConverted,
+            tenantIdConverted,
+            accept,
+            context
+        );
     }
 
     /**
@@ -230,8 +262,9 @@ public final class TenantUserOperationsImpl {
      * Default sort order is ascending. Multiple sort criteria are supported.
      *
      * Please refer to the method description for supported properties.
-     * @param groupId Filter tenant users that exists in one of the group ids.
-     * @param email Filter tenant users that have one of the emails.
+     * @param groupId Filter by group ids.
+     * @param email Filter by email.
+     * @param tenantId Filter by tenantId.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -243,9 +276,11 @@ public final class TenantUserOperationsImpl {
         Integer page,
         List<String> sort,
         List<UUID> groupId,
-        List<String> email
+        List<String> email,
+        List<UUID> tenantId
     ) {
-        return findTenantUsersWithResponseAsync(size, page, sort, groupId, email).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return findTenantUsersWithResponseAsync(size, page, sort, groupId, email, tenantId)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -266,7 +301,9 @@ public final class TenantUserOperationsImpl {
         final List<String> sort = null;
         final List<UUID> groupId = null;
         final List<String> email = null;
-        return findTenantUsersWithResponseAsync(size, page, sort, groupId, email).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        final List<UUID> tenantId = null;
+        return findTenantUsersWithResponseAsync(size, page, sort, groupId, email, tenantId)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -283,8 +320,9 @@ public final class TenantUserOperationsImpl {
      * Default sort order is ascending. Multiple sort criteria are supported.
      *
      * Please refer to the method description for supported properties.
-     * @param groupId Filter tenant users that exists in one of the group ids.
-     * @param email Filter tenant users that have one of the emails.
+     * @param groupId Filter by group ids.
+     * @param email Filter by email.
+     * @param tenantId Filter by tenantId.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -298,9 +336,11 @@ public final class TenantUserOperationsImpl {
         List<String> sort,
         List<UUID> groupId,
         List<String> email,
+        List<UUID> tenantId,
         Context context
     ) {
-        return findTenantUsersWithResponseAsync(size, page, sort, groupId, email, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return findTenantUsersWithResponseAsync(size, page, sort, groupId, email, tenantId, context)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -317,8 +357,9 @@ public final class TenantUserOperationsImpl {
      * Default sort order is ascending. Multiple sort criteria are supported.
      *
      * Please refer to the method description for supported properties.
-     * @param groupId Filter tenant users that exists in one of the group ids.
-     * @param email Filter tenant users that have one of the emails.
+     * @param groupId Filter by group ids.
+     * @param email Filter by email.
+     * @param tenantId Filter by tenantId.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -332,6 +373,7 @@ public final class TenantUserOperationsImpl {
         List<String> sort,
         List<UUID> groupId,
         List<String> email,
+        List<UUID> tenantId,
         Context context
     ) {
         final String accept = "application/json";
@@ -341,9 +383,12 @@ public final class TenantUserOperationsImpl {
         List<String> groupIdConverted = (groupId == null)
             ? new ArrayList<>()
             : groupId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        String emailConverted = (email == null)
-            ? null
-            : email.stream().map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        List<String> emailConverted = (email == null)
+            ? new ArrayList<>()
+            : email.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> tenantIdConverted = (tenantId == null)
+            ? new ArrayList<>()
+            : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return service.findTenantUsersSync(
             this.client.getHost(),
             size,
@@ -351,6 +396,7 @@ public final class TenantUserOperationsImpl {
             sortConverted,
             groupIdConverted,
             emailConverted,
+            tenantIdConverted,
             accept,
             context
         );
@@ -370,16 +416,24 @@ public final class TenantUserOperationsImpl {
      * Default sort order is ascending. Multiple sort criteria are supported.
      *
      * Please refer to the method description for supported properties.
-     * @param groupId Filter tenant users that exists in one of the group ids.
-     * @param email Filter tenant users that have one of the emails.
+     * @param groupId Filter by group ids.
+     * @param email Filter by email.
+     * @param tenantId Filter by tenantId.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TenantUserPage findTenantUsers(Integer size, Integer page, List<String> sort, List<UUID> groupId, List<String> email) {
-        return findTenantUsersWithResponse(size, page, sort, groupId, email, Context.NONE).getValue();
+    public TenantUserPage findTenantUsers(
+        Integer size,
+        Integer page,
+        List<String> sort,
+        List<UUID> groupId,
+        List<String> email,
+        List<UUID> tenantId
+    ) {
+        return findTenantUsersWithResponse(size, page, sort, groupId, email, tenantId, Context.NONE).getValue();
     }
 
     /**
@@ -400,7 +454,8 @@ public final class TenantUserOperationsImpl {
         final List<String> sort = null;
         final List<UUID> groupId = null;
         final List<String> email = null;
-        return findTenantUsersWithResponse(size, page, sort, groupId, email, Context.NONE).getValue();
+        final List<UUID> tenantId = null;
+        return findTenantUsersWithResponse(size, page, sort, groupId, email, tenantId, Context.NONE).getValue();
     }
 
     /**

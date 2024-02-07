@@ -22,12 +22,12 @@
  */
 package com.kuflow.rest;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.credential.BasicAuthenticationCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
@@ -86,17 +86,29 @@ public final class KuFlowRestClientBuilder
     private static final String PLATFORM_INFO_FORMAT = "%s; %s; %s";
 
     private String endpoint;
+
     private String clientId;
+
     private String clientSecret;
+
+    private TokenCredential credential;
+
     private boolean allowInsecureConnection = false;
+
     private HttpClient httpClient;
+
     private HttpLogOptions httpLogOptions = new HttpLogOptions();
+
     private HttpPipeline pipeline;
 
     private Configuration configuration;
+
     private final List<HttpPipelinePolicy> pipelinePolicies = new ArrayList<>();
+
     private ClientOptions clientOptions;
+
     private RetryPolicy retryPolicy;
+
     private RetryOptions retryOptions;
 
     private SerializerAdapter serializerAdapter;
@@ -127,7 +139,7 @@ public final class KuFlowRestClientBuilder
      * @return KuFlowRestClientBuilder
      */
     public KuFlowRestClientBuilder clientId(String clientId) {
-        this.clientId = Objects.requireNonNull(clientId, "'clientId' cannot be null.");
+        this.clientId = clientId;
         return this;
     }
 
@@ -138,7 +150,18 @@ public final class KuFlowRestClientBuilder
      * @return KuFlowRestClientBuilder
      */
     public KuFlowRestClientBuilder clientSecret(String clientSecret) {
-        this.clientSecret = Objects.requireNonNull(clientSecret, "'clientSecret' cannot be null.");
+        this.clientSecret = clientSecret;
+        return this;
+    }
+
+    /**
+     * Set credential of the service
+     *
+     * @param credential credential factory
+     * @return KuFlowRestClientBuilder
+     */
+    public KuFlowRestClientBuilder credential(TokenCredential credential) {
+        this.credential = credential;
         return this;
     }
 
@@ -171,7 +194,7 @@ public final class KuFlowRestClientBuilder
      */
     @Override
     public KuFlowRestClientBuilder pipeline(HttpPipeline pipeline) {
-        this.pipeline = Objects.requireNonNull(pipeline, "'pipeline' cannot be null.");
+        this.pipeline = pipeline;
         return this;
     }
 
@@ -217,7 +240,7 @@ public final class KuFlowRestClientBuilder
      */
     @Override
     public KuFlowRestClientBuilder configuration(Configuration configuration) {
-        this.configuration = Objects.requireNonNull(configuration, "'configuration' cannot be null.");
+        this.configuration = configuration;
         return this;
     }
 
@@ -238,7 +261,7 @@ public final class KuFlowRestClientBuilder
      */
     @Override
     public KuFlowRestClientBuilder httpLogOptions(HttpLogOptions logOptions) {
-        this.httpLogOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
+        this.httpLogOptions = logOptions;
         return this;
     }
 
@@ -281,7 +304,7 @@ public final class KuFlowRestClientBuilder
      */
     @Override
     public KuFlowRestClientBuilder httpClient(HttpClient httpClient) {
-        this.httpClient = Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
+        this.httpClient = httpClient;
         return this;
     }
 
@@ -311,7 +334,6 @@ public final class KuFlowRestClientBuilder
      * @param serializerAdapter the serializerAdapter value.
      * @return the KuFlowRestClientBuilder.
      */
-    @Generated
     public KuFlowRestClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
@@ -350,6 +372,14 @@ public final class KuFlowRestClientBuilder
     private HttpPipeline createHttpPipeline() {
         if (this.pipeline != null) {
             return this.pipeline;
+        }
+
+        if (this.clientId != null || this.clientSecret != null) {
+            this.credential = new BasicAuthenticationCredential(this.clientId, this.clientSecret);
+        }
+
+        if (this.credential == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'clientId/clientSecret' or 'credential' is required."));
         }
 
         Configuration localConfiguration = (this.configuration == null) ? Configuration.getGlobalConfiguration() : this.configuration;
@@ -394,20 +424,18 @@ public final class KuFlowRestClientBuilder
     }
 
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
-        if (this.clientId == null || this.clientSecret == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Both 'clientId' and 'clientSecret' are required."));
+        if (this.credential == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'credential' is required."));
         }
 
         boolean allowInsecureConnection = this.allowInsecureConnection;
 
-        BasicAuthenticationCredential tokenCredential = new BasicAuthenticationCredential(this.clientId, this.clientSecret);
-        return new BearerTokenAuthenticationPolicy(tokenCredential, "https://api.kuflow.com/v2022-10-08/.default") {
+        return new BearerTokenAuthenticationPolicy(this.credential, "https://api.kuflow.com/v2022-10-08/.default") {
             @Override
             public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
                 if ("http".equals(context.getHttpRequest().getUrl().getProtocol()) && !allowInsecureConnection) {
                     return Mono.error(new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
                 }
-
                 HttpPipelineNextPolicy nextPolicy = next.clone();
 
                 return authorizeRequest(context)
@@ -431,6 +459,7 @@ public final class KuFlowRestClientBuilder
                                     }
                                 });
                         }
+
                         return Mono.just(httpResponse);
                     });
             }

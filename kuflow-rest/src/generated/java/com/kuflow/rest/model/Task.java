@@ -89,6 +89,12 @@ public final class Task extends AbstractAudited {
     @JsonProperty(value = "owner")
     private Principal owner;
 
+    /*
+     * Tenant ID.
+     */
+    @JsonProperty(value = "tenantId")
+    private UUID tenantId;
+
     /**
      * Creates an instance of Task class.
      */
@@ -255,6 +261,26 @@ public final class Task extends AbstractAudited {
      */
     public Task setOwner(Principal owner) {
         this.owner = owner;
+        return this;
+    }
+
+    /**
+     * Get the tenantId property: Tenant ID.
+     *
+     * @return the tenantId value.
+     */
+    public UUID getTenantId() {
+        return this.tenantId;
+    }
+
+    /**
+     * Set the tenantId property: Tenant ID.
+     *
+     * @param tenantId the tenantId value to set.
+     * @return the Task object itself.
+     */
+    public Task setTenantId(UUID tenantId) {
+        this.tenantId = tenantId;
         return this;
     }
 

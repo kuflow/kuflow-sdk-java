@@ -27,7 +27,7 @@ java: true
 title: KuFlow
 override-client-name: KuFlowClient
 
-input-file: https://raw.githubusercontent.com/kuflow/kuflow-openapi/ef019b7aa2e036b7f7470afa23a36dfc20513e57/specs/api.kuflow.com/v2022-10-08/openapi.yaml
+input-file: https://raw.githubusercontent.com/kuflow/kuflow-openapi/dcc83aec8cfbf2c4a731835b940a318d2ca1d561/specs/api.kuflow.com/v2022-10-08/openapi.yaml
 output-folder: ../target/openapi-generated
 
 openapi-type: data-plane

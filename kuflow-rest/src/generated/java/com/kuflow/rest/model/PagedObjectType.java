@@ -47,7 +47,12 @@ public enum PagedObjectType {
     /**
      * Enum value TASK_PAGE.
      */
-    TASK_PAGE("TASK_PAGE");
+    TASK_PAGE("TASK_PAGE"),
+
+    /**
+     * Enum value ROBOT_PAGE.
+     */
+    ROBOT_PAGE("ROBOT_PAGE");
 
     /**
      * The actual serialized value for a PagedObjectType instance.

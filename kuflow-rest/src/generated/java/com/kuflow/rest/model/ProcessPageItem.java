@@ -74,6 +74,12 @@ public final class ProcessPageItem extends AbstractAudited {
     @JsonProperty(value = "initiator")
     private Principal initiator;
 
+    /*
+     * Tenant ID.
+     */
+    @JsonProperty(value = "tenantId")
+    private UUID tenantId;
+
     /**
      * Creates an instance of ProcessPageItem class.
      */
@@ -196,6 +202,26 @@ public final class ProcessPageItem extends AbstractAudited {
      */
     public ProcessPageItem setInitiator(Principal initiator) {
         this.initiator = initiator;
+        return this;
+    }
+
+    /**
+     * Get the tenantId property: Tenant ID.
+     *
+     * @return the tenantId value.
+     */
+    public UUID getTenantId() {
+        return this.tenantId;
+    }
+
+    /**
+     * Set the tenantId property: Tenant ID.
+     *
+     * @param tenantId the tenantId value to set.
+     * @return the ProcessPageItem object itself.
+     */
+    public ProcessPageItem setTenantId(UUID tenantId) {
+        this.tenantId = tenantId;
         return this;
     }
 

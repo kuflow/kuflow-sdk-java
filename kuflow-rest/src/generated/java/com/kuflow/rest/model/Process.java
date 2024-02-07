@@ -80,6 +80,12 @@ public final class Process extends AbstractAudited {
     @JsonProperty(value = "relatedProcess")
     private RelatedProcess relatedProcess;
 
+    /*
+     * Tenant ID.
+     */
+    @JsonProperty(value = "tenantId")
+    private UUID tenantId;
+
     /**
      * Creates an instance of Process class.
      */
@@ -222,6 +228,26 @@ public final class Process extends AbstractAudited {
      */
     public Process setRelatedProcess(RelatedProcess relatedProcess) {
         this.relatedProcess = relatedProcess;
+        return this;
+    }
+
+    /**
+     * Get the tenantId property: Tenant ID.
+     *
+     * @return the tenantId value.
+     */
+    public UUID getTenantId() {
+        return this.tenantId;
+    }
+
+    /**
+     * Set the tenantId property: Tenant ID.
+     *
+     * @param tenantId the tenantId value to set.
+     * @return the Process object itself.
+     */
+    public Process setTenantId(UUID tenantId) {
+        this.tenantId = tenantId;
         return this;
     }
 

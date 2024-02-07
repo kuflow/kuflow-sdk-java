@@ -26,6 +26,8 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
@@ -35,6 +37,7 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -58,7 +61,9 @@ import java.util.Objects;
  * A builder for creating a new instance of the KuFlowClient type.
  */
 @ServiceClientBuilder(serviceClients = { KuFlowClientImpl.class })
-public final class KuFlowClientImplBuilder implements HttpTrait<KuFlowClientImplBuilder>, ConfigurationTrait<KuFlowClientImplBuilder> {
+public final class KuFlowClientImplBuilder
+    implements
+        HttpTrait<KuFlowClientImplBuilder>, ConfigurationTrait<KuFlowClientImplBuilder>, TokenCredentialTrait<KuFlowClientImplBuilder> {
 
     @Generated
     private static final String SDK_NAME = "name";
@@ -188,6 +193,22 @@ public final class KuFlowClientImplBuilder implements HttpTrait<KuFlowClientImpl
     }
 
     /*
+     * The TokenCredential used for authentication.
+     */
+    @Generated
+    private TokenCredential tokenCredential;
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Generated
+    @Override
+    public KuFlowClientImplBuilder credential(TokenCredential tokenCredential) {
+        this.tokenCredential = tokenCredential;
+        return this;
+    }
+
+    /*
      * server parameter
      */
     @Generated
@@ -278,6 +299,9 @@ public final class KuFlowClientImplBuilder implements HttpTrait<KuFlowClientImpl
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
+        if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", host)));
+        }
         this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY).forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(localHttpLogOptions));
