@@ -61,8 +61,8 @@ public final class Robot extends AbstractAudited {
     /*
      * Robot source type
      */
-    @JsonProperty(value = "sourceType", required = true)
-    private String sourceType = "ROBOT_FRAMEWORK_PYTHON_WHEEL";
+    @JsonProperty(value = "sourceType")
+    private RobotSourceType sourceType;
 
     /*
      * Robot source type
@@ -172,7 +172,7 @@ public final class Robot extends AbstractAudited {
      *
      * @return the sourceType value.
      */
-    public String getSourceType() {
+    public RobotSourceType getSourceType() {
         return this.sourceType;
     }
 
@@ -182,7 +182,7 @@ public final class Robot extends AbstractAudited {
      * @param sourceType the sourceType value to set.
      * @return the Robot object itself.
      */
-    public Robot setSourceType(String sourceType) {
+    public Robot setSourceType(RobotSourceType sourceType) {
         this.sourceType = sourceType;
         return this;
     }

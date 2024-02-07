@@ -27,15 +27,18 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
 import static com.github.tomakehurst.wiremock.client.WireMock.ok;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.kuflow.rest.util.TaskSaveJsonFormsValueDataCommandUtils.updateJsonFormsProperty;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.kuflow.rest.model.FindTasksOptions;
 import com.kuflow.rest.model.JsonFormsFile;
 import com.kuflow.rest.model.JsonFormsPrincipal;
 import com.kuflow.rest.model.Task;
 import com.kuflow.rest.model.TaskPageItem;
 import com.kuflow.rest.model.TaskSaveElementCommand;
 import com.kuflow.rest.model.TaskSaveJsonFormsValueDataCommand;
+import com.kuflow.rest.model.TaskState;
 import com.kuflow.rest.util.TaskPageItemUtils;
 import com.kuflow.rest.util.TaskSaveElementCommandUtils;
 import com.kuflow.rest.util.TaskUtils;
@@ -60,6 +63,73 @@ public class TaskOperationTest extends AbstractOperationTest {
         );
 
         this.kuFlowRestClient.getTaskOperations().findTasks();
+    }
+
+    @Test
+    @DisplayName("GIVEN an authenticated user WHEN list tasks using query params THEN the query parameters are send")
+    public void givenAnAuthenticatedUserWhenListTasksUsingQueryParamsThenTheQueryParametersAreSend() {
+        UUID tenantId = UUID.randomUUID();
+        UUID processId = UUID.randomUUID();
+
+        givenThat(
+            get(urlPathEqualTo("/v2022-10-08/tasks"))
+                .withQueryParam("size", equalTo("30"))
+                .withQueryParam("page", equalTo("2"))
+                .withQueryParam("sort", equalTo("order1"))
+                .withQueryParam("tenantId", equalTo(tenantId.toString()))
+                .withQueryParam("processId", equalTo(processId.toString()))
+                .withQueryParam("taskDefinitionCode", equalTo("code1"))
+                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("tasks-api.list.ok.json"))
+        );
+
+        FindTasksOptions options = new FindTasksOptions()
+            .setSize(30)
+            .setPage(2)
+            .setSort("order1")
+            .setTenantId(tenantId)
+            .setProcessId(processId)
+            .setState(TaskState.READY)
+            .setTaskDefinitionCode("code1");
+
+        this.kuFlowRestClient.getTaskOperations().findTasks(options);
+    }
+
+    @Test
+    @DisplayName("GIVEN an authenticated user WHEN list tasks using query params multivalued THEN the query parameters are send")
+    public void givenAnAuthenticatedUserWhenListTasksUsingQueryParamsMultivaluedThenTheQueryParametersAreSend() {
+        UUID tenantId1 = UUID.randomUUID();
+        UUID tenantId2 = UUID.randomUUID();
+        UUID processId1 = UUID.randomUUID();
+        UUID processId2 = UUID.randomUUID();
+
+        givenThat(
+            get(urlPathEqualTo("/v2022-10-08/tasks"))
+                .withQueryParam("size", equalTo("30"))
+                .withQueryParam("page", equalTo("2"))
+                .withQueryParam("sort", equalTo("order1"))
+                .withQueryParam("sort", equalTo("order2"))
+                .withQueryParam("tenantId", equalTo(tenantId1.toString()))
+                .withQueryParam("tenantId", equalTo(tenantId2.toString()))
+                .withQueryParam("processId", equalTo(processId1.toString()))
+                .withQueryParam("processId", equalTo(processId2.toString()))
+                .withQueryParam("taskDefinitionCode", equalTo("code1"))
+                .withQueryParam("taskDefinitionCode", equalTo("code2"))
+                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("tasks-api.list.ok.json"))
+        );
+
+        FindTasksOptions options = new FindTasksOptions()
+            .setSize(30)
+            .setPage(2)
+            .addSort("order1")
+            .addSort("order2")
+            .addTenantId(tenantId1)
+            .addTenantId(tenantId2)
+            .addProcessId(processId1)
+            .addProcessId(processId2)
+            .addTaskDefinitionCode("code1")
+            .addTaskDefinitionCode("code2");
+
+        this.kuFlowRestClient.getTaskOperations().findTasks(options);
     }
 
     @Test

@@ -105,6 +105,12 @@ public class FindTasksOptions {
         return this;
     }
 
+    public FindTasksOptions setSort(String sort) {
+        Objects.requireNonNull(sort, "'sort' is required");
+
+        return this.setSorts(List.of(sort));
+    }
+
     public FindTasksOptions addSort(String sort) {
         Objects.requireNonNull(sort, "'sort' is required");
         if (!this.sorts.contains(sort)) {
@@ -173,6 +179,12 @@ public class FindTasksOptions {
         return this;
     }
 
+    public FindTasksOptions setProcessId(UUID processId) {
+        Objects.requireNonNull(processId, "'processId' is required");
+
+        return this.setProcessIds(List.of(processId));
+    }
+
     public FindTasksOptions addProcessId(UUID processId) {
         Objects.requireNonNull(processId, "'processId' is required");
         if (!this.processIds.contains(processId)) {
@@ -206,6 +218,12 @@ public class FindTasksOptions {
         return this;
     }
 
+    public FindTasksOptions setState(TaskState state) {
+        Objects.requireNonNull(state, "'state' is required");
+
+        return this.setStates(List.of(state));
+    }
+
     public FindTasksOptions addState(TaskState state) {
         Objects.requireNonNull(state, "'state' is required");
         if (!this.states.contains(state)) {
@@ -237,6 +255,12 @@ public class FindTasksOptions {
         }
 
         return this;
+    }
+
+    public FindTasksOptions setTaskDefinitionCode(String taskDefinitionCode) {
+        Objects.requireNonNull(taskDefinitionCode, "'taskDefinitionCode' is required");
+
+        return this.setTaskDefinitionCodes(List.of(taskDefinitionCode));
     }
 
     public FindTasksOptions addTaskDefinitionCode(String taskDefinitionCode) {

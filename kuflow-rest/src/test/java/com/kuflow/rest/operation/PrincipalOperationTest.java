@@ -71,6 +71,7 @@ public class PrincipalOperationTest extends AbstractOperationTest {
     @DisplayName("GIVEN an authenticated user WHEN list principals using query params THEN the query parameters are send")
     public void givenAnAuthenticatedUserWhenListPrincipalsUsingQueryParamsThenTheQueryParametersAreSend() {
         UUID groupId = UUID.randomUUID();
+        UUID tenantId = UUID.randomUUID();
 
         givenThat(
             get(urlPathEqualTo("/v2022-10-08/principals"))
@@ -78,6 +79,7 @@ public class PrincipalOperationTest extends AbstractOperationTest {
                 .withQueryParam("page", equalTo("2"))
                 .withQueryParam("sort", equalTo("order1"))
                 .withQueryParam("groupId", equalTo(groupId.toString()))
+                .withQueryParam("tenantId", equalTo(tenantId.toString()))
                 .withQueryParam("type", equalTo(PrincipalType.USER.toString()))
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("principals-api.list.ok.json"))
         );
@@ -87,16 +89,19 @@ public class PrincipalOperationTest extends AbstractOperationTest {
             .setPage(2)
             .setSort("order1")
             .setGroupId(groupId)
+            .setTenantId(tenantId)
             .setType(PrincipalType.USER);
 
         this.kuFlowRestClient.getPrincipalOperations().findPrincipals(options);
     }
 
     @Test
-    @DisplayName("GIVEN an authenticated user WHEN list principals using query params multivalues THEN the query parameters are send")
-    public void givenAnAuthenticatedUserWhenListPrincipalsUsingQueryParamsMultivaluesThenTheQueryParametersAreSend() {
+    @DisplayName("GIVEN an authenticated user WHEN list principals using query params multivalued THEN the query parameters are send")
+    public void givenAnAuthenticatedUserWhenListPrincipalsUsingQueryParamsMultivaluedThenTheQueryParametersAreSend() {
         UUID groupId1 = UUID.randomUUID();
         UUID groupId2 = UUID.randomUUID();
+        UUID tenantId1 = UUID.randomUUID();
+        UUID tenantId2 = UUID.randomUUID();
 
         givenThat(
             get(urlPathEqualTo("/v2022-10-08/principals"))
@@ -106,6 +111,8 @@ public class PrincipalOperationTest extends AbstractOperationTest {
                 .withQueryParam("sort", equalTo("order2"))
                 .withQueryParam("groupId", equalTo(groupId1.toString()))
                 .withQueryParam("groupId", equalTo(groupId2.toString()))
+                .withQueryParam("tenantId", equalTo(tenantId1.toString()))
+                .withQueryParam("tenantId", equalTo(tenantId2.toString()))
                 .withQueryParam("type", equalTo(PrincipalType.USER.toString()))
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("principals-api.list.ok.json"))
         );
@@ -117,6 +124,8 @@ public class PrincipalOperationTest extends AbstractOperationTest {
             .addSort("order2")
             .addGroupId(groupId1)
             .addGroupId(groupId2)
+            .addTenantId(tenantId1)
+            .addTenantId(tenantId2)
             .setType(PrincipalType.USER);
 
         this.kuFlowRestClient.getPrincipalOperations().findPrincipals(options);
@@ -124,7 +133,7 @@ public class PrincipalOperationTest extends AbstractOperationTest {
 
     @Test
     @DisplayName("GIVEN an authenticated user WHEN retrieve a principal THEN authentication header is added")
-    public void givenAnAuthenticatedUserWhenRetrieveAPrincipalThenAuthenticationHeaderIsAdded() throws Exception {
+    public void givenAnAuthenticatedUserWhenRetrieveAPrincipalThenAuthenticationHeaderIsAdded() {
         UUID principalId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
 
         givenThat(

@@ -164,6 +164,7 @@
         <configuration>
           <inputGlobs>
             <inputGlob>src/main/java/**/*.java</inputGlob>
+            <inputGlob>src/test/java/**/*.java</inputGlob>
             <inputGlob>src/generated/java/**/*.java</inputGlob>
           </inputGlobs>
         </configuration>
