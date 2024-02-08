@@ -27,7 +27,7 @@ java: true
 title: KuFlow
 override-client-name: KuFlowClient
 
-input-file: https://raw.githubusercontent.com/kuflow/kuflow-openapi/dcc83aec8cfbf2c4a731835b940a318d2ca1d561/specs/api.kuflow.com/v2022-10-08/openapi.yaml
+input-file: https://raw.githubusercontent.com/kuflow/kuflow-openapi/130c5c9b3a26ed2eef9350f44991d28500005ff4/specs/api.kuflow.com/v2022-10-08/openapi.yaml
 output-folder: ../target/openapi-generated
 
 openapi-type: data-plane
@@ -45,7 +45,7 @@ models-subpackage: model
 customization-class: src/main/java/KuFlowClientCustomization.java
 
 use-extension:
-  "@autorest/java": "4.1.26"
+  "@autorest/java": "4.1.27"
 
 modelerfour:
   seal-single-value-enum-by-default: false
@@ -62,7 +62,7 @@ directive:
       }
 
   # WORKAROUND:
-  # RobotSourceType has only one option, due to is required is rendered as String instead of a enum
+  # RobotSourceType has only one option, so, due to is required, is rendered as String instead of an enum
   # See: https://github.com/stankovski/AutoRest/blob/master/Documentation/swagger-extensions.md#single-value-enum-as-a-constant
   - from: openapi-document
     where: $.components.schemas.Robot.allOf[1]

@@ -46,6 +46,18 @@ public final class Authentication extends AbstractAudited {
     private AuthenticationType type;
 
     /*
+     * Tenant id. This attribute is required when an OAuth2 authentication is used.
+     */
+    @JsonProperty(value = "tenantId")
+    private UUID tenantId;
+
+    /*
+     * Robot id. This attribute is required when an OAuth2 authentication is used.
+     */
+    @JsonProperty(value = "robotId")
+    private UUID robotId;
+
+    /*
      * Engine authentication token.
      *
      * @deprecated use engineToken.token
@@ -117,6 +129,46 @@ public final class Authentication extends AbstractAudited {
      */
     public Authentication setType(AuthenticationType type) {
         this.type = type;
+        return this;
+    }
+
+    /**
+     * Get the tenantId property: Tenant id. This attribute is required when an OAuth2 authentication is used.
+     *
+     * @return the tenantId value.
+     */
+    public UUID getTenantId() {
+        return this.tenantId;
+    }
+
+    /**
+     * Set the tenantId property: Tenant id. This attribute is required when an OAuth2 authentication is used.
+     *
+     * @param tenantId the tenantId value to set.
+     * @return the Authentication object itself.
+     */
+    public Authentication setTenantId(UUID tenantId) {
+        this.tenantId = tenantId;
+        return this;
+    }
+
+    /**
+     * Get the robotId property: Robot id. This attribute is required when an OAuth2 authentication is used.
+     *
+     * @return the robotId value.
+     */
+    public UUID getRobotId() {
+        return this.robotId;
+    }
+
+    /**
+     * Set the robotId property: Robot id. This attribute is required when an OAuth2 authentication is used.
+     *
+     * @param robotId the robotId value to set.
+     * @return the Authentication object itself.
+     */
+    public Authentication setRobotId(UUID robotId) {
+        this.robotId = robotId;
         return this;
     }
 

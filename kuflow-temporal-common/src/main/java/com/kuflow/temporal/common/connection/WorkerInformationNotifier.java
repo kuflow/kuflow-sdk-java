@@ -87,7 +87,7 @@ public class WorkerInformationNotifier {
             return;
         }
 
-        this.crearOrUpdateWorkers();
+        this.createOrUpdateWorkers();
         this.scheduleCreateOrUpdateWorkers();
 
         this.running.set(true);
@@ -110,16 +110,17 @@ public class WorkerInformationNotifier {
         }
     }
 
-    private void crearOrUpdateWorkers() {
+    private void createOrUpdateWorkers() {
         InetAddress localHostInetAddress = this.getLocalHostInetAddress();
-        this.workerInformationList.forEach(workerInformation -> this.crearOrUpdateWorker(workerInformation, localHostInetAddress));
+        this.workerInformationList.forEach(workerInformation -> this.createOrUpdateWorker(workerInformation, localHostInetAddress));
     }
 
-    private void crearOrUpdateWorker(WorkerInformation workerInformation, InetAddress localHostInetAddress) {
+    private void createOrUpdateWorker(WorkerInformation workerInformation, InetAddress localHostInetAddress) {
         String workerIdentity = this.workflowClientOptions.getIdentity();
 
         try {
             com.kuflow.rest.model.Worker workerRest = new com.kuflow.rest.model.Worker();
+            workerRest.setTenantId(workerInformation.getTenantId());
             workerRest.setIdentity(workerIdentity);
             workerRest.setIp(localHostInetAddress.getHostAddress());
             workerRest.setHostname(localHostInetAddress.getHostName());
@@ -174,7 +175,7 @@ public class WorkerInformationNotifier {
         this.scheduleCreateOrUpdateWorkerFuture =
             this.scheduledExecutorService.scheduleAtFixedRate(
                     () -> {
-                        this.crearOrUpdateWorkers();
+                        this.createOrUpdateWorkers();
                         this.scheduleCreateOrUpdateWorkers();
                     },
                     delay,

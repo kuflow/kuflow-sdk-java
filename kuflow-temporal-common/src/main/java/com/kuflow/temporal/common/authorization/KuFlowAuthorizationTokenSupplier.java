@@ -27,6 +27,7 @@ import com.kuflow.rest.model.Authentication;
 import com.kuflow.rest.model.AuthenticationEngineToken;
 import com.kuflow.rest.model.AuthenticationType;
 import com.kuflow.rest.operation.AuthenticationOperations;
+import com.kuflow.temporal.common.connection.WorkerInformation;
 import io.temporal.authorization.AuthorizationTokenSupplier;
 import java.time.Duration;
 import java.time.Instant;
@@ -43,12 +44,15 @@ public class KuFlowAuthorizationTokenSupplier implements AuthorizationTokenSuppl
 
     private final AuthenticationOperations authenticationOperations;
 
+    private final WorkerInformation workerInformation;
+
     private volatile String token;
 
     private volatile Instant tokenExpireAt;
 
-    public KuFlowAuthorizationTokenSupplier(KuFlowRestClient kuFlowRestClient) {
+    public KuFlowAuthorizationTokenSupplier(KuFlowRestClient kuFlowRestClient, WorkerInformation workerInformation) {
         this.authenticationOperations = kuFlowRestClient.getAuthenticationOperations();
+        this.workerInformation = workerInformation;
     }
 
     @Override
@@ -72,8 +76,11 @@ public class KuFlowAuthorizationTokenSupplier implements AuthorizationTokenSuppl
                 return token;
             }
 
-            Authentication authentication = new Authentication();
-            authentication.setType(AuthenticationType.ENGINE_TOKEN);
+            Authentication authentication = new Authentication()
+                .setType(AuthenticationType.ENGINE_TOKEN)
+                .setTenantId(this.workerInformation.getTenantId())
+                .setRobotId(this.workerInformation.getRobotId());
+
             authentication = this.authenticationOperations.createAuthentication(authentication);
             AuthenticationEngineToken authenticationEngineToken = authentication.getEngineToken();
 
