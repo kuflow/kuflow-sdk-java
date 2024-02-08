@@ -22,10 +22,25 @@
  */
 package com.kuflow.temporal.common.connection;
 
+import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Collectors.toUnmodifiableSet;
+
+import io.temporal.common.metadata.POJOActivityImplMetadata;
+import io.temporal.common.metadata.POJOActivityMethodMetadata;
+import io.temporal.common.metadata.POJOWorkflowImplMetadata;
+import io.temporal.common.metadata.POJOWorkflowMethodMetadata;
 import io.temporal.worker.Worker;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
+import javax.annotation.Nullable;
 
 public class WorkerInformation {
+
+    private final UUID tenantId;
+
+    private final UUID robotId;
 
     private final String taskQueue;
 
@@ -35,10 +50,41 @@ public class WorkerInformation {
 
     private Worker worker;
 
-    public WorkerInformation(String taskQueue, Set<String> workflowTypes, Set<String> activityTypes) {
-        this.taskQueue = taskQueue;
-        this.workflowTypes = workflowTypes;
-        this.activityTypes = activityTypes;
+    public WorkerInformation(WorkerBuilder workerBuilder) {
+        this.tenantId = workerBuilder.getTenantId();
+        this.robotId = workerBuilder.getRobotId();
+        this.taskQueue = workerBuilder.getTaskQueue();
+        this.workflowTypes =
+            workerBuilder
+                .getWorkflowImplementationClasses()
+                .stream()
+                .flatMap(workflowImplementationRegister -> this.computeWorkflowTypes(workflowImplementationRegister).stream())
+                .collect(toUnmodifiableSet());
+
+        this.activityTypes =
+            workerBuilder
+                .getActivityImplementations()
+                .stream()
+                .flatMap(activityImplementationRegister -> this.computeActivityTypes(activityImplementationRegister).stream())
+                .collect(toUnmodifiableSet());
+    }
+
+    protected WorkerInformation(String taskQueue, Set<String> workflowTypes, Set<String> activityTypes) {
+        this.tenantId = null;
+        this.robotId = null;
+        this.taskQueue = Objects.requireNonNull(taskQueue, "'taskQueue' is required");
+        this.workflowTypes = Objects.requireNonNull(workflowTypes, "'workflowTypes' is required");
+        this.activityTypes = Objects.requireNonNull(activityTypes, "'activityTypes' is required");
+    }
+
+    @Nullable
+    public UUID getTenantId() {
+        return this.tenantId;
+    }
+
+    @Nullable
+    public UUID getRobotId() {
+        return this.robotId;
     }
 
     public String getTaskQueue() {
@@ -59,5 +105,28 @@ public class WorkerInformation {
 
     void registerWorker(Worker worker) {
         this.worker = worker;
+    }
+
+    private Set<String> computeWorkflowTypes(WorkerBuilder.WorkflowImplementationRegister workflowImplementationRegister) {
+        return Arrays
+            .stream(workflowImplementationRegister.getWorkflowImplementationClasses())
+            .flatMap(workflowImplementationClass -> {
+                POJOWorkflowImplMetadata workflowMetadata = POJOWorkflowImplMetadata.newInstance(workflowImplementationClass);
+                return workflowMetadata.getWorkflowMethods().stream();
+            })
+            .map(POJOWorkflowMethodMetadata::getName)
+            .collect(toSet());
+    }
+
+    private Set<String> computeActivityTypes(WorkerBuilder.ActivityImplementationRegister activityImplementationRegister) {
+        return Arrays
+            .stream(activityImplementationRegister.getActivityImplementations())
+            .flatMap(activityImplementation -> {
+                Class<?> cls = activityImplementation.getClass();
+                POJOActivityImplMetadata activityImplMetadata = POJOActivityImplMetadata.newInstance(cls);
+                return activityImplMetadata.getActivityMethods().stream();
+            })
+            .map(POJOActivityMethodMetadata::getActivityTypeName)
+            .collect(toSet());
     }
 }

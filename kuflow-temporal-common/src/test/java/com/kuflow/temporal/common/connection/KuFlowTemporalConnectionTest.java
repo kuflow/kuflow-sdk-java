@@ -60,9 +60,9 @@ public class KuFlowTemporalConnectionTest {
                     .withActivitiesImplementations(new Test2ActivitiesImpl())
             );
 
-        assertThat(kuFlowTemporalConnection.getWorkerInformationList()).hasSize(1);
+        assertThat(kuFlowTemporalConnection.getWorkerInformation()).isNotNull();
 
-        WorkerInformation workerInformation = kuFlowTemporalConnection.getWorkerInformationList().get(0);
+        WorkerInformation workerInformation = kuFlowTemporalConnection.getWorkerInformation();
         assertThat(workerInformation.getWorkflowTypes()).containsOnly("Test1Workflow", "Test2Workflow_name");
         assertThat(workerInformation.getActivityTypes()).containsOnly("Test1_Activity1", "Test1_Activity2", "Activity1", "Activity2");
     }

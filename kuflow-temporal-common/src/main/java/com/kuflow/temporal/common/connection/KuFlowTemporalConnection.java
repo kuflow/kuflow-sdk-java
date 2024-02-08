@@ -22,11 +22,7 @@
  */
 package com.kuflow.temporal.common.connection;
 
-import static java.util.Collections.unmodifiableList;
 import static java.util.stream.Collectors.toCollection;
-import static java.util.stream.Collectors.toSet;
-import static java.util.stream.Collectors.toUnmodifiableList;
-import static java.util.stream.Collectors.toUnmodifiableSet;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -49,10 +45,6 @@ import io.temporal.common.converter.DataConverter;
 import io.temporal.common.converter.DefaultDataConverter;
 import io.temporal.common.converter.JacksonJsonPayloadConverter;
 import io.temporal.common.converter.PayloadConverter;
-import io.temporal.common.metadata.POJOActivityImplMetadata;
-import io.temporal.common.metadata.POJOActivityMethodMetadata;
-import io.temporal.common.metadata.POJOWorkflowImplMetadata;
-import io.temporal.common.metadata.POJOWorkflowMethodMetadata;
 import io.temporal.serviceclient.WorkflowServiceStubs;
 import io.temporal.serviceclient.WorkflowServiceStubsOptions;
 import io.temporal.worker.Worker;
@@ -61,7 +53,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import org.slf4j.Logger;
@@ -87,9 +78,9 @@ public class KuFlowTemporalConnection {
     private final WorkerInformationNotifierConfigurationBuilder workerInformationNotifierConfigurationBuilder =
         WorkerInformationNotifierConfigurationBuilder.instance();
 
-    private final List<WorkerBuilder> workerBuilders = new LinkedList<>();
+    private WorkerBuilder workerBuilder;
 
-    private final List<WorkerInformation> workerInformationList = new LinkedList<>();
+    private WorkerInformation workerInformation;
 
     private WorkerInformationNotifier workerInformationNotifier;
 
@@ -146,12 +137,12 @@ public class KuFlowTemporalConnection {
         return this.createWorkerFactory();
     }
 
-    public List<Worker> getWorkers() {
-        return this.workerInformationList.stream().map(WorkerInformation::getWorker).collect(toUnmodifiableList());
+    public Worker getWorker() {
+        return this.workerInformation.getWorker();
     }
 
-    public List<WorkerInformation> getWorkerInformationList() {
-        return unmodifiableList(this.workerInformationList);
+    public WorkerInformation getWorkerInformation() {
+        return this.workerInformation;
     }
 
     public KuFlowTemporalConnection configureWorkerInformationNotifierConfiguration(
@@ -187,7 +178,7 @@ public class KuFlowTemporalConnection {
     }
 
     /**
-     * Configure a new {@link Worker} to be started
+     * Configure a {@link Worker} to be started
      */
     public synchronized KuFlowTemporalConnection configureWorker(Consumer<WorkerBuilder> configurer) {
         this.checkIsNotStarted();
@@ -195,25 +186,8 @@ public class KuFlowTemporalConnection {
         WorkerBuilder workerBuilder = WorkerBuilder.instance();
         configurer.accept(workerBuilder);
 
-        if (this.workerInformationList.stream().anyMatch(it -> it.getTaskQueue().equals(workerBuilder.getTaskQueue()))) {
-            throw new KuFlowTemporalException("Duplicate task queue");
-        }
-
-        this.workerBuilders.add(workerBuilder);
-
-        Set<String> workflowTypes = workerBuilder
-            .getWorkflowImplementationClasses()
-            .stream()
-            .flatMap(workflowImplementationRegister -> this.computeWorkflowTypes(workflowImplementationRegister).stream())
-            .collect(toUnmodifiableSet());
-
-        Set<String> activityTypes = workerBuilder
-            .getActivityImplementations()
-            .stream()
-            .flatMap(activityImplementationRegister -> this.computeActivityTypes(activityImplementationRegister).stream())
-            .collect(toUnmodifiableSet());
-
-        this.workerInformationList.add(new WorkerInformation(workerBuilder.getTaskQueue(), workflowTypes, activityTypes));
+        this.workerBuilder = workerBuilder;
+        this.workerInformation = new WorkerInformation(workerBuilder);
 
         return this;
     }
@@ -235,7 +209,7 @@ public class KuFlowTemporalConnection {
                 this.kuFlowRestClient,
                 this.workflowClientBuilder.validateAndBuildWithDefaults(),
                 this.workerInformationNotifierConfigurationBuilder.build(),
-                new LinkedList<>(this.workerInformationList)
+                List.of(this.workerInformation)
             );
         this.workerInformationNotifier.start();
 
@@ -302,7 +276,7 @@ public class KuFlowTemporalConnection {
         }
 
         AuthorizationGrpcMetadataProvider authorizationGrpcMetadataProvider = new AuthorizationGrpcMetadataProvider(
-            new KuFlowAuthorizationTokenSupplier(this.kuFlowRestClient)
+            new KuFlowAuthorizationTokenSupplier(this.kuFlowRestClient, this.workerInformation)
         );
 
         WorkflowServiceStubsOptions options =
@@ -339,7 +313,7 @@ public class KuFlowTemporalConnection {
 
         this.workerFactory = WorkerFactory.newInstance(workflowClient);
 
-        this.workerBuilders.forEach(this::newWorker);
+        this.newWorker(this.workerBuilder);
 
         return this.workerFactory;
     }
@@ -355,13 +329,7 @@ public class KuFlowTemporalConnection {
             .getActivityImplementations()
             .forEach(activityImplementationRegister -> this.configureWorker(worker, activityImplementationRegister));
 
-        WorkerInformation workerInformation =
-            this.workerInformationList.stream()
-                .filter(it -> it.getTaskQueue().equals(workerBuilder.getTaskQueue()))
-                .findFirst()
-                .orElseThrow();
-
-        workerInformation.registerWorker(worker);
+        this.workerInformation.registerWorker(worker);
     }
 
     private void configureWorker(Worker worker, WorkflowImplementationRegister workflowImplementationRegister) {
@@ -375,31 +343,8 @@ public class KuFlowTemporalConnection {
         }
     }
 
-    private Set<String> computeWorkflowTypes(WorkflowImplementationRegister workflowImplementationRegister) {
-        return Arrays
-            .stream(workflowImplementationRegister.getWorkflowImplementationClasses())
-            .flatMap(workflowImplementationClass -> {
-                POJOWorkflowImplMetadata workflowMetadata = POJOWorkflowImplMetadata.newInstance(workflowImplementationClass);
-                return workflowMetadata.getWorkflowMethods().stream();
-            })
-            .map(POJOWorkflowMethodMetadata::getName)
-            .collect(toSet());
-    }
-
     private void configureWorker(Worker worker, ActivityImplementationRegister activityImplementationRegister) {
         worker.registerActivitiesImplementations(activityImplementationRegister.getActivityImplementations());
-    }
-
-    private Set<String> computeActivityTypes(ActivityImplementationRegister activityImplementationRegister) {
-        return Arrays
-            .stream(activityImplementationRegister.getActivityImplementations())
-            .flatMap(activityImplementation -> {
-                Class<?> cls = activityImplementation.getClass();
-                POJOActivityImplMetadata activityImplMetadata = POJOActivityImplMetadata.newInstance(cls);
-                return activityImplMetadata.getActivityMethods().stream();
-            })
-            .map(POJOActivityMethodMetadata::getActivityTypeName)
-            .collect(toSet());
     }
 
     private DataConverter dataConverter() {
@@ -417,9 +362,14 @@ public class KuFlowTemporalConnection {
     }
 
     private void applyDefaultConfiguration() {
-        Authentication authenticationRequest = new Authentication().setType(AuthenticationType.ENGINE_CERTIFICATE);
+        Authentication authenticationRequest = new Authentication()
+            .setType(AuthenticationType.ENGINE_CERTIFICATE)
+            .setTenantId(this.workerInformation.getTenantId())
+            .setRobotId(this.workerInformation.getRobotId());
+
         Authentication authenticationResponse =
             this.kuFlowRestClient.getAuthenticationOperations().createAuthentication(authenticationRequest);
+
         AuthenticationEngineCertificate authenticationEngineCertificate = authenticationResponse.getEngineCertificate();
 
         this.configureWorkflowServiceStubs(builder -> {
