@@ -22,44 +22,53 @@
  */
 package com.kuflow.rest.model;
 
-import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
-/** The AuthenticationEngineConfig model. */
-@Immutable
-public final class AuthenticationEngineConfig {
-
-    /*
-     * Engine authentication token
+/**
+ * Robot source type.
+ */
+public enum RobotSourceType {
+    /**
+     * Enum value ROBOT_FRAMEWORK_PYTHON_WHEEL.
      */
-    @JsonProperty(value = "token", access = JsonProperty.Access.WRITE_ONLY)
-    private String token;
-
-    /*
-     * The expiredAt property.
-     */
-    @JsonProperty(value = "expiredAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime expiredAt;
-
-    /** Creates an instance of AuthenticationEngineConfig class. */
-    public AuthenticationEngineConfig() {}
+    ROBOT_FRAMEWORK_PYTHON_WHEEL("ROBOT_FRAMEWORK_PYTHON_WHEEL");
 
     /**
-     * Get the token property: Engine authentication token.
-     *
-     * @return the token value.
+     * The actual serialized value for a RobotSourceType instance.
      */
-    public String getToken() {
-        return this.token;
+    private final String value;
+
+    RobotSourceType(String value) {
+        this.value = value;
     }
 
     /**
-     * Get the expiredAt property: The expiredAt property.
+     * Parses a serialized value to a RobotSourceType instance.
      *
-     * @return the expiredAt value.
+     * @param value the serialized value to parse.
+     * @return the parsed RobotSourceType object, or null if unable to parse.
      */
-    public OffsetDateTime getExpiredAt() {
-        return this.expiredAt;
+    @JsonCreator
+    public static RobotSourceType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
+        RobotSourceType[] items = RobotSourceType.values();
+        for (RobotSourceType item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

@@ -78,32 +78,46 @@ public class ProcessOperationTest extends AbstractOperationTest {
     @Test
     @DisplayName("GIVEN an authenticated user WHEN list processes using query params THEN the query parameters are send")
     public void givenAnAuthenticatedUserWhenListProcessesUsingQueryParamsThenTheQueryParametersAreSend() {
+        UUID tenantId = UUID.randomUUID();
+
         givenThat(
             get(urlPathEqualTo("/v2022-10-08/processes"))
                 .withQueryParam("size", equalTo("30"))
                 .withQueryParam("page", equalTo("2"))
                 .withQueryParam("sort", equalTo("order1"))
+                .withQueryParam("tenantId", equalTo(tenantId.toString()))
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.list.ok.json"))
         );
 
-        FindProcessesOptions options = new FindProcessesOptions().setSize(30).setPage(2).setSort("order1");
+        FindProcessesOptions options = new FindProcessesOptions().setSize(30).setPage(2).setSort("order1").setTenantId(tenantId);
 
         this.kuFlowRestClient.getProcessOperations().findProcesses(options);
     }
 
     @Test
-    @DisplayName("GIVEN an authenticated user WHEN list processes using query params multivalues THEN the query parameters are send")
-    public void givenAnAuthenticatedUserWhenListProcessesUsingQueryParamsMultivaluesThenTheQueryParametersAreSend() {
+    @DisplayName("GIVEN an authenticated user WHEN list processes using query params multivalued THEN the query parameters are send")
+    public void givenAnAuthenticatedUserWhenListProcessesUsingQueryParamsMultivaluedThenTheQueryParametersAreSend() {
+        UUID tenantId1 = UUID.randomUUID();
+        UUID tenantId2 = UUID.randomUUID();
+
         givenThat(
             get(urlPathEqualTo("/v2022-10-08/processes"))
                 .withQueryParam("size", equalTo("30"))
                 .withQueryParam("page", equalTo("2"))
                 .withQueryParam("sort", equalTo("order1"))
                 .withQueryParam("sort", equalTo("order2"))
+                .withQueryParam("tenantId", equalTo(tenantId1.toString()))
+                .withQueryParam("tenantId", equalTo(tenantId2.toString()))
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.list.ok.json"))
         );
 
-        FindProcessesOptions options = new FindProcessesOptions().setSize(30).setPage(2).addSort("order1").addSort("order2");
+        FindProcessesOptions options = new FindProcessesOptions()
+            .setSize(30)
+            .setPage(2)
+            .addSort("order1")
+            .addSort("order2")
+            .addTenantId(tenantId1)
+            .addTenantId(tenantId2);
 
         this.kuFlowRestClient.getProcessOperations().findProcesses(options);
     }

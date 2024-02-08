@@ -38,9 +38,8 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.kuflow.rest.model.DefaultErrorException;
-import com.kuflow.rest.model.Principal;
-import com.kuflow.rest.model.PrincipalPage;
-import com.kuflow.rest.model.PrincipalType;
+import com.kuflow.rest.model.Robot;
+import com.kuflow.rest.model.RobotPage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -49,14 +48,14 @@ import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in PrincipalOperations.
+ * An instance of this class provides access to all the operations defined in RobotOperations.
  */
-public final class PrincipalOperationsImpl {
+public final class RobotOperationsImpl {
 
     /**
      * The proxy service used to perform REST calls.
      */
-    private final PrincipalOperationsService service;
+    private final RobotOperationsService service;
 
     /**
      * The service client containing this operation class.
@@ -64,66 +63,62 @@ public final class PrincipalOperationsImpl {
     private final KuFlowClientImpl client;
 
     /**
-     * Initializes an instance of PrincipalOperationsImpl.
+     * Initializes an instance of RobotOperationsImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    PrincipalOperationsImpl(KuFlowClientImpl client) {
-        this.service = RestProxy.create(PrincipalOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+    RobotOperationsImpl(KuFlowClientImpl client) {
+        this.service = RestProxy.create(RobotOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for KuFlowClientPrincipalOperations to be used by the proxy service to
+     * The interface defining all the services for KuFlowClientRobotOperations to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "KuFlowClientPrincipa")
-    public interface PrincipalOperationsService {
-        @Get("/principals")
+    @ServiceInterface(name = "KuFlowClientRobotOpe")
+    public interface RobotOperationsService {
+        @Get("/robots")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<PrincipalPage>> findPrincipals(
+        Mono<Response<RobotPage>> findRobots(
             @HostParam("$host") String host,
             @QueryParam("size") Integer size,
             @QueryParam("page") Integer page,
             @QueryParam(value = "sort", multipleQueryParams = true) List<String> sort,
-            @QueryParam("type") PrincipalType type,
-            @QueryParam(value = "groupId", multipleQueryParams = true) List<String> groupId,
             @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
             @HeaderParam("Accept") String accept,
             Context context
         );
 
-        @Get("/principals")
+        @Get("/robots")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Response<PrincipalPage> findPrincipalsSync(
+        Response<RobotPage> findRobotsSync(
             @HostParam("$host") String host,
             @QueryParam("size") Integer size,
             @QueryParam("page") Integer page,
             @QueryParam(value = "sort", multipleQueryParams = true) List<String> sort,
-            @QueryParam("type") PrincipalType type,
-            @QueryParam(value = "groupId", multipleQueryParams = true) List<String> groupId,
             @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
             @HeaderParam("Accept") String accept,
             Context context
         );
 
-        @Get("/principals/{id}")
+        @Get("/robots/{id}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<Principal>> retrievePrincipal(
+        Mono<Response<Robot>> retrieveRobot(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @HeaderParam("Accept") String accept,
             Context context
         );
 
-        @Get("/principals/{id}")
+        @Get("/robots/{id}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Response<Principal> retrievePrincipalSync(
+        Response<Robot> retrieveRobotSync(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @HeaderParam("Accept") String accept,
@@ -132,11 +127,11 @@ public final class PrincipalOperationsImpl {
     }
 
     /**
-     * Find all accessible Principals
+     * Find all accessible Robots
      *
-     * List all the Principals that have been created and the used credentials has access.
+     * List all the Robots that have been created and the credentials has access.
      *
-     * Available sort query values: id, name.
+     * Available sort query values: createdAt, lastModifiedAt.
      *
      * @param size The number of records returned within a single API call.
      * @param page The page number of the current page in the returned records, 0 is the first page.
@@ -145,8 +140,6 @@ public final class PrincipalOperationsImpl {
      * Default sort order is ascending. Multiple sort criteria are supported.
      *
      * Please refer to the method description for supported properties.
-     * @param type Filter principals by type.
-     * @param groupId Filter by group ids.
      * @param tenantId Filter by tenantId.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -154,45 +147,25 @@ public final class PrincipalOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PrincipalPage>> findPrincipalsWithResponseAsync(
-        Integer size,
-        Integer page,
-        List<String> sort,
-        PrincipalType type,
-        List<UUID> groupId,
-        List<UUID> tenantId
-    ) {
+    public Mono<Response<RobotPage>> findRobotsWithResponseAsync(Integer size, Integer page, List<String> sort, List<UUID> tenantId) {
         final String accept = "application/json";
         List<String> sortConverted = (sort == null)
             ? new ArrayList<>()
             : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> groupIdConverted = (groupId == null)
-            ? new ArrayList<>()
-            : groupId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> tenantIdConverted = (tenantId == null)
             ? new ArrayList<>()
             : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil.withContext(context ->
-            service.findPrincipals(
-                this.client.getHost(),
-                size,
-                page,
-                sortConverted,
-                type,
-                groupIdConverted,
-                tenantIdConverted,
-                accept,
-                context
-            )
+            service.findRobots(this.client.getHost(), size, page, sortConverted, tenantIdConverted, accept, context)
         );
     }
 
     /**
-     * Find all accessible Principals
+     * Find all accessible Robots
      *
-     * List all the Principals that have been created and the used credentials has access.
+     * List all the Robots that have been created and the credentials has access.
      *
-     * Available sort query values: id, name.
+     * Available sort query values: createdAt, lastModifiedAt.
      *
      * @param size The number of records returned within a single API call.
      * @param page The page number of the current page in the returned records, 0 is the first page.
@@ -201,8 +174,6 @@ public final class PrincipalOperationsImpl {
      * Default sort order is ascending. Multiple sort criteria are supported.
      *
      * Please refer to the method description for supported properties.
-     * @param type Filter principals by type.
-     * @param groupId Filter by group ids.
      * @param tenantId Filter by tenantId.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -211,12 +182,10 @@ public final class PrincipalOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PrincipalPage>> findPrincipalsWithResponseAsync(
+    public Mono<Response<RobotPage>> findRobotsWithResponseAsync(
         Integer size,
         Integer page,
         List<String> sort,
-        PrincipalType type,
-        List<UUID> groupId,
         List<UUID> tenantId,
         Context context
     ) {
@@ -224,31 +193,18 @@ public final class PrincipalOperationsImpl {
         List<String> sortConverted = (sort == null)
             ? new ArrayList<>()
             : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> groupIdConverted = (groupId == null)
-            ? new ArrayList<>()
-            : groupId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> tenantIdConverted = (tenantId == null)
             ? new ArrayList<>()
             : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        return service.findPrincipals(
-            this.client.getHost(),
-            size,
-            page,
-            sortConverted,
-            type,
-            groupIdConverted,
-            tenantIdConverted,
-            accept,
-            context
-        );
+        return service.findRobots(this.client.getHost(), size, page, sortConverted, tenantIdConverted, accept, context);
     }
 
     /**
-     * Find all accessible Principals
+     * Find all accessible Robots
      *
-     * List all the Principals that have been created and the used credentials has access.
+     * List all the Robots that have been created and the credentials has access.
      *
-     * Available sort query values: id, name.
+     * Available sort query values: createdAt, lastModifiedAt.
      *
      * @param size The number of records returned within a single API call.
      * @param page The page number of the current page in the returned records, 0 is the first page.
@@ -257,8 +213,6 @@ public final class PrincipalOperationsImpl {
      * Default sort order is ascending. Multiple sort criteria are supported.
      *
      * Please refer to the method description for supported properties.
-     * @param type Filter principals by type.
-     * @param groupId Filter by group ids.
      * @param tenantId Filter by tenantId.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -266,45 +220,36 @@ public final class PrincipalOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrincipalPage> findPrincipalsAsync(
-        Integer size,
-        Integer page,
-        List<String> sort,
-        PrincipalType type,
-        List<UUID> groupId,
-        List<UUID> tenantId
-    ) {
-        return findPrincipalsWithResponseAsync(size, page, sort, type, groupId, tenantId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<RobotPage> findRobotsAsync(Integer size, Integer page, List<String> sort, List<UUID> tenantId) {
+        return findRobotsWithResponseAsync(size, page, sort, tenantId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Find all accessible Principals
+     * Find all accessible Robots
      *
-     * List all the Principals that have been created and the used credentials has access.
+     * List all the Robots that have been created and the credentials has access.
      *
-     * Available sort query values: id, name.
+     * Available sort query values: createdAt, lastModifiedAt.
      *
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrincipalPage> findPrincipalsAsync() {
+    public Mono<RobotPage> findRobotsAsync() {
         final Integer size = null;
         final Integer page = null;
         final List<String> sort = null;
-        final PrincipalType type = null;
-        final List<UUID> groupId = null;
         final List<UUID> tenantId = null;
-        return findPrincipalsWithResponseAsync(size, page, sort, type, groupId, tenantId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return findRobotsWithResponseAsync(size, page, sort, tenantId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Find all accessible Principals
+     * Find all accessible Robots
      *
-     * List all the Principals that have been created and the used credentials has access.
+     * List all the Robots that have been created and the credentials has access.
      *
-     * Available sort query values: id, name.
+     * Available sort query values: createdAt, lastModifiedAt.
      *
      * @param size The number of records returned within a single API call.
      * @param page The page number of the current page in the returned records, 0 is the first page.
@@ -313,8 +258,6 @@ public final class PrincipalOperationsImpl {
      * Default sort order is ascending. Multiple sort criteria are supported.
      *
      * Please refer to the method description for supported properties.
-     * @param type Filter principals by type.
-     * @param groupId Filter by group ids.
      * @param tenantId Filter by tenantId.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -323,25 +266,16 @@ public final class PrincipalOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrincipalPage> findPrincipalsAsync(
-        Integer size,
-        Integer page,
-        List<String> sort,
-        PrincipalType type,
-        List<UUID> groupId,
-        List<UUID> tenantId,
-        Context context
-    ) {
-        return findPrincipalsWithResponseAsync(size, page, sort, type, groupId, tenantId, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<RobotPage> findRobotsAsync(Integer size, Integer page, List<String> sort, List<UUID> tenantId, Context context) {
+        return findRobotsWithResponseAsync(size, page, sort, tenantId, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Find all accessible Principals
+     * Find all accessible Robots
      *
-     * List all the Principals that have been created and the used credentials has access.
+     * List all the Robots that have been created and the credentials has access.
      *
-     * Available sort query values: id, name.
+     * Available sort query values: createdAt, lastModifiedAt.
      *
      * @param size The number of records returned within a single API call.
      * @param page The page number of the current page in the returned records, 0 is the first page.
@@ -350,8 +284,6 @@ public final class PrincipalOperationsImpl {
      * Default sort order is ascending. Multiple sort criteria are supported.
      *
      * Please refer to the method description for supported properties.
-     * @param type Filter principals by type.
-     * @param groupId Filter by group ids.
      * @param tenantId Filter by tenantId.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -360,44 +292,23 @@ public final class PrincipalOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrincipalPage> findPrincipalsWithResponse(
-        Integer size,
-        Integer page,
-        List<String> sort,
-        PrincipalType type,
-        List<UUID> groupId,
-        List<UUID> tenantId,
-        Context context
-    ) {
+    public Response<RobotPage> findRobotsWithResponse(Integer size, Integer page, List<String> sort, List<UUID> tenantId, Context context) {
         final String accept = "application/json";
         List<String> sortConverted = (sort == null)
             ? new ArrayList<>()
             : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> groupIdConverted = (groupId == null)
-            ? new ArrayList<>()
-            : groupId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> tenantIdConverted = (tenantId == null)
             ? new ArrayList<>()
             : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        return service.findPrincipalsSync(
-            this.client.getHost(),
-            size,
-            page,
-            sortConverted,
-            type,
-            groupIdConverted,
-            tenantIdConverted,
-            accept,
-            context
-        );
+        return service.findRobotsSync(this.client.getHost(), size, page, sortConverted, tenantIdConverted, accept, context);
     }
 
     /**
-     * Find all accessible Principals
+     * Find all accessible Robots
      *
-     * List all the Principals that have been created and the used credentials has access.
+     * List all the Robots that have been created and the credentials has access.
      *
-     * Available sort query values: id, name.
+     * Available sort query values: createdAt, lastModifiedAt.
      *
      * @param size The number of records returned within a single API call.
      * @param page The page number of the current page in the returned records, 0 is the first page.
@@ -406,8 +317,6 @@ public final class PrincipalOperationsImpl {
      * Default sort order is ascending. Multiple sort criteria are supported.
      *
      * Please refer to the method description for supported properties.
-     * @param type Filter principals by type.
-     * @param groupId Filter by group ids.
      * @param tenantId Filter by tenantId.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -415,43 +324,34 @@ public final class PrincipalOperationsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrincipalPage findPrincipals(
-        Integer size,
-        Integer page,
-        List<String> sort,
-        PrincipalType type,
-        List<UUID> groupId,
-        List<UUID> tenantId
-    ) {
-        return findPrincipalsWithResponse(size, page, sort, type, groupId, tenantId, Context.NONE).getValue();
+    public RobotPage findRobots(Integer size, Integer page, List<String> sort, List<UUID> tenantId) {
+        return findRobotsWithResponse(size, page, sort, tenantId, Context.NONE).getValue();
     }
 
     /**
-     * Find all accessible Principals
+     * Find all accessible Robots
      *
-     * List all the Principals that have been created and the used credentials has access.
+     * List all the Robots that have been created and the credentials has access.
      *
-     * Available sort query values: id, name.
+     * Available sort query values: createdAt, lastModifiedAt.
      *
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrincipalPage findPrincipals() {
+    public RobotPage findRobots() {
         final Integer size = null;
         final Integer page = null;
         final List<String> sort = null;
-        final PrincipalType type = null;
-        final List<UUID> groupId = null;
         final List<UUID> tenantId = null;
-        return findPrincipalsWithResponse(size, page, sort, type, groupId, tenantId, Context.NONE).getValue();
+        return findRobotsWithResponse(size, page, sort, tenantId, Context.NONE).getValue();
     }
 
     /**
-     * Get a Principal by ID
+     * Get a Robot by ID
      *
-     * Returns the requested Principal when has access to do it.
+     * Returns the requested Robot when has access to do it.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -460,15 +360,15 @@ public final class PrincipalOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Principal>> retrievePrincipalWithResponseAsync(UUID id) {
+    public Mono<Response<Robot>> retrieveRobotWithResponseAsync(UUID id) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.retrievePrincipal(this.client.getHost(), id, accept, context));
+        return FluxUtil.withContext(context -> service.retrieveRobot(this.client.getHost(), id, accept, context));
     }
 
     /**
-     * Get a Principal by ID
+     * Get a Robot by ID
      *
-     * Returns the requested Principal when has access to do it.
+     * Returns the requested Robot when has access to do it.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -478,15 +378,15 @@ public final class PrincipalOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Principal>> retrievePrincipalWithResponseAsync(UUID id, Context context) {
+    public Mono<Response<Robot>> retrieveRobotWithResponseAsync(UUID id, Context context) {
         final String accept = "application/json";
-        return service.retrievePrincipal(this.client.getHost(), id, accept, context);
+        return service.retrieveRobot(this.client.getHost(), id, accept, context);
     }
 
     /**
-     * Get a Principal by ID
+     * Get a Robot by ID
      *
-     * Returns the requested Principal when has access to do it.
+     * Returns the requested Robot when has access to do it.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -495,14 +395,14 @@ public final class PrincipalOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Principal> retrievePrincipalAsync(UUID id) {
-        return retrievePrincipalWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<Robot> retrieveRobotAsync(UUID id) {
+        return retrieveRobotWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get a Principal by ID
+     * Get a Robot by ID
      *
-     * Returns the requested Principal when has access to do it.
+     * Returns the requested Robot when has access to do it.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -512,14 +412,14 @@ public final class PrincipalOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Principal> retrievePrincipalAsync(UUID id, Context context) {
-        return retrievePrincipalWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<Robot> retrieveRobotAsync(UUID id, Context context) {
+        return retrieveRobotWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get a Principal by ID
+     * Get a Robot by ID
      *
-     * Returns the requested Principal when has access to do it.
+     * Returns the requested Robot when has access to do it.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -529,15 +429,15 @@ public final class PrincipalOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Principal> retrievePrincipalWithResponse(UUID id, Context context) {
+    public Response<Robot> retrieveRobotWithResponse(UUID id, Context context) {
         final String accept = "application/json";
-        return service.retrievePrincipalSync(this.client.getHost(), id, accept, context);
+        return service.retrieveRobotSync(this.client.getHost(), id, accept, context);
     }
 
     /**
-     * Get a Principal by ID
+     * Get a Robot by ID
      *
-     * Returns the requested Principal when has access to do it.
+     * Returns the requested Robot when has access to do it.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -546,7 +446,7 @@ public final class PrincipalOperationsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Principal retrievePrincipal(UUID id) {
-        return retrievePrincipalWithResponse(id, Context.NONE).getValue();
+    public Robot retrieveRobot(UUID id) {
+        return retrieveRobotWithResponse(id, Context.NONE).getValue();
     }
 }

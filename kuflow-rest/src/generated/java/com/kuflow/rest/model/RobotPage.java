@@ -24,63 +24,60 @@ package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
-/** The AuthenticationEngineWorkerConfig model. */
+/**
+ * The RobotPage model.
+ */
 @Fluent
-public final class AuthenticationEngineWorkerConfig {
+public final class RobotPage extends Page {
 
     /*
-     * The namespace property.
+     * The content property.
      */
-    @JsonProperty(value = "namespace")
-    private String namespace;
-
-    /*
-     * The tls property.
-     */
-    @JsonProperty(value = "tls")
-    private AuthenticationEngineWorkerConfigTls tls;
-
-    /** Creates an instance of AuthenticationEngineWorkerConfig class. */
-    public AuthenticationEngineWorkerConfig() {}
+    @JsonProperty(value = "content", required = true)
+    private List<Robot> content;
 
     /**
-     * Get the namespace property: The namespace property.
-     *
-     * @return the namespace value.
+     * Creates an instance of RobotPage class.
      */
-    public String getNamespace() {
-        return this.namespace;
+    public RobotPage() {}
+
+    /**
+     * Get the content property: The content property.
+     *
+     * @return the content value.
+     */
+    public List<Robot> getContent() {
+        return this.content;
     }
 
     /**
-     * Set the namespace property: The namespace property.
+     * Set the content property: The content property.
      *
-     * @param namespace the namespace value to set.
-     * @return the AuthenticationEngineWorkerConfig object itself.
+     * @param content the content value to set.
+     * @return the RobotPage object itself.
      */
-    public AuthenticationEngineWorkerConfig setNamespace(String namespace) {
-        this.namespace = namespace;
+    public RobotPage setContent(List<Robot> content) {
+        this.content = content;
         return this;
     }
 
     /**
-     * Get the tls property: The tls property.
-     *
-     * @return the tls value.
+     * {@inheritDoc}
      */
-    public AuthenticationEngineWorkerConfigTls getTls() {
-        return this.tls;
+    @Override
+    public RobotPage setObjectType(PagedObjectType objectType) {
+        super.setObjectType(objectType);
+        return this;
     }
 
     /**
-     * Set the tls property: The tls property.
-     *
-     * @param tls the tls value to set.
-     * @return the AuthenticationEngineWorkerConfig object itself.
+     * {@inheritDoc}
      */
-    public AuthenticationEngineWorkerConfig setTls(AuthenticationEngineWorkerConfigTls tls) {
-        this.tls = tls;
+    @Override
+    public RobotPage setMetadata(PageMetadata metadata) {
+        super.setMetadata(metadata);
         return this;
     }
 }

@@ -51,6 +51,12 @@ public final class TenantUser extends AbstractAudited {
     @JsonProperty(value = "principal", required = true)
     private Principal principal;
 
+    /*
+     * The tenantId property.
+     */
+    @JsonProperty(value = "tenantId")
+    private UUID tenantId;
+
     /**
      * Creates an instance of TenantUser class.
      */
@@ -113,6 +119,26 @@ public final class TenantUser extends AbstractAudited {
      */
     public TenantUser setPrincipal(Principal principal) {
         this.principal = principal;
+        return this;
+    }
+
+    /**
+     * Get the tenantId property: The tenantId property.
+     *
+     * @return the tenantId value.
+     */
+    public UUID getTenantId() {
+        return this.tenantId;
+    }
+
+    /**
+     * Set the tenantId property: The tenantId property.
+     *
+     * @param tenantId the tenantId value to set.
+     * @return the TenantUser object itself.
+     */
+    public TenantUser setTenantId(UUID tenantId) {
+        this.tenantId = tenantId;
         return this;
     }
 

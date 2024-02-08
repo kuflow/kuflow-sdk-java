@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class FindPrincipalsOptions {
+public class FindRobotsOptions {
 
     /**
      * The number of records returned within a single API call.
@@ -49,25 +49,15 @@ public class FindPrincipalsOptions {
     private final List<String> sorts = new LinkedList<>();
 
     /**
-     * Filter principals by type.
-     */
-    private PrincipalType type;
-
-    /**
-     * Filter principals that exists in one of tenant ids.
+     * Filter tenant users that exists in one of tenant ids.
      */
     private final List<UUID> tenantIds = new LinkedList<>();
-
-    /**
-     * Filter principals that exists in one of group ids.
-     */
-    private final List<UUID> groupIds = new LinkedList<>();
 
     public Integer getSize() {
         return this.size;
     }
 
-    public FindPrincipalsOptions setSize(Integer size) {
+    public FindRobotsOptions setSize(Integer size) {
         this.size = size;
 
         return this;
@@ -77,7 +67,7 @@ public class FindPrincipalsOptions {
         return this.page;
     }
 
-    public FindPrincipalsOptions setPage(Integer page) {
+    public FindRobotsOptions setPage(Integer page) {
         this.page = page;
 
         return this;
@@ -87,7 +77,7 @@ public class FindPrincipalsOptions {
         return unmodifiableList(this.sorts);
     }
 
-    public FindPrincipalsOptions setSorts(List<String> sorts) {
+    public FindRobotsOptions setSorts(List<String> sorts) {
         this.sorts.clear();
         if (sorts != null) {
             this.sorts.addAll(sorts);
@@ -96,13 +86,13 @@ public class FindPrincipalsOptions {
         return this;
     }
 
-    public FindPrincipalsOptions setSort(String sort) {
+    public FindRobotsOptions setSort(String sort) {
         Objects.requireNonNull(sort, "'sort' is required");
 
         return this.setSorts(List.of(sort));
     }
 
-    public FindPrincipalsOptions addSort(String sort) {
+    public FindRobotsOptions addSort(String sort) {
         Objects.requireNonNull(sort, "'sort' is required");
         if (!this.sorts.contains(sort)) {
             this.sorts.add(sort);
@@ -111,19 +101,9 @@ public class FindPrincipalsOptions {
         return this;
     }
 
-    public FindPrincipalsOptions removeSort(String sort) {
+    public FindRobotsOptions removeSort(String sort) {
         Objects.requireNonNull(sort, "'sort' is required");
         this.sorts.remove(sort);
-
-        return this;
-    }
-
-    public PrincipalType getType() {
-        return this.type;
-    }
-
-    public FindPrincipalsOptions setType(PrincipalType type) {
-        this.type = type;
 
         return this;
     }
@@ -132,7 +112,7 @@ public class FindPrincipalsOptions {
         return unmodifiableList(this.tenantIds);
     }
 
-    public FindPrincipalsOptions setTenantIds(List<UUID> tenantIds) {
+    public FindRobotsOptions setTenantIds(List<UUID> tenantIds) {
         this.tenantIds.clear();
         if (tenantIds != null) {
             this.tenantIds.addAll(tenantIds);
@@ -141,13 +121,13 @@ public class FindPrincipalsOptions {
         return this;
     }
 
-    public FindPrincipalsOptions setTenantId(UUID tenantId) {
+    public FindRobotsOptions setTenantId(UUID tenantId) {
         Objects.requireNonNull(tenantId, "'tenantId' is required");
 
         return this.setTenantIds(List.of(tenantId));
     }
 
-    public FindPrincipalsOptions addTenantId(UUID tenantId) {
+    public FindRobotsOptions addTenantId(UUID tenantId) {
         Objects.requireNonNull(tenantId, "'tenantId' is required");
         if (!this.tenantIds.contains(tenantId)) {
             this.tenantIds.add(tenantId);
@@ -156,43 +136,9 @@ public class FindPrincipalsOptions {
         return this;
     }
 
-    public FindPrincipalsOptions removeTenantId(UUID tenantId) {
+    public FindRobotsOptions removeTenantId(UUID tenantId) {
         Objects.requireNonNull(tenantId, "'tenantId' is required");
         this.tenantIds.remove(tenantId);
-
-        return this;
-    }
-
-    public List<UUID> getGroupIds() {
-        return unmodifiableList(this.groupIds);
-    }
-
-    public FindPrincipalsOptions setGroupIds(List<UUID> groupIds) {
-        this.groupIds.clear();
-        if (groupIds != null) {
-            this.groupIds.addAll(groupIds);
-        }
-
-        return this;
-    }
-
-    public FindPrincipalsOptions setGroupId(UUID groupId) {
-        Objects.requireNonNull(groupId, "'groupId' is required");
-
-        return this.setGroupIds(List.of(groupId));
-    }
-
-    public FindPrincipalsOptions addGroupId(UUID groupId) {
-        Objects.requireNonNull(groupId, "'groupId' is required");
-        if (!this.groupIds.contains(groupId)) {
-            this.groupIds.add(groupId);
-        }
-        return this;
-    }
-
-    public FindPrincipalsOptions removeGroupId(UUID groupId) {
-        Objects.requireNonNull(groupId, "'groupId' is required");
-        this.groupIds.remove(groupId);
 
         return this;
     }

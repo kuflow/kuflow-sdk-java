@@ -27,6 +27,7 @@ import static java.util.Collections.unmodifiableList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 public class FindProcessesOptions {
 
@@ -46,6 +47,11 @@ public class FindProcessesOptions {
      * <p>Please refer to the method description for supported properties.
      */
     private final List<String> sorts = new LinkedList<>();
+
+    /**
+     * Filter principals that exists in one of tenant ids.
+     */
+    private final List<UUID> tenantIds = new LinkedList<>();
 
     public Integer getSize() {
         return this.size;
@@ -98,6 +104,41 @@ public class FindProcessesOptions {
     public FindProcessesOptions removeSort(String sort) {
         Objects.requireNonNull(sort, "'sort' is required");
         this.sorts.remove(sort);
+
+        return this;
+    }
+
+    public List<UUID> getTenantIds() {
+        return unmodifiableList(this.tenantIds);
+    }
+
+    public FindProcessesOptions setTenantIds(List<UUID> tenantIds) {
+        this.tenantIds.clear();
+        if (tenantIds != null) {
+            this.tenantIds.addAll(tenantIds);
+        }
+
+        return this;
+    }
+
+    public FindProcessesOptions setTenantId(UUID tenantId) {
+        Objects.requireNonNull(tenantId, "'tenantId' is required");
+
+        return this.setTenantIds(List.of(tenantId));
+    }
+
+    public FindProcessesOptions addTenantId(UUID tenantId) {
+        Objects.requireNonNull(tenantId, "'tenantId' is required");
+        if (!this.tenantIds.contains(tenantId)) {
+            this.tenantIds.add(tenantId);
+        }
+
+        return this;
+    }
+
+    public FindProcessesOptions removeTenantId(UUID tenantId) {
+        Objects.requireNonNull(tenantId, "'tenantId' is required");
+        this.tenantIds.remove(tenantId);
 
         return this;
     }

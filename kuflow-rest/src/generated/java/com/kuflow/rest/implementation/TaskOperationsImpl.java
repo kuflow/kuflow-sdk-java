@@ -103,6 +103,7 @@ public final class TaskOperationsImpl {
             @QueryParam(value = "processId", multipleQueryParams = true) List<String> processId,
             @QueryParam(value = "state", multipleQueryParams = true) List<String> state,
             @QueryParam(value = "taskDefinitionCode", multipleQueryParams = true) List<String> taskDefinitionCode,
+            @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -118,6 +119,7 @@ public final class TaskOperationsImpl {
             @QueryParam(value = "processId", multipleQueryParams = true) List<String> processId,
             @QueryParam(value = "state", multipleQueryParams = true) List<String> state,
             @QueryParam(value = "taskDefinitionCode", multipleQueryParams = true) List<String> taskDefinitionCode,
+            @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -516,6 +518,7 @@ public final class TaskOperationsImpl {
      * @param processId Filter by an array of process ids.
      * @param state Filter by an array of task states.
      * @param taskDefinitionCode Filter by an array of task definition codes.
+     * @param tenantId Filter by tenantId.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -528,7 +531,8 @@ public final class TaskOperationsImpl {
         List<String> sort,
         List<UUID> processId,
         List<TaskState> state,
-        List<String> taskDefinitionCode
+        List<String> taskDefinitionCode,
+        List<UUID> tenantId
     ) {
         final String accept = "application/json";
         List<String> sortConverted = (sort == null)
@@ -543,6 +547,9 @@ public final class TaskOperationsImpl {
         List<String> taskDefinitionCodeConverted = (taskDefinitionCode == null)
             ? new ArrayList<>()
             : taskDefinitionCode.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> tenantIdConverted = (tenantId == null)
+            ? new ArrayList<>()
+            : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil.withContext(context ->
             service.findTasks(
                 this.client.getHost(),
@@ -552,6 +559,7 @@ public final class TaskOperationsImpl {
                 processIdConverted,
                 stateConverted,
                 taskDefinitionCodeConverted,
+                tenantIdConverted,
                 accept,
                 context
             )
@@ -575,6 +583,7 @@ public final class TaskOperationsImpl {
      * @param processId Filter by an array of process ids.
      * @param state Filter by an array of task states.
      * @param taskDefinitionCode Filter by an array of task definition codes.
+     * @param tenantId Filter by tenantId.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -589,6 +598,7 @@ public final class TaskOperationsImpl {
         List<UUID> processId,
         List<TaskState> state,
         List<String> taskDefinitionCode,
+        List<UUID> tenantId,
         Context context
     ) {
         final String accept = "application/json";
@@ -604,6 +614,9 @@ public final class TaskOperationsImpl {
         List<String> taskDefinitionCodeConverted = (taskDefinitionCode == null)
             ? new ArrayList<>()
             : taskDefinitionCode.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> tenantIdConverted = (tenantId == null)
+            ? new ArrayList<>()
+            : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return service.findTasks(
             this.client.getHost(),
             size,
@@ -612,6 +625,7 @@ public final class TaskOperationsImpl {
             processIdConverted,
             stateConverted,
             taskDefinitionCodeConverted,
+            tenantIdConverted,
             accept,
             context
         );
@@ -634,6 +648,7 @@ public final class TaskOperationsImpl {
      * @param processId Filter by an array of process ids.
      * @param state Filter by an array of task states.
      * @param taskDefinitionCode Filter by an array of task definition codes.
+     * @param tenantId Filter by tenantId.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -646,9 +661,10 @@ public final class TaskOperationsImpl {
         List<String> sort,
         List<UUID> processId,
         List<TaskState> state,
-        List<String> taskDefinitionCode
+        List<String> taskDefinitionCode,
+        List<UUID> tenantId
     ) {
-        return findTasksWithResponseAsync(size, page, sort, processId, state, taskDefinitionCode)
+        return findTasksWithResponseAsync(size, page, sort, processId, state, taskDefinitionCode, tenantId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -671,7 +687,8 @@ public final class TaskOperationsImpl {
         final List<UUID> processId = null;
         final List<TaskState> state = null;
         final List<String> taskDefinitionCode = null;
-        return findTasksWithResponseAsync(size, page, sort, processId, state, taskDefinitionCode)
+        final List<UUID> tenantId = null;
+        return findTasksWithResponseAsync(size, page, sort, processId, state, taskDefinitionCode, tenantId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -692,6 +709,7 @@ public final class TaskOperationsImpl {
      * @param processId Filter by an array of process ids.
      * @param state Filter by an array of task states.
      * @param taskDefinitionCode Filter by an array of task definition codes.
+     * @param tenantId Filter by tenantId.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -706,9 +724,10 @@ public final class TaskOperationsImpl {
         List<UUID> processId,
         List<TaskState> state,
         List<String> taskDefinitionCode,
+        List<UUID> tenantId,
         Context context
     ) {
-        return findTasksWithResponseAsync(size, page, sort, processId, state, taskDefinitionCode, context)
+        return findTasksWithResponseAsync(size, page, sort, processId, state, taskDefinitionCode, tenantId, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -729,6 +748,7 @@ public final class TaskOperationsImpl {
      * @param processId Filter by an array of process ids.
      * @param state Filter by an array of task states.
      * @param taskDefinitionCode Filter by an array of task definition codes.
+     * @param tenantId Filter by tenantId.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -743,6 +763,7 @@ public final class TaskOperationsImpl {
         List<UUID> processId,
         List<TaskState> state,
         List<String> taskDefinitionCode,
+        List<UUID> tenantId,
         Context context
     ) {
         final String accept = "application/json";
@@ -758,6 +779,9 @@ public final class TaskOperationsImpl {
         List<String> taskDefinitionCodeConverted = (taskDefinitionCode == null)
             ? new ArrayList<>()
             : taskDefinitionCode.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> tenantIdConverted = (tenantId == null)
+            ? new ArrayList<>()
+            : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return service.findTasksSync(
             this.client.getHost(),
             size,
@@ -766,6 +790,7 @@ public final class TaskOperationsImpl {
             processIdConverted,
             stateConverted,
             taskDefinitionCodeConverted,
+            tenantIdConverted,
             accept,
             context
         );
@@ -788,6 +813,7 @@ public final class TaskOperationsImpl {
      * @param processId Filter by an array of process ids.
      * @param state Filter by an array of task states.
      * @param taskDefinitionCode Filter by an array of task definition codes.
+     * @param tenantId Filter by tenantId.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -800,9 +826,10 @@ public final class TaskOperationsImpl {
         List<String> sort,
         List<UUID> processId,
         List<TaskState> state,
-        List<String> taskDefinitionCode
+        List<String> taskDefinitionCode,
+        List<UUID> tenantId
     ) {
-        return findTasksWithResponse(size, page, sort, processId, state, taskDefinitionCode, Context.NONE).getValue();
+        return findTasksWithResponse(size, page, sort, processId, state, taskDefinitionCode, tenantId, Context.NONE).getValue();
     }
 
     /**
@@ -824,7 +851,8 @@ public final class TaskOperationsImpl {
         final List<UUID> processId = null;
         final List<TaskState> state = null;
         final List<String> taskDefinitionCode = null;
-        return findTasksWithResponse(size, page, sort, processId, state, taskDefinitionCode, Context.NONE).getValue();
+        final List<UUID> tenantId = null;
+        return findTasksWithResponse(size, page, sort, processId, state, taskDefinitionCode, tenantId, Context.NONE).getValue();
     }
 
     /**

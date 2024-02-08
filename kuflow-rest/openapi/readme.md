@@ -27,7 +27,7 @@ java: true
 title: KuFlow
 override-client-name: KuFlowClient
 
-input-file: https://raw.githubusercontent.com/kuflow/kuflow-openapi/ef019b7aa2e036b7f7470afa23a36dfc20513e57/specs/api.kuflow.com/v2022-10-08/openapi.yaml
+input-file: https://raw.githubusercontent.com/kuflow/kuflow-openapi/dcc83aec8cfbf2c4a731835b940a318d2ca1d561/specs/api.kuflow.com/v2022-10-08/openapi.yaml
 output-folder: ../target/openapi-generated
 
 openapi-type: data-plane
@@ -60,5 +60,13 @@ directive:
       if ($.operationId.indexOf($.tags[1] + 'Operations_') === -1) {
         $.operationId = $.tags[1] + 'Operations_' + $.operationId;
       }
+
+  # WORKAROUND:
+  # RobotSourceType has only one option, due to is required is rendered as String instead of a enum
+  # See: https://github.com/stankovski/AutoRest/blob/master/Documentation/swagger-extensions.md#single-value-enum-as-a-constant
+  - from: openapi-document
+    where: $.components.schemas.Robot.allOf[1]
+    transform: |
+      $.required = $.required.filter(it => it !== "sourceType")
 ```
 

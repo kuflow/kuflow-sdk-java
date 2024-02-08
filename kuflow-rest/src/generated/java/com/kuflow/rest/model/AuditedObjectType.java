@@ -62,7 +62,12 @@ public enum AuditedObjectType {
     /**
      * Enum value WORKER.
      */
-    WORKER("WORKER");
+    WORKER("WORKER"),
+
+    /**
+     * Enum value ROBOT.
+     */
+    ROBOT("ROBOT");
 
     /**
      * The actual serialized value for a AuditedObjectType instance.

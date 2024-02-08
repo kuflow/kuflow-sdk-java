@@ -161,6 +161,20 @@ public final class KuFlowClientImpl {
     }
 
     /**
+     * The RobotOperationsImpl object to access its operations.
+     */
+    private final RobotOperationsImpl robotOperations;
+
+    /**
+     * Gets the RobotOperationsImpl object to access its operations.
+     *
+     * @return the RobotOperationsImpl object.
+     */
+    public RobotOperationsImpl getRobotOperations() {
+        return this.robotOperations;
+    }
+
+    /**
      * Initializes an instance of KuFlowClient client.
      *
      * @param host server parameter.
@@ -200,5 +214,6 @@ public final class KuFlowClientImpl {
         this.processOperations = new ProcessOperationsImpl(this);
         this.taskOperations = new TaskOperationsImpl(this);
         this.workerOperations = new WorkerOperationsImpl(this);
+        this.robotOperations = new RobotOperationsImpl(this);
     }
 }

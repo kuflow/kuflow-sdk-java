@@ -49,6 +49,11 @@ public class FindTasksOptions {
     private List<String> sorts = new LinkedList<>();
 
     /**
+     * Filter principals that exists in one of tenant ids.
+     */
+    private final List<UUID> tenantIds = new LinkedList<>();
+
+    /**
      * Filter by an array of process ids.
      */
     private List<UUID> processIds = new LinkedList<>();
@@ -100,6 +105,12 @@ public class FindTasksOptions {
         return this;
     }
 
+    public FindTasksOptions setSort(String sort) {
+        Objects.requireNonNull(sort, "'sort' is required");
+
+        return this.setSorts(List.of(sort));
+    }
+
     public FindTasksOptions addSort(String sort) {
         Objects.requireNonNull(sort, "'sort' is required");
         if (!this.sorts.contains(sort)) {
@@ -112,6 +123,41 @@ public class FindTasksOptions {
     public FindTasksOptions removeSort(String sort) {
         Objects.requireNonNull(sort, "'sort' is required");
         this.sorts.remove(sort);
+
+        return this;
+    }
+
+    public List<UUID> getTenantIds() {
+        return unmodifiableList(this.tenantIds);
+    }
+
+    public FindTasksOptions setTenantIds(List<UUID> tenantIds) {
+        this.tenantIds.clear();
+        if (tenantIds != null) {
+            this.tenantIds.addAll(tenantIds);
+        }
+
+        return this;
+    }
+
+    public FindTasksOptions setTenantId(UUID tenantId) {
+        Objects.requireNonNull(tenantId, "'tenantId' is required");
+
+        return this.setTenantIds(List.of(tenantId));
+    }
+
+    public FindTasksOptions addTenantId(UUID tenantId) {
+        Objects.requireNonNull(tenantId, "'tenantId' is required");
+        if (!this.tenantIds.contains(tenantId)) {
+            this.tenantIds.add(tenantId);
+        }
+
+        return this;
+    }
+
+    public FindTasksOptions removeTenantId(UUID tenantId) {
+        Objects.requireNonNull(tenantId, "'tenantId' is required");
+        this.tenantIds.remove(tenantId);
 
         return this;
     }
@@ -131,6 +177,12 @@ public class FindTasksOptions {
         }
 
         return this;
+    }
+
+    public FindTasksOptions setProcessId(UUID processId) {
+        Objects.requireNonNull(processId, "'processId' is required");
+
+        return this.setProcessIds(List.of(processId));
     }
 
     public FindTasksOptions addProcessId(UUID processId) {
@@ -166,6 +218,12 @@ public class FindTasksOptions {
         return this;
     }
 
+    public FindTasksOptions setState(TaskState state) {
+        Objects.requireNonNull(state, "'state' is required");
+
+        return this.setStates(List.of(state));
+    }
+
     public FindTasksOptions addState(TaskState state) {
         Objects.requireNonNull(state, "'state' is required");
         if (!this.states.contains(state)) {
@@ -197,6 +255,12 @@ public class FindTasksOptions {
         }
 
         return this;
+    }
+
+    public FindTasksOptions setTaskDefinitionCode(String taskDefinitionCode) {
+        Objects.requireNonNull(taskDefinitionCode, "'taskDefinitionCode' is required");
+
+        return this.setTaskDefinitionCodes(List.of(taskDefinitionCode));
     }
 
     public FindTasksOptions addTaskDefinitionCode(String taskDefinitionCode) {

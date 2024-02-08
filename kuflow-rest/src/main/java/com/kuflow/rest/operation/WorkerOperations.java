@@ -31,14 +31,14 @@ import com.kuflow.rest.implementation.WorkerOperationsImpl;
 import com.kuflow.rest.model.DefaultErrorException;
 import com.kuflow.rest.model.Worker;
 
-/** An instance of this class provides access to all the operations defined in TaskOperations. */
+/** An instance of this class provides access to all the operations defined in WorkerOperations. */
 public class WorkerOperations {
 
     /** The service. */
     private final WorkerOperationsImpl service;
 
     /**
-     * Initializes an instance of TaskOperationsImpl.
+     * Initializes an instance of WorkerOperationsImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */

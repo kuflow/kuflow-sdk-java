@@ -74,8 +74,9 @@ public class PrincipalOperations {
         List<String> sort = !options.getSorts().isEmpty() ? options.getSorts() : null;
         PrincipalType type = options.getType();
         List<UUID> groupId = !options.getGroupIds().isEmpty() ? options.getGroupIds() : null;
+        List<UUID> tenantId = !options.getTenantIds().isEmpty() ? options.getTenantIds() : null;
 
-        return this.service.findPrincipalsWithResponse(size, page, sort, type, groupId, context);
+        return this.service.findPrincipalsWithResponse(size, page, sort, type, groupId, tenantId, context);
     }
 
     /**
