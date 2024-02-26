@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
 public class JsonFormsFile {
 
     private static final Pattern PATTERN = Pattern.compile(
-        "kuflow-file:uri=(ku:[a-zA-Z0-9-/]+);type=([a-zA-Z]+/[a-zA-Z]+);size=([0-9]+);name=(.*);"
+        "kuflow-file:uri=(ku:[a-zA-Z0-9-/]+);type=([a-zA-Z]+/[a-zA-Z-.]+);size=([0-9]+);name=(.*);"
     );
 
     public static Optional<JsonFormsFile> from(String value) {
@@ -89,7 +89,7 @@ public class JsonFormsFile {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (o == null || this.getClass() != o.getClass()) {
             return false;
         }
         JsonFormsFile that = (JsonFormsFile) o;
