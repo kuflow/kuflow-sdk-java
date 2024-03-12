@@ -53,8 +53,10 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -89,6 +91,12 @@ public class KuFlowTemporalConnection {
     private WorkflowClient workflowClient;
 
     private WorkerFactory workerFactory;
+
+    private UUID installationId;
+
+    private UUID tenantId;
+
+    private List<UUID> robotIds;
 
     private boolean started = false;
 
@@ -143,6 +151,44 @@ public class KuFlowTemporalConnection {
 
     public WorkerInformation getWorkerInformation() {
         return this.workerInformation;
+    }
+
+    public KuFlowTemporalConnection withInstallationId(@Nullable UUID installationId) {
+        this.installationId = installationId;
+
+        return this;
+    }
+
+    public KuFlowTemporalConnection withTenantId(@Nullable UUID tenantId) {
+        this.tenantId = tenantId;
+
+        return this;
+    }
+
+    public KuFlowTemporalConnection withRobotId(@Nullable UUID robotId) {
+        if (robotId == null) {
+            return this;
+        }
+
+        if (this.robotIds == null) {
+            this.robotIds = new LinkedList<>();
+        }
+        if (!this.robotIds.contains(robotId)) {
+            this.robotIds.add(robotId);
+        }
+
+        return this;
+    }
+
+    public KuFlowTemporalConnection withRobotIds(@Nullable List<UUID> robotIds) {
+        if (robotIds == null) {
+            this.robotIds = null;
+            return this;
+        }
+
+        robotIds.forEach(this::withRobotId);
+
+        return this;
     }
 
     public KuFlowTemporalConnection configureWorkerInformationNotifierConfiguration(
@@ -201,6 +247,10 @@ public class KuFlowTemporalConnection {
         }
 
         LOGGER.info("Starting KuFlowTemporal Connection");
+
+        this.workerInformation.setInstallationId(this.installationId);
+        this.workerInformation.setTenantId(this.tenantId);
+        this.workerInformation.setRobotIds(this.robotIds);
 
         this.applyDefaultConfiguration();
 
@@ -364,8 +414,7 @@ public class KuFlowTemporalConnection {
     private void applyDefaultConfiguration() {
         Authentication authenticationRequest = new Authentication()
             .setType(AuthenticationType.ENGINE_CERTIFICATE)
-            .setTenantId(this.workerInformation.getTenantId())
-            .setRobotId(this.workerInformation.getRobotId());
+            .setTenantId(this.workerInformation.getTenantId());
 
         Authentication authenticationResponse =
             this.kuFlowRestClient.getAuthenticationOperations().createAuthentication(authenticationRequest);

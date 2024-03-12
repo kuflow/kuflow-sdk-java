@@ -78,8 +78,7 @@ public class KuFlowAuthorizationTokenSupplier implements AuthorizationTokenSuppl
 
             Authentication authentication = new Authentication()
                 .setType(AuthenticationType.ENGINE_TOKEN)
-                .setTenantId(this.workerInformation.getTenantId())
-                .setRobotId(this.workerInformation.getRobotId());
+                .setTenantId(this.workerInformation.getTenantId());
 
             authentication = this.authenticationOperations.createAuthentication(authentication);
             AuthenticationEngineToken authenticationEngineToken = authentication.getEngineToken();

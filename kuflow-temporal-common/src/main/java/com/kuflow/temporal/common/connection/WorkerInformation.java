@@ -31,6 +31,7 @@ import io.temporal.common.metadata.POJOWorkflowImplMetadata;
 import io.temporal.common.metadata.POJOWorkflowMethodMetadata;
 import io.temporal.worker.Worker;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -38,21 +39,21 @@ import javax.annotation.Nullable;
 
 public class WorkerInformation {
 
-    private final UUID tenantId;
-
-    private final UUID robotId;
-
     private final String taskQueue;
 
     private final Set<String> workflowTypes;
 
     private final Set<String> activityTypes;
 
+    private UUID installationId;
+
+    private UUID tenantId;
+
+    private List<UUID> robotIds;
+
     private Worker worker;
 
     public WorkerInformation(WorkerBuilder workerBuilder) {
-        this.tenantId = workerBuilder.getTenantId();
-        this.robotId = workerBuilder.getRobotId();
         this.taskQueue = workerBuilder.getTaskQueue();
         this.workflowTypes =
             workerBuilder
@@ -70,11 +71,18 @@ public class WorkerInformation {
     }
 
     protected WorkerInformation(String taskQueue, Set<String> workflowTypes, Set<String> activityTypes) {
-        this.tenantId = null;
-        this.robotId = null;
         this.taskQueue = Objects.requireNonNull(taskQueue, "'taskQueue' is required");
         this.workflowTypes = Objects.requireNonNull(workflowTypes, "'workflowTypes' is required");
         this.activityTypes = Objects.requireNonNull(activityTypes, "'activityTypes' is required");
+    }
+
+    @Nullable
+    public UUID getInstallationId() {
+        return this.installationId;
+    }
+
+    public void setInstallationId(@Nullable UUID installationId) {
+        this.installationId = installationId;
     }
 
     @Nullable
@@ -82,9 +90,17 @@ public class WorkerInformation {
         return this.tenantId;
     }
 
+    void setTenantId(@Nullable UUID tenantId) {
+        this.tenantId = tenantId;
+    }
+
     @Nullable
-    public UUID getRobotId() {
-        return this.robotId;
+    public List<UUID> getRobotIds() {
+        return this.robotIds;
+    }
+
+    void setRobotIds(@Nullable List<UUID> robotIds) {
+        this.robotIds = robotIds;
     }
 
     public String getTaskQueue() {

@@ -26,7 +26,6 @@ import io.temporal.worker.WorkerOptions;
 import io.temporal.worker.WorkflowImplementationOptions;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
 
 public class WorkerBuilder {
 
@@ -35,10 +34,6 @@ public class WorkerBuilder {
     }
 
     private String taskQueue;
-
-    private UUID tenantId;
-
-    private UUID robotId;
 
     private WorkerOptions workerOptions;
 
@@ -54,26 +49,6 @@ public class WorkerBuilder {
 
     public WorkerBuilder withTaskQueue(String taskQueue) {
         this.taskQueue = taskQueue;
-
-        return this;
-    }
-
-    public UUID getTenantId() {
-        return this.tenantId;
-    }
-
-    public WorkerBuilder withTenantId(UUID tenantId) {
-        this.tenantId = tenantId;
-
-        return this;
-    }
-
-    public UUID getRobotId() {
-        return this.robotId;
-    }
-
-    public WorkerBuilder withRobotId(UUID robotId) {
-        this.robotId = robotId;
 
         return this;
     }

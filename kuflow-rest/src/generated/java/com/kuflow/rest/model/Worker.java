@@ -77,6 +77,18 @@ public final class Worker extends AbstractAudited {
     private String ip;
 
     /*
+     * Installation Id.
+     */
+    @JsonProperty(value = "installationId")
+    private UUID installationId;
+
+    /*
+     * Robot Ids that this worker implements.
+     */
+    @JsonProperty(value = "robotIds")
+    private List<UUID> robotIds;
+
+    /*
      * Tenant ID.
      */
     @JsonProperty(value = "tenantId")
@@ -224,6 +236,46 @@ public final class Worker extends AbstractAudited {
      */
     public Worker setIp(String ip) {
         this.ip = ip;
+        return this;
+    }
+
+    /**
+     * Get the installationId property: Installation Id.
+     *
+     * @return the installationId value.
+     */
+    public UUID getInstallationId() {
+        return this.installationId;
+    }
+
+    /**
+     * Set the installationId property: Installation Id.
+     *
+     * @param installationId the installationId value to set.
+     * @return the Worker object itself.
+     */
+    public Worker setInstallationId(UUID installationId) {
+        this.installationId = installationId;
+        return this;
+    }
+
+    /**
+     * Get the robotIds property: Robot Ids that this worker implements.
+     *
+     * @return the robotIds value.
+     */
+    public List<UUID> getRobotIds() {
+        return this.robotIds;
+    }
+
+    /**
+     * Set the robotIds property: Robot Ids that this worker implements.
+     *
+     * @param robotIds the robotIds value to set.
+     * @return the Worker object itself.
+     */
+    public Worker setRobotIds(List<UUID> robotIds) {
+        this.robotIds = robotIds;
         return this;
     }
 

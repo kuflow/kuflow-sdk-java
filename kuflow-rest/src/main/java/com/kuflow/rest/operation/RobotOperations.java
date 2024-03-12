@@ -25,12 +25,17 @@ package com.kuflow.rest.operation;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.kuflow.rest.implementation.KuFlowClientImpl;
 import com.kuflow.rest.implementation.RobotOperationsImpl;
 import com.kuflow.rest.model.DefaultErrorException;
 import com.kuflow.rest.model.FindRobotsOptions;
 import com.kuflow.rest.model.Robot;
+import com.kuflow.rest.model.RobotAssetArchitecture;
+import com.kuflow.rest.model.RobotAssetPlatform;
+import com.kuflow.rest.model.RobotAssetType;
+import com.kuflow.rest.model.RobotFilterContext;
 import com.kuflow.rest.model.RobotPage;
 import java.util.List;
 import java.util.UUID;
@@ -73,8 +78,9 @@ public class RobotOperations {
         Integer page = options.getPage();
         List<String> sort = !options.getSorts().isEmpty() ? options.getSorts() : null;
         List<UUID> tenantId = !options.getTenantIds().isEmpty() ? options.getTenantIds() : null;
+        RobotFilterContext filterContext = options.getFilterContext();
 
-        return this.service.findRobotsWithResponse(size, page, sort, tenantId, context);
+        return this.service.findRobotsWithResponse(size, page, sort, tenantId, filterContext, context);
     }
 
     /**
@@ -142,5 +148,92 @@ public class RobotOperations {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Robot retrieveRobot(UUID id) {
         return this.retrieveRobotWithResponse(id, Context.NONE).getValue();
+    }
+
+    /**
+     * Download robot code
+     * <br>
+     * Given a robot, download the source code.
+     *
+     * @param id The resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> actionsRobotDownloadSourceCodeWithResponse(UUID id, Context context) {
+        return this.service.actionsRobotDownloadSourceCodeWithResponse(id, context);
+    }
+
+    /**
+     * Download robot code
+     * <br>
+     * Given a robot, download the source code.
+     *
+     * @param id The resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData actionsRobotDownloadSourceCode(UUID id) {
+        return this.actionsRobotDownloadSourceCodeWithResponse(id, Context.NONE).getValue();
+    }
+
+    /**
+     * Download robot asset
+     * <br>
+     * Given a robot, download the requested asset.
+     *
+     * @param id The resource ID.
+     * @param type The asset type.
+     * @param version The asset version.
+     * @param platform The asset platform.
+     * @param architecture The asset platform architecture.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> actionsRobotDownloadAssetWithResponse(
+        UUID id,
+        RobotAssetType type,
+        String version,
+        RobotAssetPlatform platform,
+        RobotAssetArchitecture architecture,
+        Context context
+    ) {
+        return this.service.actionsRobotDownloadAssetWithResponse(id, type, version, platform, architecture, context);
+    }
+
+    /**
+     * Download robot asset
+     * <br>
+     * Given a robot, download the requested asset.
+     *
+     * @param id The resource ID.
+     * @param type The asset type.
+     * @param version The asset version.
+     * @param platform The asset platform.
+     * @param architecture The asset platform architecture.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData actionsRobotDownloadAsset(
+        UUID id,
+        RobotAssetType type,
+        String version,
+        RobotAssetPlatform platform,
+        RobotAssetArchitecture architecture
+    ) {
+        return this.actionsRobotDownloadAssetWithResponse(id, type, version, platform, architecture, Context.NONE).getValue();
     }
 }
