@@ -26,41 +26,37 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Robot source type.
+ * Robot filter context:
+ * * READY: filters out robots ready for execution for the current credentials.
  */
-public enum RobotSourceType {
+public enum RobotFilterContext {
     /**
-     * Enum value PACKAGE.
+     * Enum value READY.
      */
-    PACKAGE("PACKAGE"),
+    READY("READY");
 
     /**
-     * Enum value ROBOT_FRAMEWORK_PYTHON_WHEEL.
-     */
-    ROBOT_FRAMEWORK_PYTHON_WHEEL("ROBOT_FRAMEWORK_PYTHON_WHEEL");
-
-    /**
-     * The actual serialized value for a RobotSourceType instance.
+     * The actual serialized value for a RobotFilterContext instance.
      */
     private final String value;
 
-    RobotSourceType(String value) {
+    RobotFilterContext(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a RobotSourceType instance.
+     * Parses a serialized value to a RobotFilterContext instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed RobotSourceType object, or null if unable to parse.
+     * @return the parsed RobotFilterContext object, or null if unable to parse.
      */
     @JsonCreator
-    public static RobotSourceType fromString(String value) {
+    public static RobotFilterContext fromString(String value) {
         if (value == null) {
             return null;
         }
-        RobotSourceType[] items = RobotSourceType.values();
-        for (RobotSourceType item : items) {
+        RobotFilterContext[] items = RobotFilterContext.values();
+        for (RobotFilterContext item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

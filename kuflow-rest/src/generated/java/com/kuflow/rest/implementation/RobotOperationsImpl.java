@@ -35,10 +35,15 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.kuflow.rest.model.DefaultErrorException;
 import com.kuflow.rest.model.Robot;
+import com.kuflow.rest.model.RobotAssetArchitecture;
+import com.kuflow.rest.model.RobotAssetPlatform;
+import com.kuflow.rest.model.RobotAssetType;
+import com.kuflow.rest.model.RobotFilterContext;
 import com.kuflow.rest.model.RobotPage;
 import java.util.ArrayList;
 import java.util.List;
@@ -88,6 +93,7 @@ public final class RobotOperationsImpl {
             @QueryParam("page") Integer page,
             @QueryParam(value = "sort", multipleQueryParams = true) List<String> sort,
             @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
+            @QueryParam("filterContext") RobotFilterContext filterContext,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -101,6 +107,7 @@ public final class RobotOperationsImpl {
             @QueryParam("page") Integer page,
             @QueryParam(value = "sort", multipleQueryParams = true) List<String> sort,
             @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
+            @QueryParam("filterContext") RobotFilterContext filterContext,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -124,39 +131,53 @@ public final class RobotOperationsImpl {
             @HeaderParam("Accept") String accept,
             Context context
         );
-    }
 
-    /**
-     * Find all accessible Robots
-     *
-     * List all the Robots that have been created and the credentials has access.
-     *
-     * Available sort query values: createdAt, lastModifiedAt.
-     *
-     * @param size The number of records returned within a single API call.
-     * @param page The page number of the current page in the returned records, 0 is the first page.
-     * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-     *
-     * Default sort order is ascending. Multiple sort criteria are supported.
-     *
-     * Please refer to the method description for supported properties.
-     * @param tenantId Filter by tenantId.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RobotPage>> findRobotsWithResponseAsync(Integer size, Integer page, List<String> sort, List<UUID> tenantId) {
-        final String accept = "application/json";
-        List<String> sortConverted = (sort == null)
-            ? new ArrayList<>()
-            : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> tenantIdConverted = (tenantId == null)
-            ? new ArrayList<>()
-            : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        return FluxUtil.withContext(context ->
-            service.findRobots(this.client.getHost(), size, page, sortConverted, tenantIdConverted, accept, context)
+        @Get("/robots/{id}/~actions/download-source-code")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<BinaryData>> actionsRobotDownloadSourceCode(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Get("/robots/{id}/~actions/download-source-code")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<BinaryData> actionsRobotDownloadSourceCodeSync(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Get("/robots/{id}/~actions/download-asset")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<BinaryData>> actionsRobotDownloadAsset(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("type") RobotAssetType type,
+            @QueryParam("version") String version,
+            @QueryParam("platform") RobotAssetPlatform platform,
+            @QueryParam("architecture") RobotAssetArchitecture architecture,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Get("/robots/{id}/~actions/download-asset")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<BinaryData> actionsRobotDownloadAssetSync(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("type") RobotAssetType type,
+            @QueryParam("version") String version,
+            @QueryParam("platform") RobotAssetPlatform platform,
+            @QueryParam("architecture") RobotAssetArchitecture architecture,
+            @HeaderParam("Accept") String accept,
+            Context context
         );
     }
 
@@ -175,7 +196,7 @@ public final class RobotOperationsImpl {
      *
      * Please refer to the method description for supported properties.
      * @param tenantId Filter by tenantId.
-     * @param context The context to associate with this operation.
+     * @param filterContext Filter by the specified context.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -187,7 +208,7 @@ public final class RobotOperationsImpl {
         Integer page,
         List<String> sort,
         List<UUID> tenantId,
-        Context context
+        RobotFilterContext filterContext
     ) {
         final String accept = "application/json";
         List<String> sortConverted = (sort == null)
@@ -196,7 +217,9 @@ public final class RobotOperationsImpl {
         List<String> tenantIdConverted = (tenantId == null)
             ? new ArrayList<>()
             : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        return service.findRobots(this.client.getHost(), size, page, sortConverted, tenantIdConverted, accept, context);
+        return FluxUtil.withContext(context ->
+            service.findRobots(this.client.getHost(), size, page, sortConverted, tenantIdConverted, filterContext, accept, context)
+        );
     }
 
     /**
@@ -214,14 +237,62 @@ public final class RobotOperationsImpl {
      *
      * Please refer to the method description for supported properties.
      * @param tenantId Filter by tenantId.
+     * @param filterContext Filter by the specified context.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RobotPage>> findRobotsWithResponseAsync(
+        Integer size,
+        Integer page,
+        List<String> sort,
+        List<UUID> tenantId,
+        RobotFilterContext filterContext,
+        Context context
+    ) {
+        final String accept = "application/json";
+        List<String> sortConverted = (sort == null)
+            ? new ArrayList<>()
+            : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> tenantIdConverted = (tenantId == null)
+            ? new ArrayList<>()
+            : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        return service.findRobots(this.client.getHost(), size, page, sortConverted, tenantIdConverted, filterContext, accept, context);
+    }
+
+    /**
+     * Find all accessible Robots
+     *
+     * List all the Robots that have been created and the credentials has access.
+     *
+     * Available sort query values: createdAt, lastModifiedAt.
+     *
+     * @param size The number of records returned within a single API call.
+     * @param page The page number of the current page in the returned records, 0 is the first page.
+     * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
+     *
+     * Default sort order is ascending. Multiple sort criteria are supported.
+     *
+     * Please refer to the method description for supported properties.
+     * @param tenantId Filter by tenantId.
+     * @param filterContext Filter by the specified context.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RobotPage> findRobotsAsync(Integer size, Integer page, List<String> sort, List<UUID> tenantId) {
-        return findRobotsWithResponseAsync(size, page, sort, tenantId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<RobotPage> findRobotsAsync(
+        Integer size,
+        Integer page,
+        List<String> sort,
+        List<UUID> tenantId,
+        RobotFilterContext filterContext
+    ) {
+        return findRobotsWithResponseAsync(size, page, sort, tenantId, filterContext).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -241,7 +312,8 @@ public final class RobotOperationsImpl {
         final Integer page = null;
         final List<String> sort = null;
         final List<UUID> tenantId = null;
-        return findRobotsWithResponseAsync(size, page, sort, tenantId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        final RobotFilterContext filterContext = null;
+        return findRobotsWithResponseAsync(size, page, sort, tenantId, filterContext).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -259,6 +331,7 @@ public final class RobotOperationsImpl {
      *
      * Please refer to the method description for supported properties.
      * @param tenantId Filter by tenantId.
+     * @param filterContext Filter by the specified context.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -266,8 +339,16 @@ public final class RobotOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RobotPage> findRobotsAsync(Integer size, Integer page, List<String> sort, List<UUID> tenantId, Context context) {
-        return findRobotsWithResponseAsync(size, page, sort, tenantId, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<RobotPage> findRobotsAsync(
+        Integer size,
+        Integer page,
+        List<String> sort,
+        List<UUID> tenantId,
+        RobotFilterContext filterContext,
+        Context context
+    ) {
+        return findRobotsWithResponseAsync(size, page, sort, tenantId, filterContext, context)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -285,6 +366,7 @@ public final class RobotOperationsImpl {
      *
      * Please refer to the method description for supported properties.
      * @param tenantId Filter by tenantId.
+     * @param filterContext Filter by the specified context.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -292,7 +374,14 @@ public final class RobotOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RobotPage> findRobotsWithResponse(Integer size, Integer page, List<String> sort, List<UUID> tenantId, Context context) {
+    public Response<RobotPage> findRobotsWithResponse(
+        Integer size,
+        Integer page,
+        List<String> sort,
+        List<UUID> tenantId,
+        RobotFilterContext filterContext,
+        Context context
+    ) {
         final String accept = "application/json";
         List<String> sortConverted = (sort == null)
             ? new ArrayList<>()
@@ -300,7 +389,7 @@ public final class RobotOperationsImpl {
         List<String> tenantIdConverted = (tenantId == null)
             ? new ArrayList<>()
             : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        return service.findRobotsSync(this.client.getHost(), size, page, sortConverted, tenantIdConverted, accept, context);
+        return service.findRobotsSync(this.client.getHost(), size, page, sortConverted, tenantIdConverted, filterContext, accept, context);
     }
 
     /**
@@ -318,14 +407,15 @@ public final class RobotOperationsImpl {
      *
      * Please refer to the method description for supported properties.
      * @param tenantId Filter by tenantId.
+     * @param filterContext Filter by the specified context.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RobotPage findRobots(Integer size, Integer page, List<String> sort, List<UUID> tenantId) {
-        return findRobotsWithResponse(size, page, sort, tenantId, Context.NONE).getValue();
+    public RobotPage findRobots(Integer size, Integer page, List<String> sort, List<UUID> tenantId, RobotFilterContext filterContext) {
+        return findRobotsWithResponse(size, page, sort, tenantId, filterContext, Context.NONE).getValue();
     }
 
     /**
@@ -345,7 +435,8 @@ public final class RobotOperationsImpl {
         final Integer page = null;
         final List<String> sort = null;
         final List<UUID> tenantId = null;
-        return findRobotsWithResponse(size, page, sort, tenantId, Context.NONE).getValue();
+        final RobotFilterContext filterContext = null;
+        return findRobotsWithResponse(size, page, sort, tenantId, filterContext, Context.NONE).getValue();
     }
 
     /**
@@ -448,5 +539,276 @@ public final class RobotOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Robot retrieveRobot(UUID id) {
         return retrieveRobotWithResponse(id, Context.NONE).getValue();
+    }
+
+    /**
+     * Download robot code
+     *
+     * Given a robot, download the source code.
+     *
+     * @param id The resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> actionsRobotDownloadSourceCodeWithResponseAsync(UUID id) {
+        final String accept = "application/octet-stream, application/json";
+        return FluxUtil.withContext(context -> service.actionsRobotDownloadSourceCode(this.client.getHost(), id, accept, context));
+    }
+
+    /**
+     * Download robot code
+     *
+     * Given a robot, download the source code.
+     *
+     * @param id The resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> actionsRobotDownloadSourceCodeWithResponseAsync(UUID id, Context context) {
+        final String accept = "application/octet-stream, application/json";
+        return service.actionsRobotDownloadSourceCode(this.client.getHost(), id, accept, context);
+    }
+
+    /**
+     * Download robot code
+     *
+     * Given a robot, download the source code.
+     *
+     * @param id The resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> actionsRobotDownloadSourceCodeAsync(UUID id) {
+        return actionsRobotDownloadSourceCodeWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Download robot code
+     *
+     * Given a robot, download the source code.
+     *
+     * @param id The resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> actionsRobotDownloadSourceCodeAsync(UUID id, Context context) {
+        return actionsRobotDownloadSourceCodeWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Download robot code
+     *
+     * Given a robot, download the source code.
+     *
+     * @param id The resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> actionsRobotDownloadSourceCodeWithResponse(UUID id, Context context) {
+        final String accept = "application/octet-stream, application/json";
+        return service.actionsRobotDownloadSourceCodeSync(this.client.getHost(), id, accept, context);
+    }
+
+    /**
+     * Download robot code
+     *
+     * Given a robot, download the source code.
+     *
+     * @param id The resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData actionsRobotDownloadSourceCode(UUID id) {
+        return actionsRobotDownloadSourceCodeWithResponse(id, Context.NONE).getValue();
+    }
+
+    /**
+     * Download robot asset
+     *
+     * Given a robot, download the requested asset.
+     *
+     * @param id The resource ID.
+     * @param type The asset type.
+     * @param version The asset version.
+     * @param platform The asset platform.
+     * @param architecture The asset platform architecture.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> actionsRobotDownloadAssetWithResponseAsync(
+        UUID id,
+        RobotAssetType type,
+        String version,
+        RobotAssetPlatform platform,
+        RobotAssetArchitecture architecture
+    ) {
+        final String accept = "application/octet-stream, application/json";
+        return FluxUtil.withContext(context ->
+            service.actionsRobotDownloadAsset(this.client.getHost(), id, type, version, platform, architecture, accept, context)
+        );
+    }
+
+    /**
+     * Download robot asset
+     *
+     * Given a robot, download the requested asset.
+     *
+     * @param id The resource ID.
+     * @param type The asset type.
+     * @param version The asset version.
+     * @param platform The asset platform.
+     * @param architecture The asset platform architecture.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> actionsRobotDownloadAssetWithResponseAsync(
+        UUID id,
+        RobotAssetType type,
+        String version,
+        RobotAssetPlatform platform,
+        RobotAssetArchitecture architecture,
+        Context context
+    ) {
+        final String accept = "application/octet-stream, application/json";
+        return service.actionsRobotDownloadAsset(this.client.getHost(), id, type, version, platform, architecture, accept, context);
+    }
+
+    /**
+     * Download robot asset
+     *
+     * Given a robot, download the requested asset.
+     *
+     * @param id The resource ID.
+     * @param type The asset type.
+     * @param version The asset version.
+     * @param platform The asset platform.
+     * @param architecture The asset platform architecture.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> actionsRobotDownloadAssetAsync(
+        UUID id,
+        RobotAssetType type,
+        String version,
+        RobotAssetPlatform platform,
+        RobotAssetArchitecture architecture
+    ) {
+        return actionsRobotDownloadAssetWithResponseAsync(id, type, version, platform, architecture)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Download robot asset
+     *
+     * Given a robot, download the requested asset.
+     *
+     * @param id The resource ID.
+     * @param type The asset type.
+     * @param version The asset version.
+     * @param platform The asset platform.
+     * @param architecture The asset platform architecture.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> actionsRobotDownloadAssetAsync(
+        UUID id,
+        RobotAssetType type,
+        String version,
+        RobotAssetPlatform platform,
+        RobotAssetArchitecture architecture,
+        Context context
+    ) {
+        return actionsRobotDownloadAssetWithResponseAsync(id, type, version, platform, architecture, context)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Download robot asset
+     *
+     * Given a robot, download the requested asset.
+     *
+     * @param id The resource ID.
+     * @param type The asset type.
+     * @param version The asset version.
+     * @param platform The asset platform.
+     * @param architecture The asset platform architecture.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> actionsRobotDownloadAssetWithResponse(
+        UUID id,
+        RobotAssetType type,
+        String version,
+        RobotAssetPlatform platform,
+        RobotAssetArchitecture architecture,
+        Context context
+    ) {
+        final String accept = "application/octet-stream, application/json";
+        return service.actionsRobotDownloadAssetSync(this.client.getHost(), id, type, version, platform, architecture, accept, context);
+    }
+
+    /**
+     * Download robot asset
+     *
+     * Given a robot, download the requested asset.
+     *
+     * @param id The resource ID.
+     * @param type The asset type.
+     * @param version The asset version.
+     * @param platform The asset platform.
+     * @param architecture The asset platform architecture.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData actionsRobotDownloadAsset(
+        UUID id,
+        RobotAssetType type,
+        String version,
+        RobotAssetPlatform platform,
+        RobotAssetArchitecture architecture
+    ) {
+        return actionsRobotDownloadAssetWithResponse(id, type, version, platform, architecture, Context.NONE).getValue();
     }
 }

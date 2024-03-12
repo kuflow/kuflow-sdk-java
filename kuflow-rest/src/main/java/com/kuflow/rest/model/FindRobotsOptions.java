@@ -53,6 +53,11 @@ public class FindRobotsOptions {
      */
     private final List<UUID> tenantIds = new LinkedList<>();
 
+    /**
+     * Filter by the specified context.
+     */
+    private RobotFilterContext filterContext;
+
     public Integer getSize() {
         return this.size;
     }
@@ -141,5 +146,13 @@ public class FindRobotsOptions {
         this.tenantIds.remove(tenantId);
 
         return this;
+    }
+
+    public RobotFilterContext getFilterContext() {
+        return this.filterContext;
+    }
+
+    public void setFilterContext(RobotFilterContext filterContext) {
+        this.filterContext = filterContext;
     }
 }

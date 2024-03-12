@@ -119,14 +119,16 @@ public class WorkerInformationNotifier {
         String workerIdentity = this.workflowClientOptions.getIdentity();
 
         try {
-            com.kuflow.rest.model.Worker workerRest = new com.kuflow.rest.model.Worker();
-            workerRest.setTenantId(workerInformation.getTenantId());
-            workerRest.setIdentity(workerIdentity);
-            workerRest.setIp(localHostInetAddress.getHostAddress());
-            workerRest.setHostname(localHostInetAddress.getHostName());
-            workerRest.setTaskQueue(workerInformation.getTaskQueue());
-            workerRest.setWorkflowTypes(this.copyOf(workerInformation.getWorkflowTypes()));
-            workerRest.setActivityTypes(this.copyOf(workerInformation.getActivityTypes()));
+            com.kuflow.rest.model.Worker workerRest = new com.kuflow.rest.model.Worker()
+                .setTenantId(workerInformation.getTenantId())
+                .setIdentity(workerIdentity)
+                .setIp(localHostInetAddress.getHostAddress())
+                .setHostname(localHostInetAddress.getHostName())
+                .setTaskQueue(workerInformation.getTaskQueue())
+                .setWorkflowTypes(this.copyOf(workerInformation.getWorkflowTypes()))
+                .setActivityTypes(this.copyOf(workerInformation.getActivityTypes()))
+                .setInstallationId(workerInformation.getInstallationId())
+                .setRobotIds(workerInformation.getRobotIds());
 
             WorkerOperations workerOperations = this.kuFlowRestClient.getWorkerOperations();
             Response<Worker> workerRestResponse = workerOperations.createWorkerWithResponse(workerRest, Context.NONE);

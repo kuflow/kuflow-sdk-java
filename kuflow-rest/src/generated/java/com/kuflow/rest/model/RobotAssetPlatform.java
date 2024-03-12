@@ -26,41 +26,46 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Robot source type.
+ * Robot asset platform.
  */
-public enum RobotSourceType {
+public enum RobotAssetPlatform {
     /**
-     * Enum value PACKAGE.
+     * Enum value WINDOWS.
      */
-    PACKAGE("PACKAGE"),
+    WINDOWS("WINDOWS"),
 
     /**
-     * Enum value ROBOT_FRAMEWORK_PYTHON_WHEEL.
+     * Enum value MAC_OS.
      */
-    ROBOT_FRAMEWORK_PYTHON_WHEEL("ROBOT_FRAMEWORK_PYTHON_WHEEL");
+    MAC_OS("MAC_OS"),
 
     /**
-     * The actual serialized value for a RobotSourceType instance.
+     * Enum value LINUX.
+     */
+    LINUX("LINUX");
+
+    /**
+     * The actual serialized value for a RobotAssetPlatform instance.
      */
     private final String value;
 
-    RobotSourceType(String value) {
+    RobotAssetPlatform(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a RobotSourceType instance.
+     * Parses a serialized value to a RobotAssetPlatform instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed RobotSourceType object, or null if unable to parse.
+     * @return the parsed RobotAssetPlatform object, or null if unable to parse.
      */
     @JsonCreator
-    public static RobotSourceType fromString(String value) {
+    public static RobotAssetPlatform fromString(String value) {
         if (value == null) {
             return null;
         }
-        RobotSourceType[] items = RobotSourceType.values();
-        for (RobotSourceType item : items) {
+        RobotAssetPlatform[] items = RobotAssetPlatform.values();
+        for (RobotAssetPlatform item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

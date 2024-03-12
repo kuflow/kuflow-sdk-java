@@ -54,7 +54,7 @@ public final class TenantUser extends AbstractAudited {
     /*
      * The tenantId property.
      */
-    @JsonProperty(value = "tenantId")
+    @JsonProperty(value = "tenantId", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private UUID tenantId;
 
     /**
@@ -129,17 +129,6 @@ public final class TenantUser extends AbstractAudited {
      */
     public UUID getTenantId() {
         return this.tenantId;
-    }
-
-    /**
-     * Set the tenantId property: The tenantId property.
-     *
-     * @param tenantId the tenantId value to set.
-     * @return the TenantUser object itself.
-     */
-    public TenantUser setTenantId(UUID tenantId) {
-        this.tenantId = tenantId;
-        return this;
     }
 
     /**
