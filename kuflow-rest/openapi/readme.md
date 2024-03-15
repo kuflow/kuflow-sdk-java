@@ -60,13 +60,5 @@ directive:
       if ($.operationId.indexOf($.tags[1] + 'Operations_') === -1) {
         $.operationId = $.tags[1] + 'Operations_' + $.operationId;
       }
-
-  # WORKAROUND:
-  # RobotSourceType has only one option, so, due to is required, is rendered as String instead of an enum
-  # See: https://github.com/stankovski/AutoRest/blob/master/Documentation/swagger-extensions.md#single-value-enum-as-a-constant
-  - from: openapi-document
-    where: $.components.schemas.Robot.allOf[1]
-    transform: |
-      $.required = $.required.filter(it => it !== "sourceType")
 ```
 

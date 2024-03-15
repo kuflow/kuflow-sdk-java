@@ -61,7 +61,7 @@ public final class Robot extends AbstractAudited {
     /*
      * Robot source type
      */
-    @JsonProperty(value = "sourceType")
+    @JsonProperty(value = "sourceType", required = true)
     private RobotSourceType sourceType;
 
     /*
