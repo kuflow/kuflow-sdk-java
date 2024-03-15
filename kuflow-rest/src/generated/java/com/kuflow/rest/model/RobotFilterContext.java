@@ -27,13 +27,19 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * Robot filter context:
- * * READY: filters out robots ready for execution for the current credentials.
+ * * READY: filters out robots ready for execution for the current credentials
+ * * DEFAULT: filters out robots accessible for the current credentials (if no set this is the default option).
  */
 public enum RobotFilterContext {
     /**
      * Enum value READY.
      */
-    READY("READY");
+    READY("READY"),
+
+    /**
+     * Enum value DEFAULT.
+     */
+    DEFAULT("DEFAULT");
 
     /**
      * The actual serialized value for a RobotFilterContext instance.
