@@ -54,6 +54,8 @@ import com.kuflow.temporal.activity.kuflow.model.RetrieveTenantUserRequest;
 import com.kuflow.temporal.activity.kuflow.model.RetrieveTenantUserResponse;
 import com.kuflow.temporal.activity.kuflow.model.SaveProcessElementRequest;
 import com.kuflow.temporal.activity.kuflow.model.SaveProcessElementResponse;
+import com.kuflow.temporal.activity.kuflow.model.SaveProcessEntityDataRequest;
+import com.kuflow.temporal.activity.kuflow.model.SaveProcessEntityDataResponse;
 import com.kuflow.temporal.activity.kuflow.model.SaveTaskElementRequest;
 import com.kuflow.temporal.activity.kuflow.model.SaveTaskElementResponse;
 import com.kuflow.temporal.activity.kuflow.model.SaveTaskJsonFormsValueDataRequest;
@@ -128,6 +130,17 @@ public interface KuFlowActivities {
      * @return process deleted
      */
     DeleteProcessElementResponse deleteProcessElement(@Nonnull DeleteProcessElementRequest request);
+
+    /**
+     * Save entity JSON data
+     *
+     * <p>Allow to save a JSON data validating that the data follow the related schema. If the data is invalid, then the
+     * json form is marked as invalid.
+     *
+     * @param request must not be {@literal null}.
+     * @return task updated
+     */
+    SaveProcessEntityDataResponse saveProcessEntityData(@Nonnull SaveProcessEntityDataRequest request);
 
     /**
      * Change the current initiator of a process. Allows you to choose a user (by email or principal

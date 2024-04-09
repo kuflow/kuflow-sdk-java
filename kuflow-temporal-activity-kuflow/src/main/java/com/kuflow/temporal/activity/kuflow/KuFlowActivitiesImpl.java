@@ -37,6 +37,7 @@ import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidatio
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateRetrieveTaskRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateRetrieveTenantUserRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateSaveProcessElementRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateSaveProcessEntityData;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateSaveTaskElementRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateSaveTaskJsonFormsDataRequest;
 
@@ -49,6 +50,7 @@ import com.kuflow.rest.model.ProcessChangeInitiatorCommand;
 import com.kuflow.rest.model.ProcessDeleteElementCommand;
 import com.kuflow.rest.model.ProcessPage;
 import com.kuflow.rest.model.ProcessSaveElementCommand;
+import com.kuflow.rest.model.ProcessSaveEntityDataCommand;
 import com.kuflow.rest.model.Task;
 import com.kuflow.rest.model.TaskAssignCommand;
 import com.kuflow.rest.model.TaskDeleteElementCommand;
@@ -93,6 +95,8 @@ import com.kuflow.temporal.activity.kuflow.model.RetrieveTenantUserRequest;
 import com.kuflow.temporal.activity.kuflow.model.RetrieveTenantUserResponse;
 import com.kuflow.temporal.activity.kuflow.model.SaveProcessElementRequest;
 import com.kuflow.temporal.activity.kuflow.model.SaveProcessElementResponse;
+import com.kuflow.temporal.activity.kuflow.model.SaveProcessEntityDataRequest;
+import com.kuflow.temporal.activity.kuflow.model.SaveProcessEntityDataResponse;
 import com.kuflow.temporal.activity.kuflow.model.SaveTaskElementRequest;
 import com.kuflow.temporal.activity.kuflow.model.SaveTaskElementResponse;
 import com.kuflow.temporal.activity.kuflow.model.SaveTaskJsonFormsValueDataRequest;
@@ -220,6 +224,24 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
             Process process = this.processOperations.actionsProcessDeleteElement(request.getProcessId(), command);
 
             DeleteProcessElementResponse response = new DeleteProcessElementResponse();
+            response.setProcess(process);
+
+            return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Override
+    public SaveProcessEntityDataResponse saveProcessEntityData(@Nonnull SaveProcessEntityDataRequest request) {
+        try {
+            validateSaveProcessEntityData(request);
+
+            ProcessSaveEntityDataCommand command = new ProcessSaveEntityDataCommand().setData(request.getData());
+
+            Process process = this.processOperations.actionsProcessSaveEntityData(request.getProcessId(), command);
+
+            SaveProcessEntityDataResponse response = new SaveProcessEntityDataResponse();
             response.setProcess(process);
 
             return response;

@@ -20,27 +20,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.rest.util;
+package com.kuflow.rest.model;
 
-import com.kuflow.rest.model.TaskElementValue;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
-public class TaskElementValueAccessorMock implements TaskElementValueAccessor {
+/**
+ * The ProcessSaveEntityDataCommand model.
+ */
+@Fluent
+public final class ProcessSaveEntityDataCommand {
 
-    private final List<TaskElementValue> elementValues = new LinkedList<>();
+    /*
+     * json value filled that complain with the related json schema.
+     */
+    @JsonProperty(value = "data", required = true)
+    private Map<String, Object> data;
 
-    @Override
-    public List<TaskElementValue> getElementValues() {
-        return Collections.unmodifiableList(this.elementValues);
+    /**
+     * Creates an instance of ProcessSaveEntityDataCommand class.
+     */
+    public ProcessSaveEntityDataCommand() {}
+
+    /**
+     * Get the data property: json value filled that complain with the related json schema.
+     *
+     * @return the data value.
+     */
+    public Map<String, Object> getData() {
+        return this.data;
     }
 
-    @Override
-    public void setElementValues(List<TaskElementValue> elementValues) {
-        this.elementValues.clear();
-        if (elementValues != null) {
-            this.elementValues.addAll(elementValues);
-        }
+    /**
+     * Set the data property: json value filled that complain with the related json schema.
+     *
+     * @param data the data value to set.
+     * @return the ProcessSaveEntityDataCommand object itself.
+     */
+    public ProcessSaveEntityDataCommand setData(Map<String, Object> data) {
+        this.data = data;
+        return this;
     }
 }

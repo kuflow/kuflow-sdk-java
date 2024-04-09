@@ -37,6 +37,8 @@ import com.kuflow.rest.model.ProcessChangeInitiatorCommand;
 import com.kuflow.rest.model.ProcessDeleteElementCommand;
 import com.kuflow.rest.model.ProcessPage;
 import com.kuflow.rest.model.ProcessSaveElementCommand;
+import com.kuflow.rest.model.ProcessSaveEntityDataCommand;
+import com.kuflow.rest.model.ProcessSaveEntityDocumentResponseCommand;
 import com.kuflow.rest.model.ProcessSaveUserActionValueDocumentCommand;
 import java.util.List;
 import java.util.Objects;
@@ -473,5 +475,154 @@ public class ProcessOperations {
         Document document
     ) {
         return this.actionsProcessSaveUserActionValueDocumentWithResponse(id, command, document, Context.NONE).getValue();
+    }
+
+    /**
+     * Save JSON data
+     * <p>
+     * Allow to save a JSON validating that the data follow the related schema. If the data is invalid, then
+     * the json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param command Command to save the JSON value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Process> actionsProcessSaveEntityDataWithResponse(UUID id, ProcessSaveEntityDataCommand command, Context context) {
+        return this.service.actionsProcessSaveEntityDataWithResponse(id, command, context);
+    }
+
+    /**
+     * Save JSON data
+     * <p>
+     * Allow to save a JSON validating that the data follow the related schema. If the data is invalid, then
+     * the json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param command Command to save the JSON value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Process actionsProcessSaveEntityData(UUID id, ProcessSaveEntityDataCommand command) {
+        return this.actionsProcessSaveEntityDataWithResponse(id, command, Context.NONE).getValue();
+    }
+
+    /**
+     * Save an entity value document
+     * <p>
+     * Save a document in the process to later be linked into the JSON data.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
+     * schema path.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ProcessSaveEntityDocumentResponseCommand> actionsProcessSaveEntityDocumentWithResponse(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String schemaPath,
+        BinaryData file,
+        long contentLength,
+        Context context
+    ) {
+        return this.service.actionsProcessSaveEntityDocumentWithResponse(
+                id,
+                fileContentType,
+                fileName,
+                schemaPath,
+                file,
+                contentLength,
+                context
+            );
+    }
+
+    /**
+     * Save an entity value document
+     * <p>
+     * Save a document in the process to later be linked into the JSON data.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
+     * schema path.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProcessSaveEntityDocumentResponseCommand actionsProcessSaveEntityDocument(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String schemaPath,
+        BinaryData file,
+        long contentLength
+    ) {
+        return this.actionsProcessSaveEntityDocumentWithResponse(
+                id,
+                fileContentType,
+                fileName,
+                schemaPath,
+                file,
+                contentLength,
+                Context.NONE
+            )
+            .getValue();
+    }
+
+    /**
+     * Download document
+     * <p>
+     * Given a process and a documentUri, download a document.
+     *
+     * @param id The resource ID.
+     * @param documentUri Document URI to download.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> actionsProcessDownloadEntityDocumentWithResponse(UUID id, String documentUri, Context context) {
+        return this.service.actionsProcessDownloadEntityDocumentWithResponse(id, documentUri, context);
+    }
+
+    /**
+     * Download document
+     * <p>
+     * Given a process and a documentUri, download a document.
+     *
+     * @param id The resource ID.
+     * @param documentUri Document URI to download.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData actionsProcessDownloadEntityDocument(UUID id, String documentUri) {
+        return this.actionsProcessDownloadEntityDocumentWithResponse(id, documentUri, Context.NONE).getValue();
     }
 }

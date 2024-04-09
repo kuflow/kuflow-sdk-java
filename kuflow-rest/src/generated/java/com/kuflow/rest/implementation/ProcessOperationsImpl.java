@@ -46,6 +46,8 @@ import com.kuflow.rest.model.ProcessChangeInitiatorCommand;
 import com.kuflow.rest.model.ProcessDeleteElementCommand;
 import com.kuflow.rest.model.ProcessPage;
 import com.kuflow.rest.model.ProcessSaveElementCommand;
+import com.kuflow.rest.model.ProcessSaveEntityDataCommand;
+import com.kuflow.rest.model.ProcessSaveEntityDocumentResponseCommand;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -300,6 +302,95 @@ public final class ProcessOperationsImpl {
             @QueryParam("userActionValueId") UUID userActionValueId,
             @BodyParam("application/octet-stream") BinaryData file,
             @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/processes/{id}/~actions/save-entity-data")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<Process>> actionsProcessSaveEntityData(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") ProcessSaveEntityDataCommand command,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/processes/{id}/~actions/save-entity-data")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<Process> actionsProcessSaveEntityDataSync(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") ProcessSaveEntityDataCommand command,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/processes/{id}/~actions/save-entity-document")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<ProcessSaveEntityDocumentResponseCommand>> actionsProcessSaveEntityDocument(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("fileContentType") String fileContentType,
+            @QueryParam("fileName") String fileName,
+            @QueryParam("schemaPath") String schemaPath,
+            @BodyParam("application/octet-stream") Flux<ByteBuffer> file,
+            @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/processes/{id}/~actions/save-entity-document")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<ProcessSaveEntityDocumentResponseCommand>> actionsProcessSaveEntityDocument(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("fileContentType") String fileContentType,
+            @QueryParam("fileName") String fileName,
+            @QueryParam("schemaPath") String schemaPath,
+            @BodyParam("application/octet-stream") BinaryData file,
+            @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/processes/{id}/~actions/save-entity-document")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<ProcessSaveEntityDocumentResponseCommand> actionsProcessSaveEntityDocumentSync(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("fileContentType") String fileContentType,
+            @QueryParam("fileName") String fileName,
+            @QueryParam("schemaPath") String schemaPath,
+            @BodyParam("application/octet-stream") BinaryData file,
+            @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Get("/processes/{id}/~actions/download-entity-document")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<BinaryData>> actionsProcessDownloadEntityDocument(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("documentUri") String documentUri,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Get("/processes/{id}/~actions/download-entity-document")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<BinaryData> actionsProcessDownloadEntityDocumentSync(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("documentUri") String documentUri,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -1819,5 +1910,598 @@ public final class ProcessOperationsImpl {
             Context.NONE
         )
             .getValue();
+    }
+
+    /**
+     * Save JSON data
+     *
+     * Allow to save a JSON validating that the data follow the related schema. If the data is invalid, then
+     * the json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param command Command to save the JSON value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Process>> actionsProcessSaveEntityDataWithResponseAsync(UUID id, ProcessSaveEntityDataCommand command) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.actionsProcessSaveEntityData(this.client.getHost(), id, command, accept, context));
+    }
+
+    /**
+     * Save JSON data
+     *
+     * Allow to save a JSON validating that the data follow the related schema. If the data is invalid, then
+     * the json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param command Command to save the JSON value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Process>> actionsProcessSaveEntityDataWithResponseAsync(
+        UUID id,
+        ProcessSaveEntityDataCommand command,
+        Context context
+    ) {
+        final String accept = "application/json";
+        return service.actionsProcessSaveEntityData(this.client.getHost(), id, command, accept, context);
+    }
+
+    /**
+     * Save JSON data
+     *
+     * Allow to save a JSON validating that the data follow the related schema. If the data is invalid, then
+     * the json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param command Command to save the JSON value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Process> actionsProcessSaveEntityDataAsync(UUID id, ProcessSaveEntityDataCommand command) {
+        return actionsProcessSaveEntityDataWithResponseAsync(id, command).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Save JSON data
+     *
+     * Allow to save a JSON validating that the data follow the related schema. If the data is invalid, then
+     * the json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param command Command to save the JSON value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Process> actionsProcessSaveEntityDataAsync(UUID id, ProcessSaveEntityDataCommand command, Context context) {
+        return actionsProcessSaveEntityDataWithResponseAsync(id, command, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Save JSON data
+     *
+     * Allow to save a JSON validating that the data follow the related schema. If the data is invalid, then
+     * the json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param command Command to save the JSON value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Process> actionsProcessSaveEntityDataWithResponse(UUID id, ProcessSaveEntityDataCommand command, Context context) {
+        final String accept = "application/json";
+        return service.actionsProcessSaveEntityDataSync(this.client.getHost(), id, command, accept, context);
+    }
+
+    /**
+     * Save JSON data
+     *
+     * Allow to save a JSON validating that the data follow the related schema. If the data is invalid, then
+     * the json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param command Command to save the JSON value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Process actionsProcessSaveEntityData(UUID id, ProcessSaveEntityDataCommand command) {
+        return actionsProcessSaveEntityDataWithResponse(id, command, Context.NONE).getValue();
+    }
+
+    /**
+     * Save an entity value document
+     *
+     * Save a document in the process to later be linked into the JSON data.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
+     * schema path.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ProcessSaveEntityDocumentResponseCommand>> actionsProcessSaveEntityDocumentWithResponseAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String schemaPath,
+        Flux<ByteBuffer> file,
+        long contentLength
+    ) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context ->
+            service.actionsProcessSaveEntityDocument(
+                this.client.getHost(),
+                id,
+                fileContentType,
+                fileName,
+                schemaPath,
+                file,
+                contentLength,
+                accept,
+                context
+            )
+        );
+    }
+
+    /**
+     * Save an entity value document
+     *
+     * Save a document in the process to later be linked into the JSON data.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
+     * schema path.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ProcessSaveEntityDocumentResponseCommand>> actionsProcessSaveEntityDocumentWithResponseAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String schemaPath,
+        Flux<ByteBuffer> file,
+        long contentLength,
+        Context context
+    ) {
+        final String accept = "application/json";
+        return service.actionsProcessSaveEntityDocument(
+            this.client.getHost(),
+            id,
+            fileContentType,
+            fileName,
+            schemaPath,
+            file,
+            contentLength,
+            accept,
+            context
+        );
+    }
+
+    /**
+     * Save an entity value document
+     *
+     * Save a document in the process to later be linked into the JSON data.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
+     * schema path.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ProcessSaveEntityDocumentResponseCommand> actionsProcessSaveEntityDocumentAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String schemaPath,
+        Flux<ByteBuffer> file,
+        long contentLength
+    ) {
+        return actionsProcessSaveEntityDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Save an entity value document
+     *
+     * Save a document in the process to later be linked into the JSON data.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
+     * schema path.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ProcessSaveEntityDocumentResponseCommand> actionsProcessSaveEntityDocumentAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String schemaPath,
+        Flux<ByteBuffer> file,
+        long contentLength,
+        Context context
+    ) {
+        return actionsProcessSaveEntityDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength, context)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Save an entity value document
+     *
+     * Save a document in the process to later be linked into the JSON data.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
+     * schema path.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ProcessSaveEntityDocumentResponseCommand>> actionsProcessSaveEntityDocumentWithResponseAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String schemaPath,
+        BinaryData file,
+        long contentLength
+    ) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context ->
+            service.actionsProcessSaveEntityDocument(
+                this.client.getHost(),
+                id,
+                fileContentType,
+                fileName,
+                schemaPath,
+                file,
+                contentLength,
+                accept,
+                context
+            )
+        );
+    }
+
+    /**
+     * Save an entity value document
+     *
+     * Save a document in the process to later be linked into the JSON data.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
+     * schema path.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ProcessSaveEntityDocumentResponseCommand>> actionsProcessSaveEntityDocumentWithResponseAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String schemaPath,
+        BinaryData file,
+        long contentLength,
+        Context context
+    ) {
+        final String accept = "application/json";
+        return service.actionsProcessSaveEntityDocument(
+            this.client.getHost(),
+            id,
+            fileContentType,
+            fileName,
+            schemaPath,
+            file,
+            contentLength,
+            accept,
+            context
+        );
+    }
+
+    /**
+     * Save an entity value document
+     *
+     * Save a document in the process to later be linked into the JSON data.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
+     * schema path.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ProcessSaveEntityDocumentResponseCommand> actionsProcessSaveEntityDocumentAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String schemaPath,
+        BinaryData file,
+        long contentLength
+    ) {
+        return actionsProcessSaveEntityDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Save an entity value document
+     *
+     * Save a document in the process to later be linked into the JSON data.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
+     * schema path.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ProcessSaveEntityDocumentResponseCommand> actionsProcessSaveEntityDocumentAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String schemaPath,
+        BinaryData file,
+        long contentLength,
+        Context context
+    ) {
+        return actionsProcessSaveEntityDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength, context)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Save an entity value document
+     *
+     * Save a document in the process to later be linked into the JSON data.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
+     * schema path.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ProcessSaveEntityDocumentResponseCommand> actionsProcessSaveEntityDocumentWithResponse(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String schemaPath,
+        BinaryData file,
+        long contentLength,
+        Context context
+    ) {
+        final String accept = "application/json";
+        return service.actionsProcessSaveEntityDocumentSync(
+            this.client.getHost(),
+            id,
+            fileContentType,
+            fileName,
+            schemaPath,
+            file,
+            contentLength,
+            accept,
+            context
+        );
+    }
+
+    /**
+     * Save an entity value document
+     *
+     * Save a document in the process to later be linked into the JSON data.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
+     * schema path.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProcessSaveEntityDocumentResponseCommand actionsProcessSaveEntityDocument(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        String schemaPath,
+        BinaryData file,
+        long contentLength
+    ) {
+        return actionsProcessSaveEntityDocumentWithResponse(id, fileContentType, fileName, schemaPath, file, contentLength, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Download document
+     *
+     * Given a process and a documentUri, download a document.
+     *
+     * @param id The resource ID.
+     * @param documentUri Document URI to download.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> actionsProcessDownloadEntityDocumentWithResponseAsync(UUID id, String documentUri) {
+        final String accept = "application/octet-stream, application/json";
+        return FluxUtil.withContext(context ->
+            service.actionsProcessDownloadEntityDocument(this.client.getHost(), id, documentUri, accept, context)
+        );
+    }
+
+    /**
+     * Download document
+     *
+     * Given a process and a documentUri, download a document.
+     *
+     * @param id The resource ID.
+     * @param documentUri Document URI to download.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> actionsProcessDownloadEntityDocumentWithResponseAsync(UUID id, String documentUri, Context context) {
+        final String accept = "application/octet-stream, application/json";
+        return service.actionsProcessDownloadEntityDocument(this.client.getHost(), id, documentUri, accept, context);
+    }
+
+    /**
+     * Download document
+     *
+     * Given a process and a documentUri, download a document.
+     *
+     * @param id The resource ID.
+     * @param documentUri Document URI to download.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> actionsProcessDownloadEntityDocumentAsync(UUID id, String documentUri) {
+        return actionsProcessDownloadEntityDocumentWithResponseAsync(id, documentUri).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Download document
+     *
+     * Given a process and a documentUri, download a document.
+     *
+     * @param id The resource ID.
+     * @param documentUri Document URI to download.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> actionsProcessDownloadEntityDocumentAsync(UUID id, String documentUri, Context context) {
+        return actionsProcessDownloadEntityDocumentWithResponseAsync(id, documentUri, context)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Download document
+     *
+     * Given a process and a documentUri, download a document.
+     *
+     * @param id The resource ID.
+     * @param documentUri Document URI to download.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> actionsProcessDownloadEntityDocumentWithResponse(UUID id, String documentUri, Context context) {
+        final String accept = "application/octet-stream, application/json";
+        return service.actionsProcessDownloadEntityDocumentSync(this.client.getHost(), id, documentUri, accept, context);
+    }
+
+    /**
+     * Download document
+     *
+     * Given a process and a documentUri, download a document.
+     *
+     * @param id The resource ID.
+     * @param documentUri Document URI to download.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData actionsProcessDownloadEntityDocument(UUID id, String documentUri) {
+        return actionsProcessDownloadEntityDocumentWithResponse(id, documentUri, Context.NONE).getValue();
     }
 }
