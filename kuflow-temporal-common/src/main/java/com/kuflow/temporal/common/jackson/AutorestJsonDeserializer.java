@@ -24,13 +24,14 @@ package com.kuflow.temporal.common.jackson;
 
 import com.azure.core.implementation.ReflectionSerializable;
 import com.azure.json.JsonSerializable;
+import com.fasterxml.jackson.core.JsonLocation;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class AutorestJsonDeserializer extends JsonDeserializer<JsonSerializable<?>> {
 
@@ -42,12 +43,19 @@ public class AutorestJsonDeserializer extends JsonDeserializer<JsonSerializable<
 
     @Override
     public JsonSerializable<?> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-        ObjectMapper codec = (ObjectMapper) jsonParser.getCodec();
+        JsonLocation currentLocation = jsonParser.getCurrentLocation();
+        Object rawContent = currentLocation.contentReference().getRawContent();
+        if (currentLocation.getByteOffset() == -1 || !(rawContent instanceof byte[])) {
+            throw new JsonParseException(jsonParser, "Unsupported raw content " + rawContent.getClass().getName());
+        }
 
         Class<?> jsonSerializable = this.type.getRawClass();
-        TreeNode treeNode = jsonParser.readValueAsTree();
 
-        byte[] json = codec.writeValueAsBytes(treeNode);
+        long begin = jsonParser.getCurrentLocation().getByteOffset();
+        jsonParser.skipChildren();
+        long end = jsonParser.getCurrentLocation().getByteOffset();
+
+        byte[] json = Arrays.copyOfRange((byte[]) rawContent, (int) begin - 1, (int) end);
 
         return (JsonSerializable<?>) ReflectionSerializable.deserializeAsJsonSerializable(jsonSerializable, json);
     }
