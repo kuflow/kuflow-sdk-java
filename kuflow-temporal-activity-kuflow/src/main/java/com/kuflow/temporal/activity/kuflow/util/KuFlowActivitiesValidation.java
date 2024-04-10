@@ -39,6 +39,7 @@ import com.kuflow.temporal.activity.kuflow.model.RetrieveProcessRequest;
 import com.kuflow.temporal.activity.kuflow.model.RetrieveTaskRequest;
 import com.kuflow.temporal.activity.kuflow.model.RetrieveTenantUserRequest;
 import com.kuflow.temporal.activity.kuflow.model.SaveProcessElementRequest;
+import com.kuflow.temporal.activity.kuflow.model.SaveProcessEntityDataRequest;
 import com.kuflow.temporal.activity.kuflow.model.SaveTaskElementRequest;
 import com.kuflow.temporal.activity.kuflow.model.SaveTaskJsonFormsValueDataRequest;
 import io.temporal.failure.ApplicationFailure;
@@ -78,6 +79,15 @@ public class KuFlowActivitiesValidation {
         }
         if (request.getElementDefinitionCode() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'elementDefinitionCode' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+    }
+
+    public static void validateSaveProcessEntityData(SaveProcessEntityDataRequest request) {
+        if (request.getProcessId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+        if (request.getData() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'data' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 

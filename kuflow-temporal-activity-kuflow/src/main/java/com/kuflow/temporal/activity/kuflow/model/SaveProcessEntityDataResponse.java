@@ -20,27 +20,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.rest.util;
+package com.kuflow.temporal.activity.kuflow.model;
 
-import com.kuflow.rest.model.TaskElementValue;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import com.kuflow.rest.model.Process;
+import com.kuflow.temporal.common.model.AbstractModel;
 
-public class TaskElementValueAccessorMock implements TaskElementValueAccessor {
+public class SaveProcessEntityDataResponse extends AbstractModel {
 
-    private final List<TaskElementValue> elementValues = new LinkedList<>();
+    private Process process;
 
-    @Override
-    public List<TaskElementValue> getElementValues() {
-        return Collections.unmodifiableList(this.elementValues);
+    public Process getProcess() {
+        return this.process;
     }
 
-    @Override
-    public void setElementValues(List<TaskElementValue> elementValues) {
-        this.elementValues.clear();
-        if (elementValues != null) {
-            this.elementValues.addAll(elementValues);
-        }
+    public void setProcess(Process process) {
+        this.process = process;
     }
 }

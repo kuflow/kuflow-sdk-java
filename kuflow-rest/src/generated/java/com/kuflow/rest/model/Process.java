@@ -69,6 +69,13 @@ public final class Process extends AbstractAudited {
     private Map<String, List<ProcessElementValue>> elementValues;
 
     /*
+     * Json form values, used when the render type selected is JSON Forms.
+     *
+     */
+    @JsonProperty(value = "entity")
+    private JsonFormsValue entity;
+
+    /*
      * The initiator property.
      */
     @JsonProperty(value = "initiator")
@@ -188,6 +195,26 @@ public final class Process extends AbstractAudited {
      */
     public Process setElementValues(Map<String, List<ProcessElementValue>> elementValues) {
         this.elementValues = elementValues;
+        return this;
+    }
+
+    /**
+     * Get the entity property: Json form values, used when the render type selected is JSON Forms.
+     *
+     * @return the entity value.
+     */
+    public JsonFormsValue getEntity() {
+        return this.entity;
+    }
+
+    /**
+     * Set the entity property: Json form values, used when the render type selected is JSON Forms.
+     *
+     * @param entity the entity value to set.
+     * @return the Process object itself.
+     */
+    public Process setEntity(JsonFormsValue entity) {
+        this.entity = entity;
         return this;
     }
 

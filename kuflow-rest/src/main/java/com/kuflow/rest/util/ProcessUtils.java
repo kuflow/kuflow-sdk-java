@@ -24,9 +24,16 @@ package com.kuflow.rest.util;
 
 import static com.kuflow.rest.util.ProcessElementValueAccessorProcess.of;
 
+import com.kuflow.rest.KuFlowRestClientException;
+import com.kuflow.rest.model.JsonFormsFile;
+import com.kuflow.rest.model.JsonFormsPrincipal;
+import com.kuflow.rest.model.JsonFormsValue;
 import com.kuflow.rest.model.Process;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -294,5 +301,297 @@ public final class ProcessUtils {
      */
     public static Optional<LocalDate> findElementValueAsLocalDate(Process process, String elementDefinitionCode) {
         return ProcessElementValueUtils.findElementValueAsLocalDate(of(process, elementDefinitionCode));
+    }
+
+    /**
+     * Get a json property as String following the 'propertyPath' passed.
+     *
+     * @param process Process
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     * @throws KuFlowRestClientException If property value doesn't exist
+     */
+    public static String getEntityPropertyAsString(Process process, String propertyPath) {
+        return JsonFormsValueUtils.getJsonFormsPropertyAsString(process.getEntity(), propertyPath);
+    }
+
+    /**
+     * Try to find a json property as String following the 'propertyPath' passed.
+     *
+     * @param process Process
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     */
+    public static Optional<String> findEntityPropertyAsString(Process process, String propertyPath) {
+        return JsonFormsValueUtils.findJsonFormsPropertyAsString(process.getEntity(), propertyPath);
+    }
+
+    /**
+     * Get a json property as Integer following the 'propertyPath' passed.
+     *
+     * @param process Process
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     * @throws KuFlowRestClientException If property value doesn't exist
+     */
+    public static Integer getEntityPropertyAsInteger(Process process, String propertyPath) {
+        return JsonFormsValueUtils.getJsonFormsPropertyAsInteger(process.getEntity(), propertyPath);
+    }
+
+    /**
+     * Try to find a json property as Integer following the 'propertyPath' passed.
+     *
+     * @param process Process
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     */
+    public static Optional<Integer> findEntityPropertyAsInteger(Process process, String propertyPath) {
+        return JsonFormsValueUtils.findJsonFormsPropertyAsInteger(process.getEntity(), propertyPath);
+    }
+
+    /**
+     * Get a json property as Double following the 'propertyPath' passed.
+     *
+     * @param process Process
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     * @throws KuFlowRestClientException If property value doesn't exist
+     */
+    public static Double getEntityPropertyAsDouble(Process process, String propertyPath) {
+        return JsonFormsValueUtils.getJsonFormsPropertyAsDouble(process.getEntity(), propertyPath);
+    }
+
+    /**
+     * Try to find a json property as Double following the 'propertyPath' passed.
+     *
+     * @param process Process
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     */
+    public static Optional<Double> findEntityPropertyAsDouble(Process process, String propertyPath) {
+        return JsonFormsValueUtils.findJsonFormsPropertyAsDouble(process.getEntity(), propertyPath);
+    }
+
+    /**
+     * Get a json property as Boolean following the 'propertyPath' passed.
+     *
+     * @param process Process
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     * @throws KuFlowRestClientException If property value doesn't exist
+     */
+    public static Boolean getEntityPropertyAsBoolean(Process process, String propertyPath) {
+        return JsonFormsValueUtils.getJsonFormsPropertyAsBoolean(process.getEntity(), propertyPath);
+    }
+
+    /**
+     * Try to find a json property as Double following the 'propertyPath' passed.
+     *
+     * @param process Process
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     */
+    public static Optional<Boolean> findEntityPropertyAsBoolean(Process process, String propertyPath) {
+        return JsonFormsValueUtils.findJsonFormsPropertyAsBoolean(process.getEntity(), propertyPath);
+    }
+
+    /**
+     * Get a json property as Instant following the 'propertyPath' passed.
+     *
+     * @param process Process
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     * @throws KuFlowRestClientException If property value doesn't exist
+     */
+    public static Instant getEntityPropertyAsInstant(Process process, String propertyPath) {
+        return JsonFormsValueUtils.getJsonFormsPropertyAsInstant(process.getEntity(), propertyPath);
+    }
+
+    /**
+     * Try to find a json property as Instant following the 'propertyPath' passed.
+     *
+     * @param process Process
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     */
+    public static Optional<Instant> findEntityPropertyAsInstant(Process process, String propertyPath) {
+        return JsonFormsValueUtils.findJsonFormsPropertyAsInstant(process.getEntity(), propertyPath);
+    }
+
+    /**
+     * Get a json property as OffsetDateTime following the 'propertyPath' passed.
+     *
+     * @param process Process
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     * @throws KuFlowRestClientException If property value doesn't exist
+     */
+    public static OffsetDateTime getEntityPropertyAsOffsetDateTime(Process process, String propertyPath) {
+        return JsonFormsValueUtils.getJsonFormsPropertyAsOffsetDateTime(process.getEntity(), propertyPath);
+    }
+
+    /**
+     * Try to find a json property as OffsetDateTime following the 'propertyPath' passed.
+     *
+     * @param process Process
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     */
+    public static Optional<OffsetDateTime> findEntityPropertyAsOffsetDateTime(Process process, String propertyPath) {
+        return JsonFormsValueUtils.findJsonFormsPropertyAsOffsetDateTime(process.getEntity(), propertyPath);
+    }
+
+    /**
+     * Get a json property as LocalDate following the 'propertyPath' passed.
+     *
+     * @param process Process
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     * @throws KuFlowRestClientException If property value doesn't exist
+     */
+    public static LocalDate getEntityPropertyAsLocalDate(Process process, String propertyPath) {
+        return JsonFormsValueUtils.getJsonFormsPropertyAsLocalDate(process.getEntity(), propertyPath);
+    }
+
+    /**
+     * Try to find a json property as LocalDate following the 'propertyPath' passed.
+     *
+     * @param process Process
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     */
+    public static Optional<LocalDate> findEntityPropertyAsLocalDate(Process process, String propertyPath) {
+        return JsonFormsValueUtils.findJsonFormsPropertyAsLocalDate(process.getEntity(), propertyPath);
+    }
+
+    /**
+     * Get a json property as JsonFormsFile following the 'propertyPath' passed.
+     *
+     * @param process Process
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     * @throws KuFlowRestClientException If property value doesn't exist
+     */
+    public static JsonFormsFile getEntityPropertyAsJsonFormsFile(Process process, String propertyPath) {
+        return JsonFormsValueUtils.getJsonFormsPropertyAsJsonFormsFile(process.getEntity(), propertyPath);
+    }
+
+    /**
+     * Try to find a json property as JsonFormsFile following the 'propertyPath' passed.
+     *
+     * @param process Process
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     */
+    public static Optional<JsonFormsFile> findEntityPropertyAsJsonFormsFile(Process process, String propertyPath) {
+        return JsonFormsValueUtils.findJsonFormsPropertyAsJsonFormsFile(process.getEntity(), propertyPath);
+    }
+
+    /**
+     * Get a json property as JsonFormsPrincipal following the 'propertyPath' passed.
+     *
+     * @param process Process
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     * @throws KuFlowRestClientException If property value doesn't exist
+     */
+    public static JsonFormsPrincipal getEntityPropertyAsJsonFormsPrincipal(Process process, String propertyPath) {
+        return JsonFormsValueUtils.getJsonFormsPropertyAsJsonFormsPrincipal(process.getEntity(), propertyPath);
+    }
+
+    /**
+     * Try to find a json property as JsonFormsPrincipal following the 'propertyPath' passed.
+     *
+     * @param process Process
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     */
+    public static Optional<JsonFormsPrincipal> findEntityPropertyAsJsonFormsPrincipal(Process process, String propertyPath) {
+        return JsonFormsValueUtils.findJsonFormsPropertyAsJsonFormsPrincipal(process.getEntity(), propertyPath);
+    }
+
+    /**
+     * Get a json property as List following the 'propertyPath' passed.
+     *
+     * @param process Process
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     * @throws KuFlowRestClientException If property value doesn't exist or is not a List
+     */
+    public static List<Object> getEntityPropertyAsList(Process process, String propertyPath) {
+        return JsonFormsValueUtils.getJsonFormsPropertyAsList(process.getEntity(), propertyPath);
+    }
+
+    /**
+     * Try to find a json property as List following the 'propertyPath' passed.
+     *
+     * @param process Process
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     */
+    public static Optional<List<Object>> findEntityPropertyAsList(Process process, String propertyPath) {
+        return JsonFormsValueUtils.findJsonFormsPropertyAsList(process.getEntity(), propertyPath);
+    }
+
+    /**
+     * Get a json property as Map following the 'propertyPath' passed.
+     *
+     * @param process Process
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     * @throws KuFlowRestClientException If property value doesn't exist or is not a List
+     */
+    public static Map<String, Object> getEntityPropertyAsMap(Process process, String propertyPath) {
+        return JsonFormsValueUtils.getJsonFormsPropertyAsMap(process.getEntity(), propertyPath);
+    }
+
+    /**
+     * Try to find a json property as Map following the 'propertyPath' passed.
+     *
+     * @param process Process
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     */
+    public static Optional<Map<String, Object>> findEntityPropertyAsMap(Process process, String propertyPath) {
+        return JsonFormsValueUtils.findJsonFormsPropertyAsMap(process.getEntity(), propertyPath);
+    }
+
+    /**
+     * Get a json property following the 'propertyPath' passed.
+     *
+     * @param process Process
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     * @throws KuFlowRestClientException If property value doesn't exist
+     */
+    public static Object getEntityProperty(Process process, String propertyPath) {
+        return JsonFormsValueUtils.getJsonFormsProperty(process.getEntity(), propertyPath);
+    }
+
+    /**
+     * Try to find a json property following the 'propertyPath' passed.
+     *
+     * @param process Process
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @return the property value if exists.
+     */
+    public static Optional<Object> findEntityProperty(Process process, String propertyPath) {
+        return JsonFormsValueUtils.findJsonFormsProperty(process.getEntity(), propertyPath);
+    }
+
+    /**
+     * Update a json forms data property in the task passed following the 'propertyPath'.
+     *
+     * @param process Process
+     * @param propertyPath Property path to find. ie: "user.name" or "users.0.name"
+     * @param value Value to update
+     * @throws KuFlowRestClientException If property parent path doesn't exist
+     */
+    public static void updateEntityProperty(Process process, String propertyPath, Object value) {
+        if (process.getEntity() == null) {
+            process.setEntity(new JsonFormsValue());
+        }
+
+        JsonFormsValueUtils.updateJsonFormsProperty(process.getEntity(), propertyPath, value);
     }
 }
