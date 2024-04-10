@@ -23,19 +23,23 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
  * The TaskDeleteElementValueDocumentCommand model.
  */
 @Fluent
-public final class TaskDeleteElementValueDocumentCommand {
+public final class TaskDeleteElementValueDocumentCommand implements JsonSerializable<TaskDeleteElementValueDocumentCommand> {
 
     /*
      * Document ID to delete.
      */
-    @JsonProperty(value = "documentId", required = true)
     private UUID documentId;
 
     /**
@@ -61,5 +65,45 @@ public final class TaskDeleteElementValueDocumentCommand {
     public TaskDeleteElementValueDocumentCommand setDocumentId(UUID documentId) {
         this.documentId = documentId;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("documentId", Objects.toString(this.documentId, null));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TaskDeleteElementValueDocumentCommand from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TaskDeleteElementValueDocumentCommand if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TaskDeleteElementValueDocumentCommand.
+     */
+    public static TaskDeleteElementValueDocumentCommand fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TaskDeleteElementValueDocumentCommand deserializedTaskDeleteElementValueDocumentCommand =
+                new TaskDeleteElementValueDocumentCommand();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("documentId".equals(fieldName)) {
+                    deserializedTaskDeleteElementValueDocumentCommand.documentId = reader.getNullable(
+                        nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    );
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTaskDeleteElementValueDocumentCommand;
+        });
     }
 }

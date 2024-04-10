@@ -23,28 +23,41 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The TaskElementValueDocument model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("DOCUMENT")
 @Fluent
 public final class TaskElementValueDocument extends TaskElementValue {
 
     /*
+     * The type property.
+     */
+    private TaskElementValueType type = TaskElementValueType.DOCUMENT;
+
+    /*
      * The value property.
      */
-    @JsonProperty(value = "value")
     private TaskElementValueDocumentItem value;
 
     /**
      * Creates an instance of TaskElementValueDocument class.
      */
     public TaskElementValueDocument() {}
+
+    /**
+     * Get the type property: The type property.
+     *
+     * @return the type value.
+     */
+    @Override
+    public TaskElementValueType getType() {
+        return this.type;
+    }
 
     /**
      * Get the value property: The value property.
@@ -73,5 +86,47 @@ public final class TaskElementValueDocument extends TaskElementValue {
     public TaskElementValueDocument setValid(Boolean valid) {
         super.setValid(valid);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("valid", isValid());
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeJsonField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TaskElementValueDocument from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TaskElementValueDocument if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TaskElementValueDocument.
+     */
+    public static TaskElementValueDocument fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TaskElementValueDocument deserializedTaskElementValueDocument = new TaskElementValueDocument();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("valid".equals(fieldName)) {
+                    deserializedTaskElementValueDocument.setValid(reader.getNullable(JsonReader::getBoolean));
+                } else if ("type".equals(fieldName)) {
+                    deserializedTaskElementValueDocument.type = TaskElementValueType.fromString(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    deserializedTaskElementValueDocument.value = TaskElementValueDocumentItem.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTaskElementValueDocument;
+        });
     }
 }

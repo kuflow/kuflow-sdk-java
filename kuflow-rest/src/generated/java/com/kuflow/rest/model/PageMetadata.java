@@ -23,36 +23,36 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The PageMetadata model.
  */
 @Fluent
-public final class PageMetadata {
+public final class PageMetadata implements JsonSerializable<PageMetadata> {
 
     /*
      * The size property.
      */
-    @JsonProperty(value = "size", required = true)
     private int size;
 
     /*
      * The page property.
      */
-    @JsonProperty(value = "page", required = true)
     private int page;
 
     /*
      * The totalElements property.
      */
-    @JsonProperty(value = "totalElements", required = true)
     private long totalElements;
 
     /*
      * The totalPages property.
      */
-    @JsonProperty(value = "totalPages", required = true)
     private int totalPages;
 
     /**
@@ -138,5 +138,51 @@ public final class PageMetadata {
     public PageMetadata setTotalPages(int totalPages) {
         this.totalPages = totalPages;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("size", this.size);
+        jsonWriter.writeIntField("page", this.page);
+        jsonWriter.writeLongField("totalElements", this.totalElements);
+        jsonWriter.writeIntField("totalPages", this.totalPages);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PageMetadata from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PageMetadata if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PageMetadata.
+     */
+    public static PageMetadata fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PageMetadata deserializedPageMetadata = new PageMetadata();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("size".equals(fieldName)) {
+                    deserializedPageMetadata.size = reader.getInt();
+                } else if ("page".equals(fieldName)) {
+                    deserializedPageMetadata.page = reader.getInt();
+                } else if ("totalElements".equals(fieldName)) {
+                    deserializedPageMetadata.totalElements = reader.getLong();
+                } else if ("totalPages".equals(fieldName)) {
+                    deserializedPageMetadata.totalPages = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPageMetadata;
+        });
     }
 }

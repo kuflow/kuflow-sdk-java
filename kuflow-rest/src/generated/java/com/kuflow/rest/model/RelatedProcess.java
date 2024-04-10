@@ -23,26 +23,29 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
  * The RelatedProcess model.
  */
 @Fluent
-public final class RelatedProcess {
+public final class RelatedProcess implements JsonSerializable<RelatedProcess> {
 
     /*
      * Processes whose relationship target is the current process.
      */
-    @JsonProperty(value = "incoming")
     private List<UUID> incoming;
 
     /*
      * Processes to which the current process relates.
      */
-    @JsonProperty(value = "outcoming")
     private List<UUID> outcoming;
 
     /**
@@ -88,5 +91,50 @@ public final class RelatedProcess {
     public RelatedProcess setOutcoming(List<UUID> outcoming) {
         this.outcoming = outcoming;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("incoming", this.incoming, (writer, element) -> writer.writeString(Objects.toString(element, null)));
+        jsonWriter.writeArrayField("outcoming", this.outcoming, (writer, element) -> writer.writeString(Objects.toString(element, null)));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RelatedProcess from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RelatedProcess if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RelatedProcess.
+     */
+    public static RelatedProcess fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RelatedProcess deserializedRelatedProcess = new RelatedProcess();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("incoming".equals(fieldName)) {
+                    List<UUID> incoming = reader.readArray(
+                        reader1 -> reader1.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()))
+                    );
+                    deserializedRelatedProcess.incoming = incoming;
+                } else if ("outcoming".equals(fieldName)) {
+                    List<UUID> outcoming = reader.readArray(
+                        reader1 -> reader1.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()))
+                    );
+                    deserializedRelatedProcess.outcoming = outcoming;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRelatedProcess;
+        });
     }
 }

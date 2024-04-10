@@ -23,38 +23,43 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The TaskElementValue model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = TaskElementValue.class)
-@JsonTypeName("TaskElementValue")
-@JsonSubTypes(
-    {
-        @JsonSubTypes.Type(name = "STRING", value = TaskElementValueString.class),
-        @JsonSubTypes.Type(name = "NUMBER", value = TaskElementValueNumber.class),
-        @JsonSubTypes.Type(name = "OBJECT", value = TaskElementValueObject.class),
-        @JsonSubTypes.Type(name = "DOCUMENT", value = TaskElementValueDocument.class),
-        @JsonSubTypes.Type(name = "PRINCIPAL", value = TaskElementValuePrincipal.class),
-    }
-)
 @Fluent
-public class TaskElementValue {
+public class TaskElementValue implements JsonSerializable<TaskElementValue> {
+
+    /*
+     * The type property.
+     */
+    private TaskElementValueType type;
 
     /*
      * The valid property.
      */
-    @JsonProperty(value = "valid")
     private Boolean valid;
 
     /**
      * Creates an instance of TaskElementValue class.
      */
-    public TaskElementValue() {}
+    public TaskElementValue() {
+        this.type = TaskElementValueType.fromString("TaskElementValue");
+    }
+
+    /**
+     * Get the type property: The type property.
+     *
+     * @return the type value.
+     */
+    public TaskElementValueType getType() {
+        return this.type;
+    }
 
     /**
      * Get the valid property: The valid property.
@@ -74,5 +79,77 @@ public class TaskElementValue {
     public TaskElementValue setValid(Boolean valid) {
         this.valid = valid;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeBooleanField("valid", this.valid);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TaskElementValue from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TaskElementValue if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TaskElementValue.
+     */
+    public static TaskElementValue fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("STRING".equals(discriminatorValue)) {
+                    return TaskElementValueString.fromJson(readerToUse.reset());
+                } else if ("NUMBER".equals(discriminatorValue)) {
+                    return TaskElementValueNumber.fromJson(readerToUse.reset());
+                } else if ("OBJECT".equals(discriminatorValue)) {
+                    return TaskElementValueObject.fromJson(readerToUse.reset());
+                } else if ("DOCUMENT".equals(discriminatorValue)) {
+                    return TaskElementValueDocument.fromJson(readerToUse.reset());
+                } else if ("PRINCIPAL".equals(discriminatorValue)) {
+                    return TaskElementValuePrincipal.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static TaskElementValue fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TaskElementValue deserializedTaskElementValue = new TaskElementValue();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedTaskElementValue.type = TaskElementValueType.fromString(reader.getString());
+                } else if ("valid".equals(fieldName)) {
+                    deserializedTaskElementValue.valid = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTaskElementValue;
+        });
     }
 }

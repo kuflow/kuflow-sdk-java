@@ -23,28 +23,41 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The ProcessElementValueString model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("STRING")
 @Fluent
 public final class ProcessElementValueString extends ProcessElementValue {
 
     /*
+     * Process element value types.
+     */
+    private ProcessElementValueType type = ProcessElementValueType.STRING;
+
+    /*
      * The value property.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /**
      * Creates an instance of ProcessElementValueString class.
      */
     public ProcessElementValueString() {}
+
+    /**
+     * Get the type property: Process element value types.
+     *
+     * @return the type value.
+     */
+    @Override
+    public ProcessElementValueType getType() {
+        return this.type;
+    }
 
     /**
      * Get the value property: The value property.
@@ -73,5 +86,47 @@ public final class ProcessElementValueString extends ProcessElementValue {
     public ProcessElementValueString setValid(Boolean valid) {
         super.setValid(valid);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("valid", isValid());
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProcessElementValueString from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProcessElementValueString if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProcessElementValueString.
+     */
+    public static ProcessElementValueString fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProcessElementValueString deserializedProcessElementValueString = new ProcessElementValueString();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("valid".equals(fieldName)) {
+                    deserializedProcessElementValueString.setValid(reader.getNullable(JsonReader::getBoolean));
+                } else if ("type".equals(fieldName)) {
+                    deserializedProcessElementValueString.type = ProcessElementValueType.fromString(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    deserializedProcessElementValueString.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProcessElementValueString;
+        });
     }
 }

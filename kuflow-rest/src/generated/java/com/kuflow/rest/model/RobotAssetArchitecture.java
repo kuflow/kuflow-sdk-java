@@ -22,9 +22,6 @@
  */
 package com.kuflow.rest.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Robot asset platform architecture.
  */
@@ -54,7 +51,6 @@ public enum RobotAssetArchitecture {
      * @param value the serialized value to parse.
      * @return the parsed RobotAssetArchitecture object, or null if unable to parse.
      */
-    @JsonCreator
     public static RobotAssetArchitecture fromString(String value) {
         if (value == null) {
             return null;
@@ -71,7 +67,6 @@ public enum RobotAssetArchitecture {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

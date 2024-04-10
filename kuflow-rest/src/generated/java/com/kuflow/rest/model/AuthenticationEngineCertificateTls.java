@@ -23,30 +23,31 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The AuthenticationEngineCertificateTls model.
  */
 @Fluent
-public final class AuthenticationEngineCertificateTls {
+public final class AuthenticationEngineCertificateTls implements JsonSerializable<AuthenticationEngineCertificateTls> {
 
     /*
      * The serverRootCaCertificate property.
      */
-    @JsonProperty(value = "serverRootCaCertificate", required = true)
     private String serverRootCaCertificate;
 
     /*
      * The clientCertificate property.
      */
-    @JsonProperty(value = "clientCertificate", required = true)
     private String clientCertificate;
 
     /*
      * The clientPrivateKey property.
      */
-    @JsonProperty(value = "clientPrivateKey", required = true)
     private String clientPrivateKey;
 
     /**
@@ -112,5 +113,48 @@ public final class AuthenticationEngineCertificateTls {
     public AuthenticationEngineCertificateTls setClientPrivateKey(String clientPrivateKey) {
         this.clientPrivateKey = clientPrivateKey;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serverRootCaCertificate", this.serverRootCaCertificate);
+        jsonWriter.writeStringField("clientCertificate", this.clientCertificate);
+        jsonWriter.writeStringField("clientPrivateKey", this.clientPrivateKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AuthenticationEngineCertificateTls from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AuthenticationEngineCertificateTls if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AuthenticationEngineCertificateTls.
+     */
+    public static AuthenticationEngineCertificateTls fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AuthenticationEngineCertificateTls deserializedAuthenticationEngineCertificateTls = new AuthenticationEngineCertificateTls();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serverRootCaCertificate".equals(fieldName)) {
+                    deserializedAuthenticationEngineCertificateTls.serverRootCaCertificate = reader.getString();
+                } else if ("clientCertificate".equals(fieldName)) {
+                    deserializedAuthenticationEngineCertificateTls.clientCertificate = reader.getString();
+                } else if ("clientPrivateKey".equals(fieldName)) {
+                    deserializedAuthenticationEngineCertificateTls.clientPrivateKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAuthenticationEngineCertificateTls;
+        });
     }
 }

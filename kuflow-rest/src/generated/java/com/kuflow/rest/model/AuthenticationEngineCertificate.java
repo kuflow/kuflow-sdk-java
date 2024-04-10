@@ -23,24 +23,26 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The AuthenticationEngineCertificate model.
  */
 @Fluent
-public final class AuthenticationEngineCertificate {
+public final class AuthenticationEngineCertificate implements JsonSerializable<AuthenticationEngineCertificate> {
 
     /*
      * The namespace property.
      */
-    @JsonProperty(value = "namespace", required = true)
     private String namespace;
 
     /*
      * The tls property.
      */
-    @JsonProperty(value = "tls", required = true)
     private AuthenticationEngineCertificateTls tls;
 
     /**
@@ -86,5 +88,45 @@ public final class AuthenticationEngineCertificate {
     public AuthenticationEngineCertificate setTls(AuthenticationEngineCertificateTls tls) {
         this.tls = tls;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("namespace", this.namespace);
+        jsonWriter.writeJsonField("tls", this.tls);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AuthenticationEngineCertificate from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AuthenticationEngineCertificate if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AuthenticationEngineCertificate.
+     */
+    public static AuthenticationEngineCertificate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AuthenticationEngineCertificate deserializedAuthenticationEngineCertificate = new AuthenticationEngineCertificate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("namespace".equals(fieldName)) {
+                    deserializedAuthenticationEngineCertificate.namespace = reader.getString();
+                } else if ("tls".equals(fieldName)) {
+                    deserializedAuthenticationEngineCertificate.tls = AuthenticationEngineCertificateTls.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAuthenticationEngineCertificate;
+        });
     }
 }

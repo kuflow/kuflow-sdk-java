@@ -23,49 +23,48 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
  * The TaskElementValueDocumentItem model.
  */
 @Fluent
-public final class TaskElementValueDocumentItem {
+public final class TaskElementValueDocumentItem implements JsonSerializable<TaskElementValueDocumentItem> {
 
     /*
      * The id property.
      */
-    @JsonProperty(value = "id")
     private UUID id;
 
     /*
      * The uri property.
      */
-    @JsonProperty(value = "uri")
     private String uri;
 
     /*
      * The name property.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The contentPath property.
      */
-    @JsonProperty(value = "contentPath")
     private String contentPath;
 
     /*
      * The contentType property.
      */
-    @JsonProperty(value = "contentType")
     private String contentType;
 
     /*
      * The contentLength property.
      */
-    @JsonProperty(value = "contentLength")
     private Long contentLength;
 
     /**
@@ -191,5 +190,58 @@ public final class TaskElementValueDocumentItem {
     public TaskElementValueDocumentItem setContentLength(Long contentLength) {
         this.contentLength = contentLength;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", Objects.toString(this.id, null));
+        jsonWriter.writeStringField("uri", this.uri);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("contentPath", this.contentPath);
+        jsonWriter.writeStringField("contentType", this.contentType);
+        jsonWriter.writeNumberField("contentLength", this.contentLength);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TaskElementValueDocumentItem from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TaskElementValueDocumentItem if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TaskElementValueDocumentItem.
+     */
+    public static TaskElementValueDocumentItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TaskElementValueDocumentItem deserializedTaskElementValueDocumentItem = new TaskElementValueDocumentItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedTaskElementValueDocumentItem.id = reader.getNullable(
+                        nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    );
+                } else if ("uri".equals(fieldName)) {
+                    deserializedTaskElementValueDocumentItem.uri = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedTaskElementValueDocumentItem.name = reader.getString();
+                } else if ("contentPath".equals(fieldName)) {
+                    deserializedTaskElementValueDocumentItem.contentPath = reader.getString();
+                } else if ("contentType".equals(fieldName)) {
+                    deserializedTaskElementValueDocumentItem.contentType = reader.getString();
+                } else if ("contentLength".equals(fieldName)) {
+                    deserializedTaskElementValueDocumentItem.contentLength = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTaskElementValueDocumentItem;
+        });
     }
 }

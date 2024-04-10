@@ -20,60 +20,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.rest.model;
+package com.kuflow.temporal.common.jackson;
 
-/**
- * Defines values for LogLevel.
- */
-public enum LogLevel {
-    /**
-     * Enum value INFO.
-     */
-    INFO("INFO"),
+import com.azure.core.implementation.ReflectionSerializable;
+import com.azure.json.JsonSerializable;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import java.io.IOException;
 
-    /**
-     * Enum value WARN.
-     */
-    WARN("WARN"),
+public class AutorestJsonSerializer extends JsonSerializer<JsonSerializable<?>> {
 
-    /**
-     * Enum value ERROR.
-     */
-    ERROR("ERROR");
-
-    /**
-     * The actual serialized value for a LogLevel instance.
-     */
-    private final String value;
-
-    LogLevel(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a LogLevel instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed LogLevel object, or null if unable to parse.
-     */
-    public static LogLevel fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        LogLevel[] items = LogLevel.values();
-        for (LogLevel item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public String toString() {
-        return this.value;
+    public void serialize(JsonSerializable<?> jsonSerializable, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
+        throws IOException {
+        String json = ReflectionSerializable.serializeJsonSerializableToString(jsonSerializable);
+        jsonGenerator.writeRawValue(json);
     }
 }

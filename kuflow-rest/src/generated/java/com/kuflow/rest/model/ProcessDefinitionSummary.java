@@ -23,31 +23,33 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
  * The ProcessDefinitionSummary model.
  */
 @Fluent
-public final class ProcessDefinitionSummary {
+public final class ProcessDefinitionSummary implements JsonSerializable<ProcessDefinitionSummary> {
 
     /*
      * The id property.
      */
-    @JsonProperty(value = "id", required = true)
     private UUID id;
 
     /*
      * The version property.
      */
-    @JsonProperty(value = "version")
     private UUID version;
 
     /*
      * The name property.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /**
@@ -113,5 +115,52 @@ public final class ProcessDefinitionSummary {
     public ProcessDefinitionSummary setName(String name) {
         this.name = name;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", Objects.toString(this.id, null));
+        jsonWriter.writeStringField("version", Objects.toString(this.version, null));
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProcessDefinitionSummary from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProcessDefinitionSummary if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ProcessDefinitionSummary.
+     */
+    public static ProcessDefinitionSummary fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProcessDefinitionSummary deserializedProcessDefinitionSummary = new ProcessDefinitionSummary();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedProcessDefinitionSummary.id = reader.getNullable(
+                        nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    );
+                } else if ("version".equals(fieldName)) {
+                    deserializedProcessDefinitionSummary.version = reader.getNullable(
+                        nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    );
+                } else if ("name".equals(fieldName)) {
+                    deserializedProcessDefinitionSummary.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProcessDefinitionSummary;
+        });
     }
 }

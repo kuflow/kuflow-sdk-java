@@ -23,12 +23,17 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.kuflow.rest.util.TaskPageItemUtils;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -41,50 +46,41 @@ public final class TaskPageItem extends AbstractAudited {
     /*
      * The id property.
      */
-    @JsonProperty(value = "id")
     private UUID id;
 
     /*
      * Task state
      */
-    @JsonProperty(value = "state")
     private TaskState state;
 
     /*
      * In creation task, one of 'id, version or code' is mandatory.
      */
-    @JsonProperty(value = "taskDefinition", required = true)
     private TaskDefinitionSummary taskDefinition;
 
     /*
      * The processId property.
      */
-    @JsonProperty(value = "processId", required = true)
     private UUID processId;
 
     /*
      * Task element values, en ElementValueDocument is not allowed.
      */
-    @JsonProperty(value = "elementValues")
     private Map<String, List<TaskElementValue>> elementValues;
 
     /*
      * Json form values, used when the render type selected is JSON Forms.
-     *
      */
-    @JsonProperty(value = "jsonFormsValue")
     private JsonFormsValue jsonFormsValue;
 
     /*
      * The owner property.
      */
-    @JsonProperty(value = "owner")
     private Principal owner;
 
     /*
      * Tenant ID.
      */
-    @JsonProperty(value = "tenantId")
     private UUID tenantId;
 
     /**
@@ -295,6 +291,98 @@ public final class TaskPageItem extends AbstractAudited {
     public TaskPageItem setLastModifiedAt(OffsetDateTime lastModifiedAt) {
         super.setLastModifiedAt(lastModifiedAt);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectType", getObjectType() == null ? null : getObjectType().toString());
+        jsonWriter.writeStringField("createdBy", Objects.toString(getCreatedBy(), null));
+        jsonWriter.writeStringField(
+            "createdAt",
+            getCreatedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreatedAt())
+        );
+        jsonWriter.writeStringField("lastModifiedBy", Objects.toString(getLastModifiedBy(), null));
+        jsonWriter.writeStringField(
+            "lastModifiedAt",
+            getLastModifiedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getLastModifiedAt())
+        );
+        jsonWriter.writeJsonField("taskDefinition", this.taskDefinition);
+        jsonWriter.writeStringField("processId", Objects.toString(this.processId, null));
+        jsonWriter.writeStringField("id", Objects.toString(this.id, null));
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeMapField(
+            "elementValues",
+            this.elementValues,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeJson(element1))
+        );
+        jsonWriter.writeJsonField("jsonFormsValue", this.jsonFormsValue);
+        jsonWriter.writeJsonField("owner", this.owner);
+        jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TaskPageItem from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TaskPageItem if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TaskPageItem.
+     */
+    public static TaskPageItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TaskPageItem deserializedTaskPageItem = new TaskPageItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectType".equals(fieldName)) {
+                    deserializedTaskPageItem.setObjectType(AuditedObjectType.fromString(reader.getString()));
+                } else if ("createdBy".equals(fieldName)) {
+                    deserializedTaskPageItem.setCreatedBy(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
+                } else if ("createdAt".equals(fieldName)) {
+                    deserializedTaskPageItem.setCreatedAt(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()))
+                    );
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedTaskPageItem.setLastModifiedBy(
+                        reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()))
+                    );
+                } else if ("lastModifiedAt".equals(fieldName)) {
+                    deserializedTaskPageItem.setLastModifiedAt(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()))
+                    );
+                } else if ("taskDefinition".equals(fieldName)) {
+                    deserializedTaskPageItem.taskDefinition = TaskDefinitionSummary.fromJson(reader);
+                } else if ("processId".equals(fieldName)) {
+                    deserializedTaskPageItem.processId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("id".equals(fieldName)) {
+                    deserializedTaskPageItem.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("state".equals(fieldName)) {
+                    deserializedTaskPageItem.state = TaskState.fromString(reader.getString());
+                } else if ("elementValues".equals(fieldName)) {
+                    Map<String, List<TaskElementValue>> elementValues = reader.readMap(
+                        reader1 -> reader1.readArray(reader2 -> TaskElementValue.fromJson(reader2))
+                    );
+                    deserializedTaskPageItem.elementValues = elementValues;
+                } else if ("jsonFormsValue".equals(fieldName)) {
+                    deserializedTaskPageItem.jsonFormsValue = JsonFormsValue.fromJson(reader);
+                } else if ("owner".equals(fieldName)) {
+                    deserializedTaskPageItem.owner = Principal.fromJson(reader);
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedTaskPageItem.tenantId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTaskPageItem;
+        });
     }
 
     /**

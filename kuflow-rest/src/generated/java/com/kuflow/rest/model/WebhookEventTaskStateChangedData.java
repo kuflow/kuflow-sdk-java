@@ -23,37 +23,38 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
  * The WebhookEventTaskStateChangedData model.
  */
 @Fluent
-public final class WebhookEventTaskStateChangedData {
+public final class WebhookEventTaskStateChangedData implements JsonSerializable<WebhookEventTaskStateChangedData> {
 
     /*
      * The processId property.
      */
-    @JsonProperty(value = "processId", required = true)
     private UUID processId;
 
     /*
      * The taskId property.
      */
-    @JsonProperty(value = "taskId", required = true)
     private UUID taskId;
 
     /*
      * The taskCode property.
      */
-    @JsonProperty(value = "taskCode", required = true)
     private String taskCode;
 
     /*
      * Task state
      */
-    @JsonProperty(value = "taskState", required = true)
     private TaskState taskState;
 
     /**
@@ -139,5 +140,55 @@ public final class WebhookEventTaskStateChangedData {
     public WebhookEventTaskStateChangedData setTaskState(TaskState taskState) {
         this.taskState = taskState;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("processId", Objects.toString(this.processId, null));
+        jsonWriter.writeStringField("taskId", Objects.toString(this.taskId, null));
+        jsonWriter.writeStringField("taskCode", this.taskCode);
+        jsonWriter.writeStringField("taskState", this.taskState == null ? null : this.taskState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebhookEventTaskStateChangedData from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebhookEventTaskStateChangedData if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WebhookEventTaskStateChangedData.
+     */
+    public static WebhookEventTaskStateChangedData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebhookEventTaskStateChangedData deserializedWebhookEventTaskStateChangedData = new WebhookEventTaskStateChangedData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("processId".equals(fieldName)) {
+                    deserializedWebhookEventTaskStateChangedData.processId = reader.getNullable(
+                        nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    );
+                } else if ("taskId".equals(fieldName)) {
+                    deserializedWebhookEventTaskStateChangedData.taskId = reader.getNullable(
+                        nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    );
+                } else if ("taskCode".equals(fieldName)) {
+                    deserializedWebhookEventTaskStateChangedData.taskCode = reader.getString();
+                } else if ("taskState".equals(fieldName)) {
+                    deserializedWebhookEventTaskStateChangedData.taskState = TaskState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebhookEventTaskStateChangedData;
+        });
     }
 }

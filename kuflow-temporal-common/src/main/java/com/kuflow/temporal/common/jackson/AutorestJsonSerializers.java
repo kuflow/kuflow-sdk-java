@@ -20,60 +20,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.rest.model;
+package com.kuflow.temporal.common.jackson;
 
-/**
- * Defines values for LogLevel.
- */
-public enum LogLevel {
-    /**
-     * Enum value INFO.
-     */
-    INFO("INFO"),
+import com.azure.core.implementation.ReflectionSerializable;
+import com.fasterxml.jackson.databind.BeanDescription;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializationConfig;
+import com.fasterxml.jackson.databind.ser.Serializers;
 
-    /**
-     * Enum value WARN.
-     */
-    WARN("WARN"),
+public class AutorestJsonSerializers extends Serializers.Base {
 
-    /**
-     * Enum value ERROR.
-     */
-    ERROR("ERROR");
-
-    /**
-     * The actual serialized value for a LogLevel instance.
-     */
-    private final String value;
-
-    LogLevel(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a LogLevel instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed LogLevel object, or null if unable to parse.
-     */
-    public static LogLevel fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        LogLevel[] items = LogLevel.values();
-        for (LogLevel item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public String toString() {
-        return this.value;
+    public JsonSerializer<?> findSerializer(SerializationConfig config, JavaType type, BeanDescription beanDesc) {
+        if (ReflectionSerializable.supportsJsonSerializable(type.getRawClass())) {
+            return new AutorestJsonSerializer();
+        }
+
+        return null;
     }
 }

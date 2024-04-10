@@ -20,60 +20,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.rest.model;
+package com.kuflow.temporal.common.jackson;
 
-/**
- * Robot asset platform.
- */
-public enum RobotAssetPlatform {
-    /**
-     * Enum value WINDOWS.
-     */
-    WINDOWS("WINDOWS"),
+import com.fasterxml.jackson.core.Version;
 
-    /**
-     * Enum value MAC_OS.
-     */
-    MAC_OS("MAC_OS"),
+public class AutorestModule extends com.fasterxml.jackson.databind.Module {
 
-    /**
-     * Enum value LINUX.
-     */
-    LINUX("LINUX");
-
-    /**
-     * The actual serialized value for a RobotAssetPlatform instance.
-     */
-    private final String value;
-
-    RobotAssetPlatform(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a RobotAssetPlatform instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed RobotAssetPlatform object, or null if unable to parse.
-     */
-    public static RobotAssetPlatform fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        RobotAssetPlatform[] items = RobotAssetPlatform.values();
-        for (RobotAssetPlatform item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public String toString() {
-        return this.value;
+    public String getModuleName() {
+        return "AutorestModule";
+    }
+
+    @Override
+    public Version version() {
+        return Version.unknownVersion();
+    }
+
+    @Override
+    public void setupModule(SetupContext context) {
+        context.addDeserializers(new AutorestJsonDeserializers());
+        context.addSerializers(new AutorestJsonSerializers());
     }
 }

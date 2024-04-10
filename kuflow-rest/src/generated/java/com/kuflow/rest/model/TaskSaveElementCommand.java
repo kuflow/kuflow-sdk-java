@@ -23,8 +23,12 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.kuflow.rest.util.TaskSaveElementCommandUtils;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -34,18 +38,16 @@ import java.util.Optional;
  * The TaskSaveElementCommand model.
  */
 @Fluent
-public final class TaskSaveElementCommand {
+public final class TaskSaveElementCommand implements JsonSerializable<TaskSaveElementCommand> {
 
     /*
      * The elementDefinitionCode property.
      */
-    @JsonProperty(value = "elementDefinitionCode", required = true)
     private String elementDefinitionCode;
 
     /*
      * The elementValues property.
      */
-    @JsonProperty(value = "elementValues")
     private List<TaskElementValue> elementValues;
 
     /**
@@ -91,6 +93,47 @@ public final class TaskSaveElementCommand {
     public TaskSaveElementCommand setElementValues(List<TaskElementValue> elementValues) {
         this.elementValues = elementValues;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("elementDefinitionCode", this.elementDefinitionCode);
+        jsonWriter.writeArrayField("elementValues", this.elementValues, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TaskSaveElementCommand from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TaskSaveElementCommand if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TaskSaveElementCommand.
+     */
+    public static TaskSaveElementCommand fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TaskSaveElementCommand deserializedTaskSaveElementCommand = new TaskSaveElementCommand();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("elementDefinitionCode".equals(fieldName)) {
+                    deserializedTaskSaveElementCommand.elementDefinitionCode = reader.getString();
+                } else if ("elementValues".equals(fieldName)) {
+                    List<TaskElementValue> elementValues = reader.readArray(reader1 -> TaskElementValue.fromJson(reader1));
+                    deserializedTaskSaveElementCommand.elementValues = elementValues;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTaskSaveElementCommand;
+        });
     }
 
     /**

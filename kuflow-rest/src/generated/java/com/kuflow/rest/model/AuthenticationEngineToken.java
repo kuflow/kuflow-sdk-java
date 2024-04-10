@@ -23,25 +23,28 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The AuthenticationEngineToken model.
  */
 @Fluent
-public final class AuthenticationEngineToken {
+public final class AuthenticationEngineToken implements JsonSerializable<AuthenticationEngineToken> {
 
     /*
      * Engine authentication token
      */
-    @JsonProperty(value = "token", required = true)
     private String token;
 
     /*
      * The expiredAt property.
      */
-    @JsonProperty(value = "expiredAt", required = true)
     private OffsetDateTime expiredAt;
 
     /**
@@ -87,5 +90,50 @@ public final class AuthenticationEngineToken {
     public AuthenticationEngineToken setExpiredAt(OffsetDateTime expiredAt) {
         this.expiredAt = expiredAt;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("token", this.token);
+        jsonWriter.writeStringField(
+            "expiredAt",
+            this.expiredAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiredAt)
+        );
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AuthenticationEngineToken from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AuthenticationEngineToken if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AuthenticationEngineToken.
+     */
+    public static AuthenticationEngineToken fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AuthenticationEngineToken deserializedAuthenticationEngineToken = new AuthenticationEngineToken();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("token".equals(fieldName)) {
+                    deserializedAuthenticationEngineToken.token = reader.getString();
+                } else if ("expiredAt".equals(fieldName)) {
+                    deserializedAuthenticationEngineToken.expiredAt = reader.getNullable(
+                        nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())
+                    );
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAuthenticationEngineToken;
+        });
     }
 }

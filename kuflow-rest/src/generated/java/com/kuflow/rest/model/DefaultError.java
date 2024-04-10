@@ -23,38 +23,39 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Default error.
  */
 @Fluent
-public final class DefaultError {
+public final class DefaultError implements JsonSerializable<DefaultError> {
 
     /*
      * Timestamp indicating when the error happened.
      */
-    @JsonProperty(value = "timestamp", required = true)
     private OffsetDateTime timestamp;
 
     /*
      * HTTP Status
      */
-    @JsonProperty(value = "status", required = true)
     private int status;
 
     /*
      * Message Status
      */
-    @JsonProperty(value = "message", required = true)
     private String message;
 
     /*
      * Related error information.
      */
-    @JsonProperty(value = "errors")
     private List<DefaultErrorInfo> errors;
 
     /**
@@ -140,5 +141,57 @@ public final class DefaultError {
     public DefaultError setErrors(List<DefaultErrorInfo> errors) {
         this.errors = errors;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField(
+            "timestamp",
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp)
+        );
+        jsonWriter.writeIntField("status", this.status);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DefaultError from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DefaultError if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DefaultError.
+     */
+    public static DefaultError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DefaultError deserializedDefaultError = new DefaultError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timestamp".equals(fieldName)) {
+                    deserializedDefaultError.timestamp = reader.getNullable(
+                        nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())
+                    );
+                } else if ("status".equals(fieldName)) {
+                    deserializedDefaultError.status = reader.getInt();
+                } else if ("message".equals(fieldName)) {
+                    deserializedDefaultError.message = reader.getString();
+                } else if ("errors".equals(fieldName)) {
+                    List<DefaultErrorInfo> errors = reader.readArray(reader1 -> DefaultErrorInfo.fromJson(reader1));
+                    deserializedDefaultError.errors = errors;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDefaultError;
+        });
     }
 }

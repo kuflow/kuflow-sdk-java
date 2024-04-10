@@ -23,12 +23,17 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.kuflow.rest.util.ProcessUtils;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -41,56 +46,46 @@ public final class Process extends AbstractAudited {
     /*
      * Process ID.
      */
-    @JsonProperty(value = "id")
     private UUID id;
 
     /*
      * Process subject.
      */
-    @JsonProperty(value = "subject")
     private String subject;
 
     /*
      * Process state
      */
-    @JsonProperty(value = "state")
     private ProcessState state;
 
     /*
      * The processDefinition property.
      */
-    @JsonProperty(value = "processDefinition", required = true)
     private ProcessDefinitionSummary processDefinition;
 
     /*
      * Process element values, an ElementValueDocument is not allowed.
      */
-    @JsonProperty(value = "elementValues")
     private Map<String, List<ProcessElementValue>> elementValues;
 
     /*
      * Json form values, used when the render type selected is JSON Forms.
-     *
      */
-    @JsonProperty(value = "entity")
     private JsonFormsValue entity;
 
     /*
      * The initiator property.
      */
-    @JsonProperty(value = "initiator")
     private Principal initiator;
 
     /*
      * The relatedProcess property.
      */
-    @JsonProperty(value = "relatedProcess")
     private RelatedProcess relatedProcess;
 
     /*
      * Tenant ID.
      */
-    @JsonProperty(value = "tenantId")
     private UUID tenantId;
 
     /**
@@ -321,6 +316,97 @@ public final class Process extends AbstractAudited {
     public Process setLastModifiedAt(OffsetDateTime lastModifiedAt) {
         super.setLastModifiedAt(lastModifiedAt);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectType", getObjectType() == null ? null : getObjectType().toString());
+        jsonWriter.writeStringField("createdBy", Objects.toString(getCreatedBy(), null));
+        jsonWriter.writeStringField(
+            "createdAt",
+            getCreatedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreatedAt())
+        );
+        jsonWriter.writeStringField("lastModifiedBy", Objects.toString(getLastModifiedBy(), null));
+        jsonWriter.writeStringField(
+            "lastModifiedAt",
+            getLastModifiedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getLastModifiedAt())
+        );
+        jsonWriter.writeJsonField("processDefinition", this.processDefinition);
+        jsonWriter.writeStringField("id", Objects.toString(this.id, null));
+        jsonWriter.writeStringField("subject", this.subject);
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeMapField(
+            "elementValues",
+            this.elementValues,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeJson(element1))
+        );
+        jsonWriter.writeJsonField("entity", this.entity);
+        jsonWriter.writeJsonField("initiator", this.initiator);
+        jsonWriter.writeJsonField("relatedProcess", this.relatedProcess);
+        jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Process from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Process if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Process.
+     */
+    public static Process fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Process deserializedProcess = new Process();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectType".equals(fieldName)) {
+                    deserializedProcess.setObjectType(AuditedObjectType.fromString(reader.getString()));
+                } else if ("createdBy".equals(fieldName)) {
+                    deserializedProcess.setCreatedBy(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
+                } else if ("createdAt".equals(fieldName)) {
+                    deserializedProcess.setCreatedAt(reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedProcess.setLastModifiedBy(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
+                } else if ("lastModifiedAt".equals(fieldName)) {
+                    deserializedProcess.setLastModifiedAt(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()))
+                    );
+                } else if ("processDefinition".equals(fieldName)) {
+                    deserializedProcess.processDefinition = ProcessDefinitionSummary.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedProcess.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("subject".equals(fieldName)) {
+                    deserializedProcess.subject = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedProcess.state = ProcessState.fromString(reader.getString());
+                } else if ("elementValues".equals(fieldName)) {
+                    Map<String, List<ProcessElementValue>> elementValues = reader.readMap(
+                        reader1 -> reader1.readArray(reader2 -> ProcessElementValue.fromJson(reader2))
+                    );
+                    deserializedProcess.elementValues = elementValues;
+                } else if ("entity".equals(fieldName)) {
+                    deserializedProcess.entity = JsonFormsValue.fromJson(reader);
+                } else if ("initiator".equals(fieldName)) {
+                    deserializedProcess.initiator = Principal.fromJson(reader);
+                } else if ("relatedProcess".equals(fieldName)) {
+                    deserializedProcess.relatedProcess = RelatedProcess.fromJson(reader);
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedProcess.tenantId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProcess;
+        });
     }
 
     /**

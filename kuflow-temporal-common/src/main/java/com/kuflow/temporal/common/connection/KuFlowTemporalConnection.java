@@ -35,6 +35,7 @@ import com.kuflow.temporal.common.authorization.KuFlowAuthorizationTokenSupplier
 import com.kuflow.temporal.common.connection.WorkerBuilder.ActivityImplementationRegister;
 import com.kuflow.temporal.common.connection.WorkerBuilder.WorkflowImplementationRegister;
 import com.kuflow.temporal.common.error.KuFlowTemporalException;
+import com.kuflow.temporal.common.jackson.AutorestModule;
 import com.kuflow.temporal.common.ssl.SslContextBuilder;
 import com.kuflow.temporal.common.tracing.MDCContextPropagator;
 import io.grpc.netty.shaded.io.netty.handler.ssl.SslContext;
@@ -400,6 +401,7 @@ public class KuFlowTemporalConnection {
         // Customize Temporal default Jackson object mapper to support unknown properties
         ObjectMapper objectMapper = JacksonJsonPayloadConverter.newDefaultObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.registerModule(new AutorestModule());
 
         List<PayloadConverter> converters = Arrays.stream(DefaultDataConverter.STANDARD_PAYLOAD_CONVERTERS)
             .filter(it -> !(it instanceof JacksonJsonPayloadConverter))
