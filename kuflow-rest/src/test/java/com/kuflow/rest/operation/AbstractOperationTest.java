@@ -40,8 +40,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 public abstract class AbstractOperationTest {
 
     @RegisterExtension
-    public static final WireMockExtension WIRE_MOCK_EXTENSION = WireMockExtension
-        .newInstance()
+    public static final WireMockExtension WIRE_MOCK_EXTENSION = WireMockExtension.newInstance()
         .options(
             wireMockConfig()
                 .extensions(new ResponseTemplateTransformer(false))

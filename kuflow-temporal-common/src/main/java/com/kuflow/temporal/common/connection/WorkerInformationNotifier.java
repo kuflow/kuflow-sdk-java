@@ -154,14 +154,13 @@ public class WorkerInformationNotifier {
     private void scheduleCreateOrUpdateWorkers() {
         long delay = this.delayWindow.toSeconds();
         if (this.consecutiveFailures > 0) {
-            delay =
-                Math.round(
-                    Math.min(
-                        delay,
-                        this.configuration.getBackoffSleep().toSeconds() *
-                        Math.pow(this.configuration.getBackoffExponentialRate(), this.consecutiveFailures)
-                    )
-                );
+            delay = Math.round(
+                Math.min(
+                    delay,
+                    this.configuration.getBackoffSleep().toSeconds() *
+                    Math.pow(this.configuration.getBackoffExponentialRate(), this.consecutiveFailures)
+                )
+            );
         }
 
         Duration delayDuration = Duration.ofSeconds(delay);
@@ -174,16 +173,15 @@ public class WorkerInformationNotifier {
         if (this.scheduleCreateOrUpdateWorkerFuture != null) {
             this.scheduleCreateOrUpdateWorkerFuture.cancel(false);
         }
-        this.scheduleCreateOrUpdateWorkerFuture =
-            this.scheduledExecutorService.scheduleAtFixedRate(
-                    () -> {
-                        this.createOrUpdateWorkers();
-                        this.scheduleCreateOrUpdateWorkers();
-                    },
-                    delay,
-                    delay,
-                    TimeUnit.SECONDS
-                );
+        this.scheduleCreateOrUpdateWorkerFuture = this.scheduledExecutorService.scheduleAtFixedRate(
+                () -> {
+                    this.createOrUpdateWorkers();
+                    this.scheduleCreateOrUpdateWorkers();
+                },
+                delay,
+                delay,
+                TimeUnit.SECONDS
+            );
     }
 
     private <E> List<E> copyOf(Collection<? extends E> coll) {

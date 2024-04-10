@@ -63,8 +63,9 @@ public final class JsonFormsValueUtils {
      * @throws KuFlowRestClientException If property value doesn't exist
      */
     public static String getJsonFormsPropertyAsString(JsonFormsValue jsonFormsValue, String propertyPath) {
-        return findJsonFormsPropertyAsString(jsonFormsValue, propertyPath)
-            .orElseThrow(() -> new KuFlowRestClientException("Property value doesn't exist"));
+        return findJsonFormsPropertyAsString(jsonFormsValue, propertyPath).orElseThrow(
+            () -> new KuFlowRestClientException("Property value doesn't exist")
+        );
     }
 
     /**
@@ -87,8 +88,9 @@ public final class JsonFormsValueUtils {
      * @throws KuFlowRestClientException If property value doesn't exist
      */
     public static Integer getJsonFormsPropertyAsInteger(JsonFormsValue jsonFormsValue, String propertyPath) {
-        return findJsonFormsPropertyAsInteger(jsonFormsValue, propertyPath)
-            .orElseThrow(() -> new KuFlowRestClientException("Property value doesn't exist"));
+        return findJsonFormsPropertyAsInteger(jsonFormsValue, propertyPath).orElseThrow(
+            () -> new KuFlowRestClientException("Property value doesn't exist")
+        );
     }
 
     /**
@@ -111,8 +113,9 @@ public final class JsonFormsValueUtils {
      * @throws KuFlowRestClientException If property value doesn't exist
      */
     public static Double getJsonFormsPropertyAsDouble(JsonFormsValue jsonFormsValue, String propertyPath) {
-        return findJsonFormsPropertyAsDouble(jsonFormsValue, propertyPath)
-            .orElseThrow(() -> new KuFlowRestClientException("Property value doesn't exist"));
+        return findJsonFormsPropertyAsDouble(jsonFormsValue, propertyPath).orElseThrow(
+            () -> new KuFlowRestClientException("Property value doesn't exist")
+        );
     }
 
     /**
@@ -135,8 +138,9 @@ public final class JsonFormsValueUtils {
      * @throws KuFlowRestClientException If property value doesn't exist
      */
     public static Boolean getJsonFormsPropertyAsBoolean(JsonFormsValue jsonFormsValue, String propertyPath) {
-        return findJsonFormsPropertyAsBoolean(jsonFormsValue, propertyPath)
-            .orElseThrow(() -> new KuFlowRestClientException("Property value doesn't exist"));
+        return findJsonFormsPropertyAsBoolean(jsonFormsValue, propertyPath).orElseThrow(
+            () -> new KuFlowRestClientException("Property value doesn't exist")
+        );
     }
 
     /**
@@ -147,14 +151,13 @@ public final class JsonFormsValueUtils {
      * @return the property value if exists.
      */
     public static Optional<Boolean> findJsonFormsPropertyAsBoolean(JsonFormsValue jsonFormsValue, String propertyPath) {
-        return findJsonFormsProperty(jsonFormsValue, propertyPath)
-            .map(value -> {
-                if (value instanceof Boolean) {
-                    return (Boolean) value;
-                }
+        return findJsonFormsProperty(jsonFormsValue, propertyPath).map(value -> {
+            if (value instanceof Boolean) {
+                return (Boolean) value;
+            }
 
-                throw new KuFlowRestClientException("Property value is not a boolean: " + value);
-            });
+            throw new KuFlowRestClientException("Property value is not a boolean: " + value);
+        });
     }
 
     /**
@@ -166,8 +169,9 @@ public final class JsonFormsValueUtils {
      * @throws KuFlowRestClientException If property value doesn't exist
      */
     public static Instant getJsonFormsPropertyAsInstant(JsonFormsValue jsonFormsValue, String propertyPath) {
-        return findJsonFormsPropertyAsInstant(jsonFormsValue, propertyPath)
-            .orElseThrow(() -> new KuFlowRestClientException("Property value doesn't exist"));
+        return findJsonFormsPropertyAsInstant(jsonFormsValue, propertyPath).orElseThrow(
+            () -> new KuFlowRestClientException("Property value doesn't exist")
+        );
     }
 
     /**
@@ -178,16 +182,15 @@ public final class JsonFormsValueUtils {
      * @return the property value if exists.
      */
     public static Optional<Instant> findJsonFormsPropertyAsInstant(JsonFormsValue jsonFormsValue, String propertyPath) {
-        return findJsonFormsProperty(jsonFormsValue, propertyPath)
-            .map(value -> {
-                try {
-                    return Instant.parse(value.toString());
-                } catch (DateTimeParseException e) {
-                    throw new KuFlowRestClientException(
-                        String.format("Wrong value format, expected something like '2007-12-03T10:15:30.00Z' but was %s", value)
-                    );
-                }
-            });
+        return findJsonFormsProperty(jsonFormsValue, propertyPath).map(value -> {
+            try {
+                return Instant.parse(value.toString());
+            } catch (DateTimeParseException e) {
+                throw new KuFlowRestClientException(
+                    String.format("Wrong value format, expected something like '2007-12-03T10:15:30.00Z' but was %s", value)
+                );
+            }
+        });
     }
 
     /**
@@ -199,8 +202,9 @@ public final class JsonFormsValueUtils {
      * @throws KuFlowRestClientException If property value doesn't exist
      */
     public static OffsetDateTime getJsonFormsPropertyAsOffsetDateTime(JsonFormsValue jsonFormsValue, String propertyPath) {
-        return findJsonFormsPropertyAsOffsetDateTime(jsonFormsValue, propertyPath)
-            .orElseThrow(() -> new KuFlowRestClientException("Property value doesn't exist"));
+        return findJsonFormsPropertyAsOffsetDateTime(jsonFormsValue, propertyPath).orElseThrow(
+            () -> new KuFlowRestClientException("Property value doesn't exist")
+        );
     }
 
     /**
@@ -211,16 +215,15 @@ public final class JsonFormsValueUtils {
      * @return the property value if exists.
      */
     public static Optional<OffsetDateTime> findJsonFormsPropertyAsOffsetDateTime(JsonFormsValue jsonFormsValue, String propertyPath) {
-        return findJsonFormsProperty(jsonFormsValue, propertyPath)
-            .map(value -> {
-                try {
-                    return OffsetDateTime.parse(value.toString());
-                } catch (DateTimeParseException e) {
-                    throw new KuFlowRestClientException(
-                        String.format("Wrong value format, expected something like '2007-12-03T10:15:30+01:00' but was %s", value)
-                    );
-                }
-            });
+        return findJsonFormsProperty(jsonFormsValue, propertyPath).map(value -> {
+            try {
+                return OffsetDateTime.parse(value.toString());
+            } catch (DateTimeParseException e) {
+                throw new KuFlowRestClientException(
+                    String.format("Wrong value format, expected something like '2007-12-03T10:15:30+01:00' but was %s", value)
+                );
+            }
+        });
     }
 
     /**
@@ -232,8 +235,9 @@ public final class JsonFormsValueUtils {
      * @throws KuFlowRestClientException If property value doesn't exist
      */
     public static LocalDate getJsonFormsPropertyAsLocalDate(JsonFormsValue jsonFormsValue, String propertyPath) {
-        return findJsonFormsPropertyAsLocalDate(jsonFormsValue, propertyPath)
-            .orElseThrow(() -> new KuFlowRestClientException("Property value doesn't exist"));
+        return findJsonFormsPropertyAsLocalDate(jsonFormsValue, propertyPath).orElseThrow(
+            () -> new KuFlowRestClientException("Property value doesn't exist")
+        );
     }
 
     /**
@@ -244,16 +248,15 @@ public final class JsonFormsValueUtils {
      * @return the property value if exists.
      */
     public static Optional<LocalDate> findJsonFormsPropertyAsLocalDate(JsonFormsValue jsonFormsValue, String propertyPath) {
-        return findJsonFormsProperty(jsonFormsValue, propertyPath)
-            .map(value -> {
-                try {
-                    return LocalDate.parse(value.toString());
-                } catch (DateTimeParseException e) {
-                    throw new KuFlowRestClientException(
-                        String.format("Wrong value format, expected something like '2011-12-03' but was %s", value)
-                    );
-                }
-            });
+        return findJsonFormsProperty(jsonFormsValue, propertyPath).map(value -> {
+            try {
+                return LocalDate.parse(value.toString());
+            } catch (DateTimeParseException e) {
+                throw new KuFlowRestClientException(
+                    String.format("Wrong value format, expected something like '2011-12-03' but was %s", value)
+                );
+            }
+        });
     }
 
     /**
@@ -265,8 +268,9 @@ public final class JsonFormsValueUtils {
      * @throws KuFlowRestClientException If property value doesn't exist
      */
     public static JsonFormsFile getJsonFormsPropertyAsJsonFormsFile(JsonFormsValue jsonFormsValue, String propertyPath) {
-        return findJsonFormsPropertyAsJsonFormsFile(jsonFormsValue, propertyPath)
-            .orElseThrow(() -> new KuFlowRestClientException("Property value doesn't exist"));
+        return findJsonFormsPropertyAsJsonFormsFile(jsonFormsValue, propertyPath).orElseThrow(
+            () -> new KuFlowRestClientException("Property value doesn't exist")
+        );
     }
 
     /**
@@ -289,8 +293,9 @@ public final class JsonFormsValueUtils {
      * @throws KuFlowRestClientException If property value doesn't exist
      */
     public static JsonFormsPrincipal getJsonFormsPropertyAsJsonFormsPrincipal(JsonFormsValue jsonFormsValue, String propertyPath) {
-        return findJsonFormsPropertyAsJsonFormsPrincipal(jsonFormsValue, propertyPath)
-            .orElseThrow(() -> new KuFlowRestClientException("Property value doesn't exist"));
+        return findJsonFormsPropertyAsJsonFormsPrincipal(jsonFormsValue, propertyPath).orElseThrow(
+            () -> new KuFlowRestClientException("Property value doesn't exist")
+        );
     }
 
     /**
@@ -316,8 +321,9 @@ public final class JsonFormsValueUtils {
      * @throws KuFlowRestClientException If property value doesn't exist or is not a List
      */
     public static List<Object> getJsonFormsPropertyAsList(JsonFormsValue jsonFormsValue, String propertyPath) {
-        return findJsonFormsPropertyAsList(jsonFormsValue, propertyPath)
-            .orElseThrow(() -> new KuFlowRestClientException("Property value doesn't exist"));
+        return findJsonFormsPropertyAsList(jsonFormsValue, propertyPath).orElseThrow(
+            () -> new KuFlowRestClientException("Property value doesn't exist")
+        );
     }
 
     /**
@@ -329,14 +335,13 @@ public final class JsonFormsValueUtils {
      */
     @SuppressWarnings("unchecked")
     public static Optional<List<Object>> findJsonFormsPropertyAsList(JsonFormsValue jsonFormsValue, String propertyPath) {
-        return findJsonFormsProperty(jsonFormsValue, propertyPath)
-            .map(value -> {
-                if (value instanceof List) {
-                    return unmodifiableList((List<Object>) value);
-                }
+        return findJsonFormsProperty(jsonFormsValue, propertyPath).map(value -> {
+            if (value instanceof List) {
+                return unmodifiableList((List<Object>) value);
+            }
 
-                throw new KuFlowRestClientException("Property value is not a list");
-            });
+            throw new KuFlowRestClientException("Property value is not a list");
+        });
     }
 
     /**
@@ -348,8 +353,9 @@ public final class JsonFormsValueUtils {
      * @throws KuFlowRestClientException If property value doesn't exist or is not a List
      */
     public static Map<String, Object> getJsonFormsPropertyAsMap(JsonFormsValue jsonFormsValue, String propertyPath) {
-        return findJsonFormsPropertyAsMap(jsonFormsValue, propertyPath)
-            .orElseThrow(() -> new KuFlowRestClientException("Property value doesn't exist"));
+        return findJsonFormsPropertyAsMap(jsonFormsValue, propertyPath).orElseThrow(
+            () -> new KuFlowRestClientException("Property value doesn't exist")
+        );
     }
 
     /**
@@ -361,14 +367,13 @@ public final class JsonFormsValueUtils {
      */
     @SuppressWarnings("unchecked")
     public static Optional<Map<String, Object>> findJsonFormsPropertyAsMap(JsonFormsValue jsonFormsValue, String propertyPath) {
-        return findJsonFormsProperty(jsonFormsValue, propertyPath)
-            .map(value -> {
-                if (value instanceof Map) {
-                    return unmodifiableMap((Map<String, Object>) value);
-                }
+        return findJsonFormsProperty(jsonFormsValue, propertyPath).map(value -> {
+            if (value instanceof Map) {
+                return unmodifiableMap((Map<String, Object>) value);
+            }
 
-                throw new KuFlowRestClientException("Property value is not a map");
-            });
+            throw new KuFlowRestClientException("Property value is not a map");
+        });
     }
 
     /**
@@ -380,8 +385,9 @@ public final class JsonFormsValueUtils {
      * @throws KuFlowRestClientException If property value doesn't exist
      */
     public static Object getJsonFormsProperty(JsonFormsValue jsonFormsValue, String propertyPath) {
-        return findJsonFormsProperty(jsonFormsValue, propertyPath)
-            .orElseThrow(() -> new KuFlowRestClientException("Property value doesn't exist"));
+        return findJsonFormsProperty(jsonFormsValue, propertyPath).orElseThrow(
+            () -> new KuFlowRestClientException("Property value doesn't exist")
+        );
     }
 
     /**

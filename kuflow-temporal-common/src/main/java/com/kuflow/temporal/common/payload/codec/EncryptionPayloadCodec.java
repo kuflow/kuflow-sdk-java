@@ -79,8 +79,7 @@ public class EncryptionPayloadCodec implements PayloadCodec {
         ByteString metadataEncryptionCipherKey = ByteString.copyFrom(encryptionInfo.getCipher(), StandardCharsets.UTF_8);
         ByteString metadataEncryptionKeyIdKey = ByteString.copyFromUtf8(encryptionInfo.getSecretKeyId());
 
-        return Payload
-            .newBuilder()
+        return Payload.newBuilder()
             .putMetadata(EncodingKeys.METADATA_ENCODING_KEY, METADATA_ENCODING)
             .putMetadata(METADATA_ENCRYPTION_CIPHER_KEY, metadataEncryptionCipherKey)
             .putMetadata(METADATA_ENCRYPTION_KEY_ID_KEY, metadataEncryptionKeyIdKey)

@@ -55,19 +55,17 @@ public class WorkerInformation {
 
     public WorkerInformation(WorkerBuilder workerBuilder) {
         this.taskQueue = workerBuilder.getTaskQueue();
-        this.workflowTypes =
-            workerBuilder
-                .getWorkflowImplementationClasses()
-                .stream()
-                .flatMap(workflowImplementationRegister -> this.computeWorkflowTypes(workflowImplementationRegister).stream())
-                .collect(toUnmodifiableSet());
+        this.workflowTypes = workerBuilder
+            .getWorkflowImplementationClasses()
+            .stream()
+            .flatMap(workflowImplementationRegister -> this.computeWorkflowTypes(workflowImplementationRegister).stream())
+            .collect(toUnmodifiableSet());
 
-        this.activityTypes =
-            workerBuilder
-                .getActivityImplementations()
-                .stream()
-                .flatMap(activityImplementationRegister -> this.computeActivityTypes(activityImplementationRegister).stream())
-                .collect(toUnmodifiableSet());
+        this.activityTypes = workerBuilder
+            .getActivityImplementations()
+            .stream()
+            .flatMap(activityImplementationRegister -> this.computeActivityTypes(activityImplementationRegister).stream())
+            .collect(toUnmodifiableSet());
     }
 
     protected WorkerInformation(String taskQueue, Set<String> workflowTypes, Set<String> activityTypes) {
@@ -124,8 +122,7 @@ public class WorkerInformation {
     }
 
     private Set<String> computeWorkflowTypes(WorkerBuilder.WorkflowImplementationRegister workflowImplementationRegister) {
-        return Arrays
-            .stream(workflowImplementationRegister.getWorkflowImplementationClasses())
+        return Arrays.stream(workflowImplementationRegister.getWorkflowImplementationClasses())
             .flatMap(workflowImplementationClass -> {
                 POJOWorkflowImplMetadata workflowMetadata = POJOWorkflowImplMetadata.newInstance(workflowImplementationClass);
                 return workflowMetadata.getWorkflowMethods().stream();
@@ -135,8 +132,7 @@ public class WorkerInformation {
     }
 
     private Set<String> computeActivityTypes(WorkerBuilder.ActivityImplementationRegister activityImplementationRegister) {
-        return Arrays
-            .stream(activityImplementationRegister.getActivityImplementations())
+        return Arrays.stream(activityImplementationRegister.getActivityImplementations())
             .flatMap(activityImplementation -> {
                 Class<?> cls = activityImplementation.getClass();
                 POJOActivityImplMetadata activityImplMetadata = POJOActivityImplMetadata.newInstance(cls);

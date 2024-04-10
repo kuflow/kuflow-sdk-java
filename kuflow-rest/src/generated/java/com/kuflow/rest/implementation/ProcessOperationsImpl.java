@@ -425,8 +425,8 @@ public final class ProcessOperationsImpl {
         List<String> tenantIdConverted = (tenantId == null)
             ? new ArrayList<>()
             : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        return FluxUtil.withContext(context ->
-            service.findProcesses(this.client.getHost(), size, page, sortConverted, tenantIdConverted, accept, context)
+        return FluxUtil.withContext(
+            context -> service.findProcesses(this.client.getHost(), size, page, sortConverted, tenantIdConverted, accept, context)
         );
     }
 
@@ -1546,18 +1546,19 @@ public final class ProcessOperationsImpl {
         long contentLength
     ) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context ->
-            service.actionsProcessSaveUserActionValueDocument(
-                this.client.getHost(),
-                id,
-                fileContentType,
-                fileName,
-                userActionValueId,
-                file,
-                contentLength,
-                accept,
-                context
-            )
+        return FluxUtil.withContext(
+            context ->
+                service.actionsProcessSaveUserActionValueDocument(
+                    this.client.getHost(),
+                    id,
+                    fileContentType,
+                    fileName,
+                    userActionValueId,
+                    file,
+                    contentLength,
+                    accept,
+                    context
+                )
         );
     }
 
@@ -1634,8 +1635,7 @@ public final class ProcessOperationsImpl {
             userActionValueId,
             file,
             contentLength
-        )
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1673,8 +1673,7 @@ public final class ProcessOperationsImpl {
             file,
             contentLength,
             context
-        )
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1703,18 +1702,19 @@ public final class ProcessOperationsImpl {
         long contentLength
     ) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context ->
-            service.actionsProcessSaveUserActionValueDocument(
-                this.client.getHost(),
-                id,
-                fileContentType,
-                fileName,
-                userActionValueId,
-                file,
-                contentLength,
-                accept,
-                context
-            )
+        return FluxUtil.withContext(
+            context ->
+                service.actionsProcessSaveUserActionValueDocument(
+                    this.client.getHost(),
+                    id,
+                    fileContentType,
+                    fileName,
+                    userActionValueId,
+                    file,
+                    contentLength,
+                    accept,
+                    context
+                )
         );
     }
 
@@ -1791,8 +1791,7 @@ public final class ProcessOperationsImpl {
             userActionValueId,
             file,
             contentLength
-        )
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1830,8 +1829,7 @@ public final class ProcessOperationsImpl {
             file,
             contentLength,
             context
-        )
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1908,8 +1906,7 @@ public final class ProcessOperationsImpl {
             file,
             contentLength,
             Context.NONE
-        )
-            .getValue();
+        ).getValue();
     }
 
     /**

@@ -103,8 +103,9 @@ public class RobotOperationTest extends AbstractOperationTest {
     @DisplayName("GIVEN an authenticated user WHEN list robots THEN expected obtain the correct value")
     public void givenAnAuthenticatedUserWhenListRobotsThenExpectedObtainTheCorrectValue() {
         givenThat(
-            get(urlPathEqualTo("/v2022-10-08/robots"))
-                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("robots-api.list.ok.json"))
+            get(urlPathEqualTo("/v2022-10-08/robots")).willReturn(
+                ok().withHeader("Content-Type", "application/json").withBodyFile("robots-api.list.ok.json")
+            )
         );
 
         RobotPage robots = this.kuFlowRestClient.getRobotOperations().findRobots();
@@ -124,8 +125,9 @@ public class RobotOperationTest extends AbstractOperationTest {
         UUID robotId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
 
         givenThat(
-            get("/v2022-10-08/robots/" + robotId)
-                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("robots-api.retrieve.ok.json"))
+            get("/v2022-10-08/robots/" + robotId).willReturn(
+                ok().withHeader("Content-Type", "application/json").withBodyFile("robots-api.retrieve.ok.json")
+            )
         );
 
         Robot robot = this.kuFlowRestClient.getRobotOperations().retrieveRobot(robotId);

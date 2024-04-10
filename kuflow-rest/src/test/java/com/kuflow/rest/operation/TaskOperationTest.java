@@ -169,8 +169,9 @@ public class TaskOperationTest extends AbstractOperationTest {
         UUID taskId = UUID.fromString("e2d0fdf9-0aae-4eed-9e07-8e4b76df733c");
 
         givenThat(
-            get("/v2022-10-08/tasks/" + taskId)
-                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("tasks-api-json-forms.retrieve.ok.json"))
+            get("/v2022-10-08/tasks/" + taskId).willReturn(
+                ok().withHeader("Content-Type", "application/json").withBodyFile("tasks-api-json-forms.retrieve.ok.json")
+            )
         );
 
         Task task = this.kuFlowRestClient.getTaskOperations().retrieveTask(taskId);
@@ -183,10 +184,12 @@ public class TaskOperationTest extends AbstractOperationTest {
         assertThat(TaskUtils.findJsonFormsPropertyAsInteger(task, "key2.2")).contains(505);
         assertThat(TaskUtils.findJsonFormsPropertyAsDouble(task, "key2.2")).contains(505.0);
         assertThat(TaskUtils.findJsonFormsPropertyAsString(task, "key3.0.key3_0")).contains("value3_0");
-        assertThat(TaskUtils.findJsonFormsPropertyAsJsonFormsFile(task, "key6"))
-            .hasValueSatisfying(value -> assertThat(value.getUri()).isEqualTo("ku:dummy/xxx-ssss-yyyy"));
-        assertThat(TaskUtils.findJsonFormsPropertyAsJsonFormsPrincipal(task, "key7"))
-            .hasValueSatisfying(value -> assertThat(value.getId()).isEqualTo(UUID.fromString("0e30a29f-469e-4c03-a3c5-f3286a7ac5c2")));
+        assertThat(TaskUtils.findJsonFormsPropertyAsJsonFormsFile(task, "key6")).hasValueSatisfying(
+            value -> assertThat(value.getUri()).isEqualTo("ku:dummy/xxx-ssss-yyyy")
+        );
+        assertThat(TaskUtils.findJsonFormsPropertyAsJsonFormsPrincipal(task, "key7")).hasValueSatisfying(
+            value -> assertThat(value.getId()).isEqualTo(UUID.fromString("0e30a29f-469e-4c03-a3c5-f3286a7ac5c2"))
+        );
         assertThat(TaskUtils.findJsonFormsPropertyAsBoolean(task, "key8.0")).contains(true);
         assertThat(TaskUtils.findJsonFormsPropertyAsBoolean(task, "key8.1")).contains(false);
     }
@@ -196,12 +199,12 @@ public class TaskOperationTest extends AbstractOperationTest {
     public void givenATaskWhenUpdateValuesThenValuesAreUpdatedCorrectly() {
         Task task = new Task();
 
-        JsonFormsFile file = JsonFormsFile
-            .from("kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;")
-            .orElseThrow();
-        JsonFormsPrincipal principalUser = JsonFormsPrincipal
-            .from("kuflow-principal:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;")
-            .orElseThrow();
+        JsonFormsFile file = JsonFormsFile.from(
+            "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;"
+        ).orElseThrow();
+        JsonFormsPrincipal principalUser = JsonFormsPrincipal.from(
+            "kuflow-principal:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;"
+        ).orElseThrow();
 
         TaskUtils.updateJsonFormsProperty(task, "key_1.0.key_2.0.key_1", "value");
         TaskUtils.updateJsonFormsProperty(task, "key_1.0.key_2.0.key_2", true);
@@ -209,31 +212,30 @@ public class TaskOperationTest extends AbstractOperationTest {
         TaskUtils.updateJsonFormsProperty(task, "key_1.0.key_2.0.key_4", file);
         TaskUtils.updateJsonFormsProperty(task, "key_1.0.key_2.0.key_5", principalUser);
 
-        assertThat(task.getJsonFormsValue().getData())
-            .isEqualTo(
-                Map.of(
-                    "key_1",
-                    List.of(
-                        Map.of(
-                            "key_2",
-                            List.of(
-                                Map.of(
-                                    "key_1",
-                                    "value",
-                                    "key_2",
-                                    true,
-                                    "key_3",
-                                    100,
-                                    "key_4",
-                                    "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;",
-                                    "key_5",
-                                    "kuflow-principal:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;"
-                                )
+        assertThat(task.getJsonFormsValue().getData()).isEqualTo(
+            Map.of(
+                "key_1",
+                List.of(
+                    Map.of(
+                        "key_2",
+                        List.of(
+                            Map.of(
+                                "key_1",
+                                "value",
+                                "key_2",
+                                true,
+                                "key_3",
+                                100,
+                                "key_4",
+                                "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;",
+                                "key_5",
+                                "kuflow-principal:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;"
                             )
                         )
                     )
                 )
-            );
+            )
+        );
     }
 
     @Test
@@ -241,12 +243,12 @@ public class TaskOperationTest extends AbstractOperationTest {
     public void givenATaskPageItemWhenUpdateValuesThenValuesAreUpdatedCorrectly() {
         TaskPageItem taskPageItem = new TaskPageItem();
 
-        JsonFormsFile file = JsonFormsFile
-            .from("kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;")
-            .orElseThrow();
-        JsonFormsPrincipal principalUser = JsonFormsPrincipal
-            .from("kuflow-principal:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;")
-            .orElseThrow();
+        JsonFormsFile file = JsonFormsFile.from(
+            "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;"
+        ).orElseThrow();
+        JsonFormsPrincipal principalUser = JsonFormsPrincipal.from(
+            "kuflow-principal:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;"
+        ).orElseThrow();
 
         TaskPageItemUtils.updateJsonFormsProperty(taskPageItem, "key_1.0.key_2.0.key_1", "value");
         TaskPageItemUtils.updateJsonFormsProperty(taskPageItem, "key_1.0.key_2.0.key_2", true);
@@ -256,23 +258,22 @@ public class TaskOperationTest extends AbstractOperationTest {
         TaskPageItemUtils.updateJsonFormsProperty(taskPageItem, "key_2.0", LocalDate.parse("3000-01-01"));
         TaskPageItemUtils.updateJsonFormsProperty(taskPageItem, "key_2.1", Instant.parse("3003-01-01T00:00:00Z"));
 
-        assertThat(taskPageItem.getJsonFormsValue().getData())
-            .isEqualTo(
-                Map.of(
-                    "key_1",
-                    List.of(
-                        Map.of("key_2", List.of(Map.of("key_1", "value", "key_2", true, "key_3", 100))),
-                        Map.of(
-                            "key_4",
-                            "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;",
-                            "key_5",
-                            "kuflow-principal:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;"
-                        )
-                    ),
-                    "key_2",
-                    List.of("3000-01-01", "3003-01-01T00:00:00Z")
-                )
-            );
+        assertThat(taskPageItem.getJsonFormsValue().getData()).isEqualTo(
+            Map.of(
+                "key_1",
+                List.of(
+                    Map.of("key_2", List.of(Map.of("key_1", "value", "key_2", true, "key_3", 100))),
+                    Map.of(
+                        "key_4",
+                        "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;",
+                        "key_5",
+                        "kuflow-principal:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;"
+                    )
+                ),
+                "key_2",
+                List.of("3000-01-01", "3003-01-01T00:00:00Z")
+            )
+        );
     }
 
     @Test
@@ -280,12 +281,12 @@ public class TaskOperationTest extends AbstractOperationTest {
     public void givenATaskSaveJsonFormsValueCommandWhenUpdateValuesThenValuesAreUpdatedCorrectly() {
         TaskSaveJsonFormsValueDataCommand command = new TaskSaveJsonFormsValueDataCommand();
 
-        JsonFormsFile file = JsonFormsFile
-            .from("kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;")
-            .orElseThrow();
-        JsonFormsPrincipal principalUser = JsonFormsPrincipal
-            .from("kuflow-principal:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;")
-            .orElseThrow();
+        JsonFormsFile file = JsonFormsFile.from(
+            "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;"
+        ).orElseThrow();
+        JsonFormsPrincipal principalUser = JsonFormsPrincipal.from(
+            "kuflow-principal:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;"
+        ).orElseThrow();
 
         updateJsonFormsProperty(command, "key_1.0.key_2.0.key_1", "value");
         updateJsonFormsProperty(command, "key_1.0.key_2.0.key_2", true);
@@ -296,61 +297,58 @@ public class TaskOperationTest extends AbstractOperationTest {
         updateJsonFormsProperty(command, "key_2.1", OffsetDateTime.parse("3001-01-01T01:00:00+05:05"));
         updateJsonFormsProperty(command, "key_2.2", Instant.parse("3002-01-01T02:00:00Z"));
 
-        assertThat(command.getData())
-            .isEqualTo(
-                Map.of(
-                    "key_1",
-                    List.of(
-                        Map.of("key_2", List.of(Map.of("key_1", "value", "key_2", true, "key_3", 100))),
-                        Map.of(
-                            "key_4",
-                            "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;",
-                            "key_5",
-                            "kuflow-principal:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;"
-                        )
-                    ),
-                    "key_2",
-                    List.of("3000-01-01", "3001-01-01T01:00:00+05:05", "3002-01-01T02:00:00Z")
-                )
-            );
+        assertThat(command.getData()).isEqualTo(
+            Map.of(
+                "key_1",
+                List.of(
+                    Map.of("key_2", List.of(Map.of("key_1", "value", "key_2", true, "key_3", 100))),
+                    Map.of(
+                        "key_4",
+                        "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;",
+                        "key_5",
+                        "kuflow-principal:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;"
+                    )
+                ),
+                "key_2",
+                List.of("3000-01-01", "3001-01-01T01:00:00+05:05", "3002-01-01T02:00:00Z")
+            )
+        );
 
         updateJsonFormsProperty(command, "key_1.0", null);
 
-        assertThat(command.getData())
-            .isEqualTo(
-                Map.of(
-                    "key_1",
-                    List.of(
-                        Map.of(
-                            "key_4",
-                            "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;",
-                            "key_5",
-                            "kuflow-principal:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;"
-                        )
-                    ),
-                    "key_2",
-                    List.of("3000-01-01", "3001-01-01T01:00:00+05:05", "3002-01-01T02:00:00Z")
-                )
-            );
+        assertThat(command.getData()).isEqualTo(
+            Map.of(
+                "key_1",
+                List.of(
+                    Map.of(
+                        "key_4",
+                        "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;",
+                        "key_5",
+                        "kuflow-principal:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;"
+                    )
+                ),
+                "key_2",
+                List.of("3000-01-01", "3001-01-01T01:00:00+05:05", "3002-01-01T02:00:00Z")
+            )
+        );
 
         updateJsonFormsProperty(command, "key_2.1", null);
 
-        assertThat(command.getData())
-            .isEqualTo(
-                Map.of(
-                    "key_1",
-                    List.of(
-                        Map.of(
-                            "key_4",
-                            "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;",
-                            "key_5",
-                            "kuflow-principal:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;"
-                        )
-                    ),
-                    "key_2",
-                    List.of("3000-01-01", "3002-01-01T02:00:00Z")
-                )
-            );
+        assertThat(command.getData()).isEqualTo(
+            Map.of(
+                "key_1",
+                List.of(
+                    Map.of(
+                        "key_4",
+                        "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;",
+                        "key_5",
+                        "kuflow-principal:id=0e30a29f-469e-4c03-a3c5-f3286a7ac5c2;type=USER;name=Homer Simpsons;"
+                    )
+                ),
+                "key_2",
+                List.of("3000-01-01", "3002-01-01T02:00:00Z")
+            )
+        );
     }
 
     @Test

@@ -174,18 +174,19 @@ public final class TenantUserOperationsImpl {
         List<String> tenantIdConverted = (tenantId == null)
             ? new ArrayList<>()
             : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        return FluxUtil.withContext(context ->
-            service.findTenantUsers(
-                this.client.getHost(),
-                size,
-                page,
-                sortConverted,
-                groupIdConverted,
-                emailConverted,
-                tenantIdConverted,
-                accept,
-                context
-            )
+        return FluxUtil.withContext(
+            context ->
+                service.findTenantUsers(
+                    this.client.getHost(),
+                    size,
+                    page,
+                    sortConverted,
+                    groupIdConverted,
+                    emailConverted,
+                    tenantIdConverted,
+                    accept,
+                    context
+                )
         );
     }
 
@@ -279,8 +280,9 @@ public final class TenantUserOperationsImpl {
         List<String> email,
         List<UUID> tenantId
     ) {
-        return findTenantUsersWithResponseAsync(size, page, sort, groupId, email, tenantId)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return findTenantUsersWithResponseAsync(size, page, sort, groupId, email, tenantId).flatMap(
+            res -> Mono.justOrEmpty(res.getValue())
+        );
     }
 
     /**
@@ -302,8 +304,9 @@ public final class TenantUserOperationsImpl {
         final List<UUID> groupId = null;
         final List<String> email = null;
         final List<UUID> tenantId = null;
-        return findTenantUsersWithResponseAsync(size, page, sort, groupId, email, tenantId)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return findTenantUsersWithResponseAsync(size, page, sort, groupId, email, tenantId).flatMap(
+            res -> Mono.justOrEmpty(res.getValue())
+        );
     }
 
     /**
@@ -339,8 +342,9 @@ public final class TenantUserOperationsImpl {
         List<UUID> tenantId,
         Context context
     ) {
-        return findTenantUsersWithResponseAsync(size, page, sort, groupId, email, tenantId, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return findTenantUsersWithResponseAsync(size, page, sort, groupId, email, tenantId, context).flatMap(
+            res -> Mono.justOrEmpty(res.getValue())
+        );
     }
 
     /**

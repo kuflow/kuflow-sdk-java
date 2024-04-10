@@ -217,8 +217,9 @@ public final class RobotOperationsImpl {
         List<String> tenantIdConverted = (tenantId == null)
             ? new ArrayList<>()
             : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        return FluxUtil.withContext(context ->
-            service.findRobots(this.client.getHost(), size, page, sortConverted, tenantIdConverted, filterContext, accept, context)
+        return FluxUtil.withContext(
+            context ->
+                service.findRobots(this.client.getHost(), size, page, sortConverted, tenantIdConverted, filterContext, accept, context)
         );
     }
 
@@ -347,8 +348,9 @@ public final class RobotOperationsImpl {
         RobotFilterContext filterContext,
         Context context
     ) {
-        return findRobotsWithResponseAsync(size, page, sort, tenantId, filterContext, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return findRobotsWithResponseAsync(size, page, sort, tenantId, filterContext, context).flatMap(
+            res -> Mono.justOrEmpty(res.getValue())
+        );
     }
 
     /**
@@ -667,8 +669,8 @@ public final class RobotOperationsImpl {
         RobotAssetArchitecture architecture
     ) {
         final String accept = "application/octet-stream, application/json";
-        return FluxUtil.withContext(context ->
-            service.actionsRobotDownloadAsset(this.client.getHost(), id, type, version, platform, architecture, accept, context)
+        return FluxUtil.withContext(
+            context -> service.actionsRobotDownloadAsset(this.client.getHost(), id, type, version, platform, architecture, accept, context)
         );
     }
 
@@ -724,8 +726,9 @@ public final class RobotOperationsImpl {
         RobotAssetPlatform platform,
         RobotAssetArchitecture architecture
     ) {
-        return actionsRobotDownloadAssetWithResponseAsync(id, type, version, platform, architecture)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return actionsRobotDownloadAssetWithResponseAsync(id, type, version, platform, architecture).flatMap(
+            res -> Mono.justOrEmpty(res.getValue())
+        );
     }
 
     /**
@@ -753,8 +756,9 @@ public final class RobotOperationsImpl {
         RobotAssetArchitecture architecture,
         Context context
     ) {
-        return actionsRobotDownloadAssetWithResponseAsync(id, type, version, platform, architecture, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return actionsRobotDownloadAssetWithResponseAsync(id, type, version, platform, architecture, context).flatMap(
+            res -> Mono.justOrEmpty(res.getValue())
+        );
     }
 
     /**

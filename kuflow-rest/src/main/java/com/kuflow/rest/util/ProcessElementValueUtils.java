@@ -143,8 +143,9 @@ public final class ProcessElementValueUtils {
     }
 
     public static String getElementValueAsString(ProcessElementValueAccessor processElementValueAccessor) {
-        return findElementValueAsString(processElementValueAccessor)
-            .orElseThrow(() -> new KuFlowRestClientException("Element value doesn't exist"));
+        return findElementValueAsString(processElementValueAccessor).orElseThrow(
+            () -> new KuFlowRestClientException("Element value doesn't exist")
+        );
     }
 
     public static Optional<String> findElementValueAsString(ProcessElementValueAccessor processElementValueAccessor) {
@@ -182,8 +183,9 @@ public final class ProcessElementValueUtils {
     }
 
     public static Double getElementValueAsDouble(ProcessElementValueAccessor processElementValueAccessor) {
-        return findElementValueAsDouble(processElementValueAccessor)
-            .orElseThrow(() -> new KuFlowRestClientException("Element value doesn't exist"));
+        return findElementValueAsDouble(processElementValueAccessor).orElseThrow(
+            () -> new KuFlowRestClientException("Element value doesn't exist")
+        );
     }
 
     public static List<Double> getElementValueAsDoubleList(ProcessElementValueAccessor processElementValueAccessor) {
@@ -222,8 +224,9 @@ public final class ProcessElementValueUtils {
     }
 
     public static LocalDate getElementValueAsLocalDate(ProcessElementValueAccessor processElementValueAccessor) {
-        return findElementValueAsLocalDate(processElementValueAccessor)
-            .orElseThrow(() -> new KuFlowRestClientException("Element value doesn't exist"));
+        return findElementValueAsLocalDate(processElementValueAccessor).orElseThrow(
+            () -> new KuFlowRestClientException("Element value doesn't exist")
+        );
     }
 
     public static List<LocalDate> getElementValueAsLocalDateList(ProcessElementValueAccessor processElementValueAccessor) {
