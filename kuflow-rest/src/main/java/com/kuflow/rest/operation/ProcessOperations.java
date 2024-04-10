@@ -587,8 +587,7 @@ public class ProcessOperations {
                 file,
                 contentLength,
                 Context.NONE
-            )
-            .getValue();
+            ).getValue();
     }
 
     /**

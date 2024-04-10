@@ -40,8 +40,7 @@ public class UIVisionActivitiesImpl implements UIVisionActivities {
 
     @Override
     public ExecuteUIVisionMacroResponse executeUIVisionMacro(ExecuteUIVisionMacroRequest request) {
-        UIVisionArgumentDto arguments = UIVisionArgumentDto
-            .newBuilder()
+        UIVisionArgumentDto arguments = UIVisionArgumentDto.newBuilder()
             .setAutoRunHtml(this.uiVisionActivityConfiguration.getAutoRunHtml())
             .setMacro(this.uiVisionActivityConfiguration.getMacro())
             .setLogDirectory(this.uiVisionActivityConfiguration.getLogDirectory())

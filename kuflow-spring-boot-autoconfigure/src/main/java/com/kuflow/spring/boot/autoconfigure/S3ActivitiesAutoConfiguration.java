@@ -55,8 +55,8 @@ public class S3ActivitiesAutoConfiguration {
         }
 
         if (s3ActivitiesProperties.getPathStyleAccessEnabled() != null) {
-            builder.serviceConfiguration(serviceConfiguration ->
-                serviceConfiguration.pathStyleAccessEnabled(s3ActivitiesProperties.getPathStyleAccessEnabled())
+            builder.serviceConfiguration(
+                serviceConfiguration -> serviceConfiguration.pathStyleAccessEnabled(s3ActivitiesProperties.getPathStyleAccessEnabled())
             );
         }
 
@@ -73,8 +73,7 @@ public class S3ActivitiesAutoConfiguration {
 
     @Bean
     public S3Activities s3activities(KuFlowRestClient kuFlowRestClient, S3Client s3Client, S3ActivitiesProperties s3ActivitiesProperties) {
-        return S3ActivitiesImpl
-            .builder()
+        return S3ActivitiesImpl.builder()
             .withKuFlowRestClient(kuFlowRestClient)
             .withS3Client(s3Client)
             .withDefaultBucket(s3ActivitiesProperties.getDefaultBucket())

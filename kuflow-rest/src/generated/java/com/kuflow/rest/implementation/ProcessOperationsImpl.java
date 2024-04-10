@@ -2054,18 +2054,19 @@ public final class ProcessOperationsImpl {
         long contentLength
     ) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context ->
-            service.actionsProcessSaveEntityDocument(
-                this.client.getHost(),
-                id,
-                fileContentType,
-                fileName,
-                schemaPath,
-                file,
-                contentLength,
-                accept,
-                context
-            )
+        return FluxUtil.withContext(
+            context ->
+                service.actionsProcessSaveEntityDocument(
+                    this.client.getHost(),
+                    id,
+                    fileContentType,
+                    fileName,
+                    schemaPath,
+                    file,
+                    contentLength,
+                    accept,
+                    context
+                )
         );
     }
 
@@ -2137,8 +2138,9 @@ public final class ProcessOperationsImpl {
         Flux<ByteBuffer> file,
         long contentLength
     ) {
-        return actionsProcessSaveEntityDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return actionsProcessSaveEntityDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength).flatMap(
+            res -> Mono.justOrEmpty(res.getValue())
+        );
     }
 
     /**
@@ -2169,8 +2171,15 @@ public final class ProcessOperationsImpl {
         long contentLength,
         Context context
     ) {
-        return actionsProcessSaveEntityDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return actionsProcessSaveEntityDocumentWithResponseAsync(
+            id,
+            fileContentType,
+            fileName,
+            schemaPath,
+            file,
+            contentLength,
+            context
+        ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2200,18 +2209,19 @@ public final class ProcessOperationsImpl {
         long contentLength
     ) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context ->
-            service.actionsProcessSaveEntityDocument(
-                this.client.getHost(),
-                id,
-                fileContentType,
-                fileName,
-                schemaPath,
-                file,
-                contentLength,
-                accept,
-                context
-            )
+        return FluxUtil.withContext(
+            context ->
+                service.actionsProcessSaveEntityDocument(
+                    this.client.getHost(),
+                    id,
+                    fileContentType,
+                    fileName,
+                    schemaPath,
+                    file,
+                    contentLength,
+                    accept,
+                    context
+                )
         );
     }
 
@@ -2283,8 +2293,9 @@ public final class ProcessOperationsImpl {
         BinaryData file,
         long contentLength
     ) {
-        return actionsProcessSaveEntityDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return actionsProcessSaveEntityDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength).flatMap(
+            res -> Mono.justOrEmpty(res.getValue())
+        );
     }
 
     /**
@@ -2315,8 +2326,15 @@ public final class ProcessOperationsImpl {
         long contentLength,
         Context context
     ) {
-        return actionsProcessSaveEntityDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return actionsProcessSaveEntityDocumentWithResponseAsync(
+            id,
+            fileContentType,
+            fileName,
+            schemaPath,
+            file,
+            contentLength,
+            context
+        ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2387,8 +2405,15 @@ public final class ProcessOperationsImpl {
         BinaryData file,
         long contentLength
     ) {
-        return actionsProcessSaveEntityDocumentWithResponse(id, fileContentType, fileName, schemaPath, file, contentLength, Context.NONE)
-            .getValue();
+        return actionsProcessSaveEntityDocumentWithResponse(
+            id,
+            fileContentType,
+            fileName,
+            schemaPath,
+            file,
+            contentLength,
+            Context.NONE
+        ).getValue();
     }
 
     /**
@@ -2406,8 +2431,8 @@ public final class ProcessOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> actionsProcessDownloadEntityDocumentWithResponseAsync(UUID id, String documentUri) {
         final String accept = "application/octet-stream, application/json";
-        return FluxUtil.withContext(context ->
-            service.actionsProcessDownloadEntityDocument(this.client.getHost(), id, documentUri, accept, context)
+        return FluxUtil.withContext(
+            context -> service.actionsProcessDownloadEntityDocument(this.client.getHost(), id, documentUri, accept, context)
         );
     }
 
@@ -2462,8 +2487,9 @@ public final class ProcessOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> actionsProcessDownloadEntityDocumentAsync(UUID id, String documentUri, Context context) {
-        return actionsProcessDownloadEntityDocumentWithResponseAsync(id, documentUri, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return actionsProcessDownloadEntityDocumentWithResponseAsync(id, documentUri, context).flatMap(
+            res -> Mono.justOrEmpty(res.getValue())
+        );
     }
 
     /**

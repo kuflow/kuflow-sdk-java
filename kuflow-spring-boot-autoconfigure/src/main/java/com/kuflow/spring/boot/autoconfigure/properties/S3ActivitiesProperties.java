@@ -105,8 +105,7 @@ public class S3ActivitiesProperties {
         }
 
         return Optional.ofNullable(
-            Region
-                .regions()
+            Region.regions()
                 .stream()
                 .filter(r -> r.metadata().id().equals(this.region.toLowerCase()))
                 .findAny()

@@ -37,24 +37,22 @@ public class NotFillMeAttributesValuesValidator implements ConstraintValidator<N
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext context) {
         List<Field> fieldsErrors = new LinkedList<>();
-        Arrays
-            .asList(value.getClass().getDeclaredFields())
-            .forEach(field -> {
-                field.setAccessible(true);
-                try {
-                    Object property = field.get(value);
-                    if (this.containsFillMe(property)) {
-                        fieldsErrors.add(field);
-                        context
-                            .buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
-                            .addPropertyNode(field.getName())
-                            .addConstraintViolation()
-                            .disableDefaultConstraintViolation();
-                    }
-                } catch (IllegalAccessException ex) {
-                    throw new IllegalStateException(ex);
+        Arrays.asList(value.getClass().getDeclaredFields()).forEach(field -> {
+            field.setAccessible(true);
+            try {
+                Object property = field.get(value);
+                if (this.containsFillMe(property)) {
+                    fieldsErrors.add(field);
+                    context
+                        .buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
+                        .addPropertyNode(field.getName())
+                        .addConstraintViolation()
+                        .disableDefaultConstraintViolation();
                 }
-            });
+            } catch (IllegalAccessException ex) {
+                throw new IllegalStateException(ex);
+            }
+        });
 
         return fieldsErrors.isEmpty();
     }

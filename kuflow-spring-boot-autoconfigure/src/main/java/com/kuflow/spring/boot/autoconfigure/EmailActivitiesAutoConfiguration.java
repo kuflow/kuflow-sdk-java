@@ -101,8 +101,7 @@ public class EmailActivitiesAutoConfiguration {
         ApplicationContext applicationContext,
         MailProperties mailProperties
     ) {
-        return EmailService
-            .builder()
+        return EmailService.builder()
             .withMailSender(mailSender)
             .withTemplateEngine(templateEngine)
             .withApplicationContext(applicationContext)

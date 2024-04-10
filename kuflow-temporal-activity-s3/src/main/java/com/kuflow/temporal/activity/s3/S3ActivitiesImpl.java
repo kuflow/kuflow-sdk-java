@@ -117,8 +117,7 @@ public class S3ActivitiesImpl implements S3Activities {
         BinaryData sourceFile = this.taskOperations.actionsTaskDownloadElementValueDocument(task.getId(), elementValueDocument.getId());
         try (InputStream sourceInputStream = sourceFile.toStream()) {
             RequestBody requestBody = RequestBody.fromInputStream(sourceInputStream, elementValueDocument.getContentLength());
-            PutObjectRequest putObjectRequest = PutObjectRequest
-                .builder()
+            PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                 .bucket(targetBucket)
                 .contentType(elementValueDocument.getContentType())
                 .contentDisposition(String.format("attachment; filename=\"%s\"", elementValueDocument.getName()))

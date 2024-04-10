@@ -44,8 +44,7 @@ public class UIVisionActivitiesAutoConfiguration {
 
     @Bean
     public UIVisionActivities uIVisionActivities(UIVisionService uIVisionService, UIVisionProperties uIVisionProperties) {
-        UIVisionActivityConfiguration uIVisionActivityConfiguration = UIVisionActivityConfiguration
-            .newBuilder()
+        UIVisionActivityConfiguration uIVisionActivityConfiguration = UIVisionActivityConfiguration.newBuilder()
             .withLaunchCommand(uIVisionProperties.getLaunchCommand())
             .withUiVisionAutoRunHtml(uIVisionProperties.getAutoRunHtml())
             .withUiVisionMacro(uIVisionProperties.getMacro())
