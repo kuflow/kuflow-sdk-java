@@ -172,18 +172,19 @@ public final class PrincipalOperationsImpl {
         List<String> tenantIdConverted = (tenantId == null)
             ? new ArrayList<>()
             : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        return FluxUtil.withContext(context ->
-            service.findPrincipals(
-                this.client.getHost(),
-                size,
-                page,
-                sortConverted,
-                type,
-                groupIdConverted,
-                tenantIdConverted,
-                accept,
-                context
-            )
+        return FluxUtil.withContext(
+            context ->
+                service.findPrincipals(
+                    this.client.getHost(),
+                    size,
+                    page,
+                    sortConverted,
+                    type,
+                    groupIdConverted,
+                    tenantIdConverted,
+                    accept,
+                    context
+                )
         );
     }
 
@@ -332,8 +333,9 @@ public final class PrincipalOperationsImpl {
         List<UUID> tenantId,
         Context context
     ) {
-        return findPrincipalsWithResponseAsync(size, page, sort, type, groupId, tenantId, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return findPrincipalsWithResponseAsync(size, page, sort, type, groupId, tenantId, context).flatMap(
+            res -> Mono.justOrEmpty(res.getValue())
+        );
     }
 
     /**

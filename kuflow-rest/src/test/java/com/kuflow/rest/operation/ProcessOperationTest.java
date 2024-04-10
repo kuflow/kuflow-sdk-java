@@ -59,8 +59,9 @@ public class ProcessOperationTest extends AbstractOperationTest {
     @DisplayName("GIVEN an authenticated user WHEN list processes THEN body is parsed correctly")
     public void givenAnAuthenticatedUserWhenListProcessesThenBodyIsParsedCorrectly() {
         givenThat(
-            get("/v2022-10-08/processes")
-                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.list.ok.json"))
+            get("/v2022-10-08/processes").willReturn(
+                ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.list.ok.json")
+            )
         );
 
         ProcessPage processes = this.kuFlowRestClient.getProcessOperations().findProcesses();
@@ -128,8 +129,9 @@ public class ProcessOperationTest extends AbstractOperationTest {
         UUID processId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
 
         givenThat(
-            get("/v2022-10-08/processes/" + processId)
-                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.retrieve.ok.json"))
+            get("/v2022-10-08/processes/" + processId).willReturn(
+                ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.retrieve.ok.json")
+            )
         );
 
         Process process = this.kuFlowRestClient.getProcessOperations().retrieveProcess(processId);

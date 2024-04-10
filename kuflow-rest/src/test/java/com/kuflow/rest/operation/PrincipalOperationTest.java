@@ -55,8 +55,9 @@ public class PrincipalOperationTest extends AbstractOperationTest {
     @DisplayName("GIVEN an authenticated user WHEN list principals THEN result is correctly parsed")
     public void givenAnAuthenticatedUserWhenListPrincipalsThenResultIsCorrectlyParsed() {
         givenThat(
-            get("/v2022-10-08/principals")
-                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("principals-api.list.ok.json"))
+            get("/v2022-10-08/principals").willReturn(
+                ok().withHeader("Content-Type", "application/json").withBodyFile("principals-api.list.ok.json")
+            )
         );
 
         PrincipalPage principals = this.kuFlowRestClient.getPrincipalOperations().findPrincipals();
@@ -151,8 +152,9 @@ public class PrincipalOperationTest extends AbstractOperationTest {
         UUID principalId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
 
         givenThat(
-            get("/v2022-10-08/principals/" + principalId)
-                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("principals-api.retrieve.ok.json"))
+            get("/v2022-10-08/principals/" + principalId).willReturn(
+                ok().withHeader("Content-Type", "application/json").withBodyFile("principals-api.retrieve.ok.json")
+            )
         );
 
         Principal principal = this.kuFlowRestClient.getPrincipalOperations().retrievePrincipal(principalId);

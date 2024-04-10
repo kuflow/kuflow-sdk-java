@@ -254,13 +254,12 @@ public class KuFlowTemporalConnection {
 
         this.applyDefaultConfiguration();
 
-        this.workerInformationNotifier =
-            new WorkerInformationNotifier(
-                this.kuFlowRestClient,
-                this.workflowClientBuilder.validateAndBuildWithDefaults(),
-                this.workerInformationNotifierConfigurationBuilder.build(),
-                List.of(this.workerInformation)
-            );
+        this.workerInformationNotifier = new WorkerInformationNotifier(
+            this.kuFlowRestClient,
+            this.workflowClientBuilder.validateAndBuildWithDefaults(),
+            this.workerInformationNotifierConfigurationBuilder.build(),
+            List.of(this.workerInformation)
+        );
         this.workerInformationNotifier.start();
 
         WorkerFactory workerFactory = this.getOrCreateWorkerFactory();
@@ -402,8 +401,7 @@ public class KuFlowTemporalConnection {
         ObjectMapper objectMapper = JacksonJsonPayloadConverter.newDefaultObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        List<PayloadConverter> converters = Arrays
-            .stream(DefaultDataConverter.STANDARD_PAYLOAD_CONVERTERS)
+        List<PayloadConverter> converters = Arrays.stream(DefaultDataConverter.STANDARD_PAYLOAD_CONVERTERS)
             .filter(it -> !(it instanceof JacksonJsonPayloadConverter))
             .collect(toCollection(LinkedList::new));
         converters.add(new JacksonJsonPayloadConverter(objectMapper));
@@ -425,8 +423,7 @@ public class KuFlowTemporalConnection {
                 WorkflowServiceStubsOptions stubsOptions = builder.build();
                 if (stubsOptions.getSslContext() == null) {
                     AuthenticationEngineCertificateTls tls = authenticationEngineCertificate.getTls();
-                    SslContext sslContext = SslContextBuilder
-                        .builder()
+                    SslContext sslContext = SslContextBuilder.builder()
                         .withCaData(tls.getServerRootCaCertificate())
                         .withCertData(tls.getClientCertificate())
                         .withKeyData(tls.getClientPrivateKey())

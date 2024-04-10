@@ -68,13 +68,12 @@ public class WorkerOperationTest extends AbstractOperationTest {
     @DisplayName("GIVEN an authenticated user WHEN create a worker THEN response is correctly parsed")
     public void givenAnAuthenticatedUserWhenCreateAWorkerThenResponseIsCorrectlyParsed() {
         givenThat(
-            post("/v2022-10-08/workers")
-                .willReturn(
-                    ok()
-                        .withHeader("Content-Type", "application/json")
-                        .withBodyFile("workers-api.create.ok.json.hbs")
-                        .withTransformers(ResponseTemplateTransformer.NAME)
-                )
+            post("/v2022-10-08/workers").willReturn(
+                ok()
+                    .withHeader("Content-Type", "application/json")
+                    .withBodyFile("workers-api.create.ok.json.hbs")
+                    .withTransformers(ResponseTemplateTransformer.NAME)
+            )
         );
 
         Worker workerRequest = new Worker()

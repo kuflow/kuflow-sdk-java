@@ -164,8 +164,9 @@ public final class TaskElementValueUtils {
     }
 
     public static String getElementValueAsString(TaskElementValueAccessor taskElementValueAccessor) {
-        return findElementValueAsString(taskElementValueAccessor)
-            .orElseThrow(() -> new KuFlowRestClientException("Element value doesn't exist"));
+        return findElementValueAsString(taskElementValueAccessor).orElseThrow(
+            () -> new KuFlowRestClientException("Element value doesn't exist")
+        );
     }
 
     public static Optional<String> findElementValueAsString(TaskElementValueAccessor taskElementValueAccessor) {
@@ -203,8 +204,9 @@ public final class TaskElementValueUtils {
     }
 
     public static Double getElementValueAsDouble(TaskElementValueAccessor taskElementValueAccessor) {
-        return findElementValueAsDouble(taskElementValueAccessor)
-            .orElseThrow(() -> new KuFlowRestClientException("Element value doesn't exist"));
+        return findElementValueAsDouble(taskElementValueAccessor).orElseThrow(
+            () -> new KuFlowRestClientException("Element value doesn't exist")
+        );
     }
 
     public static List<Double> getElementValueAsDoubleList(TaskElementValueAccessor taskElementValueAccessor) {
@@ -243,8 +245,9 @@ public final class TaskElementValueUtils {
     }
 
     public static LocalDate getElementValueAsLocalDate(TaskElementValueAccessor taskElementValueAccessor) {
-        return findElementValueAsLocalDate(taskElementValueAccessor)
-            .orElseThrow(() -> new KuFlowRestClientException("Element value doesn't exist"));
+        return findElementValueAsLocalDate(taskElementValueAccessor).orElseThrow(
+            () -> new KuFlowRestClientException("Element value doesn't exist")
+        );
     }
 
     public static List<LocalDate> getElementValueAsLocalDateList(TaskElementValueAccessor taskElementValueAccessor) {
@@ -274,8 +277,9 @@ public final class TaskElementValueUtils {
     }
 
     public static Map<String, Object> getElementValueAsMap(TaskElementValueAccessor taskElementValueAccessor) {
-        return findElementValueAsMap(taskElementValueAccessor)
-            .orElseThrow(() -> new KuFlowRestClientException("Element value doesn't exist"));
+        return findElementValueAsMap(taskElementValueAccessor).orElseThrow(
+            () -> new KuFlowRestClientException("Element value doesn't exist")
+        );
     }
 
     public static List<Map<String, Object>> getElementValueAsMapList(TaskElementValueAccessor taskElementValueAccessor) {
@@ -305,8 +309,9 @@ public final class TaskElementValueUtils {
     }
 
     public static TaskElementValueDocumentItem getElementValueAsDocument(TaskElementValueAccessor taskElementValueAccessor) {
-        return findElementValueAsDocument(taskElementValueAccessor)
-            .orElseThrow(() -> new KuFlowRestClientException("Element value doesn't exist"));
+        return findElementValueAsDocument(taskElementValueAccessor).orElseThrow(
+            () -> new KuFlowRestClientException("Element value doesn't exist")
+        );
     }
 
     public static List<TaskElementValueDocumentItem> getElementValueAsDocumentList(TaskElementValueAccessor taskElementValueAccessor) {
@@ -332,8 +337,9 @@ public final class TaskElementValueUtils {
     }
 
     public static TaskElementValuePrincipalItem getElementValueAsPrincipal(TaskElementValueAccessor taskElementValueAccessor) {
-        return findElementValueAsPrincipal(taskElementValueAccessor)
-            .orElseThrow(() -> new KuFlowRestClientException("Element value doesn't exist"));
+        return findElementValueAsPrincipal(taskElementValueAccessor).orElseThrow(
+            () -> new KuFlowRestClientException("Element value doesn't exist")
+        );
     }
 
     public static List<TaskElementValuePrincipalItem> getElementValueAsPrincipalList(TaskElementValueAccessor taskElementValueAccessor) {

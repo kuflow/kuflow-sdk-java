@@ -65,8 +65,9 @@ public class WorkerInformationNotifierTest {
 
         WorkerOperations workerOperations = mock(WorkerOperations.class);
         when(this.kuFlowRestClient.getWorkerOperations()).thenReturn(workerOperations);
-        when(workerOperations.createWorkerWithResponse(workerArgumentCaptor.capture(), contextArgumentCaptor.capture()))
-            .thenAnswer(this.prepareCreateWorkerWithResponseAnswer(Duration.ofMinutes(5)));
+        when(workerOperations.createWorkerWithResponse(workerArgumentCaptor.capture(), contextArgumentCaptor.capture())).thenAnswer(
+            this.prepareCreateWorkerWithResponseAnswer(Duration.ofMinutes(5))
+        );
 
         WorkerInformation workerInformation = this.prepareWorkerInfo();
 

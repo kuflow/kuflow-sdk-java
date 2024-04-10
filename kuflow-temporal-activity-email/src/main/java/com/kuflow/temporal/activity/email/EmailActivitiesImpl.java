@@ -45,8 +45,7 @@ public class EmailActivitiesImpl implements EmailActivities {
 
         this.validateEmail(email);
 
-        EmailDto emailDto = EmailDto
-            .builder()
+        EmailDto emailDto = EmailDto.builder()
             .withTo(email.getTo())
             .withTemplate(email.getTemplate())
             .withVariables(email.getVariables())
