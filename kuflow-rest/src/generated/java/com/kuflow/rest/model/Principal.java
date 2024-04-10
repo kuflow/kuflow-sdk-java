@@ -23,43 +23,43 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
  * The Principal model.
  */
 @Fluent
-public final class Principal {
+public final class Principal implements JsonSerializable<Principal> {
 
     /*
      * The id property.
      */
-    @JsonProperty(value = "id")
     private UUID id;
 
     /*
      * The type property.
      */
-    @JsonProperty(value = "type")
     private PrincipalType type;
 
     /*
      * The name property.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The user property.
      */
-    @JsonProperty(value = "user")
     private PrincipalUser user;
 
     /*
      * The application property.
      */
-    @JsonProperty(value = "application")
     private PrincipalApplication application;
 
     /**
@@ -165,5 +165,53 @@ public final class Principal {
     public Principal setApplication(PrincipalApplication application) {
         this.application = application;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", Objects.toString(this.id, null));
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("user", this.user);
+        jsonWriter.writeJsonField("application", this.application);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Principal from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Principal if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Principal.
+     */
+    public static Principal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Principal deserializedPrincipal = new Principal();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPrincipal.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("type".equals(fieldName)) {
+                    deserializedPrincipal.type = PrincipalType.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedPrincipal.name = reader.getString();
+                } else if ("user".equals(fieldName)) {
+                    deserializedPrincipal.user = PrincipalUser.fromJson(reader);
+                } else if ("application".equals(fieldName)) {
+                    deserializedPrincipal.application = PrincipalApplication.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrincipal;
+        });
     }
 }

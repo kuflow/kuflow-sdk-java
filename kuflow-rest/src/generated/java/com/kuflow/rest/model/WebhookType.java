@@ -22,9 +22,6 @@
  */
 package com.kuflow.rest.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Type of the Event.
  */
@@ -54,7 +51,6 @@ public enum WebhookType {
      * @param value the serialized value to parse.
      * @return the parsed WebhookType object, or null if unable to parse.
      */
-    @JsonCreator
     public static WebhookType fromString(String value) {
         if (value == null) {
             return null;
@@ -71,7 +67,6 @@ public enum WebhookType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

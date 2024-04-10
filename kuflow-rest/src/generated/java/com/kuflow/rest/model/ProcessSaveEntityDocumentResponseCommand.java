@@ -23,21 +23,23 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The ProcessSaveEntityDocumentResponseCommand model.
  */
 @Fluent
-public final class ProcessSaveEntityDocumentResponseCommand {
+public final class ProcessSaveEntityDocumentResponseCommand implements JsonSerializable<ProcessSaveEntityDocumentResponseCommand> {
 
     /*
      * JSON value representing the uploaded file.
      *
      * Example: `kuflow-file:uri=xxx-yyy-zzz;type=application/json;size=500;name=file.json;`
-     *
      */
-    @JsonProperty(value = "value", required = true)
     private String value;
 
     /**
@@ -47,10 +49,10 @@ public final class ProcessSaveEntityDocumentResponseCommand {
 
     /**
      * Get the value property: JSON value representing the uploaded file.
-     * <p>
+     *
      * Example: `kuflow-file:uri=xxx-yyy-zzz;type=application/json;size=500;name=file.json;`.
      *
-     * @return the value.
+     * @return the value value.
      */
     public String getValue() {
         return this.value;
@@ -58,14 +60,52 @@ public final class ProcessSaveEntityDocumentResponseCommand {
 
     /**
      * Set the value property: JSON value representing the uploaded file.
-     * <p>
+     *
      * Example: `kuflow-file:uri=xxx-yyy-zzz;type=application/json;size=500;name=file.json;`.
      *
-     * @param value the value to set.
+     * @param value the value value to set.
      * @return the ProcessSaveEntityDocumentResponseCommand object itself.
      */
     public ProcessSaveEntityDocumentResponseCommand setValue(String value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProcessSaveEntityDocumentResponseCommand from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProcessSaveEntityDocumentResponseCommand if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ProcessSaveEntityDocumentResponseCommand.
+     */
+    public static ProcessSaveEntityDocumentResponseCommand fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProcessSaveEntityDocumentResponseCommand deserializedProcessSaveEntityDocumentResponseCommand =
+                new ProcessSaveEntityDocumentResponseCommand();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedProcessSaveEntityDocumentResponseCommand.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProcessSaveEntityDocumentResponseCommand;
+        });
     }
 }

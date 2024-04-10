@@ -23,25 +23,28 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
  * Command to assign task, only one option is required.
  */
 @Fluent
-public final class TaskAssignCommand {
+public final class TaskAssignCommand implements JsonSerializable<TaskAssignCommand> {
 
     /*
      * The principalId property.
      */
-    @JsonProperty(value = "principalId")
     private UUID principalId;
 
     /*
      * The email property.
      */
-    @JsonProperty(value = "email")
     private String email;
 
     /**
@@ -87,5 +90,46 @@ public final class TaskAssignCommand {
     public TaskAssignCommand setEmail(String email) {
         this.email = email;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("principalId", Objects.toString(this.principalId, null));
+        jsonWriter.writeStringField("email", this.email);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TaskAssignCommand from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TaskAssignCommand if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TaskAssignCommand.
+     */
+    public static TaskAssignCommand fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TaskAssignCommand deserializedTaskAssignCommand = new TaskAssignCommand();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalId".equals(fieldName)) {
+                    deserializedTaskAssignCommand.principalId = reader.getNullable(
+                        nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    );
+                } else if ("email".equals(fieldName)) {
+                    deserializedTaskAssignCommand.email = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTaskAssignCommand;
+        });
     }
 }

@@ -22,9 +22,6 @@
  */
 package com.kuflow.rest.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Process state.
  */
@@ -59,7 +56,6 @@ public enum ProcessState {
      * @param value the serialized value to parse.
      * @return the parsed ProcessState object, or null if unable to parse.
      */
-    @JsonCreator
     public static ProcessState fromString(String value) {
         if (value == null) {
             return null;
@@ -76,7 +72,6 @@ public enum ProcessState {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

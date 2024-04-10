@@ -23,25 +23,27 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * The TenantUserMetadata model.
  */
 @Fluent
-public final class TenantUserMetadata {
+public final class TenantUserMetadata implements JsonSerializable<TenantUserMetadata> {
 
     /*
      * The valid property.
      */
-    @JsonProperty(value = "valid", required = true)
     private boolean valid;
 
     /*
      * Dictionary of <any>
      */
-    @JsonProperty(value = "value", required = true)
     private Map<String, Object> value;
 
     /**
@@ -87,5 +89,46 @@ public final class TenantUserMetadata {
     public TenantUserMetadata setValue(Map<String, Object> value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("valid", this.valid);
+        jsonWriter.writeMapField("value", this.value, (writer, element) -> writer.writeUntyped(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TenantUserMetadata from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TenantUserMetadata if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TenantUserMetadata.
+     */
+    public static TenantUserMetadata fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TenantUserMetadata deserializedTenantUserMetadata = new TenantUserMetadata();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("valid".equals(fieldName)) {
+                    deserializedTenantUserMetadata.valid = reader.getBoolean();
+                } else if ("value".equals(fieldName)) {
+                    Map<String, Object> value = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedTenantUserMetadata.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTenantUserMetadata;
+        });
     }
 }

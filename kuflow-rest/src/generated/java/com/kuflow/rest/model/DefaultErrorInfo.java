@@ -23,36 +23,36 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The DefaultErrorInfo model.
  */
 @Fluent
-public final class DefaultErrorInfo {
+public final class DefaultErrorInfo implements JsonSerializable<DefaultErrorInfo> {
 
     /*
      * The code property.
      */
-    @JsonProperty(value = "code", required = true)
     private String code;
 
     /*
      * The message property.
      */
-    @JsonProperty(value = "message", required = true)
     private String message;
 
     /*
      * The location property.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * The locationType property.
      */
-    @JsonProperty(value = "locationType")
     private String locationType;
 
     /**
@@ -138,5 +138,51 @@ public final class DefaultErrorInfo {
     public DefaultErrorInfo setLocationType(String locationType) {
         this.locationType = locationType;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeStringField("locationType", this.locationType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DefaultErrorInfo from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DefaultErrorInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DefaultErrorInfo.
+     */
+    public static DefaultErrorInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DefaultErrorInfo deserializedDefaultErrorInfo = new DefaultErrorInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedDefaultErrorInfo.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedDefaultErrorInfo.message = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDefaultErrorInfo.location = reader.getString();
+                } else if ("locationType".equals(fieldName)) {
+                    deserializedDefaultErrorInfo.locationType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDefaultErrorInfo;
+        });
     }
 }

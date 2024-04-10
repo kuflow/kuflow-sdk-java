@@ -45,7 +45,7 @@ models-subpackage: model
 customization-class: src/main/java/KuFlowClientCustomization.java
 
 use-extension:
-  "@autorest/java": "4.1.27"
+  "@autorest/java": "4.1.28"
 
 modelerfour:
   seal-single-value-enum-by-default: false

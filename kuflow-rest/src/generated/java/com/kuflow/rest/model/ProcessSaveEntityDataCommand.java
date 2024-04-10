@@ -23,19 +23,22 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * The ProcessSaveEntityDataCommand model.
  */
 @Fluent
-public final class ProcessSaveEntityDataCommand {
+public final class ProcessSaveEntityDataCommand implements JsonSerializable<ProcessSaveEntityDataCommand> {
 
     /*
      * json value filled that complain with the related json schema.
      */
-    @JsonProperty(value = "data", required = true)
     private Map<String, Object> data;
 
     /**
@@ -61,5 +64,43 @@ public final class ProcessSaveEntityDataCommand {
     public ProcessSaveEntityDataCommand setData(Map<String, Object> data) {
         this.data = data;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("data", this.data, (writer, element) -> writer.writeUntyped(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProcessSaveEntityDataCommand from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProcessSaveEntityDataCommand if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ProcessSaveEntityDataCommand.
+     */
+    public static ProcessSaveEntityDataCommand fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProcessSaveEntityDataCommand deserializedProcessSaveEntityDataCommand = new ProcessSaveEntityDataCommand();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("data".equals(fieldName)) {
+                    Map<String, Object> data = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedProcessSaveEntityDataCommand.data = data;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProcessSaveEntityDataCommand;
+        });
     }
 }

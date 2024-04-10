@@ -23,43 +23,43 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
  * Robot source type.
  */
 @Fluent
-public final class RobotSourceFile {
+public final class RobotSourceFile implements JsonSerializable<RobotSourceFile> {
 
     /*
      * Robot ID.
      */
-    @JsonProperty(value = "id", required = true)
     private UUID id;
 
     /*
      * Source file name.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Source file content type.
      */
-    @JsonProperty(value = "contentType", required = true)
     private String contentType;
 
     /*
      * Source file length.
      */
-    @JsonProperty(value = "contentLength", required = true)
     private long contentLength;
 
     /*
      * Source file to check the integrity.
      */
-    @JsonProperty(value = "contentHash", required = true)
     private String contentHash;
 
     /**
@@ -165,5 +165,54 @@ public final class RobotSourceFile {
     public RobotSourceFile setContentHash(String contentHash) {
         this.contentHash = contentHash;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", Objects.toString(this.id, null));
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("contentType", this.contentType);
+        jsonWriter.writeLongField("contentLength", this.contentLength);
+        jsonWriter.writeStringField("contentHash", this.contentHash);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RobotSourceFile from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RobotSourceFile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RobotSourceFile.
+     */
+    public static RobotSourceFile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RobotSourceFile deserializedRobotSourceFile = new RobotSourceFile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRobotSourceFile.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("name".equals(fieldName)) {
+                    deserializedRobotSourceFile.name = reader.getString();
+                } else if ("contentType".equals(fieldName)) {
+                    deserializedRobotSourceFile.contentType = reader.getString();
+                } else if ("contentLength".equals(fieldName)) {
+                    deserializedRobotSourceFile.contentLength = reader.getLong();
+                } else if ("contentHash".equals(fieldName)) {
+                    deserializedRobotSourceFile.contentHash = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRobotSourceFile;
+        });
     }
 }

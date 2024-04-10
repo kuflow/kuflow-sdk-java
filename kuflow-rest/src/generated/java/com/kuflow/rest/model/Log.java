@@ -23,38 +23,40 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
  * The Log model.
  */
 @Fluent
-public final class Log {
+public final class Log implements JsonSerializable<Log> {
 
     /*
      * The id property.
      */
-    @JsonProperty(value = "id")
     private UUID id;
 
     /*
      * When this model was created.
      */
-    @JsonProperty(value = "createdAt")
     private OffsetDateTime createdAt;
 
     /*
      * The message property.
      */
-    @JsonProperty(value = "message", required = true)
     private String message;
 
     /*
      * The level property.
      */
-    @JsonProperty(value = "level", required = true)
     private LogLevel level;
 
     /**
@@ -140,5 +142,54 @@ public final class Log {
     public Log setLevel(LogLevel level) {
         this.level = level;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("level", this.level == null ? null : this.level.toString());
+        jsonWriter.writeStringField("id", Objects.toString(this.id, null));
+        jsonWriter.writeStringField(
+            "createdAt",
+            this.createdAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdAt)
+        );
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Log from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Log if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Log.
+     */
+    public static Log fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Log deserializedLog = new Log();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("message".equals(fieldName)) {
+                    deserializedLog.message = reader.getString();
+                } else if ("level".equals(fieldName)) {
+                    deserializedLog.level = LogLevel.fromString(reader.getString());
+                } else if ("id".equals(fieldName)) {
+                    deserializedLog.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("createdAt".equals(fieldName)) {
+                    deserializedLog.createdAt = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLog;
+        });
     }
 }

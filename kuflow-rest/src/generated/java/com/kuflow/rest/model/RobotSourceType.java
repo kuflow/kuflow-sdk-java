@@ -22,9 +22,6 @@
  */
 package com.kuflow.rest.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Robot source type.
  */
@@ -54,7 +51,6 @@ public enum RobotSourceType {
      * @param value the serialized value to parse.
      * @return the parsed RobotSourceType object, or null if unable to parse.
      */
-    @JsonCreator
     public static RobotSourceType fromString(String value) {
         if (value == null) {
             return null;
@@ -71,7 +67,6 @@ public enum RobotSourceType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

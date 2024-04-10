@@ -22,9 +22,6 @@
  */
 package com.kuflow.rest.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Audited object Types.
  */
@@ -84,7 +81,6 @@ public enum AuditedObjectType {
      * @param value the serialized value to parse.
      * @return the parsed AuditedObjectType object, or null if unable to parse.
      */
-    @JsonCreator
     public static AuditedObjectType fromString(String value) {
         if (value == null) {
             return null;
@@ -101,7 +97,6 @@ public enum AuditedObjectType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

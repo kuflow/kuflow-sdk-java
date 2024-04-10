@@ -23,28 +23,41 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The TaskElementValueNumber model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("NUMBER")
 @Fluent
 public final class TaskElementValueNumber extends TaskElementValue {
 
     /*
+     * The type property.
+     */
+    private TaskElementValueType type = TaskElementValueType.NUMBER;
+
+    /*
      * The value property.
      */
-    @JsonProperty(value = "value")
     private Double value;
 
     /**
      * Creates an instance of TaskElementValueNumber class.
      */
     public TaskElementValueNumber() {}
+
+    /**
+     * Get the type property: The type property.
+     *
+     * @return the type value.
+     */
+    @Override
+    public TaskElementValueType getType() {
+        return this.type;
+    }
 
     /**
      * Get the value property: The value property.
@@ -73,5 +86,47 @@ public final class TaskElementValueNumber extends TaskElementValue {
     public TaskElementValueNumber setValid(Boolean valid) {
         super.setValid(valid);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("valid", isValid());
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeNumberField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TaskElementValueNumber from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TaskElementValueNumber if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TaskElementValueNumber.
+     */
+    public static TaskElementValueNumber fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TaskElementValueNumber deserializedTaskElementValueNumber = new TaskElementValueNumber();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("valid".equals(fieldName)) {
+                    deserializedTaskElementValueNumber.setValid(reader.getNullable(JsonReader::getBoolean));
+                } else if ("type".equals(fieldName)) {
+                    deserializedTaskElementValueNumber.type = TaskElementValueType.fromString(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    deserializedTaskElementValueNumber.value = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTaskElementValueNumber;
+        });
     }
 }

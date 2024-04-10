@@ -23,25 +23,28 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
  * The PrincipalUser model.
  */
 @Fluent
-public final class PrincipalUser {
+public final class PrincipalUser implements JsonSerializable<PrincipalUser> {
 
     /*
      * The id property.
      */
-    @JsonProperty(value = "id")
     private UUID id;
 
     /*
      * The email property.
      */
-    @JsonProperty(value = "email")
     private String email;
 
     /**
@@ -87,5 +90,44 @@ public final class PrincipalUser {
     public PrincipalUser setEmail(String email) {
         this.email = email;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", Objects.toString(this.id, null));
+        jsonWriter.writeStringField("email", this.email);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrincipalUser from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrincipalUser if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrincipalUser.
+     */
+    public static PrincipalUser fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrincipalUser deserializedPrincipalUser = new PrincipalUser();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPrincipalUser.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("email".equals(fieldName)) {
+                    deserializedPrincipalUser.email = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrincipalUser;
+        });
     }
 }

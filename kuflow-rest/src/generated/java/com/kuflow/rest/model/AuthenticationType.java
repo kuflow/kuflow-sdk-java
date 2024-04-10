@@ -22,9 +22,6 @@
  */
 package com.kuflow.rest.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Defines values for AuthenticationType.
  */
@@ -59,7 +56,6 @@ public enum AuthenticationType {
      * @param value the serialized value to parse.
      * @return the parsed AuthenticationType object, or null if unable to parse.
      */
-    @JsonCreator
     public static AuthenticationType fromString(String value) {
         if (value == null) {
             return null;
@@ -76,7 +72,6 @@ public enum AuthenticationType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

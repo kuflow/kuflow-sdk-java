@@ -22,9 +22,6 @@
  */
 package com.kuflow.rest.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Process element value types.
  */
@@ -54,7 +51,6 @@ public enum ProcessElementValueType {
      * @param value the serialized value to parse.
      * @return the parsed ProcessElementValueType object, or null if unable to parse.
      */
-    @JsonCreator
     public static ProcessElementValueType fromString(String value) {
         if (value == null) {
             return null;
@@ -71,7 +67,6 @@ public enum ProcessElementValueType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

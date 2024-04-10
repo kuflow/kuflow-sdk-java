@@ -23,25 +23,27 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Json form values, used when the render type selected is JSON Forms.
  */
 @Fluent
-public final class JsonFormsValue {
+public final class JsonFormsValue implements JsonSerializable<JsonFormsValue> {
 
     /*
      * true if the data complain the related json schema.
      */
-    @JsonProperty(value = "valid")
     private Boolean valid;
 
     /*
      * json value filled that complain with the related json schema.
      */
-    @JsonProperty(value = "data")
     private Map<String, Object> data;
 
     /**
@@ -87,5 +89,45 @@ public final class JsonFormsValue {
     public JsonFormsValue setData(Map<String, Object> data) {
         this.data = data;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("valid", this.valid);
+        jsonWriter.writeMapField("data", this.data, (writer, element) -> writer.writeUntyped(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JsonFormsValue from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JsonFormsValue if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JsonFormsValue.
+     */
+    public static JsonFormsValue fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JsonFormsValue deserializedJsonFormsValue = new JsonFormsValue();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("valid".equals(fieldName)) {
+                    deserializedJsonFormsValue.valid = reader.getNullable(JsonReader::getBoolean);
+                } else if ("data".equals(fieldName)) {
+                    Map<String, Object> data = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedJsonFormsValue.data = data;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJsonFormsValue;
+        });
     }
 }

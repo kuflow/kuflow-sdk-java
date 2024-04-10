@@ -23,9 +23,14 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -37,49 +42,41 @@ public final class Robot extends AbstractAudited {
     /*
      * Robot ID.
      */
-    @JsonProperty(value = "id", required = true)
     private UUID id;
 
     /*
      * Robot Code.
      */
-    @JsonProperty(value = "code", required = true)
     private String code;
 
     /*
      * Robot name.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Robot description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Robot source type
      */
-    @JsonProperty(value = "sourceType", required = true)
     private RobotSourceType sourceType;
 
     /*
      * Robot source type
      */
-    @JsonProperty(value = "sourceFile")
     private RobotSourceFile sourceFile;
 
     /*
      * Environment variables to load when the robot is executed.
      */
-    @JsonProperty(value = "environmentVariables")
     private Map<String, String> environmentVariables;
 
     /*
      * Tenant ID.
      */
-    @JsonProperty(value = "tenantId")
     private UUID tenantId;
 
     /**
@@ -290,5 +287,87 @@ public final class Robot extends AbstractAudited {
     public Robot setLastModifiedAt(OffsetDateTime lastModifiedAt) {
         super.setLastModifiedAt(lastModifiedAt);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectType", getObjectType() == null ? null : getObjectType().toString());
+        jsonWriter.writeStringField("createdBy", Objects.toString(getCreatedBy(), null));
+        jsonWriter.writeStringField(
+            "createdAt",
+            getCreatedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreatedAt())
+        );
+        jsonWriter.writeStringField("lastModifiedBy", Objects.toString(getLastModifiedBy(), null));
+        jsonWriter.writeStringField(
+            "lastModifiedAt",
+            getLastModifiedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getLastModifiedAt())
+        );
+        jsonWriter.writeStringField("id", Objects.toString(this.id, null));
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("sourceType", this.sourceType == null ? null : this.sourceType.toString());
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeJsonField("sourceFile", this.sourceFile);
+        jsonWriter.writeMapField("environmentVariables", this.environmentVariables, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Robot from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Robot if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Robot.
+     */
+    public static Robot fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Robot deserializedRobot = new Robot();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectType".equals(fieldName)) {
+                    deserializedRobot.setObjectType(AuditedObjectType.fromString(reader.getString()));
+                } else if ("createdBy".equals(fieldName)) {
+                    deserializedRobot.setCreatedBy(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
+                } else if ("createdAt".equals(fieldName)) {
+                    deserializedRobot.setCreatedAt(reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedRobot.setLastModifiedBy(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
+                } else if ("lastModifiedAt".equals(fieldName)) {
+                    deserializedRobot.setLastModifiedAt(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()))
+                    );
+                } else if ("id".equals(fieldName)) {
+                    deserializedRobot.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("code".equals(fieldName)) {
+                    deserializedRobot.code = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRobot.name = reader.getString();
+                } else if ("sourceType".equals(fieldName)) {
+                    deserializedRobot.sourceType = RobotSourceType.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedRobot.description = reader.getString();
+                } else if ("sourceFile".equals(fieldName)) {
+                    deserializedRobot.sourceFile = RobotSourceFile.fromJson(reader);
+                } else if ("environmentVariables".equals(fieldName)) {
+                    Map<String, String> environmentVariables = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRobot.environmentVariables = environmentVariables;
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedRobot.tenantId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRobot;
+        });
     }
 }

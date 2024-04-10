@@ -23,8 +23,13 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -36,25 +41,21 @@ public final class TenantUser extends AbstractAudited {
     /*
      * The id property.
      */
-    @JsonProperty(value = "id", required = true)
     private UUID id;
 
     /*
      * The metadata property.
      */
-    @JsonProperty(value = "metadata")
     private TenantUserMetadata metadata;
 
     /*
      * The principal property.
      */
-    @JsonProperty(value = "principal", required = true)
     private Principal principal;
 
     /*
      * The tenantId property.
      */
-    @JsonProperty(value = "tenantId", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private UUID tenantId;
 
     /**
@@ -174,5 +175,77 @@ public final class TenantUser extends AbstractAudited {
     public TenantUser setLastModifiedAt(OffsetDateTime lastModifiedAt) {
         super.setLastModifiedAt(lastModifiedAt);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectType", getObjectType() == null ? null : getObjectType().toString());
+        jsonWriter.writeStringField("createdBy", Objects.toString(getCreatedBy(), null));
+        jsonWriter.writeStringField(
+            "createdAt",
+            getCreatedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreatedAt())
+        );
+        jsonWriter.writeStringField("lastModifiedBy", Objects.toString(getLastModifiedBy(), null));
+        jsonWriter.writeStringField(
+            "lastModifiedAt",
+            getLastModifiedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getLastModifiedAt())
+        );
+        jsonWriter.writeStringField("id", Objects.toString(this.id, null));
+        jsonWriter.writeJsonField("principal", this.principal);
+        jsonWriter.writeJsonField("metadata", this.metadata);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TenantUser from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TenantUser if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TenantUser.
+     */
+    public static TenantUser fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TenantUser deserializedTenantUser = new TenantUser();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectType".equals(fieldName)) {
+                    deserializedTenantUser.setObjectType(AuditedObjectType.fromString(reader.getString()));
+                } else if ("createdBy".equals(fieldName)) {
+                    deserializedTenantUser.setCreatedBy(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
+                } else if ("createdAt".equals(fieldName)) {
+                    deserializedTenantUser.setCreatedAt(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()))
+                    );
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedTenantUser.setLastModifiedBy(
+                        reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()))
+                    );
+                } else if ("lastModifiedAt".equals(fieldName)) {
+                    deserializedTenantUser.setLastModifiedAt(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()))
+                    );
+                } else if ("id".equals(fieldName)) {
+                    deserializedTenantUser.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("principal".equals(fieldName)) {
+                    deserializedTenantUser.principal = Principal.fromJson(reader);
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedTenantUser.tenantId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedTenantUser.metadata = TenantUserMetadata.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTenantUser;
+        });
     }
 }

@@ -23,12 +23,17 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.kuflow.rest.util.ProcessPageItemUtils;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -41,43 +46,36 @@ public final class ProcessPageItem extends AbstractAudited {
     /*
      * Process ID.
      */
-    @JsonProperty(value = "id")
     private UUID id;
 
     /*
      * Process subject.
      */
-    @JsonProperty(value = "subject")
     private String subject;
 
     /*
      * Process state
      */
-    @JsonProperty(value = "state")
     private ProcessState state;
 
     /*
      * The processDefinition property.
      */
-    @JsonProperty(value = "processDefinition", required = true)
     private ProcessDefinitionSummary processDefinition;
 
     /*
      * Process element values, an ElementValueDocument is not allowed.
      */
-    @JsonProperty(value = "elementValues")
     private Map<String, List<ProcessElementValue>> elementValues;
 
     /*
      * The initiator property.
      */
-    @JsonProperty(value = "initiator")
     private Principal initiator;
 
     /*
      * Tenant ID.
      */
-    @JsonProperty(value = "tenantId")
     private UUID tenantId;
 
     /**
@@ -268,6 +266,97 @@ public final class ProcessPageItem extends AbstractAudited {
     public ProcessPageItem setLastModifiedAt(OffsetDateTime lastModifiedAt) {
         super.setLastModifiedAt(lastModifiedAt);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectType", getObjectType() == null ? null : getObjectType().toString());
+        jsonWriter.writeStringField("createdBy", Objects.toString(getCreatedBy(), null));
+        jsonWriter.writeStringField(
+            "createdAt",
+            getCreatedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreatedAt())
+        );
+        jsonWriter.writeStringField("lastModifiedBy", Objects.toString(getLastModifiedBy(), null));
+        jsonWriter.writeStringField(
+            "lastModifiedAt",
+            getLastModifiedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getLastModifiedAt())
+        );
+        jsonWriter.writeJsonField("processDefinition", this.processDefinition);
+        jsonWriter.writeStringField("id", Objects.toString(this.id, null));
+        jsonWriter.writeStringField("subject", this.subject);
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeMapField(
+            "elementValues",
+            this.elementValues,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeJson(element1))
+        );
+        jsonWriter.writeJsonField("initiator", this.initiator);
+        jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProcessPageItem from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProcessPageItem if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ProcessPageItem.
+     */
+    public static ProcessPageItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProcessPageItem deserializedProcessPageItem = new ProcessPageItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectType".equals(fieldName)) {
+                    deserializedProcessPageItem.setObjectType(AuditedObjectType.fromString(reader.getString()));
+                } else if ("createdBy".equals(fieldName)) {
+                    deserializedProcessPageItem.setCreatedBy(
+                        reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()))
+                    );
+                } else if ("createdAt".equals(fieldName)) {
+                    deserializedProcessPageItem.setCreatedAt(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()))
+                    );
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedProcessPageItem.setLastModifiedBy(
+                        reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()))
+                    );
+                } else if ("lastModifiedAt".equals(fieldName)) {
+                    deserializedProcessPageItem.setLastModifiedAt(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()))
+                    );
+                } else if ("processDefinition".equals(fieldName)) {
+                    deserializedProcessPageItem.processDefinition = ProcessDefinitionSummary.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedProcessPageItem.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("subject".equals(fieldName)) {
+                    deserializedProcessPageItem.subject = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedProcessPageItem.state = ProcessState.fromString(reader.getString());
+                } else if ("elementValues".equals(fieldName)) {
+                    Map<String, List<ProcessElementValue>> elementValues = reader.readMap(
+                        reader1 -> reader1.readArray(reader2 -> ProcessElementValue.fromJson(reader2))
+                    );
+                    deserializedProcessPageItem.elementValues = elementValues;
+                } else if ("initiator".equals(fieldName)) {
+                    deserializedProcessPageItem.initiator = Principal.fromJson(reader);
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedProcessPageItem.tenantId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProcessPageItem;
+        });
     }
 
     /**
