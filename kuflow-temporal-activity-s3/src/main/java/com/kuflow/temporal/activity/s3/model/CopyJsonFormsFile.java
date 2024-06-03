@@ -40,7 +40,7 @@ public class CopyJsonFormsFile {
     private String key;
 
     /**
-     * The json forms property path
+     * The JSON Forms property path
      *
      * @return the propertyPath
      */
@@ -51,7 +51,7 @@ public class CopyJsonFormsFile {
     /**
      * @see #getPropertyPath()
      *
-     * @param propertyPath the json forms property path
+     * @param propertyPath the JSON Forms property path
      */
     public void setPropertyPath(String propertyPath) {
         this.propertyPath = propertyPath;
