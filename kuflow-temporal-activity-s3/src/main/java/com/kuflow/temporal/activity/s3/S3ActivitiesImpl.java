@@ -26,19 +26,25 @@ import static java.util.stream.Collectors.toList;
 
 import com.azure.core.util.BinaryData;
 import com.kuflow.rest.KuFlowRestClient;
+import com.kuflow.rest.KuFlowRestClientException;
+import com.kuflow.rest.model.JsonFormsFile;
 import com.kuflow.rest.model.Task;
 import com.kuflow.rest.model.TaskElementValueDocumentItem;
 import com.kuflow.rest.operation.TaskOperations;
 import com.kuflow.rest.util.TaskUtils;
 import com.kuflow.temporal.activity.s3.model.CopyElementFile;
+import com.kuflow.temporal.activity.s3.model.CopyJsonFormsFile;
 import com.kuflow.temporal.activity.s3.model.CopyTaskElementFilesRequest;
 import com.kuflow.temporal.activity.s3.model.CopyTaskElementFilesResponse;
+import com.kuflow.temporal.activity.s3.model.CopyTaskJsonFormsFilesRequest;
+import com.kuflow.temporal.activity.s3.model.CopyTaskJsonFormsFilesResponse;
 import com.kuflow.temporal.common.error.KuFlowTemporalException;
 import io.temporal.failure.ApplicationFailure;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import javax.annotation.Nonnull;
 import org.apache.commons.io.FilenameUtils;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -106,6 +112,69 @@ public class S3ActivitiesImpl implements S3Activities {
         return result;
     }
 
+    @Nonnull
+    @Override
+    public CopyTaskJsonFormsFilesResponse copyTaskJsonFormsFiles(@Nonnull CopyTaskJsonFormsFilesRequest request) {
+        CopyTaskJsonFormsFilesResponse result = new CopyTaskJsonFormsFilesResponse();
+
+        Task task = this.taskOperations.retrieveTask(request.getSourceTaskId());
+
+        String propertyPath = request.getSourceJsonFormsPropertyPath();
+
+        List<Object> jsonFormsFiles = this.getJsonFormsFiles(task, propertyPath);
+
+        if (jsonFormsFiles == null || jsonFormsFiles.isEmpty()) {
+            return result;
+        }
+
+        String targetBucket = this.getTargetBucket(request);
+
+        List<CopyJsonFormsFile> targetFiles = jsonFormsFiles
+            .stream()
+            .map(sourceJsonFormsFile -> {
+                Optional<JsonFormsFile> jsonFormsFileOptional = JsonFormsFile.from(sourceJsonFormsFile.toString());
+                if (jsonFormsFileOptional.isEmpty()) {
+                    return null;
+                }
+                JsonFormsFile jsonFormsFile = jsonFormsFileOptional.get();
+
+                String targetKey = this.getTargetKey(request, jsonFormsFiles, jsonFormsFile);
+
+                this.putObject(task, jsonFormsFile, targetBucket, targetKey);
+
+                CopyJsonFormsFile targetFile = new CopyJsonFormsFile();
+                targetFile.setPropertyPath(propertyPath);
+                targetFile.setBucket(targetBucket);
+                targetFile.setKey(targetKey);
+
+                return targetFile;
+            })
+            .filter(Objects::nonNull)
+            .collect(toList());
+
+        result.setFiles(targetFiles);
+
+        return result;
+    }
+
+    private List<Object> getJsonFormsFiles(Task task, String propertyPath) {
+        try {
+            Optional<List<Object>> jsonFormsPropertyAsList = TaskUtils.findJsonFormsPropertyAsList(task, propertyPath);
+            if (jsonFormsPropertyAsList.isPresent()) {
+                return jsonFormsPropertyAsList.get();
+            }
+        } catch (KuFlowRestClientException ignored) {}
+
+        try {
+            Optional<String> jsonFormsPropertyAsString = TaskUtils.findJsonFormsPropertyAsString(task, propertyPath);
+            if (jsonFormsPropertyAsString.isPresent()) {
+                return List.of(jsonFormsPropertyAsString.get());
+            }
+        } catch (KuFlowRestClientException ignored) {}
+
+        return List.of();
+    }
+
     private void putObject(Task task, TaskElementValueDocumentItem elementValueDocument, String targetBucket, String targetKey) {
         if (elementValueDocument.getContentLength() == null) {
             throw ApplicationFailure.newNonRetryableFailure("ContentLength required", "KuFlowActivities.validation");
@@ -130,6 +199,30 @@ public class S3ActivitiesImpl implements S3Activities {
         }
     }
 
+    private void putObject(Task task, JsonFormsFile jsonFormsFile, String targetBucket, String targetKey) {
+        if (jsonFormsFile.getSize() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("Size required", "KuFlowActivities.validation");
+        }
+        if (jsonFormsFile.getName() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("Name required", "KuFlowActivities.validation");
+        }
+
+        BinaryData sourceFile = this.taskOperations.actionsTaskDownloadJsonFormsValueDocument(task.getId(), jsonFormsFile.getUri());
+        try (InputStream sourceInputStream = sourceFile.toStream()) {
+            RequestBody requestBody = RequestBody.fromInputStream(sourceInputStream, jsonFormsFile.getSize());
+            PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                .bucket(targetBucket)
+                .contentType(jsonFormsFile.getType())
+                .contentDisposition(String.format("attachment; filename=\"%s\"", jsonFormsFile.getName()))
+                .key(targetKey)
+                .build();
+
+            this.s3Client.putObject(putObjectRequest, requestBody);
+        } catch (IOException e) {
+            throw new KuFlowTemporalException("Input stream error", e);
+        }
+    }
+
     private String getTargetKey(
         CopyTaskElementFilesRequest request,
         List<TaskElementValueDocumentItem> elementValues,
@@ -141,7 +234,7 @@ public class S3ActivitiesImpl implements S3Activities {
 
             int sourceElementValueDocumentIndex = elementValues.indexOf(elementValueDocument);
             if (sourceElementValueDocumentIndex > 0) {
-                String path = FilenameUtils.getPath(targetKey);
+                String path = FilenameUtils.getPathNoEndSeparator(targetKey);
                 String baseName = FilenameUtils.getBaseName(targetKey);
                 String extension = FilenameUtils.getExtension(targetKey);
                 targetKey = String.format("%s/%s_%d_%s", path, baseName, sourceElementValueDocumentIndex, extension);
@@ -150,7 +243,31 @@ public class S3ActivitiesImpl implements S3Activities {
         return targetKey;
     }
 
+    private String getTargetKey(CopyTaskJsonFormsFilesRequest request, List<Object> jsonFormsFiles, JsonFormsFile jsonFormsFile) {
+        String targetKey = jsonFormsFile.getUri().replace("ku:", "");
+        if (request.getTargetKey() != null) {
+            targetKey = request.getTargetKey();
+
+            int sourceJsonFormsFileIndex = jsonFormsFiles.indexOf(jsonFormsFile.toString());
+            if (sourceJsonFormsFileIndex > 0) {
+                String path = FilenameUtils.getPathNoEndSeparator(targetKey);
+                String baseName = FilenameUtils.getBaseName(targetKey);
+                String extension = FilenameUtils.getExtension(targetKey);
+                targetKey = String.format("%s/%s_%d_%s", path, baseName, sourceJsonFormsFileIndex, extension);
+            }
+        }
+        return targetKey;
+    }
+
     private String getTargetBucket(CopyTaskElementFilesRequest request) {
+        if (request.getTargetBucket() == null) {
+            return this.defaultBucket;
+        }
+
+        return request.getTargetBucket();
+    }
+
+    private String getTargetBucket(CopyTaskJsonFormsFilesRequest request) {
         if (request.getTargetBucket() == null) {
             return this.defaultBucket;
         }

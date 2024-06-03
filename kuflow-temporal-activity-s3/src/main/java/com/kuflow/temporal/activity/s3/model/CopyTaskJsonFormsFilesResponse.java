@@ -20,35 +20,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.temporal.activity.s3;
+package com.kuflow.temporal.activity.s3.model;
 
-import com.kuflow.temporal.activity.s3.model.CopyTaskElementFilesRequest;
-import com.kuflow.temporal.activity.s3.model.CopyTaskElementFilesResponse;
-import com.kuflow.temporal.activity.s3.model.CopyTaskJsonFormsFilesRequest;
-import com.kuflow.temporal.activity.s3.model.CopyTaskJsonFormsFilesResponse;
-import io.temporal.activity.ActivityInterface;
-import io.temporal.activity.ActivityMethod;
-import javax.annotation.Nonnull;
+import static java.util.Collections.unmodifiableList;
 
-@ActivityInterface(namePrefix = "KuFlow_S3_")
-public interface S3Activities {
-    /**
-     * Copy task element files into the target S3.
-     *
-     * @param request must not be {@literal null}.
-     * @return the file copied
-     */
-    @ActivityMethod
-    @Nonnull
-    CopyTaskElementFilesResponse copyTaskElementFiles(@Nonnull CopyTaskElementFilesRequest request);
+import com.kuflow.temporal.common.model.AbstractModel;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
+
+/**
+ * Class used as response when copy JSON Forms files from KuFlow to S3.
+ */
+public class CopyTaskJsonFormsFilesResponse extends AbstractModel {
 
     /**
-     * Copy task JSON Forms files into the target S3.
-     *
-     * @param request must not be {@literal null}.
-     * @return the file copied
+     * Details of the copied files.
      */
-    @ActivityMethod
-    @Nonnull
-    CopyTaskJsonFormsFilesResponse copyTaskJsonFormsFiles(@Nonnull CopyTaskJsonFormsFilesRequest request);
+    private final List<CopyJsonFormsFile> files = new LinkedList<>();
+
+    public List<CopyJsonFormsFile> getFiles() {
+        return unmodifiableList(this.files);
+    }
+
+    public void setFiles(List<CopyJsonFormsFile> files) {
+        Objects.requireNonNull(files, "'files' is required");
+
+        this.files.clear();
+        this.files.addAll(files);
+    }
 }
