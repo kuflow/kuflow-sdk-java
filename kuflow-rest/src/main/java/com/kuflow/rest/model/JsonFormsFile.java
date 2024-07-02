@@ -22,41 +22,104 @@
  */
 package com.kuflow.rest.model;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JsonFormsFile {
 
-    private static final Pattern PATTERN = Pattern.compile(
-        "kuflow-file:uri=(ku:[a-zA-Z0-9-/]+);type=([a-zA-Z]+/[a-zA-Z-.]+);size=([0-9]+);name=(.*);"
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(JsonFormsFile.class);
 
-    public static Optional<JsonFormsFile> from(String value) {
-        Matcher matcher = PATTERN.matcher(value);
-        if (!matcher.matches()) {
+    private static final String PREFIX = "kuflow-file:";
+
+    private static final String METADATA_URI = "uri";
+    private static final String METADATA_TYPE = "type";
+    private static final String METADATA_NAME = "name";
+    private static final String METADATA_SIZE = "size";
+    private static final String METADATA_ORIGINAL_NAME = "original-name";
+
+    public static Optional<JsonFormsFile> from(String source) {
+        if (source == null || source.isEmpty()) {
             return Optional.empty();
         }
 
-        String uri = matcher.group(1);
-        String type = matcher.group(2);
-        Long size = Long.valueOf(matcher.group(3));
-        String name = matcher.group(4);
+        if (!source.toLowerCase().startsWith(PREFIX)) {
+            LOGGER.debug(String.format("Input string '%' does not start with the expected prefix '%s'", source, PREFIX));
 
-        return Optional.of(new JsonFormsFile(uri, type, name, size));
+            return Optional.empty();
+        }
+
+        String sourceWithoutPrefix = source.substring(PREFIX.length());
+        String[] keyValuePairs = sourceWithoutPrefix.split(";");
+        Map<String, String> keyValueMap = new HashMap<>();
+
+        for (String pair : keyValuePairs) {
+            int indexOfEquals = pair.indexOf("=");
+            if (indexOfEquals == -1) {
+                LOGGER.debug(String.format("Invalid format in key-value pair '%s' on value '%s' ", pair, source));
+
+                return Optional.empty();
+            }
+
+            String key = pair.substring(0, indexOfEquals).toLowerCase();
+            String value = pair.substring(indexOfEquals + 1);
+            keyValueMap.put(key, value);
+        }
+
+        String uri = keyValueMap.remove(METADATA_URI);
+
+        String type = keyValueMap.remove(METADATA_TYPE);
+
+        String name = keyValueMap.remove(METADATA_NAME);
+
+        Long size = parseLong(keyValueMap.remove(METADATA_SIZE));
+
+        if (uri == null || type == null || name == null || size == null) {
+            LOGGER.debug(
+                String.format("Wrong format some parts are missing 'uri=%s' 'type=%s' 'name=%s' 'size=%s'", uri, type, name, size)
+            );
+
+            return Optional.empty();
+        }
+
+        String originalName = keyValueMap.remove(METADATA_ORIGINAL_NAME);
+
+        return Optional.of(new JsonFormsFile(source, uri, type, name, size, originalName, keyValueMap));
     }
 
+    private final String source;
     private final String uri;
     private final String type;
     private final String name;
     private final Long size;
+    private final String originalName;
+    private final Map<String, String> unknownMetadata;
 
-    public JsonFormsFile(String uri, String type, String name, Long size) {
-        this.uri = uri;
-        this.type = type;
-        this.name = name;
-        this.size = size;
+    private JsonFormsFile(
+        String source,
+        String uri,
+        String type,
+        String name,
+        Long size,
+        String originalName,
+        Map<String, String> unknownMetadata
+    ) {
+        this.source = Objects.requireNonNull(source, "'source' must be not null");
+        this.uri = Objects.requireNonNull(uri, "'uri' must be not null");
+        this.type = Objects.requireNonNull(type, "'type' must be not null");
+        this.name = Objects.requireNonNull(name, "'name' must be not null");
+        this.size = Objects.requireNonNull(size, "'size' must be not null");
+
+        this.originalName = originalName;
+        this.unknownMetadata = Objects.requireNonNull(unknownMetadata, "'unknownMetadata' must be not null");
+    }
+
+    public String getSource() {
+        return this.source;
     }
 
     public String getUri() {
@@ -75,13 +138,33 @@ public class JsonFormsFile {
         return this.size;
     }
 
+    public Optional<String> getOriginalName() {
+        return Optional.ofNullable(this.originalName);
+    }
+
+    public Map<String, String> getUnknownMetadata() {
+        return Collections.unmodifiableMap(this.unknownMetadata);
+    }
+
+    public String getUnknownMetadataItem(String key) {
+        if (key == null) {
+            return null;
+        }
+        return this.unknownMetadata.get(key.toLowerCase());
+    }
+
+    /**
+     * @deprecated Use {@link #getSource()}
+     * @return source
+     */
+    @Deprecated
     public String generateValue() {
-        return String.format("kuflow-file:uri=%s;type=%s;size=%d;name=%s;", this.uri, this.type, this.size, this.name);
+        return this.getSource();
     }
 
     @Override
     public String toString() {
-        return this.generateValue();
+        return this.getSource();
     }
 
     @Override
@@ -93,16 +176,23 @@ public class JsonFormsFile {
             return false;
         }
         JsonFormsFile that = (JsonFormsFile) o;
-        return (
-            Objects.equals(this.uri, that.uri) &&
-            Objects.equals(this.type, that.type) &&
-            Objects.equals(this.name, that.name) &&
-            Objects.equals(this.size, that.size)
-        );
+        return Objects.equals(this.source, that.source);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.uri, this.type, this.name, this.size);
+        return Objects.hash(this.source);
+    }
+
+    private static Long parseLong(String value) {
+        if (value == null) {
+            return null;
+        }
+
+        try {
+            return Long.valueOf(value);
+        } catch (NumberFormatException ex) {
+            return null;
+        }
     }
 }
