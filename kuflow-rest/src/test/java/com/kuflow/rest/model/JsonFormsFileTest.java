@@ -73,10 +73,9 @@ public class JsonFormsFileTest {
         assertThat(parsedFile.getName()).isEqualTo("dummy.pdf");
 
         // Mandatory original name test
-        parsedOpt =
-            JsonFormsFile.from(
-                "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;original-name=scanner.pdf;"
-            );
+        parsedOpt = JsonFormsFile.from(
+            "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;original-name=scanner.pdf;"
+        );
         parsedFile = parsedOpt.orElseThrow();
         assertThat(parsedFile.getUri()).isEqualTo("ku:dummy/xxx-ssss-yyyy");
         assertThat(parsedFile.getType()).isEqualTo("application/pdf");
@@ -85,10 +84,9 @@ public class JsonFormsFileTest {
         assertThat(parsedFile.getOriginalName().get()).isEqualTo("scanner.pdf");
 
         // With unknows parts
-        parsedOpt =
-            JsonFormsFile.from(
-                "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;unknown-key1=unknown-value1;unknown-key2=unknown-value2;"
-            );
+        parsedOpt = JsonFormsFile.from(
+            "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;unknown-key1=unknown-value1;unknown-key2=unknown-value2;"
+        );
         parsedFile = parsedOpt.orElseThrow();
         assertThat(parsedFile.getUri()).isEqualTo("ku:dummy/xxx-ssss-yyyy");
         assertThat(parsedFile.getType()).isEqualTo("application/pdf");
