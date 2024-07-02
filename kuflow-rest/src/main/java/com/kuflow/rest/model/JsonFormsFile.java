@@ -22,6 +22,7 @@
  */
 package com.kuflow.rest.model;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -78,6 +79,10 @@ public class JsonFormsFile {
         Long size = parseLong(keyValueMap.remove(METADATA_SIZE));
 
         if (uri == null || type == null || name == null || size == null) {
+            LOGGER.debug(
+                String.format("Wrong format some parts are missing 'uri=%s' 'type=%s' 'name=%s' 'size=%s'", uri, type, name, size)
+            );
+
             return Optional.empty();
         }
 
@@ -137,7 +142,11 @@ public class JsonFormsFile {
         return Optional.ofNullable(this.originalName);
     }
 
-    public String getUnknownMetadata(String key) {
+    public Map<String, String> getUnknownMetadata() {
+        return Collections.unmodifiableMap(this.unknownMetadata);
+    }
+
+    public String getUnknownMetadataItem(String key) {
         if (key == null) {
             return null;
         }
@@ -167,7 +176,7 @@ public class JsonFormsFile {
             return false;
         }
         JsonFormsFile that = (JsonFormsFile) o;
-        return (Objects.equals(this.source, that.source));
+        return Objects.equals(this.source, that.source);
     }
 
     @Override

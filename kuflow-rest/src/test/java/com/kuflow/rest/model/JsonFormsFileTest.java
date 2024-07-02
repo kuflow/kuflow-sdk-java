@@ -92,7 +92,7 @@ public class JsonFormsFileTest {
         assertThat(parsedFile.getType()).isEqualTo("application/pdf");
         assertThat(parsedFile.getSize()).isEqualTo(11111);
         assertThat(parsedFile.getName()).isEqualTo("dummy.pdf");
-        assertThat(parsedFile.getUnknownMetadata("unknown-key1")).isEqualTo("unknown-value1");
-        assertThat(parsedFile.getUnknownMetadata("unknown-key2")).isEqualTo("unknown-value2");
+        assertThat(parsedFile.getUnknownMetadataItem("unknown-key1")).isEqualTo("unknown-value1");
+        assertThat(parsedFile.getUnknownMetadataItem("unknown-key2")).isEqualTo("unknown-value2");
     }
 }
