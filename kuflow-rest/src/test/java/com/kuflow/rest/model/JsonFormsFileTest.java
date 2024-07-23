@@ -37,10 +37,9 @@ public class JsonFormsFileTest {
         JsonFormsFile parsedFile = null;
 
         // Parse ok
-        parsedOpt =
-            JsonFormsFile.from(
-                "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;original-name=myname.doc;"
-            );
+        parsedOpt = JsonFormsFile.from(
+            "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;original-name=myname.doc;"
+        );
         parsedFile = parsedOpt.orElseThrow();
 
         // Empty test
@@ -60,18 +59,16 @@ public class JsonFormsFileTest {
         assertThat(parsedFile.getName()).isEqualTo("dummy.pdf");
 
         // Optional metadata test
-        parsedOpt =
-            JsonFormsFile.from(
-                "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;original-name=scanner.pdf;"
-            );
+        parsedOpt = JsonFormsFile.from(
+            "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;original-name=scanner.pdf;"
+        );
         parsedFile = parsedOpt.orElseThrow();
         assertThat(parsedFile.getOriginalName().get()).isEqualTo("scanner.pdf");
 
         // Spaces encoding
-        parsedOpt =
-            JsonFormsFile.from(
-                "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;original-name=with%20spaces.doc;"
-            );
+        parsedOpt = JsonFormsFile.from(
+            "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;original-name=with%20spaces.doc;"
+        );
         parsedFile = parsedOpt.orElseThrow();
         assertThat(parsedFile.getOriginalName().get()).isEqualTo("with spaces.doc");
 
@@ -96,10 +93,9 @@ public class JsonFormsFileTest {
         assertThat(parsedFile.getName()).isEqualTo("dummy.pdf");
 
         // With unknows parts
-        parsedOpt =
-            JsonFormsFile.from(
-                "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;unknown-key1=unknown-value1;unknown-key2=unknown-value2;"
-            );
+        parsedOpt = JsonFormsFile.from(
+            "kuflow-file:uri=ku:dummy/xxx-ssss-yyyy;type=application/pdf;size=11111;name=dummy.pdf;unknown-key1=unknown-value1;unknown-key2=unknown-value2;"
+        );
         parsedFile = parsedOpt.orElseThrow();
         assertThat(parsedFile.getUri()).isEqualTo("ku:dummy/xxx-ssss-yyyy");
         assertThat(parsedFile.getType()).isEqualTo("application/pdf");
