@@ -22,6 +22,8 @@
  */
 package com.kuflow.rest.model;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -67,6 +69,7 @@ public class JsonFormsFile {
 
             String key = pair.substring(0, indexOfEquals).toLowerCase();
             String value = pair.substring(indexOfEquals + 1);
+            value = Optional.ofNullable(value).map(it -> URLDecoder.decode(it, StandardCharsets.UTF_8)).orElse(null);
             keyValueMap.put(key, value);
         }
 
@@ -115,6 +118,7 @@ public class JsonFormsFile {
         this.size = Objects.requireNonNull(size, "'size' must be not null");
 
         this.originalName = originalName;
+
         this.unknownMetadata = Objects.requireNonNull(unknownMetadata, "'unknownMetadata' must be not null");
     }
 
