@@ -210,17 +210,7 @@ public final class RobotOperationsImpl {
         List<UUID> tenantId,
         RobotFilterContext filterContext
     ) {
-        final String accept = "application/json";
-        List<String> sortConverted = (sort == null)
-            ? new ArrayList<>()
-            : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> tenantIdConverted = (tenantId == null)
-            ? new ArrayList<>()
-            : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        return FluxUtil.withContext(
-            context ->
-                service.findRobots(this.client.getHost(), size, page, sortConverted, tenantIdConverted, filterContext, accept, context)
-        );
+        return FluxUtil.withContext(context -> findRobotsWithResponseAsync(size, page, sort, tenantId, filterContext, context));
     }
 
     /**
@@ -454,8 +444,7 @@ public final class RobotOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Robot>> retrieveRobotWithResponseAsync(UUID id) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.retrieveRobot(this.client.getHost(), id, accept, context));
+        return FluxUtil.withContext(context -> retrieveRobotWithResponseAsync(id, context));
     }
 
     /**
@@ -556,8 +545,7 @@ public final class RobotOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> actionsRobotDownloadSourceCodeWithResponseAsync(UUID id) {
-        final String accept = "application/octet-stream, application/json";
-        return FluxUtil.withContext(context -> service.actionsRobotDownloadSourceCode(this.client.getHost(), id, accept, context));
+        return FluxUtil.withContext(context -> actionsRobotDownloadSourceCodeWithResponseAsync(id, context));
     }
 
     /**
@@ -668,9 +656,8 @@ public final class RobotOperationsImpl {
         RobotAssetPlatform platform,
         RobotAssetArchitecture architecture
     ) {
-        final String accept = "application/octet-stream, application/json";
         return FluxUtil.withContext(
-            context -> service.actionsRobotDownloadAsset(this.client.getHost(), id, type, version, platform, architecture, accept, context)
+            context -> actionsRobotDownloadAssetWithResponseAsync(id, type, version, platform, architecture, context)
         );
     }
 

@@ -29,8 +29,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.ok;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.kuflow.rest.model.FindRobotsOptions;
 import com.kuflow.rest.model.Robot;
+import com.kuflow.rest.model.RobotFindOptions;
 import com.kuflow.rest.model.RobotPage;
 import com.kuflow.rest.model.RobotSourceType;
 import java.util.Map;
@@ -44,7 +44,7 @@ public class RobotOperationTest extends AbstractOperationTest {
     @DisplayName("GIVEN an authenticated user WHEN list robots THEN authentication header is added")
     public void givenAnAuthenticatedUserWhenListRobotsThenAuthenticationHeaderIsAdded() {
         givenThat(
-            get("/v2022-10-08/robots")
+            get("/v2024-06-14/robots")
                 .withHeader("Authorization", equalTo("Bearer Q0xJRU5UX0lEOkNMSUVOVF9TRUNSRVQ="))
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("robots-api.list.ok.json"))
         );
@@ -58,7 +58,7 @@ public class RobotOperationTest extends AbstractOperationTest {
         UUID tenantId = UUID.randomUUID();
 
         givenThat(
-            get(urlPathEqualTo("/v2022-10-08/robots"))
+            get(urlPathEqualTo("/v2024-06-14/robots"))
                 .withQueryParam("size", equalTo("30"))
                 .withQueryParam("page", equalTo("2"))
                 .withQueryParam("sort", equalTo("order1"))
@@ -66,7 +66,7 @@ public class RobotOperationTest extends AbstractOperationTest {
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("robots-api.list.ok.json"))
         );
 
-        FindRobotsOptions options = new FindRobotsOptions().setSize(30).setPage(2).setSort("order1").setTenantId(tenantId);
+        RobotFindOptions options = new RobotFindOptions().setSize(30).setPage(2).setSort("order1").setTenantId(tenantId);
 
         this.kuFlowRestClient.getRobotOperations().findRobots(options);
     }
@@ -78,7 +78,7 @@ public class RobotOperationTest extends AbstractOperationTest {
         UUID tenantId2 = UUID.randomUUID();
 
         givenThat(
-            get(urlPathEqualTo("/v2022-10-08/robots"))
+            get(urlPathEqualTo("/v2024-06-14/robots"))
                 .withQueryParam("size", equalTo("30"))
                 .withQueryParam("page", equalTo("2"))
                 .withQueryParam("sort", equalTo("order1"))
@@ -88,7 +88,7 @@ public class RobotOperationTest extends AbstractOperationTest {
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("robots-api.list.ok.json"))
         );
 
-        FindRobotsOptions options = new FindRobotsOptions()
+        RobotFindOptions options = new RobotFindOptions()
             .setSize(30)
             .setPage(2)
             .addSort("order1")
@@ -103,7 +103,7 @@ public class RobotOperationTest extends AbstractOperationTest {
     @DisplayName("GIVEN an authenticated user WHEN list robots THEN expected obtain the correct value")
     public void givenAnAuthenticatedUserWhenListRobotsThenExpectedObtainTheCorrectValue() {
         givenThat(
-            get(urlPathEqualTo("/v2022-10-08/robots")).willReturn(
+            get(urlPathEqualTo("/v2024-06-14/robots")).willReturn(
                 ok().withHeader("Content-Type", "application/json").withBodyFile("robots-api.list.ok.json")
             )
         );
@@ -125,7 +125,7 @@ public class RobotOperationTest extends AbstractOperationTest {
         UUID robotId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
 
         givenThat(
-            get("/v2022-10-08/robots/" + robotId).willReturn(
+            get("/v2024-06-14/robots/" + robotId).willReturn(
                 ok().withHeader("Content-Type", "application/json").withBodyFile("robots-api.retrieve.ok.json")
             )
         );
@@ -134,7 +134,7 @@ public class RobotOperationTest extends AbstractOperationTest {
 
         assertThat(robot.getId()).isEqualTo(robotId);
         assertThat(robot.getName()).isEqualTo("NAME");
-        assertThat(robot.getSourceType()).isEqualTo(RobotSourceType.ROBOT_FRAMEWORK_PYTHON_WHEEL);
+        assertThat(robot.getSourceType()).isEqualTo(RobotSourceType.PACKAGE);
         assertThat(robot.getEnvironmentVariables()).containsExactlyInAnyOrderEntriesOf(Map.of("env1", "value1", "env2", "value2"));
     }
 }

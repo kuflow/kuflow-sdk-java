@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -126,7 +127,7 @@ public final class AuthenticationEngineToken implements JsonSerializable<Authent
                     deserializedAuthenticationEngineToken.token = reader.getString();
                 } else if ("expiredAt".equals(fieldName)) {
                     deserializedAuthenticationEngineToken.expiredAt = reader.getNullable(
-                        nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())
+                        nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())
                     );
                 } else {
                     reader.skipChildren();

@@ -25,77 +25,138 @@ package com.kuflow.temporal.activity.kuflow.util;
 
 import static com.kuflow.temporal.activity.kuflow.KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE;
 
-import com.kuflow.temporal.activity.kuflow.model.AppendTaskLogRequest;
-import com.kuflow.temporal.activity.kuflow.model.AssignTaskRequest;
-import com.kuflow.temporal.activity.kuflow.model.ChangeProcessInitiatorRequest;
-import com.kuflow.temporal.activity.kuflow.model.ClaimTaskRequest;
-import com.kuflow.temporal.activity.kuflow.model.CompleteTaskRequest;
-import com.kuflow.temporal.activity.kuflow.model.CreateTaskRequest;
-import com.kuflow.temporal.activity.kuflow.model.DeleteProcessElementRequest;
-import com.kuflow.temporal.activity.kuflow.model.DeleteTaskElementRequest;
-import com.kuflow.temporal.activity.kuflow.model.DeleteTaskElementValueDocumentRequest;
-import com.kuflow.temporal.activity.kuflow.model.RetrievePrincipalRequest;
-import com.kuflow.temporal.activity.kuflow.model.RetrieveProcessRequest;
-import com.kuflow.temporal.activity.kuflow.model.RetrieveTaskRequest;
-import com.kuflow.temporal.activity.kuflow.model.RetrieveTenantUserRequest;
-import com.kuflow.temporal.activity.kuflow.model.SaveProcessElementRequest;
-import com.kuflow.temporal.activity.kuflow.model.SaveProcessEntityDataRequest;
-import com.kuflow.temporal.activity.kuflow.model.SaveTaskElementRequest;
-import com.kuflow.temporal.activity.kuflow.model.SaveTaskJsonFormsValueDataRequest;
+import com.kuflow.rest.model.ProcessItemType;
+import com.kuflow.temporal.activity.kuflow.model.PrincipalRetrieveRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessEntityPatchRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessEntityUpdateRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessInitiatorChangeRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemCreateRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemRetrieveRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAssignRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskClaimRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskCompleteRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskDataPatchRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskDataUpdateRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskLoggAppendRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessMetadataPatchRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessMetadataUpdateRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessRetrieveRequest;
+import com.kuflow.temporal.activity.kuflow.model.TenantUserRetrieveRequest;
 import io.temporal.failure.ApplicationFailure;
 
 public class KuFlowActivitiesValidation {
 
-    public static void validateRetrievePrincipalRequest(RetrievePrincipalRequest request) {
+    public static void validatePrincipalRetrieveRequest(PrincipalRetrieveRequest request) {
         if (request.getPrincipalId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'principalId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 
-    public static void validateRetrieveTenantUserRequest(RetrieveTenantUserRequest request) {
+    public static void validateTenantUserRetrieveRequest(TenantUserRetrieveRequest request) {
         if (request.getTenantUserId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'tenantUserId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 
-    public static void validateRetrieveProcessRequest(RetrieveProcessRequest request) {
+    public static void validateProcessRetrieveRequest(ProcessRetrieveRequest request) {
         if (request.getProcessId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 
-    public static void validateSaveProcessElementRequest(SaveProcessElementRequest request) {
+    public static void validateProcessEntityUpdateRequest(ProcessEntityUpdateRequest request) {
         if (request.getProcessId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
-        if (request.getElementDefinitionCode() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("'elementDefinitionCode' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        if (request.getParams() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'params' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 
-    public static void validateDeleteProcessElementRequest(DeleteProcessElementRequest request) {
+    public static void validateProcessEntityPatchRequest(ProcessEntityPatchRequest request) {
         if (request.getProcessId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
-        }
-        if (request.getElementDefinitionCode() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("'elementDefinitionCode' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 
-    public static void validateSaveProcessEntityData(SaveProcessEntityDataRequest request) {
+    public static void validateProcessMetadataUpdateRequest(ProcessMetadataUpdateRequest request) {
         if (request.getProcessId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
-        if (request.getData() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("'data' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        if (request.getParams() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'params' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 
-    public static void validateChangeProcessInitiatorRequest(ChangeProcessInitiatorRequest request) {
+    public static void validateProcessMetadataPatchRequest(ProcessMetadataPatchRequest request) {
         if (request.getProcessId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
-        if (request.getEmail() == null && request.getPrincipalId() == null) {
+    }
+
+    public static void validateProcessInitiatorChangeRequest(ProcessInitiatorChangeRequest request) {
+        if (request.getProcessId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+
+        if (request.getParams() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'params' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+        if (request.getParams().getInitiatorId() == null && request.getParams().getInitiatorEmail() == null) {
+            throw ApplicationFailure.newNonRetryableFailure(
+                "'params.initiatorId' or 'params.initiatorEmail' is required",
+                ACTIVITIES_VALIDATION_FAILURE.getType()
+            );
+        }
+    }
+
+    public static void validateProcessItemRetrieve(ProcessItemRetrieveRequest request) {
+        if (request.getProcessItemId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'processItemId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+    }
+
+    public static void validateProcessItemCreateRequest(ProcessItemCreateRequest request) {
+        if (request.getParams().getId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'params.id' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+        if (request.getParams().getProcessId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'params.processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+        if (request.getParams().getType() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'params.type' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+
+        if (ProcessItemType.TASK.equals(request.getParams().getType())) {
+            if (request.getParams().getTask() == null) {
+                throw ApplicationFailure.newNonRetryableFailure("'params.task' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+            }
+            if (request.getParams().getTask().getTaskDefinitionCode() == null) {
+                throw ApplicationFailure.newNonRetryableFailure(
+                    "'params.task.taskDefinitionCode' is required",
+                    ACTIVITIES_VALIDATION_FAILURE.getType()
+                );
+            }
+        }
+    }
+
+    public static void validateProcessItemTaskCompleteRequest(ProcessItemTaskCompleteRequest request) {
+        if (request.getProcessItemId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'processItemId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+    }
+
+    public static void validateClaimTaskRequest(ProcessItemTaskClaimRequest request) {
+        if (request.getProcessItemId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'processItemId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+    }
+
+    public static void validateProcessItemTaskAssignRequest(ProcessItemTaskAssignRequest request) {
+        if (request.getProcessItemId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'processItemId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+        if (request.getOwnerEmail() == null && request.getOwnerId() == null) {
             throw ApplicationFailure.newNonRetryableFailure(
                 "'email' or 'principalId' is required",
                 ACTIVITIES_VALIDATION_FAILURE.getType()
@@ -103,93 +164,30 @@ public class KuFlowActivitiesValidation {
         }
     }
 
-    public static void validateRetrieveTaskRequest(RetrieveTaskRequest request) {
-        if (request.getTaskId() == null) {
+    public static void validateProcessItemTaskDataUpdateRequest(ProcessItemTaskDataUpdateRequest request) {
+        if (request.getProcessItemId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'taskId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 
-    public static void validateCreateTaskRequest(CreateTaskRequest request) {
-        if (request.getTask().getId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("'task.id' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
-        }
-        if (request.getTask().getProcessId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("'task.processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
-        }
-        if (request.getTask().getTaskDefinition().getCode() == null) {
-            throw ApplicationFailure.newNonRetryableFailure(
-                "'task.taskDefinition.code' is required",
-                ACTIVITIES_VALIDATION_FAILURE.getType()
-            );
-        }
-    }
-
-    public static void validateCompleteTaskRequest(CompleteTaskRequest request) {
-        if (request.getTaskId() == null) {
+    public static void validateProcessItemTaskDataPatchRequest(ProcessItemTaskDataPatchRequest request) {
+        if (request.getProcessItemId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'taskId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 
-    public static void validateClaimTaskRequest(ClaimTaskRequest request) {
-        if (request.getTaskId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("'taskId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+    public static void validateProcessItemTaskLoggAppendRequest(ProcessItemTaskLoggAppendRequest request) {
+        if (request.getProcessItemId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'processItemId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
-    }
-
-    public static void validateAssignTaskRequest(AssignTaskRequest request) {
-        if (request.getTaskId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("'taskId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        if (request.getParams() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'params' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
-        if (request.getEmail() == null && request.getPrincipalId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure(
-                "'email' or 'principalId' is required",
-                ACTIVITIES_VALIDATION_FAILURE.getType()
-            );
+        if (request.getParams().getLevel() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'params.level' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
-    }
-
-    public static void validateSaveTaskElementRequest(SaveTaskElementRequest request) {
-        if (request.getTaskId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("'taskId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
-        }
-        if (request.getElementDefinitionCode() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("'elementDefinitionCode' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
-        }
-    }
-
-    public static void validateDeleteTaskElementRequest(DeleteTaskElementRequest request) {
-        if (request.getTaskId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("'taskId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
-        }
-        if (request.getElementDefinitionCode() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("'elementDefinitionCode' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
-        }
-    }
-
-    public static void validateDeleteTaskElementValueDocumentRequest(DeleteTaskElementValueDocumentRequest request) {
-        if (request.getTaskId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("'taskId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
-        }
-        if (request.getDocumentId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("'documentId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
-        }
-    }
-
-    public static void validateSaveTaskJsonFormsDataRequest(SaveTaskJsonFormsValueDataRequest request) {
-        if (request.getTaskId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("'taskId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
-        }
-    }
-
-    public static void validateAppendTaskLogRequest(AppendTaskLogRequest request) {
-        if (request.getTaskId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("'taskId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
-        }
-        if (request.getLog().getLevel() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("'log.level' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
-        }
-        if (request.getLog().getMessage() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("'log.message' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        if (request.getParams().getMessage() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'params.message' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 }

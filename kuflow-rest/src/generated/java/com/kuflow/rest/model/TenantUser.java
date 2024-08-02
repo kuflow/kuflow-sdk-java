@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -44,9 +45,9 @@ public final class TenantUser extends AbstractAudited {
     private UUID id;
 
     /*
-     * The metadata property.
+     * Json value.
      */
-    private TenantUserMetadata metadata;
+    private JsonValue metadata;
 
     /*
      * The principal property.
@@ -84,21 +85,21 @@ public final class TenantUser extends AbstractAudited {
     }
 
     /**
-     * Get the metadata property: The metadata property.
+     * Get the metadata property: Json value.
      *
      * @return the metadata value.
      */
-    public TenantUserMetadata getMetadata() {
+    public JsonValue getMetadata() {
         return this.metadata;
     }
 
     /**
-     * Set the metadata property: The metadata property.
+     * Set the metadata property: Json value.
      *
      * @param metadata the metadata value to set.
      * @return the TenantUser object itself.
      */
-    public TenantUser setMetadata(TenantUserMetadata metadata) {
+    public TenantUser setMetadata(JsonValue metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -130,15 +131,6 @@ public final class TenantUser extends AbstractAudited {
      */
     public UUID getTenantId() {
         return this.tenantId;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public TenantUser setObjectType(AuditedObjectType objectType) {
-        super.setObjectType(objectType);
-        return this;
     }
 
     /**
@@ -183,7 +175,6 @@ public final class TenantUser extends AbstractAudited {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("objectType", getObjectType() == null ? null : getObjectType().toString());
         jsonWriter.writeStringField("createdBy", Objects.toString(getCreatedBy(), null));
         jsonWriter.writeStringField(
             "createdAt",
@@ -216,13 +207,11 @@ public final class TenantUser extends AbstractAudited {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("objectType".equals(fieldName)) {
-                    deserializedTenantUser.setObjectType(AuditedObjectType.fromString(reader.getString()));
-                } else if ("createdBy".equals(fieldName)) {
+                if ("createdBy".equals(fieldName)) {
                     deserializedTenantUser.setCreatedBy(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
                 } else if ("createdAt".equals(fieldName)) {
                     deserializedTenantUser.setCreatedAt(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()))
+                        reader.getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()))
                     );
                 } else if ("lastModifiedBy".equals(fieldName)) {
                     deserializedTenantUser.setLastModifiedBy(
@@ -230,7 +219,7 @@ public final class TenantUser extends AbstractAudited {
                     );
                 } else if ("lastModifiedAt".equals(fieldName)) {
                     deserializedTenantUser.setLastModifiedAt(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()))
+                        reader.getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()))
                     );
                 } else if ("id".equals(fieldName)) {
                     deserializedTenantUser.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
@@ -239,7 +228,7 @@ public final class TenantUser extends AbstractAudited {
                 } else if ("tenantId".equals(fieldName)) {
                     deserializedTenantUser.tenantId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("metadata".equals(fieldName)) {
-                    deserializedTenantUser.metadata = TenantUserMetadata.fromJson(reader);
+                    deserializedTenantUser.metadata = JsonValue.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

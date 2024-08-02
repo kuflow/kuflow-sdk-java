@@ -29,8 +29,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.ok;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.kuflow.rest.model.FindPrincipalsOptions;
 import com.kuflow.rest.model.Principal;
+import com.kuflow.rest.model.PrincipalFindOptions;
 import com.kuflow.rest.model.PrincipalPage;
 import com.kuflow.rest.model.PrincipalType;
 import java.util.UUID;
@@ -43,7 +43,7 @@ public class PrincipalOperationTest extends AbstractOperationTest {
     @DisplayName("GIVEN an authenticated user WHEN list principals THEN authentication header is added")
     public void givenAnAuthenticatedUserWhenListPrincipalsThenAuthenticationHeaderIsAdded() {
         givenThat(
-            get("/v2022-10-08/principals")
+            get("/v2024-06-14/principals")
                 .withHeader("Authorization", equalTo("Bearer Q0xJRU5UX0lEOkNMSUVOVF9TRUNSRVQ="))
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("principals-api.list.ok.json"))
         );
@@ -55,7 +55,7 @@ public class PrincipalOperationTest extends AbstractOperationTest {
     @DisplayName("GIVEN an authenticated user WHEN list principals THEN result is correctly parsed")
     public void givenAnAuthenticatedUserWhenListPrincipalsThenResultIsCorrectlyParsed() {
         givenThat(
-            get("/v2022-10-08/principals").willReturn(
+            get("/v2024-06-14/principals").willReturn(
                 ok().withHeader("Content-Type", "application/json").withBodyFile("principals-api.list.ok.json")
             )
         );
@@ -63,9 +63,7 @@ public class PrincipalOperationTest extends AbstractOperationTest {
         PrincipalPage principals = this.kuFlowRestClient.getPrincipalOperations().findPrincipals();
         assertThat(principals.getMetadata().getTotalElements()).isEqualTo(2);
         assertThat(principals.getContent().get(0).getType()).isEqualTo(PrincipalType.USER);
-        assertThat(principals.getContent().get(0).getUser()).isNotNull();
         assertThat(principals.getContent().get(1).getType()).isEqualTo(PrincipalType.APPLICATION);
-        assertThat(principals.getContent().get(1).getApplication()).isNotNull();
     }
 
     @Test
@@ -75,7 +73,7 @@ public class PrincipalOperationTest extends AbstractOperationTest {
         UUID tenantId = UUID.randomUUID();
 
         givenThat(
-            get(urlPathEqualTo("/v2022-10-08/principals"))
+            get(urlPathEqualTo("/v2024-06-14/principals"))
                 .withQueryParam("size", equalTo("30"))
                 .withQueryParam("page", equalTo("2"))
                 .withQueryParam("sort", equalTo("order1"))
@@ -85,7 +83,7 @@ public class PrincipalOperationTest extends AbstractOperationTest {
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("principals-api.list.ok.json"))
         );
 
-        FindPrincipalsOptions options = new FindPrincipalsOptions()
+        PrincipalFindOptions options = new PrincipalFindOptions()
             .setSize(30)
             .setPage(2)
             .setSort("order1")
@@ -105,7 +103,7 @@ public class PrincipalOperationTest extends AbstractOperationTest {
         UUID tenantId2 = UUID.randomUUID();
 
         givenThat(
-            get(urlPathEqualTo("/v2022-10-08/principals"))
+            get(urlPathEqualTo("/v2024-06-14/principals"))
                 .withQueryParam("size", equalTo("30"))
                 .withQueryParam("page", equalTo("2"))
                 .withQueryParam("sort", equalTo("order1"))
@@ -118,7 +116,7 @@ public class PrincipalOperationTest extends AbstractOperationTest {
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("principals-api.list.ok.json"))
         );
 
-        FindPrincipalsOptions options = new FindPrincipalsOptions()
+        PrincipalFindOptions options = new PrincipalFindOptions()
             .setSize(30)
             .setPage(2)
             .addSort("order1")
@@ -138,7 +136,7 @@ public class PrincipalOperationTest extends AbstractOperationTest {
         UUID principalId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
 
         givenThat(
-            get("/v2022-10-08/principals/" + principalId)
+            get("/v2024-06-14/principals/" + principalId)
                 .withHeader("Authorization", equalTo("Bearer Q0xJRU5UX0lEOkNMSUVOVF9TRUNSRVQ="))
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("principals-api.retrieve.ok.json"))
         );
@@ -152,7 +150,7 @@ public class PrincipalOperationTest extends AbstractOperationTest {
         UUID principalId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
 
         givenThat(
-            get("/v2022-10-08/principals/" + principalId).willReturn(
+            get("/v2024-06-14/principals/" + principalId).willReturn(
                 ok().withHeader("Content-Type", "application/json").withBodyFile("principals-api.retrieve.ok.json")
             )
         );

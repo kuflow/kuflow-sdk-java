@@ -28,8 +28,10 @@ import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
+import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
@@ -41,13 +43,14 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.kuflow.rest.model.DefaultErrorException;
+import com.kuflow.rest.model.DocumentReference;
+import com.kuflow.rest.model.JsonPatchOperation;
 import com.kuflow.rest.model.Process;
-import com.kuflow.rest.model.ProcessChangeInitiatorCommand;
-import com.kuflow.rest.model.ProcessDeleteElementCommand;
+import com.kuflow.rest.model.ProcessChangeInitiatorParams;
+import com.kuflow.rest.model.ProcessCreateParams;
+import com.kuflow.rest.model.ProcessEntityUpdateParams;
+import com.kuflow.rest.model.ProcessMetadataUpdateParams;
 import com.kuflow.rest.model.ProcessPage;
-import com.kuflow.rest.model.ProcessSaveElementCommand;
-import com.kuflow.rest.model.ProcessSaveEntityDataCommand;
-import com.kuflow.rest.model.ProcessSaveEntityDocumentResponseCommand;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -120,7 +123,7 @@ public final class ProcessOperationsImpl {
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<Process>> createProcess(
             @HostParam("$host") String host,
-            @BodyParam("application/json") Process process,
+            @BodyParam("application/json") ProcessCreateParams params,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -130,7 +133,7 @@ public final class ProcessOperationsImpl {
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<Process> createProcessSync(
             @HostParam("$host") String host,
-            @BodyParam("application/json") Process process,
+            @BodyParam("application/json") ProcessCreateParams params,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -155,76 +158,10 @@ public final class ProcessOperationsImpl {
             Context context
         );
 
-        @Post("/processes/{id}/~actions/change-initiator")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<Process>> actionsProcessChangeInitiator(
-            @HostParam("$host") String host,
-            @PathParam("id") UUID id,
-            @BodyParam("application/json") ProcessChangeInitiatorCommand command,
-            @HeaderParam("Accept") String accept,
-            Context context
-        );
-
-        @Post("/processes/{id}/~actions/change-initiator")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Response<Process> actionsProcessChangeInitiatorSync(
-            @HostParam("$host") String host,
-            @PathParam("id") UUID id,
-            @BodyParam("application/json") ProcessChangeInitiatorCommand command,
-            @HeaderParam("Accept") String accept,
-            Context context
-        );
-
-        @Post("/processes/{id}/~actions/save-element")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<Process>> actionsProcessSaveElement(
-            @HostParam("$host") String host,
-            @PathParam("id") UUID id,
-            @BodyParam("application/json") ProcessSaveElementCommand command,
-            @HeaderParam("Accept") String accept,
-            Context context
-        );
-
-        @Post("/processes/{id}/~actions/save-element")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Response<Process> actionsProcessSaveElementSync(
-            @HostParam("$host") String host,
-            @PathParam("id") UUID id,
-            @BodyParam("application/json") ProcessSaveElementCommand command,
-            @HeaderParam("Accept") String accept,
-            Context context
-        );
-
-        @Post("/processes/{id}/~actions/delete-element")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<Process>> actionsProcessDeleteElement(
-            @HostParam("$host") String host,
-            @PathParam("id") UUID id,
-            @BodyParam("application/json") ProcessDeleteElementCommand command,
-            @HeaderParam("Accept") String accept,
-            Context context
-        );
-
-        @Post("/processes/{id}/~actions/delete-element")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Response<Process> actionsProcessDeleteElementSync(
-            @HostParam("$host") String host,
-            @PathParam("id") UUID id,
-            @BodyParam("application/json") ProcessDeleteElementCommand command,
-            @HeaderParam("Accept") String accept,
-            Context context
-        );
-
         @Post("/processes/{id}/~actions/complete")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<Process>> actionsProcessComplete(
+        Mono<Response<Process>> completeProcess(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @HeaderParam("Accept") String accept,
@@ -234,7 +171,7 @@ public final class ProcessOperationsImpl {
         @Post("/processes/{id}/~actions/complete")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Response<Process> actionsProcessCompleteSync(
+        Response<Process> completeProcessSync(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @HeaderParam("Accept") String accept,
@@ -244,7 +181,7 @@ public final class ProcessOperationsImpl {
         @Post("/processes/{id}/~actions/cancel")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<Process>> actionsProcessCancel(
+        Mono<Response<Process>> cancelProcess(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @HeaderParam("Accept") String accept,
@@ -254,17 +191,39 @@ public final class ProcessOperationsImpl {
         @Post("/processes/{id}/~actions/cancel")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Response<Process> actionsProcessCancelSync(
+        Response<Process> cancelProcessSync(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @HeaderParam("Accept") String accept,
             Context context
         );
 
-        @Post("/processes/{id}/~actions/save-user-action-value-document")
+        @Post("/processes/{id}/~actions/change-initiator")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<Process>> changeProcessInitiator(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") ProcessChangeInitiatorParams params,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/processes/{id}/~actions/change-initiator")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<Process> changeProcessInitiatorSync(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") ProcessChangeInitiatorParams params,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/processes/{id}/~actions/upload-user-action-document")
         @ExpectedResponses({ 200, 304 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<Process>> actionsProcessSaveUserActionValueDocument(
+        Mono<Response<Process>> uploadProcessUserActionDocument(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @QueryParam("fileContentType") String fileContentType,
@@ -276,10 +235,10 @@ public final class ProcessOperationsImpl {
             Context context
         );
 
-        @Post("/processes/{id}/~actions/save-user-action-value-document")
+        @Post("/processes/{id}/~actions/upload-user-action-document")
         @ExpectedResponses({ 200, 304 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<Process>> actionsProcessSaveUserActionValueDocument(
+        Mono<Response<Process>> uploadProcessUserActionDocument(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @QueryParam("fileContentType") String fileContentType,
@@ -291,10 +250,10 @@ public final class ProcessOperationsImpl {
             Context context
         );
 
-        @Post("/processes/{id}/~actions/save-user-action-value-document")
+        @Post("/processes/{id}/~actions/upload-user-action-document")
         @ExpectedResponses({ 200, 304 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Response<Process> actionsProcessSaveUserActionValueDocumentSync(
+        Response<Process> uploadProcessUserActionDocumentSync(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @QueryParam("fileContentType") String fileContentType,
@@ -306,32 +265,98 @@ public final class ProcessOperationsImpl {
             Context context
         );
 
-        @Post("/processes/{id}/~actions/save-entity-data")
+        @Put("/processes/{id}/metadata")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<Process>> actionsProcessSaveEntityData(
+        Mono<Response<Process>> updateProcessMetadata(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
-            @BodyParam("application/json") ProcessSaveEntityDataCommand command,
+            @BodyParam("application/json") ProcessMetadataUpdateParams params,
             @HeaderParam("Accept") String accept,
             Context context
         );
 
-        @Post("/processes/{id}/~actions/save-entity-data")
+        @Put("/processes/{id}/metadata")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Response<Process> actionsProcessSaveEntityDataSync(
+        Response<Process> updateProcessMetadataSync(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
-            @BodyParam("application/json") ProcessSaveEntityDataCommand command,
+            @BodyParam("application/json") ProcessMetadataUpdateParams params,
             @HeaderParam("Accept") String accept,
             Context context
         );
 
-        @Post("/processes/{id}/~actions/save-entity-document")
+        @Patch("/processes/{id}/metadata")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<ProcessSaveEntityDocumentResponseCommand>> actionsProcessSaveEntityDocument(
+        Mono<Response<Process>> patchProcessMetadata(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json-patch+json") List<JsonPatchOperation> jsonPatch,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Patch("/processes/{id}/metadata")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<Process> patchProcessMetadataSync(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json-patch+json") List<JsonPatchOperation> jsonPatch,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Put("/processes/{id}/entity")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<Process>> updateProcessEntity(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") ProcessEntityUpdateParams params,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Put("/processes/{id}/entity")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<Process> updateProcessEntitySync(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") ProcessEntityUpdateParams params,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Patch("/processes/{id}/entity")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<Process>> patchProcessEntity(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json-patch+json") List<JsonPatchOperation> params,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Patch("/processes/{id}/entity")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<Process> patchProcessEntitySync(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json-patch+json") List<JsonPatchOperation> params,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/processes/{id}/entity/~actions/upload-document")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<DocumentReference>> uploadProcessEntityDocument(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @QueryParam("fileContentType") String fileContentType,
@@ -343,10 +368,10 @@ public final class ProcessOperationsImpl {
             Context context
         );
 
-        @Post("/processes/{id}/~actions/save-entity-document")
+        @Post("/processes/{id}/entity/~actions/upload-document")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<ProcessSaveEntityDocumentResponseCommand>> actionsProcessSaveEntityDocument(
+        Mono<Response<DocumentReference>> uploadProcessEntityDocument(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @QueryParam("fileContentType") String fileContentType,
@@ -358,10 +383,10 @@ public final class ProcessOperationsImpl {
             Context context
         );
 
-        @Post("/processes/{id}/~actions/save-entity-document")
+        @Post("/processes/{id}/entity/~actions/upload-document")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Response<ProcessSaveEntityDocumentResponseCommand> actionsProcessSaveEntityDocumentSync(
+        Response<DocumentReference> uploadProcessEntityDocumentSync(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @QueryParam("fileContentType") String fileContentType,
@@ -373,10 +398,10 @@ public final class ProcessOperationsImpl {
             Context context
         );
 
-        @Get("/processes/{id}/~actions/download-entity-document")
+        @Get("/processes/{id}/entity/~actions/download-document")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<BinaryData>> actionsProcessDownloadEntityDocument(
+        Mono<Response<BinaryData>> downloadProcessEntityDocument(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @QueryParam("documentUri") String documentUri,
@@ -384,10 +409,10 @@ public final class ProcessOperationsImpl {
             Context context
         );
 
-        @Get("/processes/{id}/~actions/download-entity-document")
+        @Get("/processes/{id}/entity/~actions/download-document")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Response<BinaryData> actionsProcessDownloadEntityDocumentSync(
+        Response<BinaryData> downloadProcessEntityDocumentSync(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @QueryParam("documentUri") String documentUri,
@@ -418,16 +443,7 @@ public final class ProcessOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ProcessPage>> findProcessesWithResponseAsync(Integer size, Integer page, List<String> sort, List<UUID> tenantId) {
-        final String accept = "application/json";
-        List<String> sortConverted = (sort == null)
-            ? new ArrayList<>()
-            : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> tenantIdConverted = (tenantId == null)
-            ? new ArrayList<>()
-            : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        return FluxUtil.withContext(
-            context -> service.findProcesses(this.client.getHost(), size, page, sortConverted, tenantIdConverted, accept, context)
-        );
+        return FluxUtil.withContext(context -> findProcessesWithResponseAsync(size, page, sort, tenantId, context));
     }
 
     /**
@@ -629,26 +645,17 @@ public final class ProcessOperationsImpl {
      *
      * Creates a process. This option has direct correspondence to the action of starting a process in the Kuflow GUI.
      *
-     * When a process is created, the current user is assigned as the process initiator, if you want to change it, you
-     * can pass a valid initiator using the following options:
-     *
-     * * If you know the `principal ID` you can assign it to `initiator.id`
-     * * If you know the `user ID` you can assign it to `initiator.user.id`
-     * * If you know the `user email` you can assign it to `initiator.user.email`
-     * * If you know the `application ID` you can assign it to `initiator.application.id`
-     *
      * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
-     * @param process Process to create.
+     * @param params Process to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Process>> createProcessWithResponseAsync(Process process) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createProcess(this.client.getHost(), process, accept, context));
+    public Mono<Response<Process>> createProcessWithResponseAsync(ProcessCreateParams params) {
+        return FluxUtil.withContext(context -> createProcessWithResponseAsync(params, context));
     }
 
     /**
@@ -656,17 +663,9 @@ public final class ProcessOperationsImpl {
      *
      * Creates a process. This option has direct correspondence to the action of starting a process in the Kuflow GUI.
      *
-     * When a process is created, the current user is assigned as the process initiator, if you want to change it, you
-     * can pass a valid initiator using the following options:
-     *
-     * * If you know the `principal ID` you can assign it to `initiator.id`
-     * * If you know the `user ID` you can assign it to `initiator.user.id`
-     * * If you know the `user email` you can assign it to `initiator.user.email`
-     * * If you know the `application ID` you can assign it to `initiator.application.id`
-     *
      * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
-     * @param process Process to create.
+     * @param params Process to create.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -674,9 +673,9 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Process>> createProcessWithResponseAsync(Process process, Context context) {
+    public Mono<Response<Process>> createProcessWithResponseAsync(ProcessCreateParams params, Context context) {
         final String accept = "application/json";
-        return service.createProcess(this.client.getHost(), process, accept, context);
+        return service.createProcess(this.client.getHost(), params, accept, context);
     }
 
     /**
@@ -684,25 +683,17 @@ public final class ProcessOperationsImpl {
      *
      * Creates a process. This option has direct correspondence to the action of starting a process in the Kuflow GUI.
      *
-     * When a process is created, the current user is assigned as the process initiator, if you want to change it, you
-     * can pass a valid initiator using the following options:
-     *
-     * * If you know the `principal ID` you can assign it to `initiator.id`
-     * * If you know the `user ID` you can assign it to `initiator.user.id`
-     * * If you know the `user email` you can assign it to `initiator.user.email`
-     * * If you know the `application ID` you can assign it to `initiator.application.id`
-     *
      * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
-     * @param process Process to create.
+     * @param params Process to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Process> createProcessAsync(Process process) {
-        return createProcessWithResponseAsync(process).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<Process> createProcessAsync(ProcessCreateParams params) {
+        return createProcessWithResponseAsync(params).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -710,17 +701,9 @@ public final class ProcessOperationsImpl {
      *
      * Creates a process. This option has direct correspondence to the action of starting a process in the Kuflow GUI.
      *
-     * When a process is created, the current user is assigned as the process initiator, if you want to change it, you
-     * can pass a valid initiator using the following options:
-     *
-     * * If you know the `principal ID` you can assign it to `initiator.id`
-     * * If you know the `user ID` you can assign it to `initiator.user.id`
-     * * If you know the `user email` you can assign it to `initiator.user.email`
-     * * If you know the `application ID` you can assign it to `initiator.application.id`
-     *
      * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
-     * @param process Process to create.
+     * @param params Process to create.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -728,8 +711,8 @@ public final class ProcessOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Process> createProcessAsync(Process process, Context context) {
-        return createProcessWithResponseAsync(process, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<Process> createProcessAsync(ProcessCreateParams params, Context context) {
+        return createProcessWithResponseAsync(params, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -737,17 +720,9 @@ public final class ProcessOperationsImpl {
      *
      * Creates a process. This option has direct correspondence to the action of starting a process in the Kuflow GUI.
      *
-     * When a process is created, the current user is assigned as the process initiator, if you want to change it, you
-     * can pass a valid initiator using the following options:
-     *
-     * * If you know the `principal ID` you can assign it to `initiator.id`
-     * * If you know the `user ID` you can assign it to `initiator.user.id`
-     * * If you know the `user email` you can assign it to `initiator.user.email`
-     * * If you know the `application ID` you can assign it to `initiator.application.id`
-     *
      * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
-     * @param process Process to create.
+     * @param params Process to create.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -755,9 +730,9 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Process> createProcessWithResponse(Process process, Context context) {
+    public Response<Process> createProcessWithResponse(ProcessCreateParams params, Context context) {
         final String accept = "application/json";
-        return service.createProcessSync(this.client.getHost(), process, accept, context);
+        return service.createProcessSync(this.client.getHost(), params, accept, context);
     }
 
     /**
@@ -765,25 +740,17 @@ public final class ProcessOperationsImpl {
      *
      * Creates a process. This option has direct correspondence to the action of starting a process in the Kuflow GUI.
      *
-     * When a process is created, the current user is assigned as the process initiator, if you want to change it, you
-     * can pass a valid initiator using the following options:
-     *
-     * * If you know the `principal ID` you can assign it to `initiator.id`
-     * * If you know the `user ID` you can assign it to `initiator.user.id`
-     * * If you know the `user email` you can assign it to `initiator.user.email`
-     * * If you know the `application ID` you can assign it to `initiator.application.id`
-     *
      * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
-     * @param process Process to create.
+     * @param params Process to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Process createProcess(Process process) {
-        return createProcessWithResponse(process, Context.NONE).getValue();
+    public Process createProcess(ProcessCreateParams params) {
+        return createProcessWithResponse(params, Context.NONE).getValue();
     }
 
     /**
@@ -799,8 +766,7 @@ public final class ProcessOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Process>> retrieveProcessWithResponseAsync(UUID id) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.retrieveProcess(this.client.getHost(), id, accept, context));
+        return FluxUtil.withContext(context -> retrieveProcessWithResponseAsync(id, context));
     }
 
     /**
@@ -889,398 +855,6 @@ public final class ProcessOperationsImpl {
     }
 
     /**
-     * Change process initiator
-     *
-     * Change the current initiator of a process.
-     *
-     * Allows you to choose a user (by email or principal identifier) or an application (principal identifier).
-     * Only one option will be necessary.
-     *
-     * @param id The resource ID.
-     * @param command Command to change the process initiator.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Process>> actionsProcessChangeInitiatorWithResponseAsync(UUID id, ProcessChangeInitiatorCommand command) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.actionsProcessChangeInitiator(this.client.getHost(), id, command, accept, context));
-    }
-
-    /**
-     * Change process initiator
-     *
-     * Change the current initiator of a process.
-     *
-     * Allows you to choose a user (by email or principal identifier) or an application (principal identifier).
-     * Only one option will be necessary.
-     *
-     * @param id The resource ID.
-     * @param command Command to change the process initiator.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Process>> actionsProcessChangeInitiatorWithResponseAsync(
-        UUID id,
-        ProcessChangeInitiatorCommand command,
-        Context context
-    ) {
-        final String accept = "application/json";
-        return service.actionsProcessChangeInitiator(this.client.getHost(), id, command, accept, context);
-    }
-
-    /**
-     * Change process initiator
-     *
-     * Change the current initiator of a process.
-     *
-     * Allows you to choose a user (by email or principal identifier) or an application (principal identifier).
-     * Only one option will be necessary.
-     *
-     * @param id The resource ID.
-     * @param command Command to change the process initiator.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Process> actionsProcessChangeInitiatorAsync(UUID id, ProcessChangeInitiatorCommand command) {
-        return actionsProcessChangeInitiatorWithResponseAsync(id, command).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Change process initiator
-     *
-     * Change the current initiator of a process.
-     *
-     * Allows you to choose a user (by email or principal identifier) or an application (principal identifier).
-     * Only one option will be necessary.
-     *
-     * @param id The resource ID.
-     * @param command Command to change the process initiator.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Process> actionsProcessChangeInitiatorAsync(UUID id, ProcessChangeInitiatorCommand command, Context context) {
-        return actionsProcessChangeInitiatorWithResponseAsync(id, command, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Change process initiator
-     *
-     * Change the current initiator of a process.
-     *
-     * Allows you to choose a user (by email or principal identifier) or an application (principal identifier).
-     * Only one option will be necessary.
-     *
-     * @param id The resource ID.
-     * @param command Command to change the process initiator.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Process> actionsProcessChangeInitiatorWithResponse(UUID id, ProcessChangeInitiatorCommand command, Context context) {
-        final String accept = "application/json";
-        return service.actionsProcessChangeInitiatorSync(this.client.getHost(), id, command, accept, context);
-    }
-
-    /**
-     * Change process initiator
-     *
-     * Change the current initiator of a process.
-     *
-     * Allows you to choose a user (by email or principal identifier) or an application (principal identifier).
-     * Only one option will be necessary.
-     *
-     * @param id The resource ID.
-     * @param command Command to change the process initiator.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Process actionsProcessChangeInitiator(UUID id, ProcessChangeInitiatorCommand command) {
-        return actionsProcessChangeInitiatorWithResponse(id, command, Context.NONE).getValue();
-    }
-
-    /**
-     * Save a process element, aka: metadata
-     *
-     * Allow to save an element.
-     *
-     * If values already exist for the provided element code, it replaces them with the new ones, otherwise it creates
-     * them. The values of the previous elements that no longer exist will be deleted.
-     *
-     * If the process is already finished the invocations fails with an error.
-     *
-     * @param id The resource ID.
-     * @param command Command to save an element.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Process>> actionsProcessSaveElementWithResponseAsync(UUID id, ProcessSaveElementCommand command) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.actionsProcessSaveElement(this.client.getHost(), id, command, accept, context));
-    }
-
-    /**
-     * Save a process element, aka: metadata
-     *
-     * Allow to save an element.
-     *
-     * If values already exist for the provided element code, it replaces them with the new ones, otherwise it creates
-     * them. The values of the previous elements that no longer exist will be deleted.
-     *
-     * If the process is already finished the invocations fails with an error.
-     *
-     * @param id The resource ID.
-     * @param command Command to save an element.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Process>> actionsProcessSaveElementWithResponseAsync(UUID id, ProcessSaveElementCommand command, Context context) {
-        final String accept = "application/json";
-        return service.actionsProcessSaveElement(this.client.getHost(), id, command, accept, context);
-    }
-
-    /**
-     * Save a process element, aka: metadata
-     *
-     * Allow to save an element.
-     *
-     * If values already exist for the provided element code, it replaces them with the new ones, otherwise it creates
-     * them. The values of the previous elements that no longer exist will be deleted.
-     *
-     * If the process is already finished the invocations fails with an error.
-     *
-     * @param id The resource ID.
-     * @param command Command to save an element.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Process> actionsProcessSaveElementAsync(UUID id, ProcessSaveElementCommand command) {
-        return actionsProcessSaveElementWithResponseAsync(id, command).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Save a process element, aka: metadata
-     *
-     * Allow to save an element.
-     *
-     * If values already exist for the provided element code, it replaces them with the new ones, otherwise it creates
-     * them. The values of the previous elements that no longer exist will be deleted.
-     *
-     * If the process is already finished the invocations fails with an error.
-     *
-     * @param id The resource ID.
-     * @param command Command to save an element.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Process> actionsProcessSaveElementAsync(UUID id, ProcessSaveElementCommand command, Context context) {
-        return actionsProcessSaveElementWithResponseAsync(id, command, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Save a process element, aka: metadata
-     *
-     * Allow to save an element.
-     *
-     * If values already exist for the provided element code, it replaces them with the new ones, otherwise it creates
-     * them. The values of the previous elements that no longer exist will be deleted.
-     *
-     * If the process is already finished the invocations fails with an error.
-     *
-     * @param id The resource ID.
-     * @param command Command to save an element.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Process> actionsProcessSaveElementWithResponse(UUID id, ProcessSaveElementCommand command, Context context) {
-        final String accept = "application/json";
-        return service.actionsProcessSaveElementSync(this.client.getHost(), id, command, accept, context);
-    }
-
-    /**
-     * Save a process element, aka: metadata
-     *
-     * Allow to save an element.
-     *
-     * If values already exist for the provided element code, it replaces them with the new ones, otherwise it creates
-     * them. The values of the previous elements that no longer exist will be deleted.
-     *
-     * If the process is already finished the invocations fails with an error.
-     *
-     * @param id The resource ID.
-     * @param command Command to save an element.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Process actionsProcessSaveElement(UUID id, ProcessSaveElementCommand command) {
-        return actionsProcessSaveElementWithResponse(id, command, Context.NONE).getValue();
-    }
-
-    /**
-     * Delete an element by code
-     *
-     * Allow to delete a process element by specifying the item definition code.
-     *
-     * Remove all the element values.
-     *
-     * @param id The resource ID.
-     * @param command Command to delete an element.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Process>> actionsProcessDeleteElementWithResponseAsync(UUID id, ProcessDeleteElementCommand command) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.actionsProcessDeleteElement(this.client.getHost(), id, command, accept, context));
-    }
-
-    /**
-     * Delete an element by code
-     *
-     * Allow to delete a process element by specifying the item definition code.
-     *
-     * Remove all the element values.
-     *
-     * @param id The resource ID.
-     * @param command Command to delete an element.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Process>> actionsProcessDeleteElementWithResponseAsync(
-        UUID id,
-        ProcessDeleteElementCommand command,
-        Context context
-    ) {
-        final String accept = "application/json";
-        return service.actionsProcessDeleteElement(this.client.getHost(), id, command, accept, context);
-    }
-
-    /**
-     * Delete an element by code
-     *
-     * Allow to delete a process element by specifying the item definition code.
-     *
-     * Remove all the element values.
-     *
-     * @param id The resource ID.
-     * @param command Command to delete an element.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Process> actionsProcessDeleteElementAsync(UUID id, ProcessDeleteElementCommand command) {
-        return actionsProcessDeleteElementWithResponseAsync(id, command).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Delete an element by code
-     *
-     * Allow to delete a process element by specifying the item definition code.
-     *
-     * Remove all the element values.
-     *
-     * @param id The resource ID.
-     * @param command Command to delete an element.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Process> actionsProcessDeleteElementAsync(UUID id, ProcessDeleteElementCommand command, Context context) {
-        return actionsProcessDeleteElementWithResponseAsync(id, command, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Delete an element by code
-     *
-     * Allow to delete a process element by specifying the item definition code.
-     *
-     * Remove all the element values.
-     *
-     * @param id The resource ID.
-     * @param command Command to delete an element.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Process> actionsProcessDeleteElementWithResponse(UUID id, ProcessDeleteElementCommand command, Context context) {
-        final String accept = "application/json";
-        return service.actionsProcessDeleteElementSync(this.client.getHost(), id, command, accept, context);
-    }
-
-    /**
-     * Delete an element by code
-     *
-     * Allow to delete a process element by specifying the item definition code.
-     *
-     * Remove all the element values.
-     *
-     * @param id The resource ID.
-     * @param command Command to delete an element.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Process actionsProcessDeleteElement(UUID id, ProcessDeleteElementCommand command) {
-        return actionsProcessDeleteElementWithResponse(id, command, Context.NONE).getValue();
-    }
-
-    /**
      * Complete a Process
      *
      * Complete a Process. The state of Process is set to 'completed'.
@@ -1294,9 +868,8 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Process>> actionsProcessCompleteWithResponseAsync(UUID id) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.actionsProcessComplete(this.client.getHost(), id, accept, context));
+    public Mono<Response<Process>> completeProcessWithResponseAsync(UUID id) {
+        return FluxUtil.withContext(context -> completeProcessWithResponseAsync(id, context));
     }
 
     /**
@@ -1314,9 +887,9 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Process>> actionsProcessCompleteWithResponseAsync(UUID id, Context context) {
+    public Mono<Response<Process>> completeProcessWithResponseAsync(UUID id, Context context) {
         final String accept = "application/json";
-        return service.actionsProcessComplete(this.client.getHost(), id, accept, context);
+        return service.completeProcess(this.client.getHost(), id, accept, context);
     }
 
     /**
@@ -1333,8 +906,8 @@ public final class ProcessOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Process> actionsProcessCompleteAsync(UUID id) {
-        return actionsProcessCompleteWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<Process> completeProcessAsync(UUID id) {
+        return completeProcessWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1352,8 +925,8 @@ public final class ProcessOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Process> actionsProcessCompleteAsync(UUID id, Context context) {
-        return actionsProcessCompleteWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<Process> completeProcessAsync(UUID id, Context context) {
+        return completeProcessWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1371,9 +944,9 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Process> actionsProcessCompleteWithResponse(UUID id, Context context) {
+    public Response<Process> completeProcessWithResponse(UUID id, Context context) {
         final String accept = "application/json";
-        return service.actionsProcessCompleteSync(this.client.getHost(), id, accept, context);
+        return service.completeProcessSync(this.client.getHost(), id, accept, context);
     }
 
     /**
@@ -1390,8 +963,8 @@ public final class ProcessOperationsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Process actionsProcessComplete(UUID id) {
-        return actionsProcessCompleteWithResponse(id, Context.NONE).getValue();
+    public Process completeProcess(UUID id) {
+        return completeProcessWithResponse(id, Context.NONE).getValue();
     }
 
     /**
@@ -1399,7 +972,7 @@ public final class ProcessOperationsImpl {
      *
      * Cancel a Process. The Process state is set to 'cancelled'.
      *
-     * All the active tasks will be marked as cancelled too.
+     * All the active process items will be marked as cancelled too.
      *
      * If you are already in this state, no action is taken.
      *
@@ -1410,9 +983,8 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Process>> actionsProcessCancelWithResponseAsync(UUID id) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.actionsProcessCancel(this.client.getHost(), id, accept, context));
+    public Mono<Response<Process>> cancelProcessWithResponseAsync(UUID id) {
+        return FluxUtil.withContext(context -> cancelProcessWithResponseAsync(id, context));
     }
 
     /**
@@ -1420,7 +992,7 @@ public final class ProcessOperationsImpl {
      *
      * Cancel a Process. The Process state is set to 'cancelled'.
      *
-     * All the active tasks will be marked as cancelled too.
+     * All the active process items will be marked as cancelled too.
      *
      * If you are already in this state, no action is taken.
      *
@@ -1432,9 +1004,9 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Process>> actionsProcessCancelWithResponseAsync(UUID id, Context context) {
+    public Mono<Response<Process>> cancelProcessWithResponseAsync(UUID id, Context context) {
         final String accept = "application/json";
-        return service.actionsProcessCancel(this.client.getHost(), id, accept, context);
+        return service.cancelProcess(this.client.getHost(), id, accept, context);
     }
 
     /**
@@ -1442,7 +1014,7 @@ public final class ProcessOperationsImpl {
      *
      * Cancel a Process. The Process state is set to 'cancelled'.
      *
-     * All the active tasks will be marked as cancelled too.
+     * All the active process items will be marked as cancelled too.
      *
      * If you are already in this state, no action is taken.
      *
@@ -1453,8 +1025,8 @@ public final class ProcessOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Process> actionsProcessCancelAsync(UUID id) {
-        return actionsProcessCancelWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<Process> cancelProcessAsync(UUID id) {
+        return cancelProcessWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1462,7 +1034,7 @@ public final class ProcessOperationsImpl {
      *
      * Cancel a Process. The Process state is set to 'cancelled'.
      *
-     * All the active tasks will be marked as cancelled too.
+     * All the active process items will be marked as cancelled too.
      *
      * If you are already in this state, no action is taken.
      *
@@ -1474,8 +1046,8 @@ public final class ProcessOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Process> actionsProcessCancelAsync(UUID id, Context context) {
-        return actionsProcessCancelWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<Process> cancelProcessAsync(UUID id, Context context) {
+        return cancelProcessWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1483,7 +1055,7 @@ public final class ProcessOperationsImpl {
      *
      * Cancel a Process. The Process state is set to 'cancelled'.
      *
-     * All the active tasks will be marked as cancelled too.
+     * All the active process items will be marked as cancelled too.
      *
      * If you are already in this state, no action is taken.
      *
@@ -1495,9 +1067,9 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Process> actionsProcessCancelWithResponse(UUID id, Context context) {
+    public Response<Process> cancelProcessWithResponse(UUID id, Context context) {
         final String accept = "application/json";
-        return service.actionsProcessCancelSync(this.client.getHost(), id, accept, context);
+        return service.cancelProcessSync(this.client.getHost(), id, accept, context);
     }
 
     /**
@@ -1505,7 +1077,7 @@ public final class ProcessOperationsImpl {
      *
      * Cancel a Process. The Process state is set to 'cancelled'.
      *
-     * All the active tasks will be marked as cancelled too.
+     * All the active process items will be marked as cancelled too.
      *
      * If you are already in this state, no action is taken.
      *
@@ -1516,8 +1088,133 @@ public final class ProcessOperationsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Process actionsProcessCancel(UUID id) {
-        return actionsProcessCancelWithResponse(id, Context.NONE).getValue();
+    public Process cancelProcess(UUID id) {
+        return cancelProcessWithResponse(id, Context.NONE).getValue();
+    }
+
+    /**
+     * Change process initiator
+     *
+     * Change the current initiator of a process.
+     *
+     * Allows you to choose a user (by email or principal identifier) or an application (principal identifier).
+     * Only one option will be necessary.
+     *
+     * @param id The resource ID.
+     * @param params Params to change the process initiator.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Process>> changeProcessInitiatorWithResponseAsync(UUID id, ProcessChangeInitiatorParams params) {
+        return FluxUtil.withContext(context -> changeProcessInitiatorWithResponseAsync(id, params, context));
+    }
+
+    /**
+     * Change process initiator
+     *
+     * Change the current initiator of a process.
+     *
+     * Allows you to choose a user (by email or principal identifier) or an application (principal identifier).
+     * Only one option will be necessary.
+     *
+     * @param id The resource ID.
+     * @param params Params to change the process initiator.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Process>> changeProcessInitiatorWithResponseAsync(UUID id, ProcessChangeInitiatorParams params, Context context) {
+        final String accept = "application/json";
+        return service.changeProcessInitiator(this.client.getHost(), id, params, accept, context);
+    }
+
+    /**
+     * Change process initiator
+     *
+     * Change the current initiator of a process.
+     *
+     * Allows you to choose a user (by email or principal identifier) or an application (principal identifier).
+     * Only one option will be necessary.
+     *
+     * @param id The resource ID.
+     * @param params Params to change the process initiator.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Process> changeProcessInitiatorAsync(UUID id, ProcessChangeInitiatorParams params) {
+        return changeProcessInitiatorWithResponseAsync(id, params).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Change process initiator
+     *
+     * Change the current initiator of a process.
+     *
+     * Allows you to choose a user (by email or principal identifier) or an application (principal identifier).
+     * Only one option will be necessary.
+     *
+     * @param id The resource ID.
+     * @param params Params to change the process initiator.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Process> changeProcessInitiatorAsync(UUID id, ProcessChangeInitiatorParams params, Context context) {
+        return changeProcessInitiatorWithResponseAsync(id, params, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Change process initiator
+     *
+     * Change the current initiator of a process.
+     *
+     * Allows you to choose a user (by email or principal identifier) or an application (principal identifier).
+     * Only one option will be necessary.
+     *
+     * @param id The resource ID.
+     * @param params Params to change the process initiator.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Process> changeProcessInitiatorWithResponse(UUID id, ProcessChangeInitiatorParams params, Context context) {
+        final String accept = "application/json";
+        return service.changeProcessInitiatorSync(this.client.getHost(), id, params, accept, context);
+    }
+
+    /**
+     * Change process initiator
+     *
+     * Change the current initiator of a process.
+     *
+     * Allows you to choose a user (by email or principal identifier) or an application (principal identifier).
+     * Only one option will be necessary.
+     *
+     * @param id The resource ID.
+     * @param params Params to change the process initiator.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Process changeProcessInitiator(UUID id, ProcessChangeInitiatorParams params) {
+        return changeProcessInitiatorWithResponse(id, params, Context.NONE).getValue();
     }
 
     /**
@@ -1537,7 +1234,7 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Process>> actionsProcessSaveUserActionValueDocumentWithResponseAsync(
+    public Mono<Response<Process>> uploadProcessUserActionDocumentWithResponseAsync(
         UUID id,
         String fileContentType,
         String fileName,
@@ -1545,18 +1242,15 @@ public final class ProcessOperationsImpl {
         Flux<ByteBuffer> file,
         long contentLength
     ) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
             context ->
-                service.actionsProcessSaveUserActionValueDocument(
-                    this.client.getHost(),
+                uploadProcessUserActionDocumentWithResponseAsync(
                     id,
                     fileContentType,
                     fileName,
                     userActionValueId,
                     file,
                     contentLength,
-                    accept,
                     context
                 )
         );
@@ -1580,7 +1274,7 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Process>> actionsProcessSaveUserActionValueDocumentWithResponseAsync(
+    public Mono<Response<Process>> uploadProcessUserActionDocumentWithResponseAsync(
         UUID id,
         String fileContentType,
         String fileName,
@@ -1590,7 +1284,7 @@ public final class ProcessOperationsImpl {
         Context context
     ) {
         final String accept = "application/json";
-        return service.actionsProcessSaveUserActionValueDocument(
+        return service.uploadProcessUserActionDocument(
             this.client.getHost(),
             id,
             fileContentType,
@@ -1620,7 +1314,7 @@ public final class ProcessOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Process> actionsProcessSaveUserActionValueDocumentAsync(
+    public Mono<Process> uploadProcessUserActionDocumentAsync(
         UUID id,
         String fileContentType,
         String fileName,
@@ -1628,7 +1322,7 @@ public final class ProcessOperationsImpl {
         Flux<ByteBuffer> file,
         long contentLength
     ) {
-        return actionsProcessSaveUserActionValueDocumentWithResponseAsync(
+        return uploadProcessUserActionDocumentWithResponseAsync(
             id,
             fileContentType,
             fileName,
@@ -1656,7 +1350,7 @@ public final class ProcessOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Process> actionsProcessSaveUserActionValueDocumentAsync(
+    public Mono<Process> uploadProcessUserActionDocumentAsync(
         UUID id,
         String fileContentType,
         String fileName,
@@ -1665,7 +1359,7 @@ public final class ProcessOperationsImpl {
         long contentLength,
         Context context
     ) {
-        return actionsProcessSaveUserActionValueDocumentWithResponseAsync(
+        return uploadProcessUserActionDocumentWithResponseAsync(
             id,
             fileContentType,
             fileName,
@@ -1693,7 +1387,7 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Process>> actionsProcessSaveUserActionValueDocumentWithResponseAsync(
+    public Mono<Response<Process>> uploadProcessUserActionDocumentWithResponseAsync(
         UUID id,
         String fileContentType,
         String fileName,
@@ -1701,18 +1395,15 @@ public final class ProcessOperationsImpl {
         BinaryData file,
         long contentLength
     ) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
             context ->
-                service.actionsProcessSaveUserActionValueDocument(
-                    this.client.getHost(),
+                uploadProcessUserActionDocumentWithResponseAsync(
                     id,
                     fileContentType,
                     fileName,
                     userActionValueId,
                     file,
                     contentLength,
-                    accept,
                     context
                 )
         );
@@ -1736,7 +1427,7 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Process>> actionsProcessSaveUserActionValueDocumentWithResponseAsync(
+    public Mono<Response<Process>> uploadProcessUserActionDocumentWithResponseAsync(
         UUID id,
         String fileContentType,
         String fileName,
@@ -1746,7 +1437,7 @@ public final class ProcessOperationsImpl {
         Context context
     ) {
         final String accept = "application/json";
-        return service.actionsProcessSaveUserActionValueDocument(
+        return service.uploadProcessUserActionDocument(
             this.client.getHost(),
             id,
             fileContentType,
@@ -1776,7 +1467,7 @@ public final class ProcessOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Process> actionsProcessSaveUserActionValueDocumentAsync(
+    public Mono<Process> uploadProcessUserActionDocumentAsync(
         UUID id,
         String fileContentType,
         String fileName,
@@ -1784,7 +1475,7 @@ public final class ProcessOperationsImpl {
         BinaryData file,
         long contentLength
     ) {
-        return actionsProcessSaveUserActionValueDocumentWithResponseAsync(
+        return uploadProcessUserActionDocumentWithResponseAsync(
             id,
             fileContentType,
             fileName,
@@ -1812,7 +1503,7 @@ public final class ProcessOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Process> actionsProcessSaveUserActionValueDocumentAsync(
+    public Mono<Process> uploadProcessUserActionDocumentAsync(
         UUID id,
         String fileContentType,
         String fileName,
@@ -1821,7 +1512,7 @@ public final class ProcessOperationsImpl {
         long contentLength,
         Context context
     ) {
-        return actionsProcessSaveUserActionValueDocumentWithResponseAsync(
+        return uploadProcessUserActionDocumentWithResponseAsync(
             id,
             fileContentType,
             fileName,
@@ -1850,7 +1541,7 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Process> actionsProcessSaveUserActionValueDocumentWithResponse(
+    public Response<Process> uploadProcessUserActionDocumentWithResponse(
         UUID id,
         String fileContentType,
         String fileName,
@@ -1860,7 +1551,7 @@ public final class ProcessOperationsImpl {
         Context context
     ) {
         final String accept = "application/json";
-        return service.actionsProcessSaveUserActionValueDocumentSync(
+        return service.uploadProcessUserActionDocumentSync(
             this.client.getHost(),
             id,
             fileContentType,
@@ -1890,7 +1581,7 @@ public final class ProcessOperationsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Process actionsProcessSaveUserActionValueDocument(
+    public Process uploadProcessUserActionDocument(
         UUID id,
         String fileContentType,
         String fileName,
@@ -1898,7 +1589,7 @@ public final class ProcessOperationsImpl {
         BinaryData file,
         long contentLength
     ) {
-        return actionsProcessSaveUserActionValueDocumentWithResponse(
+        return uploadProcessUserActionDocumentWithResponse(
             id,
             fileContentType,
             fileName,
@@ -1910,32 +1601,25 @@ public final class ProcessOperationsImpl {
     }
 
     /**
-     * Save JSON data
-     *
-     * Allow to save a JSON validating that the data follow the related schema. If the data is invalid, then
-     * the json form is marked as invalid.
+     * Save process metadata.
      *
      * @param id The resource ID.
-     * @param command Command to save the JSON value.
+     * @param params Params to save de entity data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Process>> actionsProcessSaveEntityDataWithResponseAsync(UUID id, ProcessSaveEntityDataCommand command) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.actionsProcessSaveEntityData(this.client.getHost(), id, command, accept, context));
+    public Mono<Response<Process>> updateProcessMetadataWithResponseAsync(UUID id, ProcessMetadataUpdateParams params) {
+        return FluxUtil.withContext(context -> updateProcessMetadataWithResponseAsync(id, params, context));
     }
 
     /**
-     * Save JSON data
-     *
-     * Allow to save a JSON validating that the data follow the related schema. If the data is invalid, then
-     * the json form is marked as invalid.
+     * Save process metadata.
      *
      * @param id The resource ID.
-     * @param command Command to save the JSON value.
+     * @param params Params to save de entity data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -1943,41 +1627,31 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Process>> actionsProcessSaveEntityDataWithResponseAsync(
-        UUID id,
-        ProcessSaveEntityDataCommand command,
-        Context context
-    ) {
+    public Mono<Response<Process>> updateProcessMetadataWithResponseAsync(UUID id, ProcessMetadataUpdateParams params, Context context) {
         final String accept = "application/json";
-        return service.actionsProcessSaveEntityData(this.client.getHost(), id, command, accept, context);
+        return service.updateProcessMetadata(this.client.getHost(), id, params, accept, context);
     }
 
     /**
-     * Save JSON data
-     *
-     * Allow to save a JSON validating that the data follow the related schema. If the data is invalid, then
-     * the json form is marked as invalid.
+     * Save process metadata.
      *
      * @param id The resource ID.
-     * @param command Command to save the JSON value.
+     * @param params Params to save de entity data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Process> actionsProcessSaveEntityDataAsync(UUID id, ProcessSaveEntityDataCommand command) {
-        return actionsProcessSaveEntityDataWithResponseAsync(id, command).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<Process> updateProcessMetadataAsync(UUID id, ProcessMetadataUpdateParams params) {
+        return updateProcessMetadataWithResponseAsync(id, params).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Save JSON data
-     *
-     * Allow to save a JSON validating that the data follow the related schema. If the data is invalid, then
-     * the json form is marked as invalid.
+     * Save process metadata.
      *
      * @param id The resource ID.
-     * @param command Command to save the JSON value.
+     * @param params Params to save de entity data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -1985,18 +1659,15 @@ public final class ProcessOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Process> actionsProcessSaveEntityDataAsync(UUID id, ProcessSaveEntityDataCommand command, Context context) {
-        return actionsProcessSaveEntityDataWithResponseAsync(id, command, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<Process> updateProcessMetadataAsync(UUID id, ProcessMetadataUpdateParams params, Context context) {
+        return updateProcessMetadataWithResponseAsync(id, params, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Save JSON data
-     *
-     * Allow to save a JSON validating that the data follow the related schema. If the data is invalid, then
-     * the json form is marked as invalid.
+     * Save process metadata.
      *
      * @param id The resource ID.
-     * @param command Command to save the JSON value.
+     * @param params Params to save de entity data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -2004,9 +1675,137 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Process> actionsProcessSaveEntityDataWithResponse(UUID id, ProcessSaveEntityDataCommand command, Context context) {
+    public Response<Process> updateProcessMetadataWithResponse(UUID id, ProcessMetadataUpdateParams params, Context context) {
         final String accept = "application/json";
-        return service.actionsProcessSaveEntityDataSync(this.client.getHost(), id, command, accept, context);
+        return service.updateProcessMetadataSync(this.client.getHost(), id, params, accept, context);
+    }
+
+    /**
+     * Save process metadata.
+     *
+     * @param id The resource ID.
+     * @param params Params to save de entity data.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Process updateProcessMetadata(UUID id, ProcessMetadataUpdateParams params) {
+        return updateProcessMetadataWithResponse(id, params, Context.NONE).getValue();
+    }
+
+    /**
+     * Patch JSON data
+     *
+     * Allow to patch a JSON data validating that the data follow the related schema. If the data is invalid, then
+     * the json is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param jsonPatch Params to save the JSON value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Process>> patchProcessMetadataWithResponseAsync(UUID id, List<JsonPatchOperation> jsonPatch) {
+        return FluxUtil.withContext(context -> patchProcessMetadataWithResponseAsync(id, jsonPatch, context));
+    }
+
+    /**
+     * Patch JSON data
+     *
+     * Allow to patch a JSON data validating that the data follow the related schema. If the data is invalid, then
+     * the json is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param jsonPatch Params to save the JSON value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Process>> patchProcessMetadataWithResponseAsync(UUID id, List<JsonPatchOperation> jsonPatch, Context context) {
+        final String accept = "application/json";
+        return service.patchProcessMetadata(this.client.getHost(), id, jsonPatch, accept, context);
+    }
+
+    /**
+     * Patch JSON data
+     *
+     * Allow to patch a JSON data validating that the data follow the related schema. If the data is invalid, then
+     * the json is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param jsonPatch Params to save the JSON value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Process> patchProcessMetadataAsync(UUID id, List<JsonPatchOperation> jsonPatch) {
+        return patchProcessMetadataWithResponseAsync(id, jsonPatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Patch JSON data
+     *
+     * Allow to patch a JSON data validating that the data follow the related schema. If the data is invalid, then
+     * the json is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param jsonPatch Params to save the JSON value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Process> patchProcessMetadataAsync(UUID id, List<JsonPatchOperation> jsonPatch, Context context) {
+        return patchProcessMetadataWithResponseAsync(id, jsonPatch, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Patch JSON data
+     *
+     * Allow to patch a JSON data validating that the data follow the related schema. If the data is invalid, then
+     * the json is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param jsonPatch Params to save the JSON value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Process> patchProcessMetadataWithResponse(UUID id, List<JsonPatchOperation> jsonPatch, Context context) {
+        final String accept = "application/json";
+        return service.patchProcessMetadataSync(this.client.getHost(), id, jsonPatch, accept, context);
+    }
+
+    /**
+     * Patch JSON data
+     *
+     * Allow to patch a JSON data validating that the data follow the related schema. If the data is invalid, then
+     * the json is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param jsonPatch Params to save the JSON value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Process patchProcessMetadata(UUID id, List<JsonPatchOperation> jsonPatch) {
+        return patchProcessMetadataWithResponse(id, jsonPatch, Context.NONE).getValue();
     }
 
     /**
@@ -2016,19 +1815,227 @@ public final class ProcessOperationsImpl {
      * the json form is marked as invalid.
      *
      * @param id The resource ID.
-     * @param command Command to save the JSON value.
+     * @param params Params to save the JSON value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Process>> updateProcessEntityWithResponseAsync(UUID id, ProcessEntityUpdateParams params) {
+        return FluxUtil.withContext(context -> updateProcessEntityWithResponseAsync(id, params, context));
+    }
+
+    /**
+     * Save JSON data
+     *
+     * Allow to save a JSON validating that the data follow the related schema. If the data is invalid, then
+     * the json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param params Params to save the JSON value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Process>> updateProcessEntityWithResponseAsync(UUID id, ProcessEntityUpdateParams params, Context context) {
+        final String accept = "application/json";
+        return service.updateProcessEntity(this.client.getHost(), id, params, accept, context);
+    }
+
+    /**
+     * Save JSON data
+     *
+     * Allow to save a JSON validating that the data follow the related schema. If the data is invalid, then
+     * the json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param params Params to save the JSON value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Process> updateProcessEntityAsync(UUID id, ProcessEntityUpdateParams params) {
+        return updateProcessEntityWithResponseAsync(id, params).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Save JSON data
+     *
+     * Allow to save a JSON validating that the data follow the related schema. If the data is invalid, then
+     * the json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param params Params to save the JSON value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Process> updateProcessEntityAsync(UUID id, ProcessEntityUpdateParams params, Context context) {
+        return updateProcessEntityWithResponseAsync(id, params, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Save JSON data
+     *
+     * Allow to save a JSON validating that the data follow the related schema. If the data is invalid, then
+     * the json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param params Params to save the JSON value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Process> updateProcessEntityWithResponse(UUID id, ProcessEntityUpdateParams params, Context context) {
+        final String accept = "application/json";
+        return service.updateProcessEntitySync(this.client.getHost(), id, params, accept, context);
+    }
+
+    /**
+     * Save JSON data
+     *
+     * Allow to save a JSON validating that the data follow the related schema. If the data is invalid, then
+     * the json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param params Params to save the JSON value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Process actionsProcessSaveEntityData(UUID id, ProcessSaveEntityDataCommand command) {
-        return actionsProcessSaveEntityDataWithResponse(id, command, Context.NONE).getValue();
+    public Process updateProcessEntity(UUID id, ProcessEntityUpdateParams params) {
+        return updateProcessEntityWithResponse(id, params, Context.NONE).getValue();
     }
 
     /**
-     * Save an entity value document
+     * Patch JSON data
+     *
+     * Allow to patch a JSON data validating that the data follow the related schema. If the data is invalid, then
+     * the json is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param params Params to save the JSON value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Process>> patchProcessEntityWithResponseAsync(UUID id, List<JsonPatchOperation> params) {
+        return FluxUtil.withContext(context -> patchProcessEntityWithResponseAsync(id, params, context));
+    }
+
+    /**
+     * Patch JSON data
+     *
+     * Allow to patch a JSON data validating that the data follow the related schema. If the data is invalid, then
+     * the json is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param params Params to save the JSON value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Process>> patchProcessEntityWithResponseAsync(UUID id, List<JsonPatchOperation> params, Context context) {
+        final String accept = "application/json";
+        return service.patchProcessEntity(this.client.getHost(), id, params, accept, context);
+    }
+
+    /**
+     * Patch JSON data
+     *
+     * Allow to patch a JSON data validating that the data follow the related schema. If the data is invalid, then
+     * the json is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param params Params to save the JSON value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Process> patchProcessEntityAsync(UUID id, List<JsonPatchOperation> params) {
+        return patchProcessEntityWithResponseAsync(id, params).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Patch JSON data
+     *
+     * Allow to patch a JSON data validating that the data follow the related schema. If the data is invalid, then
+     * the json is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param params Params to save the JSON value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Process> patchProcessEntityAsync(UUID id, List<JsonPatchOperation> params, Context context) {
+        return patchProcessEntityWithResponseAsync(id, params, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Patch JSON data
+     *
+     * Allow to patch a JSON data validating that the data follow the related schema. If the data is invalid, then
+     * the json is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param params Params to save the JSON value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Process> patchProcessEntityWithResponse(UUID id, List<JsonPatchOperation> params, Context context) {
+        final String accept = "application/json";
+        return service.patchProcessEntitySync(this.client.getHost(), id, params, accept, context);
+    }
+
+    /**
+     * Patch JSON data
+     *
+     * Allow to patch a JSON data validating that the data follow the related schema. If the data is invalid, then
+     * the json is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param params Params to save the JSON value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Process patchProcessEntity(UUID id, List<JsonPatchOperation> params) {
+        return patchProcessEntityWithResponse(id, params, Context.NONE).getValue();
+    }
+
+    /**
+     * Upload an entity document
      *
      * Save a document in the process to later be linked into the JSON data.
      *
@@ -2037,6 +2044,8 @@ public final class ProcessOperationsImpl {
      * @param fileName Document name.
      * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
      * schema path.
+     *
+     * ie: "#/properties/file", "#/definitions/UserType/name".
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2045,7 +2054,7 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ProcessSaveEntityDocumentResponseCommand>> actionsProcessSaveEntityDocumentWithResponseAsync(
+    public Mono<Response<DocumentReference>> uploadProcessEntityDocumentWithResponseAsync(
         UUID id,
         String fileContentType,
         String fileName,
@@ -2053,25 +2062,13 @@ public final class ProcessOperationsImpl {
         Flux<ByteBuffer> file,
         long contentLength
     ) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-            context ->
-                service.actionsProcessSaveEntityDocument(
-                    this.client.getHost(),
-                    id,
-                    fileContentType,
-                    fileName,
-                    schemaPath,
-                    file,
-                    contentLength,
-                    accept,
-                    context
-                )
+            context -> uploadProcessEntityDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength, context)
         );
     }
 
     /**
-     * Save an entity value document
+     * Upload an entity document
      *
      * Save a document in the process to later be linked into the JSON data.
      *
@@ -2080,6 +2077,8 @@ public final class ProcessOperationsImpl {
      * @param fileName Document name.
      * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
      * schema path.
+     *
+     * ie: "#/properties/file", "#/definitions/UserType/name".
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -2089,7 +2088,7 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ProcessSaveEntityDocumentResponseCommand>> actionsProcessSaveEntityDocumentWithResponseAsync(
+    public Mono<Response<DocumentReference>> uploadProcessEntityDocumentWithResponseAsync(
         UUID id,
         String fileContentType,
         String fileName,
@@ -2099,7 +2098,7 @@ public final class ProcessOperationsImpl {
         Context context
     ) {
         final String accept = "application/json";
-        return service.actionsProcessSaveEntityDocument(
+        return service.uploadProcessEntityDocument(
             this.client.getHost(),
             id,
             fileContentType,
@@ -2113,7 +2112,7 @@ public final class ProcessOperationsImpl {
     }
 
     /**
-     * Save an entity value document
+     * Upload an entity document
      *
      * Save a document in the process to later be linked into the JSON data.
      *
@@ -2122,6 +2121,8 @@ public final class ProcessOperationsImpl {
      * @param fileName Document name.
      * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
      * schema path.
+     *
+     * ie: "#/properties/file", "#/definitions/UserType/name".
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2130,7 +2131,7 @@ public final class ProcessOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProcessSaveEntityDocumentResponseCommand> actionsProcessSaveEntityDocumentAsync(
+    public Mono<DocumentReference> uploadProcessEntityDocumentAsync(
         UUID id,
         String fileContentType,
         String fileName,
@@ -2138,13 +2139,13 @@ public final class ProcessOperationsImpl {
         Flux<ByteBuffer> file,
         long contentLength
     ) {
-        return actionsProcessSaveEntityDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength).flatMap(
+        return uploadProcessEntityDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength).flatMap(
             res -> Mono.justOrEmpty(res.getValue())
         );
     }
 
     /**
-     * Save an entity value document
+     * Upload an entity document
      *
      * Save a document in the process to later be linked into the JSON data.
      *
@@ -2153,6 +2154,8 @@ public final class ProcessOperationsImpl {
      * @param fileName Document name.
      * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
      * schema path.
+     *
+     * ie: "#/properties/file", "#/definitions/UserType/name".
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -2162,7 +2165,7 @@ public final class ProcessOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProcessSaveEntityDocumentResponseCommand> actionsProcessSaveEntityDocumentAsync(
+    public Mono<DocumentReference> uploadProcessEntityDocumentAsync(
         UUID id,
         String fileContentType,
         String fileName,
@@ -2171,7 +2174,7 @@ public final class ProcessOperationsImpl {
         long contentLength,
         Context context
     ) {
-        return actionsProcessSaveEntityDocumentWithResponseAsync(
+        return uploadProcessEntityDocumentWithResponseAsync(
             id,
             fileContentType,
             fileName,
@@ -2183,7 +2186,7 @@ public final class ProcessOperationsImpl {
     }
 
     /**
-     * Save an entity value document
+     * Upload an entity document
      *
      * Save a document in the process to later be linked into the JSON data.
      *
@@ -2192,6 +2195,8 @@ public final class ProcessOperationsImpl {
      * @param fileName Document name.
      * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
      * schema path.
+     *
+     * ie: "#/properties/file", "#/definitions/UserType/name".
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2200,7 +2205,7 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ProcessSaveEntityDocumentResponseCommand>> actionsProcessSaveEntityDocumentWithResponseAsync(
+    public Mono<Response<DocumentReference>> uploadProcessEntityDocumentWithResponseAsync(
         UUID id,
         String fileContentType,
         String fileName,
@@ -2208,25 +2213,13 @@ public final class ProcessOperationsImpl {
         BinaryData file,
         long contentLength
     ) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-            context ->
-                service.actionsProcessSaveEntityDocument(
-                    this.client.getHost(),
-                    id,
-                    fileContentType,
-                    fileName,
-                    schemaPath,
-                    file,
-                    contentLength,
-                    accept,
-                    context
-                )
+            context -> uploadProcessEntityDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength, context)
         );
     }
 
     /**
-     * Save an entity value document
+     * Upload an entity document
      *
      * Save a document in the process to later be linked into the JSON data.
      *
@@ -2235,6 +2228,8 @@ public final class ProcessOperationsImpl {
      * @param fileName Document name.
      * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
      * schema path.
+     *
+     * ie: "#/properties/file", "#/definitions/UserType/name".
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -2244,7 +2239,7 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ProcessSaveEntityDocumentResponseCommand>> actionsProcessSaveEntityDocumentWithResponseAsync(
+    public Mono<Response<DocumentReference>> uploadProcessEntityDocumentWithResponseAsync(
         UUID id,
         String fileContentType,
         String fileName,
@@ -2254,7 +2249,7 @@ public final class ProcessOperationsImpl {
         Context context
     ) {
         final String accept = "application/json";
-        return service.actionsProcessSaveEntityDocument(
+        return service.uploadProcessEntityDocument(
             this.client.getHost(),
             id,
             fileContentType,
@@ -2268,7 +2263,7 @@ public final class ProcessOperationsImpl {
     }
 
     /**
-     * Save an entity value document
+     * Upload an entity document
      *
      * Save a document in the process to later be linked into the JSON data.
      *
@@ -2277,6 +2272,8 @@ public final class ProcessOperationsImpl {
      * @param fileName Document name.
      * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
      * schema path.
+     *
+     * ie: "#/properties/file", "#/definitions/UserType/name".
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2285,7 +2282,7 @@ public final class ProcessOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProcessSaveEntityDocumentResponseCommand> actionsProcessSaveEntityDocumentAsync(
+    public Mono<DocumentReference> uploadProcessEntityDocumentAsync(
         UUID id,
         String fileContentType,
         String fileName,
@@ -2293,13 +2290,13 @@ public final class ProcessOperationsImpl {
         BinaryData file,
         long contentLength
     ) {
-        return actionsProcessSaveEntityDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength).flatMap(
+        return uploadProcessEntityDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength).flatMap(
             res -> Mono.justOrEmpty(res.getValue())
         );
     }
 
     /**
-     * Save an entity value document
+     * Upload an entity document
      *
      * Save a document in the process to later be linked into the JSON data.
      *
@@ -2308,6 +2305,8 @@ public final class ProcessOperationsImpl {
      * @param fileName Document name.
      * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
      * schema path.
+     *
+     * ie: "#/properties/file", "#/definitions/UserType/name".
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -2317,7 +2316,7 @@ public final class ProcessOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProcessSaveEntityDocumentResponseCommand> actionsProcessSaveEntityDocumentAsync(
+    public Mono<DocumentReference> uploadProcessEntityDocumentAsync(
         UUID id,
         String fileContentType,
         String fileName,
@@ -2326,7 +2325,7 @@ public final class ProcessOperationsImpl {
         long contentLength,
         Context context
     ) {
-        return actionsProcessSaveEntityDocumentWithResponseAsync(
+        return uploadProcessEntityDocumentWithResponseAsync(
             id,
             fileContentType,
             fileName,
@@ -2338,7 +2337,7 @@ public final class ProcessOperationsImpl {
     }
 
     /**
-     * Save an entity value document
+     * Upload an entity document
      *
      * Save a document in the process to later be linked into the JSON data.
      *
@@ -2347,6 +2346,8 @@ public final class ProcessOperationsImpl {
      * @param fileName Document name.
      * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
      * schema path.
+     *
+     * ie: "#/properties/file", "#/definitions/UserType/name".
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -2356,7 +2357,7 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProcessSaveEntityDocumentResponseCommand> actionsProcessSaveEntityDocumentWithResponse(
+    public Response<DocumentReference> uploadProcessEntityDocumentWithResponse(
         UUID id,
         String fileContentType,
         String fileName,
@@ -2366,7 +2367,7 @@ public final class ProcessOperationsImpl {
         Context context
     ) {
         final String accept = "application/json";
-        return service.actionsProcessSaveEntityDocumentSync(
+        return service.uploadProcessEntityDocumentSync(
             this.client.getHost(),
             id,
             fileContentType,
@@ -2380,7 +2381,7 @@ public final class ProcessOperationsImpl {
     }
 
     /**
-     * Save an entity value document
+     * Upload an entity document
      *
      * Save a document in the process to later be linked into the JSON data.
      *
@@ -2389,6 +2390,8 @@ public final class ProcessOperationsImpl {
      * @param fileName Document name.
      * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
      * schema path.
+     *
+     * ie: "#/properties/file", "#/definitions/UserType/name".
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2397,7 +2400,7 @@ public final class ProcessOperationsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProcessSaveEntityDocumentResponseCommand actionsProcessSaveEntityDocument(
+    public DocumentReference uploadProcessEntityDocument(
         UUID id,
         String fileContentType,
         String fileName,
@@ -2405,7 +2408,7 @@ public final class ProcessOperationsImpl {
         BinaryData file,
         long contentLength
     ) {
-        return actionsProcessSaveEntityDocumentWithResponse(
+        return uploadProcessEntityDocumentWithResponse(
             id,
             fileContentType,
             fileName,
@@ -2417,7 +2420,7 @@ public final class ProcessOperationsImpl {
     }
 
     /**
-     * Download document
+     * Download entity document
      *
      * Given a process and a documentUri, download a document.
      *
@@ -2429,15 +2432,12 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> actionsProcessDownloadEntityDocumentWithResponseAsync(UUID id, String documentUri) {
-        final String accept = "application/octet-stream, application/json";
-        return FluxUtil.withContext(
-            context -> service.actionsProcessDownloadEntityDocument(this.client.getHost(), id, documentUri, accept, context)
-        );
+    public Mono<Response<BinaryData>> downloadProcessEntityDocumentWithResponseAsync(UUID id, String documentUri) {
+        return FluxUtil.withContext(context -> downloadProcessEntityDocumentWithResponseAsync(id, documentUri, context));
     }
 
     /**
-     * Download document
+     * Download entity document
      *
      * Given a process and a documentUri, download a document.
      *
@@ -2450,13 +2450,13 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> actionsProcessDownloadEntityDocumentWithResponseAsync(UUID id, String documentUri, Context context) {
+    public Mono<Response<BinaryData>> downloadProcessEntityDocumentWithResponseAsync(UUID id, String documentUri, Context context) {
         final String accept = "application/octet-stream, application/json";
-        return service.actionsProcessDownloadEntityDocument(this.client.getHost(), id, documentUri, accept, context);
+        return service.downloadProcessEntityDocument(this.client.getHost(), id, documentUri, accept, context);
     }
 
     /**
-     * Download document
+     * Download entity document
      *
      * Given a process and a documentUri, download a document.
      *
@@ -2468,12 +2468,12 @@ public final class ProcessOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> actionsProcessDownloadEntityDocumentAsync(UUID id, String documentUri) {
-        return actionsProcessDownloadEntityDocumentWithResponseAsync(id, documentUri).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<BinaryData> downloadProcessEntityDocumentAsync(UUID id, String documentUri) {
+        return downloadProcessEntityDocumentWithResponseAsync(id, documentUri).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Download document
+     * Download entity document
      *
      * Given a process and a documentUri, download a document.
      *
@@ -2486,14 +2486,12 @@ public final class ProcessOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> actionsProcessDownloadEntityDocumentAsync(UUID id, String documentUri, Context context) {
-        return actionsProcessDownloadEntityDocumentWithResponseAsync(id, documentUri, context).flatMap(
-            res -> Mono.justOrEmpty(res.getValue())
-        );
+    public Mono<BinaryData> downloadProcessEntityDocumentAsync(UUID id, String documentUri, Context context) {
+        return downloadProcessEntityDocumentWithResponseAsync(id, documentUri, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Download document
+     * Download entity document
      *
      * Given a process and a documentUri, download a document.
      *
@@ -2506,13 +2504,13 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> actionsProcessDownloadEntityDocumentWithResponse(UUID id, String documentUri, Context context) {
+    public Response<BinaryData> downloadProcessEntityDocumentWithResponse(UUID id, String documentUri, Context context) {
         final String accept = "application/octet-stream, application/json";
-        return service.actionsProcessDownloadEntityDocumentSync(this.client.getHost(), id, documentUri, accept, context);
+        return service.downloadProcessEntityDocumentSync(this.client.getHost(), id, documentUri, accept, context);
     }
 
     /**
-     * Download document
+     * Download entity document
      *
      * Given a process and a documentUri, download a document.
      *
@@ -2524,7 +2522,7 @@ public final class ProcessOperationsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData actionsProcessDownloadEntityDocument(UUID id, String documentUri) {
-        return actionsProcessDownloadEntityDocumentWithResponse(id, documentUri, Context.NONE).getValue();
+    public BinaryData downloadProcessEntityDocument(UUID id, String documentUri) {
+        return downloadProcessEntityDocumentWithResponse(id, documentUri, Context.NONE).getValue();
     }
 }

@@ -27,14 +27,24 @@ package com.kuflow.rest.model;
  */
 public enum WebhookType {
     /**
+     * Enum value PROCESS.CREATED.
+     */
+    PROCESS_CREATED("PROCESS.CREATED"),
+
+    /**
      * Enum value PROCESS.STATE_CHANGED.
      */
     PROCESS_STATE_CHANGED("PROCESS.STATE_CHANGED"),
 
     /**
-     * Enum value TASK.STATE_CHANGED.
+     * Enum value PROCESS_ITEM.CREATED.
      */
-    TASK_STATE_CHANGED("TASK.STATE_CHANGED");
+    PROCESS_ITEM_CREATED("PROCESS_ITEM.CREATED"),
+
+    /**
+     * Enum value PROCESS_ITEM.TASK_STATE_CHANGED.
+     */
+    PROCESS_ITEM_TASK_STATE_CHANGED("PROCESS_ITEM.TASK_STATE_CHANGED");
 
     /**
      * The actual serialized value for a WebhookType instance.

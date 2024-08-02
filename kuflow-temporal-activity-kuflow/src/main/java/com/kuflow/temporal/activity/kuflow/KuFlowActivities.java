@@ -22,44 +22,42 @@
  */
 package com.kuflow.temporal.activity.kuflow;
 
-import com.kuflow.temporal.activity.kuflow.model.AppendTaskLogRequest;
-import com.kuflow.temporal.activity.kuflow.model.AppendTaskLogResponse;
-import com.kuflow.temporal.activity.kuflow.model.AssignTaskRequest;
-import com.kuflow.temporal.activity.kuflow.model.AssignTaskResponse;
-import com.kuflow.temporal.activity.kuflow.model.ChangeProcessInitiatorRequest;
-import com.kuflow.temporal.activity.kuflow.model.ChangeProcessInitiatorResponse;
-import com.kuflow.temporal.activity.kuflow.model.ClaimTaskRequest;
-import com.kuflow.temporal.activity.kuflow.model.ClaimTaskResponse;
-import com.kuflow.temporal.activity.kuflow.model.CompleteTaskRequest;
-import com.kuflow.temporal.activity.kuflow.model.CompleteTaskResponse;
-import com.kuflow.temporal.activity.kuflow.model.CreateTaskRequest;
-import com.kuflow.temporal.activity.kuflow.model.CreateTaskResponse;
-import com.kuflow.temporal.activity.kuflow.model.DeleteProcessElementRequest;
-import com.kuflow.temporal.activity.kuflow.model.DeleteProcessElementResponse;
-import com.kuflow.temporal.activity.kuflow.model.DeleteTaskElementRequest;
-import com.kuflow.temporal.activity.kuflow.model.DeleteTaskElementResponse;
-import com.kuflow.temporal.activity.kuflow.model.DeleteTaskElementValueDocumentRequest;
-import com.kuflow.temporal.activity.kuflow.model.DeleteTaskElementValueDocumentResponse;
-import com.kuflow.temporal.activity.kuflow.model.FindProcessesRequest;
-import com.kuflow.temporal.activity.kuflow.model.FindProcessesResponse;
-import com.kuflow.temporal.activity.kuflow.model.FindTaskRequestModel;
-import com.kuflow.temporal.activity.kuflow.model.FindTaskResponse;
-import com.kuflow.temporal.activity.kuflow.model.RetrievePrincipalRequest;
-import com.kuflow.temporal.activity.kuflow.model.RetrievePrincipalResponse;
-import com.kuflow.temporal.activity.kuflow.model.RetrieveProcessRequest;
-import com.kuflow.temporal.activity.kuflow.model.RetrieveProcessResponse;
-import com.kuflow.temporal.activity.kuflow.model.RetrieveTaskRequest;
-import com.kuflow.temporal.activity.kuflow.model.RetrieveTaskResponse;
-import com.kuflow.temporal.activity.kuflow.model.RetrieveTenantUserRequest;
-import com.kuflow.temporal.activity.kuflow.model.RetrieveTenantUserResponse;
-import com.kuflow.temporal.activity.kuflow.model.SaveProcessElementRequest;
-import com.kuflow.temporal.activity.kuflow.model.SaveProcessElementResponse;
-import com.kuflow.temporal.activity.kuflow.model.SaveProcessEntityDataRequest;
-import com.kuflow.temporal.activity.kuflow.model.SaveProcessEntityDataResponse;
-import com.kuflow.temporal.activity.kuflow.model.SaveTaskElementRequest;
-import com.kuflow.temporal.activity.kuflow.model.SaveTaskElementResponse;
-import com.kuflow.temporal.activity.kuflow.model.SaveTaskJsonFormsValueDataRequest;
-import com.kuflow.temporal.activity.kuflow.model.SaveTaskJsonFormsValueDataResponse;
+import com.kuflow.temporal.activity.kuflow.model.PrincipalRetrieveRequest;
+import com.kuflow.temporal.activity.kuflow.model.PrincipalRetrieveResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessEntityPatchRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessEntityPatchResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessEntityUpdateRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessEntityUpdateResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessFindRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessFindResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessInitiatorChangeRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessInitiatorChangeResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemCreateRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemCreateResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemFindRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemFindResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemRetrieveRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemRetrieveResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAssignRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAssignResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskClaimRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskClaimResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskCompleteRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskCompleteResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskDataPatchRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskDataPatchResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskDataUpdateRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskDataUpdateResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskLoggAppendRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskLoggAppendResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessMetadataPatchRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessMetadataPatchResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessMetadataUpdateRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessMetadataUpdateResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessRetrieveRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessRetrieveResponse;
+import com.kuflow.temporal.activity.kuflow.model.TenantUserRetrieveRequest;
+import com.kuflow.temporal.activity.kuflow.model.TenantUserRetrieveResponse;
 import io.temporal.activity.ActivityInterface;
 import io.temporal.activity.ActivityMethod;
 import javax.annotation.Nonnull;
@@ -78,7 +76,7 @@ public interface KuFlowActivities {
      */
     @ActivityMethod
     @Nonnull
-    RetrievePrincipalResponse retrievePrincipal(@Nonnull RetrievePrincipalRequest request);
+    PrincipalRetrieveResponse retrievePrincipal(@Nonnull PrincipalRetrieveRequest request);
 
     /**
      * Retrieve a Tenant User.
@@ -88,7 +86,7 @@ public interface KuFlowActivities {
      */
     @ActivityMethod
     @Nonnull
-    RetrieveTenantUserResponse retrieveTenantUser(@Nonnull RetrieveTenantUserRequest request);
+    TenantUserRetrieveResponse retrieveTenantUser(@Nonnull TenantUserRetrieveRequest request);
 
     /**
      * Find all accessible Processes
@@ -98,7 +96,7 @@ public interface KuFlowActivities {
      */
     @ActivityMethod
     @Nonnull
-    FindProcessesResponse findProcesses(FindProcessesRequest request);
+    ProcessFindResponse findProcesses(ProcessFindRequest request);
 
     /**
      * Retrieve a Process.
@@ -108,39 +106,47 @@ public interface KuFlowActivities {
      */
     @ActivityMethod
     @Nonnull
-    RetrieveProcessResponse retrieveProcess(@Nonnull RetrieveProcessRequest request);
+    ProcessRetrieveResponse retrieveProcess(@Nonnull ProcessRetrieveRequest request);
 
     /**
-     *  Allow to save an element.
-     *  If values already exist for the provided element code, it replaces them with the new ones, otherwise it creates them.
-     *  The values of the previous elements that no longer exist will be deleted.
-     *
-     *  <p>If the process is already finished the invocations fails with an error.
+     * Update a Process Entity.
      *
      * @param request must not be {@literal null}.
-     * @return process completed
+     * @return process
      */
-    SaveProcessElementResponse saveProcessElement(@Nonnull SaveProcessElementRequest request);
+    @ActivityMethod
+    @Nonnull
+    ProcessEntityUpdateResponse updateProcessEntity(@Nonnull ProcessEntityUpdateRequest request);
 
     /**
-     *  Allow to delete a process element by specifying the item definition code.
-     *  Remove all the element values.
+     * Patch a Process Entity.
      *
      * @param request must not be {@literal null}.
-     * @return process deleted
+     * @return process
      */
-    DeleteProcessElementResponse deleteProcessElement(@Nonnull DeleteProcessElementRequest request);
+    @ActivityMethod
+    @Nonnull
+    ProcessEntityPatchResponse patchProcessEntity(@Nonnull ProcessEntityPatchRequest request);
 
     /**
-     * Save entity JSON data
-     *
-     * <p>Allow to save a JSON data validating that the data follow the related schema. If the data is invalid, then the
-     * json form is marked as invalid.
+     * Update a Process Metadata.
      *
      * @param request must not be {@literal null}.
-     * @return task updated
+     * @return process
      */
-    SaveProcessEntityDataResponse saveProcessEntityData(@Nonnull SaveProcessEntityDataRequest request);
+    @ActivityMethod
+    @Nonnull
+    ProcessMetadataUpdateResponse updateProcessMetadata(@Nonnull ProcessMetadataUpdateRequest request);
+
+    /**
+     * Patch a Process Metadata.
+     *
+     * @param request must not be {@literal null}.
+     * @return process
+     */
+    @ActivityMethod
+    @Nonnull
+    ProcessMetadataPatchResponse patchProcessMetadata(@Nonnull ProcessMetadataPatchRequest request);
 
     /**
      * Change the current initiator of a process. Allows you to choose a user (by email or principal
@@ -151,7 +157,7 @@ public interface KuFlowActivities {
      */
     @ActivityMethod
     @Nonnull
-    ChangeProcessInitiatorResponse changeProcessInitiator(@Nonnull ChangeProcessInitiatorRequest request);
+    ProcessInitiatorChangeResponse changeProcessInitiator(@Nonnull ProcessInitiatorChangeRequest request);
 
     /**
      * List all the Processes that have been created and the credentials has access.
@@ -161,7 +167,7 @@ public interface KuFlowActivities {
      */
     @ActivityMethod
     @Nonnull
-    FindTaskResponse findTasks(FindTaskRequestModel request);
+    ProcessItemFindResponse findProcessItems(ProcessItemFindRequest request);
 
     /**
      * Retrieve a Task.
@@ -171,7 +177,7 @@ public interface KuFlowActivities {
      */
     @ActivityMethod
     @Nonnull
-    RetrieveTaskResponse retrieveTask(@Nonnull RetrieveTaskRequest request);
+    ProcessItemRetrieveResponse retrieveProcessItem(@Nonnull ProcessItemRetrieveRequest request);
 
     /**
      * Create a Task and optionally fill its elements.
@@ -181,7 +187,7 @@ public interface KuFlowActivities {
      */
     @ActivityMethod
     @Nonnull
-    CreateTaskResponse createTask(@Nonnull CreateTaskRequest request);
+    ProcessItemCreateResponse createProcessItem(@Nonnull ProcessItemCreateRequest request);
 
     /**
      * Complete a task.
@@ -193,7 +199,7 @@ public interface KuFlowActivities {
      */
     @ActivityMethod
     @Nonnull
-    CompleteTaskResponse completeTask(@Nonnull CompleteTaskRequest request);
+    ProcessItemTaskCompleteResponse completeProcessItemTask(@Nonnull ProcessItemTaskCompleteRequest request);
 
     /**
      * Claim a task.
@@ -203,7 +209,7 @@ public interface KuFlowActivities {
      */
     @ActivityMethod
     @Nonnull
-    ClaimTaskResponse claimTask(@Nonnull ClaimTaskRequest request);
+    ProcessItemTaskClaimResponse claimProcessItemTask(@Nonnull ProcessItemTaskClaimRequest request);
 
     /**
      * Assign a task to a user or application using their email or principalId
@@ -213,45 +219,7 @@ public interface KuFlowActivities {
      */
     @ActivityMethod
     @Nonnull
-    AssignTaskResponse assignTask(@Nonnull AssignTaskRequest request);
-
-    /**
-     * Allow to save an element i.e., a field, a decision, a form, a principal or document.
-     * <br>
-     * In the case of document type elements, this method only allows references to be made to other existing document
-     * type elements for the purpose of copying that file into the element. To do this you need to pass a reference to the
-     * document using the 'uri' attribute. In case you want to add a new document, you should create a Temporal activity
-     * specific to your needs and use our rest client to upload the document. This is because it is not recommended to save
-     * binaries in the history of Temporal.
-     * <br>
-     * If values already exist for the provided element code, it replaces them with the new ones, otherwise it
-     * creates them. The values of the previous elements that no longer exist will be deleted. To remove an element, use
-     * the appropriate API method.
-     *
-     * @param request must not be {@literal null}.
-     * @return task updated
-     */
-    SaveTaskElementResponse saveTaskElement(@Nonnull SaveTaskElementRequest request);
-
-    /**
-     * Allow to delete task element by specifying the item definition code.
-     * <br>
-     * Remove all the element values.
-     *
-     * @param request must not be {@literal null}.
-     * @return task updated
-     */
-    DeleteTaskElementResponse deleteTaskElement(@Nonnull DeleteTaskElementRequest request);
-
-    /**
-     * Allow to delete a specific document from an element of document type using its id.
-     * <br>
-     * Note: If it is a multiple item, it will only delete the specified document. If it is a single element, in addition to the document, it will also delete the element.
-     *
-     * @param request must not be {@literal null}.
-     * @return task updated
-     */
-    DeleteTaskElementValueDocumentResponse deleteTaskElementValueDocument(@Nonnull DeleteTaskElementValueDocumentRequest request);
+    ProcessItemTaskAssignResponse assignProcessItemTask(@Nonnull ProcessItemTaskAssignRequest request);
 
     /**
      * Save JSON data
@@ -262,7 +230,22 @@ public interface KuFlowActivities {
      * @param request must not be {@literal null}.
      * @return task updated
      */
-    SaveTaskJsonFormsValueDataResponse saveTaskJsonFormsValueData(@Nonnull SaveTaskJsonFormsValueDataRequest request);
+    @ActivityMethod
+    @Nonnull
+    ProcessItemTaskDataUpdateResponse updateProcessItemTaskData(@Nonnull ProcessItemTaskDataUpdateRequest request);
+
+    /**
+     * Patch JSON data
+     *
+     * <p>Allow to save a JSON data validating that the data follow the related schema. If the data is invalid, then the
+     * json form is marked as invalid.
+     *
+     * @param request must not be {@literal null}.
+     * @return task updated
+     */
+    @ActivityMethod
+    @Nonnull
+    ProcessItemTaskDataPatchResponse patchProcessItemTaskData(@Nonnull ProcessItemTaskDataPatchRequest request);
 
     /**
      * Append a log to the task.
@@ -274,5 +257,5 @@ public interface KuFlowActivities {
      */
     @ActivityMethod
     @Nonnull
-    AppendTaskLogResponse appendTaskLog(@Nonnull AppendTaskLogRequest request);
+    ProcessItemTaskLoggAppendResponse appendProcessItemTaskLog(@Nonnull ProcessItemTaskLoggAppendRequest request);
 }

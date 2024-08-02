@@ -133,17 +133,17 @@ public final class KuFlowClientImpl {
     }
 
     /**
-     * The TaskOperationsImpl object to access its operations.
+     * The ProcessItemOperationsImpl object to access its operations.
      */
-    private final TaskOperationsImpl taskOperations;
+    private final ProcessItemOperationsImpl processItemOperations;
 
     /**
-     * Gets the TaskOperationsImpl object to access its operations.
+     * Gets the ProcessItemOperationsImpl object to access its operations.
      *
-     * @return the TaskOperationsImpl object.
+     * @return the ProcessItemOperationsImpl object.
      */
-    public TaskOperationsImpl getTaskOperations() {
-        return this.taskOperations;
+    public ProcessItemOperationsImpl getProcessItemOperations() {
+        return this.processItemOperations;
     }
 
     /**
@@ -212,7 +212,7 @@ public final class KuFlowClientImpl {
         this.principalOperations = new PrincipalOperationsImpl(this);
         this.tenantUserOperations = new TenantUserOperationsImpl(this);
         this.processOperations = new ProcessOperationsImpl(this);
-        this.taskOperations = new TaskOperationsImpl(this);
+        this.processItemOperations = new ProcessItemOperationsImpl(this);
         this.workerOperations = new WorkerOperationsImpl(this);
         this.robotOperations = new RobotOperationsImpl(this);
     }

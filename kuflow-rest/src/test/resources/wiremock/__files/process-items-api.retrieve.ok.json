@@ -1,0 +1,11 @@
+{
+  "id": "e2d0fdf9-0aae-4eed-9e07-8e4b76df733c",
+  "state": "CLAIMED",
+  "ownerId": "23c7c277-70da-4d5c-9dbb-181f363b1d10",
+  "taskDefinition": {
+    "id": "5279a366-2401-4c3e-8eb6-2d2c71d74f0e",
+    "version": "022311ae-ce15-460c-90ba-0469c61f959b",
+    "code": "TASK_001",
+    "name": "Task 001 Definition"
+  }
+}

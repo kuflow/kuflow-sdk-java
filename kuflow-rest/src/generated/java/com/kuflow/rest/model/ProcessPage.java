@@ -69,15 +69,6 @@ public final class ProcessPage extends Page {
      * {@inheritDoc}
      */
     @Override
-    public ProcessPage setObjectType(PagedObjectType objectType) {
-        super.setObjectType(objectType);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public ProcessPage setMetadata(PageMetadata metadata) {
         super.setMetadata(metadata);
         return this;
@@ -90,7 +81,6 @@ public final class ProcessPage extends Page {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("metadata", getMetadata());
-        jsonWriter.writeStringField("objectType", getObjectType() == null ? null : getObjectType().toString());
         jsonWriter.writeArrayField("content", this.content, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -113,8 +103,6 @@ public final class ProcessPage extends Page {
 
                 if ("metadata".equals(fieldName)) {
                     deserializedProcessPage.setMetadata(PageMetadata.fromJson(reader));
-                } else if ("objectType".equals(fieldName)) {
-                    deserializedProcessPage.setObjectType(PagedObjectType.fromString(reader.getString()));
                 } else if ("content".equals(fieldName)) {
                     List<ProcessPageItem> content = reader.readArray(reader1 -> ProcessPageItem.fromJson(reader1));
                     deserializedProcessPage.content = content;

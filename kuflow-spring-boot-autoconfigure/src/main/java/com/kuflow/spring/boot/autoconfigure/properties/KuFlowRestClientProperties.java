@@ -74,24 +74,6 @@ public class KuFlowRestClientProperties {
         this.clientSecret = clientSecret;
     }
 
-    /**
-     * @deprecated use {@link #clientId}
-     * @param applicationId the client id
-     */
-    @Deprecated
-    public void setApplicationId(String applicationId) {
-        this.clientId = applicationId;
-    }
-
-    /**
-     * @deprecated use {@link #clientSecret}
-     * @param token the client secret
-     */
-    @Deprecated
-    public void setToken(String token) {
-        this.clientSecret = token;
-    }
-
     public HttpLogDetailLevel getLoggerLevel() {
         return this.loggerLevel;
     }

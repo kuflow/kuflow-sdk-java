@@ -32,9 +32,9 @@ public enum RobotSourceType {
     PACKAGE("PACKAGE"),
 
     /**
-     * Enum value ROBOT_FRAMEWORK_PYTHON_WHEEL.
+     * Enum value UNKNOWN.
      */
-    ROBOT_FRAMEWORK_PYTHON_WHEEL("ROBOT_FRAMEWORK_PYTHON_WHEEL");
+    UNKNOWN("UNKNOWN");
 
     /**
      * The actual serialized value for a RobotSourceType instance.

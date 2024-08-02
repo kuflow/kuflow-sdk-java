@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -248,15 +249,6 @@ public final class Robot extends AbstractAudited {
      * {@inheritDoc}
      */
     @Override
-    public Robot setObjectType(AuditedObjectType objectType) {
-        super.setObjectType(objectType);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Robot setCreatedBy(UUID createdBy) {
         super.setCreatedBy(createdBy);
         return this;
@@ -295,7 +287,6 @@ public final class Robot extends AbstractAudited {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("objectType", getObjectType() == null ? null : getObjectType().toString());
         jsonWriter.writeStringField("createdBy", Objects.toString(getCreatedBy(), null));
         jsonWriter.writeStringField(
             "createdAt",
@@ -310,10 +301,10 @@ public final class Robot extends AbstractAudited {
         jsonWriter.writeStringField("code", this.code);
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("sourceType", this.sourceType == null ? null : this.sourceType.toString());
-        jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeJsonField("sourceFile", this.sourceFile);
-        jsonWriter.writeMapField("environmentVariables", this.environmentVariables, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeMapField("environmentVariables", this.environmentVariables, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -333,17 +324,17 @@ public final class Robot extends AbstractAudited {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("objectType".equals(fieldName)) {
-                    deserializedRobot.setObjectType(AuditedObjectType.fromString(reader.getString()));
-                } else if ("createdBy".equals(fieldName)) {
+                if ("createdBy".equals(fieldName)) {
                     deserializedRobot.setCreatedBy(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
                 } else if ("createdAt".equals(fieldName)) {
-                    deserializedRobot.setCreatedAt(reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedRobot.setCreatedAt(
+                        reader.getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()))
+                    );
                 } else if ("lastModifiedBy".equals(fieldName)) {
                     deserializedRobot.setLastModifiedBy(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
                 } else if ("lastModifiedAt".equals(fieldName)) {
                     deserializedRobot.setLastModifiedAt(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()))
+                        reader.getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()))
                     );
                 } else if ("id".equals(fieldName)) {
                     deserializedRobot.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
@@ -353,15 +344,15 @@ public final class Robot extends AbstractAudited {
                     deserializedRobot.name = reader.getString();
                 } else if ("sourceType".equals(fieldName)) {
                     deserializedRobot.sourceType = RobotSourceType.fromString(reader.getString());
-                } else if ("description".equals(fieldName)) {
-                    deserializedRobot.description = reader.getString();
                 } else if ("sourceFile".equals(fieldName)) {
                     deserializedRobot.sourceFile = RobotSourceFile.fromJson(reader);
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedRobot.tenantId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedRobot.description = reader.getString();
                 } else if ("environmentVariables".equals(fieldName)) {
                     Map<String, String> environmentVariables = reader.readMap(reader1 -> reader1.getString());
                     deserializedRobot.environmentVariables = environmentVariables;
-                } else if ("tenantId".equals(fieldName)) {
-                    deserializedRobot.tenantId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

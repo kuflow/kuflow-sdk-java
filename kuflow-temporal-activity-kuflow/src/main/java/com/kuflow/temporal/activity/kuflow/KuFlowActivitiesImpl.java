@@ -23,84 +23,73 @@
 package com.kuflow.temporal.activity.kuflow;
 
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesFailure.createApplicationFailure;
-import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateAppendTaskLogRequest;
-import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateAssignTaskRequest;
-import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateChangeProcessInitiatorRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateClaimTaskRequest;
-import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateCompleteTaskRequest;
-import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateCreateTaskRequest;
-import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateDeleteProcessElementRequest;
-import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateDeleteTaskElementRequest;
-import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateDeleteTaskElementValueDocumentRequest;
-import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateRetrievePrincipalRequest;
-import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateRetrieveProcessRequest;
-import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateRetrieveTaskRequest;
-import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateRetrieveTenantUserRequest;
-import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateSaveProcessElementRequest;
-import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateSaveProcessEntityData;
-import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateSaveTaskElementRequest;
-import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateSaveTaskJsonFormsDataRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validatePrincipalRetrieveRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessEntityPatchRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessEntityUpdateRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessInitiatorChangeRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemCreateRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemRetrieve;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemTaskAssignRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemTaskCompleteRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemTaskDataPatchRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemTaskDataUpdateRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemTaskLoggAppendRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessMetadataPatchRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessMetadataUpdateRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessRetrieveRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateTenantUserRetrieveRequest;
 
 import com.kuflow.rest.KuFlowRestClient;
-import com.kuflow.rest.model.FindProcessesOptions;
-import com.kuflow.rest.model.FindTasksOptions;
 import com.kuflow.rest.model.Principal;
 import com.kuflow.rest.model.Process;
-import com.kuflow.rest.model.ProcessChangeInitiatorCommand;
-import com.kuflow.rest.model.ProcessDeleteElementCommand;
+import com.kuflow.rest.model.ProcessFindOptions;
+import com.kuflow.rest.model.ProcessItem;
+import com.kuflow.rest.model.ProcessItemFindOptions;
+import com.kuflow.rest.model.ProcessItemPage;
+import com.kuflow.rest.model.ProcessItemTaskAssignParams;
 import com.kuflow.rest.model.ProcessPage;
-import com.kuflow.rest.model.ProcessSaveElementCommand;
-import com.kuflow.rest.model.ProcessSaveEntityDataCommand;
-import com.kuflow.rest.model.Task;
-import com.kuflow.rest.model.TaskAssignCommand;
-import com.kuflow.rest.model.TaskDeleteElementCommand;
-import com.kuflow.rest.model.TaskDeleteElementValueDocumentCommand;
-import com.kuflow.rest.model.TaskPage;
-import com.kuflow.rest.model.TaskSaveElementCommand;
-import com.kuflow.rest.model.TaskSaveJsonFormsValueDataCommand;
 import com.kuflow.rest.model.TenantUser;
 import com.kuflow.rest.operation.PrincipalOperations;
+import com.kuflow.rest.operation.ProcessItemOperations;
 import com.kuflow.rest.operation.ProcessOperations;
-import com.kuflow.rest.operation.TaskOperations;
 import com.kuflow.rest.operation.TenantUserOperations;
-import com.kuflow.temporal.activity.kuflow.model.AppendTaskLogRequest;
-import com.kuflow.temporal.activity.kuflow.model.AppendTaskLogResponse;
-import com.kuflow.temporal.activity.kuflow.model.AssignTaskRequest;
-import com.kuflow.temporal.activity.kuflow.model.AssignTaskResponse;
-import com.kuflow.temporal.activity.kuflow.model.ChangeProcessInitiatorRequest;
-import com.kuflow.temporal.activity.kuflow.model.ChangeProcessInitiatorResponse;
-import com.kuflow.temporal.activity.kuflow.model.ClaimTaskRequest;
-import com.kuflow.temporal.activity.kuflow.model.ClaimTaskResponse;
-import com.kuflow.temporal.activity.kuflow.model.CompleteTaskRequest;
-import com.kuflow.temporal.activity.kuflow.model.CompleteTaskResponse;
-import com.kuflow.temporal.activity.kuflow.model.CreateTaskRequest;
-import com.kuflow.temporal.activity.kuflow.model.CreateTaskResponse;
-import com.kuflow.temporal.activity.kuflow.model.DeleteProcessElementRequest;
-import com.kuflow.temporal.activity.kuflow.model.DeleteProcessElementResponse;
-import com.kuflow.temporal.activity.kuflow.model.DeleteTaskElementRequest;
-import com.kuflow.temporal.activity.kuflow.model.DeleteTaskElementResponse;
-import com.kuflow.temporal.activity.kuflow.model.DeleteTaskElementValueDocumentRequest;
-import com.kuflow.temporal.activity.kuflow.model.DeleteTaskElementValueDocumentResponse;
-import com.kuflow.temporal.activity.kuflow.model.FindProcessesRequest;
-import com.kuflow.temporal.activity.kuflow.model.FindProcessesResponse;
-import com.kuflow.temporal.activity.kuflow.model.FindTaskRequestModel;
-import com.kuflow.temporal.activity.kuflow.model.FindTaskResponse;
-import com.kuflow.temporal.activity.kuflow.model.RetrievePrincipalRequest;
-import com.kuflow.temporal.activity.kuflow.model.RetrievePrincipalResponse;
-import com.kuflow.temporal.activity.kuflow.model.RetrieveProcessRequest;
-import com.kuflow.temporal.activity.kuflow.model.RetrieveProcessResponse;
-import com.kuflow.temporal.activity.kuflow.model.RetrieveTaskRequest;
-import com.kuflow.temporal.activity.kuflow.model.RetrieveTaskResponse;
-import com.kuflow.temporal.activity.kuflow.model.RetrieveTenantUserRequest;
-import com.kuflow.temporal.activity.kuflow.model.RetrieveTenantUserResponse;
-import com.kuflow.temporal.activity.kuflow.model.SaveProcessElementRequest;
-import com.kuflow.temporal.activity.kuflow.model.SaveProcessElementResponse;
-import com.kuflow.temporal.activity.kuflow.model.SaveProcessEntityDataRequest;
-import com.kuflow.temporal.activity.kuflow.model.SaveProcessEntityDataResponse;
-import com.kuflow.temporal.activity.kuflow.model.SaveTaskElementRequest;
-import com.kuflow.temporal.activity.kuflow.model.SaveTaskElementResponse;
-import com.kuflow.temporal.activity.kuflow.model.SaveTaskJsonFormsValueDataRequest;
-import com.kuflow.temporal.activity.kuflow.model.SaveTaskJsonFormsValueDataResponse;
+import com.kuflow.temporal.activity.kuflow.model.PrincipalRetrieveRequest;
+import com.kuflow.temporal.activity.kuflow.model.PrincipalRetrieveResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessEntityPatchRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessEntityPatchResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessEntityUpdateRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessEntityUpdateResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessFindRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessFindResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessInitiatorChangeRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessInitiatorChangeResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemCreateRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemCreateResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemFindRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemFindResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemRetrieveRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemRetrieveResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAssignRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAssignResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskClaimRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskClaimResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskCompleteRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskCompleteResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskDataPatchRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskDataPatchResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskDataUpdateRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskDataUpdateResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskLoggAppendRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskLoggAppendResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessMetadataPatchRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessMetadataPatchResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessMetadataUpdateRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessMetadataUpdateResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessRetrieveRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessRetrieveResponse;
+import com.kuflow.temporal.activity.kuflow.model.TenantUserRetrieveRequest;
+import com.kuflow.temporal.activity.kuflow.model.TenantUserRetrieveResponse;
 import javax.annotation.Nonnull;
 
 public class KuFlowActivitiesImpl implements KuFlowActivities {
@@ -111,24 +100,24 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
     private final ProcessOperations processOperations;
 
-    private final TaskOperations taskOperations;
+    private final ProcessItemOperations processItemOperations;
 
     public KuFlowActivitiesImpl(KuFlowRestClient kuFlowRestClient) {
         this.principalOperations = kuFlowRestClient.getPrincipalOperations();
         this.tenantUserOperations = kuFlowRestClient.getTenantUserOperations();
         this.processOperations = kuFlowRestClient.getProcessOperations();
-        this.taskOperations = kuFlowRestClient.getTaskOperations();
+        this.processItemOperations = kuFlowRestClient.getProcessItemOperations();
     }
 
     @Nonnull
     @Override
-    public RetrievePrincipalResponse retrievePrincipal(@Nonnull RetrievePrincipalRequest request) {
+    public PrincipalRetrieveResponse retrievePrincipal(@Nonnull PrincipalRetrieveRequest request) {
         try {
-            validateRetrievePrincipalRequest(request);
+            validatePrincipalRetrieveRequest(request);
 
             Principal principal = this.principalOperations.retrievePrincipal(request.getPrincipalId());
 
-            RetrievePrincipalResponse response = new RetrievePrincipalResponse();
+            PrincipalRetrieveResponse response = new PrincipalRetrieveResponse();
             response.setPrincipal(principal);
 
             return response;
@@ -139,13 +128,13 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
     @Nonnull
     @Override
-    public RetrieveTenantUserResponse retrieveTenantUser(@Nonnull RetrieveTenantUserRequest request) {
+    public TenantUserRetrieveResponse retrieveTenantUser(@Nonnull TenantUserRetrieveRequest request) {
         try {
-            validateRetrieveTenantUserRequest(request);
+            validateTenantUserRetrieveRequest(request);
 
             TenantUser tenantUser = this.tenantUserOperations.retrieveTenantUser(request.getTenantUserId());
 
-            RetrieveTenantUserResponse response = new RetrieveTenantUserResponse();
+            TenantUserRetrieveResponse response = new TenantUserRetrieveResponse();
             response.setTenantUser(tenantUser);
 
             return response;
@@ -156,16 +145,16 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
     @Nonnull
     @Override
-    public FindProcessesResponse findProcesses(FindProcessesRequest request) {
+    public ProcessFindResponse findProcesses(ProcessFindRequest request) {
         try {
-            FindProcessesOptions options = new FindProcessesOptions()
+            ProcessFindOptions options = new ProcessFindOptions()
                 .setPage(request.getPage())
                 .setSize(request.getSize())
                 .setSorts(request.getSorts());
 
             ProcessPage processes = this.processOperations.findProcesses(options);
 
-            FindProcessesResponse response = new FindProcessesResponse();
+            ProcessFindResponse response = new ProcessFindResponse();
             response.setProcesses(processes);
 
             return response;
@@ -176,13 +165,13 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
     @Nonnull
     @Override
-    public RetrieveProcessResponse retrieveProcess(@Nonnull RetrieveProcessRequest request) {
+    public ProcessRetrieveResponse retrieveProcess(@Nonnull ProcessRetrieveRequest request) {
         try {
-            validateRetrieveProcessRequest(request);
+            validateProcessRetrieveRequest(request);
 
             Process process = this.processOperations.retrieveProcess(request.getProcessId());
 
-            RetrieveProcessResponse response = new RetrieveProcessResponse();
+            ProcessRetrieveResponse response = new ProcessRetrieveResponse();
             response.setProcess(process);
 
             return response;
@@ -193,17 +182,13 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
     @Nonnull
     @Override
-    public SaveProcessElementResponse saveProcessElement(@Nonnull SaveProcessElementRequest request) {
+    public ProcessEntityUpdateResponse updateProcessEntity(@Nonnull ProcessEntityUpdateRequest request) {
         try {
-            validateSaveProcessElementRequest(request);
+            validateProcessEntityUpdateRequest(request);
 
-            ProcessSaveElementCommand command = new ProcessSaveElementCommand()
-                .setElementDefinitionCode(request.getElementDefinitionCode())
-                .setElementValues(request.getElementValues());
+            Process process = this.processOperations.updateProcessEntity(request.getProcessId(), request.getParams());
 
-            Process process = this.processOperations.actionsProcessSaveElement(request.getProcessId(), command);
-
-            SaveProcessElementResponse response = new SaveProcessElementResponse();
+            ProcessEntityUpdateResponse response = new ProcessEntityUpdateResponse();
             response.setProcess(process);
 
             return response;
@@ -214,34 +199,13 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
     @Nonnull
     @Override
-    public DeleteProcessElementResponse deleteProcessElement(@Nonnull DeleteProcessElementRequest request) {
+    public ProcessEntityPatchResponse patchProcessEntity(@Nonnull ProcessEntityPatchRequest request) {
         try {
-            validateDeleteProcessElementRequest(request);
+            validateProcessEntityPatchRequest(request);
 
-            ProcessDeleteElementCommand command = new ProcessDeleteElementCommand()
-                .setElementDefinitionCode(request.getElementDefinitionCode());
+            Process process = this.processOperations.patchProcessEntity(request.getProcessId(), request.getParams());
 
-            Process process = this.processOperations.actionsProcessDeleteElement(request.getProcessId(), command);
-
-            DeleteProcessElementResponse response = new DeleteProcessElementResponse();
-            response.setProcess(process);
-
-            return response;
-        } catch (Exception e) {
-            throw createApplicationFailure(e);
-        }
-    }
-
-    @Override
-    public SaveProcessEntityDataResponse saveProcessEntityData(@Nonnull SaveProcessEntityDataRequest request) {
-        try {
-            validateSaveProcessEntityData(request);
-
-            ProcessSaveEntityDataCommand command = new ProcessSaveEntityDataCommand().setData(request.getData());
-
-            Process process = this.processOperations.actionsProcessSaveEntityData(request.getProcessId(), command);
-
-            SaveProcessEntityDataResponse response = new SaveProcessEntityDataResponse();
+            ProcessEntityPatchResponse response = new ProcessEntityPatchResponse();
             response.setProcess(process);
 
             return response;
@@ -252,17 +216,13 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
     @Nonnull
     @Override
-    public ChangeProcessInitiatorResponse changeProcessInitiator(@Nonnull ChangeProcessInitiatorRequest request) {
+    public ProcessMetadataUpdateResponse updateProcessMetadata(@Nonnull ProcessMetadataUpdateRequest request) {
         try {
-            validateChangeProcessInitiatorRequest(request);
+            validateProcessMetadataUpdateRequest(request);
 
-            ProcessChangeInitiatorCommand command = new ProcessChangeInitiatorCommand()
-                .setPrincipalId(request.getPrincipalId())
-                .setEmail(request.getEmail());
+            Process process = this.processOperations.updateProcessMetadata(request.getProcessId(), request.getParams());
 
-            Process process = this.processOperations.actionsProcessChangeInitiator(request.getProcessId(), command);
-
-            ChangeProcessInitiatorResponse response = new ChangeProcessInitiatorResponse();
+            ProcessMetadataUpdateResponse response = new ProcessMetadataUpdateResponse();
             response.setProcess(process);
 
             return response;
@@ -273,20 +233,56 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
     @Nonnull
     @Override
-    public FindTaskResponse findTasks(FindTaskRequestModel request) {
+    public ProcessMetadataPatchResponse patchProcessMetadata(@Nonnull ProcessMetadataPatchRequest request) {
         try {
-            FindTasksOptions options = new FindTasksOptions()
+            validateProcessMetadataPatchRequest(request);
+
+            Process process = this.processOperations.patchProcessMetadata(request.getProcessId(), request.getParams());
+
+            ProcessMetadataPatchResponse response = new ProcessMetadataPatchResponse();
+            response.setProcess(process);
+
+            return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Nonnull
+    @Override
+    public ProcessInitiatorChangeResponse changeProcessInitiator(@Nonnull ProcessInitiatorChangeRequest request) {
+        try {
+            validateProcessInitiatorChangeRequest(request);
+
+            Process process = this.processOperations.changeProcessInitiator(request.getProcessId(), request.getParams());
+
+            ProcessInitiatorChangeResponse response = new ProcessInitiatorChangeResponse();
+            response.setProcess(process);
+
+            return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Nonnull
+    @Override
+    public ProcessItemFindResponse findProcessItems(ProcessItemFindRequest request) {
+        try {
+            ProcessItemFindOptions options = new ProcessItemFindOptions()
                 .setSize(request.getSize())
                 .setPage(request.getPage())
                 .setSorts(request.getSorts())
+                .setTenantIds(request.getTenantIds())
                 .setProcessIds(request.getProcessIds())
-                .setStates(request.getStates())
+                .setTypes(request.getTypes())
+                .setTaskStates(request.getTaskStates())
                 .setTaskDefinitionCodes(request.getTaskDefinitionCodes());
 
-            TaskPage tasks = this.taskOperations.findTasks(options);
+            ProcessItemPage processItems = this.processItemOperations.findProcessItems(options);
 
-            FindTaskResponse response = new FindTaskResponse();
-            response.setTasks(tasks);
+            ProcessItemFindResponse response = new ProcessItemFindResponse();
+            response.setProcessItems(processItems);
 
             return response;
         } catch (Exception e) {
@@ -296,14 +292,14 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
     @Nonnull
     @Override
-    public RetrieveTaskResponse retrieveTask(@Nonnull RetrieveTaskRequest request) {
+    public ProcessItemRetrieveResponse retrieveProcessItem(@Nonnull ProcessItemRetrieveRequest request) {
         try {
-            validateRetrieveTaskRequest(request);
+            validateProcessItemRetrieve(request);
 
-            Task task = this.taskOperations.retrieveTask(request.getTaskId());
+            ProcessItem processItem = this.processItemOperations.retrieveProcessItem(request.getProcessItemId());
 
-            RetrieveTaskResponse response = new RetrieveTaskResponse();
-            response.setTask(task);
+            ProcessItemRetrieveResponse response = new ProcessItemRetrieveResponse();
+            response.setProcessItem(processItem);
 
             return response;
         } catch (Exception e) {
@@ -313,14 +309,14 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
     @Nonnull
     @Override
-    public CreateTaskResponse createTask(@Nonnull CreateTaskRequest request) {
+    public ProcessItemCreateResponse createProcessItem(@Nonnull ProcessItemCreateRequest request) {
         try {
-            validateCreateTaskRequest(request);
+            validateProcessItemCreateRequest(request);
 
-            Task task = this.taskOperations.createTask(request.getTask());
+            ProcessItem processItem = this.processItemOperations.createProcessItem(request.getParams());
 
-            CreateTaskResponse response = new CreateTaskResponse();
-            response.setTask(task);
+            ProcessItemCreateResponse response = new ProcessItemCreateResponse();
+            response.setProcessItem(processItem);
 
             return response;
         } catch (Exception e) {
@@ -330,14 +326,14 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
     @Nonnull
     @Override
-    public CompleteTaskResponse completeTask(@Nonnull CompleteTaskRequest request) {
+    public ProcessItemTaskCompleteResponse completeProcessItemTask(@Nonnull ProcessItemTaskCompleteRequest request) {
         try {
-            validateCompleteTaskRequest(request);
+            validateProcessItemTaskCompleteRequest(request);
 
-            Task task = this.taskOperations.actionsTaskComplete(request.getTaskId());
+            ProcessItem processItem = this.processItemOperations.completeProcessItemTask(request.getProcessItemId());
 
-            CompleteTaskResponse response = new CompleteTaskResponse();
-            response.setTask(task);
+            ProcessItemTaskCompleteResponse response = new ProcessItemTaskCompleteResponse();
+            response.setProcessItem(processItem);
 
             return response;
         } catch (Exception e) {
@@ -347,33 +343,14 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
     @Nonnull
     @Override
-    public ClaimTaskResponse claimTask(@Nonnull ClaimTaskRequest request) {
+    public ProcessItemTaskClaimResponse claimProcessItemTask(@Nonnull ProcessItemTaskClaimRequest request) {
         try {
             validateClaimTaskRequest(request);
 
-            Task task = this.taskOperations.actionsTaskClaim(request.getTaskId());
+            ProcessItem processItem = this.processItemOperations.claimProcessItemTask(request.getProcessItemId());
 
-            ClaimTaskResponse response = new ClaimTaskResponse();
-            response.setTask(task);
-
-            return response;
-        } catch (Exception e) {
-            throw createApplicationFailure(e);
-        }
-    }
-
-    @Nonnull
-    @Override
-    public AssignTaskResponse assignTask(@Nonnull AssignTaskRequest request) {
-        try {
-            validateAssignTaskRequest(request);
-
-            TaskAssignCommand command = new TaskAssignCommand().setEmail(request.getEmail()).setPrincipalId(request.getPrincipalId());
-
-            Task task = this.taskOperations.actionsTaskAssign(request.getTaskId(), command);
-
-            AssignTaskResponse response = new AssignTaskResponse();
-            response.setTask(task);
+            ProcessItemTaskClaimResponse response = new ProcessItemTaskClaimResponse();
+            response.setProcessItem(processItem);
 
             return response;
         } catch (Exception e) {
@@ -383,73 +360,18 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
     @Nonnull
     @Override
-    public SaveTaskElementResponse saveTaskElement(@Nonnull SaveTaskElementRequest request) {
+    public ProcessItemTaskAssignResponse assignProcessItemTask(@Nonnull ProcessItemTaskAssignRequest request) {
         try {
-            validateSaveTaskElementRequest(request);
+            validateProcessItemTaskAssignRequest(request);
 
-            TaskSaveElementCommand command = new TaskSaveElementCommand()
-                .setElementDefinitionCode(request.getElementDefinitionCode())
-                .setElementValues(request.getElementValues());
+            ProcessItemTaskAssignParams command = new ProcessItemTaskAssignParams()
+                .setOwnerEmail(request.getOwnerEmail())
+                .setOwnerId(request.getOwnerId());
 
-            Task task = this.taskOperations.actionsTaskSaveElement(request.getTaskId(), command);
+            ProcessItem processItem = this.processItemOperations.assignProcessItemTask(request.getProcessItemId(), command);
 
-            SaveTaskElementResponse response = new SaveTaskElementResponse();
-            response.setTask(task);
-
-            return response;
-        } catch (Exception e) {
-            throw createApplicationFailure(e);
-        }
-    }
-
-    @Override
-    public DeleteTaskElementResponse deleteTaskElement(@Nonnull DeleteTaskElementRequest request) {
-        try {
-            validateDeleteTaskElementRequest(request);
-
-            TaskDeleteElementCommand command = new TaskDeleteElementCommand().setElementDefinitionCode(request.getElementDefinitionCode());
-
-            Task task = this.taskOperations.actionsTaskDeleteElement(request.getTaskId(), command);
-
-            DeleteTaskElementResponse response = new DeleteTaskElementResponse();
-            response.setTask(task);
-
-            return response;
-        } catch (Exception e) {
-            throw createApplicationFailure(e);
-        }
-    }
-
-    @Override
-    public DeleteTaskElementValueDocumentResponse deleteTaskElementValueDocument(@Nonnull DeleteTaskElementValueDocumentRequest request) {
-        try {
-            validateDeleteTaskElementValueDocumentRequest(request);
-
-            TaskDeleteElementValueDocumentCommand command = new TaskDeleteElementValueDocumentCommand()
-                .setDocumentId(request.getDocumentId());
-
-            Task task = this.taskOperations.actionsTaskDeleteElementValueDocument(request.getTaskId(), command);
-
-            DeleteTaskElementValueDocumentResponse response = new DeleteTaskElementValueDocumentResponse();
-            response.setTask(task);
-
-            return response;
-        } catch (Exception e) {
-            throw createApplicationFailure(e);
-        }
-    }
-
-    @Override
-    public SaveTaskJsonFormsValueDataResponse saveTaskJsonFormsValueData(@Nonnull SaveTaskJsonFormsValueDataRequest request) {
-        try {
-            validateSaveTaskJsonFormsDataRequest(request);
-
-            TaskSaveJsonFormsValueDataCommand command = new TaskSaveJsonFormsValueDataCommand().setData(request.getData());
-
-            Task task = this.taskOperations.actionsTaskSaveJsonFormsValueData(request.getTaskId(), command);
-
-            SaveTaskJsonFormsValueDataResponse response = new SaveTaskJsonFormsValueDataResponse();
-            response.setTask(task);
+            ProcessItemTaskAssignResponse response = new ProcessItemTaskAssignResponse();
+            response.setProcessItem(processItem);
 
             return response;
         } catch (Exception e) {
@@ -459,14 +381,48 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
     @Nonnull
     @Override
-    public AppendTaskLogResponse appendTaskLog(@Nonnull AppendTaskLogRequest request) {
+    public ProcessItemTaskDataUpdateResponse updateProcessItemTaskData(@Nonnull ProcessItemTaskDataUpdateRequest request) {
         try {
-            validateAppendTaskLogRequest(request);
+            validateProcessItemTaskDataUpdateRequest(request);
 
-            Task task = this.taskOperations.actionsTaskAppendLog(request.getTaskId(), request.getLog());
+            ProcessItem processItem = this.processItemOperations.updateProcessItemTaskData(request.getProcessItemId(), request.getParams());
 
-            AppendTaskLogResponse response = new AppendTaskLogResponse();
-            response.setTask(task);
+            ProcessItemTaskDataUpdateResponse response = new ProcessItemTaskDataUpdateResponse();
+            response.setProcessItem(processItem);
+
+            return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Nonnull
+    @Override
+    public ProcessItemTaskDataPatchResponse patchProcessItemTaskData(@Nonnull ProcessItemTaskDataPatchRequest request) {
+        try {
+            validateProcessItemTaskDataPatchRequest(request);
+
+            ProcessItem processItem = this.processItemOperations.patchProcessItemTaskData(request.getProcessItemId(), request.getParams());
+
+            ProcessItemTaskDataPatchResponse response = new ProcessItemTaskDataPatchResponse();
+            response.setProcessItem(processItem);
+
+            return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Nonnull
+    @Override
+    public ProcessItemTaskLoggAppendResponse appendProcessItemTaskLog(@Nonnull ProcessItemTaskLoggAppendRequest request) {
+        try {
+            validateProcessItemTaskLoggAppendRequest(request);
+
+            ProcessItem processItem = this.processItemOperations.appendProcessItemTaskLog(request.getProcessItemId(), request.getParams());
+
+            ProcessItemTaskLoggAppendResponse response = new ProcessItemTaskLoggAppendResponse();
+            response.setProcessItem(processItem);
 
             return response;
         } catch (Exception e) {

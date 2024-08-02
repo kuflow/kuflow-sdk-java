@@ -37,6 +37,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.kuflow.rest.model.Authentication;
+import com.kuflow.rest.model.AuthenticationCreateParams;
 import com.kuflow.rest.model.DefaultErrorException;
 import reactor.core.publisher.Mono;
 
@@ -77,7 +78,7 @@ public final class AuthenticationOperationsImpl {
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<Authentication>> createAuthentication(
             @HostParam("$host") String host,
-            @BodyParam("application/json") Authentication authentication,
+            @BodyParam("application/json") AuthenticationCreateParams params,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -87,7 +88,7 @@ public final class AuthenticationOperationsImpl {
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<Authentication> createAuthenticationSync(
             @HostParam("$host") String host,
-            @BodyParam("application/json") Authentication authentication,
+            @BodyParam("application/json") AuthenticationCreateParams params,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -96,22 +97,21 @@ public final class AuthenticationOperationsImpl {
     /**
      * Create an authentication for the current principal.
      *
-     * @param authentication Authentication to be created.
+     * @param params Authentication to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Authentication>> createAuthenticationWithResponseAsync(Authentication authentication) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createAuthentication(this.client.getHost(), authentication, accept, context));
+    public Mono<Response<Authentication>> createAuthenticationWithResponseAsync(AuthenticationCreateParams params) {
+        return FluxUtil.withContext(context -> createAuthenticationWithResponseAsync(params, context));
     }
 
     /**
      * Create an authentication for the current principal.
      *
-     * @param authentication Authentication to be created.
+     * @param params Authentication to be created.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -119,29 +119,29 @@ public final class AuthenticationOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Authentication>> createAuthenticationWithResponseAsync(Authentication authentication, Context context) {
+    public Mono<Response<Authentication>> createAuthenticationWithResponseAsync(AuthenticationCreateParams params, Context context) {
         final String accept = "application/json";
-        return service.createAuthentication(this.client.getHost(), authentication, accept, context);
+        return service.createAuthentication(this.client.getHost(), params, accept, context);
     }
 
     /**
      * Create an authentication for the current principal.
      *
-     * @param authentication Authentication to be created.
+     * @param params Authentication to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Authentication> createAuthenticationAsync(Authentication authentication) {
-        return createAuthenticationWithResponseAsync(authentication).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<Authentication> createAuthenticationAsync(AuthenticationCreateParams params) {
+        return createAuthenticationWithResponseAsync(params).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create an authentication for the current principal.
      *
-     * @param authentication Authentication to be created.
+     * @param params Authentication to be created.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -149,14 +149,14 @@ public final class AuthenticationOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Authentication> createAuthenticationAsync(Authentication authentication, Context context) {
-        return createAuthenticationWithResponseAsync(authentication, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<Authentication> createAuthenticationAsync(AuthenticationCreateParams params, Context context) {
+        return createAuthenticationWithResponseAsync(params, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create an authentication for the current principal.
      *
-     * @param authentication Authentication to be created.
+     * @param params Authentication to be created.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -164,22 +164,22 @@ public final class AuthenticationOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Authentication> createAuthenticationWithResponse(Authentication authentication, Context context) {
+    public Response<Authentication> createAuthenticationWithResponse(AuthenticationCreateParams params, Context context) {
         final String accept = "application/json";
-        return service.createAuthenticationSync(this.client.getHost(), authentication, accept, context);
+        return service.createAuthenticationSync(this.client.getHost(), params, accept, context);
     }
 
     /**
      * Create an authentication for the current principal.
      *
-     * @param authentication Authentication to be created.
+     * @param params Authentication to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Authentication createAuthentication(Authentication authentication) {
-        return createAuthenticationWithResponse(authentication, Context.NONE).getValue();
+    public Authentication createAuthentication(AuthenticationCreateParams params) {
+        return createAuthenticationWithResponse(params, Context.NONE).getValue();
     }
 }

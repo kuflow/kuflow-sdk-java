@@ -27,11 +27,6 @@ package com.kuflow.rest.model;
  */
 public enum AuthenticationType {
     /**
-     * Enum value ENGINE.
-     */
-    ENGINE("ENGINE"),
-
-    /**
      * Enum value ENGINE_TOKEN.
      */
     ENGINE_TOKEN("ENGINE_TOKEN"),

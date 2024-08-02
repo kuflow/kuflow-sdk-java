@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -298,15 +299,6 @@ public final class Worker extends AbstractAudited {
      * {@inheritDoc}
      */
     @Override
-    public Worker setObjectType(AuditedObjectType objectType) {
-        super.setObjectType(objectType);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Worker setCreatedBy(UUID createdBy) {
         super.setCreatedBy(createdBy);
         return this;
@@ -345,7 +337,6 @@ public final class Worker extends AbstractAudited {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("objectType", getObjectType() == null ? null : getObjectType().toString());
         jsonWriter.writeStringField("createdBy", Objects.toString(getCreatedBy(), null));
         jsonWriter.writeStringField(
             "createdAt",
@@ -385,17 +376,17 @@ public final class Worker extends AbstractAudited {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("objectType".equals(fieldName)) {
-                    deserializedWorker.setObjectType(AuditedObjectType.fromString(reader.getString()));
-                } else if ("createdBy".equals(fieldName)) {
+                if ("createdBy".equals(fieldName)) {
                     deserializedWorker.setCreatedBy(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
                 } else if ("createdAt".equals(fieldName)) {
-                    deserializedWorker.setCreatedAt(reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedWorker.setCreatedAt(
+                        reader.getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()))
+                    );
                 } else if ("lastModifiedBy".equals(fieldName)) {
                     deserializedWorker.setLastModifiedBy(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
                 } else if ("lastModifiedAt".equals(fieldName)) {
                     deserializedWorker.setLastModifiedAt(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()))
+                        reader.getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()))
                     );
                 } else if ("identity".equals(fieldName)) {
                     deserializedWorker.identity = reader.getString();

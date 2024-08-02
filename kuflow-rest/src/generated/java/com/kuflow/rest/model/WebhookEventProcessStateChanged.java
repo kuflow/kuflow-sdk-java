@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -96,6 +97,15 @@ public final class WebhookEventProcessStateChanged extends WebhookEvent {
      * {@inheritDoc}
      */
     @Override
+    public WebhookEventProcessStateChanged setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public WebhookEventProcessStateChanged setTimestamp(OffsetDateTime timestamp) {
         super.setTimestamp(timestamp);
         return this;
@@ -108,6 +118,7 @@ public final class WebhookEventProcessStateChanged extends WebhookEvent {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", Objects.toString(getId(), null));
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeStringField(
             "timestamp",
             getTimestamp() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getTimestamp())
@@ -137,9 +148,11 @@ public final class WebhookEventProcessStateChanged extends WebhookEvent {
                     deserializedWebhookEventProcessStateChanged.setId(
                         reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()))
                     );
+                } else if ("version".equals(fieldName)) {
+                    deserializedWebhookEventProcessStateChanged.setVersion(reader.getString());
                 } else if ("timestamp".equals(fieldName)) {
                     deserializedWebhookEventProcessStateChanged.setTimestamp(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()))
+                        reader.getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()))
                     );
                 } else if ("data".equals(fieldName)) {
                     deserializedWebhookEventProcessStateChanged.data = WebhookEventProcessStateChangedData.fromJson(reader);

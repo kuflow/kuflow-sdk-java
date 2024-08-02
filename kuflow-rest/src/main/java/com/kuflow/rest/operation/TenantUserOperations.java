@@ -29,8 +29,8 @@ import com.azure.core.util.Context;
 import com.kuflow.rest.implementation.KuFlowClientImpl;
 import com.kuflow.rest.implementation.TenantUserOperationsImpl;
 import com.kuflow.rest.model.DefaultErrorException;
-import com.kuflow.rest.model.FindTenantUsersOptions;
 import com.kuflow.rest.model.TenantUser;
+import com.kuflow.rest.model.TenantUserFindOptions;
 import com.kuflow.rest.model.TenantUserPage;
 import java.util.List;
 import java.util.UUID;
@@ -67,8 +67,8 @@ public class TenantUserOperations {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TenantUserPage> findTenantUsersWithResponse(FindTenantUsersOptions options, Context context) {
-        options = options != null ? options : new FindTenantUsersOptions();
+    public Response<TenantUserPage> findTenantUsersWithResponse(TenantUserFindOptions options, Context context) {
+        options = options != null ? options : new TenantUserFindOptions();
 
         Integer size = options.getSize();
         Integer page = options.getPage();
@@ -94,7 +94,7 @@ public class TenantUserOperations {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TenantUserPage findTenantUsers(FindTenantUsersOptions options) {
+    public TenantUserPage findTenantUsers(TenantUserFindOptions options) {
         return this.findTenantUsersWithResponse(options, Context.NONE).getValue();
     }
 

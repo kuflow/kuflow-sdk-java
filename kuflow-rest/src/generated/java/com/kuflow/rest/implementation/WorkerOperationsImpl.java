@@ -38,6 +38,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.kuflow.rest.model.DefaultErrorException;
 import com.kuflow.rest.model.Worker;
+import com.kuflow.rest.model.WorkerCreateParams;
 import reactor.core.publisher.Mono;
 
 /**
@@ -77,7 +78,7 @@ public final class WorkerOperationsImpl {
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<Worker>> createWorker(
             @HostParam("$host") String host,
-            @BodyParam("application/json") Worker worker,
+            @BodyParam("application/json") WorkerCreateParams params,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -87,7 +88,7 @@ public final class WorkerOperationsImpl {
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<Worker> createWorkerSync(
             @HostParam("$host") String host,
-            @BodyParam("application/json") Worker worker,
+            @BodyParam("application/json") WorkerCreateParams params,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -100,16 +101,15 @@ public final class WorkerOperationsImpl {
      *
      * If already exist a worker for the same identity, the worker will be updated.
      *
-     * @param worker Worker to create or update.
+     * @param params Worker to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Worker>> createWorkerWithResponseAsync(Worker worker) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createWorker(this.client.getHost(), worker, accept, context));
+    public Mono<Response<Worker>> createWorkerWithResponseAsync(WorkerCreateParams params) {
+        return FluxUtil.withContext(context -> createWorkerWithResponseAsync(params, context));
     }
 
     /**
@@ -119,7 +119,7 @@ public final class WorkerOperationsImpl {
      *
      * If already exist a worker for the same identity, the worker will be updated.
      *
-     * @param worker Worker to create or update.
+     * @param params Worker to create or update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -127,9 +127,9 @@ public final class WorkerOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Worker>> createWorkerWithResponseAsync(Worker worker, Context context) {
+    public Mono<Response<Worker>> createWorkerWithResponseAsync(WorkerCreateParams params, Context context) {
         final String accept = "application/json";
-        return service.createWorker(this.client.getHost(), worker, accept, context);
+        return service.createWorker(this.client.getHost(), params, accept, context);
     }
 
     /**
@@ -139,15 +139,15 @@ public final class WorkerOperationsImpl {
      *
      * If already exist a worker for the same identity, the worker will be updated.
      *
-     * @param worker Worker to create or update.
+     * @param params Worker to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Worker> createWorkerAsync(Worker worker) {
-        return createWorkerWithResponseAsync(worker).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<Worker> createWorkerAsync(WorkerCreateParams params) {
+        return createWorkerWithResponseAsync(params).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -157,7 +157,7 @@ public final class WorkerOperationsImpl {
      *
      * If already exist a worker for the same identity, the worker will be updated.
      *
-     * @param worker Worker to create or update.
+     * @param params Worker to create or update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -165,8 +165,8 @@ public final class WorkerOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Worker> createWorkerAsync(Worker worker, Context context) {
-        return createWorkerWithResponseAsync(worker, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<Worker> createWorkerAsync(WorkerCreateParams params, Context context) {
+        return createWorkerWithResponseAsync(params, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -176,7 +176,7 @@ public final class WorkerOperationsImpl {
      *
      * If already exist a worker for the same identity, the worker will be updated.
      *
-     * @param worker Worker to create or update.
+     * @param params Worker to create or update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -184,9 +184,9 @@ public final class WorkerOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Worker> createWorkerWithResponse(Worker worker, Context context) {
+    public Response<Worker> createWorkerWithResponse(WorkerCreateParams params, Context context) {
         final String accept = "application/json";
-        return service.createWorkerSync(this.client.getHost(), worker, accept, context);
+        return service.createWorkerSync(this.client.getHost(), params, accept, context);
     }
 
     /**
@@ -196,14 +196,14 @@ public final class WorkerOperationsImpl {
      *
      * If already exist a worker for the same identity, the worker will be updated.
      *
-     * @param worker Worker to create or update.
+     * @param params Worker to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Worker createWorker(Worker worker) {
-        return createWorkerWithResponse(worker, Context.NONE).getValue();
+    public Worker createWorker(WorkerCreateParams params) {
+        return createWorkerWithResponse(params, Context.NONE).getValue();
     }
 }

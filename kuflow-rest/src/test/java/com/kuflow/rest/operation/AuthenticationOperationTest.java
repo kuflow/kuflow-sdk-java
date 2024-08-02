@@ -31,6 +31,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.kuflow.rest.model.Authentication;
+import com.kuflow.rest.model.AuthenticationCreateParams;
 import com.kuflow.rest.model.AuthenticationEngineToken;
 import com.kuflow.rest.model.AuthenticationType;
 import java.time.OffsetDateTime;
@@ -43,32 +44,30 @@ public class AuthenticationOperationTest extends AbstractOperationTest {
     @DisplayName("GIVEN an authenticated user WHEN create a authentication THEN authentication header is added")
     public void givenAnAuthenticatedUserWhenCreateAAuthenticationThenAuthenticationHeaderIsAdded() {
         givenThat(
-            post("/v2022-10-08/authentications")
+            post("/v2024-06-14/authentications")
                 .withHeader("Authorization", equalTo("Bearer Q0xJRU5UX0lEOkNMSUVOVF9TRUNSRVQ="))
                 .withHeader("Content-Type", containing("application/json"))
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("authentication-api.ok.json"))
         );
 
-        Authentication authentication = new Authentication();
-        authentication.setType(AuthenticationType.ENGINE_TOKEN);
-        this.kuFlowRestClient.getAuthenticationOperations().createAuthentication(authentication);
+        AuthenticationCreateParams authenticationParams = new AuthenticationCreateParams().setType(AuthenticationType.ENGINE_TOKEN);
+        this.kuFlowRestClient.getAuthenticationOperations().createAuthentication(authenticationParams);
     }
 
     @Test
     @DisplayName("GIVEN an authenticated user WHEN create a authentication THEN authentication is created")
     public void givenAnAuthenticatedUserWhenCreateAAuthenticationThenAuthenticationIsCreated() {
         givenThat(
-            post("/v2022-10-08/authentications")
+            post("/v2024-06-14/authentications")
                 .withHeader("Content-Type", containing("application/json"))
                 .withRequestBody(matchingJsonPath("$.type", equalTo(AuthenticationType.ENGINE_TOKEN.toString())))
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("authentication-api.ok.json"))
         );
 
-        Authentication authentication = new Authentication();
-        authentication.setType(AuthenticationType.ENGINE_TOKEN);
+        AuthenticationCreateParams authenticationParams = new AuthenticationCreateParams().setType(AuthenticationType.ENGINE_TOKEN);
 
-        Authentication authenticationCreated = this.kuFlowRestClient.getAuthenticationOperations().createAuthentication(authentication);
-        AuthenticationEngineToken authenticationEngineToken = authenticationCreated.getEngineToken();
+        Authentication authentication = this.kuFlowRestClient.getAuthenticationOperations().createAuthentication(authenticationParams);
+        AuthenticationEngineToken authenticationEngineToken = authentication.getEngineToken();
         assertThat(authenticationEngineToken.getToken()).isEqualTo("DUMMY_TOKEN");
         assertThat(authenticationEngineToken.getExpiredAt()).isEqualTo(OffsetDateTime.parse("2022-03-01T08:42:48Z"));
     }

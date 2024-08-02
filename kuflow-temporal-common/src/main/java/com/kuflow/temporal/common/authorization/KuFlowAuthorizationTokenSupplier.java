@@ -24,6 +24,7 @@ package com.kuflow.temporal.common.authorization;
 
 import com.kuflow.rest.KuFlowRestClient;
 import com.kuflow.rest.model.Authentication;
+import com.kuflow.rest.model.AuthenticationCreateParams;
 import com.kuflow.rest.model.AuthenticationEngineToken;
 import com.kuflow.rest.model.AuthenticationType;
 import com.kuflow.rest.operation.AuthenticationOperations;
@@ -76,11 +77,11 @@ public class KuFlowAuthorizationTokenSupplier implements AuthorizationTokenSuppl
                 return token;
             }
 
-            Authentication authentication = new Authentication()
+            AuthenticationCreateParams params = new AuthenticationCreateParams()
                 .setType(AuthenticationType.ENGINE_TOKEN)
                 .setTenantId(this.workerInformation.getTenantId());
 
-            authentication = this.authenticationOperations.createAuthentication(authentication);
+            Authentication authentication = this.authenticationOperations.createAuthentication(params);
             AuthenticationEngineToken authenticationEngineToken = authentication.getEngineToken();
 
             Duration expireDuration = Duration.between(Instant.now(), authenticationEngineToken.getExpiredAt());

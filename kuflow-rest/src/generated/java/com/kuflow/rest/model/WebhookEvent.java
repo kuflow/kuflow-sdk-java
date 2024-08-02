@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -42,12 +43,17 @@ public class WebhookEvent implements JsonSerializable<WebhookEvent> {
     /*
      * Type of the Event.
      */
-    private WebhookType type;
+    private WebhookType type = WebhookType.fromString("WebhookEvent");
 
     /*
      * The id property.
      */
     private UUID id;
+
+    /*
+     * The version property.
+     */
+    private String version;
 
     /*
      * The timestamp property.
@@ -57,9 +63,7 @@ public class WebhookEvent implements JsonSerializable<WebhookEvent> {
     /**
      * Creates an instance of WebhookEvent class.
      */
-    public WebhookEvent() {
-        this.type = WebhookType.fromString("WebhookEvent");
-    }
+    public WebhookEvent() {}
 
     /**
      * Get the type property: Type of the Event.
@@ -91,6 +95,26 @@ public class WebhookEvent implements JsonSerializable<WebhookEvent> {
     }
 
     /**
+     * Get the version property: The version property.
+     *
+     * @return the version value.
+     */
+    public String getVersion() {
+        return this.version;
+    }
+
+    /**
+     * Set the version property: The version property.
+     *
+     * @param version the version value to set.
+     * @return the WebhookEvent object itself.
+     */
+    public WebhookEvent setVersion(String version) {
+        this.version = version;
+        return this;
+    }
+
+    /**
      * Get the timestamp property: The timestamp property.
      *
      * @return the timestamp value.
@@ -117,6 +141,7 @@ public class WebhookEvent implements JsonSerializable<WebhookEvent> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", Objects.toString(this.id, null));
+        jsonWriter.writeStringField("version", this.version);
         jsonWriter.writeStringField(
             "timestamp",
             this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp)
@@ -150,10 +175,14 @@ public class WebhookEvent implements JsonSerializable<WebhookEvent> {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("PROCESS.STATE_CHANGED".equals(discriminatorValue)) {
+                if ("PROCESS.CREATED".equals(discriminatorValue)) {
+                    return WebhookEventProcessCreated.fromJson(readerToUse.reset());
+                } else if ("PROCESS.STATE_CHANGED".equals(discriminatorValue)) {
                     return WebhookEventProcessStateChanged.fromJson(readerToUse.reset());
-                } else if ("TASK.STATE_CHANGED".equals(discriminatorValue)) {
-                    return WebhookEventTaskStateChanged.fromJson(readerToUse.reset());
+                } else if ("PROCESS_ITEM.CREATED".equals(discriminatorValue)) {
+                    return WebhookEventProcessItemCreated.fromJson(readerToUse.reset());
+                } else if ("PROCESS_ITEM.TASK_STATE_CHANGED".equals(discriminatorValue)) {
+                    return WebhookEventProcessItemTaskStateChanged.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -170,9 +199,11 @@ public class WebhookEvent implements JsonSerializable<WebhookEvent> {
 
                 if ("id".equals(fieldName)) {
                     deserializedWebhookEvent.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("version".equals(fieldName)) {
+                    deserializedWebhookEvent.version = reader.getString();
                 } else if ("timestamp".equals(fieldName)) {
                     deserializedWebhookEvent.timestamp = reader.getNullable(
-                        nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())
+                        nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())
                     );
                 } else if ("type".equals(fieldName)) {
                     deserializedWebhookEvent.type = WebhookType.fromString(reader.getString());

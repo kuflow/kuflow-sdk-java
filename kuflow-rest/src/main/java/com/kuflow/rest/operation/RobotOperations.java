@@ -30,12 +30,12 @@ import com.azure.core.util.Context;
 import com.kuflow.rest.implementation.KuFlowClientImpl;
 import com.kuflow.rest.implementation.RobotOperationsImpl;
 import com.kuflow.rest.model.DefaultErrorException;
-import com.kuflow.rest.model.FindRobotsOptions;
 import com.kuflow.rest.model.Robot;
 import com.kuflow.rest.model.RobotAssetArchitecture;
 import com.kuflow.rest.model.RobotAssetPlatform;
 import com.kuflow.rest.model.RobotAssetType;
 import com.kuflow.rest.model.RobotFilterContext;
+import com.kuflow.rest.model.RobotFindOptions;
 import com.kuflow.rest.model.RobotPage;
 import java.util.List;
 import java.util.UUID;
@@ -71,8 +71,8 @@ public class RobotOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RobotPage> findRobotsWithResponse(FindRobotsOptions options, Context context) {
-        options = options != null ? options : new FindRobotsOptions();
+    public Response<RobotPage> findRobotsWithResponse(RobotFindOptions options, Context context) {
+        options = options != null ? options : new RobotFindOptions();
 
         Integer size = options.getSize();
         Integer page = options.getPage();
@@ -97,7 +97,7 @@ public class RobotOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RobotPage findRobots(FindRobotsOptions options) {
+    public RobotPage findRobots(RobotFindOptions options) {
         return this.findRobotsWithResponse(options, Context.NONE).getValue();
     }
 

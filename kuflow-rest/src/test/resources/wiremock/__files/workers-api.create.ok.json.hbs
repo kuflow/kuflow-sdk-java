@@ -1,6 +1,5 @@
 {{parseJson request.body 'json'}}
 {
-  "objectType": "WORKER",
   "id" : "{{randomValue type='UUID'}}",
   "identity" : "{{json.identity}}",
   "taskQueue" : "{{json.taskQueue}}",

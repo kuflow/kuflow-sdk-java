@@ -1,5 +1,4 @@
 {
-  "objectType": "ROBOT_PAGE",
   "metadata": {
     "size": 25,
     "page": 0,
@@ -7,7 +6,6 @@
     "totalPages": 1
   },
   "content": [{
-    "objectType": "ROBOT",
     "id": "4f2467f1-00fa-4a6c-88ca-16ae8eac7b56",
     "code": "CODE1",
     "name": "NAME1",
@@ -18,7 +16,6 @@
       "env2": "value2"
     }
   }, {
-    "objectType": "ROBOT",
     "id": "2fd90b51-e1d8-44e3-89bd-8c4c9fc4164b",
     "code": "CODE2",
     "name": "NAME2",

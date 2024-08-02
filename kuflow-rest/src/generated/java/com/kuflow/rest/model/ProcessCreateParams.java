@@ -1,0 +1,222 @@
+/*
+ * The MIT License
+ * Copyright © 2021-present KuFlow S.L.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+package com.kuflow.rest.model;
+
+import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
+import java.util.UUID;
+
+/**
+ * The ProcessCreateParams model.
+ */
+@Fluent
+public final class ProcessCreateParams implements JsonSerializable<ProcessCreateParams> {
+
+    /*
+     * The id property.
+     */
+    private UUID id;
+
+    /*
+     * The processDefinitionId property.
+     */
+    private UUID processDefinitionId;
+
+    /*
+     * Json value.
+     */
+    private JsonValue metadata;
+
+    /*
+     * The initiatorId property.
+     */
+    private UUID initiatorId;
+
+    /*
+     * The initiatorEmail property.
+     */
+    private String initiatorEmail;
+
+    /**
+     * Creates an instance of ProcessCreateParams class.
+     */
+    public ProcessCreateParams() {}
+
+    /**
+     * Get the id property: The id property.
+     *
+     * @return the id value.
+     */
+    public UUID getId() {
+        return this.id;
+    }
+
+    /**
+     * Set the id property: The id property.
+     *
+     * @param id the id value to set.
+     * @return the ProcessCreateParams object itself.
+     */
+    public ProcessCreateParams setId(UUID id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Get the processDefinitionId property: The processDefinitionId property.
+     *
+     * @return the processDefinitionId value.
+     */
+    public UUID getProcessDefinitionId() {
+        return this.processDefinitionId;
+    }
+
+    /**
+     * Set the processDefinitionId property: The processDefinitionId property.
+     *
+     * @param processDefinitionId the processDefinitionId value to set.
+     * @return the ProcessCreateParams object itself.
+     */
+    public ProcessCreateParams setProcessDefinitionId(UUID processDefinitionId) {
+        this.processDefinitionId = processDefinitionId;
+        return this;
+    }
+
+    /**
+     * Get the metadata property: Json value.
+     *
+     * @return the metadata value.
+     */
+    public JsonValue getMetadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: Json value.
+     *
+     * @param metadata the metadata value to set.
+     * @return the ProcessCreateParams object itself.
+     */
+    public ProcessCreateParams setMetadata(JsonValue metadata) {
+        this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Get the initiatorId property: The initiatorId property.
+     *
+     * @return the initiatorId value.
+     */
+    public UUID getInitiatorId() {
+        return this.initiatorId;
+    }
+
+    /**
+     * Set the initiatorId property: The initiatorId property.
+     *
+     * @param initiatorId the initiatorId value to set.
+     * @return the ProcessCreateParams object itself.
+     */
+    public ProcessCreateParams setInitiatorId(UUID initiatorId) {
+        this.initiatorId = initiatorId;
+        return this;
+    }
+
+    /**
+     * Get the initiatorEmail property: The initiatorEmail property.
+     *
+     * @return the initiatorEmail value.
+     */
+    public String getInitiatorEmail() {
+        return this.initiatorEmail;
+    }
+
+    /**
+     * Set the initiatorEmail property: The initiatorEmail property.
+     *
+     * @param initiatorEmail the initiatorEmail value to set.
+     * @return the ProcessCreateParams object itself.
+     */
+    public ProcessCreateParams setInitiatorEmail(String initiatorEmail) {
+        this.initiatorEmail = initiatorEmail;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("processDefinitionId", Objects.toString(this.processDefinitionId, null));
+        jsonWriter.writeStringField("id", Objects.toString(this.id, null));
+        jsonWriter.writeJsonField("metadata", this.metadata);
+        jsonWriter.writeStringField("initiatorId", Objects.toString(this.initiatorId, null));
+        jsonWriter.writeStringField("initiatorEmail", this.initiatorEmail);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProcessCreateParams from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProcessCreateParams if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ProcessCreateParams.
+     */
+    public static ProcessCreateParams fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProcessCreateParams deserializedProcessCreateParams = new ProcessCreateParams();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("processDefinitionId".equals(fieldName)) {
+                    deserializedProcessCreateParams.processDefinitionId = reader.getNullable(
+                        nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    );
+                } else if ("id".equals(fieldName)) {
+                    deserializedProcessCreateParams.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedProcessCreateParams.metadata = JsonValue.fromJson(reader);
+                } else if ("initiatorId".equals(fieldName)) {
+                    deserializedProcessCreateParams.initiatorId = reader.getNullable(
+                        nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    );
+                } else if ("initiatorEmail".equals(fieldName)) {
+                    deserializedProcessCreateParams.initiatorEmail = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProcessCreateParams;
+        });
+    }
+}

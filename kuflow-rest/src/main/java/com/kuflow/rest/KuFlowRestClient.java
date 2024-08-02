@@ -28,9 +28,9 @@ import com.kuflow.rest.implementation.KuFlowClientImpl;
 import com.kuflow.rest.model.WebhookEvent;
 import com.kuflow.rest.operation.AuthenticationOperations;
 import com.kuflow.rest.operation.PrincipalOperations;
+import com.kuflow.rest.operation.ProcessItemOperations;
 import com.kuflow.rest.operation.ProcessOperations;
 import com.kuflow.rest.operation.RobotOperations;
-import com.kuflow.rest.operation.TaskOperations;
 import com.kuflow.rest.operation.TenantUserOperations;
 import com.kuflow.rest.operation.WorkerOperations;
 import java.io.ByteArrayInputStream;
@@ -41,7 +41,7 @@ import java.nio.charset.StandardCharsets;
 @ServiceClient(builder = KuFlowRestClientBuilder.class)
 public class KuFlowRestClient {
 
-    public static final String API_VERSION = "v2022-10-08";
+    public static final String API_VERSION = "v2024-06-14";
 
     private final KuFlowClientImpl client;
 
@@ -53,7 +53,7 @@ public class KuFlowRestClient {
 
     private final ProcessOperations processOperations;
 
-    private final TaskOperations taskOperations;
+    private final ProcessItemOperations processItemOperations;
 
     private final WorkerOperations workerOperations;
 
@@ -65,7 +65,7 @@ public class KuFlowRestClient {
         this.principalOperations = new PrincipalOperations(client);
         this.tenantUserOperations = new TenantUserOperations(client);
         this.processOperations = new ProcessOperations(client);
-        this.taskOperations = new TaskOperations(client);
+        this.processItemOperations = new ProcessItemOperations(client);
         this.workerOperations = new WorkerOperations(client);
         this.robotOperations = new RobotOperations(client);
     }
@@ -86,8 +86,8 @@ public class KuFlowRestClient {
         return this.processOperations;
     }
 
-    public TaskOperations getTaskOperations() {
-        return this.taskOperations;
+    public ProcessItemOperations getProcessItemOperations() {
+        return this.processItemOperations;
     }
 
     public WorkerOperations getWorkerOperations() {

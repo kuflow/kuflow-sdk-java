@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -177,7 +178,7 @@ public final class DefaultError implements JsonSerializable<DefaultError> {
 
                 if ("timestamp".equals(fieldName)) {
                     deserializedDefaultError.timestamp = reader.getNullable(
-                        nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())
+                        nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())
                     );
                 } else if ("status".equals(fieldName)) {
                     deserializedDefaultError.status = reader.getInt();
