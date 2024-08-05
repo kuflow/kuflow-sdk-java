@@ -135,7 +135,7 @@ public final class RobotOperationsImpl {
         @Get("/robots/{id}/~actions/download-source-code")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<BinaryData>> actionsRobotDownloadSourceCode(
+        Mono<Response<BinaryData>> downloadRobotSourceCode(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @HeaderParam("Accept") String accept,
@@ -145,7 +145,7 @@ public final class RobotOperationsImpl {
         @Get("/robots/{id}/~actions/download-source-code")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Response<BinaryData> actionsRobotDownloadSourceCodeSync(
+        Response<BinaryData> downloadRobotSourceCodeSync(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @HeaderParam("Accept") String accept,
@@ -155,7 +155,7 @@ public final class RobotOperationsImpl {
         @Get("/robots/{id}/~actions/download-asset")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<BinaryData>> actionsRobotDownloadAsset(
+        Mono<Response<BinaryData>> downloadRobotAsset(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @QueryParam("type") RobotAssetType type,
@@ -169,7 +169,7 @@ public final class RobotOperationsImpl {
         @Get("/robots/{id}/~actions/download-asset")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Response<BinaryData> actionsRobotDownloadAssetSync(
+        Response<BinaryData> downloadRobotAssetSync(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @QueryParam("type") RobotAssetType type,
@@ -544,8 +544,8 @@ public final class RobotOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> actionsRobotDownloadSourceCodeWithResponseAsync(UUID id) {
-        return FluxUtil.withContext(context -> actionsRobotDownloadSourceCodeWithResponseAsync(id, context));
+    public Mono<Response<BinaryData>> downloadRobotSourceCodeWithResponseAsync(UUID id) {
+        return FluxUtil.withContext(context -> downloadRobotSourceCodeWithResponseAsync(id, context));
     }
 
     /**
@@ -561,9 +561,9 @@ public final class RobotOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> actionsRobotDownloadSourceCodeWithResponseAsync(UUID id, Context context) {
+    public Mono<Response<BinaryData>> downloadRobotSourceCodeWithResponseAsync(UUID id, Context context) {
         final String accept = "application/octet-stream, application/json";
-        return service.actionsRobotDownloadSourceCode(this.client.getHost(), id, accept, context);
+        return service.downloadRobotSourceCode(this.client.getHost(), id, accept, context);
     }
 
     /**
@@ -578,8 +578,8 @@ public final class RobotOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> actionsRobotDownloadSourceCodeAsync(UUID id) {
-        return actionsRobotDownloadSourceCodeWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<BinaryData> downloadRobotSourceCodeAsync(UUID id) {
+        return downloadRobotSourceCodeWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -595,8 +595,8 @@ public final class RobotOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> actionsRobotDownloadSourceCodeAsync(UUID id, Context context) {
-        return actionsRobotDownloadSourceCodeWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<BinaryData> downloadRobotSourceCodeAsync(UUID id, Context context) {
+        return downloadRobotSourceCodeWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -612,9 +612,9 @@ public final class RobotOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> actionsRobotDownloadSourceCodeWithResponse(UUID id, Context context) {
+    public Response<BinaryData> downloadRobotSourceCodeWithResponse(UUID id, Context context) {
         final String accept = "application/octet-stream, application/json";
-        return service.actionsRobotDownloadSourceCodeSync(this.client.getHost(), id, accept, context);
+        return service.downloadRobotSourceCodeSync(this.client.getHost(), id, accept, context);
     }
 
     /**
@@ -629,8 +629,8 @@ public final class RobotOperationsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData actionsRobotDownloadSourceCode(UUID id) {
-        return actionsRobotDownloadSourceCodeWithResponse(id, Context.NONE).getValue();
+    public BinaryData downloadRobotSourceCode(UUID id) {
+        return downloadRobotSourceCodeWithResponse(id, Context.NONE).getValue();
     }
 
     /**
@@ -649,16 +649,14 @@ public final class RobotOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> actionsRobotDownloadAssetWithResponseAsync(
+    public Mono<Response<BinaryData>> downloadRobotAssetWithResponseAsync(
         UUID id,
         RobotAssetType type,
         String version,
         RobotAssetPlatform platform,
         RobotAssetArchitecture architecture
     ) {
-        return FluxUtil.withContext(context ->
-            actionsRobotDownloadAssetWithResponseAsync(id, type, version, platform, architecture, context)
-        );
+        return FluxUtil.withContext(context -> downloadRobotAssetWithResponseAsync(id, type, version, platform, architecture, context));
     }
 
     /**
@@ -678,7 +676,7 @@ public final class RobotOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> actionsRobotDownloadAssetWithResponseAsync(
+    public Mono<Response<BinaryData>> downloadRobotAssetWithResponseAsync(
         UUID id,
         RobotAssetType type,
         String version,
@@ -687,7 +685,7 @@ public final class RobotOperationsImpl {
         Context context
     ) {
         final String accept = "application/octet-stream, application/json";
-        return service.actionsRobotDownloadAsset(this.client.getHost(), id, type, version, platform, architecture, accept, context);
+        return service.downloadRobotAsset(this.client.getHost(), id, type, version, platform, architecture, accept, context);
     }
 
     /**
@@ -706,14 +704,14 @@ public final class RobotOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> actionsRobotDownloadAssetAsync(
+    public Mono<BinaryData> downloadRobotAssetAsync(
         UUID id,
         RobotAssetType type,
         String version,
         RobotAssetPlatform platform,
         RobotAssetArchitecture architecture
     ) {
-        return actionsRobotDownloadAssetWithResponseAsync(id, type, version, platform, architecture).flatMap(res ->
+        return downloadRobotAssetWithResponseAsync(id, type, version, platform, architecture).flatMap(res ->
             Mono.justOrEmpty(res.getValue())
         );
     }
@@ -735,7 +733,7 @@ public final class RobotOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> actionsRobotDownloadAssetAsync(
+    public Mono<BinaryData> downloadRobotAssetAsync(
         UUID id,
         RobotAssetType type,
         String version,
@@ -743,7 +741,7 @@ public final class RobotOperationsImpl {
         RobotAssetArchitecture architecture,
         Context context
     ) {
-        return actionsRobotDownloadAssetWithResponseAsync(id, type, version, platform, architecture, context).flatMap(res ->
+        return downloadRobotAssetWithResponseAsync(id, type, version, platform, architecture, context).flatMap(res ->
             Mono.justOrEmpty(res.getValue())
         );
     }
@@ -765,7 +763,7 @@ public final class RobotOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> actionsRobotDownloadAssetWithResponse(
+    public Response<BinaryData> downloadRobotAssetWithResponse(
         UUID id,
         RobotAssetType type,
         String version,
@@ -774,7 +772,7 @@ public final class RobotOperationsImpl {
         Context context
     ) {
         final String accept = "application/octet-stream, application/json";
-        return service.actionsRobotDownloadAssetSync(this.client.getHost(), id, type, version, platform, architecture, accept, context);
+        return service.downloadRobotAssetSync(this.client.getHost(), id, type, version, platform, architecture, accept, context);
     }
 
     /**
@@ -793,13 +791,13 @@ public final class RobotOperationsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData actionsRobotDownloadAsset(
+    public BinaryData downloadRobotAsset(
         UUID id,
         RobotAssetType type,
         String version,
         RobotAssetPlatform platform,
         RobotAssetArchitecture architecture
     ) {
-        return actionsRobotDownloadAssetWithResponse(id, type, version, platform, architecture, Context.NONE).getValue();
+        return downloadRobotAssetWithResponse(id, type, version, platform, architecture, Context.NONE).getValue();
     }
 }
