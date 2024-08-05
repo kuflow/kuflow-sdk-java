@@ -174,8 +174,8 @@ public final class TaskDefinitionSummary implements JsonSerializable<TaskDefinit
                 if ("id".equals(fieldName)) {
                     deserializedTaskDefinitionSummary.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("version".equals(fieldName)) {
-                    deserializedTaskDefinitionSummary.version = reader.getNullable(
-                        nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    deserializedTaskDefinitionSummary.version = reader.getNullable(nonNullReader ->
+                        UUID.fromString(nonNullReader.getString())
                     );
                 } else if ("code".equals(fieldName)) {
                     deserializedTaskDefinitionSummary.code = reader.getString();

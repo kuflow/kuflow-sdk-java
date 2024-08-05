@@ -180,8 +180,8 @@ public final class ProcessItemTaskLog implements JsonSerializable<ProcessItemTas
                 if ("id".equals(fieldName)) {
                     deserializedProcessItemTaskLog.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("timestamp".equals(fieldName)) {
-                    deserializedProcessItemTaskLog.timestamp = reader.getNullable(
-                        nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())
+                    deserializedProcessItemTaskLog.timestamp = reader.getNullable(nonNullReader ->
+                        CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())
                     );
                 } else if ("message".equals(fieldName)) {
                     deserializedProcessItemTaskLog.message = reader.getString();

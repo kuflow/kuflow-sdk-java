@@ -1242,17 +1242,8 @@ public final class ProcessOperationsImpl {
         Flux<ByteBuffer> file,
         long contentLength
     ) {
-        return FluxUtil.withContext(
-            context ->
-                uploadProcessUserActionDocumentWithResponseAsync(
-                    id,
-                    fileContentType,
-                    fileName,
-                    userActionValueId,
-                    file,
-                    contentLength,
-                    context
-                )
+        return FluxUtil.withContext(context ->
+            uploadProcessUserActionDocumentWithResponseAsync(id, fileContentType, fileName, userActionValueId, file, contentLength, context)
         );
     }
 
@@ -1395,17 +1386,8 @@ public final class ProcessOperationsImpl {
         BinaryData file,
         long contentLength
     ) {
-        return FluxUtil.withContext(
-            context ->
-                uploadProcessUserActionDocumentWithResponseAsync(
-                    id,
-                    fileContentType,
-                    fileName,
-                    userActionValueId,
-                    file,
-                    contentLength,
-                    context
-                )
+        return FluxUtil.withContext(context ->
+            uploadProcessUserActionDocumentWithResponseAsync(id, fileContentType, fileName, userActionValueId, file, contentLength, context)
         );
     }
 
@@ -2062,8 +2044,8 @@ public final class ProcessOperationsImpl {
         Flux<ByteBuffer> file,
         long contentLength
     ) {
-        return FluxUtil.withContext(
-            context -> uploadProcessEntityDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength, context)
+        return FluxUtil.withContext(context ->
+            uploadProcessEntityDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength, context)
         );
     }
 
@@ -2139,8 +2121,8 @@ public final class ProcessOperationsImpl {
         Flux<ByteBuffer> file,
         long contentLength
     ) {
-        return uploadProcessEntityDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength).flatMap(
-            res -> Mono.justOrEmpty(res.getValue())
+        return uploadProcessEntityDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
         );
     }
 
@@ -2213,8 +2195,8 @@ public final class ProcessOperationsImpl {
         BinaryData file,
         long contentLength
     ) {
-        return FluxUtil.withContext(
-            context -> uploadProcessEntityDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength, context)
+        return FluxUtil.withContext(context ->
+            uploadProcessEntityDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength, context)
         );
     }
 
@@ -2290,8 +2272,8 @@ public final class ProcessOperationsImpl {
         BinaryData file,
         long contentLength
     ) {
-        return uploadProcessEntityDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength).flatMap(
-            res -> Mono.justOrEmpty(res.getValue())
+        return uploadProcessEntityDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
         );
     }
 

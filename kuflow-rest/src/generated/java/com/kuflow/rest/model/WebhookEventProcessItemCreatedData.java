@@ -198,12 +198,12 @@ public final class WebhookEventProcessItemCreatedData implements JsonSerializabl
                 reader.nextToken();
 
                 if ("processId".equals(fieldName)) {
-                    deserializedWebhookEventProcessItemCreatedData.processId = reader.getNullable(
-                        nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    deserializedWebhookEventProcessItemCreatedData.processId = reader.getNullable(nonNullReader ->
+                        UUID.fromString(nonNullReader.getString())
                     );
                 } else if ("processItemId".equals(fieldName)) {
-                    deserializedWebhookEventProcessItemCreatedData.processItemId = reader.getNullable(
-                        nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    deserializedWebhookEventProcessItemCreatedData.processItemId = reader.getNullable(nonNullReader ->
+                        UUID.fromString(nonNullReader.getString())
                     );
                 } else if ("processItemType".equals(fieldName)) {
                     deserializedWebhookEventProcessItemCreatedData.processItemType = ProcessItemType.fromString(reader.getString());

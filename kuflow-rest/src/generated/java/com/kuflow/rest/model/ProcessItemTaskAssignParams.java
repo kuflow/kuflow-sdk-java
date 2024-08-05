@@ -119,8 +119,8 @@ public final class ProcessItemTaskAssignParams implements JsonSerializable<Proce
                 reader.nextToken();
 
                 if ("ownerId".equals(fieldName)) {
-                    deserializedProcessItemTaskAssignParams.ownerId = reader.getNullable(
-                        nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    deserializedProcessItemTaskAssignParams.ownerId = reader.getNullable(nonNullReader ->
+                        UUID.fromString(nonNullReader.getString())
                     );
                 } else if ("ownerEmail".equals(fieldName)) {
                     deserializedProcessItemTaskAssignParams.ownerEmail = reader.getString();

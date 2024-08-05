@@ -202,8 +202,8 @@ public class WebhookEvent implements JsonSerializable<WebhookEvent> {
                 } else if ("version".equals(fieldName)) {
                     deserializedWebhookEvent.version = reader.getString();
                 } else if ("timestamp".equals(fieldName)) {
-                    deserializedWebhookEvent.timestamp = reader.getNullable(
-                        nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())
+                    deserializedWebhookEvent.timestamp = reader.getNullable(nonNullReader ->
+                        CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())
                     );
                 } else if ("type".equals(fieldName)) {
                     deserializedWebhookEvent.type = WebhookType.fromString(reader.getString());

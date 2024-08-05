@@ -122,8 +122,8 @@ public final class AuthenticationCreateParams implements JsonSerializable<Authen
                 if ("type".equals(fieldName)) {
                     deserializedAuthenticationCreateParams.type = AuthenticationType.fromString(reader.getString());
                 } else if ("tenantId".equals(fieldName)) {
-                    deserializedAuthenticationCreateParams.tenantId = reader.getNullable(
-                        nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    deserializedAuthenticationCreateParams.tenantId = reader.getNullable(nonNullReader ->
+                        UUID.fromString(nonNullReader.getString())
                     );
                 } else {
                     reader.skipChildren();

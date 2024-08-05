@@ -55,8 +55,8 @@ public class S3ActivitiesAutoConfiguration {
         }
 
         if (s3ActivitiesProperties.getPathStyleAccessEnabled() != null) {
-            builder.serviceConfiguration(
-                serviceConfiguration -> serviceConfiguration.pathStyleAccessEnabled(s3ActivitiesProperties.getPathStyleAccessEnabled())
+            builder.serviceConfiguration(serviceConfiguration ->
+                serviceConfiguration.pathStyleAccessEnabled(s3ActivitiesProperties.getPathStyleAccessEnabled())
             );
         }
 

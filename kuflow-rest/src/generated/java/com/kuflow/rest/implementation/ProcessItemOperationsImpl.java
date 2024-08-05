@@ -421,9 +421,8 @@ public final class ProcessItemOperationsImpl {
         List<String> taskDefinitionCode,
         List<UUID> tenantId
     ) {
-        return FluxUtil.withContext(
-            context ->
-                findProcessItemsWithResponseAsync(size, page, sort, processId, type, taskState, taskDefinitionCode, tenantId, context)
+        return FluxUtil.withContext(context ->
+            findProcessItemsWithResponseAsync(size, page, sort, processId, type, taskState, taskDefinitionCode, tenantId, context)
         );
     }
 
@@ -533,8 +532,8 @@ public final class ProcessItemOperationsImpl {
         List<String> taskDefinitionCode,
         List<UUID> tenantId
     ) {
-        return findProcessItemsWithResponseAsync(size, page, sort, processId, type, taskState, taskDefinitionCode, tenantId).flatMap(
-            res -> Mono.justOrEmpty(res.getValue())
+        return findProcessItemsWithResponseAsync(size, page, sort, processId, type, taskState, taskDefinitionCode, tenantId).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
         );
     }
 
@@ -559,8 +558,8 @@ public final class ProcessItemOperationsImpl {
         final List<ProcessItemTaskState> taskState = null;
         final List<String> taskDefinitionCode = null;
         final List<UUID> tenantId = null;
-        return findProcessItemsWithResponseAsync(size, page, sort, processId, type, taskState, taskDefinitionCode, tenantId).flatMap(
-            res -> Mono.justOrEmpty(res.getValue())
+        return findProcessItemsWithResponseAsync(size, page, sort, processId, type, taskState, taskDefinitionCode, tenantId).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
         );
     }
 
@@ -1691,9 +1690,8 @@ public final class ProcessItemOperationsImpl {
         Flux<ByteBuffer> file,
         long contentLength
     ) {
-        return FluxUtil.withContext(
-            context ->
-                uploadProcessItemTaskDataDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength, context)
+        return FluxUtil.withContext(context ->
+            uploadProcessItemTaskDataDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength, context)
         );
     }
 
@@ -1843,9 +1841,8 @@ public final class ProcessItemOperationsImpl {
         BinaryData file,
         long contentLength
     ) {
-        return FluxUtil.withContext(
-            context ->
-                uploadProcessItemTaskDataDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength, context)
+        return FluxUtil.withContext(context ->
+            uploadProcessItemTaskDataDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength, context)
         );
     }
 
@@ -2118,8 +2115,8 @@ public final class ProcessItemOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> downloadProcessItemTaskDataDocumentAsync(UUID id, String documentUri, Context context) {
-        return downloadProcessItemTaskDataDocumentWithResponseAsync(id, documentUri, context).flatMap(
-            res -> Mono.justOrEmpty(res.getValue())
+        return downloadProcessItemTaskDataDocumentWithResponseAsync(id, documentUri, context).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
         );
     }
 
@@ -2231,8 +2228,8 @@ public final class ProcessItemOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> downloadProcessItemTaskDataWebformAsDocumentAsync(UUID id, String propertyPath) {
-        return downloadProcessItemTaskDataWebformAsDocumentWithResponseAsync(id, propertyPath).flatMap(
-            res -> Mono.justOrEmpty(res.getValue())
+        return downloadProcessItemTaskDataWebformAsDocumentWithResponseAsync(id, propertyPath).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
         );
     }
 
@@ -2257,8 +2254,8 @@ public final class ProcessItemOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> downloadProcessItemTaskDataWebformAsDocumentAsync(UUID id, String propertyPath, Context context) {
-        return downloadProcessItemTaskDataWebformAsDocumentWithResponseAsync(id, propertyPath, context).flatMap(
-            res -> Mono.justOrEmpty(res.getValue())
+        return downloadProcessItemTaskDataWebformAsDocumentWithResponseAsync(id, propertyPath, context).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
         );
     }
 

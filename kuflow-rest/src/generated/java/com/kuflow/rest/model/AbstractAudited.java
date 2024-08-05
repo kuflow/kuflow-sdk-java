@@ -182,16 +182,16 @@ public class AbstractAudited implements JsonSerializable<AbstractAudited> {
                 if ("createdBy".equals(fieldName)) {
                     deserializedAbstractAudited.createdBy = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("createdAt".equals(fieldName)) {
-                    deserializedAbstractAudited.createdAt = reader.getNullable(
-                        nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())
+                    deserializedAbstractAudited.createdAt = reader.getNullable(nonNullReader ->
+                        CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())
                     );
                 } else if ("lastModifiedBy".equals(fieldName)) {
-                    deserializedAbstractAudited.lastModifiedBy = reader.getNullable(
-                        nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    deserializedAbstractAudited.lastModifiedBy = reader.getNullable(nonNullReader ->
+                        UUID.fromString(nonNullReader.getString())
                     );
                 } else if ("lastModifiedAt".equals(fieldName)) {
-                    deserializedAbstractAudited.lastModifiedAt = reader.getNullable(
-                        nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())
+                    deserializedAbstractAudited.lastModifiedAt = reader.getNullable(nonNullReader ->
+                        CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())
                     );
                 } else {
                     reader.skipChildren();
