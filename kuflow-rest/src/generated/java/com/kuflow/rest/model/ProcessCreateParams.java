@@ -198,16 +198,16 @@ public final class ProcessCreateParams implements JsonSerializable<ProcessCreate
                 reader.nextToken();
 
                 if ("processDefinitionId".equals(fieldName)) {
-                    deserializedProcessCreateParams.processDefinitionId = reader.getNullable(
-                        nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    deserializedProcessCreateParams.processDefinitionId = reader.getNullable(nonNullReader ->
+                        UUID.fromString(nonNullReader.getString())
                     );
                 } else if ("id".equals(fieldName)) {
                     deserializedProcessCreateParams.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("metadata".equals(fieldName)) {
                     deserializedProcessCreateParams.metadata = JsonValue.fromJson(reader);
                 } else if ("initiatorId".equals(fieldName)) {
-                    deserializedProcessCreateParams.initiatorId = reader.getNullable(
-                        nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    deserializedProcessCreateParams.initiatorId = reader.getNullable(nonNullReader ->
+                        UUID.fromString(nonNullReader.getString())
                     );
                 } else if ("initiatorEmail".equals(fieldName)) {
                     deserializedProcessCreateParams.initiatorEmail = reader.getString();

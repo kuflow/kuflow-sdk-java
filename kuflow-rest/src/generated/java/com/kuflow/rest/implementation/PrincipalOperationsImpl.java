@@ -310,8 +310,8 @@ public final class PrincipalOperationsImpl {
         List<UUID> tenantId,
         Context context
     ) {
-        return findPrincipalsWithResponseAsync(size, page, sort, type, groupId, tenantId, context).flatMap(
-            res -> Mono.justOrEmpty(res.getValue())
+        return findPrincipalsWithResponseAsync(size, page, sort, type, groupId, tenantId, context).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
         );
     }
 

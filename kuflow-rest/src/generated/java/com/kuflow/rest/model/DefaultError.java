@@ -177,8 +177,8 @@ public final class DefaultError implements JsonSerializable<DefaultError> {
                 reader.nextToken();
 
                 if ("timestamp".equals(fieldName)) {
-                    deserializedDefaultError.timestamp = reader.getNullable(
-                        nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())
+                    deserializedDefaultError.timestamp = reader.getNullable(nonNullReader ->
+                        CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())
                     );
                 } else if ("status".equals(fieldName)) {
                     deserializedDefaultError.status = reader.getInt();

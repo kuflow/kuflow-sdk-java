@@ -226,16 +226,15 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
                 if ("type".equals(fieldName)) {
                     deserializedProcessItemCreateParams.type = ProcessItemType.fromString(reader.getString());
                 } else if ("processId".equals(fieldName)) {
-                    deserializedProcessItemCreateParams.processId = reader.getNullable(
-                        nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    deserializedProcessItemCreateParams.processId = reader.getNullable(nonNullReader ->
+                        UUID.fromString(nonNullReader.getString())
                     );
                 } else if ("id".equals(fieldName)) {
-                    deserializedProcessItemCreateParams.id = reader.getNullable(
-                        nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    deserializedProcessItemCreateParams.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())
                     );
                 } else if ("ownerId".equals(fieldName)) {
-                    deserializedProcessItemCreateParams.ownerId = reader.getNullable(
-                        nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    deserializedProcessItemCreateParams.ownerId = reader.getNullable(nonNullReader ->
+                        UUID.fromString(nonNullReader.getString())
                     );
                 } else if ("ownerEmail".equals(fieldName)) {
                     deserializedProcessItemCreateParams.ownerEmail = reader.getString();

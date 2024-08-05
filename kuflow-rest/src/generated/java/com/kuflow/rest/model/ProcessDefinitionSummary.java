@@ -146,12 +146,11 @@ public final class ProcessDefinitionSummary implements JsonSerializable<ProcessD
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedProcessDefinitionSummary.id = reader.getNullable(
-                        nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    deserializedProcessDefinitionSummary.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())
                     );
                 } else if ("version".equals(fieldName)) {
-                    deserializedProcessDefinitionSummary.version = reader.getNullable(
-                        nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    deserializedProcessDefinitionSummary.version = reader.getNullable(nonNullReader ->
+                        UUID.fromString(nonNullReader.getString())
                     );
                 } else if ("name".equals(fieldName)) {
                     deserializedProcessDefinitionSummary.name = reader.getString();

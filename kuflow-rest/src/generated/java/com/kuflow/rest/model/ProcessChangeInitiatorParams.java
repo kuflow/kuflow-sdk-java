@@ -119,8 +119,8 @@ public final class ProcessChangeInitiatorParams implements JsonSerializable<Proc
                 reader.nextToken();
 
                 if ("initiatorId".equals(fieldName)) {
-                    deserializedProcessChangeInitiatorParams.initiatorId = reader.getNullable(
-                        nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    deserializedProcessChangeInitiatorParams.initiatorId = reader.getNullable(nonNullReader ->
+                        UUID.fromString(nonNullReader.getString())
                     );
                 } else if ("initiatorEmail".equals(fieldName)) {
                     deserializedProcessChangeInitiatorParams.initiatorEmail = reader.getString();

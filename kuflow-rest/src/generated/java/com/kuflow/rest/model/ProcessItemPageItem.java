@@ -292,16 +292,15 @@ public final class ProcessItemPageItem extends AbstractAudited {
                 } else if ("type".equals(fieldName)) {
                     deserializedProcessItemPageItem.type = ProcessItemType.fromString(reader.getString());
                 } else if ("processId".equals(fieldName)) {
-                    deserializedProcessItemPageItem.processId = reader.getNullable(
-                        nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    deserializedProcessItemPageItem.processId = reader.getNullable(nonNullReader ->
+                        UUID.fromString(nonNullReader.getString())
                     );
                 } else if ("tenantId".equals(fieldName)) {
-                    deserializedProcessItemPageItem.tenantId = reader.getNullable(
-                        nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    deserializedProcessItemPageItem.tenantId = reader.getNullable(nonNullReader ->
+                        UUID.fromString(nonNullReader.getString())
                     );
                 } else if ("ownerId".equals(fieldName)) {
-                    deserializedProcessItemPageItem.ownerId = reader.getNullable(
-                        nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    deserializedProcessItemPageItem.ownerId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())
                     );
                 } else if ("task".equals(fieldName)) {
                     deserializedProcessItemPageItem.task = ProcessItemTaskPageItem.fromJson(reader);

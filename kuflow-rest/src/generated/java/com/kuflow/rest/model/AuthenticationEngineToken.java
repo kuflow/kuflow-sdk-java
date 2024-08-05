@@ -126,8 +126,8 @@ public final class AuthenticationEngineToken implements JsonSerializable<Authent
                 if ("token".equals(fieldName)) {
                     deserializedAuthenticationEngineToken.token = reader.getString();
                 } else if ("expiredAt".equals(fieldName)) {
-                    deserializedAuthenticationEngineToken.expiredAt = reader.getNullable(
-                        nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())
+                    deserializedAuthenticationEngineToken.expiredAt = reader.getNullable(nonNullReader ->
+                        CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())
                     );
                 } else {
                     reader.skipChildren();

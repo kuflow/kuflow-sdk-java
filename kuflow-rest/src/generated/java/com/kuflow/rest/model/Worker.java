@@ -407,8 +407,8 @@ public final class Worker extends AbstractAudited {
                 } else if ("installationId".equals(fieldName)) {
                     deserializedWorker.installationId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("robotIds".equals(fieldName)) {
-                    List<UUID> robotIds = reader.readArray(
-                        reader1 -> reader1.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()))
+                    List<UUID> robotIds = reader.readArray(reader1 ->
+                        reader1.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()))
                     );
                     deserializedWorker.robotIds = robotIds;
                 } else if ("tenantId".equals(fieldName)) {

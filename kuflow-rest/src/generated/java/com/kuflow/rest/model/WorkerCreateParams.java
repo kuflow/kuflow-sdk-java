@@ -317,17 +317,16 @@ public final class WorkerCreateParams implements JsonSerializable<WorkerCreatePa
                     List<String> activityTypes = reader.readArray(reader1 -> reader1.getString());
                     deserializedWorkerCreateParams.activityTypes = activityTypes;
                 } else if ("installationId".equals(fieldName)) {
-                    deserializedWorkerCreateParams.installationId = reader.getNullable(
-                        nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    deserializedWorkerCreateParams.installationId = reader.getNullable(nonNullReader ->
+                        UUID.fromString(nonNullReader.getString())
                     );
                 } else if ("robotIds".equals(fieldName)) {
-                    List<UUID> robotIds = reader.readArray(
-                        reader1 -> reader1.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()))
+                    List<UUID> robotIds = reader.readArray(reader1 ->
+                        reader1.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()))
                     );
                     deserializedWorkerCreateParams.robotIds = robotIds;
                 } else if ("tenantId".equals(fieldName)) {
-                    deserializedWorkerCreateParams.tenantId = reader.getNullable(
-                        nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    deserializedWorkerCreateParams.tenantId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())
                     );
                 } else {
                     reader.skipChildren();

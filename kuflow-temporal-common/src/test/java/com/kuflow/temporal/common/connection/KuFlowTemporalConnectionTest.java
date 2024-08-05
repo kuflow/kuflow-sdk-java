@@ -44,20 +44,15 @@ public class KuFlowTemporalConnectionTest {
     @DisplayName("GIVEN KuFlowTemporalConnection WHEN getWorkflowTypes or getActivityTypes THEN get all the register types")
     public void givenKuFlowTemporalConnectionWhenGetWorkflowTypesOrGetActivityTypesThenGetAllTheRegisterTypes() {
         KuFlowTemporalConnection kuFlowTemporalConnection = KuFlowTemporalConnection.instance(this.kuFlowRestClient)
-            .configureWorkflowServiceStubs(builder -> {
-                // do nothing
-            })
-            .configureWorkflowClient(builder -> {
-                // do nothing
-            })
-            .configureWorker(
-                builder ->
-                    builder
-                        .withTaskQueue("TASK_QUEUE")
-                        .withWorkflowImplementationTypes(Test1WorkflowImpl.class)
-                        .withWorkflowImplementationTypes(Test2WorkflowImpl.class)
-                        .withActivitiesImplementations(new Test1ActivitiesImpl())
-                        .withActivitiesImplementations(new Test2ActivitiesImpl())
+            .configureWorkflowServiceStubs(builder -> {})
+            .configureWorkflowClient(builder -> {})
+            .configureWorker(builder ->
+                builder
+                    .withTaskQueue("TASK_QUEUE")
+                    .withWorkflowImplementationTypes(Test1WorkflowImpl.class)
+                    .withWorkflowImplementationTypes(Test2WorkflowImpl.class)
+                    .withActivitiesImplementations(new Test1ActivitiesImpl())
+                    .withActivitiesImplementations(new Test2ActivitiesImpl())
             );
 
         assertThat(kuFlowTemporalConnection.getWorkerInformation()).isNotNull();

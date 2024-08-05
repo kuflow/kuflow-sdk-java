@@ -338,8 +338,8 @@ public final class RobotOperationsImpl {
         RobotFilterContext filterContext,
         Context context
     ) {
-        return findRobotsWithResponseAsync(size, page, sort, tenantId, filterContext, context).flatMap(
-            res -> Mono.justOrEmpty(res.getValue())
+        return findRobotsWithResponseAsync(size, page, sort, tenantId, filterContext, context).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
         );
     }
 
@@ -656,8 +656,8 @@ public final class RobotOperationsImpl {
         RobotAssetPlatform platform,
         RobotAssetArchitecture architecture
     ) {
-        return FluxUtil.withContext(
-            context -> actionsRobotDownloadAssetWithResponseAsync(id, type, version, platform, architecture, context)
+        return FluxUtil.withContext(context ->
+            actionsRobotDownloadAssetWithResponseAsync(id, type, version, platform, architecture, context)
         );
     }
 
@@ -713,8 +713,8 @@ public final class RobotOperationsImpl {
         RobotAssetPlatform platform,
         RobotAssetArchitecture architecture
     ) {
-        return actionsRobotDownloadAssetWithResponseAsync(id, type, version, platform, architecture).flatMap(
-            res -> Mono.justOrEmpty(res.getValue())
+        return actionsRobotDownloadAssetWithResponseAsync(id, type, version, platform, architecture).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
         );
     }
 
@@ -743,8 +743,8 @@ public final class RobotOperationsImpl {
         RobotAssetArchitecture architecture,
         Context context
     ) {
-        return actionsRobotDownloadAssetWithResponseAsync(id, type, version, platform, architecture, context).flatMap(
-            res -> Mono.justOrEmpty(res.getValue())
+        return actionsRobotDownloadAssetWithResponseAsync(id, type, version, platform, architecture, context).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
         );
     }
 

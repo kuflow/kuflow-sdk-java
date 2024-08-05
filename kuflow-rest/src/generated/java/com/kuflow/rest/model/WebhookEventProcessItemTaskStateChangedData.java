@@ -199,12 +199,12 @@ public final class WebhookEventProcessItemTaskStateChangedData implements JsonSe
                 reader.nextToken();
 
                 if ("processId".equals(fieldName)) {
-                    deserializedWebhookEventProcessItemTaskStateChangedData.processId = reader.getNullable(
-                        nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    deserializedWebhookEventProcessItemTaskStateChangedData.processId = reader.getNullable(nonNullReader ->
+                        UUID.fromString(nonNullReader.getString())
                     );
                 } else if ("processItemId".equals(fieldName)) {
-                    deserializedWebhookEventProcessItemTaskStateChangedData.processItemId = reader.getNullable(
-                        nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    deserializedWebhookEventProcessItemTaskStateChangedData.processItemId = reader.getNullable(nonNullReader ->
+                        UUID.fromString(nonNullReader.getString())
                     );
                 } else if ("processItemType".equals(fieldName)) {
                     deserializedWebhookEventProcessItemTaskStateChangedData.processItemType = ProcessItemType.fromString(

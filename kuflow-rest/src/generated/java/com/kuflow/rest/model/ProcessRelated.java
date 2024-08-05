@@ -120,13 +120,13 @@ public final class ProcessRelated implements JsonSerializable<ProcessRelated> {
                 reader.nextToken();
 
                 if ("incoming".equals(fieldName)) {
-                    List<UUID> incoming = reader.readArray(
-                        reader1 -> reader1.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()))
+                    List<UUID> incoming = reader.readArray(reader1 ->
+                        reader1.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()))
                     );
                     deserializedProcessRelated.incoming = incoming;
                 } else if ("outcoming".equals(fieldName)) {
-                    List<UUID> outcoming = reader.readArray(
-                        reader1 -> reader1.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()))
+                    List<UUID> outcoming = reader.readArray(reader1 ->
+                        reader1.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()))
                     );
                     deserializedProcessRelated.outcoming = outcoming;
                 } else {

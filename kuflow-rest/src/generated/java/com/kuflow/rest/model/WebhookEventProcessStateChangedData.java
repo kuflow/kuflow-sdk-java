@@ -120,8 +120,8 @@ public final class WebhookEventProcessStateChangedData implements JsonSerializab
                 reader.nextToken();
 
                 if ("processId".equals(fieldName)) {
-                    deserializedWebhookEventProcessStateChangedData.processId = reader.getNullable(
-                        nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    deserializedWebhookEventProcessStateChangedData.processId = reader.getNullable(nonNullReader ->
+                        UUID.fromString(nonNullReader.getString())
                     );
                 } else if ("processState".equals(fieldName)) {
                     deserializedWebhookEventProcessStateChangedData.processState = ProcessState.fromString(reader.getString());
