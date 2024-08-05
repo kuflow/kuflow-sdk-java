@@ -547,8 +547,8 @@ public class ProcessItemOperations {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> downloadProcessItemTaskDataWebformAsDocumentWithResponse(UUID id, String propertyPath, Context context) {
-        return this.service.downloadProcessItemTaskDataWebformAsDocumentWithResponse(id, propertyPath, context);
+    public Response<BinaryData> downloadProcessItemTaskDataWebformsAsDocumentWithResponse(UUID id, String propertyPath, Context context) {
+        return this.service.downloadProcessItemTaskDataWebformsAsDocumentWithResponse(id, propertyPath, context);
     }
 
     /**
@@ -569,7 +569,7 @@ public class ProcessItemOperations {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData downloadProcessItemTaskDataWebformAsDocument(UUID id, String propertyPath) {
-        return this.downloadProcessItemTaskDataWebformAsDocumentWithResponse(id, propertyPath, Context.NONE).getValue();
+    public BinaryData downloadProcessItemTaskDataWebformsAsDocumentWithResponse(UUID id, String propertyPath) {
+        return this.downloadProcessItemTaskDataWebformsAsDocumentWithResponse(id, propertyPath, Context.NONE).getValue();
     }
 }
