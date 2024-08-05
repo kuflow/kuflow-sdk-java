@@ -363,10 +363,10 @@ public final class ProcessItemOperationsImpl {
             Context context
         );
 
-        @Get("/process-items/{id}/task/data/~actions/download-webform-as-document")
+        @Get("/process-items/{id}/task/data/~actions/download-webforms-as-document")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<BinaryData>> downloadProcessItemTaskDataWebformAsDocument(
+        Mono<Response<BinaryData>> downloadProcessItemTaskDataWebformsAsDocument(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @QueryParam("propertyPath") String propertyPath,
@@ -374,10 +374,10 @@ public final class ProcessItemOperationsImpl {
             Context context
         );
 
-        @Get("/process-items/{id}/task/data/~actions/download-webform-as-document")
+        @Get("/process-items/{id}/task/data/~actions/download-webforms-as-document")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Response<BinaryData> downloadProcessItemTaskDataWebformAsDocumentSync(
+        Response<BinaryData> downloadProcessItemTaskDataWebformsAsDocumentSync(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @QueryParam("propertyPath") String propertyPath,
@@ -2175,8 +2175,8 @@ public final class ProcessItemOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> downloadProcessItemTaskDataWebformAsDocumentWithResponseAsync(UUID id, String propertyPath) {
-        return FluxUtil.withContext(context -> downloadProcessItemTaskDataWebformAsDocumentWithResponseAsync(id, propertyPath, context));
+    public Mono<Response<BinaryData>> downloadProcessItemTaskDataWebformsAsDocumentWithResponseAsync(UUID id, String propertyPath) {
+        return FluxUtil.withContext(context -> downloadProcessItemTaskDataWebformsAsDocumentWithResponseAsync(id, propertyPath, context));
     }
 
     /**
@@ -2199,13 +2199,13 @@ public final class ProcessItemOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> downloadProcessItemTaskDataWebformAsDocumentWithResponseAsync(
+    public Mono<Response<BinaryData>> downloadProcessItemTaskDataWebformsAsDocumentWithResponseAsync(
         UUID id,
         String propertyPath,
         Context context
     ) {
         final String accept = "application/pdf, application/zip, application/json";
-        return service.downloadProcessItemTaskDataWebformAsDocument(this.client.getHost(), id, propertyPath, accept, context);
+        return service.downloadProcessItemTaskDataWebformsAsDocument(this.client.getHost(), id, propertyPath, accept, context);
     }
 
     /**
@@ -2227,8 +2227,8 @@ public final class ProcessItemOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> downloadProcessItemTaskDataWebformAsDocumentAsync(UUID id, String propertyPath) {
-        return downloadProcessItemTaskDataWebformAsDocumentWithResponseAsync(id, propertyPath).flatMap(res ->
+    public Mono<BinaryData> downloadProcessItemTaskDataWebformsAsDocumentAsync(UUID id, String propertyPath) {
+        return downloadProcessItemTaskDataWebformsAsDocumentWithResponseAsync(id, propertyPath).flatMap(res ->
             Mono.justOrEmpty(res.getValue())
         );
     }
@@ -2253,8 +2253,8 @@ public final class ProcessItemOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> downloadProcessItemTaskDataWebformAsDocumentAsync(UUID id, String propertyPath, Context context) {
-        return downloadProcessItemTaskDataWebformAsDocumentWithResponseAsync(id, propertyPath, context).flatMap(res ->
+    public Mono<BinaryData> downloadProcessItemTaskDataWebformsAsDocumentAsync(UUID id, String propertyPath, Context context) {
+        return downloadProcessItemTaskDataWebformsAsDocumentWithResponseAsync(id, propertyPath, context).flatMap(res ->
             Mono.justOrEmpty(res.getValue())
         );
     }
@@ -2279,9 +2279,9 @@ public final class ProcessItemOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> downloadProcessItemTaskDataWebformAsDocumentWithResponse(UUID id, String propertyPath, Context context) {
+    public Response<BinaryData> downloadProcessItemTaskDataWebformsAsDocumentWithResponse(UUID id, String propertyPath, Context context) {
         final String accept = "application/pdf, application/zip, application/json";
-        return service.downloadProcessItemTaskDataWebformAsDocumentSync(this.client.getHost(), id, propertyPath, accept, context);
+        return service.downloadProcessItemTaskDataWebformsAsDocumentSync(this.client.getHost(), id, propertyPath, accept, context);
     }
 
     /**
@@ -2303,7 +2303,7 @@ public final class ProcessItemOperationsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData downloadProcessItemTaskDataWebformAsDocument(UUID id, String propertyPath) {
-        return downloadProcessItemTaskDataWebformAsDocumentWithResponse(id, propertyPath, Context.NONE).getValue();
+    public BinaryData downloadProcessItemTaskDataWebformsAsDocument(UUID id, String propertyPath) {
+        return downloadProcessItemTaskDataWebformsAsDocumentWithResponse(id, propertyPath, Context.NONE).getValue();
     }
 }
