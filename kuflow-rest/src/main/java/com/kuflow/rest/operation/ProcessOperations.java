@@ -31,15 +31,17 @@ import com.kuflow.rest.implementation.KuFlowClientImpl;
 import com.kuflow.rest.implementation.ProcessOperationsImpl;
 import com.kuflow.rest.model.DefaultErrorException;
 import com.kuflow.rest.model.Document;
-import com.kuflow.rest.model.FindProcessesOptions;
+import com.kuflow.rest.model.DocumentReference;
+import com.kuflow.rest.model.JsonPatchOperation;
 import com.kuflow.rest.model.Process;
-import com.kuflow.rest.model.ProcessChangeInitiatorCommand;
-import com.kuflow.rest.model.ProcessDeleteElementCommand;
+import com.kuflow.rest.model.ProcessChangeInitiatorParams;
+import com.kuflow.rest.model.ProcessCreateParams;
+import com.kuflow.rest.model.ProcessEntityDocumentUploadParams;
+import com.kuflow.rest.model.ProcessEntityUpdateParams;
+import com.kuflow.rest.model.ProcessFindOptions;
+import com.kuflow.rest.model.ProcessMetadataUpdateParams;
 import com.kuflow.rest.model.ProcessPage;
-import com.kuflow.rest.model.ProcessSaveElementCommand;
-import com.kuflow.rest.model.ProcessSaveEntityDataCommand;
-import com.kuflow.rest.model.ProcessSaveEntityDocumentResponseCommand;
-import com.kuflow.rest.model.ProcessSaveUserActionValueDocumentCommand;
+import com.kuflow.rest.model.ProcessUserActionDocumentUploadParams;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -74,8 +76,8 @@ public class ProcessOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProcessPage> findProcessesWithResponse(FindProcessesOptions options, Context context) {
-        options = options != null ? options : new FindProcessesOptions();
+    public Response<ProcessPage> findProcessesWithResponse(ProcessFindOptions options, Context context) {
+        options = options != null ? options : new ProcessFindOptions();
 
         Integer size = options.getSize();
         Integer page = options.getPage();
@@ -99,7 +101,7 @@ public class ProcessOperations {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProcessPage findProcesses(FindProcessesOptions options) {
+    public ProcessPage findProcesses(ProcessFindOptions options) {
         return this.findProcessesWithResponse(options, Context.NONE).getValue();
     }
 
@@ -121,20 +123,12 @@ public class ProcessOperations {
 
     /**
      * Create a new process
+     * <p>
+     * Creates a process. This option has direct correspondence to the action of starting a process in the Kuflow GUI.
+     * <p>
+     * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
-     * <p>Creates a process. This option has direct correspondence to the action of starting a process in the Kuflow
-     * GUI.
-     *
-     * <p>When a process is created, the current user is assigned as the process initiator, if you want to change it,
-     * you can pass a valid initiator using the following options:
-     *
-     * <p>* If you know the `principal ID` you can assign it to `initiator.id` * If you know the `user ID` you can
-     * assign it to `initiator.user.id` * If you know the `user email` you can assign it to `initiator.user.email` * If
-     * you know the `application ID` you can assign it to `initiator.application.id`
-     *
-     * <p>If you want the method to be idempotent, please specify the `id` field in the request body.
-     *
-     * @param process Process to create.
+     * @param params Process to create.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -142,34 +136,26 @@ public class ProcessOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Process> createProcessWithResponse(Process process, Context context) {
-        return this.service.createProcessWithResponse(process, context);
+    public Response<Process> createProcessWithResponse(ProcessCreateParams params, Context context) {
+        return this.service.createProcessWithResponse(params, context);
     }
 
     /**
      * Create a new process
+     * <p>
+     * Creates a process. This option has direct correspondence to the action of starting a process in the Kuflow GUI.
+     * <p>
+     * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
-     * <p>Creates a process. This option has direct correspondence to the action of starting a process in the Kuflow
-     * GUI.
-     *
-     * <p>When a process is created, the current user is assigned as the process initiator, if you want to change it,
-     * you can pass a valid initiator using the following options:
-     *
-     * <p>* If you know the `principal ID` you can assign it to `initiator.id` * If you know the `user ID` you can
-     * assign it to `initiator.user.id` * If you know the `user email` you can assign it to `initiator.user.email` * If
-     * you know the `application ID` you can assign it to `initiator.application.id`
-     *
-     * <p>If you want the method to be idempotent, please specify the `id` field in the request body.
-     *
-     * @param process Process to create.
+     * @param params Process to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Process createProcess(Process process) {
-        return this.createProcessWithResponse(process, Context.NONE).getValue();
+    public Process createProcess(ProcessCreateParams params) {
+        return this.createProcessWithResponse(params, Context.NONE).getValue();
     }
 
     /**
@@ -206,131 +192,6 @@ public class ProcessOperations {
     }
 
     /**
-     * Change process initiator
-     *
-     * <p>Change the current initiator of a process.
-     *
-     * <p>Allows you to choose a user (by email or principal identifier) or an application (principal identifier). Only
-     * one option will be necessary.
-     *
-     * @param id The resource ID.
-     * @param command Command to change the process initiator.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Process> actionsProcessChangeInitiatorWithResponse(UUID id, ProcessChangeInitiatorCommand command, Context context) {
-        return this.service.actionsProcessChangeInitiatorWithResponse(id, command, context);
-    }
-
-    /**
-     * Change process initiator
-     *
-     * <p>Change the current initiator of a process.
-     *
-     * <p>Allows you to choose a user (by email or principal identifier) or an application (principal identifier). Only
-     * one option will be necessary.
-     *
-     * @param id The resource ID.
-     * @param command Command to change the process initiator.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Process actionsProcessChangeInitiator(UUID id, ProcessChangeInitiatorCommand command) {
-        return this.actionsProcessChangeInitiatorWithResponse(id, command, Context.NONE).getValue();
-    }
-
-    /**
-     * Save a process element, aka: metadata
-     *
-     * <p>Allow to save an element.
-     *
-     * <p>If values already exist for the provided element code, it replaces them with the new ones, otherwise it
-     * creates them. The values of the previous elements that no longer exist will be deleted.
-     *
-     * <p>If the process is already finished the invocations fails with an error.
-     *
-     * @param id The resource ID.
-     * @param command Command to save an element.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Process> actionsProcessSaveElementWithResponse(UUID id, ProcessSaveElementCommand command, Context context) {
-        return this.service.actionsProcessSaveElementWithResponse(id, command, context);
-    }
-
-    /**
-     * Save a process element, aka: metadata
-     *
-     * <p>Allow to save an element.
-     *
-     * <p>If values already exist for the provided element code, it replaces them with the new ones, otherwise it
-     * creates them. The values of the previous elements that no longer exist will be deleted.
-     *
-     * <p>If the process is already finished the invocations fails with an error.
-     *
-     * @param id The resource ID.
-     * @param command Command to save an element.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Process actionsProcessSaveElement(UUID id, ProcessSaveElementCommand command) {
-        return this.actionsProcessSaveElementWithResponse(id, command, Context.NONE).getValue();
-    }
-
-    /**
-     * Delete an element by code
-     *
-     * <p>Allow to delete a process element by specifying the item definition code.
-     *
-     * <p>Remove all the element values.
-     *
-     * @param id The resource ID.
-     * @param command Command to delete an element.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Process> actionsProcessDeleteElementWithResponse(UUID id, ProcessDeleteElementCommand command, Context context) {
-        return this.service.actionsProcessDeleteElementWithResponse(id, command, context);
-    }
-
-    /**
-     * Delete an element by code
-     *
-     * <p>Allow to delete a process element by specifying the item definition code.
-     *
-     * <p>Remove all the element values.
-     *
-     * @param id The resource ID.
-     * @param command Command to delete an element.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Process actionsProcessDeleteElement(UUID id, ProcessDeleteElementCommand command) {
-        return this.actionsProcessDeleteElementWithResponse(id, command, Context.NONE).getValue();
-    }
-
-    /**
      * Complete a Process
      *
      * <p>Complete a Process. The state of Process is set to 'completed'.
@@ -345,8 +206,8 @@ public class ProcessOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Process> actionsProcessCompleteWithResponse(UUID id, Context context) {
-        return this.service.actionsProcessCompleteWithResponse(id, context);
+    public Response<Process> completeProcessWithResponse(UUID id, Context context) {
+        return this.service.completeProcessWithResponse(id, context);
     }
 
     /**
@@ -363,8 +224,8 @@ public class ProcessOperations {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Process actionsProcessComplete(UUID id) {
-        return this.actionsProcessCompleteWithResponse(id, Context.NONE).getValue();
+    public Process completeProcess(UUID id) {
+        return this.completeProcessWithResponse(id, Context.NONE).getValue();
     }
 
     /**
@@ -384,8 +245,8 @@ public class ProcessOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Process> actionsProcessCancelWithResponse(UUID id, Context context) {
-        return this.service.actionsProcessCancelWithResponse(id, context);
+    public Response<Process> cancelProcessWithResponse(UUID id, Context context) {
+        return this.service.cancelProcessWithResponse(id, context);
     }
 
     /**
@@ -404,8 +265,49 @@ public class ProcessOperations {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Process actionsProcessCancel(UUID id) {
-        return this.actionsProcessCancelWithResponse(id, Context.NONE).getValue();
+    public Process cancelProcess(UUID id) {
+        return this.cancelProcessWithResponse(id, Context.NONE).getValue();
+    }
+
+    /**
+     * Change process initiator
+     *
+     * <p>Change the current initiator of a process.
+     *
+     * <p>Allows you to choose a user (by email or principal identifier) or an application (principal identifier). Only
+     * one option will be necessary.
+     *
+     * @param id The resource ID.
+     * @param params Params to change the process initiator.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Process> changeProcessInitiatorWithResponse(UUID id, ProcessChangeInitiatorParams params, Context context) {
+        return this.service.changeProcessInitiatorWithResponse(id, params, context);
+    }
+
+    /**
+     * Change process initiator
+     *
+     * <p>Change the current initiator of a process.
+     *
+     * <p>Allows you to choose a user (by email or principal identifier) or an application (principal identifier). Only
+     * one option will be necessary.
+     *
+     * @param id The resource ID.
+     * @param params Params to change the process initiator.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Process changeProcessInitiator(UUID id, ProcessChangeInitiatorParams params) {
+        return this.changeProcessInitiatorWithResponse(id, params, Context.NONE).getValue();
     }
 
     /**
@@ -414,7 +316,7 @@ public class ProcessOperations {
      * <p>Allow saving a user action document uploading the content.
      *
      * @param id The resource ID.
-     * @param command Command info.
+     * @param params Params info.
      * @param document Document to upload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -423,9 +325,9 @@ public class ProcessOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Process> actionsProcessSaveUserActionValueDocumentWithResponse(
+    public Response<Process> uploadProcessUserActionDocumentWithResponse(
         UUID id,
-        ProcessSaveUserActionValueDocumentCommand command,
+        ProcessUserActionDocumentUploadParams params,
         Document document,
         Context context
     ) {
@@ -440,11 +342,11 @@ public class ProcessOperations {
 
         String fileContentType = document.getContentType();
         String fileName = document.getFileName();
-        UUID userActionValueId = command.getUserActionValueId();
+        UUID userActionValueId = params.getUserActionValueId();
         BinaryData file = document.getFileContent();
         long contentLength = file.getLength();
 
-        return this.service.actionsProcessSaveUserActionValueDocumentWithResponse(
+        return this.service.uploadProcessUserActionDocumentWithResponse(
                 id,
                 fileContentType,
                 fileName,
@@ -469,22 +371,15 @@ public class ProcessOperations {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Process actionsProcessSaveUserActionValueDocument(
-        UUID id,
-        ProcessSaveUserActionValueDocumentCommand command,
-        Document document
-    ) {
-        return this.actionsProcessSaveUserActionValueDocumentWithResponse(id, command, document, Context.NONE).getValue();
+    public Process uploadProcessUserActionDocument(UUID id, ProcessUserActionDocumentUploadParams command, Document document) {
+        return this.uploadProcessUserActionDocumentWithResponse(id, command, document, Context.NONE).getValue();
     }
 
     /**
-     * Save JSON data
-     * <p>
-     * Allow to save a JSON validating that the data follow the related schema. If the data is invalid, then
-     * the json form is marked as invalid.
+     * Save process metadata.
      *
      * @param id The resource ID.
-     * @param command Command to save the JSON value.
+     * @param params Params to save de entity data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -492,40 +387,33 @@ public class ProcessOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Process> actionsProcessSaveEntityDataWithResponse(UUID id, ProcessSaveEntityDataCommand command, Context context) {
-        return this.service.actionsProcessSaveEntityDataWithResponse(id, command, context);
+    public Response<Process> updateProcessMetadataWithResponse(UUID id, ProcessMetadataUpdateParams params, Context context) {
+        return this.service.updateProcessMetadataWithResponse(id, params, context);
     }
 
     /**
-     * Save JSON data
-     * <p>
-     * Allow to save a JSON validating that the data follow the related schema. If the data is invalid, then
-     * the json form is marked as invalid.
+     * Save process metadata.
      *
      * @param id The resource ID.
-     * @param command Command to save the JSON value.
+     * @param params Params to save de entity data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Process actionsProcessSaveEntityData(UUID id, ProcessSaveEntityDataCommand command) {
-        return this.actionsProcessSaveEntityDataWithResponse(id, command, Context.NONE).getValue();
+    public Process updateProcessMetadata(UUID id, ProcessMetadataUpdateParams params) {
+        return this.updateProcessMetadataWithResponse(id, params, Context.NONE).getValue();
     }
 
     /**
-     * Save an entity value document
+     * Patch JSON data
      * <p>
-     * Save a document in the process to later be linked into the JSON data.
+     * Allow to patch a JSON data validating that the data follow the related schema. If the data is invalid, then
+     * the json is marked as invalid.
      *
      * @param id The resource ID.
-     * @param fileContentType Document content type.
-     * @param fileName Document name.
-     * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
-     * schema path.
-     * @param file Document to save.
-     * @param contentLength The Content-Length header for the request.
+     * @param params Array of JsonPatchOperation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -533,16 +421,138 @@ public class ProcessOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProcessSaveEntityDocumentResponseCommand> actionsProcessSaveEntityDocumentWithResponse(
+    public Response<Process> patchProcessMetadataWithResponse(UUID id, List<JsonPatchOperation> params, Context context) {
+        return this.service.patchProcessMetadataWithResponse(id, params, context);
+    }
+
+    /**
+     * Patch JSON data
+     * <p>
+     * Allow to patch a JSON data validating that the data follow the related schema. If the data is invalid, then
+     * the json is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param params Array of JsonPatchOperation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Process patchProcessMetadata(UUID id, List<JsonPatchOperation> params) {
+        return this.patchProcessMetadataWithResponse(id, params, Context.NONE).getValue();
+    }
+
+    /**
+     * Save JSON data
+     * <p>
+     * Allow to save a JSON validating that the data follow the related schema. If the data is invalid, then
+     * the json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param params Params to save the JSON value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Process> updateProcessEntityWithResponse(UUID id, ProcessEntityUpdateParams params, Context context) {
+        return this.service.updateProcessEntityWithResponse(id, params, context);
+    }
+
+    /**
+     * Save JSON data
+     * <p>
+     * Allow to save a JSON validating that the data follow the related schema. If the data is invalid, then
+     * the json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param params Params to save the JSON value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Process updateProcessEntity(UUID id, ProcessEntityUpdateParams params) {
+        return this.updateProcessEntityWithResponse(id, params, Context.NONE).getValue();
+    }
+
+    /**
+     * Patch JSON data
+     * <p>
+     * Allow to patch a JSON data validating that the data follow the related schema. If the data is invalid, then
+     * the json is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param params Array of JsonPatchOperation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Process> patchProcessEntityWithResponse(UUID id, List<JsonPatchOperation> params, Context context) {
+        return this.service.patchProcessEntityWithResponse(id, params, context);
+    }
+
+    /**
+     * Patch JSON data
+     * <p>
+     * Allow to patch a JSON data validating that the data follow the related schema. If the data is invalid, then
+     * the json is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param params Array of JsonPatchOperation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Process patchProcessEntity(UUID id, List<JsonPatchOperation> params) {
+        return this.patchProcessEntityWithResponse(id, params, Context.NONE).getValue();
+    }
+
+    /**
+     * Upload an entity document
+     * <p>
+     * Save a document in the process to later be linked into the JSON data.
+     *
+     * @param id The resource ID.
+     * @param params Params info.
+     * @param document Document to upload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DocumentReference> uploadProcessEntityDocumentWithResponse(
         UUID id,
-        String fileContentType,
-        String fileName,
-        String schemaPath,
-        BinaryData file,
-        long contentLength,
+        ProcessEntityDocumentUploadParams params,
+        Document document,
         Context context
     ) {
-        return this.service.actionsProcessSaveEntityDocumentWithResponse(
+        Objects.requireNonNull(document, "'document' is required");
+        Objects.requireNonNull(document.getFileContent(), "'document.fileContent' is required");
+        Objects.requireNonNull(document.getFileContent().getLength(), "'document.fileContent.length' is required");
+        Objects.requireNonNull(document.getFileName(), "'document.fileName' is required");
+        Objects.requireNonNull(document.getContentType(), "'document.contentType' is required");
+        if (document.getFileContent().getLength() == 0) {
+            throw new IllegalArgumentException("File size must be greater that 0");
+        }
+
+        String fileContentType = document.getContentType();
+        String fileName = document.getFileName();
+        String schemaPath = params.getSchemaPath();
+        BinaryData file = document.getFileContent();
+        long contentLength = file.getLength();
+        return this.service.uploadProcessEntityDocumentWithResponse(
                 id,
                 fileContentType,
                 fileName,
@@ -554,44 +564,25 @@ public class ProcessOperations {
     }
 
     /**
-     * Save an entity value document
+     * Upload an entity document
      * <p>
      * Save a document in the process to later be linked into the JSON data.
      *
      * @param id The resource ID.
-     * @param fileContentType Document content type.
-     * @param fileName Document name.
-     * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
-     * schema path.
-     * @param file Document to save.
-     * @param contentLength The Content-Length header for the request.
+     * @param params Params info.
+     * @param document Document to upload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProcessSaveEntityDocumentResponseCommand actionsProcessSaveEntityDocument(
-        UUID id,
-        String fileContentType,
-        String fileName,
-        String schemaPath,
-        BinaryData file,
-        long contentLength
-    ) {
-        return this.actionsProcessSaveEntityDocumentWithResponse(
-                id,
-                fileContentType,
-                fileName,
-                schemaPath,
-                file,
-                contentLength,
-                Context.NONE
-            ).getValue();
+    public DocumentReference uploadProcessEntityDocument(UUID id, ProcessEntityDocumentUploadParams params, Document document) {
+        return this.uploadProcessEntityDocumentWithResponse(id, params, document, Context.NONE).getValue();
     }
 
     /**
-     * Download document
+     * Download entity document
      * <p>
      * Given a process and a documentUri, download a document.
      *
@@ -604,12 +595,12 @@ public class ProcessOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> actionsProcessDownloadEntityDocumentWithResponse(UUID id, String documentUri, Context context) {
-        return this.service.actionsProcessDownloadEntityDocumentWithResponse(id, documentUri, context);
+    public Response<BinaryData> downloadProcessEntityDocumentWithResponse(UUID id, String documentUri, Context context) {
+        return this.service.downloadProcessEntityDocumentWithResponse(id, documentUri, context);
     }
 
     /**
-     * Download document
+     * Download entity document
      * <p>
      * Given a process and a documentUri, download a document.
      *
@@ -621,7 +612,7 @@ public class ProcessOperations {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData actionsProcessDownloadEntityDocument(UUID id, String documentUri) {
-        return this.actionsProcessDownloadEntityDocumentWithResponse(id, documentUri, Context.NONE).getValue();
+    public BinaryData downloadProcessEntityDocument(UUID id, String documentUri) {
+        return this.downloadProcessEntityDocumentWithResponse(id, documentUri, Context.NONE).getValue();
     }
 }

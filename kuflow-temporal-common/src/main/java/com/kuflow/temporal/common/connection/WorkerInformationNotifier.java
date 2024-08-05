@@ -28,6 +28,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.kuflow.rest.KuFlowRestClient;
 import com.kuflow.rest.model.Worker;
+import com.kuflow.rest.model.WorkerCreateParams;
 import com.kuflow.rest.operation.WorkerOperations;
 import com.kuflow.temporal.common.error.KuFlowTemporalException;
 import io.temporal.client.WorkflowClientOptions;
@@ -119,7 +120,7 @@ public class WorkerInformationNotifier {
         String workerIdentity = this.workflowClientOptions.getIdentity();
 
         try {
-            com.kuflow.rest.model.Worker workerRest = new com.kuflow.rest.model.Worker()
+            WorkerCreateParams workerCreateParams = new WorkerCreateParams()
                 .setTenantId(workerInformation.getTenantId())
                 .setIdentity(workerIdentity)
                 .setIp(localHostInetAddress.getHostAddress())
@@ -131,7 +132,7 @@ public class WorkerInformationNotifier {
                 .setRobotIds(workerInformation.getRobotIds());
 
             WorkerOperations workerOperations = this.kuFlowRestClient.getWorkerOperations();
-            Response<Worker> workerRestResponse = workerOperations.createWorkerWithResponse(workerRest, Context.NONE);
+            Response<Worker> workerRestResponse = workerOperations.createWorkerWithResponse(workerCreateParams, Context.NONE);
 
             LOGGER.info(
                 "Registered worker {}/{} with id {}",

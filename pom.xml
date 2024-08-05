@@ -23,7 +23,10 @@
     THE SOFTWARE.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" child.project.url.inherit.append.path="false" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         child.project.url.inherit.append.path="false"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
@@ -36,7 +39,7 @@
 
   <groupId>com.kuflow</groupId>
   <artifactId>kuflow-sdk</artifactId>
-  <version>2.11.1</version>
+  <version>3.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>KuFlow SDK</name>
@@ -85,12 +88,13 @@
     <commons-io.version>2.11.0</commons-io.version>
     <commons-text.version>1.10.0</commons-text.version>
     <jackson.version>2.14.2</jackson.version>
-    <azure-core.version>1.48.0</azure-core.version>
-    <azure-communication-common.version>1.3.1</azure-communication-common.version>
+    <azure-core.version>1.50.0</azure-core.version>
+    <azure-communication-common.version>1.3.5</azure-communication-common.version>
     <jsr305.version>3.0.2</jsr305.version>
+    <uuid-creator.version>6.0.0</uuid-creator.version>
 
     <wiremock.version>2.35.1</wiremock.version>
-    <awaitility.version>4.2.0</awaitility.version>
+    <awaitility.version>4.2.1</awaitility.version>
   </properties>
 
   <dependencyManagement>
@@ -216,6 +220,11 @@
         <groupId>com.google.code.findbugs</groupId>
         <artifactId>jsr305</artifactId>
         <version>${jsr305.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.f4b6a3</groupId>
+        <artifactId>uuid-creator</artifactId>
+        <version>${uuid-creator.version}</version>
       </dependency>
 
       <dependency>

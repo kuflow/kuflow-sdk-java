@@ -28,6 +28,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kuflow.rest.KuFlowRestClient;
 import com.kuflow.rest.model.Authentication;
+import com.kuflow.rest.model.AuthenticationCreateParams;
 import com.kuflow.rest.model.AuthenticationEngineCertificate;
 import com.kuflow.rest.model.AuthenticationEngineCertificateTls;
 import com.kuflow.rest.model.AuthenticationType;
@@ -412,14 +413,13 @@ public class KuFlowTemporalConnection {
     }
 
     private void applyDefaultConfiguration() {
-        Authentication authenticationRequest = new Authentication()
+        AuthenticationCreateParams params = new AuthenticationCreateParams()
             .setType(AuthenticationType.ENGINE_CERTIFICATE)
             .setTenantId(this.workerInformation.getTenantId());
 
-        Authentication authenticationResponse =
-            this.kuFlowRestClient.getAuthenticationOperations().createAuthentication(authenticationRequest);
+        Authentication authentication = this.kuFlowRestClient.getAuthenticationOperations().createAuthentication(params);
 
-        AuthenticationEngineCertificate authenticationEngineCertificate = authenticationResponse.getEngineCertificate();
+        AuthenticationEngineCertificate authenticationEngineCertificate = authentication.getEngineCertificate();
 
         this.configureWorkflowServiceStubs(builder -> {
                 WorkflowServiceStubsOptions stubsOptions = builder.build();

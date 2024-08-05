@@ -1,8 +1,6 @@
 {
-  "objectType": "AUTHENTICATION",
   "id" : "9a2ff355-54dd-4e70-b7a2-e693b72436f8",
   "type" : "ENGINE_TOKEN",
-  "token" : "DUMMY_TOKEN",
   "expiredAt" : "2022-03-01T08:42:48Z",
   "engineToken": {
     "token" : "DUMMY_TOKEN",

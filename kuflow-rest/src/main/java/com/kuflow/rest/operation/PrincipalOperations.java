@@ -29,8 +29,8 @@ import com.azure.core.util.Context;
 import com.kuflow.rest.implementation.KuFlowClientImpl;
 import com.kuflow.rest.implementation.PrincipalOperationsImpl;
 import com.kuflow.rest.model.DefaultErrorException;
-import com.kuflow.rest.model.FindPrincipalsOptions;
 import com.kuflow.rest.model.Principal;
+import com.kuflow.rest.model.PrincipalFindOptions;
 import com.kuflow.rest.model.PrincipalPage;
 import com.kuflow.rest.model.PrincipalType;
 import java.util.List;
@@ -66,8 +66,8 @@ public class PrincipalOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrincipalPage> findPrincipalsWithResponse(FindPrincipalsOptions options, Context context) {
-        options = options != null ? options : new FindPrincipalsOptions();
+    public Response<PrincipalPage> findPrincipalsWithResponse(PrincipalFindOptions options, Context context) {
+        options = options != null ? options : new PrincipalFindOptions();
 
         Integer size = options.getSize();
         Integer page = options.getPage();
@@ -93,7 +93,7 @@ public class PrincipalOperations {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrincipalPage findPrincipals(FindPrincipalsOptions options) {
+    public PrincipalPage findPrincipals(PrincipalFindOptions options) {
         return this.findPrincipalsWithResponse(options, Context.NONE).getValue();
     }
 

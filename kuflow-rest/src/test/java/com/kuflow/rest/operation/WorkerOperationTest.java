@@ -30,6 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.github.tomakehurst.wiremock.extension.responsetemplating.ResponseTemplateTransformer;
 import com.kuflow.rest.model.Worker;
+import com.kuflow.rest.model.WorkerCreateParams;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
@@ -41,7 +42,7 @@ public class WorkerOperationTest extends AbstractOperationTest {
     @DisplayName("GIVEN an authenticated user WHEN create a worker THEN authentication header is added")
     public void givenAnAuthenticatedUserWhenCreateAWorkerThenAuthenticationHeaderIsAdded() {
         givenThat(
-            post("/v2022-10-08/workers")
+            post("/v2024-06-14/workers")
                 .withHeader("Authorization", equalTo("Bearer Q0xJRU5UX0lEOkNMSUVOVF9TRUNSRVQ="))
                 .willReturn(
                     ok()
@@ -51,7 +52,7 @@ public class WorkerOperationTest extends AbstractOperationTest {
                 )
         );
 
-        Worker workerRequest = new Worker()
+        WorkerCreateParams workerRequest = new WorkerCreateParams()
             .setIdentity("identity-" + UUID.randomUUID())
             .setTaskQueue("task-queue-" + UUID.randomUUID())
             .setWorkflowTypes(List.of("wt-" + UUID.randomUUID(), "wt-" + UUID.randomUUID()))
@@ -68,7 +69,7 @@ public class WorkerOperationTest extends AbstractOperationTest {
     @DisplayName("GIVEN an authenticated user WHEN create a worker THEN response is correctly parsed")
     public void givenAnAuthenticatedUserWhenCreateAWorkerThenResponseIsCorrectlyParsed() {
         givenThat(
-            post("/v2022-10-08/workers").willReturn(
+            post("/v2024-06-14/workers").willReturn(
                 ok()
                     .withHeader("Content-Type", "application/json")
                     .withBodyFile("workers-api.create.ok.json.hbs")
@@ -76,7 +77,7 @@ public class WorkerOperationTest extends AbstractOperationTest {
             )
         );
 
-        Worker workerRequest = new Worker()
+        WorkerCreateParams workerRequest = new WorkerCreateParams()
             .setIdentity("identity-" + UUID.randomUUID())
             .setTaskQueue("task-queue-" + UUID.randomUUID())
             .setWorkflowTypes(List.of("wt-" + UUID.randomUUID(), "wt-" + UUID.randomUUID()))

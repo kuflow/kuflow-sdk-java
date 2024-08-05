@@ -23,18 +23,14 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.kuflow.rest.util.ProcessUtils;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -49,11 +45,6 @@ public final class Process extends AbstractAudited {
     private UUID id;
 
     /*
-     * Process subject.
-     */
-    private String subject;
-
-    /*
      * Process state
      */
     private ProcessState state;
@@ -64,24 +55,24 @@ public final class Process extends AbstractAudited {
     private ProcessDefinitionSummary processDefinition;
 
     /*
-     * Process element values, an ElementValueDocument is not allowed.
+     * Json value.
      */
-    private Map<String, List<ProcessElementValue>> elementValues;
+    private JsonValue metadata;
 
     /*
-     * Json form values, used when the render type selected is JSON Forms.
+     * Json value.
      */
-    private JsonFormsValue entity;
+    private JsonValue entity;
 
     /*
-     * The initiator property.
+     * The processRelated property.
      */
-    private Principal initiator;
+    private ProcessRelated processRelated;
 
     /*
-     * The relatedProcess property.
+     * Process initiator id, Principal ID.
      */
-    private RelatedProcess relatedProcess;
+    private UUID initiatorId;
 
     /*
      * Tenant ID.
@@ -110,26 +101,6 @@ public final class Process extends AbstractAudited {
      */
     public Process setId(UUID id) {
         this.id = id;
-        return this;
-    }
-
-    /**
-     * Get the subject property: Process subject.
-     *
-     * @return the subject value.
-     */
-    public String getSubject() {
-        return this.subject;
-    }
-
-    /**
-     * Set the subject property: Process subject.
-     *
-     * @param subject the subject value to set.
-     * @return the Process object itself.
-     */
-    public Process setSubject(String subject) {
-        this.subject = subject;
         return this;
     }
 
@@ -174,82 +145,82 @@ public final class Process extends AbstractAudited {
     }
 
     /**
-     * Get the elementValues property: Process element values, an ElementValueDocument is not allowed.
+     * Get the metadata property: Json value.
      *
-     * @return the elementValues value.
+     * @return the metadata value.
      */
-    public Map<String, List<ProcessElementValue>> getElementValues() {
-        return this.elementValues;
+    public JsonValue getMetadata() {
+        return this.metadata;
     }
 
     /**
-     * Set the elementValues property: Process element values, an ElementValueDocument is not allowed.
+     * Set the metadata property: Json value.
      *
-     * @param elementValues the elementValues value to set.
+     * @param metadata the metadata value to set.
      * @return the Process object itself.
      */
-    public Process setElementValues(Map<String, List<ProcessElementValue>> elementValues) {
-        this.elementValues = elementValues;
+    public Process setMetadata(JsonValue metadata) {
+        this.metadata = metadata;
         return this;
     }
 
     /**
-     * Get the entity property: Json form values, used when the render type selected is JSON Forms.
+     * Get the entity property: Json value.
      *
      * @return the entity value.
      */
-    public JsonFormsValue getEntity() {
+    public JsonValue getEntity() {
         return this.entity;
     }
 
     /**
-     * Set the entity property: Json form values, used when the render type selected is JSON Forms.
+     * Set the entity property: Json value.
      *
      * @param entity the entity value to set.
      * @return the Process object itself.
      */
-    public Process setEntity(JsonFormsValue entity) {
+    public Process setEntity(JsonValue entity) {
         this.entity = entity;
         return this;
     }
 
     /**
-     * Get the initiator property: The initiator property.
+     * Get the processRelated property: The processRelated property.
      *
-     * @return the initiator value.
+     * @return the processRelated value.
      */
-    public Principal getInitiator() {
-        return this.initiator;
+    public ProcessRelated getProcessRelated() {
+        return this.processRelated;
     }
 
     /**
-     * Set the initiator property: The initiator property.
+     * Set the processRelated property: The processRelated property.
      *
-     * @param initiator the initiator value to set.
+     * @param processRelated the processRelated value to set.
      * @return the Process object itself.
      */
-    public Process setInitiator(Principal initiator) {
-        this.initiator = initiator;
+    public Process setProcessRelated(ProcessRelated processRelated) {
+        this.processRelated = processRelated;
         return this;
     }
 
     /**
-     * Get the relatedProcess property: The relatedProcess property.
+     * Get the initiatorId property: Process initiator id, Principal ID.
      *
-     * @return the relatedProcess value.
+     * @return the initiatorId value.
      */
-    public RelatedProcess getRelatedProcess() {
-        return this.relatedProcess;
+    public UUID getInitiatorId() {
+        return this.initiatorId;
     }
 
     /**
-     * Set the relatedProcess property: The relatedProcess property.
+     * Set the initiatorId property: Process initiator id, Principal ID.
      *
-     * @param relatedProcess the relatedProcess value to set.
+     * @param initiatorId the initiatorId value to set.
      * @return the Process object itself.
      */
-    public Process setRelatedProcess(RelatedProcess relatedProcess) {
-        this.relatedProcess = relatedProcess;
+    public Process setInitiatorId(UUID initiatorId) {
+        this.initiatorId = initiatorId;
         return this;
     }
 
@@ -270,15 +241,6 @@ public final class Process extends AbstractAudited {
      */
     public Process setTenantId(UUID tenantId) {
         this.tenantId = tenantId;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Process setObjectType(AuditedObjectType objectType) {
-        super.setObjectType(objectType);
         return this;
     }
 
@@ -324,7 +286,6 @@ public final class Process extends AbstractAudited {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("objectType", getObjectType() == null ? null : getObjectType().toString());
         jsonWriter.writeStringField("createdBy", Objects.toString(getCreatedBy(), null));
         jsonWriter.writeStringField(
             "createdAt",
@@ -335,19 +296,14 @@ public final class Process extends AbstractAudited {
             "lastModifiedAt",
             getLastModifiedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getLastModifiedAt())
         );
-        jsonWriter.writeJsonField("processDefinition", this.processDefinition);
         jsonWriter.writeStringField("id", Objects.toString(this.id, null));
-        jsonWriter.writeStringField("subject", this.subject);
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
-        jsonWriter.writeMapField(
-            "elementValues",
-            this.elementValues,
-            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeJson(element1))
-        );
-        jsonWriter.writeJsonField("entity", this.entity);
-        jsonWriter.writeJsonField("initiator", this.initiator);
-        jsonWriter.writeJsonField("relatedProcess", this.relatedProcess);
+        jsonWriter.writeJsonField("processDefinition", this.processDefinition);
         jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
+        jsonWriter.writeJsonField("metadata", this.metadata);
+        jsonWriter.writeJsonField("entity", this.entity);
+        jsonWriter.writeJsonField("processRelated", this.processRelated);
+        jsonWriter.writeStringField("initiatorId", Objects.toString(this.initiatorId, null));
         return jsonWriter.writeEndObject();
     }
 
@@ -367,39 +323,34 @@ public final class Process extends AbstractAudited {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("objectType".equals(fieldName)) {
-                    deserializedProcess.setObjectType(AuditedObjectType.fromString(reader.getString()));
-                } else if ("createdBy".equals(fieldName)) {
+                if ("createdBy".equals(fieldName)) {
                     deserializedProcess.setCreatedBy(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
                 } else if ("createdAt".equals(fieldName)) {
-                    deserializedProcess.setCreatedAt(reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedProcess.setCreatedAt(
+                        reader.getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()))
+                    );
                 } else if ("lastModifiedBy".equals(fieldName)) {
                     deserializedProcess.setLastModifiedBy(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
                 } else if ("lastModifiedAt".equals(fieldName)) {
                     deserializedProcess.setLastModifiedAt(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()))
+                        reader.getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()))
                     );
-                } else if ("processDefinition".equals(fieldName)) {
-                    deserializedProcess.processDefinition = ProcessDefinitionSummary.fromJson(reader);
                 } else if ("id".equals(fieldName)) {
                     deserializedProcess.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
-                } else if ("subject".equals(fieldName)) {
-                    deserializedProcess.subject = reader.getString();
                 } else if ("state".equals(fieldName)) {
                     deserializedProcess.state = ProcessState.fromString(reader.getString());
-                } else if ("elementValues".equals(fieldName)) {
-                    Map<String, List<ProcessElementValue>> elementValues = reader.readMap(
-                        reader1 -> reader1.readArray(reader2 -> ProcessElementValue.fromJson(reader2))
-                    );
-                    deserializedProcess.elementValues = elementValues;
-                } else if ("entity".equals(fieldName)) {
-                    deserializedProcess.entity = JsonFormsValue.fromJson(reader);
-                } else if ("initiator".equals(fieldName)) {
-                    deserializedProcess.initiator = Principal.fromJson(reader);
-                } else if ("relatedProcess".equals(fieldName)) {
-                    deserializedProcess.relatedProcess = RelatedProcess.fromJson(reader);
+                } else if ("processDefinition".equals(fieldName)) {
+                    deserializedProcess.processDefinition = ProcessDefinitionSummary.fromJson(reader);
                 } else if ("tenantId".equals(fieldName)) {
                     deserializedProcess.tenantId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedProcess.metadata = JsonValue.fromJson(reader);
+                } else if ("entity".equals(fieldName)) {
+                    deserializedProcess.entity = JsonValue.fromJson(reader);
+                } else if ("processRelated".equals(fieldName)) {
+                    deserializedProcess.processRelated = ProcessRelated.fromJson(reader);
+                } else if ("initiatorId".equals(fieldName)) {
+                    deserializedProcess.initiatorId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }
@@ -407,361 +358,5 @@ public final class Process extends AbstractAudited {
 
             return deserializedProcess;
         });
-    }
-
-    /**
-     * Check if all related valid values are TRUE
-     *
-     * @param elementDefinitionCode Element Definition Code
-     * @return TRUE if all related valid values are TRUE else FALSE.
-     * @deprecated in favor of {@link ProcessUtils}
-     */
-    @Deprecated
-    public Boolean getElementValueValid(String elementDefinitionCode) {
-        return ProcessUtils.getElementValueValid(this, elementDefinitionCode);
-    }
-
-    /**
-     * Check if all related valid values are TRUE
-     *
-     * @param elementDefinitionCode Element Definition Code
-     * @param index Element value index
-     * @return The requested valid value
-     * @deprecated in favor of {@link ProcessUtils}
-     */
-    @Deprecated
-    public Boolean getElementValueValidAt(String elementDefinitionCode, int index) {
-        return ProcessUtils.getElementValueValidAt(this, elementDefinitionCode, index);
-    }
-
-    /**
-     * Set valid to all values
-     *
-     * @param elementDefinitionCode Element Definition Code
-     * @param valid Valid value
-     * @return the object itself
-     * @deprecated in favor of {@link ProcessUtils}
-     */
-    @Deprecated
-    public Process setElementValueValid(String elementDefinitionCode, Boolean valid) {
-        ProcessUtils.setElementValueValid(this, elementDefinitionCode, valid);
-
-        return this;
-    }
-
-    /**
-     * Set valid to the selected value
-     *
-     * @param elementDefinitionCode Element Definition Code
-     * @param valid Valid value
-     * @param index Element value index
-     * @return the object itself
-     * @deprecated in favor of {@link ProcessUtils}
-     */
-    @Deprecated
-    public Process setElementValueValidAt(String elementDefinitionCode, Boolean valid, int index) {
-        ProcessUtils.setElementValueValidAt(this, elementDefinitionCode, valid, index);
-
-        return this;
-    }
-
-    /**
-     * Set an element value
-     *
-     * @param elementDefinitionCode Element Definition Code
-     * @param elementValue Element value, if the value is null all current values are removed
-     * @return the object itself
-     * @deprecated in favor of {@link ProcessUtils}
-     */
-    @Deprecated
-    public Process setElementValueAsString(String elementDefinitionCode, String elementValue) {
-        ProcessUtils.setElementValueAsString(this, elementDefinitionCode, elementValue);
-
-        return this;
-    }
-
-    /**
-     * Set all element values passed, previews values will be removed
-     *
-     * @param elementDefinitionCode Element Definition Code
-     * @param elementValues Element values, if the values are null all current values are removed
-     * @return the object itself
-     * @deprecated in favor of {@link ProcessUtils}
-     */
-    @Deprecated
-    public Process setElementValueAsStringList(String elementDefinitionCode, List<String> elementValues) {
-        ProcessUtils.setElementValueAsStringList(this, elementDefinitionCode, elementValues);
-
-        return this;
-    }
-
-    /**
-     * Add a new element value
-     *
-     * @param elementDefinitionCode Element Definition Code
-     * @param elementValue Element value, if the values is null the value is not added
-     * @return the object itself
-     * @deprecated in favor of {@link ProcessUtils}
-     */
-    @Deprecated
-    public Process addElementValueAsString(String elementDefinitionCode, String elementValue) {
-        ProcessUtils.addElementValueAsString(this, elementDefinitionCode, elementValue);
-
-        return this;
-    }
-
-    /**
-     * Add all element values passed
-     *
-     * @param elementDefinitionCode Element Definition Code
-     * @param elementValues Element values
-     * @return the object itself
-     * @deprecated in favor of {@link ProcessUtils}
-     */
-    @Deprecated
-    public Process addElementValueAsStringList(String elementDefinitionCode, List<String> elementValues) {
-        ProcessUtils.addElementValueAsStringList(this, elementDefinitionCode, elementValues);
-
-        return this;
-    }
-
-    /**
-     * Get an element as String
-     *
-     * @param elementDefinitionCode Element Definition Code
-     * @return the element value.
-     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     * doesn't exist
-     * @deprecated in favor of {@link ProcessUtils}
-     */
-    @Deprecated
-    public String getElementValueAsString(String elementDefinitionCode) {
-        return ProcessUtils.getElementValueAsString(this, elementDefinitionCode);
-    }
-
-    /**
-     * Get all elements as String
-     *
-     * @param elementDefinitionCode Element Definition Code
-     * @return the elements values.
-     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     * doesn't exist
-     * @deprecated in favor of {@link ProcessUtils}
-     */
-    @Deprecated
-    public List<String> getElementValueAsStringList(String elementDefinitionCode) {
-        return ProcessUtils.getElementValueAsStringList(this, elementDefinitionCode);
-    }
-
-    /**
-     * Try to get an element as String
-     *
-     * @param elementDefinitionCode Element Definition Code
-     * @return the element value if exists.
-     * @deprecated in favor of {@link ProcessUtils}
-     */
-    @Deprecated
-    public Optional<String> findElementValueAsString(String elementDefinitionCode) {
-        return ProcessUtils.findElementValueAsString(this, elementDefinitionCode);
-    }
-
-    /**
-     * Set an element value
-     *
-     * @param elementDefinitionCode Element Definition Code
-     * @param elementValue Element value, if the value is null all current values are removed
-     * @return the object itself
-     * @deprecated in favor of {@link ProcessUtils}
-     */
-    @Deprecated
-    public Process setElementValueAsDouble(String elementDefinitionCode, Double elementValue) {
-        ProcessUtils.setElementValueAsDouble(this, elementDefinitionCode, elementValue);
-
-        return this;
-    }
-
-    /**
-     * Set all element values passed, previews values will be removed
-     *
-     * @param elementDefinitionCode Element Definition Code
-     * @param elementValues Element values, if the values are null all current values are removed
-     * @return the object itself
-     * @deprecated in favor of {@link ProcessUtils}
-     */
-    @Deprecated
-    public Process setElementValueAsDoubleList(String elementDefinitionCode, List<Double> elementValues) {
-        ProcessUtils.setElementValueAsDoubleList(this, elementDefinitionCode, elementValues);
-
-        return this;
-    }
-
-    /**
-     * Add a new element value
-     *
-     * @param elementDefinitionCode Element Definition Code
-     * @param elementValue Element value, if the values is null the value is not added
-     * @return the object itself
-     * @deprecated in favor of {@link ProcessUtils}
-     */
-    @Deprecated
-    public Process addElementValueAsDouble(String elementDefinitionCode, Double elementValue) {
-        ProcessUtils.addElementValueAsDouble(this, elementDefinitionCode, elementValue);
-
-        return this;
-    }
-
-    /**
-     * Add all element values passed
-     *
-     * @param elementDefinitionCode Element Definition Code
-     * @param elementValues Element values
-     * @return the object itself
-     * @deprecated in favor of {@link ProcessUtils}
-     */
-    @Deprecated
-    public Process addElementValueAsDoubleList(String elementDefinitionCode, List<Double> elementValues) {
-        ProcessUtils.addElementValueAsDoubleList(this, elementDefinitionCode, elementValues);
-
-        return this;
-    }
-
-    /**
-     * Get an element as Double
-     *
-     * @param elementDefinitionCode Element Definition Code
-     * @return the element value.
-     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     * doesn't exist
-     * @deprecated in favor of {@link ProcessUtils}
-     */
-    @Deprecated
-    public Double getElementValueAsDouble(String elementDefinitionCode) {
-        return ProcessUtils.getElementValueAsDouble(this, elementDefinitionCode);
-    }
-
-    /**
-     * Get all elements as Double
-     *
-     * @param elementDefinitionCode Element Definition Code
-     * @return the elements values.
-     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     * doesn't exist
-     * @deprecated in favor of {@link ProcessUtils}
-     */
-    @Deprecated
-    public List<Double> getElementValueAsDoubleList(String elementDefinitionCode) {
-        return ProcessUtils.getElementValueAsDoubleList(this, elementDefinitionCode);
-    }
-
-    /**
-     * Try to get an element as Double
-     *
-     * @param elementDefinitionCode Element Definition Code
-     * @return the element value if exists.
-     * @deprecated in favor of {@link ProcessUtils}
-     */
-    @Deprecated
-    public Optional<Double> findElementValueAsDouble(String elementDefinitionCode) {
-        return ProcessUtils.findElementValueAsDouble(this, elementDefinitionCode);
-    }
-
-    /**
-     * Set an element value
-     *
-     * @param elementDefinitionCode Element Definition Code
-     * @param elementValue Element value, if the value is null all current values are removed
-     * @return the object itself
-     * @deprecated in favor of {@link ProcessUtils}
-     */
-    @Deprecated
-    public Process setElementValueAsLocalDate(String elementDefinitionCode, LocalDate elementValue) {
-        ProcessUtils.setElementValueAsLocalDate(this, elementDefinitionCode, elementValue);
-
-        return this;
-    }
-
-    /**
-     * Set all element values passed, previews values will be removed
-     *
-     * @param elementDefinitionCode Element Definition Code
-     * @param elementValues Element values, if the values are null all current values are removed
-     * @return the object itself
-     * @deprecated in favor of {@link ProcessUtils}
-     */
-    @Deprecated
-    public Process setElementValueAsLocalDateList(String elementDefinitionCode, List<LocalDate> elementValues) {
-        ProcessUtils.setElementValueAsLocalDateList(this, elementDefinitionCode, elementValues);
-
-        return this;
-    }
-
-    /**
-     * Add a new element value
-     *
-     * @param elementDefinitionCode Element Definition Code
-     * @param elementValue Element value, if the values is null the value is not added
-     * @return the object itself
-     * @deprecated in favor of {@link ProcessUtils}
-     */
-    @Deprecated
-    public Process addElementValueAsLocalDate(String elementDefinitionCode, LocalDate elementValue) {
-        ProcessUtils.addElementValueAsLocalDate(this, elementDefinitionCode, elementValue);
-
-        return this;
-    }
-
-    /**
-     * Add all element values passed
-     *
-     * @param elementDefinitionCode Element Definition Code
-     * @param elementValues Element values
-     * @return the object itself
-     * @deprecated in favor of {@link ProcessUtils}
-     */
-    @Deprecated
-    public Process addElementValueAsLocalDateList(String elementDefinitionCode, List<LocalDate> elementValues) {
-        ProcessUtils.addElementValueAsLocalDateList(this, elementDefinitionCode, elementValues);
-
-        return this;
-    }
-
-    /**
-     * Get an element as LocalDate
-     *
-     * @param elementDefinitionCode Element Definition Code
-     * @return the element value.
-     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     * doesn't exist
-     * @deprecated in favor of {@link ProcessUtils}
-     */
-    @Deprecated
-    public LocalDate getElementValueAsLocalDate(String elementDefinitionCode) {
-        return ProcessUtils.getElementValueAsLocalDate(this, elementDefinitionCode);
-    }
-
-    /**
-     * Get all elements as LocalDate
-     *
-     * @param elementDefinitionCode Element Definition Code
-     * @return the elements values.
-     * @throws com.kuflow.rest.KuFlowRestClientException com.kuflow.rest.KuFlowRestClientException If element value
-     * doesn't exist
-     * @deprecated in favor of {@link ProcessUtils}
-     */
-    @Deprecated
-    public List<LocalDate> getElementValueAsLocalDateList(String elementDefinitionCode) {
-        return ProcessUtils.getElementValueAsLocalDateList(this, elementDefinitionCode);
-    }
-
-    /**
-     * Try to get an element as LocalDate
-     *
-     * @param elementDefinitionCode Element Definition Code
-     * @return the element value if exists.
-     * @deprecated in favor of {@link ProcessUtils}
-     */
-    @Deprecated
-    public Optional<LocalDate> findElementValueAsLocalDate(String elementDefinitionCode) {
-        return ProcessUtils.findElementValueAsLocalDate(this, elementDefinitionCode);
     }
 }

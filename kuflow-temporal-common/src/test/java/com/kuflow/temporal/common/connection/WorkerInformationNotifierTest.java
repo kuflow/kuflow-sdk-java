@@ -34,6 +34,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.kuflow.rest.KuFlowRestClient;
 import com.kuflow.rest.model.Worker;
+import com.kuflow.rest.model.WorkerCreateParams;
 import com.kuflow.rest.operation.WorkerOperations;
 import io.temporal.client.WorkflowClientOptions;
 import java.time.Duration;
@@ -60,14 +61,14 @@ public class WorkerInformationNotifierTest {
     @Test
     @DisplayName("GIVEN workerInformationNotifier WHEN is started THEN the required worker info is sent")
     public void givenWorkerInformationNotifierWhenIsStartedThenTheRequiredWorkerInfoIsSent() {
-        ArgumentCaptor<Worker> workerArgumentCaptor = ArgumentCaptor.forClass(Worker.class);
+        ArgumentCaptor<WorkerCreateParams> workerCreateParamsArgumentCaptor = ArgumentCaptor.forClass(WorkerCreateParams.class);
         ArgumentCaptor<Context> contextArgumentCaptor = ArgumentCaptor.forClass(Context.class);
 
         WorkerOperations workerOperations = mock(WorkerOperations.class);
         when(this.kuFlowRestClient.getWorkerOperations()).thenReturn(workerOperations);
-        when(workerOperations.createWorkerWithResponse(workerArgumentCaptor.capture(), contextArgumentCaptor.capture())).thenAnswer(
-            this.prepareCreateWorkerWithResponseAnswer(Duration.ofMinutes(5))
-        );
+        when(
+            workerOperations.createWorkerWithResponse(workerCreateParamsArgumentCaptor.capture(), contextArgumentCaptor.capture())
+        ).thenAnswer(this.prepareCreateWorkerWithResponseAnswer(Duration.ofMinutes(5)));
 
         WorkerInformation workerInformation = this.prepareWorkerInfo();
 
@@ -80,12 +81,12 @@ public class WorkerInformationNotifierTest {
 
         workerInformationNotifier.start();
 
-        Worker worker = workerArgumentCaptor.getValue();
-        assertThat(worker.getTaskQueue()).isEqualTo(workerInformation.getTaskQueue());
-        assertThat(worker.getWorkflowTypes()).containsExactlyElementsOf(workerInformation.getWorkflowTypes());
-        assertThat(worker.getActivityTypes()).containsExactlyElementsOf(workerInformation.getActivityTypes());
-        assertThat(worker.getHostname()).isNotBlank();
-        assertThat(worker.getIp()).isNotBlank();
+        WorkerCreateParams workerCreateParams = workerCreateParamsArgumentCaptor.getValue();
+        assertThat(workerCreateParams.getTaskQueue()).isEqualTo(workerInformation.getTaskQueue());
+        assertThat(workerCreateParams.getWorkflowTypes()).containsExactlyElementsOf(workerInformation.getWorkflowTypes());
+        assertThat(workerCreateParams.getActivityTypes()).containsExactlyElementsOf(workerInformation.getActivityTypes());
+        assertThat(workerCreateParams.getHostname()).isNotBlank();
+        assertThat(workerCreateParams.getIp()).isNotBlank();
 
         workerInformationNotifier.shutdown();
     }
@@ -93,7 +94,7 @@ public class WorkerInformationNotifierTest {
     @Test
     @DisplayName("GIVEN workerInformationNotifier WHEN is started and the delay change THEN the notification interval change too")
     public void givenWorkerInformationNotifierWhenIsStartedAndTheDelayChangeThenTheNotificationIntervalChangeToo() {
-        ArgumentCaptor<Worker> workerArgumentCaptor = ArgumentCaptor.forClass(Worker.class);
+        ArgumentCaptor<WorkerCreateParams> workerCreateParamsArgumentCaptor = ArgumentCaptor.forClass(WorkerCreateParams.class);
         ArgumentCaptor<Context> contextArgumentCaptor = ArgumentCaptor.forClass(Context.class);
 
         Duration firstDelayWindow = Duration.ofSeconds(1);
@@ -101,7 +102,7 @@ public class WorkerInformationNotifierTest {
 
         WorkerOperations workerOperations = mock(WorkerOperations.class);
         when(this.kuFlowRestClient.getWorkerOperations()).thenReturn(workerOperations);
-        when(workerOperations.createWorkerWithResponse(workerArgumentCaptor.capture(), contextArgumentCaptor.capture()))
+        when(workerOperations.createWorkerWithResponse(workerCreateParamsArgumentCaptor.capture(), contextArgumentCaptor.capture()))
             .then(this.prepareCreateWorkerWithResponseAnswer(firstDelayWindow))
             .then(this.prepareCreateWorkerWithResponseAnswer(restDelayWindow))
             .then(this.prepareCreateWorkerWithResponseAnswer(restDelayWindow))
@@ -120,17 +121,17 @@ public class WorkerInformationNotifierTest {
 
         // First invocation
         long firstInvocation = System.currentTimeMillis();
-        assertThat(workerArgumentCaptor.getAllValues()).hasSize(1);
+        assertThat(workerCreateParamsArgumentCaptor.getAllValues()).hasSize(1);
 
         // After X Seconds we get the next
-        await().pollDelay(firstDelayWindow).atMost(1, MINUTES).until(() -> workerArgumentCaptor.getAllValues().size() == 2);
+        await().pollDelay(firstDelayWindow).atMost(1, MINUTES).until(() -> workerCreateParamsArgumentCaptor.getAllValues().size() == 2);
         long secondInvocation = System.currentTimeMillis();
-        assertThat(workerArgumentCaptor.getAllValues()).hasSize(2);
+        assertThat(workerCreateParamsArgumentCaptor.getAllValues()).hasSize(2);
 
         // After Y Seconds we get the next
-        await().pollDelay(restDelayWindow).atMost(1, MINUTES).until(() -> workerArgumentCaptor.getAllValues().size() == 3); // 5 Seconds
+        await().pollDelay(restDelayWindow).atMost(1, MINUTES).until(() -> workerCreateParamsArgumentCaptor.getAllValues().size() == 3); // 5 Seconds
         long thirdInvocation = System.currentTimeMillis();
-        assertThat(workerArgumentCaptor.getAllValues()).hasSize(3);
+        assertThat(workerCreateParamsArgumentCaptor.getAllValues()).hasSize(3);
 
         workerInformationNotifier.shutdown();
 
@@ -141,14 +142,14 @@ public class WorkerInformationNotifierTest {
     @Test
     @DisplayName("GIVEN workerInformationNotifier WHEN is started and then fails THEN a backoff process is started")
     public void givenWorkerInformationNotifierWhenIsStartedAndThenFailsThenABackoffProcessIsStarted() {
-        ArgumentCaptor<Worker> workerArgumentCaptor = ArgumentCaptor.forClass(Worker.class);
+        ArgumentCaptor<WorkerCreateParams> workerCreateParamsArgumentCaptor = ArgumentCaptor.forClass(WorkerCreateParams.class);
         ArgumentCaptor<Context> contextArgumentCaptor = ArgumentCaptor.forClass(Context.class);
 
         Duration delayWindow = Duration.ofSeconds(5);
 
         WorkerOperations workerOperations = mock(WorkerOperations.class);
         when(this.kuFlowRestClient.getWorkerOperations()).thenReturn(workerOperations);
-        when(workerOperations.createWorkerWithResponse(workerArgumentCaptor.capture(), contextArgumentCaptor.capture()))
+        when(workerOperations.createWorkerWithResponse(workerCreateParamsArgumentCaptor.capture(), contextArgumentCaptor.capture()))
             .then(this.prepareCreateWorkerWithResponseAnswer(delayWindow))
             .thenThrow(RuntimeException.class)
             .thenThrow(RuntimeException.class)
@@ -167,17 +168,17 @@ public class WorkerInformationNotifierTest {
 
         // First invocation
         long firstInvocation = System.currentTimeMillis();
-        assertThat(workerArgumentCaptor.getAllValues()).hasSize(1);
+        assertThat(workerCreateParamsArgumentCaptor.getAllValues()).hasSize(1);
 
         // After X Seconds we get the next
-        await().atMost(1, MINUTES).until(() -> workerArgumentCaptor.getAllValues().size() == 2);
+        await().atMost(1, MINUTES).until(() -> workerCreateParamsArgumentCaptor.getAllValues().size() == 2);
         long secondInvocation = System.currentTimeMillis();
 
         // After Y Seconds we get the next
-        await().atMost(1, MINUTES).until(() -> workerArgumentCaptor.getAllValues().size() == 3);
+        await().atMost(1, MINUTES).until(() -> workerCreateParamsArgumentCaptor.getAllValues().size() == 3);
         long thirdInvocation = System.currentTimeMillis();
 
-        await().atMost(1, MINUTES).until(() -> workerArgumentCaptor.getAllValues().size() == 4);
+        await().atMost(1, MINUTES).until(() -> workerCreateParamsArgumentCaptor.getAllValues().size() == 4);
         long fourthInvocation = System.currentTimeMillis();
 
         workerInformationNotifier.shutdown();
@@ -189,7 +190,7 @@ public class WorkerInformationNotifierTest {
 
     private Answer<Object> prepareCreateWorkerWithResponseAnswer(Duration delay) {
         return answer -> {
-            Worker worker = answer.getArgument(0);
+            WorkerCreateParams worker = answer.getArgument(0);
 
             Worker workerResponse = new Worker();
             workerResponse.setId(UUID.randomUUID());

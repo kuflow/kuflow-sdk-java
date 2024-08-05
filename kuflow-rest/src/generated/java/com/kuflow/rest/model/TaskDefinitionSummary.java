@@ -32,7 +32,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * In creation task, one of 'id, version or code' is mandatory.
+ * The TaskDefinitionSummary model.
  */
 @Fluent
 public final class TaskDefinitionSummary implements JsonSerializable<TaskDefinitionSummary> {
@@ -161,6 +161,7 @@ public final class TaskDefinitionSummary implements JsonSerializable<TaskDefinit
      * @param jsonReader The JsonReader being read.
      * @return An instance of TaskDefinitionSummary if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TaskDefinitionSummary.
      */
     public static TaskDefinitionSummary fromJson(JsonReader jsonReader) throws IOException {

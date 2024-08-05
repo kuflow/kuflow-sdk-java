@@ -27,7 +27,7 @@ java: true
 title: KuFlow
 override-client-name: KuFlowClient
 
-input-file: https://raw.githubusercontent.com/kuflow/kuflow-openapi/6fc81d3359a008a63ac60c413ba208f0b1a56a6a/specs/api.kuflow.com/v2022-10-08/openapi.yaml
+input-file: https://raw.githubusercontent.com/kuflow/kuflow-openapi/acdcea4234500b8dcb7118b3ce0ba334e9a94d35/specs/api.kuflow.com/v2024-06-14/openapi.yaml
 output-folder: ../target/openapi-generated
 
 openapi-type: data-plane
@@ -41,11 +41,9 @@ enable-sync-stack: true
 required-parameter-client-methods: true
 pass-discriminator-to-child-deserialization: false
 models-subpackage: model
-# See: https://github.com/Azure/autorest.java/tree/main/customization-base
-customization-class: src/main/java/KuFlowClientCustomization.java
 
 use-extension:
-  "@autorest/java": "4.1.28"
+  "@autorest/java": "4.1.35"
 
 modelerfour:
   seal-single-value-enum-by-default: false

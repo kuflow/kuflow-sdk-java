@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -52,20 +53,6 @@ public final class Authentication extends AbstractAudited {
      * Tenant id. This attribute is required when an OAuth2 authentication is used.
      */
     private UUID tenantId;
-
-    /*
-     * Engine authentication token.
-     *
-     * @deprecated use engineToken.token
-     */
-    private String token;
-
-    /*
-     * Engine authentication token expiration.
-     *
-     * @deprecated use engineToken.expiredAt
-     */
-    private OffsetDateTime expiredAt;
 
     /*
      * The engineToken property.
@@ -143,54 +130,6 @@ public final class Authentication extends AbstractAudited {
     }
 
     /**
-     * Get the token property: Engine authentication token.
-     *
-     * @deprecated use engineToken.token.
-     *
-     * @return the token value.
-     */
-    public String getToken() {
-        return this.token;
-    }
-
-    /**
-     * Set the token property: Engine authentication token.
-     *
-     * @deprecated use engineToken.token.
-     *
-     * @param token the token value to set.
-     * @return the Authentication object itself.
-     */
-    public Authentication setToken(String token) {
-        this.token = token;
-        return this;
-    }
-
-    /**
-     * Get the expiredAt property: Engine authentication token expiration.
-     *
-     * @deprecated use engineToken.expiredAt.
-     *
-     * @return the expiredAt value.
-     */
-    public OffsetDateTime getExpiredAt() {
-        return this.expiredAt;
-    }
-
-    /**
-     * Set the expiredAt property: Engine authentication token expiration.
-     *
-     * @deprecated use engineToken.expiredAt.
-     *
-     * @param expiredAt the expiredAt value to set.
-     * @return the Authentication object itself.
-     */
-    public Authentication setExpiredAt(OffsetDateTime expiredAt) {
-        this.expiredAt = expiredAt;
-        return this;
-    }
-
-    /**
      * Get the engineToken property: The engineToken property.
      *
      * @return the engineToken value.
@@ -227,15 +166,6 @@ public final class Authentication extends AbstractAudited {
      */
     public Authentication setEngineCertificate(AuthenticationEngineCertificate engineCertificate) {
         this.engineCertificate = engineCertificate;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Authentication setObjectType(AuditedObjectType objectType) {
-        super.setObjectType(objectType);
         return this;
     }
 
@@ -281,7 +211,6 @@ public final class Authentication extends AbstractAudited {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("objectType", getObjectType() == null ? null : getObjectType().toString());
         jsonWriter.writeStringField("createdBy", Objects.toString(getCreatedBy(), null));
         jsonWriter.writeStringField(
             "createdAt",
@@ -295,11 +224,6 @@ public final class Authentication extends AbstractAudited {
         jsonWriter.writeStringField("id", Objects.toString(this.id, null));
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
-        jsonWriter.writeStringField("token", this.token);
-        jsonWriter.writeStringField(
-            "expiredAt",
-            this.expiredAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiredAt)
-        );
         jsonWriter.writeJsonField("engineToken", this.engineToken);
         jsonWriter.writeJsonField("engineCertificate", this.engineCertificate);
         return jsonWriter.writeEndObject();
@@ -320,15 +244,13 @@ public final class Authentication extends AbstractAudited {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("objectType".equals(fieldName)) {
-                    deserializedAuthentication.setObjectType(AuditedObjectType.fromString(reader.getString()));
-                } else if ("createdBy".equals(fieldName)) {
+                if ("createdBy".equals(fieldName)) {
                     deserializedAuthentication.setCreatedBy(
                         reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()))
                     );
                 } else if ("createdAt".equals(fieldName)) {
                     deserializedAuthentication.setCreatedAt(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()))
+                        reader.getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()))
                     );
                 } else if ("lastModifiedBy".equals(fieldName)) {
                     deserializedAuthentication.setLastModifiedBy(
@@ -336,7 +258,7 @@ public final class Authentication extends AbstractAudited {
                     );
                 } else if ("lastModifiedAt".equals(fieldName)) {
                     deserializedAuthentication.setLastModifiedAt(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()))
+                        reader.getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()))
                     );
                 } else if ("id".equals(fieldName)) {
                     deserializedAuthentication.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
@@ -344,12 +266,6 @@ public final class Authentication extends AbstractAudited {
                     deserializedAuthentication.type = AuthenticationType.fromString(reader.getString());
                 } else if ("tenantId".equals(fieldName)) {
                     deserializedAuthentication.tenantId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
-                } else if ("token".equals(fieldName)) {
-                    deserializedAuthentication.token = reader.getString();
-                } else if ("expiredAt".equals(fieldName)) {
-                    deserializedAuthentication.expiredAt = reader.getNullable(
-                        nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())
-                    );
                 } else if ("engineToken".equals(fieldName)) {
                     deserializedAuthentication.engineToken = AuthenticationEngineToken.fromJson(reader);
                 } else if ("engineCertificate".equals(fieldName)) {

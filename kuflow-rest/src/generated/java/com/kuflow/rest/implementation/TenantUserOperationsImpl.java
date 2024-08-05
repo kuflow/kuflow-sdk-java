@@ -161,33 +161,7 @@ public final class TenantUserOperationsImpl {
         List<String> email,
         List<UUID> tenantId
     ) {
-        final String accept = "application/json";
-        List<String> sortConverted = (sort == null)
-            ? new ArrayList<>()
-            : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> groupIdConverted = (groupId == null)
-            ? new ArrayList<>()
-            : groupId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> emailConverted = (email == null)
-            ? new ArrayList<>()
-            : email.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> tenantIdConverted = (tenantId == null)
-            ? new ArrayList<>()
-            : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        return FluxUtil.withContext(
-            context ->
-                service.findTenantUsers(
-                    this.client.getHost(),
-                    size,
-                    page,
-                    sortConverted,
-                    groupIdConverted,
-                    emailConverted,
-                    tenantIdConverted,
-                    accept,
-                    context
-                )
-        );
+        return FluxUtil.withContext(context -> findTenantUsersWithResponseAsync(size, page, sort, groupId, email, tenantId, context));
     }
 
     /**
@@ -475,8 +449,7 @@ public final class TenantUserOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TenantUser>> retrieveTenantUserWithResponseAsync(UUID id) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.retrieveTenantUser(this.client.getHost(), id, accept, context));
+        return FluxUtil.withContext(context -> retrieveTenantUserWithResponseAsync(id, context));
     }
 
     /**

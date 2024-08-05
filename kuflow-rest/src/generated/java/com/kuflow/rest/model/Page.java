@@ -36,11 +36,6 @@ import java.io.IOException;
 public class Page implements JsonSerializable<Page> {
 
     /*
-     * Paged Model types.
-     */
-    private PagedObjectType objectType;
-
-    /*
      * The metadata property.
      */
     private PageMetadata metadata;
@@ -49,26 +44,6 @@ public class Page implements JsonSerializable<Page> {
      * Creates an instance of Page class.
      */
     public Page() {}
-
-    /**
-     * Get the objectType property: Paged Model types.
-     *
-     * @return the objectType value.
-     */
-    public PagedObjectType getObjectType() {
-        return this.objectType;
-    }
-
-    /**
-     * Set the objectType property: Paged Model types.
-     *
-     * @param objectType the objectType value to set.
-     * @return the Page object itself.
-     */
-    public Page setObjectType(PagedObjectType objectType) {
-        this.objectType = objectType;
-        return this;
-    }
 
     /**
      * Get the metadata property: The metadata property.
@@ -97,7 +72,6 @@ public class Page implements JsonSerializable<Page> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("metadata", this.metadata);
-        jsonWriter.writeStringField("objectType", this.objectType == null ? null : this.objectType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -119,8 +93,6 @@ public class Page implements JsonSerializable<Page> {
 
                 if ("metadata".equals(fieldName)) {
                     deserializedPage.metadata = PageMetadata.fromJson(reader);
-                } else if ("objectType".equals(fieldName)) {
-                    deserializedPage.objectType = PagedObjectType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

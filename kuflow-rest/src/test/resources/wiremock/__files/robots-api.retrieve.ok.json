@@ -1,10 +1,9 @@
 {
-  "objectType": "ROBOT",
   "id": "80d8c9a1-e3d2-4c35-a0a9-77ec21d28950",
   "code": "CODE",
   "name": "NAME",
   "description": "DESCRIPTION",
-  "sourceType": "ROBOT_FRAMEWORK_PYTHON_WHEEL",
+  "sourceType": "PACKAGE",
   "environmentVariables": {
     "env1": "value1",
     "env2": "value2"

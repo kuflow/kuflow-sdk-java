@@ -38,7 +38,7 @@ public final class TenantUserPage extends Page {
     /*
      * The content property.
      */
-    private List<TenantUser> content;
+    private List<TenantUserPageItem> content;
 
     /**
      * Creates an instance of TenantUserPage class.
@@ -50,7 +50,7 @@ public final class TenantUserPage extends Page {
      *
      * @return the content value.
      */
-    public List<TenantUser> getContent() {
+    public List<TenantUserPageItem> getContent() {
         return this.content;
     }
 
@@ -60,17 +60,8 @@ public final class TenantUserPage extends Page {
      * @param content the content value to set.
      * @return the TenantUserPage object itself.
      */
-    public TenantUserPage setContent(List<TenantUser> content) {
+    public TenantUserPage setContent(List<TenantUserPageItem> content) {
         this.content = content;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public TenantUserPage setObjectType(PagedObjectType objectType) {
-        super.setObjectType(objectType);
         return this;
     }
 
@@ -90,7 +81,6 @@ public final class TenantUserPage extends Page {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("metadata", getMetadata());
-        jsonWriter.writeStringField("objectType", getObjectType() == null ? null : getObjectType().toString());
         jsonWriter.writeArrayField("content", this.content, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -113,10 +103,8 @@ public final class TenantUserPage extends Page {
 
                 if ("metadata".equals(fieldName)) {
                     deserializedTenantUserPage.setMetadata(PageMetadata.fromJson(reader));
-                } else if ("objectType".equals(fieldName)) {
-                    deserializedTenantUserPage.setObjectType(PagedObjectType.fromString(reader.getString()));
                 } else if ("content".equals(fieldName)) {
-                    List<TenantUser> content = reader.readArray(reader1 -> TenantUser.fromJson(reader1));
+                    List<TenantUserPageItem> content = reader.readArray(reader1 -> TenantUserPageItem.fromJson(reader1));
                     deserializedTenantUserPage.content = content;
                 } else {
                     reader.skipChildren();

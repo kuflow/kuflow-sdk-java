@@ -22,26 +22,14 @@
  */
 package com.kuflow.temporal.activity.s3;
 
-import com.kuflow.temporal.activity.s3.model.CopyTaskElementFilesRequest;
-import com.kuflow.temporal.activity.s3.model.CopyTaskElementFilesResponse;
-import com.kuflow.temporal.activity.s3.model.CopyTaskJsonFormsFilesRequest;
-import com.kuflow.temporal.activity.s3.model.CopyTaskJsonFormsFilesResponse;
+import com.kuflow.temporal.activity.s3.model.ProcessItemTaskDataDocumentsCopyRequest;
+import com.kuflow.temporal.activity.s3.model.ProcessItemTaskDataDocumentsCopyResponse;
 import io.temporal.activity.ActivityInterface;
 import io.temporal.activity.ActivityMethod;
 import javax.annotation.Nonnull;
 
 @ActivityInterface(namePrefix = "KuFlow_S3_")
 public interface S3Activities {
-    /**
-     * Copy task element files into the target S3.
-     *
-     * @param request must not be {@literal null}.
-     * @return the file copied
-     */
-    @ActivityMethod
-    @Nonnull
-    CopyTaskElementFilesResponse copyTaskElementFiles(@Nonnull CopyTaskElementFilesRequest request);
-
     /**
      * Copy task JSON Forms files into the target S3.
      *
@@ -50,5 +38,5 @@ public interface S3Activities {
      */
     @ActivityMethod
     @Nonnull
-    CopyTaskJsonFormsFilesResponse copyTaskJsonFormsFiles(@Nonnull CopyTaskJsonFormsFilesRequest request);
+    ProcessItemTaskDataDocumentsCopyResponse copyProcessItemTaskDataDocuments(@Nonnull ProcessItemTaskDataDocumentsCopyRequest request);
 }

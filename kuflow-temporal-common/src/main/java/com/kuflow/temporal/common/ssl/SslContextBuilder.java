@@ -56,14 +56,6 @@ public final class SslContextBuilder {
         return new SslContextBuilder();
     }
 
-    /**
-     * @deprecated user {@link #withCaFile}
-     */
-    @Deprecated
-    public SslContextBuilder withCa(String ca) {
-        return this.withCaFile(ca);
-    }
-
     public SslContextBuilder withCaFile(String caFile) {
         this.caFile = caFile;
         return this;
@@ -74,14 +66,6 @@ public final class SslContextBuilder {
         return this;
     }
 
-    /**
-     * @deprecated user {@link #withCertFile}
-     */
-    @Deprecated
-    public SslContextBuilder withCert(String cert) {
-        return this.withCertFile(cert);
-    }
-
     public SslContextBuilder withCertFile(String certFile) {
         this.certFile = certFile;
         return this;
@@ -90,14 +74,6 @@ public final class SslContextBuilder {
     public SslContextBuilder withCertData(String certData) {
         this.certData = certData;
         return this;
-    }
-
-    /**
-     * @deprecated user {@link #withKeyFile}
-     */
-    @Deprecated
-    public SslContextBuilder withKey(String key) {
-        return this.withKeyFile(key);
     }
 
     public SslContextBuilder withKeyFile(String key) {

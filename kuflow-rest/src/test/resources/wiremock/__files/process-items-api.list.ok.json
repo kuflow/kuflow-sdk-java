@@ -1,0 +1,27 @@
+{
+  "metadata": {
+    "size": 25,
+    "page": 0,
+    "totalElements": 2,
+    "totalPages": 1
+  },
+  "content": [{
+    "id": "e2d0fdf9-0aae-4eed-9e07-8e4b76df733c",
+    "state": "CLAIMED",
+    "taskDefinition": {
+      "id": "5279a366-2401-4c3e-8eb6-2d2c71d74f0e",
+      "version": "022311ae-ce15-460c-90ba-0469c61f959b",
+      "code": "TASK_001",
+      "name": "Task 001 Definition"
+    }
+  }, {
+    "id": "0d7eb24e-f574-40a3-9a17-6b984e97e04a",
+    "state": "READY",
+    "taskDefinition": {
+      "id": "e19a9ba4-8bfb-4fab-ab2e-d7724c913103",
+      "version": "6b5ff49b-1c07-4d13-b7a3-a2cb786c3b0e",
+      "code": "TASK_002",
+      "name": "Task 002 Definition"
+    }
+  }]
+}

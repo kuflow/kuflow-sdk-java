@@ -162,30 +162,7 @@ public final class PrincipalOperationsImpl {
         List<UUID> groupId,
         List<UUID> tenantId
     ) {
-        final String accept = "application/json";
-        List<String> sortConverted = (sort == null)
-            ? new ArrayList<>()
-            : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> groupIdConverted = (groupId == null)
-            ? new ArrayList<>()
-            : groupId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> tenantIdConverted = (tenantId == null)
-            ? new ArrayList<>()
-            : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        return FluxUtil.withContext(
-            context ->
-                service.findPrincipals(
-                    this.client.getHost(),
-                    size,
-                    page,
-                    sortConverted,
-                    type,
-                    groupIdConverted,
-                    tenantIdConverted,
-                    accept,
-                    context
-                )
-        );
+        return FluxUtil.withContext(context -> findPrincipalsWithResponseAsync(size, page, sort, type, groupId, tenantId, context));
     }
 
     /**
@@ -463,8 +440,7 @@ public final class PrincipalOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Principal>> retrievePrincipalWithResponseAsync(UUID id) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.retrievePrincipal(this.client.getHost(), id, accept, context));
+        return FluxUtil.withContext(context -> retrievePrincipalWithResponseAsync(id, context));
     }
 
     /**

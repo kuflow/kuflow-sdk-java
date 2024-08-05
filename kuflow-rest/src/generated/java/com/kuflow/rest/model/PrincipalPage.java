@@ -38,7 +38,7 @@ public final class PrincipalPage extends Page {
     /*
      * The content property.
      */
-    private List<Principal> content;
+    private List<PrincipalPageItem> content;
 
     /**
      * Creates an instance of PrincipalPage class.
@@ -50,7 +50,7 @@ public final class PrincipalPage extends Page {
      *
      * @return the content value.
      */
-    public List<Principal> getContent() {
+    public List<PrincipalPageItem> getContent() {
         return this.content;
     }
 
@@ -60,17 +60,8 @@ public final class PrincipalPage extends Page {
      * @param content the content value to set.
      * @return the PrincipalPage object itself.
      */
-    public PrincipalPage setContent(List<Principal> content) {
+    public PrincipalPage setContent(List<PrincipalPageItem> content) {
         this.content = content;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PrincipalPage setObjectType(PagedObjectType objectType) {
-        super.setObjectType(objectType);
         return this;
     }
 
@@ -90,7 +81,6 @@ public final class PrincipalPage extends Page {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("metadata", getMetadata());
-        jsonWriter.writeStringField("objectType", getObjectType() == null ? null : getObjectType().toString());
         jsonWriter.writeArrayField("content", this.content, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -113,10 +103,8 @@ public final class PrincipalPage extends Page {
 
                 if ("metadata".equals(fieldName)) {
                     deserializedPrincipalPage.setMetadata(PageMetadata.fromJson(reader));
-                } else if ("objectType".equals(fieldName)) {
-                    deserializedPrincipalPage.setObjectType(PagedObjectType.fromString(reader.getString()));
                 } else if ("content".equals(fieldName)) {
-                    List<Principal> content = reader.readArray(reader1 -> Principal.fromJson(reader1));
+                    List<PrincipalPageItem> content = reader.readArray(reader1 -> PrincipalPageItem.fromJson(reader1));
                     deserializedPrincipalPage.content = content;
                 } else {
                     reader.skipChildren();

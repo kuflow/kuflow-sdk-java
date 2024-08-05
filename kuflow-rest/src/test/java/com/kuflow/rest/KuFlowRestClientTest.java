@@ -26,13 +26,17 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.BinaryData;
 import com.kuflow.rest.model.Document;
+import com.kuflow.rest.model.DocumentReference;
+import com.kuflow.rest.model.JsonValue;
 import com.kuflow.rest.model.Process;
-import com.kuflow.rest.model.ProcessDefinitionSummary;
-import com.kuflow.rest.model.Task;
-import com.kuflow.rest.model.TaskDefinitionSummary;
-import com.kuflow.rest.model.TaskSaveElementCommand;
-import com.kuflow.rest.model.TaskSaveElementValueDocumentCommand;
-import com.kuflow.rest.util.TaskSaveElementCommandUtils;
+import com.kuflow.rest.model.ProcessCreateParams;
+import com.kuflow.rest.model.ProcessItem;
+import com.kuflow.rest.model.ProcessItemCreateParams;
+import com.kuflow.rest.model.ProcessItemTaskCreateParams;
+import com.kuflow.rest.model.ProcessItemTaskDataDocumentUploadParams;
+import com.kuflow.rest.model.ProcessItemTaskDataUpdateParams;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -51,113 +55,37 @@ public class KuFlowRestClientTest {
             .httpLogOptions(logOptions)
             .buildClient();
 
-        Process process = new Process()
+        ProcessCreateParams params = new ProcessCreateParams()
             .setId(UUID.fromString("cf9b199e-18b7-489a-811a-0132edef21b3"))
-            .setProcessDefinition(new ProcessDefinitionSummary().setId(UUID.fromString("be35212b-deb8-4719-a10d-b8550219d156")));
-        Process processCreated = kuFlowRestClient.getProcessOperations().createProcess(process);
+            .setProcessDefinitionId(UUID.fromString("01911390-4cda-7d06-9746-66152148bc8b"));
+        Process process = kuFlowRestClient.getProcessOperations().createProcess(params);
 
-        System.out.println(processCreated);
+        System.out.println(process);
 
-        Task task = new Task()
-            .setId(UUID.fromString("a81b7d61-9619-4e1c-b2f4-e0e7de03d310"))
-            .setProcessId(processCreated.getId())
-            .setTaskDefinition(new TaskDefinitionSummary().setCode("TASK_0001"));
+        ProcessItemTaskCreateParams processItemTaskCreateParams = new ProcessItemTaskCreateParams().setTaskDefinitionCode("TASK_0001");
 
-        Task taskCreated = kuFlowRestClient.getTaskOperations().createTask(task);
+        ProcessItemCreateParams processItemCreateParams = new ProcessItemCreateParams()
+            .setId(UUID.fromString("01911390-9435-7c2d-a566-ff2907bf4253"))
+            .setProcessId(process.getId())
+            .setTask(processItemTaskCreateParams);
 
-        System.out.println(taskCreated);
+        ProcessItem processItem = kuFlowRestClient.getProcessItemOperations().createProcessItem(processItemCreateParams);
 
-        //        kuFlowRestClient.getTaskOperations().actionsTaskClaim(taskCreated.getId());
+        System.out.println(processItem);
 
-        TaskSaveElementCommand command2 = new TaskSaveElementCommand().setElementDefinitionCode("TEXT_002");
-
-        TaskSaveElementCommandUtils.addElementValueAsString(command2, "Valor del bueno uno");
-        TaskSaveElementCommandUtils.addElementValueAsString(command2, "Valor del bueno dos");
-        kuFlowRestClient.getTaskOperations().actionsTaskSaveElement(taskCreated.getId(), command2);
-
-        //        TaskSaveElementCommand command3 = new TaskSaveElementCommand()
-        //            .setElementDefinitionCode("NUMBER_001")
-        //            .setValues(
-        //                List.of(
-        //                    new TaskElementValueNumber().setValue(50.0)
-        //                )
-        //            );
-        //        kuFlowRestClient.getTaskOperations().actionsTaskSaveElement(taskCreated.getId(), command3);
-
-        TaskSaveElementValueDocumentCommand command4 = new TaskSaveElementValueDocumentCommand().setElementDefinitionCode("DOC_001");
+        ProcessItemTaskDataDocumentUploadParams uploadParams = new ProcessItemTaskDataDocumentUploadParams().setSchemaPath("DOC_001");
 
         BinaryData file = BinaryData.fromStream(this.getClass().getResourceAsStream("kuflow.png"));
         Document document = new Document().setFileContent(file).setFileName("kuflow.png").setContentType("image/png");
-        kuFlowRestClient.getTaskOperations().actionsTaskSaveElementValueDocument(taskCreated.getId(), command4, document);
+        DocumentReference documentReference = kuFlowRestClient
+            .getProcessItemOperations()
+            .uploadProcessItemTaskDataDocument(processItem.getId(), uploadParams, document);
+
+        ProcessItemTaskDataUpdateParams updateParams = new ProcessItemTaskDataUpdateParams()
+            .setData(
+                new JsonValue().setValue(Map.of("TEXT_002", List.of("Value 1", "Value 2", "DOC_001", documentReference.getDocumentUri())))
+            );
+
+        kuFlowRestClient.getProcessItemOperations().updateProcessItemTaskData(processItem.getId(), updateParams);
     }
-    //
-    //    @Test
-    //    @DisplayName("GIVEN json request WHEN invoque a method THEN the json is sent and parsed correctly")
-    //    public void givenJsonRequestWhenInvoqueAMethodThenTheJsonIsSentAndParsedCorrectly() {
-    //        givenThat(
-    //            post("/authentications")
-    //                .withHeader("Content-Type", containing("application/json"))
-    //                .withRequestBody(matchingJsonPath("$.type", equalTo(AuthenticationTypeResource.ENGINE.getValue())))
-    //                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("authentication-api.ok.json"))
-    //        );
-    //
-    //        AuthenticationResource resource = new AuthenticationResource();
-    //        resource.setType(AuthenticationTypeResource.ENGINE);
-    //
-    //        AuthenticationResource authentication = this.kuFlowRestClient.getAuthenticationApi().createAuthentication(resource);
-    //        assertThat(authentication.getToken()).isEqualTo("DUMMY_TOKEN");
-    //        assertThat(authentication.getExpiredAt()).isEqualTo(Instant.parse("2022-03-01T08:42:48Z"));
-    //    }
-    //
-    //    @Test
-    //    @DisplayName("GIVEN a multipart request WHEN invoque a method THEN the json and the files are sent and response is parsed correctly")
-    //    public void givenAMultipartRequestWhenInvoqueAMethodThenTheJsonAndTheFilesAreSentAndResponseIsParsedCorrectly() {
-    //        givenThat(
-    //            post(urlMatching("/tasks/([a-z0-9\\-]+)/~actions/save-element-value-document"))
-    //                .withMultipartRequestBody(aMultipart().withName("json").withHeader("Content-Type", containing("application/json")))
-    //                .withMultipartRequestBody(aMultipart().withName("file").withHeader("Content-Type", containing("text/plain")))
-    //                .willReturn(ok().withBodyFile("task-api.ok.json"))
-    //        );
-    //
-    //        UUID taskId = UUID.randomUUID();
-    //        SaveElementValueDocumentCommandResource command = new SaveElementValueDocumentCommandResource();
-    //        command.setCode("DOC");
-    //        File file = this.getFile("sample.txt");
-    //
-    //        TaskResource task = this.kuFlowRestClient.getTaskApi().actionsSaveTaskElementValueDocument(taskId, command, file);
-    //        assertThat(task.getId()).isNotNull();
-    //    }
-    //
-    //    @Test
-    //    @DisplayName("GIVEN a download request WHEN invoque a method THEN a feign response is passed")
-    //    public void givenADownloadRequestWhenInvoqueAMethodThenAFeignResponseIsPassed() {
-    //        File file = this.getFile("sample.txt");
-    //
-    //        givenThat(
-    //            get(urlMatching("/tasks/([a-z0-9\\-]+)/~actions/download-element-value-document\\?.*"))
-    //                .withQueryParam("documentId", matching("[a-z0-9\\-]+"))
-    //                .willReturn(
-    //                    ok()
-    //                        .withHeader("Content-Type", "text/plain")
-    //                        .withHeader("Content-Length", String.valueOf(file.length()))
-    //                        .withBodyFile("sample.txt")
-    //                )
-    //        );
-    //
-    //        UUID taskId = UUID.randomUUID();
-    //        UUID elementId = UUID.randomUUID();
-    //
-    //        Response response = this.kuFlowRestClient.getTaskApi().actionsDownloadTaskElementValueDocument(taskId, elementId);
-    //        assertThat(response.status()).isEqualTo(200);
-    //        assertThat(response.headers().get("Content-Type").iterator().next()).isEqualTo("text/plain");
-    //        assertThat(response.body().length()).isEqualTo(12);
-    //    }
-    //
-    //    private File getFile(String file) {
-    //        try {
-    //            return new File(Objects.requireNonNull(KuFlowRestClientTest.class.getResource("/wiremock/__files/" + file)).toURI());
-    //        } catch (URISyntaxException e) {
-    //            throw new RuntimeException(e);
-    //        }
-    //    }
 }

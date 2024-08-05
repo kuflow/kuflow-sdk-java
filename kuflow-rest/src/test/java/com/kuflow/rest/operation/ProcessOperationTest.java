@@ -29,14 +29,11 @@ import static com.github.tomakehurst.wiremock.client.WireMock.ok;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.kuflow.rest.model.FindProcessesOptions;
 import com.kuflow.rest.model.Process;
+import com.kuflow.rest.model.ProcessFindOptions;
 import com.kuflow.rest.model.ProcessPage;
 import com.kuflow.rest.model.ProcessPageItem;
 import com.kuflow.rest.model.ProcessState;
-import com.kuflow.rest.util.ProcessPageItemUtils;
-import com.kuflow.rest.util.ProcessUtils;
-import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,7 +44,7 @@ public class ProcessOperationTest extends AbstractOperationTest {
     @DisplayName("GIVEN an authenticated user WHEN list processes THEN authentication header is added")
     public void givenAnAuthenticatedUserWhenListProcessesThenAuthenticationHeaderIsAdded() {
         givenThat(
-            get("/v2022-10-08/processes")
+            get("/v2024-06-14/processes")
                 .withHeader("Authorization", equalTo("Bearer Q0xJRU5UX0lEOkNMSUVOVF9TRUNSRVQ="))
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.list.ok.json"))
         );
@@ -59,7 +56,7 @@ public class ProcessOperationTest extends AbstractOperationTest {
     @DisplayName("GIVEN an authenticated user WHEN list processes THEN body is parsed correctly")
     public void givenAnAuthenticatedUserWhenListProcessesThenBodyIsParsedCorrectly() {
         givenThat(
-            get("/v2022-10-08/processes").willReturn(
+            get("/v2024-06-14/processes").willReturn(
                 ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.list.ok.json")
             )
         );
@@ -70,10 +67,8 @@ public class ProcessOperationTest extends AbstractOperationTest {
         assertThat(processes.getContent()).hasSize(2);
 
         ProcessPageItem processPageItem = processes.getContent().get(0);
-        List<String> code001Value = ProcessPageItemUtils.getElementValueAsStringList(processPageItem, "CODE_001");
-
-        assertThat(processPageItem.getElementValues()).containsOnlyKeys("CODE_001", "CODE_002");
-        assertThat(code001Value).containsOnly("Value as text 1", "Value as text 2");
+        assertThat(processPageItem.getId()).isEqualTo(UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950"));
+        assertThat(processPageItem.getState()).isEqualTo(ProcessState.RUNNING);
     }
 
     @Test
@@ -82,7 +77,7 @@ public class ProcessOperationTest extends AbstractOperationTest {
         UUID tenantId = UUID.randomUUID();
 
         givenThat(
-            get(urlPathEqualTo("/v2022-10-08/processes"))
+            get(urlPathEqualTo("/v2024-06-14/processes"))
                 .withQueryParam("size", equalTo("30"))
                 .withQueryParam("page", equalTo("2"))
                 .withQueryParam("sort", equalTo("order1"))
@@ -90,7 +85,7 @@ public class ProcessOperationTest extends AbstractOperationTest {
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.list.ok.json"))
         );
 
-        FindProcessesOptions options = new FindProcessesOptions().setSize(30).setPage(2).setSort("order1").setTenantId(tenantId);
+        ProcessFindOptions options = new ProcessFindOptions().setSize(30).setPage(2).setSort("order1").setTenantId(tenantId);
 
         this.kuFlowRestClient.getProcessOperations().findProcesses(options);
     }
@@ -102,7 +97,7 @@ public class ProcessOperationTest extends AbstractOperationTest {
         UUID tenantId2 = UUID.randomUUID();
 
         givenThat(
-            get(urlPathEqualTo("/v2022-10-08/processes"))
+            get(urlPathEqualTo("/v2024-06-14/processes"))
                 .withQueryParam("size", equalTo("30"))
                 .withQueryParam("page", equalTo("2"))
                 .withQueryParam("sort", equalTo("order1"))
@@ -112,7 +107,7 @@ public class ProcessOperationTest extends AbstractOperationTest {
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.list.ok.json"))
         );
 
-        FindProcessesOptions options = new FindProcessesOptions()
+        ProcessFindOptions options = new ProcessFindOptions()
             .setSize(30)
             .setPage(2)
             .addSort("order1")
@@ -129,7 +124,7 @@ public class ProcessOperationTest extends AbstractOperationTest {
         UUID processId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
 
         givenThat(
-            get("/v2022-10-08/processes/" + processId).willReturn(
+            get("/v2024-06-14/processes/" + processId).willReturn(
                 ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.retrieve.ok.json")
             )
         );
@@ -137,9 +132,5 @@ public class ProcessOperationTest extends AbstractOperationTest {
         Process process = this.kuFlowRestClient.getProcessOperations().retrieveProcess(processId);
 
         assertThat(process.getState()).isEqualTo(ProcessState.RUNNING);
-        assertThat(process.getElementValues()).containsOnlyKeys("CODE_001", "CODE_002");
-
-        List<String> code001Values = ProcessUtils.getElementValueAsStringList(process, "CODE_001");
-        assertThat(code001Values).containsOnly("Value as text 1", "Value as text 2");
     }
 }

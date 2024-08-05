@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -38,11 +39,6 @@ import java.util.UUID;
  */
 @Fluent
 public class AbstractAudited implements JsonSerializable<AbstractAudited> {
-
-    /*
-     * Audited object Types.
-     */
-    private AuditedObjectType objectType;
 
     /*
      * Who create this model.
@@ -68,26 +64,6 @@ public class AbstractAudited implements JsonSerializable<AbstractAudited> {
      * Creates an instance of AbstractAudited class.
      */
     public AbstractAudited() {}
-
-    /**
-     * Get the objectType property: Audited object Types.
-     *
-     * @return the objectType value.
-     */
-    public AuditedObjectType getObjectType() {
-        return this.objectType;
-    }
-
-    /**
-     * Set the objectType property: Audited object Types.
-     *
-     * @param objectType the objectType value to set.
-     * @return the AbstractAudited object itself.
-     */
-    public AbstractAudited setObjectType(AuditedObjectType objectType) {
-        this.objectType = objectType;
-        return this;
-    }
 
     /**
      * Get the createdBy property: Who create this model.
@@ -175,7 +151,6 @@ public class AbstractAudited implements JsonSerializable<AbstractAudited> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("objectType", this.objectType == null ? null : this.objectType.toString());
         jsonWriter.writeStringField("createdBy", Objects.toString(this.createdBy, null));
         jsonWriter.writeStringField(
             "createdAt",
@@ -204,13 +179,11 @@ public class AbstractAudited implements JsonSerializable<AbstractAudited> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("objectType".equals(fieldName)) {
-                    deserializedAbstractAudited.objectType = AuditedObjectType.fromString(reader.getString());
-                } else if ("createdBy".equals(fieldName)) {
+                if ("createdBy".equals(fieldName)) {
                     deserializedAbstractAudited.createdBy = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("createdAt".equals(fieldName)) {
                     deserializedAbstractAudited.createdAt = reader.getNullable(
-                        nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())
+                        nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())
                     );
                 } else if ("lastModifiedBy".equals(fieldName)) {
                     deserializedAbstractAudited.lastModifiedBy = reader.getNullable(
@@ -218,7 +191,7 @@ public class AbstractAudited implements JsonSerializable<AbstractAudited> {
                     );
                 } else if ("lastModifiedAt".equals(fieldName)) {
                     deserializedAbstractAudited.lastModifiedAt = reader.getNullable(
-                        nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())
+                        nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())
                     );
                 } else {
                     reader.skipChildren();
