@@ -163,8 +163,8 @@ public class RobotOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> actionsRobotDownloadSourceCodeWithResponse(UUID id, Context context) {
-        return this.service.actionsRobotDownloadSourceCodeWithResponse(id, context);
+    public Response<BinaryData> downloadRobotSourceCodeWithResponse(UUID id, Context context) {
+        return this.service.downloadRobotSourceCodeWithResponse(id, context);
     }
 
     /**
@@ -179,8 +179,8 @@ public class RobotOperations {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData actionsRobotDownloadSourceCode(UUID id) {
-        return this.actionsRobotDownloadSourceCodeWithResponse(id, Context.NONE).getValue();
+    public BinaryData downloadRobotSourceCodeWithResponse(UUID id) {
+        return this.downloadRobotSourceCodeWithResponse(id, Context.NONE).getValue();
     }
 
     /**
@@ -200,7 +200,7 @@ public class RobotOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> actionsRobotDownloadAssetWithResponse(
+    public Response<BinaryData> downloadRobotAssetWithResponse(
         UUID id,
         RobotAssetType type,
         String version,
@@ -208,7 +208,7 @@ public class RobotOperations {
         RobotAssetArchitecture architecture,
         Context context
     ) {
-        return this.service.actionsRobotDownloadAssetWithResponse(id, type, version, platform, architecture, context);
+        return this.service.downloadRobotAssetWithResponse(id, type, version, platform, architecture, context);
     }
 
     /**
@@ -227,13 +227,13 @@ public class RobotOperations {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData actionsRobotDownloadAsset(
+    public BinaryData downloadRobotAssetWithResponse(
         UUID id,
         RobotAssetType type,
         String version,
         RobotAssetPlatform platform,
         RobotAssetArchitecture architecture
     ) {
-        return this.actionsRobotDownloadAssetWithResponse(id, type, version, platform, architecture, Context.NONE).getValue();
+        return this.downloadRobotAssetWithResponse(id, type, version, platform, architecture, Context.NONE).getValue();
     }
 }
