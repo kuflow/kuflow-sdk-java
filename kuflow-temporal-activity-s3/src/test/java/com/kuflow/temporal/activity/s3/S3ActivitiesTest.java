@@ -40,7 +40,7 @@ import com.kuflow.rest.model.ProcessItemType;
 import com.kuflow.rest.operation.ProcessItemOperations;
 import com.kuflow.temporal.activity.s3.model.ProcessItemTaskDataDocumentsCopyRequest;
 import com.kuflow.temporal.activity.s3.model.ProcessItemTaskDataDocumentsCopyResponse;
-import com.kuflow.temporal.common.util.UUIDUtils;
+import com.kuflow.rest.util.UUIDUtils;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;

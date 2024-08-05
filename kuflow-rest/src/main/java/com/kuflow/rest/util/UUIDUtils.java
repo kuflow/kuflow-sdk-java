@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.temporal.common.util;
+package com.kuflow.rest.util;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.Optional;

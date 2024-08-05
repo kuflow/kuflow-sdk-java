@@ -22,7 +22,7 @@
  */
 package com.kuflow.temporal.common;
 
-import com.kuflow.temporal.common.util.UUIDUtils;
+import com.kuflow.rest.util.UUIDUtils;
 import io.temporal.workflow.Workflow;
 import java.util.UUID;
 
