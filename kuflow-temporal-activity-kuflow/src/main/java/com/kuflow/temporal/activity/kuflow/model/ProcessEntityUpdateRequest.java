@@ -22,7 +22,7 @@
  */
 package com.kuflow.temporal.activity.kuflow.model;
 
-import com.kuflow.rest.model.ProcessEntityUpdateParams;
+import com.kuflow.rest.model.JsonValue;
 import com.kuflow.temporal.common.model.AbstractModel;
 import java.util.UUID;
 
@@ -30,7 +30,7 @@ public class ProcessEntityUpdateRequest extends AbstractModel {
 
     private UUID processId;
 
-    private ProcessEntityUpdateParams params;
+    private JsonValue entity;
 
     public UUID getProcessId() {
         return this.processId;
@@ -40,11 +40,11 @@ public class ProcessEntityUpdateRequest extends AbstractModel {
         this.processId = processId;
     }
 
-    public ProcessEntityUpdateParams getParams() {
-        return this.params;
+    public JsonValue getEntity() {
+        return this.entity;
     }
 
-    public void setParams(ProcessEntityUpdateParams params) {
-        this.params = params;
+    public void setEntity(JsonValue entity) {
+        this.entity = entity;
     }
 }

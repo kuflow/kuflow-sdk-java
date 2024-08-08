@@ -22,7 +22,6 @@
  */
 package com.kuflow.temporal.activity.kuflow.model;
 
-import com.kuflow.rest.model.ProcessChangeInitiatorParams;
 import com.kuflow.temporal.common.model.AbstractModel;
 import java.util.UUID;
 
@@ -33,7 +32,15 @@ public class ProcessInitiatorChangeRequest extends AbstractModel {
      */
     private UUID processId;
 
-    private ProcessChangeInitiatorParams params;
+    /**
+     * The initiatorId property.
+     */
+    private UUID initiatorId;
+
+    /**
+     * The initiatorEmail property.
+     */
+    private String initiatorEmail;
 
     public UUID getProcessId() {
         return this.processId;
@@ -43,11 +50,19 @@ public class ProcessInitiatorChangeRequest extends AbstractModel {
         this.processId = processId;
     }
 
-    public ProcessChangeInitiatorParams getParams() {
-        return this.params;
+    public UUID getInitiatorId() {
+        return this.initiatorId;
     }
 
-    public void setParams(ProcessChangeInitiatorParams params) {
-        this.params = params;
+    public void setInitiatorId(UUID initiatorId) {
+        this.initiatorId = initiatorId;
+    }
+
+    public String getInitiatorEmail() {
+        return this.initiatorEmail;
+    }
+
+    public void setInitiatorEmail(String initiatorEmail) {
+        this.initiatorEmail = initiatorEmail;
     }
 }

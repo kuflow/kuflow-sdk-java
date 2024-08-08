@@ -50,7 +50,7 @@ public class AuthenticationOperations {
     /**
      * Create an authentication for the current principal.
      *
-     * @param params Authentication to be created.
+     * @param authenticationCreateParams Authentication to be created.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -58,21 +58,24 @@ public class AuthenticationOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Authentication> createAuthenticationWithResponse(AuthenticationCreateParams params, Context context) {
-        return this.service.createAuthenticationWithResponse(params, context);
+    public Response<Authentication> createAuthenticationWithResponse(
+        AuthenticationCreateParams authenticationCreateParams,
+        Context context
+    ) {
+        return this.service.createAuthenticationWithResponse(authenticationCreateParams, context);
     }
 
     /**
      * Create an authentication for the current principal.
      *
-     * @param params Authentication to be created.
+     * @param authenticationCreateParams Authentication to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Authentication createAuthentication(AuthenticationCreateParams params) {
-        return this.createAuthenticationWithResponse(params, Context.NONE).getValue();
+    public Authentication createAuthentication(AuthenticationCreateParams authenticationCreateParams) {
+        return this.createAuthenticationWithResponse(authenticationCreateParams, Context.NONE).getValue();
     }
 }

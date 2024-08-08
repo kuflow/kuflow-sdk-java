@@ -246,9 +246,9 @@ public final class ProcessItem extends AbstractAudited {
             "lastModifiedAt",
             getLastModifiedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getLastModifiedAt())
         );
+        jsonWriter.writeStringField("id", Objects.toString(this.id, null));
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("processId", Objects.toString(this.processId, null));
-        jsonWriter.writeStringField("id", Objects.toString(this.id, null));
         jsonWriter.writeStringField("ownerId", Objects.toString(this.ownerId, null));
         jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
         jsonWriter.writeJsonField("task", this.task);
@@ -285,12 +285,12 @@ public final class ProcessItem extends AbstractAudited {
                     deserializedProcessItem.setLastModifiedAt(
                         reader.getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()))
                     );
+                } else if ("id".equals(fieldName)) {
+                    deserializedProcessItem.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("type".equals(fieldName)) {
                     deserializedProcessItem.type = ProcessItemType.fromString(reader.getString());
                 } else if ("processId".equals(fieldName)) {
                     deserializedProcessItem.processId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
-                } else if ("id".equals(fieldName)) {
-                    deserializedProcessItem.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("ownerId".equals(fieldName)) {
                     deserializedProcessItem.ownerId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("tenantId".equals(fieldName)) {

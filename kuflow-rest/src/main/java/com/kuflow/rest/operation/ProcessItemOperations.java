@@ -148,7 +148,7 @@ public class ProcessItemOperations {
      * <p>
      * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
-     * @param params Process Item to be created.
+     * @param processItemCreateParams Process Item to be created.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -156,8 +156,8 @@ public class ProcessItemOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProcessItem> createProcessItemWithResponse(ProcessItemCreateParams params, Context context) {
-        return this.service.createProcessItemWithResponse(params, context);
+    public Response<ProcessItem> createProcessItemWithResponse(ProcessItemCreateParams processItemCreateParams, Context context) {
+        return this.service.createProcessItemWithResponse(processItemCreateParams, context);
     }
 
     /**
@@ -171,15 +171,15 @@ public class ProcessItemOperations {
      * <p>
      * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
-     * @param params Process Item to be created.
+     * @param processItemCreateParams Process Item to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProcessItem createProcessItem(ProcessItemCreateParams params) {
-        return this.createProcessItemWithResponse(params, Context.NONE).getValue();
+    public ProcessItem createProcessItem(ProcessItemCreateParams processItemCreateParams) {
+        return this.createProcessItemWithResponse(processItemCreateParams, Context.NONE).getValue();
     }
 
     /**
@@ -254,7 +254,7 @@ public class ProcessItemOperations {
      * Allow to assign a process item task to a user or application. Only one option will be necessary.
      *
      * @param id The resource ID.
-     * @param params Params to change the process item task owner.
+     * @param processItemTaskAssignParams Params to change the process item task owner.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -262,8 +262,12 @@ public class ProcessItemOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProcessItem> assignProcessItemTaskWithResponse(UUID id, ProcessItemTaskAssignParams params, Context context) {
-        return this.service.assignProcessItemTaskWithResponse(id, params, context);
+    public Response<ProcessItem> assignProcessItemTaskWithResponse(
+        UUID id,
+        ProcessItemTaskAssignParams processItemTaskAssignParams,
+        Context context
+    ) {
+        return this.service.assignProcessItemTaskWithResponse(id, processItemTaskAssignParams, context);
     }
 
     /**
@@ -272,15 +276,15 @@ public class ProcessItemOperations {
      * Allow to assign a process item task to a user or application. Only one option will be necessary.
      *
      * @param id The resource ID.
-     * @param params Params to change the process item task owner.
+     * @param processItemTaskAssignParams Params to change the process item task owner.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProcessItem assignProcessItemTask(UUID id, ProcessItemTaskAssignParams params) {
-        return this.assignProcessItemTaskWithResponse(id, params, Context.NONE).getValue();
+    public ProcessItem assignProcessItemTask(UUID id, ProcessItemTaskAssignParams processItemTaskAssignParams) {
+        return this.assignProcessItemTaskWithResponse(id, processItemTaskAssignParams, Context.NONE).getValue();
     }
 
     /**
@@ -322,7 +326,7 @@ public class ProcessItemOperations {
      * A log entry is added to the task. If the number of log entries is reached, the oldest log entry is removed.
      *
      * @param id The resource ID.
-     * @param params Log to be created.
+     * @param processItemTaskAppendLogParams Log to be created.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -330,8 +334,12 @@ public class ProcessItemOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProcessItem> appendProcessItemTaskLogWithResponse(UUID id, ProcessItemTaskAppendLogParams params, Context context) {
-        return this.service.appendProcessItemTaskLogWithResponse(id, params, context);
+    public Response<ProcessItem> appendProcessItemTaskLogWithResponse(
+        UUID id,
+        ProcessItemTaskAppendLogParams processItemTaskAppendLogParams,
+        Context context
+    ) {
+        return this.service.appendProcessItemTaskLogWithResponse(id, processItemTaskAppendLogParams, context);
     }
 
     /**
@@ -340,39 +348,15 @@ public class ProcessItemOperations {
      * A log entry is added to the task. If the number of log entries is reached, the oldest log entry is removed.
      *
      * @param id The resource ID.
-     * @param params Log to be created.
+     * @param processItemTaskAppendLogParams Log to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProcessItem appendProcessItemTaskLog(UUID id, ProcessItemTaskAppendLogParams params) {
-        return this.appendProcessItemTaskLogWithResponse(id, params, Context.NONE).getValue();
-    }
-
-    // *******************
-    // *******************
-    // *******************
-    // *******************
-
-    /**
-     * Save JSON data
-     * <p>
-     * Allow to save a JSON data validating that the data follow the related schema. If the data is invalid, then
-     * the json form is marked as invalid.
-     *
-     * @param id The resource ID.
-     * @param params Params used to update the JSON value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProcessItem> updateProcessItemTaskDataWithResponse(UUID id, ProcessItemTaskDataUpdateParams params, Context context) {
-        return this.service.updateProcessItemTaskDataWithResponse(id, params, context);
+    public ProcessItem appendProcessItemTaskLog(UUID id, ProcessItemTaskAppendLogParams processItemTaskAppendLogParams) {
+        return this.appendProcessItemTaskLogWithResponse(id, processItemTaskAppendLogParams, Context.NONE).getValue();
     }
 
     /**
@@ -382,25 +366,7 @@ public class ProcessItemOperations {
      * the json form is marked as invalid.
      *
      * @param id The resource ID.
-     * @param params Params used to update the JSON value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProcessItem updateProcessItemTaskData(UUID id, ProcessItemTaskDataUpdateParams params) {
-        return this.updateProcessItemTaskDataWithResponse(id, params, Context.NONE).getValue();
-    }
-
-    /**
-     * Patch JSON data
-     * <p>
-     * Allow to patch a JSON data validating that the data follow the related schema. If the data is invalid, then
-     * the json is marked as invalid.
-     *
-     * @param id The resource ID.
-     * @param params Array of JsonPatchOperation.
+     * @param processItemTaskDataUpdateParams Params used to update the JSON value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -408,8 +374,30 @@ public class ProcessItemOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProcessItem> patchProcessItemTaskDataWithResponse(UUID id, List<JsonPatchOperation> params, Context context) {
-        return this.service.patchProcessItemTaskDataWithResponse(id, params, context);
+    public Response<ProcessItem> updateProcessItemTaskDataWithResponse(
+        UUID id,
+        ProcessItemTaskDataUpdateParams processItemTaskDataUpdateParams,
+        Context context
+    ) {
+        return this.service.updateProcessItemTaskDataWithResponse(id, processItemTaskDataUpdateParams, context);
+    }
+
+    /**
+     * Save JSON data
+     * <p>
+     * Allow to save a JSON data validating that the data follow the related schema. If the data is invalid, then
+     * the json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param processItemTaskDataUpdateParams Params used to update the JSON value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProcessItem updateProcessItemTaskData(UUID id, ProcessItemTaskDataUpdateParams processItemTaskDataUpdateParams) {
+        return this.updateProcessItemTaskDataWithResponse(id, processItemTaskDataUpdateParams, Context.NONE).getValue();
     }
 
     /**
@@ -419,15 +407,34 @@ public class ProcessItemOperations {
      * the json is marked as invalid.
      *
      * @param id The resource ID.
-     * @param params Array of JsonPatchOperation.
+     * @param jsonPatch Array of JsonPatchOperation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ProcessItem> patchProcessItemTaskDataWithResponse(UUID id, List<JsonPatchOperation> jsonPatch, Context context) {
+        return this.service.patchProcessItemTaskDataWithResponse(id, jsonPatch, context);
+    }
+
+    /**
+     * Patch JSON data
+     * <p>
+     * Allow to patch a JSON data validating that the data follow the related schema. If the data is invalid, then
+     * the json is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param jsonPatch Array of JsonPatchOperation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProcessItem patchProcessItemTaskData(UUID id, List<JsonPatchOperation> params) {
-        return this.patchProcessItemTaskDataWithResponse(id, params, Context.NONE).getValue();
+    public ProcessItem patchProcessItemTaskData(UUID id, List<JsonPatchOperation> jsonPatch) {
+        return this.patchProcessItemTaskDataWithResponse(id, jsonPatch, Context.NONE).getValue();
     }
 
     /**
@@ -436,7 +443,7 @@ public class ProcessItemOperations {
      * Save a document in the task to later be linked into the JSON data.
      *
      * @param id The resource ID.
-     * @param params Params info.
+     * @param processItemTaskDataDocumentUploadParams Params info.
      * @param document Document to upload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -447,7 +454,7 @@ public class ProcessItemOperations {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentReference> uploadProcessItemTaskDataDocumentWithResponse(
         UUID id,
-        ProcessItemTaskDataDocumentUploadParams params,
+        ProcessItemTaskDataDocumentUploadParams processItemTaskDataDocumentUploadParams,
         Document document,
         Context context
     ) {
@@ -462,7 +469,7 @@ public class ProcessItemOperations {
 
         String fileContentType = document.getContentType();
         String fileName = document.getFileName();
-        String schemaPath = params.getSchemaPath();
+        String schemaPath = processItemTaskDataDocumentUploadParams.getSchemaPath();
         BinaryData file = document.getFileContent();
         long contentLength = file.getLength();
         return this.service.uploadProcessItemTaskDataDocumentWithResponse(
@@ -482,7 +489,7 @@ public class ProcessItemOperations {
      * Save a document in the task to later be linked into the JSON data.
      *
      * @param id The resource ID.
-     * @param params Params info.
+     * @param processItemTaskDataDocumentUploadParams Params info.
      * @param document Document to upload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -490,8 +497,17 @@ public class ProcessItemOperations {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentReference uploadProcessItemTaskDataDocument(UUID id, ProcessItemTaskDataDocumentUploadParams params, Document document) {
-        return this.uploadProcessItemTaskDataDocumentWithResponse(id, params, document, Context.NONE).getValue();
+    public DocumentReference uploadProcessItemTaskDataDocument(
+        UUID id,
+        ProcessItemTaskDataDocumentUploadParams processItemTaskDataDocumentUploadParams,
+        Document document
+    ) {
+        return this.uploadProcessItemTaskDataDocumentWithResponse(
+                id,
+                processItemTaskDataDocumentUploadParams,
+                document,
+                Context.NONE
+            ).getValue();
     }
 
     /**

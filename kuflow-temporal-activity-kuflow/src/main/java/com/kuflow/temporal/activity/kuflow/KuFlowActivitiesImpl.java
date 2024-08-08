@@ -43,11 +43,17 @@ import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidatio
 import com.kuflow.rest.KuFlowRestClient;
 import com.kuflow.rest.model.Principal;
 import com.kuflow.rest.model.Process;
+import com.kuflow.rest.model.ProcessChangeInitiatorParams;
+import com.kuflow.rest.model.ProcessEntityUpdateParams;
 import com.kuflow.rest.model.ProcessFindOptions;
 import com.kuflow.rest.model.ProcessItem;
+import com.kuflow.rest.model.ProcessItemCreateParams;
 import com.kuflow.rest.model.ProcessItemFindOptions;
 import com.kuflow.rest.model.ProcessItemPage;
+import com.kuflow.rest.model.ProcessItemTaskAppendLogParams;
 import com.kuflow.rest.model.ProcessItemTaskAssignParams;
+import com.kuflow.rest.model.ProcessItemTaskDataUpdateParams;
+import com.kuflow.rest.model.ProcessMetadataUpdateParams;
 import com.kuflow.rest.model.ProcessPage;
 import com.kuflow.rest.model.TenantUser;
 import com.kuflow.rest.operation.PrincipalOperations;
@@ -186,7 +192,9 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
         try {
             validateProcessEntityUpdateRequest(request);
 
-            Process process = this.processOperations.updateProcessEntity(request.getProcessId(), request.getParams());
+            ProcessEntityUpdateParams params = new ProcessEntityUpdateParams().setEntity(request.getEntity());
+
+            Process process = this.processOperations.updateProcessEntity(request.getProcessId(), params);
 
             ProcessEntityUpdateResponse response = new ProcessEntityUpdateResponse();
             response.setProcess(process);
@@ -203,7 +211,7 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
         try {
             validateProcessEntityPatchRequest(request);
 
-            Process process = this.processOperations.patchProcessEntity(request.getProcessId(), request.getParams());
+            Process process = this.processOperations.patchProcessEntity(request.getProcessId(), request.getJsonPatch());
 
             ProcessEntityPatchResponse response = new ProcessEntityPatchResponse();
             response.setProcess(process);
@@ -220,7 +228,9 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
         try {
             validateProcessMetadataUpdateRequest(request);
 
-            Process process = this.processOperations.updateProcessMetadata(request.getProcessId(), request.getParams());
+            ProcessMetadataUpdateParams params = new ProcessMetadataUpdateParams().setMetadata(request.getMetadata());
+
+            Process process = this.processOperations.updateProcessMetadata(request.getProcessId(), params);
 
             ProcessMetadataUpdateResponse response = new ProcessMetadataUpdateResponse();
             response.setProcess(process);
@@ -237,7 +247,7 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
         try {
             validateProcessMetadataPatchRequest(request);
 
-            Process process = this.processOperations.patchProcessMetadata(request.getProcessId(), request.getParams());
+            Process process = this.processOperations.patchProcessMetadata(request.getProcessId(), request.getJsonPatch());
 
             ProcessMetadataPatchResponse response = new ProcessMetadataPatchResponse();
             response.setProcess(process);
@@ -254,7 +264,11 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
         try {
             validateProcessInitiatorChangeRequest(request);
 
-            Process process = this.processOperations.changeProcessInitiator(request.getProcessId(), request.getParams());
+            ProcessChangeInitiatorParams params = new ProcessChangeInitiatorParams()
+                .setInitiatorId(request.getInitiatorId())
+                .setInitiatorEmail(request.getInitiatorEmail());
+
+            Process process = this.processOperations.changeProcessInitiator(request.getProcessId(), params);
 
             ProcessInitiatorChangeResponse response = new ProcessInitiatorChangeResponse();
             response.setProcess(process);
@@ -313,7 +327,15 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
         try {
             validateProcessItemCreateRequest(request);
 
-            ProcessItem processItem = this.processItemOperations.createProcessItem(request.getParams());
+            ProcessItemCreateParams params = new ProcessItemCreateParams()
+                .setId(request.getId())
+                .setType(request.getType())
+                .setProcessId(request.getProcessId())
+                .setOwnerId(request.getOwnerId())
+                .setOwnerEmail(request.getOwnerEmail())
+                .setTask(request.getTask());
+
+            ProcessItem processItem = this.processItemOperations.createProcessItem(params);
 
             ProcessItemCreateResponse response = new ProcessItemCreateResponse();
             response.setProcessItem(processItem);
@@ -385,7 +407,9 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
         try {
             validateProcessItemTaskDataUpdateRequest(request);
 
-            ProcessItem processItem = this.processItemOperations.updateProcessItemTaskData(request.getProcessItemId(), request.getParams());
+            ProcessItemTaskDataUpdateParams params = new ProcessItemTaskDataUpdateParams().setData(request.getData());
+
+            ProcessItem processItem = this.processItemOperations.updateProcessItemTaskData(request.getProcessItemId(), params);
 
             ProcessItemTaskDataUpdateResponse response = new ProcessItemTaskDataUpdateResponse();
             response.setProcessItem(processItem);
@@ -402,7 +426,8 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
         try {
             validateProcessItemTaskDataPatchRequest(request);
 
-            ProcessItem processItem = this.processItemOperations.patchProcessItemTaskData(request.getProcessItemId(), request.getParams());
+            ProcessItem processItem =
+                this.processItemOperations.patchProcessItemTaskData(request.getProcessItemId(), request.getJsonPatch());
 
             ProcessItemTaskDataPatchResponse response = new ProcessItemTaskDataPatchResponse();
             response.setProcessItem(processItem);
@@ -419,7 +444,11 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
         try {
             validateProcessItemTaskLoggAppendRequest(request);
 
-            ProcessItem processItem = this.processItemOperations.appendProcessItemTaskLog(request.getProcessItemId(), request.getParams());
+            ProcessItemTaskAppendLogParams params = new ProcessItemTaskAppendLogParams()
+                .setMessage(request.getMessage())
+                .setLevel(request.getLevel());
+
+            ProcessItem processItem = this.processItemOperations.appendProcessItemTaskLog(request.getProcessItemId(), params);
 
             ProcessItemTaskLoggAppendResponse response = new ProcessItemTaskLoggAppendResponse();
             response.setProcessItem(processItem);

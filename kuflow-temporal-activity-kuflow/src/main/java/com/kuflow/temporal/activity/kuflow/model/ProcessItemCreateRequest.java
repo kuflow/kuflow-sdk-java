@@ -22,18 +22,88 @@
  */
 package com.kuflow.temporal.activity.kuflow.model;
 
-import com.kuflow.rest.model.ProcessItemCreateParams;
+import com.kuflow.rest.model.ProcessItemTaskCreateParams;
+import com.kuflow.rest.model.ProcessItemType;
 import com.kuflow.temporal.common.model.AbstractModel;
+import java.util.UUID;
 
 public class ProcessItemCreateRequest extends AbstractModel {
 
-    private ProcessItemCreateParams params;
+    /**
+     * The id property.
+     */
+    private UUID id;
 
-    public ProcessItemCreateParams getParams() {
-        return this.params;
+    /**
+     * Process Item Type
+     */
+    private ProcessItemType type;
+
+    /**
+     * The processId property.
+     */
+    private UUID processId;
+
+    /**
+     * The ownerId property.
+     */
+    private UUID ownerId;
+
+    /**
+     * The ownerEmail property.
+     */
+    private String ownerEmail;
+
+    /**
+     * The task property.
+     */
+    private ProcessItemTaskCreateParams task;
+
+    public UUID getId() {
+        return this.id;
     }
 
-    public void setParams(ProcessItemCreateParams params) {
-        this.params = params;
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public ProcessItemType getType() {
+        return this.type;
+    }
+
+    public void setType(ProcessItemType type) {
+        this.type = type;
+    }
+
+    public UUID getProcessId() {
+        return this.processId;
+    }
+
+    public void setProcessId(UUID processId) {
+        this.processId = processId;
+    }
+
+    public UUID getOwnerId() {
+        return this.ownerId;
+    }
+
+    public void setOwnerId(UUID ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public String getOwnerEmail() {
+        return this.ownerEmail;
+    }
+
+    public void setOwnerEmail(String ownerEmail) {
+        this.ownerEmail = ownerEmail;
+    }
+
+    public ProcessItemTaskCreateParams getTask() {
+        return this.task;
+    }
+
+    public void setTask(ProcessItemTaskCreateParams task) {
+        this.task = task;
     }
 }

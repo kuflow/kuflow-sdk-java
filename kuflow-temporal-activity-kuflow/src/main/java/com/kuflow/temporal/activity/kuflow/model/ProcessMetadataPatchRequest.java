@@ -31,7 +31,7 @@ public class ProcessMetadataPatchRequest extends AbstractModel {
 
     private UUID processId;
 
-    private List<JsonPatchOperation> params;
+    private List<JsonPatchOperation> jsonPatch;
 
     public UUID getProcessId() {
         return this.processId;
@@ -41,11 +41,11 @@ public class ProcessMetadataPatchRequest extends AbstractModel {
         this.processId = processId;
     }
 
-    public List<JsonPatchOperation> getParams() {
-        return this.params;
+    public List<JsonPatchOperation> getJsonPatch() {
+        return this.jsonPatch;
     }
 
-    public void setParams(List<JsonPatchOperation> params) {
-        this.params = params;
+    public void setJsonPatch(List<JsonPatchOperation> jsonPatch) {
+        this.jsonPatch = jsonPatch;
     }
 }

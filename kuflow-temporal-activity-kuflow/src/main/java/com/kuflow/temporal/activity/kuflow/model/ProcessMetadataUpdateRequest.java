@@ -22,7 +22,7 @@
  */
 package com.kuflow.temporal.activity.kuflow.model;
 
-import com.kuflow.rest.model.ProcessMetadataUpdateParams;
+import com.kuflow.rest.model.JsonValue;
 import com.kuflow.temporal.common.model.AbstractModel;
 import java.util.UUID;
 
@@ -30,7 +30,7 @@ public class ProcessMetadataUpdateRequest extends AbstractModel {
 
     private UUID processId;
 
-    private ProcessMetadataUpdateParams params;
+    private JsonValue metadata;
 
     public UUID getProcessId() {
         return this.processId;
@@ -40,11 +40,11 @@ public class ProcessMetadataUpdateRequest extends AbstractModel {
         this.processId = processId;
     }
 
-    public ProcessMetadataUpdateParams getParams() {
-        return this.params;
+    public JsonValue getMetadata() {
+        return this.metadata;
     }
 
-    public void setParams(ProcessMetadataUpdateParams params) {
-        this.params = params;
+    public void setMetadata(JsonValue metadata) {
+        this.metadata = metadata;
     }
 }
