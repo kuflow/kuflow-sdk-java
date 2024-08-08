@@ -22,7 +22,7 @@
  */
 package com.kuflow.temporal.activity.kuflow.model;
 
-import com.kuflow.rest.model.ProcessItemTaskAppendLogParams;
+import com.kuflow.rest.model.ProcessItemTaskLogLevel;
 import com.kuflow.temporal.common.model.AbstractModel;
 import java.util.UUID;
 
@@ -30,7 +30,15 @@ public class ProcessItemTaskLoggAppendRequest extends AbstractModel {
 
     private UUID processItemId;
 
-    private ProcessItemTaskAppendLogParams params;
+    /**
+     * The message property.
+     */
+    private String message;
+
+    /**
+     * The level property.
+     */
+    private ProcessItemTaskLogLevel level;
 
     public UUID getProcessItemId() {
         return this.processItemId;
@@ -40,11 +48,19 @@ public class ProcessItemTaskLoggAppendRequest extends AbstractModel {
         this.processItemId = processItemId;
     }
 
-    public ProcessItemTaskAppendLogParams getParams() {
-        return this.params;
+    public String getMessage() {
+        return this.message;
     }
 
-    public void setParams(ProcessItemTaskAppendLogParams params) {
-        this.params = params;
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public ProcessItemTaskLogLevel getLevel() {
+        return this.level;
+    }
+
+    public void setLevel(ProcessItemTaskLogLevel level) {
+        this.level = level;
     }
 }

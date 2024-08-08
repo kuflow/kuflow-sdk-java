@@ -133,7 +133,7 @@ public final class ProcessItemOperationsImpl {
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<ProcessItem>> createProcessItem(
             @HostParam("$host") String host,
-            @BodyParam("application/json") ProcessItemCreateParams params,
+            @BodyParam("application/json") ProcessItemCreateParams processItemCreateParams,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -143,7 +143,7 @@ public final class ProcessItemOperationsImpl {
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<ProcessItem> createProcessItemSync(
             @HostParam("$host") String host,
-            @BodyParam("application/json") ProcessItemCreateParams params,
+            @BodyParam("application/json") ProcessItemCreateParams processItemCreateParams,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -194,7 +194,7 @@ public final class ProcessItemOperationsImpl {
         Mono<Response<ProcessItem>> assignProcessItemTask(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
-            @BodyParam("application/json") ProcessItemTaskAssignParams params,
+            @BodyParam("application/json") ProcessItemTaskAssignParams processItemTaskAssignParams,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -205,7 +205,7 @@ public final class ProcessItemOperationsImpl {
         Response<ProcessItem> assignProcessItemTaskSync(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
-            @BodyParam("application/json") ProcessItemTaskAssignParams params,
+            @BodyParam("application/json") ProcessItemTaskAssignParams processItemTaskAssignParams,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -236,7 +236,7 @@ public final class ProcessItemOperationsImpl {
         Mono<Response<ProcessItem>> appendProcessItemTaskLog(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
-            @BodyParam("application/json") ProcessItemTaskAppendLogParams params,
+            @BodyParam("application/json") ProcessItemTaskAppendLogParams processItemTaskAppendLogParams,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -247,7 +247,7 @@ public final class ProcessItemOperationsImpl {
         Response<ProcessItem> appendProcessItemTaskLogSync(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
-            @BodyParam("application/json") ProcessItemTaskAppendLogParams params,
+            @BodyParam("application/json") ProcessItemTaskAppendLogParams processItemTaskAppendLogParams,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -258,7 +258,7 @@ public final class ProcessItemOperationsImpl {
         Mono<Response<ProcessItem>> updateProcessItemTaskData(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
-            @BodyParam("application/json") ProcessItemTaskDataUpdateParams params,
+            @BodyParam("application/json") ProcessItemTaskDataUpdateParams processItemTaskDataUpdateParams,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -269,7 +269,7 @@ public final class ProcessItemOperationsImpl {
         Response<ProcessItem> updateProcessItemTaskDataSync(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
-            @BodyParam("application/json") ProcessItemTaskDataUpdateParams params,
+            @BodyParam("application/json") ProcessItemTaskDataUpdateParams processItemTaskDataUpdateParams,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -280,7 +280,7 @@ public final class ProcessItemOperationsImpl {
         Mono<Response<ProcessItem>> patchProcessItemTaskData(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
-            @BodyParam("application/json-patch+json") List<JsonPatchOperation> params,
+            @BodyParam("application/json-patch+json") List<JsonPatchOperation> jsonPatch,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -291,7 +291,7 @@ public final class ProcessItemOperationsImpl {
         Response<ProcessItem> patchProcessItemTaskDataSync(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
-            @BodyParam("application/json-patch+json") List<JsonPatchOperation> params,
+            @BodyParam("application/json-patch+json") List<JsonPatchOperation> jsonPatch,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -777,15 +777,15 @@ public final class ProcessItemOperationsImpl {
      *
      * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
-     * @param params Process Item to be created.
+     * @param processItemCreateParams Process Item to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ProcessItem>> createProcessItemWithResponseAsync(ProcessItemCreateParams params) {
-        return FluxUtil.withContext(context -> createProcessItemWithResponseAsync(params, context));
+    public Mono<Response<ProcessItem>> createProcessItemWithResponseAsync(ProcessItemCreateParams processItemCreateParams) {
+        return FluxUtil.withContext(context -> createProcessItemWithResponseAsync(processItemCreateParams, context));
     }
 
     /**
@@ -799,7 +799,7 @@ public final class ProcessItemOperationsImpl {
      *
      * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
-     * @param params Process Item to be created.
+     * @param processItemCreateParams Process Item to be created.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -807,9 +807,12 @@ public final class ProcessItemOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ProcessItem>> createProcessItemWithResponseAsync(ProcessItemCreateParams params, Context context) {
+    public Mono<Response<ProcessItem>> createProcessItemWithResponseAsync(
+        ProcessItemCreateParams processItemCreateParams,
+        Context context
+    ) {
         final String accept = "application/json";
-        return service.createProcessItem(this.client.getHost(), params, accept, context);
+        return service.createProcessItem(this.client.getHost(), processItemCreateParams, accept, context);
     }
 
     /**
@@ -823,15 +826,15 @@ public final class ProcessItemOperationsImpl {
      *
      * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
-     * @param params Process Item to be created.
+     * @param processItemCreateParams Process Item to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProcessItem> createProcessItemAsync(ProcessItemCreateParams params) {
-        return createProcessItemWithResponseAsync(params).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<ProcessItem> createProcessItemAsync(ProcessItemCreateParams processItemCreateParams) {
+        return createProcessItemWithResponseAsync(processItemCreateParams).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -845,7 +848,7 @@ public final class ProcessItemOperationsImpl {
      *
      * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
-     * @param params Process Item to be created.
+     * @param processItemCreateParams Process Item to be created.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -853,8 +856,8 @@ public final class ProcessItemOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProcessItem> createProcessItemAsync(ProcessItemCreateParams params, Context context) {
-        return createProcessItemWithResponseAsync(params, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<ProcessItem> createProcessItemAsync(ProcessItemCreateParams processItemCreateParams, Context context) {
+        return createProcessItemWithResponseAsync(processItemCreateParams, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -868,7 +871,7 @@ public final class ProcessItemOperationsImpl {
      *
      * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
-     * @param params Process Item to be created.
+     * @param processItemCreateParams Process Item to be created.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -876,9 +879,9 @@ public final class ProcessItemOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProcessItem> createProcessItemWithResponse(ProcessItemCreateParams params, Context context) {
+    public Response<ProcessItem> createProcessItemWithResponse(ProcessItemCreateParams processItemCreateParams, Context context) {
         final String accept = "application/json";
-        return service.createProcessItemSync(this.client.getHost(), params, accept, context);
+        return service.createProcessItemSync(this.client.getHost(), processItemCreateParams, accept, context);
     }
 
     /**
@@ -892,15 +895,15 @@ public final class ProcessItemOperationsImpl {
      *
      * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
-     * @param params Process Item to be created.
+     * @param processItemCreateParams Process Item to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProcessItem createProcessItem(ProcessItemCreateParams params) {
-        return createProcessItemWithResponse(params, Context.NONE).getValue();
+    public ProcessItem createProcessItem(ProcessItemCreateParams processItemCreateParams) {
+        return createProcessItemWithResponse(processItemCreateParams, Context.NONE).getValue();
     }
 
     /**
@@ -1111,15 +1114,18 @@ public final class ProcessItemOperationsImpl {
      * Allow to assign a process item task to a user or application. Only one option will be necessary.
      *
      * @param id The resource ID.
-     * @param params Params to change the process item task owner.
+     * @param processItemTaskAssignParams Params to change the process item task owner.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ProcessItem>> assignProcessItemTaskWithResponseAsync(UUID id, ProcessItemTaskAssignParams params) {
-        return FluxUtil.withContext(context -> assignProcessItemTaskWithResponseAsync(id, params, context));
+    public Mono<Response<ProcessItem>> assignProcessItemTaskWithResponseAsync(
+        UUID id,
+        ProcessItemTaskAssignParams processItemTaskAssignParams
+    ) {
+        return FluxUtil.withContext(context -> assignProcessItemTaskWithResponseAsync(id, processItemTaskAssignParams, context));
     }
 
     /**
@@ -1128,7 +1134,7 @@ public final class ProcessItemOperationsImpl {
      * Allow to assign a process item task to a user or application. Only one option will be necessary.
      *
      * @param id The resource ID.
-     * @param params Params to change the process item task owner.
+     * @param processItemTaskAssignParams Params to change the process item task owner.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -1138,11 +1144,11 @@ public final class ProcessItemOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ProcessItem>> assignProcessItemTaskWithResponseAsync(
         UUID id,
-        ProcessItemTaskAssignParams params,
+        ProcessItemTaskAssignParams processItemTaskAssignParams,
         Context context
     ) {
         final String accept = "application/json";
-        return service.assignProcessItemTask(this.client.getHost(), id, params, accept, context);
+        return service.assignProcessItemTask(this.client.getHost(), id, processItemTaskAssignParams, accept, context);
     }
 
     /**
@@ -1151,15 +1157,15 @@ public final class ProcessItemOperationsImpl {
      * Allow to assign a process item task to a user or application. Only one option will be necessary.
      *
      * @param id The resource ID.
-     * @param params Params to change the process item task owner.
+     * @param processItemTaskAssignParams Params to change the process item task owner.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProcessItem> assignProcessItemTaskAsync(UUID id, ProcessItemTaskAssignParams params) {
-        return assignProcessItemTaskWithResponseAsync(id, params).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<ProcessItem> assignProcessItemTaskAsync(UUID id, ProcessItemTaskAssignParams processItemTaskAssignParams) {
+        return assignProcessItemTaskWithResponseAsync(id, processItemTaskAssignParams).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1168,7 +1174,7 @@ public final class ProcessItemOperationsImpl {
      * Allow to assign a process item task to a user or application. Only one option will be necessary.
      *
      * @param id The resource ID.
-     * @param params Params to change the process item task owner.
+     * @param processItemTaskAssignParams Params to change the process item task owner.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -1176,8 +1182,10 @@ public final class ProcessItemOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProcessItem> assignProcessItemTaskAsync(UUID id, ProcessItemTaskAssignParams params, Context context) {
-        return assignProcessItemTaskWithResponseAsync(id, params, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<ProcessItem> assignProcessItemTaskAsync(UUID id, ProcessItemTaskAssignParams processItemTaskAssignParams, Context context) {
+        return assignProcessItemTaskWithResponseAsync(id, processItemTaskAssignParams, context).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
+        );
     }
 
     /**
@@ -1186,7 +1194,7 @@ public final class ProcessItemOperationsImpl {
      * Allow to assign a process item task to a user or application. Only one option will be necessary.
      *
      * @param id The resource ID.
-     * @param params Params to change the process item task owner.
+     * @param processItemTaskAssignParams Params to change the process item task owner.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -1194,9 +1202,13 @@ public final class ProcessItemOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProcessItem> assignProcessItemTaskWithResponse(UUID id, ProcessItemTaskAssignParams params, Context context) {
+    public Response<ProcessItem> assignProcessItemTaskWithResponse(
+        UUID id,
+        ProcessItemTaskAssignParams processItemTaskAssignParams,
+        Context context
+    ) {
         final String accept = "application/json";
-        return service.assignProcessItemTaskSync(this.client.getHost(), id, params, accept, context);
+        return service.assignProcessItemTaskSync(this.client.getHost(), id, processItemTaskAssignParams, accept, context);
     }
 
     /**
@@ -1205,15 +1217,15 @@ public final class ProcessItemOperationsImpl {
      * Allow to assign a process item task to a user or application. Only one option will be necessary.
      *
      * @param id The resource ID.
-     * @param params Params to change the process item task owner.
+     * @param processItemTaskAssignParams Params to change the process item task owner.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProcessItem assignProcessItemTask(UUID id, ProcessItemTaskAssignParams params) {
-        return assignProcessItemTaskWithResponse(id, params, Context.NONE).getValue();
+    public ProcessItem assignProcessItemTask(UUID id, ProcessItemTaskAssignParams processItemTaskAssignParams) {
+        return assignProcessItemTaskWithResponse(id, processItemTaskAssignParams, Context.NONE).getValue();
     }
 
     /**
@@ -1323,15 +1335,18 @@ public final class ProcessItemOperationsImpl {
      * A log entry is added to the task. If the number of log entries is reached, the oldest log entry is removed.
      *
      * @param id The resource ID.
-     * @param params Log to be created.
+     * @param processItemTaskAppendLogParams Log to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ProcessItem>> appendProcessItemTaskLogWithResponseAsync(UUID id, ProcessItemTaskAppendLogParams params) {
-        return FluxUtil.withContext(context -> appendProcessItemTaskLogWithResponseAsync(id, params, context));
+    public Mono<Response<ProcessItem>> appendProcessItemTaskLogWithResponseAsync(
+        UUID id,
+        ProcessItemTaskAppendLogParams processItemTaskAppendLogParams
+    ) {
+        return FluxUtil.withContext(context -> appendProcessItemTaskLogWithResponseAsync(id, processItemTaskAppendLogParams, context));
     }
 
     /**
@@ -1340,7 +1355,7 @@ public final class ProcessItemOperationsImpl {
      * A log entry is added to the task. If the number of log entries is reached, the oldest log entry is removed.
      *
      * @param id The resource ID.
-     * @param params Log to be created.
+     * @param processItemTaskAppendLogParams Log to be created.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -1350,11 +1365,11 @@ public final class ProcessItemOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ProcessItem>> appendProcessItemTaskLogWithResponseAsync(
         UUID id,
-        ProcessItemTaskAppendLogParams params,
+        ProcessItemTaskAppendLogParams processItemTaskAppendLogParams,
         Context context
     ) {
         final String accept = "application/json";
-        return service.appendProcessItemTaskLog(this.client.getHost(), id, params, accept, context);
+        return service.appendProcessItemTaskLog(this.client.getHost(), id, processItemTaskAppendLogParams, accept, context);
     }
 
     /**
@@ -1363,15 +1378,16 @@ public final class ProcessItemOperationsImpl {
      * A log entry is added to the task. If the number of log entries is reached, the oldest log entry is removed.
      *
      * @param id The resource ID.
-     * @param params Log to be created.
+     * @param processItemTaskAppendLogParams Log to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProcessItem> appendProcessItemTaskLogAsync(UUID id, ProcessItemTaskAppendLogParams params) {
-        return appendProcessItemTaskLogWithResponseAsync(id, params).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<ProcessItem> appendProcessItemTaskLogAsync(UUID id, ProcessItemTaskAppendLogParams processItemTaskAppendLogParams) {
+        return appendProcessItemTaskLogWithResponseAsync(id, processItemTaskAppendLogParams).flatMap(res -> Mono.justOrEmpty(res.getValue())
+        );
     }
 
     /**
@@ -1380,7 +1396,7 @@ public final class ProcessItemOperationsImpl {
      * A log entry is added to the task. If the number of log entries is reached, the oldest log entry is removed.
      *
      * @param id The resource ID.
-     * @param params Log to be created.
+     * @param processItemTaskAppendLogParams Log to be created.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -1388,8 +1404,14 @@ public final class ProcessItemOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProcessItem> appendProcessItemTaskLogAsync(UUID id, ProcessItemTaskAppendLogParams params, Context context) {
-        return appendProcessItemTaskLogWithResponseAsync(id, params, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<ProcessItem> appendProcessItemTaskLogAsync(
+        UUID id,
+        ProcessItemTaskAppendLogParams processItemTaskAppendLogParams,
+        Context context
+    ) {
+        return appendProcessItemTaskLogWithResponseAsync(id, processItemTaskAppendLogParams, context).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
+        );
     }
 
     /**
@@ -1398,7 +1420,7 @@ public final class ProcessItemOperationsImpl {
      * A log entry is added to the task. If the number of log entries is reached, the oldest log entry is removed.
      *
      * @param id The resource ID.
-     * @param params Log to be created.
+     * @param processItemTaskAppendLogParams Log to be created.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -1406,9 +1428,13 @@ public final class ProcessItemOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProcessItem> appendProcessItemTaskLogWithResponse(UUID id, ProcessItemTaskAppendLogParams params, Context context) {
+    public Response<ProcessItem> appendProcessItemTaskLogWithResponse(
+        UUID id,
+        ProcessItemTaskAppendLogParams processItemTaskAppendLogParams,
+        Context context
+    ) {
         final String accept = "application/json";
-        return service.appendProcessItemTaskLogSync(this.client.getHost(), id, params, accept, context);
+        return service.appendProcessItemTaskLogSync(this.client.getHost(), id, processItemTaskAppendLogParams, accept, context);
     }
 
     /**
@@ -1417,15 +1443,15 @@ public final class ProcessItemOperationsImpl {
      * A log entry is added to the task. If the number of log entries is reached, the oldest log entry is removed.
      *
      * @param id The resource ID.
-     * @param params Log to be created.
+     * @param processItemTaskAppendLogParams Log to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProcessItem appendProcessItemTaskLog(UUID id, ProcessItemTaskAppendLogParams params) {
-        return appendProcessItemTaskLogWithResponse(id, params, Context.NONE).getValue();
+    public ProcessItem appendProcessItemTaskLog(UUID id, ProcessItemTaskAppendLogParams processItemTaskAppendLogParams) {
+        return appendProcessItemTaskLogWithResponse(id, processItemTaskAppendLogParams, Context.NONE).getValue();
     }
 
     /**
@@ -1435,15 +1461,18 @@ public final class ProcessItemOperationsImpl {
      * the json form is marked as invalid.
      *
      * @param id The resource ID.
-     * @param params Params used to update the JSON value.
+     * @param processItemTaskDataUpdateParams Params used to update the JSON value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ProcessItem>> updateProcessItemTaskDataWithResponseAsync(UUID id, ProcessItemTaskDataUpdateParams params) {
-        return FluxUtil.withContext(context -> updateProcessItemTaskDataWithResponseAsync(id, params, context));
+    public Mono<Response<ProcessItem>> updateProcessItemTaskDataWithResponseAsync(
+        UUID id,
+        ProcessItemTaskDataUpdateParams processItemTaskDataUpdateParams
+    ) {
+        return FluxUtil.withContext(context -> updateProcessItemTaskDataWithResponseAsync(id, processItemTaskDataUpdateParams, context));
     }
 
     /**
@@ -1453,7 +1482,7 @@ public final class ProcessItemOperationsImpl {
      * the json form is marked as invalid.
      *
      * @param id The resource ID.
-     * @param params Params used to update the JSON value.
+     * @param processItemTaskDataUpdateParams Params used to update the JSON value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -1463,11 +1492,11 @@ public final class ProcessItemOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ProcessItem>> updateProcessItemTaskDataWithResponseAsync(
         UUID id,
-        ProcessItemTaskDataUpdateParams params,
+        ProcessItemTaskDataUpdateParams processItemTaskDataUpdateParams,
         Context context
     ) {
         final String accept = "application/json";
-        return service.updateProcessItemTaskData(this.client.getHost(), id, params, accept, context);
+        return service.updateProcessItemTaskData(this.client.getHost(), id, processItemTaskDataUpdateParams, accept, context);
     }
 
     /**
@@ -1477,15 +1506,17 @@ public final class ProcessItemOperationsImpl {
      * the json form is marked as invalid.
      *
      * @param id The resource ID.
-     * @param params Params used to update the JSON value.
+     * @param processItemTaskDataUpdateParams Params used to update the JSON value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProcessItem> updateProcessItemTaskDataAsync(UUID id, ProcessItemTaskDataUpdateParams params) {
-        return updateProcessItemTaskDataWithResponseAsync(id, params).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<ProcessItem> updateProcessItemTaskDataAsync(UUID id, ProcessItemTaskDataUpdateParams processItemTaskDataUpdateParams) {
+        return updateProcessItemTaskDataWithResponseAsync(id, processItemTaskDataUpdateParams).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
+        );
     }
 
     /**
@@ -1495,7 +1526,7 @@ public final class ProcessItemOperationsImpl {
      * the json form is marked as invalid.
      *
      * @param id The resource ID.
-     * @param params Params used to update the JSON value.
+     * @param processItemTaskDataUpdateParams Params used to update the JSON value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -1503,8 +1534,14 @@ public final class ProcessItemOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProcessItem> updateProcessItemTaskDataAsync(UUID id, ProcessItemTaskDataUpdateParams params, Context context) {
-        return updateProcessItemTaskDataWithResponseAsync(id, params, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<ProcessItem> updateProcessItemTaskDataAsync(
+        UUID id,
+        ProcessItemTaskDataUpdateParams processItemTaskDataUpdateParams,
+        Context context
+    ) {
+        return updateProcessItemTaskDataWithResponseAsync(id, processItemTaskDataUpdateParams, context).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
+        );
     }
 
     /**
@@ -1514,7 +1551,7 @@ public final class ProcessItemOperationsImpl {
      * the json form is marked as invalid.
      *
      * @param id The resource ID.
-     * @param params Params used to update the JSON value.
+     * @param processItemTaskDataUpdateParams Params used to update the JSON value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -1522,9 +1559,13 @@ public final class ProcessItemOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProcessItem> updateProcessItemTaskDataWithResponse(UUID id, ProcessItemTaskDataUpdateParams params, Context context) {
+    public Response<ProcessItem> updateProcessItemTaskDataWithResponse(
+        UUID id,
+        ProcessItemTaskDataUpdateParams processItemTaskDataUpdateParams,
+        Context context
+    ) {
         final String accept = "application/json";
-        return service.updateProcessItemTaskDataSync(this.client.getHost(), id, params, accept, context);
+        return service.updateProcessItemTaskDataSync(this.client.getHost(), id, processItemTaskDataUpdateParams, accept, context);
     }
 
     /**
@@ -1534,15 +1575,15 @@ public final class ProcessItemOperationsImpl {
      * the json form is marked as invalid.
      *
      * @param id The resource ID.
-     * @param params Params used to update the JSON value.
+     * @param processItemTaskDataUpdateParams Params used to update the JSON value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProcessItem updateProcessItemTaskData(UUID id, ProcessItemTaskDataUpdateParams params) {
-        return updateProcessItemTaskDataWithResponse(id, params, Context.NONE).getValue();
+    public ProcessItem updateProcessItemTaskData(UUID id, ProcessItemTaskDataUpdateParams processItemTaskDataUpdateParams) {
+        return updateProcessItemTaskDataWithResponse(id, processItemTaskDataUpdateParams, Context.NONE).getValue();
     }
 
     /**
@@ -1552,15 +1593,15 @@ public final class ProcessItemOperationsImpl {
      * the json is marked as invalid.
      *
      * @param id The resource ID.
-     * @param params Params to save the JSON value.
+     * @param jsonPatch Params to save the JSON value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ProcessItem>> patchProcessItemTaskDataWithResponseAsync(UUID id, List<JsonPatchOperation> params) {
-        return FluxUtil.withContext(context -> patchProcessItemTaskDataWithResponseAsync(id, params, context));
+    public Mono<Response<ProcessItem>> patchProcessItemTaskDataWithResponseAsync(UUID id, List<JsonPatchOperation> jsonPatch) {
+        return FluxUtil.withContext(context -> patchProcessItemTaskDataWithResponseAsync(id, jsonPatch, context));
     }
 
     /**
@@ -1570,7 +1611,7 @@ public final class ProcessItemOperationsImpl {
      * the json is marked as invalid.
      *
      * @param id The resource ID.
-     * @param params Params to save the JSON value.
+     * @param jsonPatch Params to save the JSON value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -1580,11 +1621,11 @@ public final class ProcessItemOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ProcessItem>> patchProcessItemTaskDataWithResponseAsync(
         UUID id,
-        List<JsonPatchOperation> params,
+        List<JsonPatchOperation> jsonPatch,
         Context context
     ) {
         final String accept = "application/json";
-        return service.patchProcessItemTaskData(this.client.getHost(), id, params, accept, context);
+        return service.patchProcessItemTaskData(this.client.getHost(), id, jsonPatch, accept, context);
     }
 
     /**
@@ -1594,15 +1635,15 @@ public final class ProcessItemOperationsImpl {
      * the json is marked as invalid.
      *
      * @param id The resource ID.
-     * @param params Params to save the JSON value.
+     * @param jsonPatch Params to save the JSON value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProcessItem> patchProcessItemTaskDataAsync(UUID id, List<JsonPatchOperation> params) {
-        return patchProcessItemTaskDataWithResponseAsync(id, params).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<ProcessItem> patchProcessItemTaskDataAsync(UUID id, List<JsonPatchOperation> jsonPatch) {
+        return patchProcessItemTaskDataWithResponseAsync(id, jsonPatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1612,7 +1653,7 @@ public final class ProcessItemOperationsImpl {
      * the json is marked as invalid.
      *
      * @param id The resource ID.
-     * @param params Params to save the JSON value.
+     * @param jsonPatch Params to save the JSON value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -1620,8 +1661,8 @@ public final class ProcessItemOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProcessItem> patchProcessItemTaskDataAsync(UUID id, List<JsonPatchOperation> params, Context context) {
-        return patchProcessItemTaskDataWithResponseAsync(id, params, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<ProcessItem> patchProcessItemTaskDataAsync(UUID id, List<JsonPatchOperation> jsonPatch, Context context) {
+        return patchProcessItemTaskDataWithResponseAsync(id, jsonPatch, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1631,7 +1672,7 @@ public final class ProcessItemOperationsImpl {
      * the json is marked as invalid.
      *
      * @param id The resource ID.
-     * @param params Params to save the JSON value.
+     * @param jsonPatch Params to save the JSON value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -1639,9 +1680,9 @@ public final class ProcessItemOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProcessItem> patchProcessItemTaskDataWithResponse(UUID id, List<JsonPatchOperation> params, Context context) {
+    public Response<ProcessItem> patchProcessItemTaskDataWithResponse(UUID id, List<JsonPatchOperation> jsonPatch, Context context) {
         final String accept = "application/json";
-        return service.patchProcessItemTaskDataSync(this.client.getHost(), id, params, accept, context);
+        return service.patchProcessItemTaskDataSync(this.client.getHost(), id, jsonPatch, accept, context);
     }
 
     /**
@@ -1651,15 +1692,15 @@ public final class ProcessItemOperationsImpl {
      * the json is marked as invalid.
      *
      * @param id The resource ID.
-     * @param params Params to save the JSON value.
+     * @param jsonPatch Params to save the JSON value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProcessItem patchProcessItemTaskData(UUID id, List<JsonPatchOperation> params) {
-        return patchProcessItemTaskDataWithResponse(id, params, Context.NONE).getValue();
+    public ProcessItem patchProcessItemTaskData(UUID id, List<JsonPatchOperation> jsonPatch) {
+        return patchProcessItemTaskDataWithResponse(id, jsonPatch, Context.NONE).getValue();
     }
 
     /**

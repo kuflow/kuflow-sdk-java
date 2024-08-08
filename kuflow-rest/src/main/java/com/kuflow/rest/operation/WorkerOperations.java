@@ -54,8 +54,8 @@ public class WorkerOperations {
      * ones.
      *
      * <p>If already exist a worker for the same identity, the worker will be updated.
-     *
-     * @param params Worker to create or update.
+     workerCreateParams
+     * @param workerCreateParams Worker to create or update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -63,8 +63,8 @@ public class WorkerOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Worker> createWorkerWithResponse(WorkerCreateParams params, Context context) {
-        return this.service.createWorkerWithResponse(params, context);
+    public Response<Worker> createWorkerWithResponse(WorkerCreateParams workerCreateParams, Context context) {
+        return this.service.createWorkerWithResponse(workerCreateParams, context);
     }
 
     /**
@@ -75,14 +75,14 @@ public class WorkerOperations {
      *
      * <p>If already exist a worker for the same identity, the worker will be updated.
      *
-     * @param params Worker to create or update.
+     * @param workerCreateParams Worker to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Worker createWorker(WorkerCreateParams params) {
-        return this.createWorkerWithResponse(params, Context.NONE).getValue();
+    public Worker createWorker(WorkerCreateParams workerCreateParams) {
+        return this.createWorkerWithResponse(workerCreateParams, Context.NONE).getValue();
     }
 }

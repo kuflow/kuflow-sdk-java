@@ -22,7 +22,7 @@
  */
 package com.kuflow.temporal.activity.kuflow.model;
 
-import com.kuflow.rest.model.ProcessItemTaskDataUpdateParams;
+import com.kuflow.rest.model.JsonValue;
 import com.kuflow.temporal.common.model.AbstractModel;
 import java.util.UUID;
 
@@ -31,9 +31,15 @@ import java.util.UUID;
  */
 public class ProcessItemTaskDataUpdateRequest extends AbstractModel {
 
+    /**
+     * Process Item Id
+     */
     private UUID processItemId;
 
-    private ProcessItemTaskDataUpdateParams params;
+    /**
+     * Json value.
+     */
+    private JsonValue data;
 
     public UUID getProcessItemId() {
         return this.processItemId;
@@ -43,11 +49,11 @@ public class ProcessItemTaskDataUpdateRequest extends AbstractModel {
         this.processItemId = processItemId;
     }
 
-    public ProcessItemTaskDataUpdateParams getParams() {
-        return this.params;
+    public JsonValue getData() {
+        return this.data;
     }
 
-    public void setParams(ProcessItemTaskDataUpdateParams params) {
-        this.params = params;
+    public void setData(JsonValue data) {
+        this.data = data;
     }
 }

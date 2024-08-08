@@ -34,7 +34,7 @@ public class ProcessItemTaskDataPatchRequest extends AbstractModel {
 
     private UUID processItemId;
 
-    private List<JsonPatchOperation> params;
+    private List<JsonPatchOperation> jsonPatch;
 
     public UUID getProcessItemId() {
         return this.processItemId;
@@ -44,11 +44,11 @@ public class ProcessItemTaskDataPatchRequest extends AbstractModel {
         this.processItemId = processItemId;
     }
 
-    public List<JsonPatchOperation> getParams() {
-        return this.params;
+    public List<JsonPatchOperation> getJsonPatch() {
+        return this.jsonPatch;
     }
 
-    public void setParams(List<JsonPatchOperation> params) {
-        this.params = params;
+    public void setJsonPatch(List<JsonPatchOperation> jsonPatch) {
+        this.jsonPatch = jsonPatch;
     }
 }

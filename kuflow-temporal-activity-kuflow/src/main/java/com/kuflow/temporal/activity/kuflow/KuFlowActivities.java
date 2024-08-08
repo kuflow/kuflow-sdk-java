@@ -160,7 +160,7 @@ public interface KuFlowActivities {
     ProcessInitiatorChangeResponse changeProcessInitiator(@Nonnull ProcessInitiatorChangeRequest request);
 
     /**
-     * List all the Processes that have been created and the credentials has access.
+     * List all the Process Items that have been created and the credentials has access.
      *
      * @param request must not be {@literal null}.
      * @return Processes found paginated
@@ -170,7 +170,7 @@ public interface KuFlowActivities {
     ProcessItemFindResponse findProcessItems(ProcessItemFindRequest request);
 
     /**
-     * Retrieve a Task.
+     * Retrieve a Process Item Task.
      *
      * @param request must not be {@literal null}.
      * @return process completed
@@ -180,7 +180,7 @@ public interface KuFlowActivities {
     ProcessItemRetrieveResponse retrieveProcessItem(@Nonnull ProcessItemRetrieveRequest request);
 
     /**
-     * Create a Task and optionally fill its elements.
+     * Create a Process Item.
      *
      * @param request must not be {@literal null}.
      * @return task created
@@ -190,32 +190,32 @@ public interface KuFlowActivities {
     ProcessItemCreateResponse createProcessItem(@Nonnull ProcessItemCreateRequest request);
 
     /**
-     * Complete a task.
+     * Complete a Process Item Task.
      *
      * <p>Allow to complete a claimed task by the principal.
      *
      * @param request must not be {@literal null}.
-     * @return task completed
+     * @return process item with task completed
      */
     @ActivityMethod
     @Nonnull
     ProcessItemTaskCompleteResponse completeProcessItemTask(@Nonnull ProcessItemTaskCompleteRequest request);
 
     /**
-     * Claim a task.
+     * Claim a Process Item Task.
      *
      * @param request must not be {@literal null}.
-     * @return task claimed
+     * @return process item with task claimed
      */
     @ActivityMethod
     @Nonnull
     ProcessItemTaskClaimResponse claimProcessItemTask(@Nonnull ProcessItemTaskClaimRequest request);
 
     /**
-     * Assign a task to a user or application using their email or principalId
+     * Assign a Process Item Task to a user or application using their email or principalId
      *
      * @param request must not be {@literal null}.
-     * @return task assigned
+     * @return process item with task assigned
      */
     @ActivityMethod
     @Nonnull
@@ -228,7 +228,7 @@ public interface KuFlowActivities {
      * json form is marked as invalid.
      *
      * @param request must not be {@literal null}.
-     * @return task updated
+     * @return process item with task updated
      */
     @ActivityMethod
     @Nonnull
@@ -241,19 +241,19 @@ public interface KuFlowActivities {
      * json form is marked as invalid.
      *
      * @param request must not be {@literal null}.
-     * @return task updated
+     * @return process item with task updated
      */
     @ActivityMethod
     @Nonnull
     ProcessItemTaskDataPatchResponse patchProcessItemTaskData(@Nonnull ProcessItemTaskDataPatchRequest request);
 
     /**
-     * Append a log to the task.
+     * Append a log to the Process Item Task.
      *
      * <p>A log entry is added to the task. If the number of log entries is reached, the oldest log entry is removed.
      *
      * @param request must not be {@literal null}.
-     * @return log appended
+     * @return process item with task log appended
      */
     @ActivityMethod
     @Nonnull

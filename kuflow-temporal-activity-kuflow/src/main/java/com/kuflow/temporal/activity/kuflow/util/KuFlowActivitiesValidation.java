@@ -68,8 +68,8 @@ public class KuFlowActivitiesValidation {
         if (request.getProcessId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
-        if (request.getParams() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("'params' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        if (request.getEntity() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'entity' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 
@@ -83,8 +83,8 @@ public class KuFlowActivitiesValidation {
         if (request.getProcessId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
-        if (request.getParams() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("'params' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        if (request.getMetadata() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'metadata' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 
@@ -99,12 +99,9 @@ public class KuFlowActivitiesValidation {
             throw ApplicationFailure.newNonRetryableFailure("'processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
 
-        if (request.getParams() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("'params' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
-        }
-        if (request.getParams().getInitiatorId() == null && request.getParams().getInitiatorEmail() == null) {
+        if (request.getInitiatorId() == null && request.getInitiatorEmail() == null) {
             throw ApplicationFailure.newNonRetryableFailure(
-                "'params.initiatorId' or 'params.initiatorEmail' is required",
+                "'initiatorId' or 'initiatorEmail' is required",
                 ACTIVITIES_VALIDATION_FAILURE.getType()
             );
         }
@@ -117,23 +114,23 @@ public class KuFlowActivitiesValidation {
     }
 
     public static void validateProcessItemCreateRequest(ProcessItemCreateRequest request) {
-        if (request.getParams().getId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("'params.id' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        if (request.getId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'id' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
-        if (request.getParams().getProcessId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("'params.processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        if (request.getProcessId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
-        if (request.getParams().getType() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("'params.type' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        if (request.getType() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'type' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
 
-        if (ProcessItemType.TASK.equals(request.getParams().getType())) {
-            if (request.getParams().getTask() == null) {
-                throw ApplicationFailure.newNonRetryableFailure("'params.task' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        if (ProcessItemType.TASK.equals(request.getType())) {
+            if (request.getTask() == null) {
+                throw ApplicationFailure.newNonRetryableFailure("'task' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
             }
-            if (request.getParams().getTask().getTaskDefinitionCode() == null) {
+            if (request.getTask().getTaskDefinitionCode() == null) {
                 throw ApplicationFailure.newNonRetryableFailure(
-                    "'params.task.taskDefinitionCode' is required",
+                    "'task.taskDefinitionCode' is required",
                     ACTIVITIES_VALIDATION_FAILURE.getType()
                 );
             }
@@ -166,13 +163,13 @@ public class KuFlowActivitiesValidation {
 
     public static void validateProcessItemTaskDataUpdateRequest(ProcessItemTaskDataUpdateRequest request) {
         if (request.getProcessItemId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("'taskId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+            throw ApplicationFailure.newNonRetryableFailure("'processItemId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 
     public static void validateProcessItemTaskDataPatchRequest(ProcessItemTaskDataPatchRequest request) {
         if (request.getProcessItemId() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("'taskId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+            throw ApplicationFailure.newNonRetryableFailure("'processItemId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 
@@ -180,14 +177,11 @@ public class KuFlowActivitiesValidation {
         if (request.getProcessItemId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'processItemId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
-        if (request.getParams() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("'params' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        if (request.getLevel() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'level' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
-        if (request.getParams().getLevel() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("'params.level' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
-        }
-        if (request.getParams().getMessage() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("'params.message' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        if (request.getMessage() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'message' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 }
