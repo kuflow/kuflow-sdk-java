@@ -353,55 +353,52 @@ public final class ProcessOperationsImpl {
             Context context
         );
 
-        @Post("/processes/{id}/entity/~actions/upload-document")
+        @Post("/processes/{id}/~actions/upload-document")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<DocumentReference>> uploadProcessEntityDocument(
+        Mono<Response<DocumentReference>> uploadProcessDocument(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @QueryParam("fileContentType") String fileContentType,
             @QueryParam("fileName") String fileName,
-            @QueryParam("schemaPath") String schemaPath,
             @BodyParam("application/octet-stream") Flux<ByteBuffer> file,
             @HeaderParam("Content-Length") long contentLength,
             @HeaderParam("Accept") String accept,
             Context context
         );
 
-        @Post("/processes/{id}/entity/~actions/upload-document")
+        @Post("/processes/{id}/~actions/upload-document")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<DocumentReference>> uploadProcessEntityDocument(
+        Mono<Response<DocumentReference>> uploadProcessDocument(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @QueryParam("fileContentType") String fileContentType,
             @QueryParam("fileName") String fileName,
-            @QueryParam("schemaPath") String schemaPath,
             @BodyParam("application/octet-stream") BinaryData file,
             @HeaderParam("Content-Length") long contentLength,
             @HeaderParam("Accept") String accept,
             Context context
         );
 
-        @Post("/processes/{id}/entity/~actions/upload-document")
+        @Post("/processes/{id}/~actions/upload-document")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Response<DocumentReference> uploadProcessEntityDocumentSync(
+        Response<DocumentReference> uploadProcessDocumentSync(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @QueryParam("fileContentType") String fileContentType,
             @QueryParam("fileName") String fileName,
-            @QueryParam("schemaPath") String schemaPath,
             @BodyParam("application/octet-stream") BinaryData file,
             @HeaderParam("Content-Length") long contentLength,
             @HeaderParam("Accept") String accept,
             Context context
         );
 
-        @Get("/processes/{id}/entity/~actions/download-document")
+        @Get("/processes/{id}/~actions/download-document")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<BinaryData>> downloadProcessEntityDocument(
+        Mono<Response<BinaryData>> downloadProcessDocument(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @QueryParam("documentUri") String documentUri,
@@ -409,10 +406,10 @@ public final class ProcessOperationsImpl {
             Context context
         );
 
-        @Get("/processes/{id}/entity/~actions/download-document")
+        @Get("/processes/{id}/~actions/download-document")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Response<BinaryData> downloadProcessEntityDocumentSync(
+        Response<BinaryData> downloadProcessDocumentSync(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @QueryParam("documentUri") String documentUri,
@@ -2052,17 +2049,16 @@ public final class ProcessOperationsImpl {
     }
 
     /**
-     * Upload an entity document
+     * Upload a temporal document into the process that later on must be linked with a process domain resource
      *
-     * Save a document in the process to later be linked into the JSON data.
+     * Upload a temporal document into the process that later on must be linked with a process domain resource.
+     *
+     * Documents uploaded with this API will be deleted after 24 hours as long as they have not been linked to a
+     * process or process item..
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
      * @param fileName Document name.
-     * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
-     * schema path.
-     *
-     * ie: "#/properties/file", "#/definitions/UserType/name".
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2071,31 +2067,29 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentReference>> uploadProcessEntityDocumentWithResponseAsync(
+    public Mono<Response<DocumentReference>> uploadProcessDocumentWithResponseAsync(
         UUID id,
         String fileContentType,
         String fileName,
-        String schemaPath,
         Flux<ByteBuffer> file,
         long contentLength
     ) {
         return FluxUtil.withContext(context ->
-            uploadProcessEntityDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength, context)
+            uploadProcessDocumentWithResponseAsync(id, fileContentType, fileName, file, contentLength, context)
         );
     }
 
     /**
-     * Upload an entity document
+     * Upload a temporal document into the process that later on must be linked with a process domain resource
      *
-     * Save a document in the process to later be linked into the JSON data.
+     * Upload a temporal document into the process that later on must be linked with a process domain resource.
+     *
+     * Documents uploaded with this API will be deleted after 24 hours as long as they have not been linked to a
+     * process or process item..
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
      * @param fileName Document name.
-     * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
-     * schema path.
-     *
-     * ie: "#/properties/file", "#/definitions/UserType/name".
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -2105,41 +2099,29 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentReference>> uploadProcessEntityDocumentWithResponseAsync(
+    public Mono<Response<DocumentReference>> uploadProcessDocumentWithResponseAsync(
         UUID id,
         String fileContentType,
         String fileName,
-        String schemaPath,
         Flux<ByteBuffer> file,
         long contentLength,
         Context context
     ) {
         final String accept = "application/json";
-        return service.uploadProcessEntityDocument(
-            this.client.getHost(),
-            id,
-            fileContentType,
-            fileName,
-            schemaPath,
-            file,
-            contentLength,
-            accept,
-            context
-        );
+        return service.uploadProcessDocument(this.client.getHost(), id, fileContentType, fileName, file, contentLength, accept, context);
     }
 
     /**
-     * Upload an entity document
+     * Upload a temporal document into the process that later on must be linked with a process domain resource
      *
-     * Save a document in the process to later be linked into the JSON data.
+     * Upload a temporal document into the process that later on must be linked with a process domain resource.
+     *
+     * Documents uploaded with this API will be deleted after 24 hours as long as they have not been linked to a
+     * process or process item..
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
      * @param fileName Document name.
-     * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
-     * schema path.
-     *
-     * ie: "#/properties/file", "#/definitions/UserType/name".
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2148,31 +2130,29 @@ public final class ProcessOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentReference> uploadProcessEntityDocumentAsync(
+    public Mono<DocumentReference> uploadProcessDocumentAsync(
         UUID id,
         String fileContentType,
         String fileName,
-        String schemaPath,
         Flux<ByteBuffer> file,
         long contentLength
     ) {
-        return uploadProcessEntityDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength).flatMap(res ->
+        return uploadProcessDocumentWithResponseAsync(id, fileContentType, fileName, file, contentLength).flatMap(res ->
             Mono.justOrEmpty(res.getValue())
         );
     }
 
     /**
-     * Upload an entity document
+     * Upload a temporal document into the process that later on must be linked with a process domain resource
      *
-     * Save a document in the process to later be linked into the JSON data.
+     * Upload a temporal document into the process that later on must be linked with a process domain resource.
+     *
+     * Documents uploaded with this API will be deleted after 24 hours as long as they have not been linked to a
+     * process or process item..
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
      * @param fileName Document name.
-     * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
-     * schema path.
-     *
-     * ie: "#/properties/file", "#/definitions/UserType/name".
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -2182,38 +2162,30 @@ public final class ProcessOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentReference> uploadProcessEntityDocumentAsync(
+    public Mono<DocumentReference> uploadProcessDocumentAsync(
         UUID id,
         String fileContentType,
         String fileName,
-        String schemaPath,
         Flux<ByteBuffer> file,
         long contentLength,
         Context context
     ) {
-        return uploadProcessEntityDocumentWithResponseAsync(
-            id,
-            fileContentType,
-            fileName,
-            schemaPath,
-            file,
-            contentLength,
-            context
-        ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return uploadProcessDocumentWithResponseAsync(id, fileContentType, fileName, file, contentLength, context).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
+        );
     }
 
     /**
-     * Upload an entity document
+     * Upload a temporal document into the process that later on must be linked with a process domain resource
      *
-     * Save a document in the process to later be linked into the JSON data.
+     * Upload a temporal document into the process that later on must be linked with a process domain resource.
+     *
+     * Documents uploaded with this API will be deleted after 24 hours as long as they have not been linked to a
+     * process or process item..
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
      * @param fileName Document name.
-     * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
-     * schema path.
-     *
-     * ie: "#/properties/file", "#/definitions/UserType/name".
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2222,31 +2194,29 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentReference>> uploadProcessEntityDocumentWithResponseAsync(
+    public Mono<Response<DocumentReference>> uploadProcessDocumentWithResponseAsync(
         UUID id,
         String fileContentType,
         String fileName,
-        String schemaPath,
         BinaryData file,
         long contentLength
     ) {
         return FluxUtil.withContext(context ->
-            uploadProcessEntityDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength, context)
+            uploadProcessDocumentWithResponseAsync(id, fileContentType, fileName, file, contentLength, context)
         );
     }
 
     /**
-     * Upload an entity document
+     * Upload a temporal document into the process that later on must be linked with a process domain resource
      *
-     * Save a document in the process to later be linked into the JSON data.
+     * Upload a temporal document into the process that later on must be linked with a process domain resource.
+     *
+     * Documents uploaded with this API will be deleted after 24 hours as long as they have not been linked to a
+     * process or process item..
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
      * @param fileName Document name.
-     * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
-     * schema path.
-     *
-     * ie: "#/properties/file", "#/definitions/UserType/name".
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -2256,41 +2226,29 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentReference>> uploadProcessEntityDocumentWithResponseAsync(
+    public Mono<Response<DocumentReference>> uploadProcessDocumentWithResponseAsync(
         UUID id,
         String fileContentType,
         String fileName,
-        String schemaPath,
         BinaryData file,
         long contentLength,
         Context context
     ) {
         final String accept = "application/json";
-        return service.uploadProcessEntityDocument(
-            this.client.getHost(),
-            id,
-            fileContentType,
-            fileName,
-            schemaPath,
-            file,
-            contentLength,
-            accept,
-            context
-        );
+        return service.uploadProcessDocument(this.client.getHost(), id, fileContentType, fileName, file, contentLength, accept, context);
     }
 
     /**
-     * Upload an entity document
+     * Upload a temporal document into the process that later on must be linked with a process domain resource
      *
-     * Save a document in the process to later be linked into the JSON data.
+     * Upload a temporal document into the process that later on must be linked with a process domain resource.
+     *
+     * Documents uploaded with this API will be deleted after 24 hours as long as they have not been linked to a
+     * process or process item..
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
      * @param fileName Document name.
-     * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
-     * schema path.
-     *
-     * ie: "#/properties/file", "#/definitions/UserType/name".
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2299,31 +2257,29 @@ public final class ProcessOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentReference> uploadProcessEntityDocumentAsync(
+    public Mono<DocumentReference> uploadProcessDocumentAsync(
         UUID id,
         String fileContentType,
         String fileName,
-        String schemaPath,
         BinaryData file,
         long contentLength
     ) {
-        return uploadProcessEntityDocumentWithResponseAsync(id, fileContentType, fileName, schemaPath, file, contentLength).flatMap(res ->
+        return uploadProcessDocumentWithResponseAsync(id, fileContentType, fileName, file, contentLength).flatMap(res ->
             Mono.justOrEmpty(res.getValue())
         );
     }
 
     /**
-     * Upload an entity document
+     * Upload a temporal document into the process that later on must be linked with a process domain resource
      *
-     * Save a document in the process to later be linked into the JSON data.
+     * Upload a temporal document into the process that later on must be linked with a process domain resource.
+     *
+     * Documents uploaded with this API will be deleted after 24 hours as long as they have not been linked to a
+     * process or process item..
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
      * @param fileName Document name.
-     * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
-     * schema path.
-     *
-     * ie: "#/properties/file", "#/definitions/UserType/name".
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -2333,38 +2289,30 @@ public final class ProcessOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentReference> uploadProcessEntityDocumentAsync(
+    public Mono<DocumentReference> uploadProcessDocumentAsync(
         UUID id,
         String fileContentType,
         String fileName,
-        String schemaPath,
         BinaryData file,
         long contentLength,
         Context context
     ) {
-        return uploadProcessEntityDocumentWithResponseAsync(
-            id,
-            fileContentType,
-            fileName,
-            schemaPath,
-            file,
-            contentLength,
-            context
-        ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return uploadProcessDocumentWithResponseAsync(id, fileContentType, fileName, file, contentLength, context).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
+        );
     }
 
     /**
-     * Upload an entity document
+     * Upload a temporal document into the process that later on must be linked with a process domain resource
      *
-     * Save a document in the process to later be linked into the JSON data.
+     * Upload a temporal document into the process that later on must be linked with a process domain resource.
+     *
+     * Documents uploaded with this API will be deleted after 24 hours as long as they have not been linked to a
+     * process or process item..
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
      * @param fileName Document name.
-     * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
-     * schema path.
-     *
-     * ie: "#/properties/file", "#/definitions/UserType/name".
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -2374,22 +2322,20 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentReference> uploadProcessEntityDocumentWithResponse(
+    public Response<DocumentReference> uploadProcessDocumentWithResponse(
         UUID id,
         String fileContentType,
         String fileName,
-        String schemaPath,
         BinaryData file,
         long contentLength,
         Context context
     ) {
         final String accept = "application/json";
-        return service.uploadProcessEntityDocumentSync(
+        return service.uploadProcessDocumentSync(
             this.client.getHost(),
             id,
             fileContentType,
             fileName,
-            schemaPath,
             file,
             contentLength,
             accept,
@@ -2398,17 +2344,16 @@ public final class ProcessOperationsImpl {
     }
 
     /**
-     * Upload an entity document
+     * Upload a temporal document into the process that later on must be linked with a process domain resource
      *
-     * Save a document in the process to later be linked into the JSON data.
+     * Upload a temporal document into the process that later on must be linked with a process domain resource.
+     *
+     * Documents uploaded with this API will be deleted after 24 hours as long as they have not been linked to a
+     * process or process item..
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
      * @param fileName Document name.
-     * @param schemaPath JSON Schema path related to the document. The uploaded document will be validated by the passed
-     * schema path.
-     *
-     * ie: "#/properties/file", "#/definitions/UserType/name".
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2417,29 +2362,14 @@ public final class ProcessOperationsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentReference uploadProcessEntityDocument(
-        UUID id,
-        String fileContentType,
-        String fileName,
-        String schemaPath,
-        BinaryData file,
-        long contentLength
-    ) {
-        return uploadProcessEntityDocumentWithResponse(
-            id,
-            fileContentType,
-            fileName,
-            schemaPath,
-            file,
-            contentLength,
-            Context.NONE
-        ).getValue();
+    public DocumentReference uploadProcessDocument(UUID id, String fileContentType, String fileName, BinaryData file, long contentLength) {
+        return uploadProcessDocumentWithResponse(id, fileContentType, fileName, file, contentLength, Context.NONE).getValue();
     }
 
     /**
-     * Download entity document
+     * Download document
      *
-     * Given a process and a documentUri, download a document.
+     * Given a document uri download a document.
      *
      * @param id The resource ID.
      * @param documentUri Document URI to download.
@@ -2449,14 +2379,14 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> downloadProcessEntityDocumentWithResponseAsync(UUID id, String documentUri) {
-        return FluxUtil.withContext(context -> downloadProcessEntityDocumentWithResponseAsync(id, documentUri, context));
+    public Mono<Response<BinaryData>> downloadProcessDocumentWithResponseAsync(UUID id, String documentUri) {
+        return FluxUtil.withContext(context -> downloadProcessDocumentWithResponseAsync(id, documentUri, context));
     }
 
     /**
-     * Download entity document
+     * Download document
      *
-     * Given a process and a documentUri, download a document.
+     * Given a document uri download a document.
      *
      * @param id The resource ID.
      * @param documentUri Document URI to download.
@@ -2467,15 +2397,15 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> downloadProcessEntityDocumentWithResponseAsync(UUID id, String documentUri, Context context) {
+    public Mono<Response<BinaryData>> downloadProcessDocumentWithResponseAsync(UUID id, String documentUri, Context context) {
         final String accept = "application/octet-stream, application/json";
-        return service.downloadProcessEntityDocument(this.client.getHost(), id, documentUri, accept, context);
+        return service.downloadProcessDocument(this.client.getHost(), id, documentUri, accept, context);
     }
 
     /**
-     * Download entity document
+     * Download document
      *
-     * Given a process and a documentUri, download a document.
+     * Given a document uri download a document.
      *
      * @param id The resource ID.
      * @param documentUri Document URI to download.
@@ -2485,14 +2415,14 @@ public final class ProcessOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> downloadProcessEntityDocumentAsync(UUID id, String documentUri) {
-        return downloadProcessEntityDocumentWithResponseAsync(id, documentUri).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<BinaryData> downloadProcessDocumentAsync(UUID id, String documentUri) {
+        return downloadProcessDocumentWithResponseAsync(id, documentUri).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Download entity document
+     * Download document
      *
-     * Given a process and a documentUri, download a document.
+     * Given a document uri download a document.
      *
      * @param id The resource ID.
      * @param documentUri Document URI to download.
@@ -2503,14 +2433,14 @@ public final class ProcessOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> downloadProcessEntityDocumentAsync(UUID id, String documentUri, Context context) {
-        return downloadProcessEntityDocumentWithResponseAsync(id, documentUri, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<BinaryData> downloadProcessDocumentAsync(UUID id, String documentUri, Context context) {
+        return downloadProcessDocumentWithResponseAsync(id, documentUri, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Download entity document
+     * Download document
      *
-     * Given a process and a documentUri, download a document.
+     * Given a document uri download a document.
      *
      * @param id The resource ID.
      * @param documentUri Document URI to download.
@@ -2521,15 +2451,15 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> downloadProcessEntityDocumentWithResponse(UUID id, String documentUri, Context context) {
+    public Response<BinaryData> downloadProcessDocumentWithResponse(UUID id, String documentUri, Context context) {
         final String accept = "application/octet-stream, application/json";
-        return service.downloadProcessEntityDocumentSync(this.client.getHost(), id, documentUri, accept, context);
+        return service.downloadProcessDocumentSync(this.client.getHost(), id, documentUri, accept, context);
     }
 
     /**
-     * Download entity document
+     * Download document
      *
-     * Given a process and a documentUri, download a document.
+     * Given a document uri download a document.
      *
      * @param id The resource ID.
      * @param documentUri Document URI to download.
@@ -2539,7 +2469,7 @@ public final class ProcessOperationsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData downloadProcessEntityDocument(UUID id, String documentUri) {
-        return downloadProcessEntityDocumentWithResponse(id, documentUri, Context.NONE).getValue();
+    public BinaryData downloadProcessDocument(UUID id, String documentUri) {
+        return downloadProcessDocumentWithResponse(id, documentUri, Context.NONE).getValue();
     }
 }

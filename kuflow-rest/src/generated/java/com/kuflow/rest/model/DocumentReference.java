@@ -36,13 +36,6 @@ import java.io.IOException;
 public final class DocumentReference implements JsonSerializable<DocumentReference> {
 
     /*
-     * JSON Schema path related to the document. The uploaded document will be validated by the passed schema path.
-     *
-     * ie: "#/properties/file", "#/definitions/UserType/name"
-     */
-    private String schemaPath;
-
-    /*
      * JSON value representing the uploaded file.
      *
      * Example: `kuflow-file:uri=xxx-yyy-zzz;type=application/json;size=500;name=file.json;`
@@ -53,32 +46,6 @@ public final class DocumentReference implements JsonSerializable<DocumentReferen
      * Creates an instance of DocumentReference class.
      */
     public DocumentReference() {}
-
-    /**
-     * Get the schemaPath property: JSON Schema path related to the document. The uploaded document will be validated by
-     * the passed schema path.
-     *
-     * ie: "#/properties/file", "#/definitions/UserType/name".
-     *
-     * @return the schemaPath value.
-     */
-    public String getSchemaPath() {
-        return this.schemaPath;
-    }
-
-    /**
-     * Set the schemaPath property: JSON Schema path related to the document. The uploaded document will be validated by
-     * the passed schema path.
-     *
-     * ie: "#/properties/file", "#/definitions/UserType/name".
-     *
-     * @param schemaPath the schemaPath value to set.
-     * @return the DocumentReference object itself.
-     */
-    public DocumentReference setSchemaPath(String schemaPath) {
-        this.schemaPath = schemaPath;
-        return this;
-    }
 
     /**
      * Get the documentUri property: JSON value representing the uploaded file.
@@ -110,7 +77,6 @@ public final class DocumentReference implements JsonSerializable<DocumentReferen
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("schemaPath", this.schemaPath);
         jsonWriter.writeStringField("documentUri", this.documentUri);
         return jsonWriter.writeEndObject();
     }
@@ -131,9 +97,7 @@ public final class DocumentReference implements JsonSerializable<DocumentReferen
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("schemaPath".equals(fieldName)) {
-                    deserializedDocumentReference.schemaPath = reader.getString();
-                } else if ("documentUri".equals(fieldName)) {
+                if ("documentUri".equals(fieldName)) {
                     deserializedDocumentReference.documentUri = reader.getString();
                 } else {
                     reader.skipChildren();

@@ -67,6 +67,11 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
      */
     private ProcessItemTaskCreateParams task;
 
+    /*
+     * The message property.
+     */
+    private ProcessItemMessageCreateParams message;
+
     /**
      * Creates an instance of ProcessItemCreateParams class.
      */
@@ -193,6 +198,26 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
     }
 
     /**
+     * Get the message property: The message property.
+     *
+     * @return the message value.
+     */
+    public ProcessItemMessageCreateParams getMessage() {
+        return this.message;
+    }
+
+    /**
+     * Set the message property: The message property.
+     *
+     * @param message the message value to set.
+     * @return the ProcessItemCreateParams object itself.
+     */
+    public ProcessItemCreateParams setMessage(ProcessItemMessageCreateParams message) {
+        this.message = message;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -204,6 +229,7 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
         jsonWriter.writeStringField("ownerId", Objects.toString(this.ownerId, null));
         jsonWriter.writeStringField("ownerEmail", this.ownerEmail);
         jsonWriter.writeJsonField("task", this.task);
+        jsonWriter.writeJsonField("message", this.message);
         return jsonWriter.writeEndObject();
     }
 
@@ -240,6 +266,8 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
                     deserializedProcessItemCreateParams.ownerEmail = reader.getString();
                 } else if ("task".equals(fieldName)) {
                     deserializedProcessItemCreateParams.task = ProcessItemTaskCreateParams.fromJson(reader);
+                } else if ("message".equals(fieldName)) {
+                    deserializedProcessItemCreateParams.message = ProcessItemMessageCreateParams.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

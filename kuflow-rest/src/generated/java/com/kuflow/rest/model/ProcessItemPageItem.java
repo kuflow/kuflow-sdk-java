@@ -69,6 +69,11 @@ public final class ProcessItemPageItem extends AbstractAudited {
      */
     private ProcessItemTaskPageItem task;
 
+    /*
+     * The message property.
+     */
+    private ProcessItemMessagePageItem message;
+
     /**
      * Creates an instance of ProcessItemPageItem class.
      */
@@ -195,6 +200,26 @@ public final class ProcessItemPageItem extends AbstractAudited {
     }
 
     /**
+     * Get the message property: The message property.
+     *
+     * @return the message value.
+     */
+    public ProcessItemMessagePageItem getMessage() {
+        return this.message;
+    }
+
+    /**
+     * Set the message property: The message property.
+     *
+     * @param message the message value to set.
+     * @return the ProcessItemPageItem object itself.
+     */
+    public ProcessItemPageItem setMessage(ProcessItemMessagePageItem message) {
+        this.message = message;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -252,6 +277,7 @@ public final class ProcessItemPageItem extends AbstractAudited {
         jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
         jsonWriter.writeStringField("ownerId", Objects.toString(this.ownerId, null));
         jsonWriter.writeJsonField("task", this.task);
+        jsonWriter.writeJsonField("message", this.message);
         return jsonWriter.writeEndObject();
     }
 
@@ -304,6 +330,8 @@ public final class ProcessItemPageItem extends AbstractAudited {
                     );
                 } else if ("task".equals(fieldName)) {
                     deserializedProcessItemPageItem.task = ProcessItemTaskPageItem.fromJson(reader);
+                } else if ("message".equals(fieldName)) {
+                    deserializedProcessItemPageItem.message = ProcessItemMessagePageItem.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

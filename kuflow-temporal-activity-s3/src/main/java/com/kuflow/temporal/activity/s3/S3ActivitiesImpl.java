@@ -32,6 +32,7 @@ import com.kuflow.rest.model.ProcessItem;
 import com.kuflow.rest.model.ProcessItemTask;
 import com.kuflow.rest.model.ProcessItemType;
 import com.kuflow.rest.operation.ProcessItemOperations;
+import com.kuflow.rest.operation.ProcessOperations;
 import com.kuflow.temporal.activity.s3.model.KuFlowFileCopy;
 import com.kuflow.temporal.activity.s3.model.ProcessItemTaskDataDocumentsCopyRequest;
 import com.kuflow.temporal.activity.s3.model.ProcessItemTaskDataDocumentsCopyResponse;
@@ -56,6 +57,8 @@ public class S3ActivitiesImpl implements S3Activities {
         return new S3ActivitiesImplBuilder();
     }
 
+    private final ProcessOperations processOperations;
+
     private final ProcessItemOperations processItemOperations;
 
     private final S3Client s3Client;
@@ -67,6 +70,7 @@ public class S3ActivitiesImpl implements S3Activities {
         Objects.requireNonNull(s3Client, "'s3Client' is required");
         Objects.requireNonNull(defaultBucket, "'defaultBucket' is required");
 
+        this.processOperations = kuFlowRestClient.getProcessOperations();
         this.processItemOperations = kuFlowRestClient.getProcessItemOperations();
         this.s3Client = s3Client;
         this.defaultBucket = defaultBucket;
@@ -123,7 +127,7 @@ public class S3ActivitiesImpl implements S3Activities {
             throw ApplicationFailure.newNonRetryableFailure("Name required", "KuFlowActivities.validation");
         }
 
-        BinaryData sourceFile = this.processItemOperations.downloadProcessItemTaskDataDocument(processItem.getId(), file.getUri());
+        BinaryData sourceFile = this.processOperations.downloadProcessDocument(processItem.getId(), file.getUri());
         try (InputStream sourceInputStream = sourceFile.toStream()) {
             RequestBody requestBody = RequestBody.fromInputStream(sourceInputStream, file.getSize());
             PutObjectRequest putObjectRequest = PutObjectRequest.builder()

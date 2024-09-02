@@ -33,7 +33,6 @@ import com.kuflow.rest.model.ProcessCreateParams;
 import com.kuflow.rest.model.ProcessItem;
 import com.kuflow.rest.model.ProcessItemCreateParams;
 import com.kuflow.rest.model.ProcessItemTaskCreateParams;
-import com.kuflow.rest.model.ProcessItemTaskDataDocumentUploadParams;
 import com.kuflow.rest.model.ProcessItemTaskDataUpdateParams;
 import java.util.List;
 import java.util.Map;
@@ -73,13 +72,9 @@ public class KuFlowRestClientTest {
 
         System.out.println(processItem);
 
-        ProcessItemTaskDataDocumentUploadParams uploadParams = new ProcessItemTaskDataDocumentUploadParams().setSchemaPath("DOC_001");
-
         BinaryData file = BinaryData.fromStream(this.getClass().getResourceAsStream("kuflow.png"));
         Document document = new Document().setFileContent(file).setFileName("kuflow.png").setContentType("image/png");
-        DocumentReference documentReference = kuFlowRestClient
-            .getProcessItemOperations()
-            .uploadProcessItemTaskDataDocument(processItem.getId(), uploadParams, document);
+        DocumentReference documentReference = kuFlowRestClient.getProcessOperations().uploadProcessDocument(processItem.getId(), document);
 
         ProcessItemTaskDataUpdateParams updateParams = new ProcessItemTaskDataUpdateParams()
             .setData(
