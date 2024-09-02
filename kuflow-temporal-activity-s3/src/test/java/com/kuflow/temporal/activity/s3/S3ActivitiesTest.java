@@ -38,6 +38,7 @@ import com.kuflow.rest.model.ProcessItem;
 import com.kuflow.rest.model.ProcessItemTask;
 import com.kuflow.rest.model.ProcessItemType;
 import com.kuflow.rest.operation.ProcessItemOperations;
+import com.kuflow.rest.operation.ProcessOperations;
 import com.kuflow.rest.util.UUIDUtils;
 import com.kuflow.temporal.activity.s3.model.ProcessItemTaskDataDocumentsCopyRequest;
 import com.kuflow.temporal.activity.s3.model.ProcessItemTaskDataDocumentsCopyResponse;
@@ -54,13 +55,15 @@ public class S3ActivitiesTest {
 
     private static final KuFlowRestClient kuFlowRestClient = mock(KuFlowRestClient.class);
 
+    private static final ProcessOperations processOperations = mock(ProcessOperations.class);
+
     private static final ProcessItemOperations processItemOperations = mock(ProcessItemOperations.class);
 
     private static final S3Client s3Client = mock(S3Client.class);
 
     @BeforeEach
     public void setupTest() {
-        reset(kuFlowRestClient, processItemOperations, s3Client);
+        reset(kuFlowRestClient, processOperations, processItemOperations, s3Client);
     }
 
     @Test
@@ -83,9 +86,10 @@ public class S3ActivitiesTest {
         processItem.setType(ProcessItemType.TASK);
         processItem.setTask(processItemTask);
 
+        when(kuFlowRestClient.getProcessOperations()).thenReturn(processOperations);
         when(kuFlowRestClient.getProcessItemOperations()).thenReturn(processItemOperations);
         when(processItemOperations.retrieveProcessItem(eq(processItem.getId()))).thenReturn(processItem);
-        when(processItemOperations.downloadProcessItemTaskDataDocument(eq(processItem.getId()), any())).thenReturn(
+        when(processOperations.downloadProcessDocument(eq(processItem.getId()), any())).thenReturn(
             BinaryData.fromBytes("Dummy".getBytes())
         );
 
@@ -134,9 +138,10 @@ public class S3ActivitiesTest {
         processItem.setType(ProcessItemType.TASK);
         processItem.setTask(processItemTask);
 
+        when(kuFlowRestClient.getProcessOperations()).thenReturn(processOperations);
         when(kuFlowRestClient.getProcessItemOperations()).thenReturn(processItemOperations);
         when(processItemOperations.retrieveProcessItem(eq(processItem.getId()))).thenReturn(processItem);
-        when(processItemOperations.downloadProcessItemTaskDataDocument(eq(processItem.getId()), any())).thenReturn(
+        when(processOperations.downloadProcessDocument(eq(processItem.getId()), any())).thenReturn(
             BinaryData.fromBytes("Dummy".getBytes())
         );
 
@@ -186,9 +191,10 @@ public class S3ActivitiesTest {
         processItem.setType(ProcessItemType.TASK);
         processItem.setTask(processItemTask);
 
+        when(kuFlowRestClient.getProcessOperations()).thenReturn(processOperations);
         when(kuFlowRestClient.getProcessItemOperations()).thenReturn(processItemOperations);
         when(processItemOperations.retrieveProcessItem(eq(processItem.getId()))).thenReturn(processItem);
-        when(processItemOperations.downloadProcessItemTaskDataDocument(eq(processItem.getId()), any())).thenReturn(
+        when(processOperations.downloadProcessDocument(eq(processItem.getId()), any())).thenReturn(
             BinaryData.fromBytes("Dummy".getBytes())
         );
 
@@ -237,9 +243,10 @@ public class S3ActivitiesTest {
         processItem.setType(ProcessItemType.TASK);
         processItem.setTask(processItemTask);
 
+        when(kuFlowRestClient.getProcessOperations()).thenReturn(processOperations);
         when(kuFlowRestClient.getProcessItemOperations()).thenReturn(processItemOperations);
         when(processItemOperations.retrieveProcessItem(eq(processItem.getId()))).thenReturn(processItem);
-        when(processItemOperations.downloadProcessItemTaskDataDocument(eq(processItem.getId()), any())).thenReturn(
+        when(processOperations.downloadProcessDocument(eq(processItem.getId()), any())).thenReturn(
             BinaryData.fromBytes("Dummy".getBytes())
         );
 

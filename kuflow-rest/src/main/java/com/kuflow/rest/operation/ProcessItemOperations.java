@@ -30,8 +30,6 @@ import com.azure.core.util.Context;
 import com.kuflow.rest.implementation.KuFlowClientImpl;
 import com.kuflow.rest.implementation.ProcessItemOperationsImpl;
 import com.kuflow.rest.model.DefaultErrorException;
-import com.kuflow.rest.model.Document;
-import com.kuflow.rest.model.DocumentReference;
 import com.kuflow.rest.model.JsonPatchOperation;
 import com.kuflow.rest.model.ProcessItem;
 import com.kuflow.rest.model.ProcessItemCreateParams;
@@ -39,12 +37,10 @@ import com.kuflow.rest.model.ProcessItemFindOptions;
 import com.kuflow.rest.model.ProcessItemPage;
 import com.kuflow.rest.model.ProcessItemTaskAppendLogParams;
 import com.kuflow.rest.model.ProcessItemTaskAssignParams;
-import com.kuflow.rest.model.ProcessItemTaskDataDocumentUploadParams;
 import com.kuflow.rest.model.ProcessItemTaskDataUpdateParams;
 import com.kuflow.rest.model.ProcessItemTaskState;
 import com.kuflow.rest.model.ProcessItemType;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
@@ -435,114 +431,6 @@ public class ProcessItemOperations {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProcessItem patchProcessItemTaskData(UUID id, List<JsonPatchOperation> jsonPatch) {
         return this.patchProcessItemTaskDataWithResponse(id, jsonPatch, Context.NONE).getValue();
-    }
-
-    /**
-     * Upload a document associated with the process item task data
-     * <p>
-     * Save a document in the task to later be linked into the JSON data.
-     *
-     * @param id The resource ID.
-     * @param processItemTaskDataDocumentUploadParams Params info.
-     * @param document Document to upload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentReference> uploadProcessItemTaskDataDocumentWithResponse(
-        UUID id,
-        ProcessItemTaskDataDocumentUploadParams processItemTaskDataDocumentUploadParams,
-        Document document,
-        Context context
-    ) {
-        Objects.requireNonNull(document, "'document' is required");
-        Objects.requireNonNull(document.getFileContent(), "'document.fileContent' is required");
-        Objects.requireNonNull(document.getFileContent().getLength(), "'document.fileContent.length' is required");
-        Objects.requireNonNull(document.getFileName(), "'document.fileName' is required");
-        Objects.requireNonNull(document.getContentType(), "'document.contentType' is required");
-        if (document.getFileContent().getLength() == 0) {
-            throw new IllegalArgumentException("File size must be greater that 0");
-        }
-
-        String fileContentType = document.getContentType();
-        String fileName = document.getFileName();
-        String schemaPath = processItemTaskDataDocumentUploadParams.getSchemaPath();
-        BinaryData file = document.getFileContent();
-        long contentLength = file.getLength();
-        return this.service.uploadProcessItemTaskDataDocumentWithResponse(
-                id,
-                fileContentType,
-                fileName,
-                schemaPath,
-                file,
-                contentLength,
-                context
-            );
-    }
-
-    /**
-     * Upload a document associated with the process item task data
-     * <p>
-     * Save a document in the task to later be linked into the JSON data.
-     *
-     * @param id The resource ID.
-     * @param processItemTaskDataDocumentUploadParams Params info.
-     * @param document Document to upload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentReference uploadProcessItemTaskDataDocument(
-        UUID id,
-        ProcessItemTaskDataDocumentUploadParams processItemTaskDataDocumentUploadParams,
-        Document document
-    ) {
-        return this.uploadProcessItemTaskDataDocumentWithResponse(
-                id,
-                processItemTaskDataDocumentUploadParams,
-                document,
-                Context.NONE
-            ).getValue();
-    }
-
-    /**
-     * Download document
-     * <p>
-     * Given a task, download a document from a json form data.
-     *
-     * @param id The resource ID.
-     * @param documentUri Document URI to download.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> downloadProcessItemTaskDataDocumentWithResponse(UUID id, String documentUri, Context context) {
-        return this.service.downloadProcessItemTaskDataDocumentWithResponse(id, documentUri, context);
-    }
-
-    /**
-     * Download document
-     * <p>
-     * Given a task, download a document from a json form data.
-     *
-     * @param id The resource ID.
-     * @param documentUri Document URI to download.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData downloadProcessItemTaskDataDocument(UUID id, String documentUri) {
-        return this.downloadProcessItemTaskDataDocumentWithResponse(id, documentUri, Context.NONE).getValue();
     }
 
     /**

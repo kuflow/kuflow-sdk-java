@@ -36,7 +36,6 @@ import com.kuflow.rest.model.JsonPatchOperation;
 import com.kuflow.rest.model.Process;
 import com.kuflow.rest.model.ProcessChangeInitiatorParams;
 import com.kuflow.rest.model.ProcessCreateParams;
-import com.kuflow.rest.model.ProcessEntityDocumentUploadParams;
 import com.kuflow.rest.model.ProcessEntityUpdateParams;
 import com.kuflow.rest.model.ProcessFindOptions;
 import com.kuflow.rest.model.ProcessMetadataUpdateParams;
@@ -530,12 +529,14 @@ public class ProcessOperations {
     }
 
     /**
-     * Upload an entity document
+     * Upload a temporal document into the process that later on must be linked with a process domain resource
      * <p>
-     * Save a document in the process to later be linked into the JSON data.
+     * Upload a temporal document into the process that later on must be linked with a process domain resource.
+     * <p>
+     * Documents uploaded with this API will be deleted after 24 hours as long as they have not been linked to a
+     * process or process item.
      *
      * @param id The resource ID.
-     * @param processEntityDocumentUploadParams Params info.
      * @param document Document to upload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -544,12 +545,7 @@ public class ProcessOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentReference> uploadProcessEntityDocumentWithResponse(
-        UUID id,
-        ProcessEntityDocumentUploadParams processEntityDocumentUploadParams,
-        Document document,
-        Context context
-    ) {
+    public Response<DocumentReference> uploadProcessDocumentWithResponse(UUID id, Document document, Context context) {
         Objects.requireNonNull(document, "'document' is required");
         Objects.requireNonNull(document.getFileContent(), "'document.fileContent' is required");
         Objects.requireNonNull(document.getFileContent().getLength(), "'document.fileContent.length' is required");
@@ -561,27 +557,20 @@ public class ProcessOperations {
 
         String fileContentType = document.getContentType();
         String fileName = document.getFileName();
-        String schemaPath = processEntityDocumentUploadParams.getSchemaPath();
         BinaryData file = document.getFileContent();
         long contentLength = file.getLength();
-        return this.service.uploadProcessEntityDocumentWithResponse(
-                id,
-                fileContentType,
-                fileName,
-                schemaPath,
-                file,
-                contentLength,
-                context
-            );
+        return this.service.uploadProcessDocumentWithResponse(id, fileContentType, fileName, file, contentLength, context);
     }
 
     /**
-     * Upload an entity document
+     * Upload a temporal document into the process that later on must be linked with a process domain resource
      * <p>
-     * Save a document in the process to later be linked into the JSON data.
+     * Upload a temporal document into the process that later on must be linked with a process domain resource.
+     * <p>
+     * Documents uploaded with this API will be deleted after 24 hours as long as they have not been linked to a
+     * process or process item.
      *
      * @param id The resource ID.
-     * @param processEntityDocumentUploadParams Params info.
      * @param document Document to upload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -589,18 +578,14 @@ public class ProcessOperations {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentReference uploadProcessEntityDocument(
-        UUID id,
-        ProcessEntityDocumentUploadParams processEntityDocumentUploadParams,
-        Document document
-    ) {
-        return this.uploadProcessEntityDocumentWithResponse(id, processEntityDocumentUploadParams, document, Context.NONE).getValue();
+    public DocumentReference uploadProcessDocument(UUID id, Document document) {
+        return this.uploadProcessDocumentWithResponse(id, document, Context.NONE).getValue();
     }
 
     /**
-     * Download entity document
+     * Download document
      * <p>
-     * Given a process and a documentUri, download a document.
+     * Given a document uri download a document.
      *
      * @param id The resource ID.
      * @param documentUri Document URI to download.
@@ -611,14 +596,14 @@ public class ProcessOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> downloadProcessEntityDocumentWithResponse(UUID id, String documentUri, Context context) {
-        return this.service.downloadProcessEntityDocumentWithResponse(id, documentUri, context);
+    public Response<BinaryData> downloadProcessDocumentWithResponse(UUID id, String documentUri, Context context) {
+        return this.service.downloadProcessDocumentWithResponse(id, documentUri, context);
     }
 
     /**
-     * Download entity document
+     * Download document
      * <p>
-     * Given a process and a documentUri, download a document.
+     * Given a document uri download a document.
      *
      * @param id The resource ID.
      * @param documentUri Document URI to download.
@@ -628,7 +613,7 @@ public class ProcessOperations {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData downloadProcessEntityDocument(UUID id, String documentUri) {
-        return this.downloadProcessEntityDocumentWithResponse(id, documentUri, Context.NONE).getValue();
+    public BinaryData downloadProcessDocument(UUID id, String documentUri) {
+        return this.downloadProcessDocumentWithResponse(id, documentUri, Context.NONE).getValue();
     }
 }
