@@ -46,7 +46,7 @@ public class UIVisionActivitiesImpl implements UIVisionActivities {
             .setLogDirectory(this.uiVisionActivityConfiguration.getLogDirectory())
             .setCloseBrowser(String.valueOf(this.uiVisionActivityConfiguration.getCloseBrowser()))
             .setCloseRpa(String.valueOf(this.uiVisionActivityConfiguration.getCloseRpa()))
-            .setCmdVar1(request.getTaskId().toString())
+            .setCmdVar1(request.getProcessItemId().toString())
             .setCmdVar2(request.getExtraCommandVariable2())
             .setCmdVar3(request.getExtraCommandVariable3())
             .build();

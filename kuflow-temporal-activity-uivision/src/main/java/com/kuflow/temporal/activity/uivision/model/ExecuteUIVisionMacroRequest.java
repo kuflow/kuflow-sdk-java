@@ -27,7 +27,7 @@ import java.util.UUID;
 
 public class ExecuteUIVisionMacroRequest extends AbstractModel {
 
-    private UUID taskId;
+    private UUID processItemId;
 
     /**
      * UI.Vision Internal Variable #2
@@ -43,12 +43,12 @@ public class ExecuteUIVisionMacroRequest extends AbstractModel {
      */
     private String extraCommandVariable3;
 
-    public UUID getTaskId() {
-        return this.taskId;
+    public UUID getProcessItemId() {
+        return this.processItemId;
     }
 
-    public void setTaskId(UUID taskId) {
-        this.taskId = taskId;
+    public void setProcessItemId(UUID processItemId) {
+        this.processItemId = processItemId;
     }
 
     public String getExtraCommandVariable2() {
