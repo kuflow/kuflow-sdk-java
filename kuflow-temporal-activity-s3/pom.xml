@@ -44,6 +44,10 @@
   <dependencies>
     <dependency>
       <groupId>com.kuflow</groupId>
+      <artifactId>kuflow-rest</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.kuflow</groupId>
       <artifactId>kuflow-temporal-common</artifactId>
     </dependency>
     <dependency>

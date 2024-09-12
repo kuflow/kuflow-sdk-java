@@ -36,24 +36,20 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>kuflow-temporal-activity-uivision</artifactId>
+  <artifactId>kuflow-temporal-workflow-kuflow</artifactId>
   <packaging>jar</packaging>
 
-  <name>KuFlow SDK :: Temporal :: Activity :: UI Vision</name>
+  <name>KuFlow SDK :: Temporal :: Workflow :: KuFlow</name>
 
   <dependencies>
     <dependency>
-      <groupId>com.kuflow</groupId>
-      <artifactId>kuflow-temporal-common</artifactId>
+      <groupId>io.temporal</groupId>
+      <artifactId>temporal-sdk</artifactId>
     </dependency>
 
     <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-text</artifactId>
+      <groupId>com.kuflow</groupId>
+      <artifactId>kuflow-temporal-common</artifactId>
     </dependency>
   </dependencies>
 

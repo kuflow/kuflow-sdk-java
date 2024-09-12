@@ -39,11 +39,11 @@ import com.kuflow.rest.model.ProcessItemTask;
 import com.kuflow.rest.model.ProcessItemType;
 import com.kuflow.rest.operation.ProcessItemOperations;
 import com.kuflow.rest.operation.ProcessOperations;
-import com.kuflow.rest.util.UUIDUtils;
 import com.kuflow.temporal.activity.s3.model.ProcessItemTaskDataDocumentsCopyRequest;
 import com.kuflow.temporal.activity.s3.model.ProcessItemTaskDataDocumentsCopyResponse;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -82,7 +82,7 @@ public class S3ActivitiesTest {
         processItemTask.setData(data);
 
         ProcessItem processItem = new ProcessItem();
-        processItem.setId(UUIDUtils.generateUUIDv7());
+        processItem.setId(UUID.randomUUID());
         processItem.setType(ProcessItemType.TASK);
         processItem.setTask(processItemTask);
 
@@ -134,7 +134,7 @@ public class S3ActivitiesTest {
         processItemTask.setData(data);
 
         ProcessItem processItem = new ProcessItem();
-        processItem.setId(UUIDUtils.generateUUIDv7());
+        processItem.setId(UUID.randomUUID());
         processItem.setType(ProcessItemType.TASK);
         processItem.setTask(processItemTask);
 
@@ -187,7 +187,7 @@ public class S3ActivitiesTest {
         processItemTask.setData(data);
 
         ProcessItem processItem = new ProcessItem();
-        processItem.setId(UUIDUtils.generateUUIDv7());
+        processItem.setId(UUID.randomUUID());
         processItem.setType(ProcessItemType.TASK);
         processItem.setTask(processItemTask);
 
@@ -239,7 +239,7 @@ public class S3ActivitiesTest {
         processItemTask.setData(data);
 
         ProcessItem processItem = new ProcessItem();
-        processItem.setId(UUIDUtils.generateUUIDv7());
+        processItem.setId(UUID.randomUUID());
         processItem.setType(ProcessItemType.TASK);
         processItem.setTask(processItemTask);
 

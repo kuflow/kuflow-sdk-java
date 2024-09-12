@@ -33,7 +33,7 @@ import java.util.Optional;
 
 public abstract class AbstractModel {
 
-    private Map<String, Serializable> payloads = new HashMap<>();
+    private final Map<String, Serializable> payloads = new HashMap<>();
 
     public Map<String, Serializable> getPayloads() {
         return Collections.unmodifiableMap(this.payloads);
@@ -45,17 +45,17 @@ public abstract class AbstractModel {
         this.payloads.putAll(payloads);
     }
 
-    public void putPayload(String name, Serializable value) {
+    public void putPayloadItem(String name, Serializable value) {
         Objects.requireNonNull(name, "'name' is required");
         Objects.requireNonNull(value, "'value' is required");
         this.payloads.put(name, value);
     }
 
-    public <T> T getPayload(String name, Class<T> clazz) {
-        return this.getPayloadOptional(name, clazz).orElseThrow();
+    public <T> T getPayloadItem(String name, Class<T> clazz) {
+        return this.findPayloadItem(name, clazz).orElseThrow();
     }
 
-    public <T> Optional<T> getPayloadOptional(String name, Class<T> clazz) {
+    public <T> Optional<T> findPayloadItem(String name, Class<T> clazz) {
         if (!this.payloads.containsKey(name)) {
             return Optional.empty();
         }

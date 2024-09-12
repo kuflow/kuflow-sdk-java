@@ -53,6 +53,8 @@
     <module>kuflow-temporal-activity-s3</module>
     <module>kuflow-temporal-activity-robotframework</module>
     <module>kuflow-temporal-activity-uivision</module>
+    <module>kuflow-temporal-workflow-kuflow</module>
+    <module>kuflow-temporal-worker</module>
     <module>kuflow-spring-boot-autoconfigure</module>
   </modules>
 
@@ -91,7 +93,6 @@
     <azure-core.version>1.50.0</azure-core.version>
     <azure-communication-common.version>1.3.5</azure-communication-common.version>
     <jsr305.version>3.0.2</jsr305.version>
-    <uuid-creator.version>6.0.0</uuid-creator.version>
 
     <wiremock.version>2.35.1</wiremock.version>
     <awaitility.version>4.2.1</awaitility.version>
@@ -220,11 +221,6 @@
         <groupId>com.google.code.findbugs</groupId>
         <artifactId>jsr305</artifactId>
         <version>${jsr305.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.github.f4b6a3</groupId>
-        <artifactId>uuid-creator</artifactId>
-        <version>${uuid-creator.version}</version>
       </dependency>
 
       <dependency>
