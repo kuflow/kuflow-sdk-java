@@ -39,7 +39,7 @@
   <artifactId>kuflow-temporal-activity-robotframework</artifactId>
   <packaging>jar</packaging>
 
-  <name>KuFlow SDK :: Temporal :: Activity :: RobotFramework</name>
+  <name>KuFlow SDK :: Temporal :: Activity :: Robot Framework</name>
 
   <dependencies>
     <dependency>
