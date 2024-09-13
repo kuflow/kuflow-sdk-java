@@ -36,7 +36,7 @@ import java.io.IOException;
 public final class ProcessItemMessagePageItem implements JsonSerializable<ProcessItemMessagePageItem> {
 
     /*
-     * The text property.
+     * Message text in Markdown format according to the specification https://spec.commonmark.org/
      */
     private String text;
 
@@ -51,7 +51,8 @@ public final class ProcessItemMessagePageItem implements JsonSerializable<Proces
     public ProcessItemMessagePageItem() {}
 
     /**
-     * Get the text property: The text property.
+     * Get the text property: Message text in Markdown format according to the specification
+     * https://spec.commonmark.org/.
      *
      * @return the text value.
      */
@@ -60,7 +61,8 @@ public final class ProcessItemMessagePageItem implements JsonSerializable<Proces
     }
 
     /**
-     * Set the text property: The text property.
+     * Set the text property: Message text in Markdown format according to the specification
+     * https://spec.commonmark.org/.
      *
      * @param text the text value to set.
      * @return the ProcessItemMessagePageItem object itself.
