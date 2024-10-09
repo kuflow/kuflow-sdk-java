@@ -60,6 +60,16 @@ public final class RobotPageItem extends AbstractAudited {
     private String description;
 
     /*
+     * Robot source type
+     */
+    private RobotSourceType sourceType;
+
+    /*
+     * Robot source type
+     */
+    private RobotSourceFile sourceFile;
+
+    /*
      * Tenant ID.
      */
     private UUID tenantId;
@@ -150,6 +160,46 @@ public final class RobotPageItem extends AbstractAudited {
     }
 
     /**
+     * Get the sourceType property: Robot source type.
+     *
+     * @return the sourceType value.
+     */
+    public RobotSourceType getSourceType() {
+        return this.sourceType;
+    }
+
+    /**
+     * Set the sourceType property: Robot source type.
+     *
+     * @param sourceType the sourceType value to set.
+     * @return the RobotPageItem object itself.
+     */
+    public RobotPageItem setSourceType(RobotSourceType sourceType) {
+        this.sourceType = sourceType;
+        return this;
+    }
+
+    /**
+     * Get the sourceFile property: Robot source type.
+     *
+     * @return the sourceFile value.
+     */
+    public RobotSourceFile getSourceFile() {
+        return this.sourceFile;
+    }
+
+    /**
+     * Set the sourceFile property: Robot source type.
+     *
+     * @param sourceFile the sourceFile value to set.
+     * @return the RobotPageItem object itself.
+     */
+    public RobotPageItem setSourceFile(RobotSourceFile sourceFile) {
+        this.sourceFile = sourceFile;
+        return this;
+    }
+
+    /**
      * Get the tenantId property: Tenant ID.
      *
      * @return the tenantId value.
@@ -224,6 +274,8 @@ public final class RobotPageItem extends AbstractAudited {
         jsonWriter.writeStringField("id", Objects.toString(this.id, null));
         jsonWriter.writeStringField("code", this.code);
         jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("sourceType", this.sourceType == null ? null : this.sourceType.toString());
+        jsonWriter.writeJsonField("sourceFile", this.sourceFile);
         jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
         jsonWriter.writeStringField("description", this.description);
         return jsonWriter.writeEndObject();
@@ -265,6 +317,10 @@ public final class RobotPageItem extends AbstractAudited {
                     deserializedRobotPageItem.code = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     deserializedRobotPageItem.name = reader.getString();
+                } else if ("sourceType".equals(fieldName)) {
+                    deserializedRobotPageItem.sourceType = RobotSourceType.fromString(reader.getString());
+                } else if ("sourceFile".equals(fieldName)) {
+                    deserializedRobotPageItem.sourceFile = RobotSourceFile.fromJson(reader);
                 } else if ("tenantId".equals(fieldName)) {
                     deserializedRobotPageItem.tenantId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("description".equals(fieldName)) {
