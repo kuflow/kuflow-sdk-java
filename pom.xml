@@ -39,7 +39,7 @@
 
   <groupId>com.kuflow</groupId>
   <artifactId>kuflow-sdk</artifactId>
-  <version>3.0.2-SNAPSHOT</version>
+  <version>3.1.0</version>
   <packaging>pom</packaging>
 
   <name>KuFlow SDK</name>
