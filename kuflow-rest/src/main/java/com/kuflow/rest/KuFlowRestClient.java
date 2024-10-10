@@ -31,6 +31,7 @@ import com.kuflow.rest.operation.PrincipalOperations;
 import com.kuflow.rest.operation.ProcessItemOperations;
 import com.kuflow.rest.operation.ProcessOperations;
 import com.kuflow.rest.operation.RobotOperations;
+import com.kuflow.rest.operation.TenantOperations;
 import com.kuflow.rest.operation.TenantUserOperations;
 import com.kuflow.rest.operation.WorkerOperations;
 import java.io.ByteArrayInputStream;
@@ -59,6 +60,8 @@ public class KuFlowRestClient {
 
     private final RobotOperations robotOperations;
 
+    private final TenantOperations tenantOperations;
+
     public KuFlowRestClient(KuFlowClientImpl client) {
         this.client = client;
         this.authenticationOperations = new AuthenticationOperations(client);
@@ -68,6 +71,7 @@ public class KuFlowRestClient {
         this.processItemOperations = new ProcessItemOperations(client);
         this.workerOperations = new WorkerOperations(client);
         this.robotOperations = new RobotOperations(client);
+        this.tenantOperations = new TenantOperations(client);
     }
 
     public AuthenticationOperations getAuthenticationOperations() {
@@ -96,6 +100,10 @@ public class KuFlowRestClient {
 
     public RobotOperations getRobotOperations() {
         return this.robotOperations;
+    }
+
+    public TenantOperations getTenantOperations() {
+        return this.tenantOperations;
     }
 
     public WebhookEvent parseWebhookEvent(String payload) {

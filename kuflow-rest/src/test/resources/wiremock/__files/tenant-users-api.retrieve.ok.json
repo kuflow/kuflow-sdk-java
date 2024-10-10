@@ -1,0 +1,28 @@
+{
+  "createdBy": "8934b169-c85e-4e05-9580-13ace7f267f5",
+  "createdAt": "2022-03-25T09:58:11.587788Z",
+  "lastModifiedBy": "8934b169-c85e-4e05-9580-13ace7f267f5",
+  "lastModifiedAt": "2024-09-04T06:07:58.988184Z",
+  "id": "8a68bef6-3e54-466f-8d08-b9b1f5c551fc",
+  "metadata": {
+      "valid": true,
+      "value": {
+          "Organizations": [
+              {
+                  "Office": "Santa Cruz",
+                  "Department": "IT"
+              }
+          ]
+      }
+  },
+  "principal": {
+      "id": "8934b169-c85e-4e05-9580-13ace7f267f5",
+      "type": "USER",
+      "name": "Paula Smith Cook",
+      "user": {
+          "id": "4c425fad-af4d-4302-8ba5-5b406f8d736f",
+          "email": "email@kuflow.com"
+      }
+  },
+  "tenantId": "00a9f1d4-3698-45a4-951c-66a468846aad"
+}

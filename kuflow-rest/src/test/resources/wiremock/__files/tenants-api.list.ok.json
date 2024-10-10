@@ -1,0 +1,14 @@
+{
+  "metadata": {
+      "size": 25,
+      "page": 0,
+      "totalElements": 1,
+      "totalPages": 1
+  },
+  "content": [
+      {
+          "id": "00a9f1d4-3698-45a4-951c-66a468846aad",
+          "name": "My tenant name"
+      }
+  ]
+}
