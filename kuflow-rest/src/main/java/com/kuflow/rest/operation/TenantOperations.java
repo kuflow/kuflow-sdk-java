@@ -59,14 +59,7 @@ public class TenantOperations {
      *
      * Available sort query values: id, name.
      *
-     * @param size The number of records returned within a single API call.
-     * @param page The page number of the current page in the returned records, 0 is the first page.
-     * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-     *
-     * Default sort order is ascending. Multiple sort criteria are supported.
-     *
-     * Please refer to the method description for supported properties.
-     * @param tenantId Filter by an array of tenant ids.
+     * @param options The options parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -92,13 +85,7 @@ public class TenantOperations {
      *
      * Available sort query values: id, name.
      *
-     * @param size The number of records returned within a single API call.
-     * @param page The page number of the current page in the returned records, 0 is the first page.
-     * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-     *
-     * Default sort order is ascending. Multiple sort criteria are supported.
-     *
-     * Please refer to the method description for supported properties.
+     * @param options The options parameters.
      * @param tenantId Filter by an array of tenant ids.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
