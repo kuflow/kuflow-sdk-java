@@ -27,6 +27,7 @@ import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
@@ -37,6 +38,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.kuflow.rest.model.DefaultErrorException;
+import com.kuflow.rest.model.Tenant;
 import com.kuflow.rest.model.TenantPage;
 import java.util.ArrayList;
 import java.util.List;
@@ -99,6 +101,26 @@ public final class TenantOperationsImpl {
             @QueryParam("page") Integer page,
             @QueryParam(value = "sort", multipleQueryParams = true) List<String> sort,
             @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Get("/tenants/{id}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<Tenant>> retrieveTenant(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Get("/tenants/{id}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<Tenant> retrieveTenantSync(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -321,5 +343,106 @@ public final class TenantOperationsImpl {
         final List<String> sort = null;
         final List<UUID> tenantId = null;
         return findTenantsWithResponse(size, page, sort, tenantId, Context.NONE).getValue();
+    }
+
+    /**
+     * Get a Tenant by ID
+     *
+     * Returns the requested Tenant when has access to do it.
+     *
+     * @param id The resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Tenant>> retrieveTenantWithResponseAsync(UUID id) {
+        return FluxUtil.withContext(context -> retrieveTenantWithResponseAsync(id, context));
+    }
+
+    /**
+     * Get a Tenant by ID
+     *
+     * Returns the requested Tenant when has access to do it.
+     *
+     * @param id The resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Tenant>> retrieveTenantWithResponseAsync(UUID id, Context context) {
+        final String accept = "application/json";
+        return service.retrieveTenant(this.client.getHost(), id, accept, context);
+    }
+
+    /**
+     * Get a Tenant by ID
+     *
+     * Returns the requested Tenant when has access to do it.
+     *
+     * @param id The resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Tenant> retrieveTenantAsync(UUID id) {
+        return retrieveTenantWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get a Tenant by ID
+     *
+     * Returns the requested Tenant when has access to do it.
+     *
+     * @param id The resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Tenant> retrieveTenantAsync(UUID id, Context context) {
+        return retrieveTenantWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get a Tenant by ID
+     *
+     * Returns the requested Tenant when has access to do it.
+     *
+     * @param id The resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Tenant> retrieveTenantWithResponse(UUID id, Context context) {
+        final String accept = "application/json";
+        return service.retrieveTenantSync(this.client.getHost(), id, accept, context);
+    }
+
+    /**
+     * Get a Tenant by ID
+     *
+     * Returns the requested Tenant when has access to do it.
+     *
+     * @param id The resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Tenant retrieveTenant(UUID id) {
+        return retrieveTenantWithResponse(id, Context.NONE).getValue();
     }
 }

@@ -27,7 +27,9 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
 import static com.github.tomakehurst.wiremock.client.WireMock.ok;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
+import static org.assertj.core.api.Assertions.assertThat;
 
+import com.kuflow.rest.model.Tenant;
 import com.kuflow.rest.model.TenantFindOptions;
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
@@ -92,5 +94,22 @@ public class TenantOperationTest extends AbstractOperationTest {
             .addTenantId(tenantId2);
 
         this.kuFlowRestClient.getTenantOperations().findTenants(options);
+    }
+
+    @Test
+    @DisplayName("GIVEN an authenticated user WHEN retrieve a tenant THEN body is parsed correctly")
+    public void givenAnAuthenticatedUserWhenRetrieveATenantThenBodyIsParsedCorrectly() {
+        UUID tenantId = UUID.fromString("00a9f1d4-3698-45a4-951c-66a468846aad");
+
+        givenThat(
+            get("/v2024-06-14/tenants/" + tenantId)
+                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("tenants-api.retrieve.ok.json"))
+        );
+
+        Tenant tenant = this.kuFlowRestClient.getTenantOperations().retrieveTenant(tenantId);
+
+        assertThat(tenant.getId()).isEqualTo(tenantId);
+        assertThat(tenant.getName()).isNotNull();
+        assertThat(tenant.getPlan()).isNotNull();
     }
 }

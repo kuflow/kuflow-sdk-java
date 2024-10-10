@@ -121,8 +121,9 @@ public class TenantUserOperationTest extends AbstractOperationTest {
         UUID tenantUserId = UUID.fromString("8a68bef6-3e54-466f-8d08-b9b1f5c551fc");
 
         givenThat(
-            get("/v2024-06-14/tenant-users/" + tenantUserId)
-                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("tenant-users-api.retrieve.ok.json"))
+            get("/v2024-06-14/tenant-users/" + tenantUserId).willReturn(
+                ok().withHeader("Content-Type", "application/json").withBodyFile("tenant-users-api.retrieve.ok.json")
+            )
         );
 
         TenantUser tenantUser = this.kuFlowRestClient.getTenantUserOperations().retrieveTenantUser(tenantUserId);

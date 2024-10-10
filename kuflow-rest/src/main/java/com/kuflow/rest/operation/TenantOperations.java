@@ -29,6 +29,7 @@ import com.azure.core.util.Context;
 import com.kuflow.rest.implementation.KuFlowClientImpl;
 import com.kuflow.rest.implementation.TenantOperationsImpl;
 import com.kuflow.rest.model.DefaultErrorException;
+import com.kuflow.rest.model.Tenant;
 import com.kuflow.rest.model.TenantFindOptions;
 import com.kuflow.rest.model.TenantPage;
 import java.util.List;
@@ -123,5 +124,38 @@ public class TenantOperations {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TenantPage findTenants() {
         return this.findTenantsWithResponse(null, Context.NONE).getValue();
+    }
+
+    /**
+     * Get a Tenant by ID
+     *
+     * Returns the requested Tenant when has access to do it.
+     *
+     * @param id The resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Tenant> retrieveTenantWithResponse(UUID id, Context context) {
+        return this.service.retrieveTenantWithResponse(id, context);
+    }
+
+    /**
+     * Get a Tenant by ID
+     *
+     * Returns the requested Tenant when has access to do it.
+     *
+     * @param id The resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Tenant retrieveTenant(UUID id) {
+        return this.retrieveTenantWithResponse(id, Context.NONE).getValue();
     }
 }
