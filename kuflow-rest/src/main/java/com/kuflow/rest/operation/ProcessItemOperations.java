@@ -443,6 +443,7 @@ public class ProcessItemOperations {
      *
      * @param id The resource ID.
      * @param propertyPath JSON pointer to the property with the error. See: <a href="https://datatracker.ietf.org/doc/html/rfc6901">...</a>
+     * @param context The context to associate with this operation.
      * <p>
      * ie: /user/name or /users/1/name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

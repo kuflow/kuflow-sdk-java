@@ -124,6 +124,7 @@ public class RobotOperations {
      * Returns the requested Robot when has access to do it.
      *
      * @param id The resource ID.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

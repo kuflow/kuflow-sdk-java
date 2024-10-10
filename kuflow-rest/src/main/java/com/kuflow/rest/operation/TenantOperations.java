@@ -86,7 +86,6 @@ public class TenantOperations {
      * Available sort query values: id, name.
      *
      * @param options The options parameters.
-     * @param tenantId Filter by an array of tenant ids.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
