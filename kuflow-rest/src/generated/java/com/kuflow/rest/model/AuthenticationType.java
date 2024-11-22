@@ -22,53 +22,48 @@
  */
 package com.kuflow.rest.model;
 
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Defines values for AuthenticationType.
  */
-public enum AuthenticationType {
+public final class AuthenticationType extends ExpandableStringEnum<AuthenticationType> {
+
     /**
-     * Enum value ENGINE_TOKEN.
+     * Static value ENGINE_TOKEN for AuthenticationType.
      */
-    ENGINE_TOKEN("ENGINE_TOKEN"),
+    public static final AuthenticationType ENGINE_TOKEN = fromString("ENGINE_TOKEN");
 
     /**
-     * Enum value ENGINE_CERTIFICATE.
+     * Static value ENGINE_CERTIFICATE for AuthenticationType.
      */
-    ENGINE_CERTIFICATE("ENGINE_CERTIFICATE");
+    public static final AuthenticationType ENGINE_CERTIFICATE = fromString("ENGINE_CERTIFICATE");
 
     /**
-     * The actual serialized value for a AuthenticationType instance.
-     */
-    private final String value;
-
-    AuthenticationType(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a AuthenticationType instance.
+     * Creates a new instance of AuthenticationType value.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed AuthenticationType object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static AuthenticationType fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        AuthenticationType[] items = AuthenticationType.values();
-        for (AuthenticationType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Deprecated
+    public AuthenticationType() {}
+
+    /**
+     * Creates or finds a AuthenticationType from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding AuthenticationType.
+     */
+    public static AuthenticationType fromString(String name) {
+        return fromString(name, AuthenticationType.class);
     }
 
     /**
-     * {@inheritDoc}
+     * Gets known AuthenticationType values.
+     *
+     * @return known AuthenticationType values.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<AuthenticationType> values() {
+        return values(AuthenticationType.class);
     }
 }

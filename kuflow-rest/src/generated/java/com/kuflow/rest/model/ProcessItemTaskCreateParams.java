@@ -36,11 +36,6 @@ import java.io.IOException;
 public final class ProcessItemTaskCreateParams implements JsonSerializable<ProcessItemTaskCreateParams> {
 
     /*
-     * The taskDefinitionCode property.
-     */
-    private String taskDefinitionCode;
-
-    /*
      * Json value.
      */
     private JsonValue data;
@@ -49,26 +44,6 @@ public final class ProcessItemTaskCreateParams implements JsonSerializable<Proce
      * Creates an instance of ProcessItemTaskCreateParams class.
      */
     public ProcessItemTaskCreateParams() {}
-
-    /**
-     * Get the taskDefinitionCode property: The taskDefinitionCode property.
-     *
-     * @return the taskDefinitionCode value.
-     */
-    public String getTaskDefinitionCode() {
-        return this.taskDefinitionCode;
-    }
-
-    /**
-     * Set the taskDefinitionCode property: The taskDefinitionCode property.
-     *
-     * @param taskDefinitionCode the taskDefinitionCode value to set.
-     * @return the ProcessItemTaskCreateParams object itself.
-     */
-    public ProcessItemTaskCreateParams setTaskDefinitionCode(String taskDefinitionCode) {
-        this.taskDefinitionCode = taskDefinitionCode;
-        return this;
-    }
 
     /**
      * Get the data property: Json value.
@@ -96,7 +71,6 @@ public final class ProcessItemTaskCreateParams implements JsonSerializable<Proce
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("taskDefinitionCode", this.taskDefinitionCode);
         jsonWriter.writeJsonField("data", this.data);
         return jsonWriter.writeEndObject();
     }
@@ -107,7 +81,6 @@ public final class ProcessItemTaskCreateParams implements JsonSerializable<Proce
      * @param jsonReader The JsonReader being read.
      * @return An instance of ProcessItemTaskCreateParams if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ProcessItemTaskCreateParams.
      */
     public static ProcessItemTaskCreateParams fromJson(JsonReader jsonReader) throws IOException {
@@ -117,9 +90,7 @@ public final class ProcessItemTaskCreateParams implements JsonSerializable<Proce
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("taskDefinitionCode".equals(fieldName)) {
-                    deserializedProcessItemTaskCreateParams.taskDefinitionCode = reader.getString();
-                } else if ("data".equals(fieldName)) {
+                if ("data".equals(fieldName)) {
                     deserializedProcessItemTaskCreateParams.data = JsonValue.fromJson(reader);
                 } else {
                     reader.skipChildren();

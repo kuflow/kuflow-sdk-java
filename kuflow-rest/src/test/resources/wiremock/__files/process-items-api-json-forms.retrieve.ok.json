@@ -1,11 +1,12 @@
 {
   "id": "e2d0fdf9-0aae-4eed-9e07-8e4b76df733c",
   "type": "TASK",
-  "taskDefinition": {
+  "processId": "4821b000-88b4-447e-bdca-2b5d811e746b",
+  "tenantId": "750ef2e1-0c07-48fd-a2f9-5fc1dbcc2be3",
+  "processItemDefinitionRef": {
     "id": "5279a366-2401-4c3e-8eb6-2d2c71d74f0e",
     "version": "022311ae-ce15-460c-90ba-0469c61f959b",
-    "code": "TASK_001",
-    "name": "Task 001 Definition"
+    "code": "TASK_001"
   },
   "task": {
     "state": "CLAIMED",

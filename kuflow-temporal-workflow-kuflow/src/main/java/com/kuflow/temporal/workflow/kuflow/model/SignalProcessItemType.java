@@ -22,7 +22,41 @@
  */
 package com.kuflow.temporal.workflow.kuflow.model;
 
-public enum SignalProcessItemType {
-    TASK,
-    MESSAGE,
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
+public final class SignalProcessItemType extends ExpandableStringEnum<SignalProcessItemType> {
+
+    public static final SignalProcessItemType TASK = fromString("TASK");
+
+    public static final SignalProcessItemType MESSAGE = fromString("MESSAGE");
+
+    public static final SignalProcessItemType THREAD = fromString("THREAD");
+
+    /**
+     * Creates a new instance of ProcessState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SignalProcessItemType() {}
+
+    /**
+     * Creates or finds a SignalProcessItemType from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding SignalProcessItemType.
+     */
+    public static SignalProcessItemType fromString(String name) {
+        return fromString(name, SignalProcessItemType.class);
+    }
+
+    /**
+     * Gets known SignalProcessItemType values.
+     *
+     * @return known SignalProcessItemType values.
+     */
+    public static Collection<SignalProcessItemType> values() {
+        return values(SignalProcessItemType.class);
+    }
 }

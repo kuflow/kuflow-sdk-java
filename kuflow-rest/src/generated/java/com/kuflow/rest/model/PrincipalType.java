@@ -22,58 +22,53 @@
  */
 package com.kuflow.rest.model;
 
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Defines values for PrincipalType.
  */
-public enum PrincipalType {
+public final class PrincipalType extends ExpandableStringEnum<PrincipalType> {
+
     /**
-     * Enum value USER.
+     * Static value USER for PrincipalType.
      */
-    USER("USER"),
+    public static final PrincipalType USER = fromString("USER");
 
     /**
-     * Enum value APPLICATION.
+     * Static value APPLICATION for PrincipalType.
      */
-    APPLICATION("APPLICATION"),
+    public static final PrincipalType APPLICATION = fromString("APPLICATION");
 
     /**
-     * Enum value SYSTEM.
+     * Static value SYSTEM for PrincipalType.
      */
-    SYSTEM("SYSTEM");
+    public static final PrincipalType SYSTEM = fromString("SYSTEM");
 
     /**
-     * The actual serialized value for a PrincipalType instance.
-     */
-    private final String value;
-
-    PrincipalType(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a PrincipalType instance.
+     * Creates a new instance of PrincipalType value.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed PrincipalType object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static PrincipalType fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        PrincipalType[] items = PrincipalType.values();
-        for (PrincipalType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Deprecated
+    public PrincipalType() {}
+
+    /**
+     * Creates or finds a PrincipalType from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding PrincipalType.
+     */
+    public static PrincipalType fromString(String name) {
+        return fromString(name, PrincipalType.class);
     }
 
     /**
-     * {@inheritDoc}
+     * Gets known PrincipalType values.
+     *
+     * @return known PrincipalType values.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<PrincipalType> values() {
+        return values(PrincipalType.class);
     }
 }

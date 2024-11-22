@@ -117,20 +117,46 @@ public class KuFlowActivitiesValidation {
         if (request.getId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'id' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
+
         if (request.getProcessId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
+
         if (request.getType() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'type' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
 
         if (ProcessItemType.TASK.equals(request.getType())) {
-            if (request.getTask() == null) {
-                throw ApplicationFailure.newNonRetryableFailure("'task' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
-            }
-            if (request.getTask().getTaskDefinitionCode() == null) {
+            if (request.getProcessItemDefinitionCode() == null) {
                 throw ApplicationFailure.newNonRetryableFailure(
-                    "'task.taskDefinitionCode' is required",
+                    "'processItemDefinitionCode' is required for task items",
+                    ACTIVITIES_VALIDATION_FAILURE.getType()
+                );
+            }
+        }
+
+        if (ProcessItemType.MESSAGE.equals(request.getType())) {
+            if (request.getMessage() == null) {
+                throw ApplicationFailure.newNonRetryableFailure("'message' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+            }
+            if (request.getMessage().getText() == null && request.getMessage().getData() == null) {
+                throw ApplicationFailure.newNonRetryableFailure(
+                    "'message.text' and/or 'message.data' is required for message items",
+                    ACTIVITIES_VALIDATION_FAILURE.getType()
+                );
+            }
+            if (request.getMessage().getData() != null && request.getMessage().getDataStructureDataDefinitionCode() == null) {
+                throw ApplicationFailure.newNonRetryableFailure(
+                    "'message.dataStructureDataDefinitionCode' is required for message items when 'message.data' is set",
+                    ACTIVITIES_VALIDATION_FAILURE.getType()
+                );
+            }
+        }
+
+        if (ProcessItemType.THREAD.equals(request.getType())) {
+            if (request.getProcessItemDefinitionCode() == null) {
+                throw ApplicationFailure.newNonRetryableFailure(
+                    "'processItemDefinitionCode' is required for thread items",
                     ACTIVITIES_VALIDATION_FAILURE.getType()
                 );
             }

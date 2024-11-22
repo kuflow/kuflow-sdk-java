@@ -22,55 +22,50 @@
  */
 package com.kuflow.rest.model;
 
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Robot filter context:
  * * READY: filters out robots ready for execution for the current credentials
  * * DEFAULT: filters out robots accessible for the current credentials (if no set this is the default option).
  */
-public enum RobotFilterContext {
+public final class RobotFilterContext extends ExpandableStringEnum<RobotFilterContext> {
+
     /**
-     * Enum value READY.
+     * Static value READY for RobotFilterContext.
      */
-    READY("READY"),
+    public static final RobotFilterContext READY = fromString("READY");
 
     /**
-     * Enum value DEFAULT.
+     * Static value DEFAULT for RobotFilterContext.
      */
-    DEFAULT("DEFAULT");
+    public static final RobotFilterContext DEFAULT = fromString("DEFAULT");
 
     /**
-     * The actual serialized value for a RobotFilterContext instance.
-     */
-    private final String value;
-
-    RobotFilterContext(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a RobotFilterContext instance.
+     * Creates a new instance of RobotFilterContext value.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed RobotFilterContext object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static RobotFilterContext fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        RobotFilterContext[] items = RobotFilterContext.values();
-        for (RobotFilterContext item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Deprecated
+    public RobotFilterContext() {}
+
+    /**
+     * Creates or finds a RobotFilterContext from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding RobotFilterContext.
+     */
+    public static RobotFilterContext fromString(String name) {
+        return fromString(name, RobotFilterContext.class);
     }
 
     /**
-     * {@inheritDoc}
+     * Gets known RobotFilterContext values.
+     *
+     * @return known RobotFilterContext values.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<RobotFilterContext> values() {
+        return values(RobotFilterContext.class);
     }
 }

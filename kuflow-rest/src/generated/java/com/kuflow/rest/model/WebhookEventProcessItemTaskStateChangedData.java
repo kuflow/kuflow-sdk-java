@@ -53,14 +53,14 @@ public final class WebhookEventProcessItemTaskStateChangedData implements JsonSe
     private ProcessItemType processItemType;
 
     /*
-     * The processItemTaskCode property.
-     */
-    private String processItemTaskCode;
-
-    /*
      * Process Item Task state
      */
     private ProcessItemTaskState processItemState;
+
+    /*
+     * The processItemDefinitionCode property.
+     */
+    private String processItemDefinitionCode;
 
     /**
      * Creates an instance of WebhookEventProcessItemTaskStateChangedData class.
@@ -128,26 +128,6 @@ public final class WebhookEventProcessItemTaskStateChangedData implements JsonSe
     }
 
     /**
-     * Get the processItemTaskCode property: The processItemTaskCode property.
-     *
-     * @return the processItemTaskCode value.
-     */
-    public String getProcessItemTaskCode() {
-        return this.processItemTaskCode;
-    }
-
-    /**
-     * Set the processItemTaskCode property: The processItemTaskCode property.
-     *
-     * @param processItemTaskCode the processItemTaskCode value to set.
-     * @return the WebhookEventProcessItemTaskStateChangedData object itself.
-     */
-    public WebhookEventProcessItemTaskStateChangedData setProcessItemTaskCode(String processItemTaskCode) {
-        this.processItemTaskCode = processItemTaskCode;
-        return this;
-    }
-
-    /**
      * Get the processItemState property: Process Item Task state.
      *
      * @return the processItemState value.
@@ -168,6 +148,26 @@ public final class WebhookEventProcessItemTaskStateChangedData implements JsonSe
     }
 
     /**
+     * Get the processItemDefinitionCode property: The processItemDefinitionCode property.
+     *
+     * @return the processItemDefinitionCode value.
+     */
+    public String getProcessItemDefinitionCode() {
+        return this.processItemDefinitionCode;
+    }
+
+    /**
+     * Set the processItemDefinitionCode property: The processItemDefinitionCode property.
+     *
+     * @param processItemDefinitionCode the processItemDefinitionCode value to set.
+     * @return the WebhookEventProcessItemTaskStateChangedData object itself.
+     */
+    public WebhookEventProcessItemTaskStateChangedData setProcessItemDefinitionCode(String processItemDefinitionCode) {
+        this.processItemDefinitionCode = processItemDefinitionCode;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -176,8 +176,8 @@ public final class WebhookEventProcessItemTaskStateChangedData implements JsonSe
         jsonWriter.writeStringField("processId", Objects.toString(this.processId, null));
         jsonWriter.writeStringField("processItemId", Objects.toString(this.processItemId, null));
         jsonWriter.writeStringField("processItemType", this.processItemType == null ? null : this.processItemType.toString());
-        jsonWriter.writeStringField("processItemTaskCode", this.processItemTaskCode);
         jsonWriter.writeStringField("processItemState", this.processItemState == null ? null : this.processItemState.toString());
+        jsonWriter.writeStringField("processItemDefinitionCode", this.processItemDefinitionCode);
         return jsonWriter.writeEndObject();
     }
 
@@ -210,12 +210,12 @@ public final class WebhookEventProcessItemTaskStateChangedData implements JsonSe
                     deserializedWebhookEventProcessItemTaskStateChangedData.processItemType = ProcessItemType.fromString(
                         reader.getString()
                     );
-                } else if ("processItemTaskCode".equals(fieldName)) {
-                    deserializedWebhookEventProcessItemTaskStateChangedData.processItemTaskCode = reader.getString();
                 } else if ("processItemState".equals(fieldName)) {
                     deserializedWebhookEventProcessItemTaskStateChangedData.processItemState = ProcessItemTaskState.fromString(
                         reader.getString()
                     );
+                } else if ("processItemDefinitionCode".equals(fieldName)) {
+                    deserializedWebhookEventProcessItemTaskStateChangedData.processItemDefinitionCode = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

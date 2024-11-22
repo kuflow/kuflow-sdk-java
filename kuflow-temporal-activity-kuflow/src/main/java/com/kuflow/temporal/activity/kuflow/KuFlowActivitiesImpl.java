@@ -291,7 +291,7 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
                 .setProcessIds(request.getProcessIds())
                 .setTypes(request.getTypes())
                 .setTaskStates(request.getTaskStates())
-                .setTaskDefinitionCodes(request.getTaskDefinitionCodes());
+                .setProcessItemDefinitionCode(request.getProcessItemDefinitionCodes());
 
             ProcessItemPage processItems = this.processItemOperations.findProcessItems(options);
 
@@ -333,7 +333,9 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
                 .setProcessId(request.getProcessId())
                 .setOwnerId(request.getOwnerId())
                 .setOwnerEmail(request.getOwnerEmail())
-                .setTask(request.getTask());
+                .setProcessItemDefinitionCode(request.getProcessItemDefinitionCode())
+                .setTask(request.getTask())
+                .setMessage(request.getMessage());
 
             ProcessItem processItem = this.processItemOperations.createProcessItem(params);
 

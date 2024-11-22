@@ -69,7 +69,7 @@ public class ProcessItemOperationTest extends AbstractOperationTest {
                 .withQueryParam("sort", equalTo("order1"))
                 .withQueryParam("tenantId", equalTo(tenantId.toString()))
                 .withQueryParam("processId", equalTo(processId.toString()))
-                .withQueryParam("taskDefinitionCode", equalTo("code1"))
+                .withQueryParam("processItemDefinitionCode", equalTo("code1"))
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("process-items-api.list.ok.json"))
         );
 
@@ -80,7 +80,7 @@ public class ProcessItemOperationTest extends AbstractOperationTest {
             .setTenantId(tenantId)
             .setProcessId(processId)
             .setTaskState(ProcessItemTaskState.READY)
-            .setTaskDefinitionCode("code1");
+            .setProcessItemDefinitionCode("code1");
 
         this.kuFlowRestClient.getProcessItemOperations().findProcessItems(options);
     }
@@ -103,8 +103,8 @@ public class ProcessItemOperationTest extends AbstractOperationTest {
                 .withQueryParam("tenantId", equalTo(tenantId2.toString()))
                 .withQueryParam("processId", equalTo(processId1.toString()))
                 .withQueryParam("processId", equalTo(processId2.toString()))
-                .withQueryParam("taskDefinitionCode", equalTo("code1"))
-                .withQueryParam("taskDefinitionCode", equalTo("code2"))
+                .withQueryParam("processItemDefinitionCode", equalTo("code1"))
+                .withQueryParam("processItemDefinitionCode", equalTo("code2"))
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("process-items-api.list.ok.json"))
         );
 
@@ -117,8 +117,8 @@ public class ProcessItemOperationTest extends AbstractOperationTest {
             .addTenantId(tenantId2)
             .addProcessId(processId1)
             .addProcessId(processId2)
-            .addTaskDefinitionCode("code1")
-            .addTaskDefinitionCode("code2");
+            .addProcessItemDefinitionCode("code1")
+            .addProcessItemDefinitionCode("code2");
 
         this.kuFlowRestClient.getProcessItemOperations().findProcessItems(options);
     }

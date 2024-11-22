@@ -32,10 +32,10 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * The TaskDefinitionSummary model.
+ * The ProcessDefinitionRef model.
  */
 @Fluent
-public final class TaskDefinitionSummary implements JsonSerializable<TaskDefinitionSummary> {
+public final class ProcessDefinitionRef implements JsonSerializable<ProcessDefinitionRef> {
 
     /*
      * The id property.
@@ -47,20 +47,10 @@ public final class TaskDefinitionSummary implements JsonSerializable<TaskDefinit
      */
     private UUID version;
 
-    /*
-     * The code property.
-     */
-    private String code;
-
-    /*
-     * The name property.
-     */
-    private String name;
-
     /**
-     * Creates an instance of TaskDefinitionSummary class.
+     * Creates an instance of ProcessDefinitionRef class.
      */
-    public TaskDefinitionSummary() {}
+    public ProcessDefinitionRef() {}
 
     /**
      * Get the id property: The id property.
@@ -75,9 +65,9 @@ public final class TaskDefinitionSummary implements JsonSerializable<TaskDefinit
      * Set the id property: The id property.
      *
      * @param id the id value to set.
-     * @return the TaskDefinitionSummary object itself.
+     * @return the ProcessDefinitionRef object itself.
      */
-    public TaskDefinitionSummary setId(UUID id) {
+    public ProcessDefinitionRef setId(UUID id) {
         this.id = id;
         return this;
     }
@@ -95,50 +85,10 @@ public final class TaskDefinitionSummary implements JsonSerializable<TaskDefinit
      * Set the version property: The version property.
      *
      * @param version the version value to set.
-     * @return the TaskDefinitionSummary object itself.
+     * @return the ProcessDefinitionRef object itself.
      */
-    public TaskDefinitionSummary setVersion(UUID version) {
+    public ProcessDefinitionRef setVersion(UUID version) {
         this.version = version;
-        return this;
-    }
-
-    /**
-     * Get the code property: The code property.
-     *
-     * @return the code value.
-     */
-    public String getCode() {
-        return this.code;
-    }
-
-    /**
-     * Set the code property: The code property.
-     *
-     * @param code the code value to set.
-     * @return the TaskDefinitionSummary object itself.
-     */
-    public TaskDefinitionSummary setCode(String code) {
-        this.code = code;
-        return this;
-    }
-
-    /**
-     * Get the name property: The name property.
-     *
-     * @return the name value.
-     */
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Set the name property: The name property.
-     *
-     * @param name the name value to set.
-     * @return the TaskDefinitionSummary object itself.
-     */
-    public TaskDefinitionSummary setName(String name) {
-        this.name = name;
         return this;
     }
 
@@ -150,43 +100,37 @@ public final class TaskDefinitionSummary implements JsonSerializable<TaskDefinit
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", Objects.toString(this.id, null));
         jsonWriter.writeStringField("version", Objects.toString(this.version, null));
-        jsonWriter.writeStringField("code", this.code);
-        jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of TaskDefinitionSummary from the JsonReader.
+     * Reads an instance of ProcessDefinitionRef from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of TaskDefinitionSummary if the JsonReader was pointing to an instance of it, or null if it
+     * @return An instance of ProcessDefinitionRef if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the TaskDefinitionSummary.
+     * @throws IOException If an error occurs while reading the ProcessDefinitionRef.
      */
-    public static TaskDefinitionSummary fromJson(JsonReader jsonReader) throws IOException {
+    public static ProcessDefinitionRef fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            TaskDefinitionSummary deserializedTaskDefinitionSummary = new TaskDefinitionSummary();
+            ProcessDefinitionRef deserializedProcessDefinitionRef = new ProcessDefinitionRef();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedTaskDefinitionSummary.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                    deserializedProcessDefinitionRef.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("version".equals(fieldName)) {
-                    deserializedTaskDefinitionSummary.version = reader.getNullable(nonNullReader ->
+                    deserializedProcessDefinitionRef.version = reader.getNullable(nonNullReader ->
                         UUID.fromString(nonNullReader.getString())
                     );
-                } else if ("code".equals(fieldName)) {
-                    deserializedTaskDefinitionSummary.code = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedTaskDefinitionSummary.name = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedTaskDefinitionSummary;
+            return deserializedProcessDefinitionRef;
         });
     }
 }

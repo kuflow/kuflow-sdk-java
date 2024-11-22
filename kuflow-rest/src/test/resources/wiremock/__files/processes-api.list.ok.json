@@ -8,19 +8,17 @@
   "content": [{
     "id": "80d8c9a1-e3d2-4c35-a0a9-77ec21d28950",
     "state": "RUNNING",
-    "processDefinition": {
+    "processDefinitionRef": {
       "id": "0edf54c6-c1c9-4426-a7ec-26dd4fa5c98e",
-      "version": "fbde55ae-49f9-4591-967c-6c07f116c616",
-      "name": "Process Definition"
+      "version": "fbde55ae-49f9-4591-967c-6c07f116c616"
     },
     "initiatorId": "80d8c9a1-e3d2-4c35-a0a9-77ec21d28950"
   }, {
     "id": "c98dcbf3-2d64-475f-a6f2-bcc7b5c1a524",
     "state": "COMPLETED",
-    "processDefinition": {
+    "processDefinitionRef": {
       "id": "0edf54c6-c1c9-4426-a7ec-26dd4fa5c98e",
-      "version": "fbde55ae-49f9-4591-967c-6c07f116c616",
-      "name": "Process Definition"
+      "version": "fbde55ae-49f9-4591-967c-6c07f116c616"
     },
     "initiatorId": "80d8c9a1-e3d2-4c35-a0a9-77ec21d28950"
   }]

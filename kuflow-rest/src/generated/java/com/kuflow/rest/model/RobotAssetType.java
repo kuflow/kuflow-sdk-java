@@ -22,58 +22,53 @@
  */
 package com.kuflow.rest.model;
 
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Robot asset type.
  */
-public enum RobotAssetType {
+public final class RobotAssetType extends ExpandableStringEnum<RobotAssetType> {
+
     /**
-     * Enum value PYTHON.
+     * Static value PYTHON for RobotAssetType.
      */
-    PYTHON("PYTHON"),
+    public static final RobotAssetType PYTHON = fromString("PYTHON");
 
     /**
-     * Enum value PYTHON_PIP.
+     * Static value PYTHON_PIP for RobotAssetType.
      */
-    PYTHON_PIP("PYTHON_PIP"),
+    public static final RobotAssetType PYTHON_PIP = fromString("PYTHON_PIP");
 
     /**
-     * Enum value NODEJS.
+     * Static value NODEJS for RobotAssetType.
      */
-    NODE_JS("NODEJS");
+    public static final RobotAssetType NODEJS = fromString("NODEJS");
 
     /**
-     * The actual serialized value for a RobotAssetType instance.
-     */
-    private final String value;
-
-    RobotAssetType(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a RobotAssetType instance.
+     * Creates a new instance of RobotAssetType value.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed RobotAssetType object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static RobotAssetType fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        RobotAssetType[] items = RobotAssetType.values();
-        for (RobotAssetType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Deprecated
+    public RobotAssetType() {}
+
+    /**
+     * Creates or finds a RobotAssetType from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding RobotAssetType.
+     */
+    public static RobotAssetType fromString(String name) {
+        return fromString(name, RobotAssetType.class);
     }
 
     /**
-     * {@inheritDoc}
+     * Gets known RobotAssetType values.
+     *
+     * @return known RobotAssetType values.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<RobotAssetType> values() {
+        return values(RobotAssetType.class);
     }
 }

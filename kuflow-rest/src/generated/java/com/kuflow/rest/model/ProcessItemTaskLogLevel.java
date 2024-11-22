@@ -22,58 +22,53 @@
  */
 package com.kuflow.rest.model;
 
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Defines values for ProcessItemTaskLogLevel.
  */
-public enum ProcessItemTaskLogLevel {
+public final class ProcessItemTaskLogLevel extends ExpandableStringEnum<ProcessItemTaskLogLevel> {
+
     /**
-     * Enum value INFO.
+     * Static value INFO for ProcessItemTaskLogLevel.
      */
-    INFO("INFO"),
+    public static final ProcessItemTaskLogLevel INFO = fromString("INFO");
 
     /**
-     * Enum value WARN.
+     * Static value WARN for ProcessItemTaskLogLevel.
      */
-    WARN("WARN"),
+    public static final ProcessItemTaskLogLevel WARN = fromString("WARN");
 
     /**
-     * Enum value ERROR.
+     * Static value ERROR for ProcessItemTaskLogLevel.
      */
-    ERROR("ERROR");
+    public static final ProcessItemTaskLogLevel ERROR = fromString("ERROR");
 
     /**
-     * The actual serialized value for a ProcessItemTaskLogLevel instance.
-     */
-    private final String value;
-
-    ProcessItemTaskLogLevel(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a ProcessItemTaskLogLevel instance.
+     * Creates a new instance of ProcessItemTaskLogLevel value.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed ProcessItemTaskLogLevel object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static ProcessItemTaskLogLevel fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        ProcessItemTaskLogLevel[] items = ProcessItemTaskLogLevel.values();
-        for (ProcessItemTaskLogLevel item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Deprecated
+    public ProcessItemTaskLogLevel() {}
+
+    /**
+     * Creates or finds a ProcessItemTaskLogLevel from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding ProcessItemTaskLogLevel.
+     */
+    public static ProcessItemTaskLogLevel fromString(String name) {
+        return fromString(name, ProcessItemTaskLogLevel.class);
     }
 
     /**
-     * {@inheritDoc}
+     * Gets known ProcessItemTaskLogLevel values.
+     *
+     * @return known ProcessItemTaskLogLevel values.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<ProcessItemTaskLogLevel> values() {
+        return values(ProcessItemTaskLogLevel.class);
     }
 }

@@ -22,58 +22,53 @@
  */
 package com.kuflow.rest.model;
 
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Process state.
  */
-public enum ProcessState {
+public final class ProcessState extends ExpandableStringEnum<ProcessState> {
+
     /**
-     * Enum value RUNNING.
+     * Static value RUNNING for ProcessState.
      */
-    RUNNING("RUNNING"),
+    public static final ProcessState RUNNING = fromString("RUNNING");
 
     /**
-     * Enum value COMPLETED.
+     * Static value COMPLETED for ProcessState.
      */
-    COMPLETED("COMPLETED"),
+    public static final ProcessState COMPLETED = fromString("COMPLETED");
 
     /**
-     * Enum value CANCELLED.
+     * Static value CANCELLED for ProcessState.
      */
-    CANCELLED("CANCELLED");
+    public static final ProcessState CANCELLED = fromString("CANCELLED");
 
     /**
-     * The actual serialized value for a ProcessState instance.
-     */
-    private final String value;
-
-    ProcessState(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a ProcessState instance.
+     * Creates a new instance of ProcessState value.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed ProcessState object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static ProcessState fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        ProcessState[] items = ProcessState.values();
-        for (ProcessState item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Deprecated
+    public ProcessState() {}
+
+    /**
+     * Creates or finds a ProcessState from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding ProcessState.
+     */
+    public static ProcessState fromString(String name) {
+        return fromString(name, ProcessState.class);
     }
 
     /**
-     * {@inheritDoc}
+     * Gets known ProcessState values.
+     *
+     * @return known ProcessState values.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<ProcessState> values() {
+        return values(ProcessState.class);
     }
 }

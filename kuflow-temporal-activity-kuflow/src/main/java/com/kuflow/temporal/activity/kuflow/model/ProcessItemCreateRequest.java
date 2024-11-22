@@ -22,6 +22,7 @@
  */
 package com.kuflow.temporal.activity.kuflow.model;
 
+import com.kuflow.rest.model.ProcessItemMessageCreateParams;
 import com.kuflow.rest.model.ProcessItemTaskCreateParams;
 import com.kuflow.rest.model.ProcessItemType;
 import com.kuflow.temporal.common.model.AbstractModel;
@@ -54,10 +55,20 @@ public class ProcessItemCreateRequest extends AbstractModel {
      */
     private String ownerEmail;
 
+    /*
+     * The processItemDefinitionCode property.
+     */
+    private String processItemDefinitionCode;
+
     /**
      * The task property.
      */
     private ProcessItemTaskCreateParams task;
+
+    /*
+     * The message property.
+     */
+    private ProcessItemMessageCreateParams message;
 
     public UUID getId() {
         return this.id;
@@ -99,11 +110,27 @@ public class ProcessItemCreateRequest extends AbstractModel {
         this.ownerEmail = ownerEmail;
     }
 
+    public String getProcessItemDefinitionCode() {
+        return this.processItemDefinitionCode;
+    }
+
+    public void setProcessItemDefinitionCode(String processItemDefinitionCode) {
+        this.processItemDefinitionCode = processItemDefinitionCode;
+    }
+
     public ProcessItemTaskCreateParams getTask() {
         return this.task;
     }
 
     public void setTask(ProcessItemTaskCreateParams task) {
         this.task = task;
+    }
+
+    public ProcessItemMessageCreateParams getMessage() {
+        return this.message;
+    }
+
+    public void setMessage(ProcessItemMessageCreateParams message) {
+        this.message = message;
     }
 }

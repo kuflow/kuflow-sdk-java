@@ -22,53 +22,48 @@
  */
 package com.kuflow.rest.model;
 
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Robot source type.
  */
-public enum RobotSourceType {
+public final class RobotSourceType extends ExpandableStringEnum<RobotSourceType> {
+
     /**
-     * Enum value PACKAGE.
+     * Static value PACKAGE for RobotSourceType.
      */
-    PACKAGE("PACKAGE"),
+    public static final RobotSourceType PACKAGE = fromString("PACKAGE");
 
     /**
-     * Enum value UNKNOWN.
+     * Static value UNKNOWN for RobotSourceType.
      */
-    UNKNOWN("UNKNOWN");
+    public static final RobotSourceType UNKNOWN = fromString("UNKNOWN");
 
     /**
-     * The actual serialized value for a RobotSourceType instance.
-     */
-    private final String value;
-
-    RobotSourceType(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a RobotSourceType instance.
+     * Creates a new instance of RobotSourceType value.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed RobotSourceType object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static RobotSourceType fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        RobotSourceType[] items = RobotSourceType.values();
-        for (RobotSourceType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Deprecated
+    public RobotSourceType() {}
+
+    /**
+     * Creates or finds a RobotSourceType from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding RobotSourceType.
+     */
+    public static RobotSourceType fromString(String name) {
+        return fromString(name, RobotSourceType.class);
     }
 
     /**
-     * {@inheritDoc}
+     * Gets known RobotSourceType values.
+     *
+     * @return known RobotSourceType values.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<RobotSourceType> values() {
+        return values(RobotSourceType.class);
     }
 }

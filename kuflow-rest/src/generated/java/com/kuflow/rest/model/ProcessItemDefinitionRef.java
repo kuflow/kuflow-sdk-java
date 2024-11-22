@@ -32,10 +32,10 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * The ProcessDefinitionSummary model.
+ * The ProcessItemDefinitionRef model.
  */
 @Fluent
-public final class ProcessDefinitionSummary implements JsonSerializable<ProcessDefinitionSummary> {
+public final class ProcessItemDefinitionRef implements JsonSerializable<ProcessItemDefinitionRef> {
 
     /*
      * The id property.
@@ -48,14 +48,14 @@ public final class ProcessDefinitionSummary implements JsonSerializable<ProcessD
     private UUID version;
 
     /*
-     * The name property.
+     * The code property.
      */
-    private String name;
+    private String code;
 
     /**
-     * Creates an instance of ProcessDefinitionSummary class.
+     * Creates an instance of ProcessItemDefinitionRef class.
      */
-    public ProcessDefinitionSummary() {}
+    public ProcessItemDefinitionRef() {}
 
     /**
      * Get the id property: The id property.
@@ -70,9 +70,9 @@ public final class ProcessDefinitionSummary implements JsonSerializable<ProcessD
      * Set the id property: The id property.
      *
      * @param id the id value to set.
-     * @return the ProcessDefinitionSummary object itself.
+     * @return the ProcessItemDefinitionRef object itself.
      */
-    public ProcessDefinitionSummary setId(UUID id) {
+    public ProcessItemDefinitionRef setId(UUID id) {
         this.id = id;
         return this;
     }
@@ -90,30 +90,30 @@ public final class ProcessDefinitionSummary implements JsonSerializable<ProcessD
      * Set the version property: The version property.
      *
      * @param version the version value to set.
-     * @return the ProcessDefinitionSummary object itself.
+     * @return the ProcessItemDefinitionRef object itself.
      */
-    public ProcessDefinitionSummary setVersion(UUID version) {
+    public ProcessItemDefinitionRef setVersion(UUID version) {
         this.version = version;
         return this;
     }
 
     /**
-     * Get the name property: The name property.
+     * Get the code property: The code property.
      *
-     * @return the name value.
+     * @return the code value.
      */
-    public String getName() {
-        return this.name;
+    public String getCode() {
+        return this.code;
     }
 
     /**
-     * Set the name property: The name property.
+     * Set the code property: The code property.
      *
-     * @param name the name value to set.
-     * @return the ProcessDefinitionSummary object itself.
+     * @param code the code value to set.
+     * @return the ProcessItemDefinitionRef object itself.
      */
-    public ProcessDefinitionSummary setName(String name) {
-        this.name = name;
+    public ProcessItemDefinitionRef setCode(String code) {
+        this.code = code;
         return this;
     }
 
@@ -125,41 +125,41 @@ public final class ProcessDefinitionSummary implements JsonSerializable<ProcessD
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", Objects.toString(this.id, null));
         jsonWriter.writeStringField("version", Objects.toString(this.version, null));
-        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("code", this.code);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of ProcessDefinitionSummary from the JsonReader.
+     * Reads an instance of ProcessItemDefinitionRef from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ProcessDefinitionSummary if the JsonReader was pointing to an instance of it, or null if
+     * @return An instance of ProcessItemDefinitionRef if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ProcessDefinitionSummary.
+     * @throws IOException If an error occurs while reading the ProcessItemDefinitionRef.
      */
-    public static ProcessDefinitionSummary fromJson(JsonReader jsonReader) throws IOException {
+    public static ProcessItemDefinitionRef fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ProcessDefinitionSummary deserializedProcessDefinitionSummary = new ProcessDefinitionSummary();
+            ProcessItemDefinitionRef deserializedProcessItemDefinitionRef = new ProcessItemDefinitionRef();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedProcessDefinitionSummary.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    deserializedProcessItemDefinitionRef.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())
                     );
                 } else if ("version".equals(fieldName)) {
-                    deserializedProcessDefinitionSummary.version = reader.getNullable(nonNullReader ->
+                    deserializedProcessItemDefinitionRef.version = reader.getNullable(nonNullReader ->
                         UUID.fromString(nonNullReader.getString())
                     );
-                } else if ("name".equals(fieldName)) {
-                    deserializedProcessDefinitionSummary.name = reader.getString();
+                } else if ("code".equals(fieldName)) {
+                    deserializedProcessItemDefinitionRef.code = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedProcessDefinitionSummary;
+            return deserializedProcessItemDefinitionRef;
         });
     }
 }

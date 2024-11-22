@@ -40,11 +40,6 @@ public final class ProcessItemTaskPageItem implements JsonSerializable<ProcessIt
      */
     private ProcessItemTaskState state;
 
-    /*
-     * The taskDefinition property.
-     */
-    private TaskDefinitionSummary taskDefinition;
-
     /**
      * Creates an instance of ProcessItemTaskPageItem class.
      */
@@ -71,33 +66,12 @@ public final class ProcessItemTaskPageItem implements JsonSerializable<ProcessIt
     }
 
     /**
-     * Get the taskDefinition property: The taskDefinition property.
-     *
-     * @return the taskDefinition value.
-     */
-    public TaskDefinitionSummary getTaskDefinition() {
-        return this.taskDefinition;
-    }
-
-    /**
-     * Set the taskDefinition property: The taskDefinition property.
-     *
-     * @param taskDefinition the taskDefinition value to set.
-     * @return the ProcessItemTaskPageItem object itself.
-     */
-    public ProcessItemTaskPageItem setTaskDefinition(TaskDefinitionSummary taskDefinition) {
-        this.taskDefinition = taskDefinition;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
-        jsonWriter.writeJsonField("taskDefinition", this.taskDefinition);
         return jsonWriter.writeEndObject();
     }
 
@@ -119,8 +93,6 @@ public final class ProcessItemTaskPageItem implements JsonSerializable<ProcessIt
 
                 if ("state".equals(fieldName)) {
                     deserializedProcessItemTaskPageItem.state = ProcessItemTaskState.fromString(reader.getString());
-                } else if ("taskDefinition".equals(fieldName)) {
-                    deserializedProcessItemTaskPageItem.taskDefinition = TaskDefinitionSummary.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
