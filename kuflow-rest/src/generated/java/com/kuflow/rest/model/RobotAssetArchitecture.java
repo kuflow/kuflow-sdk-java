@@ -22,53 +22,48 @@
  */
 package com.kuflow.rest.model;
 
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Robot asset platform architecture.
  */
-public enum RobotAssetArchitecture {
+public final class RobotAssetArchitecture extends ExpandableStringEnum<RobotAssetArchitecture> {
+
     /**
-     * Enum value X86_32.
+     * Static value X86_32 for RobotAssetArchitecture.
      */
-    X86BIT32("X86_32"),
+    public static final RobotAssetArchitecture X8632 = fromString("X86_32");
 
     /**
-     * Enum value X86_64.
+     * Static value X86_64 for RobotAssetArchitecture.
      */
-    X86BIT64("X86_64");
+    public static final RobotAssetArchitecture X8664 = fromString("X86_64");
 
     /**
-     * The actual serialized value for a RobotAssetArchitecture instance.
-     */
-    private final String value;
-
-    RobotAssetArchitecture(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a RobotAssetArchitecture instance.
+     * Creates a new instance of RobotAssetArchitecture value.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed RobotAssetArchitecture object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static RobotAssetArchitecture fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        RobotAssetArchitecture[] items = RobotAssetArchitecture.values();
-        for (RobotAssetArchitecture item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Deprecated
+    public RobotAssetArchitecture() {}
+
+    /**
+     * Creates or finds a RobotAssetArchitecture from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding RobotAssetArchitecture.
+     */
+    public static RobotAssetArchitecture fromString(String name) {
+        return fromString(name, RobotAssetArchitecture.class);
     }
 
     /**
-     * {@inheritDoc}
+     * Gets known RobotAssetArchitecture values.
+     *
+     * @return known RobotAssetArchitecture values.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<RobotAssetArchitecture> values() {
+        return values(RobotAssetArchitecture.class);
     }
 }

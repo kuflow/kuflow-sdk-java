@@ -65,6 +65,11 @@ public final class ProcessItem extends AbstractAudited {
     private UUID tenantId;
 
     /*
+     * The processItemDefinitionRef property.
+     */
+    private ProcessItemDefinitionRef processItemDefinitionRef;
+
+    /*
      * The task property.
      */
     private ProcessItemTask task;
@@ -180,6 +185,26 @@ public final class ProcessItem extends AbstractAudited {
     }
 
     /**
+     * Get the processItemDefinitionRef property: The processItemDefinitionRef property.
+     *
+     * @return the processItemDefinitionRef value.
+     */
+    public ProcessItemDefinitionRef getProcessItemDefinitionRef() {
+        return this.processItemDefinitionRef;
+    }
+
+    /**
+     * Set the processItemDefinitionRef property: The processItemDefinitionRef property.
+     *
+     * @param processItemDefinitionRef the processItemDefinitionRef value to set.
+     * @return the ProcessItem object itself.
+     */
+    public ProcessItem setProcessItemDefinitionRef(ProcessItemDefinitionRef processItemDefinitionRef) {
+        this.processItemDefinitionRef = processItemDefinitionRef;
+        return this;
+    }
+
+    /**
      * Get the task property: The task property.
      *
      * @return the task value.
@@ -276,6 +301,7 @@ public final class ProcessItem extends AbstractAudited {
         jsonWriter.writeStringField("processId", Objects.toString(this.processId, null));
         jsonWriter.writeStringField("ownerId", Objects.toString(this.ownerId, null));
         jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
+        jsonWriter.writeJsonField("processItemDefinitionRef", this.processItemDefinitionRef);
         jsonWriter.writeJsonField("task", this.task);
         jsonWriter.writeJsonField("message", this.message);
         return jsonWriter.writeEndObject();
@@ -321,6 +347,8 @@ public final class ProcessItem extends AbstractAudited {
                     deserializedProcessItem.ownerId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("tenantId".equals(fieldName)) {
                     deserializedProcessItem.tenantId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("processItemDefinitionRef".equals(fieldName)) {
+                    deserializedProcessItem.processItemDefinitionRef = ProcessItemDefinitionRef.fromJson(reader);
                 } else if ("task".equals(fieldName)) {
                     deserializedProcessItem.task = ProcessItemTask.fromJson(reader);
                 } else if ("message".equals(fieldName)) {

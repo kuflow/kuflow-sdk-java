@@ -22,9 +22,15 @@
  */
 package com.kuflow.temporal.workflow.kuflow.model;
 
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
-public class SignalProcessItem {
+public class SignalProcessItem implements JsonSerializable<SignalProcessItem> {
 
     private UUID id;
 
@@ -54,5 +60,37 @@ public class SignalProcessItem {
 
     public void setPayload(SignalProcessItemPayload payload) {
         this.payload = payload;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", Objects.toString(this.id, null));
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeJsonField("payload", this.payload);
+
+        return jsonWriter.writeEndObject();
+    }
+
+    public static SignalProcessItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SignalProcessItem deserializedSignalProcessItem = new SignalProcessItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSignalProcessItem.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("type".equals(fieldName)) {
+                    deserializedSignalProcessItem.type = SignalProcessItemType.fromString(reader.getString());
+                } else if ("payload".equals(fieldName)) {
+                    deserializedSignalProcessItem.payload = SignalProcessItemPayload.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSignalProcessItem;
+        });
     }
 }

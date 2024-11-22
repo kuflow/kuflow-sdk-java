@@ -72,9 +72,9 @@ public class ProcessItemFindRequest extends AbstractModel {
     private List<ProcessItemTaskState> taskStates = new LinkedList<>();
 
     /**
-     * Filter by an array of task definition codes.
+     * Filter by an array of process item definition codes.
      */
-    private List<String> taskDefinitionCodes = new LinkedList<>();
+    private List<String> processItemDefinitionCodes = new LinkedList<>();
 
     public Integer getSize() {
         return this.size;
@@ -287,18 +287,18 @@ public class ProcessItemFindRequest extends AbstractModel {
         return this;
     }
 
-    public List<String> getTaskDefinitionCodes() {
-        if (this.taskDefinitionCodes == null) {
-            this.taskDefinitionCodes = new LinkedList<>();
+    public List<String> getProcessItemDefinitionCodes() {
+        if (this.processItemDefinitionCodes == null) {
+            this.processItemDefinitionCodes = new LinkedList<>();
         }
 
-        return unmodifiableList(this.taskDefinitionCodes);
+        return unmodifiableList(this.processItemDefinitionCodes);
     }
 
-    public ProcessItemFindRequest setTaskDefinitionCodes(List<String> taskDefinitionCodes) {
-        this.taskDefinitionCodes.clear();
-        if (taskDefinitionCodes != null) {
-            this.taskDefinitionCodes.addAll(taskDefinitionCodes);
+    public ProcessItemFindRequest setProcessItemDefinitionCodes(List<String> processItemDefinitionCodes) {
+        this.processItemDefinitionCodes.clear();
+        if (processItemDefinitionCodes != null) {
+            this.processItemDefinitionCodes.addAll(processItemDefinitionCodes);
         }
 
         return this;
@@ -307,13 +307,13 @@ public class ProcessItemFindRequest extends AbstractModel {
     public ProcessItemFindRequest setTaskDefinitionCode(String taskDefinitionCode) {
         Objects.requireNonNull(taskDefinitionCode, "'taskDefinitionCode' is required");
 
-        return this.setTaskDefinitionCodes(List.of(taskDefinitionCode));
+        return this.setProcessItemDefinitionCodes(List.of(taskDefinitionCode));
     }
 
     public ProcessItemFindRequest addTaskDefinitionCode(String taskDefinitionCode) {
         Objects.requireNonNull(taskDefinitionCode, "'taskDefinitionCode' is required");
-        if (!this.taskDefinitionCodes.contains(taskDefinitionCode)) {
-            this.taskDefinitionCodes.add(taskDefinitionCode);
+        if (!this.processItemDefinitionCodes.contains(taskDefinitionCode)) {
+            this.processItemDefinitionCodes.add(taskDefinitionCode);
         }
 
         return this;
@@ -321,7 +321,7 @@ public class ProcessItemFindRequest extends AbstractModel {
 
     public ProcessItemFindRequest removeTaskDefinitionCode(String taskDefinitionCode) {
         Objects.requireNonNull(taskDefinitionCode, "'taskDefinitionCode' is required");
-        this.taskDefinitionCodes.remove(taskDefinitionCode);
+        this.processItemDefinitionCodes.remove(taskDefinitionCode);
 
         return this;
     }

@@ -22,63 +22,58 @@
  */
 package com.kuflow.rest.model;
 
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Type of the Event.
  */
-public enum WebhookType {
+public final class WebhookType extends ExpandableStringEnum<WebhookType> {
+
     /**
-     * Enum value PROCESS.CREATED.
+     * Static value PROCESS.CREATED for WebhookType.
      */
-    PROCESS_CREATED("PROCESS.CREATED"),
+    public static final WebhookType PROCESS_CREATED = fromString("PROCESS.CREATED");
 
     /**
-     * Enum value PROCESS.STATE_CHANGED.
+     * Static value PROCESS.STATE_CHANGED for WebhookType.
      */
-    PROCESS_STATE_CHANGED("PROCESS.STATE_CHANGED"),
+    public static final WebhookType PROCESS_STATE_CHANGED = fromString("PROCESS.STATE_CHANGED");
 
     /**
-     * Enum value PROCESS_ITEM.CREATED.
+     * Static value PROCESS_ITEM.CREATED for WebhookType.
      */
-    PROCESS_ITEM_CREATED("PROCESS_ITEM.CREATED"),
+    public static final WebhookType PROCESS_ITEM_CREATED = fromString("PROCESS_ITEM.CREATED");
 
     /**
-     * Enum value PROCESS_ITEM.TASK_STATE_CHANGED.
+     * Static value PROCESS_ITEM.TASK_STATE_CHANGED for WebhookType.
      */
-    PROCESS_ITEM_TASK_STATE_CHANGED("PROCESS_ITEM.TASK_STATE_CHANGED");
+    public static final WebhookType PROCESS_ITEM_TASK_STATE_CHANGED = fromString("PROCESS_ITEM.TASK_STATE_CHANGED");
 
     /**
-     * The actual serialized value for a WebhookType instance.
-     */
-    private final String value;
-
-    WebhookType(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a WebhookType instance.
+     * Creates a new instance of WebhookType value.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed WebhookType object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static WebhookType fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        WebhookType[] items = WebhookType.values();
-        for (WebhookType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Deprecated
+    public WebhookType() {}
+
+    /**
+     * Creates or finds a WebhookType from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding WebhookType.
+     */
+    public static WebhookType fromString(String name) {
+        return fromString(name, WebhookType.class);
     }
 
     /**
-     * {@inheritDoc}
+     * Gets known WebhookType values.
+     *
+     * @return known WebhookType values.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<WebhookType> values() {
+        return values(WebhookType.class);
     }
 }

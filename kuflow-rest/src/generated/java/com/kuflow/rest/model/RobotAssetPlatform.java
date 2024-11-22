@@ -22,58 +22,53 @@
  */
 package com.kuflow.rest.model;
 
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Robot asset platform.
  */
-public enum RobotAssetPlatform {
+public final class RobotAssetPlatform extends ExpandableStringEnum<RobotAssetPlatform> {
+
     /**
-     * Enum value WINDOWS.
+     * Static value WINDOWS for RobotAssetPlatform.
      */
-    WINDOWS("WINDOWS"),
+    public static final RobotAssetPlatform WINDOWS = fromString("WINDOWS");
 
     /**
-     * Enum value MAC_OS.
+     * Static value MAC_OS for RobotAssetPlatform.
      */
-    MAC_OS("MAC_OS"),
+    public static final RobotAssetPlatform MACOS = fromString("MAC_OS");
 
     /**
-     * Enum value LINUX.
+     * Static value LINUX for RobotAssetPlatform.
      */
-    LINUX("LINUX");
+    public static final RobotAssetPlatform LINUX = fromString("LINUX");
 
     /**
-     * The actual serialized value for a RobotAssetPlatform instance.
-     */
-    private final String value;
-
-    RobotAssetPlatform(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a RobotAssetPlatform instance.
+     * Creates a new instance of RobotAssetPlatform value.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed RobotAssetPlatform object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static RobotAssetPlatform fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        RobotAssetPlatform[] items = RobotAssetPlatform.values();
-        for (RobotAssetPlatform item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Deprecated
+    public RobotAssetPlatform() {}
+
+    /**
+     * Creates or finds a RobotAssetPlatform from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding RobotAssetPlatform.
+     */
+    public static RobotAssetPlatform fromString(String name) {
+        return fromString(name, RobotAssetPlatform.class);
     }
 
     /**
-     * {@inheritDoc}
+     * Gets known RobotAssetPlatform values.
+     *
+     * @return known RobotAssetPlatform values.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<RobotAssetPlatform> values() {
+        return values(RobotAssetPlatform.class);
     }
 }

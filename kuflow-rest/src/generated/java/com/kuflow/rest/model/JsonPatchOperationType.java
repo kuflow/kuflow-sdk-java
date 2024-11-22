@@ -22,73 +22,68 @@
  */
 package com.kuflow.rest.model;
 
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * The operation to perform.
  */
-public enum JsonPatchOperationType {
+public final class JsonPatchOperationType extends ExpandableStringEnum<JsonPatchOperationType> {
+
     /**
-     * Enum value add.
+     * Static value add for JsonPatchOperationType.
      */
-    ADD("add"),
+    public static final JsonPatchOperationType ADD = fromString("add");
 
     /**
-     * Enum value remove.
+     * Static value remove for JsonPatchOperationType.
      */
-    REMOVE("remove"),
+    public static final JsonPatchOperationType REMOVE = fromString("remove");
 
     /**
-     * Enum value replace.
+     * Static value replace for JsonPatchOperationType.
      */
-    REPLACE("replace"),
+    public static final JsonPatchOperationType REPLACE = fromString("replace");
 
     /**
-     * Enum value move.
+     * Static value move for JsonPatchOperationType.
      */
-    MOVE("move"),
+    public static final JsonPatchOperationType MOVE = fromString("move");
 
     /**
-     * Enum value copy.
+     * Static value copy for JsonPatchOperationType.
      */
-    COPY("copy"),
+    public static final JsonPatchOperationType COPY = fromString("copy");
 
     /**
-     * Enum value test.
+     * Static value test for JsonPatchOperationType.
      */
-    TEST("test");
+    public static final JsonPatchOperationType TEST = fromString("test");
 
     /**
-     * The actual serialized value for a JsonPatchOperationType instance.
-     */
-    private final String value;
-
-    JsonPatchOperationType(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a JsonPatchOperationType instance.
+     * Creates a new instance of JsonPatchOperationType value.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed JsonPatchOperationType object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static JsonPatchOperationType fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        JsonPatchOperationType[] items = JsonPatchOperationType.values();
-        for (JsonPatchOperationType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Deprecated
+    public JsonPatchOperationType() {}
+
+    /**
+     * Creates or finds a JsonPatchOperationType from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding JsonPatchOperationType.
+     */
+    public static JsonPatchOperationType fromString(String name) {
+        return fromString(name, JsonPatchOperationType.class);
     }
 
     /**
-     * {@inheritDoc}
+     * Gets known JsonPatchOperationType values.
+     *
+     * @return known JsonPatchOperationType values.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<JsonPatchOperationType> values() {
+        return values(JsonPatchOperationType.class);
     }
 }

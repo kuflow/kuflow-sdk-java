@@ -63,6 +63,11 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
     private String ownerEmail;
 
     /*
+     * The processItemDefinitionCode property.
+     */
+    private String processItemDefinitionCode;
+
+    /*
      * The task property.
      */
     private ProcessItemTaskCreateParams task;
@@ -178,6 +183,26 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
     }
 
     /**
+     * Get the processItemDefinitionCode property: The processItemDefinitionCode property.
+     *
+     * @return the processItemDefinitionCode value.
+     */
+    public String getProcessItemDefinitionCode() {
+        return this.processItemDefinitionCode;
+    }
+
+    /**
+     * Set the processItemDefinitionCode property: The processItemDefinitionCode property.
+     *
+     * @param processItemDefinitionCode the processItemDefinitionCode value to set.
+     * @return the ProcessItemCreateParams object itself.
+     */
+    public ProcessItemCreateParams setProcessItemDefinitionCode(String processItemDefinitionCode) {
+        this.processItemDefinitionCode = processItemDefinitionCode;
+        return this;
+    }
+
+    /**
      * Get the task property: The task property.
      *
      * @return the task value.
@@ -228,6 +253,7 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
         jsonWriter.writeStringField("id", Objects.toString(this.id, null));
         jsonWriter.writeStringField("ownerId", Objects.toString(this.ownerId, null));
         jsonWriter.writeStringField("ownerEmail", this.ownerEmail);
+        jsonWriter.writeStringField("processItemDefinitionCode", this.processItemDefinitionCode);
         jsonWriter.writeJsonField("task", this.task);
         jsonWriter.writeJsonField("message", this.message);
         return jsonWriter.writeEndObject();
@@ -264,6 +290,8 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
                     );
                 } else if ("ownerEmail".equals(fieldName)) {
                     deserializedProcessItemCreateParams.ownerEmail = reader.getString();
+                } else if ("processItemDefinitionCode".equals(fieldName)) {
+                    deserializedProcessItemCreateParams.processItemDefinitionCode = reader.getString();
                 } else if ("task".equals(fieldName)) {
                     deserializedProcessItemCreateParams.task = ProcessItemTaskCreateParams.fromJson(reader);
                 } else if ("message".equals(fieldName)) {

@@ -22,63 +22,58 @@
  */
 package com.kuflow.rest.model;
 
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Process Item Task state.
  */
-public enum ProcessItemTaskState {
+public final class ProcessItemTaskState extends ExpandableStringEnum<ProcessItemTaskState> {
+
     /**
-     * Enum value READY.
+     * Static value READY for ProcessItemTaskState.
      */
-    READY("READY"),
+    public static final ProcessItemTaskState READY = fromString("READY");
 
     /**
-     * Enum value CLAIMED.
+     * Static value CLAIMED for ProcessItemTaskState.
      */
-    CLAIMED("CLAIMED"),
+    public static final ProcessItemTaskState CLAIMED = fromString("CLAIMED");
 
     /**
-     * Enum value COMPLETED.
+     * Static value COMPLETED for ProcessItemTaskState.
      */
-    COMPLETED("COMPLETED"),
+    public static final ProcessItemTaskState COMPLETED = fromString("COMPLETED");
 
     /**
-     * Enum value CANCELLED.
+     * Static value CANCELLED for ProcessItemTaskState.
      */
-    CANCELLED("CANCELLED");
+    public static final ProcessItemTaskState CANCELLED = fromString("CANCELLED");
 
     /**
-     * The actual serialized value for a ProcessItemTaskState instance.
-     */
-    private final String value;
-
-    ProcessItemTaskState(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a ProcessItemTaskState instance.
+     * Creates a new instance of ProcessItemTaskState value.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed ProcessItemTaskState object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static ProcessItemTaskState fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        ProcessItemTaskState[] items = ProcessItemTaskState.values();
-        for (ProcessItemTaskState item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Deprecated
+    public ProcessItemTaskState() {}
+
+    /**
+     * Creates or finds a ProcessItemTaskState from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding ProcessItemTaskState.
+     */
+    public static ProcessItemTaskState fromString(String name) {
+        return fromString(name, ProcessItemTaskState.class);
     }
 
     /**
-     * {@inheritDoc}
+     * Gets known ProcessItemTaskState values.
+     *
+     * @return known ProcessItemTaskState values.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<ProcessItemTaskState> values() {
+        return values(ProcessItemTaskState.class);
     }
 }

@@ -50,9 +50,9 @@ public final class ProcessPageItem extends AbstractAudited {
     private ProcessState state;
 
     /*
-     * The processDefinition property.
+     * The processDefinitionRef property.
      */
-    private ProcessDefinitionSummary processDefinition;
+    private ProcessDefinitionRef processDefinitionRef;
 
     /*
      * Principal ID.
@@ -110,22 +110,22 @@ public final class ProcessPageItem extends AbstractAudited {
     }
 
     /**
-     * Get the processDefinition property: The processDefinition property.
+     * Get the processDefinitionRef property: The processDefinitionRef property.
      *
-     * @return the processDefinition value.
+     * @return the processDefinitionRef value.
      */
-    public ProcessDefinitionSummary getProcessDefinition() {
-        return this.processDefinition;
+    public ProcessDefinitionRef getProcessDefinitionRef() {
+        return this.processDefinitionRef;
     }
 
     /**
-     * Set the processDefinition property: The processDefinition property.
+     * Set the processDefinitionRef property: The processDefinitionRef property.
      *
-     * @param processDefinition the processDefinition value to set.
+     * @param processDefinitionRef the processDefinitionRef value to set.
      * @return the ProcessPageItem object itself.
      */
-    public ProcessPageItem setProcessDefinition(ProcessDefinitionSummary processDefinition) {
-        this.processDefinition = processDefinition;
+    public ProcessPageItem setProcessDefinitionRef(ProcessDefinitionRef processDefinitionRef) {
+        this.processDefinitionRef = processDefinitionRef;
         return this;
     }
 
@@ -223,7 +223,7 @@ public final class ProcessPageItem extends AbstractAudited {
         );
         jsonWriter.writeStringField("id", Objects.toString(this.id, null));
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
-        jsonWriter.writeJsonField("processDefinition", this.processDefinition);
+        jsonWriter.writeJsonField("processDefinitionRef", this.processDefinitionRef);
         jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
         jsonWriter.writeStringField("initiatorId", Objects.toString(this.initiatorId, null));
         return jsonWriter.writeEndObject();
@@ -265,8 +265,8 @@ public final class ProcessPageItem extends AbstractAudited {
                     deserializedProcessPageItem.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("state".equals(fieldName)) {
                     deserializedProcessPageItem.state = ProcessState.fromString(reader.getString());
-                } else if ("processDefinition".equals(fieldName)) {
-                    deserializedProcessPageItem.processDefinition = ProcessDefinitionSummary.fromJson(reader);
+                } else if ("processDefinitionRef".equals(fieldName)) {
+                    deserializedProcessPageItem.processDefinitionRef = ProcessDefinitionRef.fromJson(reader);
                 } else if ("tenantId".equals(fieldName)) {
                     deserializedProcessPageItem.tenantId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("initiatorId".equals(fieldName)) {

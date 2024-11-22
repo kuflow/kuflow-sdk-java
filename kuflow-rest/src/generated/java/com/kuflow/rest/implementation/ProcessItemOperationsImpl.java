@@ -102,7 +102,7 @@ public final class ProcessItemOperationsImpl {
             @QueryParam(value = "processId", multipleQueryParams = true) List<String> processId,
             @QueryParam(value = "type", multipleQueryParams = true) List<String> type,
             @QueryParam(value = "taskState", multipleQueryParams = true) List<String> taskState,
-            @QueryParam(value = "taskDefinitionCode", multipleQueryParams = true) List<String> taskDefinitionCode,
+            @QueryParam(value = "processItemDefinitionCode", multipleQueryParams = true) List<String> processItemDefinitionCode,
             @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
             @HeaderParam("Accept") String accept,
             Context context
@@ -119,7 +119,7 @@ public final class ProcessItemOperationsImpl {
             @QueryParam(value = "processId", multipleQueryParams = true) List<String> processId,
             @QueryParam(value = "type", multipleQueryParams = true) List<String> type,
             @QueryParam(value = "taskState", multipleQueryParams = true) List<String> taskState,
-            @QueryParam(value = "taskDefinitionCode", multipleQueryParams = true) List<String> taskDefinitionCode,
+            @QueryParam(value = "processItemDefinitionCode", multipleQueryParams = true) List<String> processItemDefinitionCode,
             @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
             @HeaderParam("Accept") String accept,
             Context context
@@ -333,7 +333,7 @@ public final class ProcessItemOperationsImpl {
      * @param processId Filter by an array of process ids.
      * @param type Filter by an array of type.
      * @param taskState Filter by an array of task states.
-     * @param taskDefinitionCode Filter by an array of task definition codes.
+     * @param processItemDefinitionCode Filter by an array of task definition codes.
      * @param tenantId Filter by tenantId.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -348,11 +348,11 @@ public final class ProcessItemOperationsImpl {
         List<UUID> processId,
         List<ProcessItemType> type,
         List<ProcessItemTaskState> taskState,
-        List<String> taskDefinitionCode,
+        List<String> processItemDefinitionCode,
         List<UUID> tenantId
     ) {
         return FluxUtil.withContext(context ->
-            findProcessItemsWithResponseAsync(size, page, sort, processId, type, taskState, taskDefinitionCode, tenantId, context)
+            findProcessItemsWithResponseAsync(size, page, sort, processId, type, taskState, processItemDefinitionCode, tenantId, context)
         );
     }
 
@@ -373,7 +373,7 @@ public final class ProcessItemOperationsImpl {
      * @param processId Filter by an array of process ids.
      * @param type Filter by an array of type.
      * @param taskState Filter by an array of task states.
-     * @param taskDefinitionCode Filter by an array of task definition codes.
+     * @param processItemDefinitionCode Filter by an array of task definition codes.
      * @param tenantId Filter by tenantId.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -389,7 +389,7 @@ public final class ProcessItemOperationsImpl {
         List<UUID> processId,
         List<ProcessItemType> type,
         List<ProcessItemTaskState> taskState,
-        List<String> taskDefinitionCode,
+        List<String> processItemDefinitionCode,
         List<UUID> tenantId,
         Context context
     ) {
@@ -406,9 +406,9 @@ public final class ProcessItemOperationsImpl {
         List<String> taskStateConverted = (taskState == null)
             ? new ArrayList<>()
             : taskState.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> taskDefinitionCodeConverted = (taskDefinitionCode == null)
+        List<String> processItemDefinitionCodeConverted = (processItemDefinitionCode == null)
             ? new ArrayList<>()
-            : taskDefinitionCode.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+            : processItemDefinitionCode.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> tenantIdConverted = (tenantId == null)
             ? new ArrayList<>()
             : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
@@ -420,7 +420,7 @@ public final class ProcessItemOperationsImpl {
             processIdConverted,
             typeConverted,
             taskStateConverted,
-            taskDefinitionCodeConverted,
+            processItemDefinitionCodeConverted,
             tenantIdConverted,
             accept,
             context
@@ -444,7 +444,7 @@ public final class ProcessItemOperationsImpl {
      * @param processId Filter by an array of process ids.
      * @param type Filter by an array of type.
      * @param taskState Filter by an array of task states.
-     * @param taskDefinitionCode Filter by an array of task definition codes.
+     * @param processItemDefinitionCode Filter by an array of task definition codes.
      * @param tenantId Filter by tenantId.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -459,11 +459,11 @@ public final class ProcessItemOperationsImpl {
         List<UUID> processId,
         List<ProcessItemType> type,
         List<ProcessItemTaskState> taskState,
-        List<String> taskDefinitionCode,
+        List<String> processItemDefinitionCode,
         List<UUID> tenantId
     ) {
-        return findProcessItemsWithResponseAsync(size, page, sort, processId, type, taskState, taskDefinitionCode, tenantId).flatMap(res ->
-            Mono.justOrEmpty(res.getValue())
+        return findProcessItemsWithResponseAsync(size, page, sort, processId, type, taskState, processItemDefinitionCode, tenantId).flatMap(
+            res -> Mono.justOrEmpty(res.getValue())
         );
     }
 
@@ -486,10 +486,10 @@ public final class ProcessItemOperationsImpl {
         final List<UUID> processId = null;
         final List<ProcessItemType> type = null;
         final List<ProcessItemTaskState> taskState = null;
-        final List<String> taskDefinitionCode = null;
+        final List<String> processItemDefinitionCode = null;
         final List<UUID> tenantId = null;
-        return findProcessItemsWithResponseAsync(size, page, sort, processId, type, taskState, taskDefinitionCode, tenantId).flatMap(res ->
-            Mono.justOrEmpty(res.getValue())
+        return findProcessItemsWithResponseAsync(size, page, sort, processId, type, taskState, processItemDefinitionCode, tenantId).flatMap(
+            res -> Mono.justOrEmpty(res.getValue())
         );
     }
 
@@ -510,7 +510,7 @@ public final class ProcessItemOperationsImpl {
      * @param processId Filter by an array of process ids.
      * @param type Filter by an array of type.
      * @param taskState Filter by an array of task states.
-     * @param taskDefinitionCode Filter by an array of task definition codes.
+     * @param processItemDefinitionCode Filter by an array of task definition codes.
      * @param tenantId Filter by tenantId.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -526,7 +526,7 @@ public final class ProcessItemOperationsImpl {
         List<UUID> processId,
         List<ProcessItemType> type,
         List<ProcessItemTaskState> taskState,
-        List<String> taskDefinitionCode,
+        List<String> processItemDefinitionCode,
         List<UUID> tenantId,
         Context context
     ) {
@@ -537,7 +537,7 @@ public final class ProcessItemOperationsImpl {
             processId,
             type,
             taskState,
-            taskDefinitionCode,
+            processItemDefinitionCode,
             tenantId,
             context
         ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -560,7 +560,7 @@ public final class ProcessItemOperationsImpl {
      * @param processId Filter by an array of process ids.
      * @param type Filter by an array of type.
      * @param taskState Filter by an array of task states.
-     * @param taskDefinitionCode Filter by an array of task definition codes.
+     * @param processItemDefinitionCode Filter by an array of task definition codes.
      * @param tenantId Filter by tenantId.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -576,7 +576,7 @@ public final class ProcessItemOperationsImpl {
         List<UUID> processId,
         List<ProcessItemType> type,
         List<ProcessItemTaskState> taskState,
-        List<String> taskDefinitionCode,
+        List<String> processItemDefinitionCode,
         List<UUID> tenantId,
         Context context
     ) {
@@ -593,9 +593,9 @@ public final class ProcessItemOperationsImpl {
         List<String> taskStateConverted = (taskState == null)
             ? new ArrayList<>()
             : taskState.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> taskDefinitionCodeConverted = (taskDefinitionCode == null)
+        List<String> processItemDefinitionCodeConverted = (processItemDefinitionCode == null)
             ? new ArrayList<>()
-            : taskDefinitionCode.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+            : processItemDefinitionCode.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> tenantIdConverted = (tenantId == null)
             ? new ArrayList<>()
             : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
@@ -607,7 +607,7 @@ public final class ProcessItemOperationsImpl {
             processIdConverted,
             typeConverted,
             taskStateConverted,
-            taskDefinitionCodeConverted,
+            processItemDefinitionCodeConverted,
             tenantIdConverted,
             accept,
             context
@@ -631,7 +631,7 @@ public final class ProcessItemOperationsImpl {
      * @param processId Filter by an array of process ids.
      * @param type Filter by an array of type.
      * @param taskState Filter by an array of task states.
-     * @param taskDefinitionCode Filter by an array of task definition codes.
+     * @param processItemDefinitionCode Filter by an array of task definition codes.
      * @param tenantId Filter by tenantId.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -646,7 +646,7 @@ public final class ProcessItemOperationsImpl {
         List<UUID> processId,
         List<ProcessItemType> type,
         List<ProcessItemTaskState> taskState,
-        List<String> taskDefinitionCode,
+        List<String> processItemDefinitionCode,
         List<UUID> tenantId
     ) {
         return findProcessItemsWithResponse(
@@ -656,7 +656,7 @@ public final class ProcessItemOperationsImpl {
             processId,
             type,
             taskState,
-            taskDefinitionCode,
+            processItemDefinitionCode,
             tenantId,
             Context.NONE
         ).getValue();
@@ -681,7 +681,7 @@ public final class ProcessItemOperationsImpl {
         final List<UUID> processId = null;
         final List<ProcessItemType> type = null;
         final List<ProcessItemTaskState> taskState = null;
-        final List<String> taskDefinitionCode = null;
+        final List<String> processItemDefinitionCode = null;
         final List<UUID> tenantId = null;
         return findProcessItemsWithResponse(
             size,
@@ -690,7 +690,7 @@ public final class ProcessItemOperationsImpl {
             processId,
             type,
             taskState,
-            taskDefinitionCode,
+            processItemDefinitionCode,
             tenantId,
             Context.NONE
         ).getValue();

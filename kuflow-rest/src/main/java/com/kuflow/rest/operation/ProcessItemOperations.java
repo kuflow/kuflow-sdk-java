@@ -83,7 +83,9 @@ public class ProcessItemOperations {
         List<UUID> processId = !options.getProcessIds().isEmpty() ? options.getProcessIds() : null;
         List<ProcessItemType> type = !options.getTypes().isEmpty() ? options.getTypes() : null;
         List<ProcessItemTaskState> taskState = !options.getTaskStates().isEmpty() ? options.getTaskStates() : null;
-        List<String> taskDefinitionCode = !options.getTaskDefinitionCodes().isEmpty() ? options.getTaskDefinitionCodes() : null;
+        List<String> processItemDefinitionCode = !options.getProcessItemDefinitionCode().isEmpty()
+            ? options.getProcessItemDefinitionCode()
+            : null;
         List<UUID> tenantId = !options.getTenantIds().isEmpty() ? options.getTenantIds() : null;
 
         return this.service.findProcessItemsWithResponse(
@@ -93,7 +95,7 @@ public class ProcessItemOperations {
                 processId,
                 type,
                 taskState,
-                taskDefinitionCode,
+                processItemDefinitionCode,
                 tenantId,
                 context
             );

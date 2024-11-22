@@ -42,11 +42,6 @@ public final class ProcessItemTask implements JsonSerializable<ProcessItemTask> 
     private ProcessItemTaskState state;
 
     /*
-     * The taskDefinition property.
-     */
-    private TaskDefinitionSummary taskDefinition;
-
-    /*
      * Json value.
      */
     private JsonValue data;
@@ -78,26 +73,6 @@ public final class ProcessItemTask implements JsonSerializable<ProcessItemTask> 
      */
     public ProcessItemTask setState(ProcessItemTaskState state) {
         this.state = state;
-        return this;
-    }
-
-    /**
-     * Get the taskDefinition property: The taskDefinition property.
-     *
-     * @return the taskDefinition value.
-     */
-    public TaskDefinitionSummary getTaskDefinition() {
-        return this.taskDefinition;
-    }
-
-    /**
-     * Set the taskDefinition property: The taskDefinition property.
-     *
-     * @param taskDefinition the taskDefinition value to set.
-     * @return the ProcessItemTask object itself.
-     */
-    public ProcessItemTask setTaskDefinition(TaskDefinitionSummary taskDefinition) {
-        this.taskDefinition = taskDefinition;
         return this;
     }
 
@@ -148,7 +123,6 @@ public final class ProcessItemTask implements JsonSerializable<ProcessItemTask> 
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
-        jsonWriter.writeJsonField("taskDefinition", this.taskDefinition);
         jsonWriter.writeJsonField("data", this.data);
         jsonWriter.writeArrayField("logs", this.logs, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -172,8 +146,6 @@ public final class ProcessItemTask implements JsonSerializable<ProcessItemTask> 
 
                 if ("state".equals(fieldName)) {
                     deserializedProcessItemTask.state = ProcessItemTaskState.fromString(reader.getString());
-                } else if ("taskDefinition".equals(fieldName)) {
-                    deserializedProcessItemTask.taskDefinition = TaskDefinitionSummary.fromJson(reader);
                 } else if ("data".equals(fieldName)) {
                     deserializedProcessItemTask.data = JsonValue.fromJson(reader);
                 } else if ("logs".equals(fieldName)) {

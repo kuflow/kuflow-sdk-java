@@ -65,6 +65,11 @@ public final class ProcessItemPageItem extends AbstractAudited {
     private UUID tenantId;
 
     /*
+     * The processItemDefinitionRef property.
+     */
+    private ProcessItemDefinitionRef processItemDefinitionRef;
+
+    /*
      * The task property.
      */
     private ProcessItemTaskPageItem task;
@@ -180,6 +185,26 @@ public final class ProcessItemPageItem extends AbstractAudited {
     }
 
     /**
+     * Get the processItemDefinitionRef property: The processItemDefinitionRef property.
+     *
+     * @return the processItemDefinitionRef value.
+     */
+    public ProcessItemDefinitionRef getProcessItemDefinitionRef() {
+        return this.processItemDefinitionRef;
+    }
+
+    /**
+     * Set the processItemDefinitionRef property: The processItemDefinitionRef property.
+     *
+     * @param processItemDefinitionRef the processItemDefinitionRef value to set.
+     * @return the ProcessItemPageItem object itself.
+     */
+    public ProcessItemPageItem setProcessItemDefinitionRef(ProcessItemDefinitionRef processItemDefinitionRef) {
+        this.processItemDefinitionRef = processItemDefinitionRef;
+        return this;
+    }
+
+    /**
      * Get the task property: The task property.
      *
      * @return the task value.
@@ -276,6 +301,7 @@ public final class ProcessItemPageItem extends AbstractAudited {
         jsonWriter.writeStringField("processId", Objects.toString(this.processId, null));
         jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
         jsonWriter.writeStringField("ownerId", Objects.toString(this.ownerId, null));
+        jsonWriter.writeJsonField("processItemDefinitionRef", this.processItemDefinitionRef);
         jsonWriter.writeJsonField("task", this.task);
         jsonWriter.writeJsonField("message", this.message);
         return jsonWriter.writeEndObject();
@@ -328,6 +354,8 @@ public final class ProcessItemPageItem extends AbstractAudited {
                 } else if ("ownerId".equals(fieldName)) {
                     deserializedProcessItemPageItem.ownerId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())
                     );
+                } else if ("processItemDefinitionRef".equals(fieldName)) {
+                    deserializedProcessItemPageItem.processItemDefinitionRef = ProcessItemDefinitionRef.fromJson(reader);
                 } else if ("task".equals(fieldName)) {
                     deserializedProcessItemPageItem.task = ProcessItemTaskPageItem.fromJson(reader);
                 } else if ("message".equals(fieldName)) {

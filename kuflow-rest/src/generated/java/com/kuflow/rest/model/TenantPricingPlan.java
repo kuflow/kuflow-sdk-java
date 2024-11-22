@@ -22,58 +22,53 @@
  */
 package com.kuflow.rest.model;
 
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Tenant pricing plan.
  */
-public enum TenantPricingPlan {
+public final class TenantPricingPlan extends ExpandableStringEnum<TenantPricingPlan> {
+
     /**
-     * Enum value FREE.
+     * Static value FREE for TenantPricingPlan.
      */
-    FREE("FREE"),
+    public static final TenantPricingPlan FREE = fromString("FREE");
 
     /**
-     * Enum value PREMIUM.
+     * Static value PREMIUM for TenantPricingPlan.
      */
-    PREMIUM("PREMIUM"),
+    public static final TenantPricingPlan PREMIUM = fromString("PREMIUM");
 
     /**
-     * Enum value UNLIMITED.
+     * Static value UNLIMITED for TenantPricingPlan.
      */
-    UNLIMITED("UNLIMITED");
+    public static final TenantPricingPlan UNLIMITED = fromString("UNLIMITED");
 
     /**
-     * The actual serialized value for a TenantPricingPlan instance.
-     */
-    private final String value;
-
-    TenantPricingPlan(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a TenantPricingPlan instance.
+     * Creates a new instance of TenantPricingPlan value.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed TenantPricingPlan object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static TenantPricingPlan fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        TenantPricingPlan[] items = TenantPricingPlan.values();
-        for (TenantPricingPlan item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Deprecated
+    public TenantPricingPlan() {}
+
+    /**
+     * Creates or finds a TenantPricingPlan from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding TenantPricingPlan.
+     */
+    public static TenantPricingPlan fromString(String name) {
+        return fromString(name, TenantPricingPlan.class);
     }
 
     /**
-     * {@inheritDoc}
+     * Gets known TenantPricingPlan values.
+     *
+     * @return known TenantPricingPlan values.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<TenantPricingPlan> values() {
+        return values(TenantPricingPlan.class);
     }
 }

@@ -22,53 +22,53 @@
  */
 package com.kuflow.rest.model;
 
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Process Item Type.
  */
-public enum ProcessItemType {
+public final class ProcessItemType extends ExpandableStringEnum<ProcessItemType> {
+
     /**
-     * Enum value TASK.
+     * Static value TASK for ProcessItemType.
      */
-    TASK("TASK"),
+    public static final ProcessItemType TASK = fromString("TASK");
 
     /**
-     * Enum value MESSAGE.
+     * Static value MESSAGE for ProcessItemType.
      */
-    MESSAGE("MESSAGE");
+    public static final ProcessItemType MESSAGE = fromString("MESSAGE");
 
     /**
-     * The actual serialized value for a ProcessItemType instance.
+     * Static value THREAD for ProcessItemType.
      */
-    private final String value;
-
-    ProcessItemType(String value) {
-        this.value = value;
-    }
+    public static final ProcessItemType THREAD = fromString("THREAD");
 
     /**
-     * Parses a serialized value to a ProcessItemType instance.
+     * Creates a new instance of ProcessItemType value.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed ProcessItemType object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static ProcessItemType fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        ProcessItemType[] items = ProcessItemType.values();
-        for (ProcessItemType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Deprecated
+    public ProcessItemType() {}
+
+    /**
+     * Creates or finds a ProcessItemType from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding ProcessItemType.
+     */
+    public static ProcessItemType fromString(String name) {
+        return fromString(name, ProcessItemType.class);
     }
 
     /**
-     * {@inheritDoc}
+     * Gets known ProcessItemType values.
+     *
+     * @return known ProcessItemType values.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<ProcessItemType> values() {
+        return values(ProcessItemType.class);
     }
 }

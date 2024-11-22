@@ -69,9 +69,9 @@ public class ProcessItemFindOptions {
     private List<ProcessItemTaskState> taskStates = new LinkedList<>();
 
     /**
-     * Filter by an array of task definition codes.
+     * Filter by an array of process item definition codes.
      */
-    private List<String> taskDefinitionCodes = new LinkedList<>();
+    private List<String> processItemDefinitionCode = new LinkedList<>();
 
     public Integer getSize() {
         return this.size;
@@ -284,41 +284,41 @@ public class ProcessItemFindOptions {
         return this;
     }
 
-    public List<String> getTaskDefinitionCodes() {
-        if (this.taskDefinitionCodes == null) {
-            this.taskDefinitionCodes = new LinkedList<>();
+    public List<String> getProcessItemDefinitionCode() {
+        if (this.processItemDefinitionCode == null) {
+            this.processItemDefinitionCode = new LinkedList<>();
         }
 
-        return unmodifiableList(this.taskDefinitionCodes);
+        return unmodifiableList(this.processItemDefinitionCode);
     }
 
-    public ProcessItemFindOptions setTaskDefinitionCodes(List<String> taskDefinitionCodes) {
-        this.taskDefinitionCodes.clear();
-        if (taskDefinitionCodes != null) {
-            this.taskDefinitionCodes.addAll(taskDefinitionCodes);
-        }
-
-        return this;
-    }
-
-    public ProcessItemFindOptions setTaskDefinitionCode(String taskDefinitionCode) {
-        Objects.requireNonNull(taskDefinitionCode, "'taskDefinitionCode' is required");
-
-        return this.setTaskDefinitionCodes(List.of(taskDefinitionCode));
-    }
-
-    public ProcessItemFindOptions addTaskDefinitionCode(String taskDefinitionCode) {
-        Objects.requireNonNull(taskDefinitionCode, "'taskDefinitionCode' is required");
-        if (!this.taskDefinitionCodes.contains(taskDefinitionCode)) {
-            this.taskDefinitionCodes.add(taskDefinitionCode);
+    public ProcessItemFindOptions setProcessItemDefinitionCode(List<String> processItemDefinitionCode) {
+        this.processItemDefinitionCode.clear();
+        if (processItemDefinitionCode != null) {
+            this.processItemDefinitionCode.addAll(processItemDefinitionCode);
         }
 
         return this;
     }
 
-    public ProcessItemFindOptions removeTaskDefinitionCode(String taskDefinitionCode) {
-        Objects.requireNonNull(taskDefinitionCode, "'taskDefinitionCode' is required");
-        this.taskDefinitionCodes.remove(taskDefinitionCode);
+    public ProcessItemFindOptions setProcessItemDefinitionCode(String processItemDefinitionCode) {
+        Objects.requireNonNull(processItemDefinitionCode, "'processItemDefinitionCode' is required");
+
+        return this.setProcessItemDefinitionCode(List.of(processItemDefinitionCode));
+    }
+
+    public ProcessItemFindOptions addProcessItemDefinitionCode(String processItemDefinitionCode) {
+        Objects.requireNonNull(processItemDefinitionCode, "'processItemDefinitionCode' is required");
+        if (!this.processItemDefinitionCode.contains(processItemDefinitionCode)) {
+            this.processItemDefinitionCode.add(processItemDefinitionCode);
+        }
+
+        return this;
+    }
+
+    public ProcessItemFindOptions removeProcessItemDefinitionCode(String processItemDefinitionCode) {
+        Objects.requireNonNull(processItemDefinitionCode, "'processItemDefinitionCode' is required");
+        this.processItemDefinitionCode.remove(processItemDefinitionCode);
 
         return this;
     }

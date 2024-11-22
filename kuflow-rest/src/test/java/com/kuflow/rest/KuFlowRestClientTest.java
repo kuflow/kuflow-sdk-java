@@ -61,11 +61,12 @@ public class KuFlowRestClientTest {
 
         System.out.println(process);
 
-        ProcessItemTaskCreateParams processItemTaskCreateParams = new ProcessItemTaskCreateParams().setTaskDefinitionCode("TASK_0001");
+        ProcessItemTaskCreateParams processItemTaskCreateParams = new ProcessItemTaskCreateParams();
 
         ProcessItemCreateParams processItemCreateParams = new ProcessItemCreateParams()
             .setId(UUID.fromString("01911390-9435-7c2d-a566-ff2907bf4253"))
             .setProcessId(process.getId())
+            .setProcessItemDefinitionCode("TASK_0001")
             .setTask(processItemTaskCreateParams);
 
         ProcessItem processItem = kuFlowRestClient.getProcessItemOperations().createProcessItem(processItemCreateParams);
