@@ -24,8 +24,8 @@ package com.kuflow.spring.boot.autoconfigure.properties;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.kuflow.spring.boot.autoconfigure.validation.NotFillMeAttributesValues;
+import jakarta.validation.constraints.NotNull;
 import java.time.Duration;
-import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;

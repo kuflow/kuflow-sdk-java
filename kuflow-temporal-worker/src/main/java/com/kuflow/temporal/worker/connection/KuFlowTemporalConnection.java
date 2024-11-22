@@ -24,6 +24,7 @@ package com.kuflow.temporal.worker.connection;
 
 import static java.util.stream.Collectors.toCollection;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kuflow.rest.KuFlowRestClient;
@@ -402,6 +403,7 @@ public class KuFlowTemporalConnection {
         // Customize Temporal default Jackson object mapper to support unknown properties
         ObjectMapper objectMapper = JacksonJsonPayloadConverter.newDefaultObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.configure(JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION, true);
         objectMapper.registerModule(new AutorestModule());
 
         List<PayloadConverter> converters = Arrays.stream(DefaultDataConverter.STANDARD_PAYLOAD_CONVERTERS)

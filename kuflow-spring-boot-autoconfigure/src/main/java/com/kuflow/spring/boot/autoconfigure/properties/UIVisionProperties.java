@@ -23,9 +23,9 @@
 package com.kuflow.spring.boot.autoconfigure.properties;
 
 import com.kuflow.spring.boot.autoconfigure.validation.NotFillMeAttributesValues;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.time.Duration;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;

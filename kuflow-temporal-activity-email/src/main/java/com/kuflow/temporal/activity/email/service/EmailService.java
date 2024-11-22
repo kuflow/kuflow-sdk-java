@@ -24,6 +24,7 @@ package com.kuflow.temporal.activity.email.service;
 
 import com.kuflow.temporal.activity.email.dto.EmailDto;
 import com.kuflow.temporal.common.error.KuFlowTemporalException;
+import jakarta.mail.internet.MimeMessage;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,7 +35,6 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
-import javax.mail.internet.MimeMessage;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
@@ -120,7 +120,7 @@ public class EmailService {
         }
     }
 
-    public EmailResources extractResources(@Nonnull String html) {
+    private EmailResources extractResources(@Nonnull String html) {
         Set<String> imageSources = this.findHtmlImagesLocalPath(html);
 
         EmailResources emailResources = new EmailResources();
