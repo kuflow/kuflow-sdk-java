@@ -94,7 +94,7 @@
     <azure-communication-common.version>1.3.8</azure-communication-common.version>
     <jsr305.version>3.0.2</jsr305.version>
 
-    <wiremock.version>3.6.0</wiremock.version>
+    <wiremock.version>3.9.2</wiremock.version>
     <awaitility.version>4.2.2</awaitility.version>
   </properties>
 
