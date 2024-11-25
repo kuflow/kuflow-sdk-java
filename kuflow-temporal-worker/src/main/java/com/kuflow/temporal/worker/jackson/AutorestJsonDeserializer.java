@@ -43,17 +43,20 @@ public class AutorestJsonDeserializer extends JsonDeserializer<JsonSerializable<
 
     @Override
     public JsonSerializable<?> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-        JsonLocation currentLocation = jsonParser.getCurrentLocation();
+        JsonLocation currentLocation = jsonParser.currentLocation();
         Object rawContent = currentLocation.contentReference().getRawContent();
         if (currentLocation.getByteOffset() == -1 || !(rawContent instanceof byte[])) {
-            throw new JsonParseException(jsonParser, "Unsupported raw content " + rawContent.getClass().getName());
+            throw new JsonParseException(
+                jsonParser,
+                "Unsupported raw content " + (rawContent != null ? rawContent.getClass().getName() : "<null>")
+            );
         }
 
         Class<?> jsonSerializable = this.type.getRawClass();
 
-        long begin = jsonParser.getCurrentLocation().getByteOffset();
+        long begin = jsonParser.currentLocation().getByteOffset();
         jsonParser.skipChildren();
-        long end = jsonParser.getCurrentLocation().getByteOffset();
+        long end = jsonParser.currentLocation().getByteOffset();
 
         byte[] json = Arrays.copyOfRange((byte[]) rawContent, (int) begin - 1, (int) end);
 

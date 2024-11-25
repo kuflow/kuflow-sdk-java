@@ -22,13 +22,13 @@
  */
 package com.kuflow.spring.boot.autoconfigure.validation;
 
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 
 public class NotFillMeAttributesValuesValidator implements ConstraintValidator<NotFillMeAttributesValues, Object> {
 
@@ -62,8 +62,6 @@ public class NotFillMeAttributesValuesValidator implements ConstraintValidator<N
             return false;
         }
 
-        String valueString = (String) value;
-
-        return (valueString.toUpperCase().contains(FILL_ME));
+        return (value.toString().toUpperCase().contains(FILL_ME));
     }
 }
