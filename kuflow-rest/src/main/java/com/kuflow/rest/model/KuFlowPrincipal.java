@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,6 +44,16 @@ public class KuFlowPrincipal {
     private static final String METADATA_TYPE = "type";
 
     private static final String METADATA_NAME = "name";
+
+    public static KuFlowPrincipal from(UUID id, PrincipalType type) {
+        return from(id, type, null);
+    }
+
+    public static KuFlowPrincipal from(UUID id, PrincipalType type, String name) {
+        String source = generateValue(id, type, name);
+
+        return new KuFlowPrincipal(source, id, type, name);
+    }
 
     public static Optional<KuFlowPrincipal> from(String source) {
         if (source == null || source.isEmpty()) {
@@ -152,5 +163,31 @@ public class KuFlowPrincipal {
         } catch (Exception ex) {
             return null;
         }
+    }
+
+    private static String generateValue(UUID id, PrincipalType type, String name) {
+        return (
+            PREFIX +
+            METADATA_ID +
+            "=" +
+            encode(id.toString()) +
+            ";" +
+            METADATA_TYPE +
+            "=" +
+            encode(type.getValue()) +
+            ";" +
+            METADATA_NAME +
+            "=" +
+            encode(name) +
+            ";"
+        );
+    }
+
+    private static String encode(String value) {
+        if (value == null) {
+            return "";
+        }
+
+        return URLEncoder.encode(value.trim(), StandardCharsets.UTF_8).replaceAll("\\+", "%20");
     }
 }
