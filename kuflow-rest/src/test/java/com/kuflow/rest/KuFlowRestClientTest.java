@@ -75,7 +75,9 @@ public class KuFlowRestClientTest {
 
         BinaryData file = BinaryData.fromStream(this.getClass().getResourceAsStream("kuflow.png"));
         Document document = new Document().setFileContent(file).setFileName("kuflow.png").setContentType("image/png");
-        DocumentReference documentReference = kuFlowRestClient.getProcessOperations().uploadProcessDocument(processItem.getId(), document);
+        DocumentReference documentReference = kuFlowRestClient
+            .getProcessOperations()
+            .uploadProcessDocument(processItem.getProcessId(), document);
 
         ProcessItemTaskDataUpdateParams updateParams = new ProcessItemTaskDataUpdateParams()
             .setData(
