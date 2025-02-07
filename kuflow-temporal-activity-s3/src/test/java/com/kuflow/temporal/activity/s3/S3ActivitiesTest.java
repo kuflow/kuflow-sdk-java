@@ -89,11 +89,11 @@ public class S3ActivitiesTest {
         when(kuFlowRestClient.getProcessOperations()).thenReturn(processOperations);
         when(kuFlowRestClient.getProcessItemOperations()).thenReturn(processItemOperations);
         when(processItemOperations.retrieveProcessItem(eq(processItem.getId()))).thenReturn(processItem);
-        when(processOperations.downloadProcessDocument(eq(processItem.getId()), any())).thenReturn(
-            BinaryData.fromBytes("Dummy".getBytes())
-        );
+        when(processOperations.downloadProcessDocument(eq(processItem.getProcessId()), any()))
+            .thenReturn(BinaryData.fromBytes("Dummy".getBytes()));
 
-        S3Activities s3Activities = S3ActivitiesImpl.builder()
+        S3Activities s3Activities = S3ActivitiesImpl
+            .builder()
             .withKuFlowRestClient(kuFlowRestClient)
             .withS3Client(s3Client)
             .withDefaultBucket("default-bucket")
@@ -141,11 +141,11 @@ public class S3ActivitiesTest {
         when(kuFlowRestClient.getProcessOperations()).thenReturn(processOperations);
         when(kuFlowRestClient.getProcessItemOperations()).thenReturn(processItemOperations);
         when(processItemOperations.retrieveProcessItem(eq(processItem.getId()))).thenReturn(processItem);
-        when(processOperations.downloadProcessDocument(eq(processItem.getId()), any())).thenReturn(
-            BinaryData.fromBytes("Dummy".getBytes())
-        );
+        when(processOperations.downloadProcessDocument(eq(processItem.getProcessId()), any()))
+            .thenReturn(BinaryData.fromBytes("Dummy".getBytes()));
 
-        S3Activities s3Activities = S3ActivitiesImpl.builder()
+        S3Activities s3Activities = S3ActivitiesImpl
+            .builder()
             .withKuFlowRestClient(kuFlowRestClient)
             .withS3Client(s3Client)
             .withDefaultBucket("default-bucket")
@@ -194,11 +194,11 @@ public class S3ActivitiesTest {
         when(kuFlowRestClient.getProcessOperations()).thenReturn(processOperations);
         when(kuFlowRestClient.getProcessItemOperations()).thenReturn(processItemOperations);
         when(processItemOperations.retrieveProcessItem(eq(processItem.getId()))).thenReturn(processItem);
-        when(processOperations.downloadProcessDocument(eq(processItem.getId()), any())).thenReturn(
-            BinaryData.fromBytes("Dummy".getBytes())
-        );
+        when(processOperations.downloadProcessDocument(eq(processItem.getProcessId()), any()))
+            .thenReturn(BinaryData.fromBytes("Dummy".getBytes()));
 
-        S3Activities s3Activities = S3ActivitiesImpl.builder()
+        S3Activities s3Activities = S3ActivitiesImpl
+            .builder()
             .withKuFlowRestClient(kuFlowRestClient)
             .withS3Client(s3Client)
             .withDefaultBucket("default-bucket")
@@ -246,11 +246,11 @@ public class S3ActivitiesTest {
         when(kuFlowRestClient.getProcessOperations()).thenReturn(processOperations);
         when(kuFlowRestClient.getProcessItemOperations()).thenReturn(processItemOperations);
         when(processItemOperations.retrieveProcessItem(eq(processItem.getId()))).thenReturn(processItem);
-        when(processOperations.downloadProcessDocument(eq(processItem.getId()), any())).thenReturn(
-            BinaryData.fromBytes("Dummy".getBytes())
-        );
+        when(processOperations.downloadProcessDocument(eq(processItem.getProcessId()), any()))
+            .thenReturn(BinaryData.fromBytes("Dummy".getBytes()));
 
-        S3Activities s3Activities = S3ActivitiesImpl.builder()
+        S3Activities s3Activities = S3ActivitiesImpl
+            .builder()
             .withKuFlowRestClient(kuFlowRestClient)
             .withS3Client(s3Client)
             .withDefaultBucket("default-bucket")

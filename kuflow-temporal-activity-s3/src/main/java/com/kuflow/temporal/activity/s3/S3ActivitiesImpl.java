@@ -127,10 +127,11 @@ public class S3ActivitiesImpl implements S3Activities {
             throw ApplicationFailure.newNonRetryableFailure("Name required", "KuFlowActivities.validation");
         }
 
-        BinaryData sourceFile = this.processOperations.downloadProcessDocument(processItem.getId(), file.getUri());
+        BinaryData sourceFile = this.processOperations.downloadProcessDocument(processItem.getProcessId(), file.getUri());
         try (InputStream sourceInputStream = sourceFile.toStream()) {
             RequestBody requestBody = RequestBody.fromInputStream(sourceInputStream, file.getSize());
-            PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+            PutObjectRequest putObjectRequest = PutObjectRequest
+                .builder()
                 .bucket(targetBucket)
                 .contentType(file.getType())
                 .contentDisposition(String.format("attachment; filename=\"%s\"", file.getName()))
