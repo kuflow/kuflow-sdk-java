@@ -27,6 +27,7 @@ import static java.util.stream.Collectors.toCollection;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.kuflow.rest.KuFlowRestClient;
 import com.kuflow.rest.model.Authentication;
 import com.kuflow.rest.model.AuthenticationCreateParams;
@@ -38,6 +39,7 @@ import com.kuflow.temporal.worker.authorization.KuFlowAuthorizationTokenSupplier
 import com.kuflow.temporal.worker.connection.WorkerBuilder.ActivityImplementationRegister;
 import com.kuflow.temporal.worker.connection.WorkerBuilder.WorkflowImplementationRegister;
 import com.kuflow.temporal.worker.jackson.AutorestModule;
+import com.kuflow.temporal.worker.jackson.OffsetTimeSerializer;
 import com.kuflow.temporal.worker.ssl.SslContextBuilder;
 import com.kuflow.temporal.worker.tracing.MDCContextPropagator;
 import io.grpc.netty.shaded.io.netty.handler.ssl.SslContext;
@@ -52,6 +54,7 @@ import io.temporal.serviceclient.WorkflowServiceStubs;
 import io.temporal.serviceclient.WorkflowServiceStubsOptions;
 import io.temporal.worker.Worker;
 import io.temporal.worker.WorkerFactory;
+import java.time.OffsetTime;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -400,11 +403,15 @@ public class KuFlowTemporalConnection {
     }
 
     private DataConverter dataConverter() {
+        SimpleModule kuFlowModule = new SimpleModule();
+        kuFlowModule.addSerializer(OffsetTime.class, new OffsetTimeSerializer());
+
         // Customize Temporal default Jackson object mapper to support unknown properties
         ObjectMapper objectMapper = JacksonJsonPayloadConverter.newDefaultObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         objectMapper.configure(JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION, true);
         objectMapper.registerModule(new AutorestModule());
+        objectMapper.registerModule(kuFlowModule);
 
         List<PayloadConverter> converters = Arrays.stream(DefaultDataConverter.STANDARD_PAYLOAD_CONVERTERS)
             .filter(it -> !(it instanceof JacksonJsonPayloadConverter))
