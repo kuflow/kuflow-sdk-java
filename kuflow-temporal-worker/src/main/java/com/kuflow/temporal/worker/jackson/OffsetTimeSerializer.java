@@ -44,10 +44,6 @@ public class OffsetTimeSerializer extends StdSerializer<OffsetTime> {
 
     @Override
     public void serialize(OffsetTime value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-        if (value != null) {
-            gen.writeString(value.format(this.formatter));
-        } else {
-            gen.writeNull();
-        }
+        gen.writeString(value.format(this.formatter));
     }
 }
