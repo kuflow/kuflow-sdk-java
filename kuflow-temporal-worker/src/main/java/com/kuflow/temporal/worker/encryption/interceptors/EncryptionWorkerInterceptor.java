@@ -20,31 +20,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.temporal.worker.codec.store;
+package com.kuflow.temporal.worker.encryption.interceptors;
 
-import com.kuflow.temporal.common.error.KuFlowTemporalException;
-import com.kuflow.temporal.worker.codec.encryption.EncryptionInfo;
-import io.temporal.api.common.v1.Payload;
-import javax.crypto.SecretKey;
+import io.nexusrpc.handler.OperationContext;
+import io.temporal.common.interceptors.ActivityInboundCallsInterceptor;
+import io.temporal.common.interceptors.NexusOperationInboundCallsInterceptor;
+import io.temporal.common.interceptors.WorkerInterceptorBase;
+import io.temporal.common.interceptors.WorkflowInboundCallsInterceptor;
 
-/**
- * Service interface to allow to get secret keys.
- */
-public interface SecretStore {
-    /**
-     * Get the secreted key id related to the payload passed.
-     *
-     * @param payload the payload
-     * @return the secreted key id
-     */
-    String getSecretKeyId(Payload payload);
+public class EncryptionWorkerInterceptor extends WorkerInterceptorBase {
 
-    /**
-     * Get the secreted key related to the encryption passed if it doesn't exist a secret key for the {@code encryptionInfo} passed, then
-     * a {@link KuFlowTemporalException} exception is thrown.
-     *
-     * @param encryptionInfo the encryption info
-     * @return the secreted key found
-     */
-    SecretKey getSecretKey(EncryptionInfo encryptionInfo);
+    @Override
+    public WorkflowInboundCallsInterceptor interceptWorkflow(WorkflowInboundCallsInterceptor next) {
+        return new EncryptionWorkerWorkflowInboundCallsInterceptor(next);
+    }
+
+    @Override
+    public ActivityInboundCallsInterceptor interceptActivity(ActivityInboundCallsInterceptor next) {
+        return new EncryptionWorkerActivityInboundCallsInterceptor(next);
+    }
+
+    @Override
+    public NexusOperationInboundCallsInterceptor interceptNexusOperation(
+        OperationContext context,
+        NexusOperationInboundCallsInterceptor next
+    ) {
+        return new EncryptionWorkerNexusOperationInboundCallsInterceptor(next);
+    }
 }

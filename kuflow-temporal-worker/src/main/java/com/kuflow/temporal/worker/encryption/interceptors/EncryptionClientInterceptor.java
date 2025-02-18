@@ -20,24 +20,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.temporal.worker.codec.encryption;
+package com.kuflow.temporal.worker.encryption.interceptors;
 
-import com.kuflow.temporal.worker.codec.store.SecretStore;
+import io.temporal.common.interceptors.WorkflowClientCallsInterceptor;
+import io.temporal.common.interceptors.WorkflowClientInterceptorBase;
 
-/**
- * Factory for commonly used {@link PayloadEncryptor}.
- */
-public final class PayloadEncryptors {
+public class EncryptionClientInterceptor extends WorkflowClientInterceptorBase {
 
-    private PayloadEncryptors() {}
-
-    /**
-     * Creates an AES/GCM payload encryptor.
-     * @param secretStore the secretStore used to get the secrets keys.
-     *
-     * @return The payload encryptor
-     */
-    public static AesGcmPayloadEncryptor aesGcm(SecretStore secretStore) {
-        return new AesGcmPayloadEncryptor(secretStore);
+    @Override
+    public WorkflowClientCallsInterceptor workflowClientCallsInterceptor(WorkflowClientCallsInterceptor next) {
+        return new EncryptionClientCallsInterceptor(next);
     }
 }

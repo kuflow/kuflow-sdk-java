@@ -20,25 +20,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.temporal.worker.codec;
+package com.kuflow.temporal.worker.encryption.interceptors;
 
-import com.kuflow.temporal.worker.codec.encryption.PayloadEncryptor;
-import io.temporal.payload.codec.PayloadCodec;
+import com.kuflow.temporal.worker.encryption.converter.EncryptionWrapper;
+import io.temporal.common.interceptors.ActivityInboundCallsInterceptor;
+import io.temporal.common.interceptors.ActivityInboundCallsInterceptorBase;
 
-/**
- * Factory for commonly used {@link PayloadCodec}.
- */
-public final class PayLoadCodecs {
+public class EncryptionWorkerActivityInboundCallsInterceptor extends ActivityInboundCallsInterceptorBase {
 
-    private PayLoadCodecs() {}
+    public EncryptionWorkerActivityInboundCallsInterceptor(ActivityInboundCallsInterceptor next) {
+        super(next);
+    }
 
-    /**
-     * Creates an encrypted payload coded.
-     * @param payloadEncryptor the payloadEncryptor used to encrypt/decrypt the payload.
-     *
-     * @return The payload codec
-     */
-    public PayloadCodec encrypted(PayloadEncryptor payloadEncryptor) {
-        return new EncryptionPayloadCodec(payloadEncryptor);
+    @Override
+    public ActivityOutput execute(ActivityInput input) {
+        ActivityOutput output = super.execute(input);
+
+        if (EncryptionUtils.existEncryptionEncoding(input.getHeader())) {
+            output = new ActivityOutput(EncryptionWrapper.of(output.getResult()));
+        }
+
+        return output;
     }
 }

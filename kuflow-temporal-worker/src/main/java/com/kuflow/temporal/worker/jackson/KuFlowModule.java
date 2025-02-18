@@ -20,26 +20,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.temporal.worker.codec.store;
+package com.kuflow.temporal.worker.jackson;
 
-import java.util.Map;
-import javax.crypto.SecretKey;
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import java.io.Serial;
+import java.time.OffsetTime;
 
-/**
- * Factory for commonly used {@link SecretStore}.
- */
-public final class SecretStores {
+public class KuFlowModule extends SimpleModule {
 
-    private SecretStores() {}
+    @Serial
+    private static final long serialVersionUID = 8660705027104242864L;
 
-    /**
-     * Creates a memory {@link SecretStore}.
-     * @param defaultSecretKeyId the default secret key id to use when new payloads needs to be encrypted.
-     * @param secretKeys the secret keys to use.
-     *
-     * @return A secret stored implemented in memory
-     */
-    public static SecretStore memory(String defaultSecretKeyId, Map<String, SecretKey> secretKeys) {
-        return new InMemorySecretStore(defaultSecretKeyId, secretKeys);
+    public KuFlowModule() {
+        super(Version.unknownVersion());
+        this.addSerializer(OffsetTime.class, OffsetTimeSerializer.INSTANCE);
     }
 }

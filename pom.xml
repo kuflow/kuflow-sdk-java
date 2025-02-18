@@ -33,7 +33,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.3.6</version>
+    <version>3.3.8</version>
     <relativePath /> <!-- lookup parent from repository -->
   </parent>
 
@@ -77,15 +77,15 @@
     <nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
     <checkstyle.version>10.20.1</checkstyle.version>
     <prettier-maven-plugin.version>0.22</prettier-maven-plugin.version>
-    <prettier-java.version>2.6.5</prettier-java.version>
+    <prettier-java.version>2.6.7</prettier-java.version>
     <build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
     <license-maven-plugin.version>4.6</license-maven-plugin.version>
 
     <!-- Spring dependencies -->
-    <spring-boot.version>3.3.6</spring-boot.version>
+    <spring-boot.version>3.3.8</spring-boot.version>
 
     <!-- Application dependencies -->
-    <temporal-sdk.version>1.24.3</temporal-sdk.version>
+    <temporal-sdk.version>1.27.1</temporal-sdk.version>
     <awssdk.version>2.29.17</awssdk.version>
     <commons-io.version>2.18.0</commons-io.version>
     <commons-text.version>1.12.0</commons-text.version>

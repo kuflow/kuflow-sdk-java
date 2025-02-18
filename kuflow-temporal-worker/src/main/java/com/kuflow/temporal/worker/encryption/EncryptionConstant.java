@@ -20,35 +20,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.temporal.worker.codec.encryption;
+package com.kuflow.temporal.worker.encryption;
 
-/**
- * Class to hold encryption data information
- */
-public class EncryptionInfo {
+import com.google.protobuf.ByteString;
 
-    private final String secretKeyId;
+public interface EncryptionConstant {
+    String METADATA_KUFLOW_ENCODING_KEY = "x-kuflow-encoding";
 
-    private final String cipher;
+    String METADATA_KUFLOW_ENCODING_ENCRYPTED_NAME = "binary/encrypted?vendor=KuFlow";
 
-    public EncryptionInfo(String secretKeyId, String cipher) {
-        this.secretKeyId = secretKeyId;
-        this.cipher = cipher;
-    }
-
-    /**
-     * Get the secret key used for encrypt/decrypt a payload
-     * @return the secret key id
-     */
-    public String getSecretKeyId() {
-        return this.secretKeyId;
-    }
-
-    /**
-     * Get the cipher used for encrypt/decrypt a payload
-     * @return the cipher ma,e
-     */
-    public String getCipher() {
-        return this.cipher;
-    }
+    ByteString METADATA_KUFLOW_ENCODING_ENCRYPTED_BYTE_STRING = ByteString.copyFromUtf8(METADATA_KUFLOW_ENCODING_ENCRYPTED_NAME);
 }
