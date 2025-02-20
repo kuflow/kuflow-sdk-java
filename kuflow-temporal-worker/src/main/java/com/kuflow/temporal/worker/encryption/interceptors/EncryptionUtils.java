@@ -37,7 +37,7 @@ public final class EncryptionUtils {
         EncryptionConstant.METADATA_KUFLOW_ENCODING_ENCRYPTED_NAME
     ).orElseThrow();
 
-    public static boolean existEncryptionEncoding(Header header) {
+    public static boolean isEncryptionRequired(Header header) {
         return (
             header != null &&
             header.getValues() != null &&

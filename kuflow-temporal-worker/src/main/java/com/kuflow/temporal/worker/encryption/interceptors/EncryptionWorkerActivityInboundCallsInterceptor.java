@@ -36,7 +36,7 @@ public class EncryptionWorkerActivityInboundCallsInterceptor extends ActivityInb
     public ActivityOutput execute(ActivityInput input) {
         ActivityOutput output = super.execute(input);
 
-        if (EncryptionUtils.existEncryptionEncoding(input.getHeader())) {
+        if (EncryptionUtils.isEncryptionRequired(input.getHeader())) {
             output = new ActivityOutput(EncryptionWrapper.of(output.getResult()));
         }
 

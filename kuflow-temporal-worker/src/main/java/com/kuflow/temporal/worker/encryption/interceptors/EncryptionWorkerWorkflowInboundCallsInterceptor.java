@@ -43,7 +43,7 @@ public class EncryptionWorkerWorkflowInboundCallsInterceptor extends WorkflowInb
 
     @Override
     public WorkflowOutput execute(WorkflowInput input) {
-        boolean needEncryption = EncryptionUtils.existEncryptionEncoding(input.getHeader());
+        boolean needEncryption = EncryptionUtils.isEncryptionRequired(input.getHeader());
 
         this.encryptionState.setEncryptionNeeded(needEncryption);
 
