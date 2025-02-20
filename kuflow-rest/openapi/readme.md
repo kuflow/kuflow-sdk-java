@@ -43,7 +43,7 @@ pass-discriminator-to-child-deserialization: false
 models-subpackage: model
 
 use-extension:
-  "@autorest/java": "4.1.42"
+  "@autorest/java": "4.1.45"
 
 modelerfour:
   seal-single-value-enum-by-default: false
