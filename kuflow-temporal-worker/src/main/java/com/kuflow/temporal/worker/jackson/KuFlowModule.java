@@ -20,25 +20,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.temporal.worker.codec;
+package com.kuflow.temporal.worker.jackson;
 
-import com.kuflow.temporal.worker.codec.encryption.PayloadEncryptor;
-import io.temporal.payload.codec.PayloadCodec;
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import java.io.Serial;
+import java.time.OffsetTime;
 
-/**
- * Factory for commonly used {@link PayloadCodec}.
- */
-public final class PayLoadCodecs {
+public class KuFlowModule extends SimpleModule {
 
-    private PayLoadCodecs() {}
+    @Serial
+    private static final long serialVersionUID = 8660705027104242864L;
 
-    /**
-     * Creates an encrypted payload coded.
-     * @param payloadEncryptor the payloadEncryptor used to encrypt/decrypt the payload.
-     *
-     * @return The payload codec
-     */
-    public PayloadCodec encrypted(PayloadEncryptor payloadEncryptor) {
-        return new EncryptionPayloadCodec(payloadEncryptor);
+    public KuFlowModule() {
+        super(Version.unknownVersion());
+        this.addSerializer(OffsetTime.class, OffsetTimeSerializer.INSTANCE);
     }
 }

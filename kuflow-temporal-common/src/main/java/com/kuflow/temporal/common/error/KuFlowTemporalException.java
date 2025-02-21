@@ -22,8 +22,11 @@
  */
 package com.kuflow.temporal.common.error;
 
+import java.io.Serial;
+
 public class KuFlowTemporalException extends RuntimeException {
 
+    @Serial
     private static final long serialVersionUID = -5196736077043846135L;
 
     public KuFlowTemporalException(String msg) {

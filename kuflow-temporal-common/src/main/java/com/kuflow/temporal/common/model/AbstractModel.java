@@ -22,9 +22,6 @@
  */
 package com.kuflow.temporal.common.model;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,37 +30,29 @@ import java.util.Optional;
 
 public abstract class AbstractModel {
 
-    private final Map<String, Serializable> payloads = new HashMap<>();
+    private final Map<String, String> payloads = new HashMap<>();
 
-    public Map<String, Serializable> getPayloads() {
+    public Map<String, String> getPayloads() {
         return Collections.unmodifiableMap(this.payloads);
     }
 
-    public void setPayload(Map<String, Serializable> payloads) {
+    public void setPayload(Map<String, String> payloads) {
         Objects.requireNonNull(payloads, "'payloads' is required");
         this.payloads.clear();
         this.payloads.putAll(payloads);
     }
 
-    public void putPayloadItem(String name, Serializable value) {
+    public void putPayloadItem(String name, String value) {
         Objects.requireNonNull(name, "'name' is required");
         Objects.requireNonNull(value, "'value' is required");
         this.payloads.put(name, value);
     }
 
-    public <T> T getPayloadItem(String name, Class<T> clazz) {
-        return this.findPayloadItem(name, clazz).orElseThrow();
+    public String getPayloadItem(String name) {
+        return this.findPayloadItem(name).orElseThrow();
     }
 
-    public <T> Optional<T> findPayloadItem(String name, Class<T> clazz) {
-        if (!this.payloads.containsKey(name)) {
-            return Optional.empty();
-        }
-
-        Gson gson = new Gson();
-        JsonElement jsonElement = gson.toJsonTree(this.payloads.get(name));
-        T value = gson.fromJson(jsonElement, clazz);
-
-        return Optional.of(value);
+    public Optional<String> findPayloadItem(String name) {
+        return Optional.ofNullable(this.payloads.get(name));
     }
 }

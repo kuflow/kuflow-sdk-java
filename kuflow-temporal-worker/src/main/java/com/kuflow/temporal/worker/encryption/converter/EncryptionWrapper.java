@@ -20,32 +20,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.temporal.worker.jackson;
+package com.kuflow.temporal.worker.encryption.converter;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import java.io.IOException;
-import java.time.OffsetTime;
-import java.time.format.DateTimeFormatter;
+public class EncryptionWrapper {
 
-public class OffsetTimeSerializer extends StdSerializer<OffsetTime> {
-
-    public static final OffsetTimeSerializer INSTANCE = new OffsetTimeSerializer();
-
-    private final DateTimeFormatter formatter;
-
-    protected OffsetTimeSerializer() {
-        this(DateTimeFormatter.ISO_OFFSET_TIME);
+    public static EncryptionWrapper of(Object value) {
+        return new EncryptionWrapper(value);
     }
 
-    public OffsetTimeSerializer(DateTimeFormatter formatter) {
-        super(OffsetTime.class);
-        this.formatter = formatter;
+    private final Object value;
+
+    private EncryptionWrapper(Object value) {
+        this.value = value;
     }
 
-    @Override
-    public void serialize(OffsetTime value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-        gen.writeString(value.format(this.formatter));
+    public Object getValue() {
+        return this.value;
     }
 }

@@ -20,32 +20,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.temporal.worker.jackson;
+package com.kuflow.temporal.worker.encryption.interceptors;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import java.io.IOException;
-import java.time.OffsetTime;
-import java.time.format.DateTimeFormatter;
+import io.temporal.common.interceptors.NexusOperationInboundCallsInterceptor;
+import io.temporal.common.interceptors.NexusOperationInboundCallsInterceptorBase;
 
-public class OffsetTimeSerializer extends StdSerializer<OffsetTime> {
+public class EncryptionWorkerNexusOperationInboundCallsInterceptor extends NexusOperationInboundCallsInterceptorBase {
 
-    public static final OffsetTimeSerializer INSTANCE = new OffsetTimeSerializer();
-
-    private final DateTimeFormatter formatter;
-
-    protected OffsetTimeSerializer() {
-        this(DateTimeFormatter.ISO_OFFSET_TIME);
-    }
-
-    public OffsetTimeSerializer(DateTimeFormatter formatter) {
-        super(OffsetTime.class);
-        this.formatter = formatter;
-    }
-
-    @Override
-    public void serialize(OffsetTime value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-        gen.writeString(value.format(this.formatter));
+    public EncryptionWorkerNexusOperationInboundCallsInterceptor(NexusOperationInboundCallsInterceptor next) {
+        super(next);
     }
 }

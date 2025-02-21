@@ -20,32 +20,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.temporal.worker.jackson;
+package com.kuflow.temporal.worker.encryption;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import java.io.IOException;
-import java.time.OffsetTime;
-import java.time.format.DateTimeFormatter;
+public class EncryptionState {
 
-public class OffsetTimeSerializer extends StdSerializer<OffsetTime> {
-
-    public static final OffsetTimeSerializer INSTANCE = new OffsetTimeSerializer();
-
-    private final DateTimeFormatter formatter;
-
-    protected OffsetTimeSerializer() {
-        this(DateTimeFormatter.ISO_OFFSET_TIME);
+    public static EncryptionState of(boolean encryptionNeeded) {
+        return new EncryptionState(encryptionNeeded);
     }
 
-    public OffsetTimeSerializer(DateTimeFormatter formatter) {
-        super(OffsetTime.class);
-        this.formatter = formatter;
+    private boolean encryptionNeeded;
+
+    private EncryptionState(boolean encryptionNeeded) {
+        this.encryptionNeeded = encryptionNeeded;
     }
 
-    @Override
-    public void serialize(OffsetTime value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-        gen.writeString(value.format(this.formatter));
+    public void setEncryptionNeeded(boolean encryptionNeeded) {
+        this.encryptionNeeded = encryptionNeeded;
+    }
+
+    public boolean isEncryptionNeeded() {
+        return this.encryptionNeeded;
     }
 }

@@ -20,24 +20,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.temporal.worker.codec.encryption;
+package com.kuflow.temporal.worker.encryption.interceptors;
 
-import com.kuflow.temporal.worker.codec.store.SecretStore;
+import com.kuflow.temporal.worker.encryption.converter.EncryptionWrapper;
+import io.temporal.common.interceptors.ActivityInboundCallsInterceptor;
+import io.temporal.common.interceptors.ActivityInboundCallsInterceptorBase;
 
-/**
- * Factory for commonly used {@link PayloadEncryptor}.
- */
-public final class PayloadEncryptors {
+public class EncryptionWorkerActivityInboundCallsInterceptor extends ActivityInboundCallsInterceptorBase {
 
-    private PayloadEncryptors() {}
+    public EncryptionWorkerActivityInboundCallsInterceptor(ActivityInboundCallsInterceptor next) {
+        super(next);
+    }
 
-    /**
-     * Creates an AES/GCM payload encryptor.
-     * @param secretStore the secretStore used to get the secrets keys.
-     *
-     * @return The payload encryptor
-     */
-    public static AesGcmPayloadEncryptor aesGcm(SecretStore secretStore) {
-        return new AesGcmPayloadEncryptor(secretStore);
+    @Override
+    public ActivityOutput execute(ActivityInput input) {
+        ActivityOutput output = super.execute(input);
+
+        if (EncryptionUtils.isEncryptionRequired(input.getHeader())) {
+            output = new ActivityOutput(EncryptionWrapper.of(output.getResult()));
+        }
+
+        return output;
     }
 }

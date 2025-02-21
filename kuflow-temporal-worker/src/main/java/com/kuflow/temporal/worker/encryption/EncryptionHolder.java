@@ -20,26 +20,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.temporal.worker.codec.encryption;
+package com.kuflow.temporal.worker.encryption;
 
-import io.temporal.api.common.v1.Payload;
+import javax.annotation.Nullable;
 
-/**
- * Service interface for symmetric data encryption.
- */
-public interface PayloadEncryptor {
-    /**
-     * Get the {@link EncryptionInfo} computed for the payload passed.
-     */
-    EncryptionInfo getEncryptionInfo(Payload payload);
+public class EncryptionHolder {
+
+    private static final ThreadLocal<EncryptionState> encryptionHolder = new ThreadLocal<>();
 
     /**
-     * Encrypt the plainData byte array using the encryptionInfo passed.
+     * Reset the EncryptionState for the current thread.
      */
-    byte[] encrypt(byte[] plainData, EncryptionInfo encryptionInfo);
+    public static void resetEncryptionState() {
+        encryptionHolder.remove();
+    }
 
     /**
-     * Decrypt the encryptedData byte array using the encryptionInfo passed.
+     * Bind the given EncryptionState to the current thread
+     * @param encryptionState the EncryptionState to expose
      */
-    byte[] decrypt(byte[] encryptedData, EncryptionInfo encryptionInfo);
+    public static void setEncryptionState(@Nullable EncryptionState encryptionState) {
+        if (encryptionState == null) {
+            resetEncryptionState();
+        } else {
+            encryptionHolder.set(encryptionState);
+        }
+    }
+
+    /**
+     * Return the EncryptionState currently bound to the thread.
+     * @return the EncryptionState currently bound to the thread,
+     * or {@code null} if none bound
+     */
+    @Nullable
+    public static EncryptionState getEncryptionState() {
+        return encryptionHolder.get();
+    }
+
+    public static boolean isEncryptionNeeded() {
+        return getEncryptionState() != null && getEncryptionState().isEncryptionNeeded();
+    }
 }

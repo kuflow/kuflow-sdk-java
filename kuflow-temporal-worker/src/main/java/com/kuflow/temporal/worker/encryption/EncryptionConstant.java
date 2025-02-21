@@ -20,26 +20,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.temporal.worker.codec.store;
+package com.kuflow.temporal.worker.encryption;
 
-import java.util.Map;
-import javax.crypto.SecretKey;
+import com.google.protobuf.ByteString;
 
-/**
- * Factory for commonly used {@link SecretStore}.
- */
-public final class SecretStores {
+public interface EncryptionConstant {
+    String METADATA_KUFLOW_ENCODING_KEY = "x-kuflow-encoding";
 
-    private SecretStores() {}
+    String METADATA_KUFLOW_ENCODING_ENCRYPTED_NAME = "binary/encrypted?vendor=KuFlow";
 
-    /**
-     * Creates a memory {@link SecretStore}.
-     * @param defaultSecretKeyId the default secret key id to use when new payloads needs to be encrypted.
-     * @param secretKeys the secret keys to use.
-     *
-     * @return A secret stored implemented in memory
-     */
-    public static SecretStore memory(String defaultSecretKeyId, Map<String, SecretKey> secretKeys) {
-        return new InMemorySecretStore(defaultSecretKeyId, secretKeys);
-    }
+    ByteString METADATA_KUFLOW_ENCODING_ENCRYPTED_BYTE_STRING = ByteString.copyFromUtf8(METADATA_KUFLOW_ENCODING_ENCRYPTED_NAME);
 }

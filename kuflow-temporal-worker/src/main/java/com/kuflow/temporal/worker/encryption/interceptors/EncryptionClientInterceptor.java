@@ -20,35 +20,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.temporal.worker.codec.encryption;
+package com.kuflow.temporal.worker.encryption.interceptors;
 
-/**
- * Class to hold encryption data information
- */
-public class EncryptionInfo {
+import io.temporal.common.interceptors.WorkflowClientCallsInterceptor;
+import io.temporal.common.interceptors.WorkflowClientInterceptorBase;
 
-    private final String secretKeyId;
+public class EncryptionClientInterceptor extends WorkflowClientInterceptorBase {
 
-    private final String cipher;
-
-    public EncryptionInfo(String secretKeyId, String cipher) {
-        this.secretKeyId = secretKeyId;
-        this.cipher = cipher;
-    }
-
-    /**
-     * Get the secret key used for encrypt/decrypt a payload
-     * @return the secret key id
-     */
-    public String getSecretKeyId() {
-        return this.secretKeyId;
-    }
-
-    /**
-     * Get the cipher used for encrypt/decrypt a payload
-     * @return the cipher ma,e
-     */
-    public String getCipher() {
-        return this.cipher;
+    @Override
+    public WorkflowClientCallsInterceptor workflowClientCallsInterceptor(WorkflowClientCallsInterceptor next) {
+        return new EncryptionClientCallsInterceptor(next);
     }
 }
