@@ -54,6 +54,10 @@ public final class EncryptionUtils {
     }
 
     public static Object[] markObjectsToBeEncrypted(Object[] arguments) {
+        if (arguments == null) {
+            return null;
+        }
+
         arguments = Arrays.copyOf(arguments, arguments.length);
 
         for (int i = 0; i < arguments.length; i++) {

@@ -27,7 +27,6 @@ import io.temporal.client.WorkflowUpdateHandle;
 import io.temporal.common.interceptors.Header;
 import io.temporal.common.interceptors.WorkflowClientCallsInterceptor;
 import io.temporal.common.interceptors.WorkflowClientCallsInterceptorBase;
-import java.util.Arrays;
 import java.util.concurrent.TimeoutException;
 
 public class EncryptionClientCallsInterceptor extends WorkflowClientCallsInterceptorBase {
@@ -39,7 +38,7 @@ public class EncryptionClientCallsInterceptor extends WorkflowClientCallsInterce
     @Override
     public WorkflowStartOutput start(WorkflowStartInput input) {
         Header header = input.getHeader();
-        Object[] arguments = Arrays.copyOf(input.getArguments(), input.getArguments().length);
+        Object[] arguments = input.getArguments();
 
         if (EncryptionHolder.isEncryptionNeeded()) {
             header = EncryptionUtils.addEncryptionEncoding(header);
@@ -52,7 +51,7 @@ public class EncryptionClientCallsInterceptor extends WorkflowClientCallsInterce
     @Override
     public WorkflowSignalOutput signal(WorkflowSignalInput input) {
         Header header = input.getHeader();
-        Object[] arguments = Arrays.copyOf(input.getArguments(), input.getArguments().length);
+        Object[] arguments = input.getArguments();
 
         if (EncryptionHolder.isEncryptionNeeded()) {
             header = EncryptionUtils.addEncryptionEncoding(header);
@@ -65,11 +64,8 @@ public class EncryptionClientCallsInterceptor extends WorkflowClientCallsInterce
     @Override
     public WorkflowSignalWithStartOutput signalWithStart(WorkflowSignalWithStartInput input) {
         Header workflowStartHeader = input.getWorkflowStartInput().getHeader();
-        Object[] workflowStartArguments = Arrays.copyOf(
-            input.getWorkflowStartInput().getArguments(),
-            input.getWorkflowStartInput().getArguments().length
-        );
-        Object[] signalArguments = Arrays.copyOf(input.getSignalArguments(), input.getSignalArguments().length);
+        Object[] workflowStartArguments = input.getWorkflowStartInput().getArguments();
+        Object[] signalArguments = input.getSignalArguments();
 
         if (EncryptionHolder.isEncryptionNeeded()) {
             workflowStartHeader = EncryptionUtils.addEncryptionEncoding(workflowStartHeader);
