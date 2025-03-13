@@ -1,0 +1,11 @@
+{
+  "tenantId" : "5b639af8-0aa0-4ae4-a1ed-e17ac4f673fd",
+  "payloads" : [
+    {
+      "metadata": {
+        "metadata-1-key": "bWV0YWRhdGEtMS12YWx1ZQ=="
+      },
+      "data": "ZGF0YS12YWx1ZQ=="
+    }
+  ]
+}

@@ -33,14 +33,18 @@ import io.temporal.common.converter.EncodingKeys;
 import io.temporal.payload.codec.PayloadCodec;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 
 public class EncryptionPayloadCodec implements PayloadCodec {
 
+    private final UUID tenantId;
+
     private final VaultOperations vaultOperations;
 
-    public EncryptionPayloadCodec(KuFlowRestClient kuFlowRestClient) {
+    public EncryptionPayloadCodec(UUID tenantId, KuFlowRestClient kuFlowRestClient) {
+        this.tenantId = tenantId;
         this.vaultOperations = kuFlowRestClient.getVaultOperations();
     }
 
@@ -115,7 +119,7 @@ public class EncryptionPayloadCodec implements PayloadCodec {
 
         List<VaultCodecPayload> requestPayloads = payloads.stream().map(this::transform).toList();
 
-        VaultCodecPayloads request = new VaultCodecPayloads().setPayloads(requestPayloads);
+        VaultCodecPayloads request = new VaultCodecPayloads().setTenantId(this.tenantId).setPayloads(requestPayloads);
 
         VaultCodecPayloads response = this.vaultOperations.codecEncode(request);
 
@@ -129,7 +133,7 @@ public class EncryptionPayloadCodec implements PayloadCodec {
 
         List<VaultCodecPayload> requestPayloads = payloads.stream().map(this::transform).toList();
 
-        VaultCodecPayloads request = new VaultCodecPayloads().setPayloads(requestPayloads);
+        VaultCodecPayloads request = new VaultCodecPayloads().setTenantId(this.tenantId).setPayloads(requestPayloads);
 
         VaultCodecPayloads response = this.vaultOperations.codecDecode(request);
 

@@ -29,12 +29,19 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * The VaultCodecPayloads model.
  */
 @Fluent
 public final class VaultCodecPayloads implements JsonSerializable<VaultCodecPayloads> {
+
+    /*
+     * Tenant id. This attribute is required when an OAuth2 authentication is used.
+     */
+    private UUID tenantId;
 
     /*
      * The payloads property.
@@ -45,6 +52,26 @@ public final class VaultCodecPayloads implements JsonSerializable<VaultCodecPayl
      * Creates an instance of VaultCodecPayloads class.
      */
     public VaultCodecPayloads() {}
+
+    /**
+     * Get the tenantId property: Tenant id. This attribute is required when an OAuth2 authentication is used.
+     *
+     * @return the tenantId value.
+     */
+    public UUID getTenantId() {
+        return this.tenantId;
+    }
+
+    /**
+     * Set the tenantId property: Tenant id. This attribute is required when an OAuth2 authentication is used.
+     *
+     * @param tenantId the tenantId value to set.
+     * @return the VaultCodecPayloads object itself.
+     */
+    public VaultCodecPayloads setTenantId(UUID tenantId) {
+        this.tenantId = tenantId;
+        return this;
+    }
 
     /**
      * Get the payloads property: The payloads property.
@@ -73,6 +100,7 @@ public final class VaultCodecPayloads implements JsonSerializable<VaultCodecPayl
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("payloads", this.payloads, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
         return jsonWriter.writeEndObject();
     }
 
@@ -95,6 +123,9 @@ public final class VaultCodecPayloads implements JsonSerializable<VaultCodecPayl
                 if ("payloads".equals(fieldName)) {
                     List<VaultCodecPayload> payloads = reader.readArray(reader1 -> VaultCodecPayload.fromJson(reader1));
                     deserializedVaultCodecPayloads.payloads = payloads;
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedVaultCodecPayloads.tenantId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    );
                 } else {
                     reader.skipChildren();
                 }
