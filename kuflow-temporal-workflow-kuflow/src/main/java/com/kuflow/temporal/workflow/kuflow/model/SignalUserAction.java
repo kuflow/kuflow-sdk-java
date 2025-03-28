@@ -6,7 +6,7 @@
 
 package com.kuflow.temporal.workflow.kuflow.model;
 
-public class SignalSendUserAction {
+public class SignalUserAction {
 
     private String userActionDefinitionCode;
 
