@@ -22,9 +22,13 @@
  */
 package com.kuflow.temporal.workflow.kuflow.model;
 
+import java.time.Instant;
+
 public class SignalUserAction {
 
     private String userActionDefinitionCode;
+
+    private Instant requestInstant;
 
     public String getUserActionDefinitionCode() {
         return this.userActionDefinitionCode;
@@ -32,5 +36,13 @@ public class SignalUserAction {
 
     public void setUserActionDefinitionCode(String userActionDefinitionCode) {
         this.userActionDefinitionCode = userActionDefinitionCode;
+    }
+
+    public Instant getRequestInstant() {
+        return this.requestInstant;
+    }
+
+    public void setRequestInstant(Instant requestInstant) {
+        this.requestInstant = requestInstant;
     }
 }
