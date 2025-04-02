@@ -65,15 +65,15 @@ public class EncryptionPayloadCodec implements PayloadCodec {
     }
 
     private Payload encrypt(Payload payload) {
-        if (!this.needPayloadBeEncrypted(payload)) {
+        if (!payload.containsMetadata(EncryptionConstant.METADATA_KEY_ENCODING_ENCRYPTED_KEY_ID)) {
             return payload;
         }
 
         String keyId = payload.getMetadataOrThrow(EncryptionConstant.METADATA_KEY_ENCODING_ENCRYPTED_KEY_ID).toStringUtf8();
 
-        SecretKey secretKey = this.retrieveSecretKey(keyId);
+        SecretKey keyValue = this.retrieveSecretKey(keyId);
 
-        byte[] cipherTextBytes = CipherUtils.AES_256_GCM.encrypt(secretKey, payload.toByteArray());
+        byte[] cipherTextBytes = CipherUtils.AES_256_GCM.encrypt(keyValue, payload.toByteArray());
 
         String cipherTextValue = Base64.getEncoder().encodeToString(cipherTextBytes);
 
@@ -87,13 +87,22 @@ public class EncryptionPayloadCodec implements PayloadCodec {
     }
 
     private Payload decrypt(Payload payload) {
-        if (!this.isPayloadEncrypted(payload)) {
+        if (
+            !payload.containsMetadata(EncodingKeys.METADATA_ENCODING_KEY) ||
+            !payload
+                .getMetadataOrThrow(EncodingKeys.METADATA_ENCODING_KEY)
+                .equals(EncryptionConstant.METADATA_VALUE_KUFLOW_ENCODING_ENCRYPTED)
+        ) {
             return payload;
+        }
+
+        if (!payload.containsMetadata(EncryptionConstant.METADATA_KEY_ENCODING_ENCRYPTED_KEY_ID)) {
+            throw new PayloadCodecException("Unable to decrypt Payload without encryption key id");
         }
 
         String keyId = payload.getMetadataOrThrow(EncryptionConstant.METADATA_KEY_ENCODING_ENCRYPTED_KEY_ID).toStringUtf8();
 
-        SecretKey secretKey = this.retrieveSecretKey(keyId);
+        SecretKey keyValue = this.retrieveSecretKey(keyId);
 
         String cipherText = payload.getData().toStringUtf8();
 
@@ -111,30 +120,9 @@ public class EncryptionPayloadCodec implements PayloadCodec {
 
         byte[] cipherTextBytes = Base64.getDecoder().decode(cipherTextValue);
 
-        byte[] plainText = CipherUtils.AES_256_GCM.decrypt(secretKey, cipherTextBytes);
+        byte[] plainText = CipherUtils.AES_256_GCM.decrypt(keyValue, cipherTextBytes);
 
         return this.parsePayloadFrom(plainText);
-    }
-
-    private boolean needPayloadBeEncrypted(Payload payload) {
-        try {
-            return (payload.containsMetadata(EncryptionConstant.METADATA_KEY_ENCODING_ENCRYPTED_KEY_ID));
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    private boolean isPayloadEncrypted(Payload payload) {
-        try {
-            return (
-                EncryptionConstant.METADATA_VALUE_KUFLOW_ENCODING_ENCRYPTED.equals(
-                    payload.getMetadataOrDefault(EncodingKeys.METADATA_ENCODING_KEY, ByteString.EMPTY)
-                ) &&
-                payload.containsMetadata(EncryptionConstant.METADATA_KEY_ENCODING_ENCRYPTED_KEY_ID)
-            );
-        } catch (Exception e) {
-            return false;
-        }
     }
 
     private Payload parsePayloadFrom(byte[] plainData) {

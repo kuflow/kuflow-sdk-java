@@ -45,8 +45,8 @@ public final class EncryptionUtils {
             return EncryptionState.empty();
         }
 
-        Payload payload = header.getValues().get(EncryptionConstant.HEADER_KEY_KUFLOW_ENCODING_ENCRYPTED_KEY_ID);
-        String keyId = DefaultDataConverter.STANDARD_INSTANCE.fromPayload(payload, String.class, String.class);
+        Payload keyIdPayload = header.getValues().get(EncryptionConstant.HEADER_KEY_KUFLOW_ENCODING_ENCRYPTED_KEY_ID);
+        String keyId = DefaultDataConverter.STANDARD_INSTANCE.fromPayload(keyIdPayload, String.class, String.class);
 
         return EncryptionState.of(keyId);
     }

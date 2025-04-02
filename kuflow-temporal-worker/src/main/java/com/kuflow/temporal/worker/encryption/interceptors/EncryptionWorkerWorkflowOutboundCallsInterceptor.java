@@ -131,4 +131,15 @@ public class EncryptionWorkerWorkflowOutboundCallsInterceptor extends WorkflowOu
 
         super.continueAsNew(new ContinueAsNewInput(input.getWorkflowType(), input.getOptions(), arguments, header));
     }
+
+    @Override
+    public SignalExternalOutput signalExternalWorkflow(SignalExternalInput input) {
+        Header header = input.getHeader();
+        Object[] arguments = input.getArgs();
+
+        header = EncryptionUtils.addEncryptionEncoding(this.encryptionState, header);
+        arguments = EncryptionUtils.markObjectsToBeEncrypted(this.encryptionState, arguments);
+
+        return super.signalExternalWorkflow(new SignalExternalInput(input.getExecution(), input.getSignalName(), header, arguments));
+    }
 }

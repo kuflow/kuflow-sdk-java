@@ -72,22 +72,22 @@ public final class KmsOperationsImpl {
     @Host("{$host}")
     @ServiceInterface(name = "KuFlowClientKmsOpera")
     public interface KmsOperationsService {
-        @Get("/kms/keys/{id}")
+        @Get("/kms/keys/{keyId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<KmsKey>> retrieveKmsKey(
             @HostParam("$host") String host,
-            @PathParam("id") String id,
+            @PathParam("keyId") String keyId,
             @HeaderParam("Accept") String accept,
             Context context
         );
 
-        @Get("/kms/keys/{id}")
+        @Get("/kms/keys/{keyId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<KmsKey> retrieveKmsKeySync(
             @HostParam("$host") String host,
-            @PathParam("id") String id,
+            @PathParam("keyId") String keyId,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -96,21 +96,21 @@ public final class KmsOperationsImpl {
     /**
      * Get the requested key id.
      *
-     * @param id The resource ID.
+     * @param keyId The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the requested key id along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KmsKey>> retrieveKmsKeyWithResponseAsync(String id) {
-        return FluxUtil.withContext(context -> retrieveKmsKeyWithResponseAsync(id, context));
+    public Mono<Response<KmsKey>> retrieveKmsKeyWithResponseAsync(String keyId) {
+        return FluxUtil.withContext(context -> retrieveKmsKeyWithResponseAsync(keyId, context));
     }
 
     /**
      * Get the requested key id.
      *
-     * @param id The resource ID.
+     * @param keyId The resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -118,29 +118,29 @@ public final class KmsOperationsImpl {
      * @return the requested key id along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KmsKey>> retrieveKmsKeyWithResponseAsync(String id, Context context) {
+    public Mono<Response<KmsKey>> retrieveKmsKeyWithResponseAsync(String keyId, Context context) {
         final String accept = "application/json";
-        return service.retrieveKmsKey(this.client.getHost(), id, accept, context);
+        return service.retrieveKmsKey(this.client.getHost(), keyId, accept, context);
     }
 
     /**
      * Get the requested key id.
      *
-     * @param id The resource ID.
+     * @param keyId The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the requested key id on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KmsKey> retrieveKmsKeyAsync(String id) {
-        return retrieveKmsKeyWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<KmsKey> retrieveKmsKeyAsync(String keyId) {
+        return retrieveKmsKeyWithResponseAsync(keyId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the requested key id.
      *
-     * @param id The resource ID.
+     * @param keyId The resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -148,14 +148,14 @@ public final class KmsOperationsImpl {
      * @return the requested key id on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KmsKey> retrieveKmsKeyAsync(String id, Context context) {
-        return retrieveKmsKeyWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<KmsKey> retrieveKmsKeyAsync(String keyId, Context context) {
+        return retrieveKmsKeyWithResponseAsync(keyId, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the requested key id.
      *
-     * @param id The resource ID.
+     * @param keyId The resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -163,22 +163,22 @@ public final class KmsOperationsImpl {
      * @return the requested key id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KmsKey> retrieveKmsKeyWithResponse(String id, Context context) {
+    public Response<KmsKey> retrieveKmsKeyWithResponse(String keyId, Context context) {
         final String accept = "application/json";
-        return service.retrieveKmsKeySync(this.client.getHost(), id, accept, context);
+        return service.retrieveKmsKeySync(this.client.getHost(), keyId, accept, context);
     }
 
     /**
      * Get the requested key id.
      *
-     * @param id The resource ID.
+     * @param keyId The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the requested key id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KmsKey retrieveKmsKey(String id) {
-        return retrieveKmsKeyWithResponse(id, Context.NONE).getValue();
+    public KmsKey retrieveKmsKey(String keyId) {
+        return retrieveKmsKeyWithResponse(keyId, Context.NONE).getValue();
     }
 }
