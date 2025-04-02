@@ -27,13 +27,13 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.kuflow.rest.implementation.KuFlowClientImpl;
 import com.kuflow.rest.model.WebhookEvent;
 import com.kuflow.rest.operation.AuthenticationOperations;
+import com.kuflow.rest.operation.KmsOperations;
 import com.kuflow.rest.operation.PrincipalOperations;
 import com.kuflow.rest.operation.ProcessItemOperations;
 import com.kuflow.rest.operation.ProcessOperations;
 import com.kuflow.rest.operation.RobotOperations;
 import com.kuflow.rest.operation.TenantOperations;
 import com.kuflow.rest.operation.TenantUserOperations;
-import com.kuflow.rest.operation.VaultOperations;
 import com.kuflow.rest.operation.WorkerOperations;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -63,7 +63,7 @@ public class KuFlowRestClient {
 
     private final TenantOperations tenantOperations;
 
-    private final VaultOperations vaultOperations;
+    private final KmsOperations kmsOperations;
 
     public KuFlowRestClient(KuFlowClientImpl client) {
         this.client = client;
@@ -75,7 +75,7 @@ public class KuFlowRestClient {
         this.workerOperations = new WorkerOperations(client);
         this.robotOperations = new RobotOperations(client);
         this.tenantOperations = new TenantOperations(client);
-        this.vaultOperations = new VaultOperations(client);
+        this.kmsOperations = new KmsOperations(client);
     }
 
     public AuthenticationOperations getAuthenticationOperations() {
@@ -110,8 +110,8 @@ public class KuFlowRestClient {
         return this.tenantOperations;
     }
 
-    public VaultOperations getVaultOperations() {
-        return this.vaultOperations;
+    public KmsOperations getKmsOperations() {
+        return this.kmsOperations;
     }
 
     public WebhookEvent parseWebhookEvent(String payload) {

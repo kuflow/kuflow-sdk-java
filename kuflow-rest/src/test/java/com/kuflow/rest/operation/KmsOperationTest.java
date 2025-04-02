@@ -22,43 +22,28 @@
  */
 package com.kuflow.rest.operation;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.containing;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
 import static com.github.tomakehurst.wiremock.client.WireMock.ok;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
 
-import com.kuflow.rest.model.VaultCodecPayloads;
+import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class VaultOperationTest extends AbstractOperationTest {
+public class KmsOperationTest extends AbstractOperationTest {
 
     @Test
-    @DisplayName("GIVEN an authenticated user WHEN encode THEN authentication header is added")
-    public void givenAnAuthenticatedUserWhenEncodeThenAuthenticationHeaderIsAdded() {
+    @DisplayName("GIVEN an authenticated user WHEN retrieve a kms key THEN authentication header is added")
+    public void givenAnAuthenticatedUserWhenRetrieveAKmsKeyThenAuthenticationHeaderIsAdded() {
+        String keyId = UUID.randomUUID().toString();
+
         givenThat(
-            post("/v2024-06-14/vault/codec/~actions/encode")
+            get("/v2024-06-14/kms/keys/" + keyId)
                 .withHeader("Authorization", equalTo("Bearer Q0xJRU5UX0lEOkNMSUVOVF9TRUNSRVQ="))
-                .withHeader("Content-Type", containing("application/json"))
-                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("vault-api.ok.json"))
+                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("kms-keys.retrieve.ok.json"))
         );
 
-        VaultCodecPayloads payloads = new VaultCodecPayloads();
-        this.kuFlowRestClient.getVaultOperations().codecEncode(payloads);
-    }
-
-    @Test
-    @DisplayName("GIVEN an authenticated user WHEN decode THEN authentication header is added")
-    public void givenAnAuthenticatedUserWhenDecodeThenAuthenticationHeaderIsAdded() {
-        givenThat(
-            post("/v2024-06-14/vault/codec/~actions/decode")
-                .withHeader("Authorization", equalTo("Bearer Q0xJRU5UX0lEOkNMSUVOVF9TRUNSRVQ="))
-                .withHeader("Content-Type", containing("application/json"))
-                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("vault-api.ok.json"))
-        );
-
-        VaultCodecPayloads payloads = new VaultCodecPayloads();
-        this.kuFlowRestClient.getVaultOperations().codecDecode(payloads);
+        this.kuFlowRestClient.getKmsOperations().retrieveKmsKey(keyId);
     }
 }

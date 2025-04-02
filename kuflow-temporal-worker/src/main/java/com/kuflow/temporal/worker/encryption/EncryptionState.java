@@ -22,23 +22,45 @@
  */
 package com.kuflow.temporal.worker.encryption;
 
+import java.util.Objects;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class EncryptionState {
 
-    public static EncryptionState of(boolean encryptionNeeded) {
-        return new EncryptionState(encryptionNeeded);
+    public static EncryptionState empty() {
+        return new EncryptionState(null);
     }
 
-    private boolean encryptionNeeded;
-
-    private EncryptionState(boolean encryptionNeeded) {
-        this.encryptionNeeded = encryptionNeeded;
+    public static EncryptionState of(@Nullable String keyId) {
+        return new EncryptionState(keyId);
     }
 
-    public void setEncryptionNeeded(boolean encryptionNeeded) {
-        this.encryptionNeeded = encryptionNeeded;
+    private String keyId;
+
+    private EncryptionState(String keyId) {
+        this.keyId = keyId;
     }
 
     public boolean isEncryptionNeeded() {
-        return this.encryptionNeeded;
+        return this.keyId != null;
+    }
+
+    @Nullable
+    public String getKeyId() {
+        return this.keyId;
+    }
+
+    @Nonnull
+    public String getKeyIdRequired() {
+        return Objects.requireNonNull(this.keyId, "KeyId is required");
+    }
+
+    public void merge(@Nullable EncryptionState other) {
+        if (other != null && other.isEncryptionNeeded()) {
+            this.keyId = other.keyId;
+        } else {
+            this.keyId = null;
+        }
     }
 }

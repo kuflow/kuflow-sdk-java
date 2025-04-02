@@ -424,10 +424,7 @@ public class KuFlowTemporalConnection {
         DefaultDataConverter dataConverter = DefaultDataConverter.newDefaultInstance()
             .withPayloadConverterOverrides(new EncryptionPayloadConverter(jacksonJsonPayloadConverter));
 
-        EncryptionPayloadCodec encryptionPayloadCodec = new EncryptionPayloadCodec(
-            this.workerInformation.getTenantId(),
-            this.kuFlowRestClient
-        );
+        EncryptionPayloadCodec encryptionPayloadCodec = new EncryptionPayloadCodec(this.kuFlowRestClient);
 
         return new CodecDataConverter(dataConverter, List.of(encryptionPayloadCodec));
     }

@@ -22,7 +22,8 @@
  */
 package com.kuflow.temporal.worker.encryption.interceptors;
 
-import com.kuflow.temporal.worker.encryption.EncryptionHolder;
+import com.kuflow.temporal.worker.encryption.EncryptionState;
+import com.kuflow.temporal.worker.encryption.EncryptionStateHolder;
 import io.temporal.client.WorkflowUpdateHandle;
 import io.temporal.common.interceptors.Header;
 import io.temporal.common.interceptors.WorkflowClientCallsInterceptor;
@@ -40,10 +41,10 @@ public class EncryptionClientCallsInterceptor extends WorkflowClientCallsInterce
         Header header = input.getHeader();
         Object[] arguments = input.getArguments();
 
-        if (EncryptionHolder.isEncryptionNeeded()) {
-            header = EncryptionUtils.addEncryptionEncoding(header);
-            arguments = EncryptionUtils.markObjectsToBeEncrypted(arguments);
-        }
+        EncryptionState encryptionState = EncryptionStateHolder.getCurrentEncryptionState();
+
+        header = EncryptionUtils.addEncryptionEncoding(encryptionState, header);
+        arguments = EncryptionUtils.markObjectsToBeEncrypted(encryptionState, arguments);
 
         return super.start(new WorkflowStartInput(input.getWorkflowId(), input.getWorkflowType(), header, arguments, input.getOptions()));
     }
@@ -53,10 +54,10 @@ public class EncryptionClientCallsInterceptor extends WorkflowClientCallsInterce
         Header header = input.getHeader();
         Object[] arguments = input.getArguments();
 
-        if (EncryptionHolder.isEncryptionNeeded()) {
-            header = EncryptionUtils.addEncryptionEncoding(header);
-            arguments = EncryptionUtils.markObjectsToBeEncrypted(arguments);
-        }
+        EncryptionState encryptionState = EncryptionStateHolder.getCurrentEncryptionState();
+
+        header = EncryptionUtils.addEncryptionEncoding(encryptionState, header);
+        arguments = EncryptionUtils.markObjectsToBeEncrypted(encryptionState, arguments);
 
         return super.signal(new WorkflowSignalInput(input.getWorkflowExecution(), input.getSignalName(), header, arguments));
     }
@@ -67,11 +68,11 @@ public class EncryptionClientCallsInterceptor extends WorkflowClientCallsInterce
         Object[] workflowStartArguments = input.getWorkflowStartInput().getArguments();
         Object[] signalArguments = input.getSignalArguments();
 
-        if (EncryptionHolder.isEncryptionNeeded()) {
-            workflowStartHeader = EncryptionUtils.addEncryptionEncoding(workflowStartHeader);
-            workflowStartArguments = EncryptionUtils.markObjectsToBeEncrypted(workflowStartArguments);
-            signalArguments = EncryptionUtils.markObjectsToBeEncrypted(signalArguments);
-        }
+        EncryptionState encryptionState = EncryptionStateHolder.getCurrentEncryptionState();
+
+        workflowStartHeader = EncryptionUtils.addEncryptionEncoding(encryptionState, workflowStartHeader);
+        workflowStartArguments = EncryptionUtils.markObjectsToBeEncrypted(encryptionState, workflowStartArguments);
+        signalArguments = EncryptionUtils.markObjectsToBeEncrypted(encryptionState, signalArguments);
 
         return super.signalWithStart(
             new WorkflowSignalWithStartInput(
@@ -95,13 +96,13 @@ public class EncryptionClientCallsInterceptor extends WorkflowClientCallsInterce
         Header startUpdateInputHeader = input.getStartUpdateInput().getHeader();
         Object[] startUpdateInputArguments = input.getStartUpdateInput().getArguments();
 
-        if (EncryptionHolder.isEncryptionNeeded()) {
-            workflowStartInputHeader = EncryptionUtils.addEncryptionEncoding(workflowStartInputHeader);
-            workflowStartInputArguments = EncryptionUtils.markObjectsToBeEncrypted(workflowStartInputArguments);
+        EncryptionState encryptionState = EncryptionStateHolder.getCurrentEncryptionState();
 
-            startUpdateInputHeader = EncryptionUtils.addEncryptionEncoding(startUpdateInputHeader);
-            startUpdateInputArguments = EncryptionUtils.markObjectsToBeEncrypted(startUpdateInputArguments);
-        }
+        workflowStartInputHeader = EncryptionUtils.addEncryptionEncoding(encryptionState, workflowStartInputHeader);
+        workflowStartInputArguments = EncryptionUtils.markObjectsToBeEncrypted(encryptionState, workflowStartInputArguments);
+
+        startUpdateInputHeader = EncryptionUtils.addEncryptionEncoding(encryptionState, startUpdateInputHeader);
+        startUpdateInputArguments = EncryptionUtils.markObjectsToBeEncrypted(encryptionState, startUpdateInputArguments);
 
         return super.updateWithStart(
             new WorkflowUpdateWithStartInput<>(
@@ -143,10 +144,10 @@ public class EncryptionClientCallsInterceptor extends WorkflowClientCallsInterce
         Header header = input.getHeader();
         Object[] arguments = input.getArguments();
 
-        if (EncryptionHolder.isEncryptionNeeded()) {
-            header = EncryptionUtils.addEncryptionEncoding(header);
-            arguments = EncryptionUtils.markObjectsToBeEncrypted(arguments);
-        }
+        EncryptionState encryptionState = EncryptionStateHolder.getCurrentEncryptionState();
+
+        header = EncryptionUtils.addEncryptionEncoding(encryptionState, header);
+        arguments = EncryptionUtils.markObjectsToBeEncrypted(encryptionState, arguments);
 
         return super.query(
             new QueryInput<>(
@@ -165,10 +166,10 @@ public class EncryptionClientCallsInterceptor extends WorkflowClientCallsInterce
         Header startUpdateInputHeader = input.getHeader();
         Object[] startUpdateInputArguments = input.getArguments();
 
-        if (EncryptionHolder.isEncryptionNeeded()) {
-            startUpdateInputHeader = EncryptionUtils.addEncryptionEncoding(startUpdateInputHeader);
-            startUpdateInputArguments = EncryptionUtils.markObjectsToBeEncrypted(startUpdateInputArguments);
-        }
+        EncryptionState encryptionState = EncryptionStateHolder.getCurrentEncryptionState();
+
+        startUpdateInputHeader = EncryptionUtils.addEncryptionEncoding(encryptionState, startUpdateInputHeader);
+        startUpdateInputArguments = EncryptionUtils.markObjectsToBeEncrypted(encryptionState, startUpdateInputArguments);
 
         return super.startUpdate(
             new StartUpdateInput<>(

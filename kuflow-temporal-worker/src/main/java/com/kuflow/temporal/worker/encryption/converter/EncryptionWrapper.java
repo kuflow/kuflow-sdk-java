@@ -22,18 +22,31 @@
  */
 package com.kuflow.temporal.worker.encryption.converter;
 
+import com.kuflow.temporal.worker.encryption.EncryptionState;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class EncryptionWrapper {
 
-    public static EncryptionWrapper of(Object value) {
-        return new EncryptionWrapper(value);
+    public static EncryptionWrapper of(@Nonnull EncryptionState encryptionState, @Nullable Object value) {
+        return new EncryptionWrapper(encryptionState, value);
     }
+
+    private final EncryptionState encryptionState;
 
     private final Object value;
 
-    private EncryptionWrapper(Object value) {
+    private EncryptionWrapper(@Nonnull EncryptionState encryptionState, @Nullable Object value) {
+        this.encryptionState = encryptionState;
         this.value = value;
     }
 
+    @Nonnull
+    public EncryptionState getEncryptionState() {
+        return this.encryptionState;
+    }
+
+    @Nullable
     public Object getValue() {
         return this.value;
     }

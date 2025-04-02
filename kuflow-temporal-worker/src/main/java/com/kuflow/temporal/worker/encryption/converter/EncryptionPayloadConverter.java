@@ -22,7 +22,9 @@
  */
 package com.kuflow.temporal.worker.encryption.converter;
 
+import com.google.protobuf.ByteString;
 import com.kuflow.temporal.worker.encryption.EncryptionConstant;
+import com.kuflow.temporal.worker.encryption.EncryptionState;
 import io.temporal.api.common.v1.Payload;
 import io.temporal.common.converter.DataConverterException;
 import io.temporal.common.converter.PayloadConverter;
@@ -44,24 +46,19 @@ public class EncryptionPayloadConverter implements PayloadConverter {
 
     @Override
     public Optional<Payload> toData(Object value) throws DataConverterException {
-        boolean needEncryption = false;
+        EncryptionState encryptionState = EncryptionState.empty();
         if (value instanceof EncryptionWrapper encryptionWrapper) {
-            needEncryption = true;
+            encryptionState = encryptionWrapper.getEncryptionState();
             value = encryptionWrapper.getValue();
         }
 
         Optional<Payload> data = this.delegate.toData(value);
 
-        if (data.isPresent() && needEncryption) {
+        if (data.isPresent() && encryptionState.isEncryptionNeeded()) {
+            ByteString keyId = ByteString.copyFromUtf8(encryptionState.getKeyIdRequired());
+
             data = Optional.of(
-                data
-                    .get()
-                    .toBuilder()
-                    .putMetadata(
-                        EncryptionConstant.METADATA_KUFLOW_ENCODING_KEY,
-                        EncryptionConstant.METADATA_KUFLOW_ENCODING_ENCRYPTED_BYTE_STRING
-                    )
-                    .build()
+                data.get().toBuilder().putMetadata(EncryptionConstant.METADATA_KEY_ENCODING_ENCRYPTED_KEY_ID, keyId).build()
             );
         }
 

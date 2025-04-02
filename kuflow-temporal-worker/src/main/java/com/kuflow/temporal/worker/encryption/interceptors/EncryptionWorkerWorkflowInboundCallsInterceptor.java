@@ -30,7 +30,7 @@ import io.temporal.common.interceptors.WorkflowOutboundCallsInterceptor;
 
 public class EncryptionWorkerWorkflowInboundCallsInterceptor extends WorkflowInboundCallsInterceptorBase {
 
-    private final EncryptionState encryptionState = EncryptionState.of(false);
+    private final EncryptionState encryptionState = EncryptionState.empty();
 
     public EncryptionWorkerWorkflowInboundCallsInterceptor(WorkflowInboundCallsInterceptor next) {
         super(next);
@@ -43,38 +43,26 @@ public class EncryptionWorkerWorkflowInboundCallsInterceptor extends WorkflowInb
 
     @Override
     public WorkflowOutput execute(WorkflowInput input) {
-        boolean needEncryption = EncryptionUtils.isEncryptionRequired(input.getHeader());
+        EncryptionState encryptionStateCurrent = EncryptionUtils.retrieveEncryptionState(input.getHeader());
 
-        this.encryptionState.setEncryptionNeeded(needEncryption);
+        this.encryptionState.merge(encryptionStateCurrent);
 
         WorkflowOutput output = super.execute(input);
 
-        if (this.encryptionState.isEncryptionNeeded()) {
-            output = new WorkflowOutput(EncryptionWrapper.of(output.getResult()));
-        }
-
-        return output;
+        return new WorkflowOutput(EncryptionWrapper.of(this.encryptionState, output.getResult()));
     }
 
     @Override
     public QueryOutput handleQuery(QueryInput input) {
         QueryOutput output = super.handleQuery(input);
 
-        if (this.encryptionState.isEncryptionNeeded()) {
-            output = new QueryOutput(EncryptionWrapper.of(output.getResult()));
-        }
-
-        return output;
+        return new QueryOutput(EncryptionWrapper.of(this.encryptionState, output.getResult()));
     }
 
     @Override
     public UpdateOutput executeUpdate(UpdateInput input) {
         UpdateOutput output = super.executeUpdate(input);
 
-        if (this.encryptionState.isEncryptionNeeded()) {
-            output = new UpdateOutput(EncryptionWrapper.of(output.getResult()));
-        }
-
-        return output;
+        return new UpdateOutput(EncryptionWrapper.of(this.encryptionState, output.getResult()));
     }
 }

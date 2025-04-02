@@ -22,7 +22,6 @@
  */
 package com.kuflow.temporal.worker.encryption.interceptors;
 
-import com.kuflow.temporal.worker.encryption.EncryptionConstant;
 import com.kuflow.temporal.worker.encryption.EncryptionState;
 import com.kuflow.temporal.worker.encryption.converter.EncryptionWrapper;
 import io.temporal.common.interceptors.Header;
@@ -44,10 +43,8 @@ public class EncryptionWorkerWorkflowOutboundCallsInterceptor extends WorkflowOu
         Header header = input.getHeader();
         Object[] arguments = input.getArgs();
 
-        if (this.encryptionState.isEncryptionNeeded()) {
-            header = EncryptionUtils.addEncryptionEncoding(header);
-            arguments = EncryptionUtils.markObjectsToBeEncrypted(arguments);
-        }
+        header = EncryptionUtils.addEncryptionEncoding(this.encryptionState, header);
+        arguments = EncryptionUtils.markObjectsToBeEncrypted(this.encryptionState, arguments);
 
         return super.executeActivity(
             new ActivityInput<>(
@@ -66,10 +63,8 @@ public class EncryptionWorkerWorkflowOutboundCallsInterceptor extends WorkflowOu
         Header header = input.getHeader();
         Object[] arguments = input.getArgs();
 
-        if (this.encryptionState.isEncryptionNeeded()) {
-            header = EncryptionUtils.addEncryptionEncoding(header);
-            arguments = EncryptionUtils.markObjectsToBeEncrypted(arguments);
-        }
+        header = EncryptionUtils.addEncryptionEncoding(this.encryptionState, header);
+        arguments = EncryptionUtils.markObjectsToBeEncrypted(this.encryptionState, arguments);
 
         return super.executeLocalActivity(
             new LocalActivityInput<>(
@@ -88,10 +83,8 @@ public class EncryptionWorkerWorkflowOutboundCallsInterceptor extends WorkflowOu
         Header header = input.getHeader();
         Object[] arguments = input.getArgs();
 
-        if (this.encryptionState.isEncryptionNeeded()) {
-            header = EncryptionUtils.addEncryptionEncoding(header);
-            arguments = EncryptionUtils.markObjectsToBeEncrypted(arguments);
-        }
+        header = EncryptionUtils.addEncryptionEncoding(this.encryptionState, header);
+        arguments = EncryptionUtils.markObjectsToBeEncrypted(this.encryptionState, arguments);
 
         return super.executeChildWorkflow(
             new ChildWorkflowInput<>(
@@ -111,10 +104,8 @@ public class EncryptionWorkerWorkflowOutboundCallsInterceptor extends WorkflowOu
         Map<String, String> headers = input.getHeaders();
         Object argument = input.getArg();
 
-        if (this.encryptionState.isEncryptionNeeded()) {
-            headers.put(EncryptionConstant.METADATA_KUFLOW_ENCODING_KEY, EncryptionConstant.METADATA_KUFLOW_ENCODING_ENCRYPTED_NAME);
-            argument = EncryptionWrapper.of(argument);
-        }
+        headers = EncryptionUtils.addEncryptionEncoding(this.encryptionState, headers);
+        argument = EncryptionWrapper.of(this.encryptionState, argument);
 
         return super.executeNexusOperation(
             new WorkflowOutboundCallsInterceptor.ExecuteNexusOperationInput<>(
@@ -135,24 +126,9 @@ public class EncryptionWorkerWorkflowOutboundCallsInterceptor extends WorkflowOu
         Header header = input.getHeader();
         Object[] arguments = input.getArgs();
 
-        if (this.encryptionState.isEncryptionNeeded()) {
-            header = EncryptionUtils.addEncryptionEncoding(header);
-            arguments = EncryptionUtils.markObjectsToBeEncrypted(arguments);
-        }
+        header = EncryptionUtils.addEncryptionEncoding(this.encryptionState, header);
+        arguments = EncryptionUtils.markObjectsToBeEncrypted(this.encryptionState, arguments);
 
         super.continueAsNew(new ContinueAsNewInput(input.getWorkflowType(), input.getOptions(), arguments, header));
-    }
-
-    @Override
-    public SignalExternalOutput signalExternalWorkflow(SignalExternalInput input) {
-        Header header = input.getHeader();
-        Object[] arguments = input.getArgs();
-
-        if (this.encryptionState.isEncryptionNeeded()) {
-            header = EncryptionUtils.addEncryptionEncoding(header);
-            arguments = EncryptionUtils.markObjectsToBeEncrypted(arguments);
-        }
-
-        return super.signalExternalWorkflow(new SignalExternalInput(input.getExecution(), input.getSignalName(), header, arguments));
     }
 }

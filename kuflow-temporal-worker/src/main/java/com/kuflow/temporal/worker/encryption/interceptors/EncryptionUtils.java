@@ -23,48 +23,130 @@
 package com.kuflow.temporal.worker.encryption.interceptors;
 
 import com.kuflow.temporal.worker.encryption.EncryptionConstant;
+import com.kuflow.temporal.worker.encryption.EncryptionState;
 import com.kuflow.temporal.worker.encryption.converter.EncryptionWrapper;
 import io.temporal.api.common.v1.Payload;
 import io.temporal.common.converter.DefaultDataConverter;
-import io.temporal.common.interceptors.Header;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public final class EncryptionUtils {
 
-    private static final Payload METADATA_KUFLOW_ENCODING_ENCRYPTED_PAYLOAD = DefaultDataConverter.STANDARD_INSTANCE.toPayload(
-        EncryptionConstant.METADATA_KUFLOW_ENCODING_ENCRYPTED_NAME
+    private static final Payload HEADER_VALUE_KUFLOW_ENCODING_ENCRYPTED_PAYLOAD = DefaultDataConverter.STANDARD_INSTANCE.toPayload(
+        EncryptionConstant.HEADER_VALUE_KUFLOW_ENCODING_ENCRYPTED_NAME
     ).orElseThrow();
 
-    public static boolean isEncryptionRequired(Header header) {
-        return (
-            header != null &&
-            header.getValues() != null &&
-            header.getValues().containsKey(EncryptionConstant.METADATA_KUFLOW_ENCODING_KEY) &&
-            METADATA_KUFLOW_ENCODING_ENCRYPTED_PAYLOAD.equals(header.getValues().get(EncryptionConstant.METADATA_KUFLOW_ENCODING_KEY))
+    @Nonnull
+    public static EncryptionState retrieveEncryptionState(@Nonnull io.temporal.common.interceptors.Header header) {
+        if (!EncryptionUtils.isEncryptionRequired(header)) {
+            return EncryptionState.empty();
+        }
+
+        Payload payload = header.getValues().get(EncryptionConstant.HEADER_KEY_KUFLOW_ENCODING_ENCRYPTED_KEY_ID);
+        String keyId = DefaultDataConverter.STANDARD_INSTANCE.fromPayload(payload, String.class, String.class);
+
+        return EncryptionState.of(keyId);
+    }
+
+    public static io.temporal.common.interceptors.Header addEncryptionEncoding(
+        @Nonnull EncryptionState encryptionState,
+        @Nullable io.temporal.common.interceptors.Header header
+    ) {
+        if (!encryptionState.isEncryptionNeeded()) {
+            return header;
+        }
+
+        Map<String, Payload> headerValues = EncryptionUtils.populateEncryptionEncoding(
+            encryptionState,
+            header != null ? header.getValues() : null
         );
+
+        return new io.temporal.common.interceptors.Header(headerValues);
     }
 
-    public static Header addEncryptionEncoding(Header header) {
-        Map<String, Payload> headerValues = new HashMap<>(header.getValues());
-        headerValues.put(EncryptionConstant.METADATA_KUFLOW_ENCODING_KEY, METADATA_KUFLOW_ENCODING_ENCRYPTED_PAYLOAD);
+    public static io.temporal.api.common.v1.Header addEncryptionEncoding(
+        @Nonnull EncryptionState encryptionState,
+        @Nullable io.temporal.api.common.v1.Header header
+    ) {
+        if (!encryptionState.isEncryptionNeeded()) {
+            return header;
+        }
 
-        return new Header(headerValues);
+        Map<String, Payload> headerValues = EncryptionUtils.populateEncryptionEncoding(
+            encryptionState,
+            header != null ? header.getFieldsMap() : null
+        );
+
+        return io.temporal.api.common.v1.Header.newBuilder().putAllFields(headerValues).build();
     }
 
-    public static Object[] markObjectsToBeEncrypted(Object[] arguments) {
+    @Nonnull
+    private static Map<String, Payload> populateEncryptionEncoding(@Nonnull EncryptionState encryptionState, Map<String, Payload> headers) {
+        String keyId = encryptionState.getKeyIdRequired();
+
+        Payload headerEncodingKeyId = DefaultDataConverter.STANDARD_INSTANCE.toPayload(keyId).orElseThrow();
+
+        Map<String, Payload> headersResult = new HashMap<>();
+        if (headers != null) {
+            headersResult.putAll(headers);
+        }
+
+        headersResult.put(EncryptionConstant.HEADER_KEY_KUFLOW_ENCODING, HEADER_VALUE_KUFLOW_ENCODING_ENCRYPTED_PAYLOAD);
+        headersResult.put(EncryptionConstant.HEADER_KEY_KUFLOW_ENCODING_ENCRYPTED_KEY_ID, headerEncodingKeyId);
+
+        return headersResult;
+    }
+
+    public static Map<String, String> addEncryptionEncoding(
+        @Nonnull EncryptionState encryptionState,
+        @Nullable Map<String, String> headers
+    ) {
+        if (!encryptionState.isEncryptionNeeded()) {
+            return headers;
+        }
+
+        Map<String, String> headerValues = new HashMap<>();
+        if (headers != null) {
+            headerValues.putAll(headers);
+        }
+
+        String keyId = encryptionState.getKeyIdRequired();
+
+        headerValues.put(EncryptionConstant.HEADER_KEY_KUFLOW_ENCODING, EncryptionConstant.HEADER_VALUE_KUFLOW_ENCODING_ENCRYPTED_NAME);
+        headerValues.put(EncryptionConstant.HEADER_KEY_KUFLOW_ENCODING_ENCRYPTED_KEY_ID, keyId);
+
+        return headerValues;
+    }
+
+    public static Object[] markObjectsToBeEncrypted(@Nonnull EncryptionState encryptionState, Object[] arguments) {
         if (arguments == null) {
             return null;
+        }
+
+        if (!encryptionState.isEncryptionNeeded()) {
+            return arguments;
         }
 
         arguments = Arrays.copyOf(arguments, arguments.length);
 
         for (int i = 0; i < arguments.length; i++) {
-            arguments[i] = EncryptionWrapper.of(arguments[i]);
+            arguments[i] = EncryptionWrapper.of(encryptionState, arguments[i]);
         }
 
         return arguments;
+    }
+
+    private static boolean isEncryptionRequired(io.temporal.common.interceptors.Header header) {
+        return (
+            header != null &&
+            header.getValues() != null &&
+            header.getValues().containsKey(EncryptionConstant.HEADER_KEY_KUFLOW_ENCODING) &&
+            header.getValues().containsKey(EncryptionConstant.HEADER_KEY_KUFLOW_ENCODING_ENCRYPTED_KEY_ID) &&
+            HEADER_VALUE_KUFLOW_ENCODING_ENCRYPTED_PAYLOAD.equals(header.getValues().get(EncryptionConstant.HEADER_KEY_KUFLOW_ENCODING))
+        );
     }
 
     private EncryptionUtils() {

@@ -91,17 +91,17 @@ public final class KuFlowClientImpl {
     }
 
     /**
-     * The VaultOperationsImpl object to access its operations.
+     * The KmsOperationsImpl object to access its operations.
      */
-    private final VaultOperationsImpl vaultOperations;
+    private final KmsOperationsImpl kmsOperations;
 
     /**
-     * Gets the VaultOperationsImpl object to access its operations.
+     * Gets the KmsOperationsImpl object to access its operations.
      *
-     * @return the VaultOperationsImpl object.
+     * @return the KmsOperationsImpl object.
      */
-    public VaultOperationsImpl getVaultOperations() {
-        return this.vaultOperations;
+    public KmsOperationsImpl getKmsOperations() {
+        return this.kmsOperations;
     }
 
     /**
@@ -237,7 +237,7 @@ public final class KuFlowClientImpl {
         this.serializerAdapter = serializerAdapter;
         this.host = host;
         this.authenticationOperations = new AuthenticationOperationsImpl(this);
-        this.vaultOperations = new VaultOperationsImpl(this);
+        this.kmsOperations = new KmsOperationsImpl(this);
         this.principalOperations = new PrincipalOperationsImpl(this);
         this.tenantOperations = new TenantOperationsImpl(this);
         this.tenantUserOperations = new TenantUserOperationsImpl(this);

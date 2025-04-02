@@ -22,6 +22,7 @@
  */
 package com.kuflow.temporal.worker.encryption.interceptors;
 
+import com.kuflow.temporal.worker.encryption.EncryptionState;
 import com.kuflow.temporal.worker.encryption.converter.EncryptionWrapper;
 import io.temporal.common.interceptors.ActivityInboundCallsInterceptor;
 import io.temporal.common.interceptors.ActivityInboundCallsInterceptorBase;
@@ -36,10 +37,8 @@ public class EncryptionWorkerActivityInboundCallsInterceptor extends ActivityInb
     public ActivityOutput execute(ActivityInput input) {
         ActivityOutput output = super.execute(input);
 
-        if (EncryptionUtils.isEncryptionRequired(input.getHeader())) {
-            output = new ActivityOutput(EncryptionWrapper.of(output.getResult()));
-        }
+        EncryptionState encryptionState = EncryptionUtils.retrieveEncryptionState(input.getHeader());
 
-        return output;
+        return new ActivityOutput(EncryptionWrapper.of(encryptionState, output.getResult()));
     }
 }

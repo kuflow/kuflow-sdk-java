@@ -22,79 +22,103 @@
  */
 package com.kuflow.temporal.worker.encryption.codec;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.google.protobuf.ByteString;
 import com.kuflow.rest.KuFlowRestClient;
-import com.kuflow.rest.model.VaultCodecPayload;
-import com.kuflow.rest.model.VaultCodecPayloads;
-import com.kuflow.rest.operation.VaultOperations;
+import com.kuflow.rest.model.KmsKey;
+import com.kuflow.rest.operation.KmsOperations;
+import com.kuflow.temporal.common.crypto.CipherUtils;
 import com.kuflow.temporal.worker.encryption.EncryptionConstant;
 import io.temporal.api.common.v1.Payload;
 import io.temporal.common.converter.EncodingKeys;
 import io.temporal.payload.codec.PayloadCodec;
+import io.temporal.payload.codec.PayloadCodecException;
+import java.util.Base64;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import javax.annotation.Nonnull;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 public class EncryptionPayloadCodec implements PayloadCodec {
 
-    private final UUID tenantId;
+    private final Cache<String, KmsKey> kmsKeyCache = CacheBuilder.newBuilder().expireAfterAccess(1, TimeUnit.HOURS).build();
 
-    private final VaultOperations vaultOperations;
+    private final KmsOperations kmsOperations;
 
-    public EncryptionPayloadCodec(UUID tenantId, KuFlowRestClient kuFlowRestClient) {
-        this.tenantId = tenantId;
-        this.vaultOperations = kuFlowRestClient.getVaultOperations();
+    public EncryptionPayloadCodec(KuFlowRestClient kuFlowRestClient) {
+        this.kmsOperations = kuFlowRestClient.getKmsOperations();
     }
 
     @Nonnull
     @Override
     public List<Payload> encode(@Nonnull List<Payload> payloads) {
-        List<Payload> payloadsToEncrypt = payloads.stream().filter(this::needPayloadBeEncrypted).toList();
-
-        List<Payload> payloadsEncrypted = this.encrypt(payloadsToEncrypt);
-
-        return payloads
-            .stream()
-            .map(it -> {
-                if (!this.needPayloadBeEncrypted(it)) {
-                    return it;
-                }
-
-                int index = payloadsToEncrypt.indexOf(it);
-                return payloadsEncrypted.get(index);
-            })
-            .toList();
+        return payloads.stream().map(this::encrypt).toList();
     }
 
     @Nonnull
     @Override
     public List<Payload> decode(@Nonnull List<Payload> payloads) {
-        List<Payload> payloadsToDecrypt = payloads.stream().filter(this::isPayloadEncrypted).toList();
+        return payloads.stream().map(this::decrypt).toList();
+    }
 
-        List<Payload> payloadsDecrypted = this.decrypt(payloadsToDecrypt);
+    private Payload encrypt(Payload payload) {
+        if (!this.needPayloadBeEncrypted(payload)) {
+            return payload;
+        }
 
-        return payloads
-            .stream()
-            .map(it -> {
-                if (!this.isPayloadEncrypted(it)) {
-                    return it;
-                }
+        String keyId = payload.getMetadataOrThrow(EncryptionConstant.METADATA_KEY_ENCODING_ENCRYPTED_KEY_ID).toStringUtf8();
 
-                int index = payloadsToDecrypt.indexOf(it);
-                return payloadsDecrypted.get(index);
-            })
-            .toList();
+        SecretKey secretKey = this.retrieveSecretKey(keyId);
+
+        byte[] cipherTextBytes = CipherUtils.AES_256_GCM.encrypt(secretKey, payload.toByteArray());
+
+        String cipherTextValue = Base64.getEncoder().encodeToString(cipherTextBytes);
+
+        String cipherText = "%s:%s".formatted(CipherUtils.AES_256_GCM.getAlgorithm(), cipherTextValue);
+
+        return Payload.newBuilder()
+            .putMetadata(EncodingKeys.METADATA_ENCODING_KEY, EncryptionConstant.METADATA_VALUE_KUFLOW_ENCODING_ENCRYPTED)
+            .putMetadata(EncryptionConstant.METADATA_KEY_ENCODING_ENCRYPTED_KEY_ID, ByteString.copyFromUtf8(keyId))
+            .setData(ByteString.copyFromUtf8(cipherText))
+            .build();
+    }
+
+    private Payload decrypt(Payload payload) {
+        if (!this.isPayloadEncrypted(payload)) {
+            return payload;
+        }
+
+        String keyId = payload.getMetadataOrThrow(EncryptionConstant.METADATA_KEY_ENCODING_ENCRYPTED_KEY_ID).toStringUtf8();
+
+        SecretKey secretKey = this.retrieveSecretKey(keyId);
+
+        String cipherText = payload.getData().toStringUtf8();
+
+        String[] cipherTextParts = cipherText.split(":");
+        if (cipherTextParts.length != 2) {
+            throw new PayloadCodecException("Invalid cipherText format: %s".formatted(cipherText.substring(0, 20)));
+        }
+
+        String cipherTextAlgorithm = cipherTextParts[0];
+        String cipherTextValue = cipherTextParts[1];
+
+        if (!CipherUtils.AES_256_GCM.getAlgorithm().equals(cipherTextAlgorithm)) {
+            throw new PayloadCodecException("Invalid cipherText algorithm: %s".formatted(cipherTextAlgorithm));
+        }
+
+        byte[] cipherTextBytes = Base64.getDecoder().decode(cipherTextValue);
+
+        byte[] plainText = CipherUtils.AES_256_GCM.decrypt(secretKey, cipherTextBytes);
+
+        return this.parsePayloadFrom(plainText);
     }
 
     private boolean needPayloadBeEncrypted(Payload payload) {
         try {
-            return (
-                EncryptionConstant.METADATA_KUFLOW_ENCODING_ENCRYPTED_BYTE_STRING.equals(
-                    payload.getMetadataOrDefault(EncryptionConstant.METADATA_KUFLOW_ENCODING_KEY, ByteString.EMPTY)
-                )
-            );
+            return (payload.containsMetadata(EncryptionConstant.METADATA_KEY_ENCODING_ENCRYPTED_KEY_ID));
         } catch (Exception e) {
             return false;
         }
@@ -103,74 +127,31 @@ public class EncryptionPayloadCodec implements PayloadCodec {
     private boolean isPayloadEncrypted(Payload payload) {
         try {
             return (
-                EncryptionConstant.METADATA_KUFLOW_ENCODING_ENCRYPTED_BYTE_STRING.equals(
+                EncryptionConstant.METADATA_VALUE_KUFLOW_ENCODING_ENCRYPTED.equals(
                     payload.getMetadataOrDefault(EncodingKeys.METADATA_ENCODING_KEY, ByteString.EMPTY)
-                )
+                ) &&
+                payload.containsMetadata(EncryptionConstant.METADATA_KEY_ENCODING_ENCRYPTED_KEY_ID)
             );
         } catch (Exception e) {
             return false;
         }
     }
 
-    private List<Payload> encrypt(List<Payload> payloads) {
-        if (payloads.isEmpty()) {
-            return List.of();
+    private Payload parsePayloadFrom(byte[] plainData) {
+        try {
+            return Payload.parseFrom(plainData);
+        } catch (Exception e) {
+            throw new PayloadCodecException(e);
         }
-
-        List<VaultCodecPayload> requestPayloads = payloads.stream().map(this::transform).toList();
-
-        VaultCodecPayloads request = new VaultCodecPayloads().setTenantId(this.tenantId).setPayloads(requestPayloads);
-
-        VaultCodecPayloads response = this.vaultOperations.codecEncode(request);
-
-        return response.getPayloads().stream().map(this::transform).toList();
     }
 
-    private List<Payload> decrypt(List<Payload> payloads) {
-        if (payloads.isEmpty()) {
-            return List.of();
+    private SecretKey retrieveSecretKey(String keyId) {
+        try {
+            KmsKey kmsKey = this.kmsKeyCache.get(keyId, () -> this.kmsOperations.retrieveKmsKey(keyId));
+
+            return new SecretKeySpec(kmsKey.getValue(), "AES");
+        } catch (ExecutionException e) {
+            throw new PayloadCodecException("Unable to fetch the key %s".formatted(keyId), e);
         }
-
-        List<VaultCodecPayload> requestPayloads = payloads.stream().map(this::transform).toList();
-
-        VaultCodecPayloads request = new VaultCodecPayloads().setTenantId(this.tenantId).setPayloads(requestPayloads);
-
-        VaultCodecPayloads response = this.vaultOperations.codecDecode(request);
-
-        return response.getPayloads().stream().map(this::transform).toList();
-    }
-
-    private VaultCodecPayload transform(Payload payload) {
-        VaultCodecPayload codecPayload = new VaultCodecPayload();
-        if (!payload.getMetadataMap().isEmpty()) {
-            Map<String, byte[]> metadata = payload
-                .getMetadataMap()
-                .entrySet()
-                .stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().toByteArray()));
-
-            codecPayload.setMetadata(metadata);
-        }
-
-        codecPayload.setData(payload.getData().toByteArray());
-
-        return codecPayload;
-    }
-
-    private Payload transform(VaultCodecPayload codecPayload) {
-        Payload.Builder builder = Payload.newBuilder();
-        if (codecPayload.getMetadata() != null && !codecPayload.getMetadata().isEmpty()) {
-            Map<String, ByteString> metadata = codecPayload
-                .getMetadata()
-                .entrySet()
-                .stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, e -> ByteString.copyFrom(e.getValue())));
-
-            builder.putAllMetadata(metadata);
-        }
-
-        builder.setData(ByteString.copyFrom(codecPayload.getData()));
-
-        return builder.build();
     }
 }

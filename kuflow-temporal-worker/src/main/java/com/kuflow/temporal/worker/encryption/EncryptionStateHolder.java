@@ -22,42 +22,32 @@
  */
 package com.kuflow.temporal.worker.encryption;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class EncryptionHolder {
+public class EncryptionStateHolder {
 
-    private static final ThreadLocal<EncryptionState> encryptionHolder = new ThreadLocal<>();
+    private static final ThreadLocal<String> KEY_ID = new ThreadLocal<>();
 
-    /**
-     * Reset the EncryptionState for the current thread.
-     */
-    public static void resetEncryptionState() {
-        encryptionHolder.remove();
+    @Nonnull
+    public static EncryptionState getCurrentEncryptionState() {
+        return EncryptionState.of(EncryptionStateHolder.KEY_ID.get());
     }
 
-    /**
-     * Bind the given EncryptionState to the current thread
-     * @param encryptionState the EncryptionState to expose
-     */
-    public static void setEncryptionState(@Nullable EncryptionState encryptionState) {
-        if (encryptionState == null) {
-            resetEncryptionState();
-        } else {
-            encryptionHolder.set(encryptionState);
+    public static void execute(boolean encryption, @Nullable String keyId, Action action) {
+        try {
+            if (encryption && keyId != null) {
+                EncryptionStateHolder.KEY_ID.set(keyId);
+            }
+
+            action.execute();
+        } finally {
+            EncryptionStateHolder.KEY_ID.remove();
         }
     }
 
-    /**
-     * Return the EncryptionState currently bound to the thread.
-     * @return the EncryptionState currently bound to the thread,
-     * or {@code null} if none bound
-     */
-    @Nullable
-    public static EncryptionState getEncryptionState() {
-        return encryptionHolder.get();
-    }
-
-    public static boolean isEncryptionNeeded() {
-        return getEncryptionState() != null && getEncryptionState().isEncryptionNeeded();
+    @FunctionalInterface
+    public interface Action {
+        void execute();
     }
 }
