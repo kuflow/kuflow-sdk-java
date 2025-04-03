@@ -31,7 +31,6 @@ import com.kuflow.rest.operation.KmsOperations;
 import com.kuflow.temporal.common.crypto.CipherUtils;
 import com.kuflow.temporal.worker.encryption.EncryptionConstant;
 import io.temporal.api.common.v1.Payload;
-import io.temporal.common.converter.EncodingKeys;
 import io.temporal.payload.codec.PayloadCodec;
 import io.temporal.payload.codec.PayloadCodecException;
 import java.util.Base64;
@@ -80,7 +79,7 @@ public class EncryptionPayloadCodec implements PayloadCodec {
         String cipherText = "%s:%s".formatted(CipherUtils.AES_256_GCM.getAlgorithm(), cipherTextValue);
 
         return Payload.newBuilder()
-            .putMetadata(EncodingKeys.METADATA_ENCODING_KEY, EncryptionConstant.METADATA_VALUE_KUFLOW_ENCODING_ENCRYPTED)
+            .putMetadata(EncryptionConstant.METADATA_KEY_ENCODING, EncryptionConstant.METADATA_VALUE_KUFLOW_ENCODING_ENCRYPTED)
             .putMetadata(EncryptionConstant.METADATA_KEY_ENCODING_ENCRYPTED_KEY_ID, ByteString.copyFromUtf8(keyId))
             .setData(ByteString.copyFromUtf8(cipherText))
             .build();
@@ -88,9 +87,9 @@ public class EncryptionPayloadCodec implements PayloadCodec {
 
     private Payload decrypt(Payload payload) {
         if (
-            !payload.containsMetadata(EncodingKeys.METADATA_ENCODING_KEY) ||
+            !payload.containsMetadata(EncryptionConstant.METADATA_KEY_ENCODING) ||
             !payload
-                .getMetadataOrThrow(EncodingKeys.METADATA_ENCODING_KEY)
+                .getMetadataOrThrow(EncryptionConstant.METADATA_KEY_ENCODING)
                 .equals(EncryptionConstant.METADATA_VALUE_KUFLOW_ENCODING_ENCRYPTED)
         ) {
             return payload;

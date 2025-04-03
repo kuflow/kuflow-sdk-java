@@ -32,6 +32,8 @@ public interface EncryptionConstant {
 
     String HEADER_VALUE_KUFLOW_ENCODING_ENCRYPTED_NAME = "binary/encrypted?vendor=KuFlow";
 
+    String METADATA_KEY_ENCODING = EncodingKeys.METADATA_ENCODING_KEY;
+
     String METADATA_KEY_ENCODING_ENCRYPTED_KEY_ID = EncodingKeys.METADATA_ENCODING_KEY + "-encrypted-key-id";
 
     String METADATA_VALUE_KUFLOW_ENCODING_ENCRYPTED_NAME = "binary/encrypted?vendor=KuFlow";
