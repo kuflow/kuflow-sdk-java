@@ -20,24 +20,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.temporal.worker.codec.encryption;
+package com.kuflow.temporal.worker.encryption;
 
-import com.kuflow.temporal.worker.codec.store.SecretStore;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-/**
- * Factory for commonly used {@link PayloadEncryptor}.
- */
-public final class PayloadEncryptors {
+public class EncryptionStateHolder {
 
-    private PayloadEncryptors() {}
+    private static final ThreadLocal<String> KEY_ID = new ThreadLocal<>();
 
-    /**
-     * Creates an AES/GCM payload encryptor.
-     * @param secretStore the secretStore used to get the secrets keys.
-     *
-     * @return The payload encryptor
-     */
-    public static AesGcmPayloadEncryptor aesGcm(SecretStore secretStore) {
-        return new AesGcmPayloadEncryptor(secretStore);
+    @Nonnull
+    public static EncryptionState getCurrentEncryptionState() {
+        return EncryptionState.of(EncryptionStateHolder.KEY_ID.get());
+    }
+
+    public static void execute(boolean encryption, @Nullable String keyId, Action action) {
+        try {
+            if (encryption && keyId != null) {
+                EncryptionStateHolder.KEY_ID.set(keyId);
+            }
+
+            action.execute();
+        } finally {
+            EncryptionStateHolder.KEY_ID.remove();
+        }
+    }
+
+    @FunctionalInterface
+    public interface Action {
+        void execute();
     }
 }

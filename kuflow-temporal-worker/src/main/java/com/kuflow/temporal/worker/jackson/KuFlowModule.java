@@ -22,30 +22,18 @@
  */
 package com.kuflow.temporal.worker.jackson;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import java.io.IOException;
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import java.io.Serial;
 import java.time.OffsetTime;
-import java.time.format.DateTimeFormatter;
 
-public class OffsetTimeSerializer extends StdSerializer<OffsetTime> {
+public class KuFlowModule extends SimpleModule {
 
-    public static final OffsetTimeSerializer INSTANCE = new OffsetTimeSerializer();
+    @Serial
+    private static final long serialVersionUID = 8660705027104242864L;
 
-    private final DateTimeFormatter formatter;
-
-    protected OffsetTimeSerializer() {
-        this(DateTimeFormatter.ISO_OFFSET_TIME);
-    }
-
-    public OffsetTimeSerializer(DateTimeFormatter formatter) {
-        super(OffsetTime.class);
-        this.formatter = formatter;
-    }
-
-    @Override
-    public void serialize(OffsetTime value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-        gen.writeString(value.format(this.formatter));
+    public KuFlowModule() {
+        super(Version.unknownVersion());
+        this.addSerializer(OffsetTime.class, OffsetTimeSerializer.INSTANCE);
     }
 }

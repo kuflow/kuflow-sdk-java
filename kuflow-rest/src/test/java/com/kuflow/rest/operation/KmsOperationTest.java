@@ -20,31 +20,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.temporal.worker.codec.store;
+package com.kuflow.rest.operation;
 
-import com.kuflow.temporal.common.error.KuFlowTemporalException;
-import com.kuflow.temporal.worker.codec.encryption.EncryptionInfo;
-import io.temporal.api.common.v1.Payload;
-import javax.crypto.SecretKey;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
+import static com.github.tomakehurst.wiremock.client.WireMock.ok;
 
-/**
- * Service interface to allow to get secret keys.
- */
-public interface SecretStore {
-    /**
-     * Get the secreted key id related to the payload passed.
-     *
-     * @param payload the payload
-     * @return the secreted key id
-     */
-    String getSecretKeyId(Payload payload);
+import java.util.UUID;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-    /**
-     * Get the secreted key related to the encryption passed if it doesn't exist a secret key for the {@code encryptionInfo} passed, then
-     * a {@link KuFlowTemporalException} exception is thrown.
-     *
-     * @param encryptionInfo the encryption info
-     * @return the secreted key found
-     */
-    SecretKey getSecretKey(EncryptionInfo encryptionInfo);
+public class KmsOperationTest extends AbstractOperationTest {
+
+    @Test
+    @DisplayName("GIVEN an authenticated user WHEN retrieve a kms key THEN authentication header is added")
+    public void givenAnAuthenticatedUserWhenRetrieveAKmsKeyThenAuthenticationHeaderIsAdded() {
+        String keyId = UUID.randomUUID().toString();
+
+        givenThat(
+            get("/v2024-06-14/kms/keys/" + keyId)
+                .withHeader("Authorization", equalTo("Bearer Q0xJRU5UX0lEOkNMSUVOVF9TRUNSRVQ="))
+                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("kms-keys.retrieve.ok.json"))
+        );
+
+        this.kuFlowRestClient.getKmsOperations().retrieveKmsKey(keyId);
+    }
 }

@@ -20,32 +20,47 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.temporal.worker.jackson;
+package com.kuflow.temporal.worker.encryption;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import java.io.IOException;
-import java.time.OffsetTime;
-import java.time.format.DateTimeFormatter;
+import java.util.Objects;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-public class OffsetTimeSerializer extends StdSerializer<OffsetTime> {
+public class EncryptionState {
 
-    public static final OffsetTimeSerializer INSTANCE = new OffsetTimeSerializer();
-
-    private final DateTimeFormatter formatter;
-
-    protected OffsetTimeSerializer() {
-        this(DateTimeFormatter.ISO_OFFSET_TIME);
+    public static EncryptionState empty() {
+        return new EncryptionState(null);
     }
 
-    public OffsetTimeSerializer(DateTimeFormatter formatter) {
-        super(OffsetTime.class);
-        this.formatter = formatter;
+    public static EncryptionState of(@Nullable String keyId) {
+        return new EncryptionState(keyId);
     }
 
-    @Override
-    public void serialize(OffsetTime value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-        gen.writeString(value.format(this.formatter));
+    private String keyId;
+
+    private EncryptionState(String keyId) {
+        this.keyId = keyId;
+    }
+
+    public boolean isEncryptionNeeded() {
+        return this.keyId != null;
+    }
+
+    @Nullable
+    public String getKeyId() {
+        return this.keyId;
+    }
+
+    @Nonnull
+    public String getKeyIdRequired() {
+        return Objects.requireNonNull(this.keyId, "KeyId is required");
+    }
+
+    public void merge(@Nullable EncryptionState other) {
+        if (other != null && other.isEncryptionNeeded()) {
+            this.keyId = other.keyId;
+        } else {
+            this.keyId = null;
+        }
     }
 }

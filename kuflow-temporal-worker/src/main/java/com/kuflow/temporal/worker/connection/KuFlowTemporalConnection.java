@@ -22,12 +22,10 @@
  */
 package com.kuflow.temporal.worker.connection;
 
-import static java.util.stream.Collectors.toCollection;
-
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.kuflow.rest.KuFlowRestClient;
 import com.kuflow.rest.model.Authentication;
 import com.kuflow.rest.model.AuthenticationCreateParams;
@@ -38,24 +36,27 @@ import com.kuflow.temporal.common.error.KuFlowTemporalException;
 import com.kuflow.temporal.worker.authorization.KuFlowAuthorizationTokenSupplier;
 import com.kuflow.temporal.worker.connection.WorkerBuilder.ActivityImplementationRegister;
 import com.kuflow.temporal.worker.connection.WorkerBuilder.WorkflowImplementationRegister;
+import com.kuflow.temporal.worker.encryption.codec.EncryptionPayloadCodec;
+import com.kuflow.temporal.worker.encryption.converter.EncryptionPayloadConverter;
+import com.kuflow.temporal.worker.encryption.interceptors.EncryptionClientInterceptor;
+import com.kuflow.temporal.worker.encryption.interceptors.EncryptionWorkerInterceptor;
 import com.kuflow.temporal.worker.jackson.AutorestModule;
-import com.kuflow.temporal.worker.jackson.OffsetTimeSerializer;
+import com.kuflow.temporal.worker.jackson.KuFlowModule;
 import com.kuflow.temporal.worker.ssl.SslContextBuilder;
 import com.kuflow.temporal.worker.tracing.MDCContextPropagator;
 import io.grpc.netty.shaded.io.netty.handler.ssl.SslContext;
 import io.temporal.authorization.AuthorizationGrpcMetadataProvider;
 import io.temporal.client.WorkflowClient;
 import io.temporal.client.WorkflowClientOptions;
+import io.temporal.common.converter.CodecDataConverter;
 import io.temporal.common.converter.DataConverter;
 import io.temporal.common.converter.DefaultDataConverter;
 import io.temporal.common.converter.JacksonJsonPayloadConverter;
-import io.temporal.common.converter.PayloadConverter;
 import io.temporal.serviceclient.WorkflowServiceStubs;
 import io.temporal.serviceclient.WorkflowServiceStubsOptions;
 import io.temporal.worker.Worker;
 import io.temporal.worker.WorkerFactory;
-import java.time.OffsetTime;
-import java.util.Arrays;
+import io.temporal.worker.WorkerFactoryOptions;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -352,7 +353,10 @@ public class KuFlowTemporalConnection {
         DataConverter dataConverter = this.dataConverter();
 
         WorkflowClientOptions workflowClientOptions =
-            this.workflowClientBuilder.setContextPropagators(List.of(new MDCContextPropagator())).setDataConverter(dataConverter).build();
+            this.workflowClientBuilder.setContextPropagators(List.of(new MDCContextPropagator()))
+                .setDataConverter(dataConverter)
+                .setInterceptors(new EncryptionClientInterceptor())
+                .validateAndBuildWithDefaults();
 
         this.workflowClient = WorkflowClient.newInstance(workflowServiceStubs, workflowClientOptions);
 
@@ -366,7 +370,11 @@ public class KuFlowTemporalConnection {
 
         WorkflowClient workflowClient = this.getOrCreateWorkflowClient();
 
-        this.workerFactory = WorkerFactory.newInstance(workflowClient);
+        WorkerFactoryOptions workerFactoryOptions = WorkerFactoryOptions.newBuilder()
+            .setWorkerInterceptors(new EncryptionWorkerInterceptor())
+            .validateAndBuildWithDefaults();
+
+        this.workerFactory = WorkerFactory.newInstance(workflowClient, workerFactoryOptions);
 
         this.newWorker(this.workerBuilder);
 
@@ -403,22 +411,22 @@ public class KuFlowTemporalConnection {
     }
 
     private DataConverter dataConverter() {
-        SimpleModule kuFlowModule = new SimpleModule();
-        kuFlowModule.addSerializer(OffsetTime.class, new OffsetTimeSerializer());
-
         // Customize Temporal default Jackson object mapper to support unknown properties
         ObjectMapper objectMapper = JacksonJsonPayloadConverter.newDefaultObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         objectMapper.configure(JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION, true);
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         objectMapper.registerModule(new AutorestModule());
-        objectMapper.registerModule(kuFlowModule);
+        objectMapper.registerModule(new KuFlowModule());
 
-        List<PayloadConverter> converters = Arrays.stream(DefaultDataConverter.STANDARD_PAYLOAD_CONVERTERS)
-            .filter(it -> !(it instanceof JacksonJsonPayloadConverter))
-            .collect(toCollection(LinkedList::new));
-        converters.add(new JacksonJsonPayloadConverter(objectMapper));
+        JacksonJsonPayloadConverter jacksonJsonPayloadConverter = new JacksonJsonPayloadConverter(objectMapper);
 
-        return new DefaultDataConverter(converters.toArray(new PayloadConverter[0]));
+        DefaultDataConverter dataConverter = DefaultDataConverter.newDefaultInstance()
+            .withPayloadConverterOverrides(new EncryptionPayloadConverter(jacksonJsonPayloadConverter));
+
+        EncryptionPayloadCodec encryptionPayloadCodec = new EncryptionPayloadCodec(this.kuFlowRestClient);
+
+        return new CodecDataConverter(dataConverter, List.of(encryptionPayloadCodec));
     }
 
     private void applyDefaultConfiguration() {

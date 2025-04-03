@@ -20,26 +20,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.temporal.worker.codec.store;
+package com.kuflow.temporal.worker.encryption.interceptors;
 
-import java.util.Map;
-import javax.crypto.SecretKey;
+import com.kuflow.temporal.worker.encryption.EncryptionState;
+import com.kuflow.temporal.worker.encryption.converter.EncryptionWrapper;
+import io.temporal.common.interceptors.ActivityInboundCallsInterceptor;
+import io.temporal.common.interceptors.ActivityInboundCallsInterceptorBase;
 
-/**
- * Factory for commonly used {@link SecretStore}.
- */
-public final class SecretStores {
+public class EncryptionWorkerActivityInboundCallsInterceptor extends ActivityInboundCallsInterceptorBase {
 
-    private SecretStores() {}
+    public EncryptionWorkerActivityInboundCallsInterceptor(ActivityInboundCallsInterceptor next) {
+        super(next);
+    }
 
-    /**
-     * Creates a memory {@link SecretStore}.
-     * @param defaultSecretKeyId the default secret key id to use when new payloads needs to be encrypted.
-     * @param secretKeys the secret keys to use.
-     *
-     * @return A secret stored implemented in memory
-     */
-    public static SecretStore memory(String defaultSecretKeyId, Map<String, SecretKey> secretKeys) {
-        return new InMemorySecretStore(defaultSecretKeyId, secretKeys);
+    @Override
+    public ActivityOutput execute(ActivityInput input) {
+        ActivityOutput output = super.execute(input);
+
+        EncryptionState encryptionState = EncryptionUtils.retrieveEncryptionState(input.getHeader());
+
+        return new ActivityOutput(EncryptionWrapper.of(encryptionState, output.getResult()));
     }
 }

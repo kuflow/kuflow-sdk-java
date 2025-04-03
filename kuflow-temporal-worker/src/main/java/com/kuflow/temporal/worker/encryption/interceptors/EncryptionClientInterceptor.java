@@ -20,26 +20,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.temporal.worker.codec.encryption;
+package com.kuflow.temporal.worker.encryption.interceptors;
 
-import io.temporal.api.common.v1.Payload;
+import io.temporal.common.interceptors.WorkflowClientCallsInterceptor;
+import io.temporal.common.interceptors.WorkflowClientInterceptorBase;
 
-/**
- * Service interface for symmetric data encryption.
- */
-public interface PayloadEncryptor {
-    /**
-     * Get the {@link EncryptionInfo} computed for the payload passed.
-     */
-    EncryptionInfo getEncryptionInfo(Payload payload);
+public class EncryptionClientInterceptor extends WorkflowClientInterceptorBase {
 
-    /**
-     * Encrypt the plainData byte array using the encryptionInfo passed.
-     */
-    byte[] encrypt(byte[] plainData, EncryptionInfo encryptionInfo);
-
-    /**
-     * Decrypt the encryptedData byte array using the encryptionInfo passed.
-     */
-    byte[] decrypt(byte[] encryptedData, EncryptionInfo encryptionInfo);
+    @Override
+    public WorkflowClientCallsInterceptor workflowClientCallsInterceptor(WorkflowClientCallsInterceptor next) {
+        return new EncryptionClientCallsInterceptor(next);
+    }
 }

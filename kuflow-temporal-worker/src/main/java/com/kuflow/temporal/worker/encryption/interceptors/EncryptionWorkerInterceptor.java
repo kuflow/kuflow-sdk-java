@@ -20,35 +20,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.temporal.worker.codec.encryption;
+package com.kuflow.temporal.worker.encryption.interceptors;
 
-/**
- * Class to hold encryption data information
- */
-public class EncryptionInfo {
+import io.nexusrpc.handler.OperationContext;
+import io.temporal.common.interceptors.ActivityInboundCallsInterceptor;
+import io.temporal.common.interceptors.NexusOperationInboundCallsInterceptor;
+import io.temporal.common.interceptors.WorkerInterceptorBase;
+import io.temporal.common.interceptors.WorkflowInboundCallsInterceptor;
 
-    private final String secretKeyId;
+public class EncryptionWorkerInterceptor extends WorkerInterceptorBase {
 
-    private final String cipher;
-
-    public EncryptionInfo(String secretKeyId, String cipher) {
-        this.secretKeyId = secretKeyId;
-        this.cipher = cipher;
+    @Override
+    public WorkflowInboundCallsInterceptor interceptWorkflow(WorkflowInboundCallsInterceptor next) {
+        return new EncryptionWorkerWorkflowInboundCallsInterceptor(next);
     }
 
-    /**
-     * Get the secret key used for encrypt/decrypt a payload
-     * @return the secret key id
-     */
-    public String getSecretKeyId() {
-        return this.secretKeyId;
+    @Override
+    public ActivityInboundCallsInterceptor interceptActivity(ActivityInboundCallsInterceptor next) {
+        return new EncryptionWorkerActivityInboundCallsInterceptor(next);
     }
 
-    /**
-     * Get the cipher used for encrypt/decrypt a payload
-     * @return the cipher ma,e
-     */
-    public String getCipher() {
-        return this.cipher;
+    @Override
+    public NexusOperationInboundCallsInterceptor interceptNexusOperation(
+        OperationContext context,
+        NexusOperationInboundCallsInterceptor next
+    ) {
+        return new EncryptionWorkerNexusOperationInboundCallsInterceptor(next);
     }
 }
