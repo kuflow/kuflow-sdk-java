@@ -28,7 +28,6 @@ import com.kuflow.temporal.worker.encryption.converter.EncryptionWrapper;
 import io.temporal.api.common.v1.Payload;
 import io.temporal.common.converter.DefaultDataConverter;
 import io.temporal.payload.codec.PayloadCodecException;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -49,7 +48,9 @@ public final class EncryptionUtils {
 
         Payload keyIdPayload = header.getValues().get(EncryptionConstant.HEADER_KEY_KUFLOW_ENCODING_ENCRYPTED_KEY_ID);
         if (keyIdPayload == null) {
-            throw new PayloadCodecException("Header %s is required".formatted(EncryptionConstant.HEADER_KEY_KUFLOW_ENCODING_ENCRYPTED_KEY_ID));
+            throw new PayloadCodecException(
+                "Header %s is required".formatted(EncryptionConstant.HEADER_KEY_KUFLOW_ENCODING_ENCRYPTED_KEY_ID)
+            );
         }
 
         String keyId = DefaultDataConverter.STANDARD_INSTANCE.fromPayload(keyIdPayload, String.class, String.class);
