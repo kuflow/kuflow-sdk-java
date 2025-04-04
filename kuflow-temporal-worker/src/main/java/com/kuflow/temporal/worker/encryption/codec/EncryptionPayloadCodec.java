@@ -40,10 +40,19 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.Nonnull;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EncryptionPayloadCodec implements PayloadCodec {
 
-    private final Cache<String, KmsKey> kmsKeyCache = CacheBuilder.newBuilder().expireAfterAccess(1, TimeUnit.HOURS).build();
+    private static final Logger LOGGER = LoggerFactory.getLogger(EncryptionPayloadCodec.class);
+
+    private final Cache<String, KmsKey> kmsKeyCache = CacheBuilder.newBuilder()
+        .expireAfterAccess(1, TimeUnit.HOURS)
+        .removalListener(listener -> {
+            LOGGER.info("Removed KMS key {} from cache", listener.getKey());
+        })
+        .build();
 
     private final KmsOperations kmsOperations;
 
@@ -134,7 +143,12 @@ public class EncryptionPayloadCodec implements PayloadCodec {
 
     private SecretKey retrieveSecretKey(String keyId) {
         try {
-            KmsKey kmsKey = this.kmsKeyCache.get(keyId, () -> this.kmsOperations.retrieveKmsKey(keyId));
+            KmsKey kmsKey =
+                this.kmsKeyCache.get(keyId, () -> {
+                        LOGGER.info("Loading KMS key {} into cache", keyId);
+
+                        return this.kmsOperations.retrieveKmsKey(keyId);
+                    });
 
             return new SecretKeySpec(kmsKey.getValue(), "AES");
         } catch (ExecutionException e) {
