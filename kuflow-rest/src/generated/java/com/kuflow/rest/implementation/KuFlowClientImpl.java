@@ -119,6 +119,20 @@ public final class KuFlowClientImpl {
     }
 
     /**
+     * The GroupOperationsImpl object to access its operations.
+     */
+    private final GroupOperationsImpl groupOperations;
+
+    /**
+     * Gets the GroupOperationsImpl object to access its operations.
+     *
+     * @return the GroupOperationsImpl object.
+     */
+    public GroupOperationsImpl getGroupOperations() {
+        return this.groupOperations;
+    }
+
+    /**
      * The TenantOperationsImpl object to access its operations.
      */
     private final TenantOperationsImpl tenantOperations;
@@ -239,6 +253,7 @@ public final class KuFlowClientImpl {
         this.authenticationOperations = new AuthenticationOperationsImpl(this);
         this.kmsOperations = new KmsOperationsImpl(this);
         this.principalOperations = new PrincipalOperationsImpl(this);
+        this.groupOperations = new GroupOperationsImpl(this);
         this.tenantOperations = new TenantOperationsImpl(this);
         this.tenantUserOperations = new TenantUserOperationsImpl(this);
         this.processOperations = new ProcessOperationsImpl(this);

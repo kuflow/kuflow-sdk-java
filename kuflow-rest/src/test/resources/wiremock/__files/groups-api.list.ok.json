@@ -1,0 +1,30 @@
+{
+  "metadata": {
+    "size": 25,
+    "page": 0,
+    "totalElements": 4,
+    "totalPages": 1
+  },
+  "content": [
+    {
+        "id": "0195f5df-803b-7f4e-aa05-ab5910c9a0a1",
+        "name": "My group",
+        "tenantId": "4b94d138-08da-4b4f-b8c2-504cb1b37026"
+    },
+    {
+        "id": "215dfca3-a501-4869-b032-cd0bd2ee39ab",
+        "name": "Organization Administrators",
+        "tenantId": "4b94d138-08da-4b4f-b8c2-504cb1b37026"
+    },
+    {
+        "id": "5b62d85c-8fbd-4d13-9fd6-298334e8e105",
+        "name": "Users",
+        "tenantId": "4b94d138-08da-4b4f-b8c2-504cb1b37026"
+    },
+    {
+        "id": "dcab6b0b-5518-44d6-8714-d87a5531ed88",
+        "name": "Organization Owners",
+        "tenantId": "4b94d138-08da-4b4f-b8c2-504cb1b37026"
+    }
+]
+}
