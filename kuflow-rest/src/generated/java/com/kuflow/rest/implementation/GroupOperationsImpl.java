@@ -86,7 +86,7 @@ public final class GroupOperationsImpl {
             @QueryParam("page") Integer page,
             @QueryParam(value = "sort", multipleQueryParams = true) List<String> sort,
             @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
-            @QueryParam(value = "principalId", multipleQueryParams = true) UUID principalId,
+            @QueryParam("principalId") UUID principalId,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -100,7 +100,7 @@ public final class GroupOperationsImpl {
             @QueryParam("page") Integer page,
             @QueryParam(value = "sort", multipleQueryParams = true) List<String> sort,
             @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
-            @QueryParam(value = "principalId", multipleQueryParams = true) UUID principalId,
+            @QueryParam("principalId") UUID principalId,
             @HeaderParam("Accept") String accept,
             Context context
         );

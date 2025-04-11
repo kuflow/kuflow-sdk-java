@@ -31,7 +31,6 @@ import com.kuflow.rest.implementation.KuFlowClientImpl;
 import com.kuflow.rest.model.DefaultErrorException;
 import com.kuflow.rest.model.GroupFindOptions;
 import com.kuflow.rest.model.GroupPage;
-import com.kuflow.rest.model.PrincipalFindOptions;
 import java.util.List;
 import java.util.UUID;
 
