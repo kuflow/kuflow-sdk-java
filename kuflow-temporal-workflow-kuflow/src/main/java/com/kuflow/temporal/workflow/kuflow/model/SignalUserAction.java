@@ -22,13 +22,31 @@
  */
 package com.kuflow.temporal.workflow.kuflow.model;
 
-import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 
 public class SignalUserAction {
 
+    /**
+     * The code that defines a user action.
+     * This code is used to identify and differentiate among various user actions
+     * within a workflow system.
+     */
     private String userActionDefinitionCode;
 
-    private Instant requestInstant;
+    /**
+     * Represents the unique identifier of the principal (user or system)
+     * who initiated the user action.
+     * This field is used to associate the user action with the entity that requested it.
+     */
+    private OffsetDateTime requestTime;
+
+    /**
+     * The timestamp when the request was made.
+     * This field is used to record the exact time the associated robot operation
+     * or process item task was requested.
+     */
+    private ZoneId requestTimeZone;
 
     public String getUserActionDefinitionCode() {
         return this.userActionDefinitionCode;
@@ -38,11 +56,19 @@ public class SignalUserAction {
         this.userActionDefinitionCode = userActionDefinitionCode;
     }
 
-    public Instant getRequestInstant() {
-        return this.requestInstant;
+    public OffsetDateTime getRequestTime() {
+        return this.requestTime;
     }
 
-    public void setRequestInstant(Instant requestInstant) {
-        this.requestInstant = requestInstant;
+    public void setRequestTime(OffsetDateTime requestTime) {
+        this.requestTime = requestTime;
+    }
+
+    public ZoneId getRequestTimeZone() {
+        return this.requestTimeZone;
+    }
+
+    public void setRequestTimeZone(ZoneId requestTimeZone) {
+        this.requestTimeZone = requestTimeZone;
     }
 }

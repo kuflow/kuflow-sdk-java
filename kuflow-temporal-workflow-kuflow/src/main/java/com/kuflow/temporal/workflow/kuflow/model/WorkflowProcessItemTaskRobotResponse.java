@@ -22,48 +22,15 @@
  */
 package com.kuflow.temporal.workflow.kuflow.model;
 
-import com.kuflow.temporal.common.model.AbstractModel;
-import java.util.UUID;
+public class WorkflowProcessItemTaskRobotResponse {
 
-public class UserActionWorkflowRequest extends AbstractModel {
+    private String message;
 
-    private UUID processId;
-
-    private String userActionDefinitionCode;
-
-    private UUID userActionId;
-
-    private UUID requestorPrincipalId;
-
-    public UUID getProcessId() {
-        return this.processId;
+    public String getMessage() {
+        return this.message;
     }
 
-    public void setProcessId(UUID processId) {
-        this.processId = processId;
-    }
-
-    public String getUserActionDefinitionCode() {
-        return this.userActionDefinitionCode;
-    }
-
-    public void setUserActionDefinitionCode(String userActionDefinitionCode) {
-        this.userActionDefinitionCode = userActionDefinitionCode;
-    }
-
-    public UUID getUserActionId() {
-        return this.userActionId;
-    }
-
-    public void setUserActionId(UUID userActionId) {
-        this.userActionId = userActionId;
-    }
-
-    public UUID getRequestorPrincipalId() {
-        return this.requestorPrincipalId;
-    }
-
-    public void setRequestorPrincipalId(UUID requestorPrincipalId) {
-        this.requestorPrincipalId = requestorPrincipalId;
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
