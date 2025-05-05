@@ -22,7 +22,7 @@
  */
 package com.kuflow.temporal.workflow.kuflow.model;
 
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.UUID;
 
@@ -56,7 +56,7 @@ public class WorkflowProcessItemTaskRobotRequest {
      * This field is used to record the exact time the associated robot operation
      * or process item task was requested.
      */
-    private Instant requestTime;
+    private OffsetDateTime requestTime;
 
     /**
      * The time zone associated with the request.
@@ -97,11 +97,11 @@ public class WorkflowProcessItemTaskRobotRequest {
         this.robotOperation = robotOperation;
     }
 
-    public void setRequestTime(Instant requestTime) {
+    public void setRequestTime(OffsetDateTime requestTime) {
         this.requestTime = requestTime;
     }
 
-    public Instant getRequestTime() {
+    public OffsetDateTime getRequestTime() {
         return this.requestTime;
     }
 
