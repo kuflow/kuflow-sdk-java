@@ -22,12 +22,31 @@
  */
 package com.kuflow.temporal.workflow.kuflow.model;
 
-import com.kuflow.temporal.common.model.AbstractModel;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.UUID;
 
-public class WorkflowRequest extends AbstractModel {
+public class WorkflowRequest {
 
+    /**
+     * Unique identifier for a specific process.
+     * This identifier is used to track and reference a process in the workflow system.
+     */
     private UUID processId;
+
+    /**
+     * The timestamp when the request was made.
+     * This field is used to record the exact time the associated robot operation
+     * or process item task was requested.
+     */
+    private OffsetDateTime requestTime;
+
+    /**
+     * The time zone associated with the request.
+     * This allows timestamp values to be interpreted in the context of a specific geographical region
+     * or offset from UTC.
+     */
+    private ZoneId requestTimeZone;
 
     public UUID getProcessId() {
         return this.processId;
@@ -35,5 +54,21 @@ public class WorkflowRequest extends AbstractModel {
 
     public void setProcessId(UUID processId) {
         this.processId = processId;
+    }
+
+    public OffsetDateTime getRequestTime() {
+        return this.requestTime;
+    }
+
+    public void setRequestTime(OffsetDateTime requestTime) {
+        this.requestTime = requestTime;
+    }
+
+    public ZoneId getRequestTimeZone() {
+        return this.requestTimeZone;
+    }
+
+    public void setRequestTimeZone(ZoneId requestTimeZone) {
+        this.requestTimeZone = requestTimeZone;
     }
 }

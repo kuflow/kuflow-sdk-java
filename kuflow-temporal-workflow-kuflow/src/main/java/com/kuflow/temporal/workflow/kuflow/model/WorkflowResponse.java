@@ -22,9 +22,7 @@
  */
 package com.kuflow.temporal.workflow.kuflow.model;
 
-import com.kuflow.temporal.common.model.AbstractModel;
-
-public class WorkflowResponse extends AbstractModel {
+public class WorkflowResponse {
 
     private String message;
 
