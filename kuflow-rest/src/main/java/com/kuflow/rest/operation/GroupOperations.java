@@ -71,8 +71,9 @@ public class GroupOperations {
         List<String> sort = !options.getSorts().isEmpty() ? options.getSorts() : null;
         UUID principalId = options.getPrincipalId();
         List<UUID> tenantId = !options.getTenantIds().isEmpty() ? options.getTenantIds() : null;
+        List<UUID> groupId = !options.getGroupIds().isEmpty() ? options.getGroupIds() : null;
 
-        return this.service.findGroupsWithResponse(size, page, sort, tenantId, principalId, context);
+        return this.service.findGroupsWithResponse(size, page, sort, tenantId, principalId, groupId, context);
     }
 
     /**

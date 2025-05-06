@@ -71,6 +71,7 @@ public class GroupOperationTest extends AbstractOperationTest {
     public void givenAnAuthenticatedUserWhenListGroupsUsingQueryParamsThenTheQueryParametersAreSend() {
         UUID princiaplId = UUID.randomUUID();
         UUID tenantId = UUID.randomUUID();
+        UUID groupId1 = UUID.randomUUID();
 
         givenThat(
             get(urlPathEqualTo("/v2024-06-14/groups"))
@@ -79,6 +80,7 @@ public class GroupOperationTest extends AbstractOperationTest {
                 .withQueryParam("sort", equalTo("order1"))
                 .withQueryParam("principalId", equalTo(princiaplId.toString()))
                 .withQueryParam("tenantId", equalTo(tenantId.toString()))
+                .withQueryParam("groupId", equalTo(groupId1.toString()))
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("groups-api.list.ok.json"))
         );
 
@@ -87,7 +89,8 @@ public class GroupOperationTest extends AbstractOperationTest {
             .setPage(2)
             .setSort("order1")
             .setPrincipalId(princiaplId)
-            .setTenantId(tenantId);
+            .setTenantId(tenantId)
+            .setGroupId(groupId1);
 
         this.kuFlowRestClient.getGroupOperations().findGroups(options);
     }
@@ -98,6 +101,8 @@ public class GroupOperationTest extends AbstractOperationTest {
         UUID princiaplId = UUID.randomUUID();
         UUID tenantId1 = UUID.randomUUID();
         UUID tenantId2 = UUID.randomUUID();
+        UUID groupId1 = UUID.randomUUID();
+        UUID groupId2 = UUID.randomUUID();
 
         givenThat(
             get(urlPathEqualTo("/v2024-06-14/groups"))
@@ -108,6 +113,8 @@ public class GroupOperationTest extends AbstractOperationTest {
                 .withQueryParam("principalId", equalTo(princiaplId.toString()))
                 .withQueryParam("tenantId", equalTo(tenantId1.toString()))
                 .withQueryParam("tenantId", equalTo(tenantId2.toString()))
+                .withQueryParam("groupId", equalTo(groupId1.toString()))
+                .withQueryParam("groupId", equalTo(groupId2.toString()))
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("groups-api.list.ok.json"))
         );
 
@@ -118,7 +125,9 @@ public class GroupOperationTest extends AbstractOperationTest {
             .addSort("order2")
             .setPrincipalId(princiaplId)
             .addTenantId(tenantId1)
-            .addTenantId(tenantId2);
+            .addTenantId(tenantId2)
+            .setGroupId(groupId1)
+            .setGroupId(groupId2);
 
         this.kuFlowRestClient.getGroupOperations().findGroups(options);
     }

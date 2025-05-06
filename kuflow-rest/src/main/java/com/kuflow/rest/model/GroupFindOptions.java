@@ -49,7 +49,7 @@ public class GroupFindOptions {
     private final List<String> sorts = new LinkedList<>();
 
     /**
-     * Filter principals that exists in one of tenant ids.
+     * Filter groups that exists in one of tenant ids.
      */
     private final List<UUID> tenantIds = new LinkedList<>();
 
@@ -57,6 +57,11 @@ public class GroupFindOptions {
      * Filter groups where the principalId exists.
      */
     private UUID principalId;
+
+    /**
+     * Filter groups by groupIds.
+     */
+    private final List<UUID> groupIds = new LinkedList<>();
 
     public Integer getSize() {
         return this.size;
@@ -154,6 +159,41 @@ public class GroupFindOptions {
 
     public GroupFindOptions setPrincipalId(UUID principalId) {
         this.principalId = principalId;
+
+        return this;
+    }
+
+    public List<UUID> getGroupIds() {
+        return unmodifiableList(this.groupIds);
+    }
+
+    public GroupFindOptions setGroupIds(List<UUID> groupIds) {
+        this.groupIds.clear();
+        if (groupIds != null) {
+            this.groupIds.addAll(groupIds);
+        }
+
+        return this;
+    }
+
+    public GroupFindOptions setGroupId(UUID groupId) {
+        Objects.requireNonNull(groupId, "'groupId' is required");
+
+        return this.setGroupIds(List.of(groupId));
+    }
+
+    public GroupFindOptions addGroupId(UUID groupId) {
+        Objects.requireNonNull(groupId, "'groupId' is required");
+        if (!this.groupIds.contains(groupId)) {
+            this.groupIds.add(groupId);
+        }
+
+        return this;
+    }
+
+    public GroupFindOptions removeGroupId(UUID groupId) {
+        Objects.requireNonNull(groupId, "'groupId' is required");
+        this.groupIds.remove(groupId);
 
         return this;
     }
