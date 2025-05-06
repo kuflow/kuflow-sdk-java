@@ -24,9 +24,9 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         child.project.url.inherit.append.path="false"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  child.project.url.inherit.append.path="false"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
@@ -74,7 +74,7 @@
     <maven-gpg-plugin.version>3.2.7</maven-gpg-plugin.version>
     <maven-checkstyle.version>3.6.0</maven-checkstyle.version>
     <flatten-maven-plugin.version>1.6.0</flatten-maven-plugin.version>
-    <nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
+    <central-publishing-maven-plugin.version>0.7.0</central-publishing-maven-plugin.version>
     <checkstyle.version>10.21.2</checkstyle.version>
     <prettier-maven-plugin.version>0.22</prettier-maven-plugin.version>
     <prettier-java.version>2.6.7</prettier-java.version>
@@ -262,8 +262,10 @@
                 <consoleOutput>true</consoleOutput>
                 <includeTestSourceDirectory>true</includeTestSourceDirectory>
                 <configLocation>${maven.multiModuleProjectDirectory}/etc/checkstyle/checkstyle.xml</configLocation>
-                <headerLocation>${maven.multiModuleProjectDirectory}/etc/checkstyle/checkstyle-header.txt</headerLocation>
-                <suppressionsLocation>${maven.multiModuleProjectDirectory}/etc/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+                <headerLocation>
+                  ${maven.multiModuleProjectDirectory}/etc/checkstyle/checkstyle-header.txt</headerLocation>
+                <suppressionsLocation>
+                  ${maven.multiModuleProjectDirectory}/etc/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
                 <suppressionsFileExpression>checkstyle.suppressions.location</suppressionsFileExpression>
               </configuration>
             </execution>
@@ -323,9 +325,9 @@
           <version>${maven-gpg-plugin.version}</version>
         </plugin>
         <plugin>
-          <groupId>org.sonatype.plugins</groupId>
-          <artifactId>nexus-staging-maven-plugin</artifactId>
-          <version>${nexus-staging-maven-plugin.version}</version>
+          <groupId>org.sonatype.central</groupId>
+          <artifactId>central-publishing-maven-plugin</artifactId>
+          <version>${central-publishing-maven-plugin.version}</version>
         </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
@@ -407,7 +409,9 @@
     </developer>
   </developers>
 
-  <scm child.scm.connection.inherit.append.path="false" child.scm.developerConnection.inherit.append.path="false" child.scm.url.inherit.append.path="false">
+  <scm child.scm.connection.inherit.append.path="false"
+    child.scm.developerConnection.inherit.append.path="false"
+    child.scm.url.inherit.append.path="false">
     <connection>scm:git:git@github.com:kuflow/kuflow-sdk-java.git</connection>
     <developerConnection>scm:git:git@github.com:kuflow/kuflow-sdk-java.git</developerConnection>
     <url>https://github.com/kuflow/kuflow-sdk-java</url>
@@ -472,13 +476,12 @@
             </executions>
           </plugin>
           <plugin>
-            <groupId>org.sonatype.plugins</groupId>
-            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
             <extensions>true</extensions>
             <configuration>
-              <serverId>ossrh</serverId>
-              <nexusUrl>https://s01.oss.sonatype.org</nexusUrl>
-              <autoReleaseAfterClose>true</autoReleaseAfterClose>
+              <publishingServerId>central</publishingServerId>
+              <autoPublish>true</autoPublish>
             </configuration>
           </plugin>
         </plugins>
