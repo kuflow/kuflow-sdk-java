@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class WorkflowRequest {
@@ -53,7 +54,7 @@ public class WorkflowRequest {
      */
     private ZoneId requestTimeZone;
 
-    private final Map<String, Object> extras = new HashMap<>();
+    private Map<String, Object> extras = null;
 
     public UUID getProcessId() {
         return this.processId;
@@ -79,11 +80,20 @@ public class WorkflowRequest {
         this.requestTimeZone = requestTimeZone;
     }
 
+    @Nonnull
     public Map<String, Object> getExtras() {
+        if (this.extras == null) {
+            return Map.of();
+        }
+
         return Collections.unmodifiableMap(this.extras);
     }
 
-    public void setExtra(Map<String, Object> extras) {
+    public void setExtra(@Nullable Map<String, Object> extras) {
+        if (this.extras == null) {
+            this.extras = new HashMap<>();
+        }
+
         this.extras.clear();
 
         if (extras != null && !extras.isEmpty()) {
@@ -91,14 +101,19 @@ public class WorkflowRequest {
         }
     }
 
-    public void putExtraItem(String name, Object value) {
+    public void putExtraItem(@Nonnull String name, @Nonnull Object value) {
         Objects.requireNonNull(name, "'name' is required");
         Objects.requireNonNull(value, "'value' is required");
+
+        if (this.extras == null) {
+            this.extras = new HashMap<>();
+        }
+
         this.extras.put(name, value);
     }
 
     @Nullable
     public Object getExtraItem(String name) {
-        return this.extras.get(name);
+        return this.getExtras().get(name);
     }
 }
