@@ -24,7 +24,13 @@ package com.kuflow.temporal.workflow.kuflow.model;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class WorkflowRequest {
 
@@ -48,6 +54,8 @@ public class WorkflowRequest {
      */
     private ZoneId requestTimeZone;
 
+    private Map<String, Object> extras = null;
+
     public UUID getProcessId() {
         return this.processId;
     }
@@ -70,5 +78,42 @@ public class WorkflowRequest {
 
     public void setRequestTimeZone(ZoneId requestTimeZone) {
         this.requestTimeZone = requestTimeZone;
+    }
+
+    @Nonnull
+    public Map<String, Object> getExtras() {
+        if (this.extras == null) {
+            return Map.of();
+        }
+
+        return Collections.unmodifiableMap(this.extras);
+    }
+
+    public void setExtra(@Nullable Map<String, Object> extras) {
+        if (this.extras == null) {
+            this.extras = new HashMap<>();
+        }
+
+        this.extras.clear();
+
+        if (extras != null && !extras.isEmpty()) {
+            this.extras.putAll(extras);
+        }
+    }
+
+    public void putExtraItem(@Nonnull String name, @Nonnull Object value) {
+        Objects.requireNonNull(name, "'name' is required");
+        Objects.requireNonNull(value, "'value' is required");
+
+        if (this.extras == null) {
+            this.extras = new HashMap<>();
+        }
+
+        this.extras.put(name, value);
+    }
+
+    @Nullable
+    public Object getExtraItem(String name) {
+        return this.getExtras().get(name);
     }
 }
