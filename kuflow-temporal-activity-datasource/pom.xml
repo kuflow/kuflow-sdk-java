@@ -36,36 +36,19 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>kuflow-temporal-common</artifactId>
+  <artifactId>kuflow-temporal-activity-datasource</artifactId>
   <packaging>jar</packaging>
 
-  <name>KuFlow SDK :: Temporal :: Common</name>
+  <name>KuFlow SDK :: Temporal :: Activity :: Datasource</name>
 
   <dependencies>
     <dependency>
-      <groupId>io.temporal</groupId>
-      <artifactId>temporal-sdk</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
     </dependency>
-
     <dependency>
       <groupId>com.kuflow</groupId>
-      <artifactId>kuflow-common</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.awaitility</groupId>
-      <artifactId>awaitility</artifactId>
-      <scope>test</scope>
+      <artifactId>kuflow-temporal-common</artifactId>
     </dependency>
   </dependencies>
 

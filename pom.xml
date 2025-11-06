@@ -46,8 +46,10 @@
   <description>Components to use in KuFlow.</description>
 
   <modules>
+    <module>kuflow-common</module>
     <module>kuflow-rest</module>
     <module>kuflow-temporal-common</module>
+    <module>kuflow-temporal-activity-datasource</module>
     <module>kuflow-temporal-activity-email</module>
     <module>kuflow-temporal-activity-kuflow</module>
     <module>kuflow-temporal-activity-s3</module>
@@ -115,9 +117,25 @@
         <type>pom</type>
       </dependency>
 
+
+      <dependency>
+        <groupId>com.kuflow</groupId>
+        <artifactId>kuflow-common</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.kuflow</groupId>
+        <artifactId>kuflow-rest</artifactId>
+        <version>${project.version}</version>
+      </dependency>
       <dependency>
         <groupId>com.kuflow</groupId>
         <artifactId>kuflow-temporal-common</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.kuflow</groupId>
+        <artifactId>kuflow-temporal-activity-datasource</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -143,12 +161,6 @@
       <dependency>
         <groupId>com.kuflow</groupId>
         <artifactId>kuflow-temporal-activity-uivision</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.kuflow</groupId>
-        <artifactId>kuflow-rest</artifactId>
         <version>${project.version}</version>
       </dependency>
 
