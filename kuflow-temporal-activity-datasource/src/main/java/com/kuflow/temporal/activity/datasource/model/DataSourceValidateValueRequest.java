@@ -20,22 +20,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.temporal.activity.email;
+package com.kuflow.temporal.activity.datasource.model;
 
 import com.kuflow.common.Experimental;
-import com.kuflow.temporal.activity.email.model.DataSourceQueryRequest;
-import com.kuflow.temporal.activity.email.model.DataSourceQueryResponse;
-import com.kuflow.temporal.activity.email.model.DataSourceValidateValueRequest;
-import com.kuflow.temporal.activity.email.model.DataSourceValidateValueResponse;
-import io.temporal.activity.ActivityInterface;
-import io.temporal.workflow.WorkflowMethod;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import javax.annotation.Nullable;
 
+/**
+ * Request DTO for data source validation operations.
+ * This is sent to integrator-implemented workflows for validating data source values.
+ */
 @Experimental
-@ActivityInterface(namePrefix = "KuFlow_DataSource_")
-public interface DataSourceActivities {
-    @WorkflowMethod
-    DataSourceQueryResponse runQuery(DataSourceQueryRequest request);
+public class DataSourceValidateValueRequest extends DataSourceActivityRequest {
 
-    @WorkflowMethod
-    DataSourceValidateValueResponse validateValue(DataSourceValidateValueRequest request);
+    private final List<Object> values = new LinkedList<>();
+
+    public List<Object> getValues() {
+        return Collections.unmodifiableList(this.values);
+    }
+
+    public void setValues(@Nullable List<Object> values) {
+        this.values.clear();
+        if (values != null) {
+            this.values.addAll(values);
+        }
+    }
 }

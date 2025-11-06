@@ -20,30 +20,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.temporal.activity.email.model;
+package com.kuflow.temporal.activity.datasource;
 
 import com.kuflow.common.Experimental;
+import com.kuflow.temporal.activity.datasource.model.DataSourceQueryRequest;
+import com.kuflow.temporal.activity.datasource.model.DataSourceQueryResponse;
+import com.kuflow.temporal.activity.datasource.model.DataSourceValidateValueRequest;
+import com.kuflow.temporal.activity.datasource.model.DataSourceValidateValueResponse;
+import io.temporal.activity.ActivityInterface;
+import io.temporal.workflow.WorkflowMethod;
 
 @Experimental
-public class DataSourceValidateValueResult {
+@ActivityInterface(namePrefix = "KuFlow_DataSource_")
+public interface DataSourceActivities {
+    @WorkflowMethod
+    DataSourceQueryResponse runQuery(DataSourceQueryRequest request);
 
-    private boolean valid;
-
-    private String message;
-
-    public boolean isValid() {
-        return this.valid;
-    }
-
-    public void setValid(boolean valid) {
-        this.valid = valid;
-    }
-
-    public String getMessage() {
-        return this.message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
+    @WorkflowMethod
+    DataSourceValidateValueResponse validateValue(DataSourceValidateValueRequest request);
 }

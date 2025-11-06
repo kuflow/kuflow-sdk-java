@@ -20,31 +20,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.temporal.activity.email.model;
+package com.kuflow.temporal.activity.datasource.model;
 
 import com.kuflow.common.Experimental;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import javax.annotation.Nullable;
 
-/**
- * Request DTO for data source validation operations.
- * This is sent to integrator-implemented workflows for validating data source values.
- */
 @Experimental
-public class DataSourceValidateValueRequest extends DataSourceActivityRequest {
+public class DataSourceValidateValueResult {
 
-    private final List<Object> values = new LinkedList<>();
+    private boolean valid;
 
-    public List<Object> getValues() {
-        return Collections.unmodifiableList(this.values);
+    private String message;
+
+    public boolean isValid() {
+        return this.valid;
     }
 
-    public void setValues(@Nullable List<Object> values) {
-        this.values.clear();
-        if (values != null) {
-            this.values.addAll(values);
-        }
+    public void setValid(boolean valid) {
+        this.valid = valid;
+    }
+
+    public String getMessage() {
+        return this.message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

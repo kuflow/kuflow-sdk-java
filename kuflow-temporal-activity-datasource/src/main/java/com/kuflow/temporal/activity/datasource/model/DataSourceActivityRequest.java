@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.temporal.activity.email.model;
+package com.kuflow.temporal.activity.datasource.model;
 
 import com.kuflow.common.Experimental;
 import jakarta.validation.constraints.NotNull;
