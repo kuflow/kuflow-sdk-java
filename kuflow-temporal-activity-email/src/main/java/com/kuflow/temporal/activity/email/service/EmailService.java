@@ -153,16 +153,13 @@ public class EmailService {
 
     private String calculateSubject(EmailDto email, Context context) {
         // Handle subject - use override if provided, otherwise use template
-        String subject;
         String subjectOverride = email.getSubjectOverride();
         if (subjectOverride != null && !subjectOverride.trim().isEmpty()) {
-            subject = subjectOverride.trim();
+            return subjectOverride.trim();
         } else {
             TemplateSpec subjectSpec = new TemplateSpec(email.getTemplate() + ".subject", TemplateMode.TEXT);
-            subject = this.templateEngine.process(subjectSpec, context).trim();
+            return this.templateEngine.process(subjectSpec, context).trim();
         }
-
-        return subject;
     }
 
     private EmailResources extractResources(@Nonnull String html) {
