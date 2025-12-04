@@ -24,6 +24,7 @@ package com.kuflow.temporal.activity.email;
 
 import com.kuflow.temporal.activity.email.dto.EmailDto;
 import com.kuflow.temporal.activity.email.model.Email;
+import com.kuflow.temporal.activity.email.model.EmailAttachment;
 import com.kuflow.temporal.activity.email.model.SendMailRequest;
 import com.kuflow.temporal.activity.email.model.SendMailResponse;
 import com.kuflow.temporal.activity.email.service.EmailService;
@@ -45,12 +46,25 @@ public class EmailActivitiesImpl implements EmailActivities {
 
         this.validateEmail(email);
 
-        EmailDto emailDto = EmailDto.builder()
-            .withTo(email.getTo())
+        EmailDto.EmailDtoBuilder builder = EmailDto.builder()
             .withTemplate(email.getTemplate())
             .withVariables(email.getVariables())
-            .withLocale(email.getLocale())
-            .build();
+            .withLocale(email.getLocale());
+
+        // Merge deprecated 'to' field with new toAddresses for backward compatibility
+        if (email.getTo() != null) {
+            builder.addToAddress(email.getTo());
+        }
+        builder
+            .withToAddresses(email.getToAddresses())
+            .withCcAddresses(email.getCcAddresses())
+            .withBccAddresses(email.getBccAddresses())
+            .withAttachments(email.getAttachments())
+            .withSubjectOverride(email.getSubjectOverride())
+            .withReplyTo(email.getReplyTo())
+            .withPriority(email.getPriority());
+
+        EmailDto emailDto = builder.build();
 
         this.emailService.sendEmail(emailDto);
 
@@ -61,11 +75,32 @@ public class EmailActivitiesImpl implements EmailActivities {
     }
 
     private void validateEmail(Email email) {
-        if (email.getTo() == null) {
-            throw ApplicationFailure.newNonRetryableFailure("'email.to' is required", "EmailActivities.validation");
+        // Check at least one recipient exists (backward compatible with deprecated 'to' field)
+        boolean hasRecipients =
+            (email.getTo() != null) ||
+            (!email.getToAddresses().isEmpty()) ||
+            (!email.getCcAddresses().isEmpty()) ||
+            (!email.getBccAddresses().isEmpty());
+
+        if (!hasRecipients) {
+            throw ApplicationFailure.newNonRetryableFailure(
+                "'email' must have at least one recipient (to/cc/bcc)",
+                "EmailActivities.validation"
+            );
         }
+
         if (email.getTemplate() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'email.template' is required", "EmailActivities.validation");
+        }
+
+        // Validate all attachments have required fields
+        for (EmailAttachment attachment : email.getAttachments()) {
+            if (attachment.getFilename() == null || attachment.getResource() == null) {
+                throw ApplicationFailure.newNonRetryableFailure(
+                    "All attachments must have filename and resource",
+                    "EmailActivities.validation"
+                );
+            }
         }
     }
 }

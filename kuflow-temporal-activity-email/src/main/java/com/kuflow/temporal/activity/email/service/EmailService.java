@@ -23,6 +23,8 @@
 package com.kuflow.temporal.activity.email.service;
 
 import com.kuflow.temporal.activity.email.dto.EmailDto;
+import com.kuflow.temporal.activity.email.model.EmailAttachment;
+import com.kuflow.temporal.activity.email.model.EmailPriority;
 import com.kuflow.temporal.common.error.KuFlowTemporalException;
 import jakarta.mail.internet.MimeMessage;
 import java.nio.charset.StandardCharsets;
@@ -96,8 +98,8 @@ public class EmailService {
             }
             context.setVariables(email.getVariables());
 
-            TemplateSpec subjectSpec = new TemplateSpec(email.getTemplate() + ".subject", TemplateMode.TEXT);
-            String subject = this.templateEngine.process(subjectSpec, context);
+            String subject = this.calculateSubject(email, context);
+
             TemplateSpec htmlSpec = new TemplateSpec(email.getTemplate() + ".html", TemplateMode.HTML);
             String html = this.templateEngine.process(htmlSpec, context);
 
@@ -106,17 +108,57 @@ public class EmailService {
             MimeMessage mimeMessage = this.mailSender.createMimeMessage();
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true/* multipart */, StandardCharsets.UTF_8.name());
             message.setFrom(this.fromEmail);
-            message.setTo(email.getTo());
-            message.setSubject(subject.trim());
+
+            // Set recipients
+            if (!email.getToAddresses().isEmpty()) {
+                message.setTo(email.getToAddresses().toArray(new String[0]));
+            }
+            if (!email.getCcAddresses().isEmpty()) {
+                message.setCc(email.getCcAddresses().toArray(new String[0]));
+            }
+            if (!email.getBccAddresses().isEmpty()) {
+                message.setBcc(email.getBccAddresses().toArray(new String[0]));
+            }
+
+            // Set reply-to if provided
+            String replyTo = email.getReplyTo();
+            if (replyTo != null && !replyTo.trim().isEmpty()) {
+                message.setReplyTo(replyTo.trim());
+            }
+
+            // Set priority if provided
+            EmailPriority priority = email.getPriority();
+            if (priority != null) {
+                message.setPriority(priority.getValue());
+            }
+
+            message.setSubject(subject);
             message.setText(emailResources.html, true/* isHtml */);
 
+            // Add inline images
             for (Map.Entry<String, Resource> entry : emailResources.images.entrySet()) {
                 message.addInline(entry.getKey(), entry.getValue());
+            }
+
+            // Add attachments
+            for (EmailAttachment attachment : email.getAttachments()) {
+                message.addAttachment(attachment.getFilename(), attachment.getResource());
             }
 
             this.mailSender.send(mimeMessage);
         } catch (Exception ex) {
             throw new KuFlowTemporalException("Unable to send email", ex);
+        }
+    }
+
+    private String calculateSubject(EmailDto email, Context context) {
+        // Handle subject - use override if provided, otherwise use template
+        String subjectOverride = email.getSubjectOverride();
+        if (subjectOverride != null && !subjectOverride.trim().isEmpty()) {
+            return subjectOverride.trim();
+        } else {
+            TemplateSpec subjectSpec = new TemplateSpec(email.getTemplate() + ".subject", TemplateMode.TEXT);
+            return this.templateEngine.process(subjectSpec, context).trim();
         }
     }
 
