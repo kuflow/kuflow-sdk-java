@@ -22,8 +22,12 @@
  */
 package com.kuflow.temporal.activity.email.dto;
 
+import com.kuflow.temporal.activity.email.model.EmailAttachment;
+import com.kuflow.temporal.activity.email.model.EmailPriority;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -49,14 +53,67 @@ public final class EmailDto {
     @Nonnull
     private final Locale locale;
 
-    private EmailDto(@Nonnull String to, @Nonnull String template, @Nonnull Map<String, Object> variables, @Nullable Locale locale) {
-        Objects.requireNonNull(to, "'to' is required");
+    @Nonnull
+    private final List<String> toAddresses;
+
+    @Nonnull
+    private final List<String> ccAddresses;
+
+    @Nonnull
+    private final List<String> bccAddresses;
+
+    @Nonnull
+    private final List<EmailAttachment> attachments;
+
+    @Nullable
+    private final String subjectOverride;
+
+    @Nullable
+    private final String replyTo;
+
+    @Nullable
+    private final EmailPriority priority;
+
+    private EmailDto(
+        @Nullable String to,
+        @Nonnull String template,
+        @Nonnull Map<String, Object> variables,
+        @Nullable Locale locale,
+        @Nonnull List<String> toAddresses,
+        @Nonnull List<String> ccAddresses,
+        @Nonnull List<String> bccAddresses,
+        @Nonnull List<EmailAttachment> attachments,
+        @Nullable String subjectOverride,
+        @Nullable String replyTo,
+        @Nullable EmailPriority priority
+    ) {
         Objects.requireNonNull(template, "'template' is required");
 
-        this.to = to;
+        // Merge deprecated 'to' with toAddresses for backward compatibility
+        List<String> mergedToAddresses = new LinkedList<>();
+        if (to != null && !to.trim().isEmpty()) {
+            mergedToAddresses.add(to);
+            this.to = to;
+        } else {
+            this.to = toAddresses.isEmpty() ? "" : toAddresses.get(0);
+        }
+        mergedToAddresses.addAll(toAddresses);
+
+        // Validate at least one recipient exists
+        if (mergedToAddresses.isEmpty() && ccAddresses.isEmpty() && bccAddresses.isEmpty()) {
+            throw new IllegalArgumentException("At least one recipient (to/cc/bcc) is required");
+        }
+
         this.template = template;
         this.variables = Collections.unmodifiableMap(variables);
         this.locale = Optional.ofNullable(locale).orElse(Locale.ENGLISH);
+        this.toAddresses = Collections.unmodifiableList(mergedToAddresses);
+        this.ccAddresses = Collections.unmodifiableList(new LinkedList<>(ccAddresses));
+        this.bccAddresses = Collections.unmodifiableList(new LinkedList<>(bccAddresses));
+        this.attachments = Collections.unmodifiableList(new LinkedList<>(attachments));
+        this.subjectOverride = subjectOverride;
+        this.replyTo = replyTo;
+        this.priority = priority;
     }
 
     @Nonnull
@@ -79,6 +136,41 @@ public final class EmailDto {
         return this.variables;
     }
 
+    @Nonnull
+    public List<String> getToAddresses() {
+        return this.toAddresses;
+    }
+
+    @Nonnull
+    public List<String> getCcAddresses() {
+        return this.ccAddresses;
+    }
+
+    @Nonnull
+    public List<String> getBccAddresses() {
+        return this.bccAddresses;
+    }
+
+    @Nonnull
+    public List<EmailAttachment> getAttachments() {
+        return this.attachments;
+    }
+
+    @Nullable
+    public String getSubjectOverride() {
+        return this.subjectOverride;
+    }
+
+    @Nullable
+    public String getReplyTo() {
+        return this.replyTo;
+    }
+
+    @Nullable
+    public EmailPriority getPriority() {
+        return this.priority;
+    }
+
     public static final class EmailDtoBuilder {
 
         private String to;
@@ -88,6 +180,20 @@ public final class EmailDto {
         private Locale locale;
 
         private final Map<String, Object> variables = new HashMap<>();
+
+        private final List<String> toAddresses = new LinkedList<>();
+
+        private final List<String> ccAddresses = new LinkedList<>();
+
+        private final List<String> bccAddresses = new LinkedList<>();
+
+        private final List<EmailAttachment> attachments = new LinkedList<>();
+
+        private String subjectOverride;
+
+        private String replyTo;
+
+        private EmailPriority priority;
 
         private EmailDtoBuilder() {}
 
@@ -122,8 +228,106 @@ public final class EmailDto {
             return this;
         }
 
+        public EmailDtoBuilder withToAddresses(List<String> toAddresses) {
+            this.toAddresses.clear();
+            if (toAddresses != null) {
+                this.toAddresses.addAll(toAddresses);
+            }
+
+            return this;
+        }
+
+        public EmailDtoBuilder addToAddress(String toAddress) {
+            if (toAddress != null && !this.toAddresses.contains(toAddress)) {
+                this.toAddresses.add(toAddress);
+            }
+
+            return this;
+        }
+
+        public EmailDtoBuilder withCcAddresses(List<String> ccAddresses) {
+            this.ccAddresses.clear();
+            if (ccAddresses != null) {
+                this.ccAddresses.addAll(ccAddresses);
+            }
+
+            return this;
+        }
+
+        public EmailDtoBuilder addCcAddress(String ccAddress) {
+            if (ccAddress != null && !this.ccAddresses.contains(ccAddress)) {
+                this.ccAddresses.add(ccAddress);
+            }
+
+            return this;
+        }
+
+        public EmailDtoBuilder withBccAddresses(List<String> bccAddresses) {
+            this.bccAddresses.clear();
+            if (bccAddresses != null) {
+                this.bccAddresses.addAll(bccAddresses);
+            }
+
+            return this;
+        }
+
+        public EmailDtoBuilder addBccAddress(String bccAddress) {
+            if (bccAddress != null && !this.bccAddresses.contains(bccAddress)) {
+                this.bccAddresses.add(bccAddress);
+            }
+
+            return this;
+        }
+
+        public EmailDtoBuilder withAttachments(List<EmailAttachment> attachments) {
+            this.attachments.clear();
+            if (attachments != null) {
+                this.attachments.addAll(attachments);
+            }
+
+            return this;
+        }
+
+        public EmailDtoBuilder addAttachment(EmailAttachment attachment) {
+            if (attachment != null) {
+                this.attachments.add(attachment);
+            }
+
+            return this;
+        }
+
+        public EmailDtoBuilder withSubjectOverride(String subjectOverride) {
+            this.subjectOverride = subjectOverride;
+
+            return this;
+        }
+
+        public EmailDtoBuilder withReplyTo(String replyTo) {
+            this.replyTo = replyTo;
+
+            return this;
+        }
+
+        public EmailDtoBuilder withPriority(EmailPriority priority) {
+            this.priority = priority;
+
+            return this;
+        }
+
         public EmailDto build() {
-            return new EmailDto(this.to, this.template, this.variables, this.locale);
+            return new EmailDto(
+                this.to,
+                this.template,
+                this.variables,
+                this.locale,
+                this.toAddresses,
+                this.ccAddresses,
+                this.bccAddresses,
+                this.attachments,
+                this.subjectOverride,
+                this.replyTo,
+                this.priority
+            );
         }
     }
 }
