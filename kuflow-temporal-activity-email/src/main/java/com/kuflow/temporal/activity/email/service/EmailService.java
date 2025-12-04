@@ -98,15 +98,7 @@ public class EmailService {
             }
             context.setVariables(email.getVariables());
 
-            // Handle subject - use override if provided, otherwise use template
-            String subject;
-            String subjectOverride = email.getSubjectOverride();
-            if (subjectOverride != null && !subjectOverride.trim().isEmpty()) {
-                subject = subjectOverride.trim();
-            } else {
-                TemplateSpec subjectSpec = new TemplateSpec(email.getTemplate() + ".subject", TemplateMode.TEXT);
-                subject = this.templateEngine.process(subjectSpec, context).trim();
-            }
+            String subject = this.calculateSubject(email, context);
 
             TemplateSpec htmlSpec = new TemplateSpec(email.getTemplate() + ".html", TemplateMode.HTML);
             String html = this.templateEngine.process(htmlSpec, context);
@@ -157,6 +149,20 @@ public class EmailService {
         } catch (Exception ex) {
             throw new KuFlowTemporalException("Unable to send email", ex);
         }
+    }
+
+    private String calculateSubject(EmailDto email, Context context) {
+        // Handle subject - use override if provided, otherwise use template
+        String subject;
+        String subjectOverride = email.getSubjectOverride();
+        if (subjectOverride != null && !subjectOverride.trim().isEmpty()) {
+            subject = subjectOverride.trim();
+        } else {
+            TemplateSpec subjectSpec = new TemplateSpec(email.getTemplate() + ".subject", TemplateMode.TEXT);
+            subject = this.templateEngine.process(subjectSpec, context).trim();
+        }
+
+        return subject;
     }
 
     private EmailResources extractResources(@Nonnull String html) {
