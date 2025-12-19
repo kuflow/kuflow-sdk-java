@@ -101,11 +101,17 @@ public class EmailActivitiesAutoConfiguration {
         ApplicationContext applicationContext,
         MailProperties mailProperties
     ) {
+        // Use 'from' property if defined, otherwise fall back to 'username'
+        String fromEmail = mailProperties.getProperties().getOrDefault("from", mailProperties.getUsername());
+        if (fromEmail == null || fromEmail.isBlank()) {
+            fromEmail = mailProperties.getUsername();
+        }
+
         return EmailService.builder()
             .withMailSender(mailSender)
             .withTemplateEngine(templateEngine)
             .withApplicationContext(applicationContext)
-            .withFromEmail(mailProperties.getUsername())
+            .withFromEmail(fromEmail)
             .withTemplateVariables(emailActivitiesProperties.getTemplateVariables())
             .build();
     }
