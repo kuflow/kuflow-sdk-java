@@ -189,6 +189,20 @@ public final class KuFlowClientImpl {
     }
 
     /**
+     * The BusinessArtifactOperationsImpl object to access its operations.
+     */
+    private final BusinessArtifactOperationsImpl businessArtifactOperations;
+
+    /**
+     * Gets the BusinessArtifactOperationsImpl object to access its operations.
+     *
+     * @return the BusinessArtifactOperationsImpl object.
+     */
+    public BusinessArtifactOperationsImpl getBusinessArtifactOperations() {
+        return this.businessArtifactOperations;
+    }
+
+    /**
      * The WorkerOperationsImpl object to access its operations.
      */
     private final WorkerOperationsImpl workerOperations;
@@ -258,6 +272,7 @@ public final class KuFlowClientImpl {
         this.tenantUserOperations = new TenantUserOperationsImpl(this);
         this.processOperations = new ProcessOperationsImpl(this);
         this.processItemOperations = new ProcessItemOperationsImpl(this);
+        this.businessArtifactOperations = new BusinessArtifactOperationsImpl(this);
         this.workerOperations = new WorkerOperationsImpl(this);
         this.robotOperations = new RobotOperationsImpl(this);
     }

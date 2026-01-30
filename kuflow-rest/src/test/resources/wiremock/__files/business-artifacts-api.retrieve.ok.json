@@ -1,0 +1,14 @@
+{
+  "id": "80d8c9a1-e3d2-4c35-a0a9-77ec21d28950",
+  "tenantId": "00a9f1d4-3698-45a4-951c-66a468846aad",
+  "businessArtifactDefinitionRef": {
+    "id": "b1c2d3e4-5678-90ab-cdef-1234567890ab",
+    "code": "ARTIFACT_DEF_CODE"
+  },
+  "data": {
+    "value": {
+      "key1": "value1",
+      "key2": "value2"
+    }
+  }
+}
