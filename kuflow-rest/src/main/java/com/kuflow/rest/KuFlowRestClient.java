@@ -27,6 +27,7 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.kuflow.rest.implementation.KuFlowClientImpl;
 import com.kuflow.rest.model.WebhookEvent;
 import com.kuflow.rest.operation.AuthenticationOperations;
+import com.kuflow.rest.operation.BusinessArtifactOperations;
 import com.kuflow.rest.operation.GroupOperations;
 import com.kuflow.rest.operation.KmsOperations;
 import com.kuflow.rest.operation.PrincipalOperations;
@@ -60,6 +61,8 @@ public class KuFlowRestClient {
 
     private final ProcessItemOperations processItemOperations;
 
+    private final BusinessArtifactOperations businessArtifactOperations;
+
     private final WorkerOperations workerOperations;
 
     private final RobotOperations robotOperations;
@@ -76,6 +79,7 @@ public class KuFlowRestClient {
         this.tenantUserOperations = new TenantUserOperations(client);
         this.processOperations = new ProcessOperations(client);
         this.processItemOperations = new ProcessItemOperations(client);
+        this.businessArtifactOperations = new BusinessArtifactOperations(client);
         this.workerOperations = new WorkerOperations(client);
         this.robotOperations = new RobotOperations(client);
         this.tenantOperations = new TenantOperations(client);
@@ -104,6 +108,10 @@ public class KuFlowRestClient {
 
     public ProcessItemOperations getProcessItemOperations() {
         return this.processItemOperations;
+    }
+
+    public BusinessArtifactOperations getBusinessArtifactOperations() {
+        return this.businessArtifactOperations;
     }
 
     public WorkerOperations getWorkerOperations() {

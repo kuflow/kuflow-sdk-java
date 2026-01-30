@@ -395,9 +395,8 @@ public final class KuFlowRestClientBuilder
         policies.add(new UserAgentPolicy(this.toUserAgentString(clientName, clientVersion, localConfiguration)));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
-        HttpHeaders headers = new HttpHeaders();
-        localClientOptions.getHeaders().forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
-        if (headers.getSize() > 0) {
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);
+        if (headers != null && headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
         // Add additional policies

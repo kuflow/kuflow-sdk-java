@@ -1,0 +1,23 @@
+{
+  "metadata": {
+    "size": 25,
+    "page": 0,
+    "totalElements": 2,
+    "totalPages": 1
+  },
+  "content": [{
+    "id": "4f2467f1-00fa-4a6c-88ca-16ae8eac7b56",
+    "tenantId": "00a9f1d4-3698-45a4-951c-66a468846aad",
+    "businessArtifactDefinitionRef": {
+      "id": "b1c2d3e4-5678-90ab-cdef-1234567890ab",
+      "code": "ARTIFACT_DEF_CODE_1"
+    }
+  }, {
+    "id": "2fd90b51-e1d8-44e3-89bd-8c4c9fc4164b",
+    "tenantId": "00a9f1d4-3698-45a4-951c-66a468846aad",
+    "businessArtifactDefinitionRef": {
+      "id": "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+      "code": "ARTIFACT_DEF_CODE_2"
+    }
+  }]
+}
