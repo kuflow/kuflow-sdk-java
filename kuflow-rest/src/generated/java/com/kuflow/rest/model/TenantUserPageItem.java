@@ -180,7 +180,8 @@ public final class TenantUserPageItem extends AbstractAudited {
                         UUID.fromString(nonNullReader.getString())
                     );
                 } else if ("tenantId".equals(fieldName)) {
-                    deserializedTenantUserPageItem.tenantId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    deserializedTenantUserPageItem.tenantId = reader.getNullable(nonNullReader ->
+                        UUID.fromString(nonNullReader.getString())
                     );
                 } else {
                     reader.skipChildren();

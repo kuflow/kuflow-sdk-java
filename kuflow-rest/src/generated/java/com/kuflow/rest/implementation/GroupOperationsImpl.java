@@ -178,13 +178,22 @@ public final class GroupOperationsImpl {
         final String accept = "application/json";
         List<String> sortConverted = (sort == null)
             ? new ArrayList<>()
-            : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+            : sort
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         List<String> tenantIdConverted = (tenantId == null)
             ? new ArrayList<>()
-            : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+            : tenantId
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         List<String> groupIdConverted = (groupId == null)
             ? new ArrayList<>()
-            : groupId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+            : groupId
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         return service.findGroups(
             this.client.getHost(),
             size,
@@ -229,7 +238,8 @@ public final class GroupOperationsImpl {
         UUID principalId,
         List<UUID> groupId
     ) {
-        return findGroupsWithResponseAsync(size, page, sort, tenantId, principalId, groupId).flatMap(res -> Mono.justOrEmpty(res.getValue())
+        return findGroupsWithResponseAsync(size, page, sort, tenantId, principalId, groupId).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
         );
     }
 
@@ -252,7 +262,8 @@ public final class GroupOperationsImpl {
         final List<UUID> tenantId = null;
         final UUID principalId = null;
         final List<UUID> groupId = null;
-        return findGroupsWithResponseAsync(size, page, sort, tenantId, principalId, groupId).flatMap(res -> Mono.justOrEmpty(res.getValue())
+        return findGroupsWithResponseAsync(size, page, sort, tenantId, principalId, groupId).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
         );
     }
 
@@ -330,13 +341,22 @@ public final class GroupOperationsImpl {
         final String accept = "application/json";
         List<String> sortConverted = (sort == null)
             ? new ArrayList<>()
-            : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+            : sort
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         List<String> tenantIdConverted = (tenantId == null)
             ? new ArrayList<>()
-            : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+            : tenantId
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         List<String> groupIdConverted = (groupId == null)
             ? new ArrayList<>()
-            : groupId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+            : groupId
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         return service.findGroupsSync(
             this.client.getHost(),
             size,

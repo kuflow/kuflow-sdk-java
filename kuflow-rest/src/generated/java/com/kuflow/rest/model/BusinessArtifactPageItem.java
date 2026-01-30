@@ -210,7 +210,8 @@ public final class BusinessArtifactPageItem extends AbstractAudited {
                         reader.getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()))
                     );
                 } else if ("id".equals(fieldName)) {
-                    deserializedBusinessArtifactPageItem.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    deserializedBusinessArtifactPageItem.id = reader.getNullable(nonNullReader ->
+                        UUID.fromString(nonNullReader.getString())
                     );
                 } else if ("tenantId".equals(fieldName)) {
                     deserializedBusinessArtifactPageItem.tenantId = reader.getNullable(nonNullReader ->

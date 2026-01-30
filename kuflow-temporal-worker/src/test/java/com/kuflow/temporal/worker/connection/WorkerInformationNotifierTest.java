@@ -124,12 +124,18 @@ public class WorkerInformationNotifierTest {
         assertThat(workerCreateParamsArgumentCaptor.getAllValues()).hasSize(1);
 
         // After X Seconds we get the next
-        await().pollDelay(firstDelayWindow).atMost(1, MINUTES).until(() -> workerCreateParamsArgumentCaptor.getAllValues().size() == 2);
+        await()
+            .pollDelay(firstDelayWindow)
+            .atMost(1, MINUTES)
+            .until(() -> workerCreateParamsArgumentCaptor.getAllValues().size() == 2);
         long secondInvocation = System.currentTimeMillis();
         assertThat(workerCreateParamsArgumentCaptor.getAllValues()).hasSize(2);
 
         // After Y Seconds we get the next
-        await().pollDelay(restDelayWindow).atMost(1, MINUTES).until(() -> workerCreateParamsArgumentCaptor.getAllValues().size() == 3); // 5 Seconds
+        await()
+            .pollDelay(restDelayWindow)
+            .atMost(1, MINUTES)
+            .until(() -> workerCreateParamsArgumentCaptor.getAllValues().size() == 3); // 5 Seconds
         long thirdInvocation = System.currentTimeMillis();
         assertThat(workerCreateParamsArgumentCaptor.getAllValues()).hasSize(3);
 
@@ -171,14 +177,20 @@ public class WorkerInformationNotifierTest {
         assertThat(workerCreateParamsArgumentCaptor.getAllValues()).hasSize(1);
 
         // After X Seconds we get the next
-        await().atMost(1, MINUTES).until(() -> workerCreateParamsArgumentCaptor.getAllValues().size() == 2);
+        await()
+            .atMost(1, MINUTES)
+            .until(() -> workerCreateParamsArgumentCaptor.getAllValues().size() == 2);
         long secondInvocation = System.currentTimeMillis();
 
         // After Y Seconds we get the next
-        await().atMost(1, MINUTES).until(() -> workerCreateParamsArgumentCaptor.getAllValues().size() == 3);
+        await()
+            .atMost(1, MINUTES)
+            .until(() -> workerCreateParamsArgumentCaptor.getAllValues().size() == 3);
         long thirdInvocation = System.currentTimeMillis();
 
-        await().atMost(1, MINUTES).until(() -> workerCreateParamsArgumentCaptor.getAllValues().size() == 4);
+        await()
+            .atMost(1, MINUTES)
+            .until(() -> workerCreateParamsArgumentCaptor.getAllValues().size() == 4);
         long fourthInvocation = System.currentTimeMillis();
 
         workerInformationNotifier.shutdown();

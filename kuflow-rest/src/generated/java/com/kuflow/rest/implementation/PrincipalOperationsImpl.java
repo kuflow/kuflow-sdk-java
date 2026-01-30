@@ -201,13 +201,22 @@ public final class PrincipalOperationsImpl {
         final String accept = "application/json";
         List<String> sortConverted = (sort == null)
             ? new ArrayList<>()
-            : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+            : sort
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         List<String> groupIdConverted = (groupId == null)
             ? new ArrayList<>()
-            : groupId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+            : groupId
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         List<String> tenantIdConverted = (tenantId == null)
             ? new ArrayList<>()
-            : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+            : tenantId
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         return service.findPrincipals(
             this.client.getHost(),
             size,
@@ -351,13 +360,22 @@ public final class PrincipalOperationsImpl {
         final String accept = "application/json";
         List<String> sortConverted = (sort == null)
             ? new ArrayList<>()
-            : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+            : sort
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         List<String> groupIdConverted = (groupId == null)
             ? new ArrayList<>()
-            : groupId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+            : groupId
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         List<String> tenantIdConverted = (tenantId == null)
             ? new ArrayList<>()
-            : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+            : tenantId
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         return service.findPrincipalsSync(
             this.client.getHost(),
             size,

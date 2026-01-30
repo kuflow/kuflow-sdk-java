@@ -183,10 +183,16 @@ public final class TenantOperationsImpl {
         final String accept = "application/json";
         List<String> sortConverted = (sort == null)
             ? new ArrayList<>()
-            : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+            : sort
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         List<String> tenantIdConverted = (tenantId == null)
             ? new ArrayList<>()
-            : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+            : tenantId
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         return service.findTenants(this.client.getHost(), size, page, sortConverted, tenantIdConverted, accept, context);
     }
 
@@ -293,10 +299,16 @@ public final class TenantOperationsImpl {
         final String accept = "application/json";
         List<String> sortConverted = (sort == null)
             ? new ArrayList<>()
-            : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+            : sort
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         List<String> tenantIdConverted = (tenantId == null)
             ? new ArrayList<>()
-            : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+            : tenantId
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         return service.findTenantsSync(this.client.getHost(), size, page, sortConverted, tenantIdConverted, accept, context);
     }
 

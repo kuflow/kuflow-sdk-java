@@ -143,7 +143,8 @@ public class SignalProcessItem implements JsonSerializable<SignalProcessItem> {
                         CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())
                     );
                 } else if ("requestTimeZone".equals(fieldName)) {
-                    deserializedSignalProcessItem.requestTimeZone = reader.getNullable(nonNullReader -> ZoneId.of(nonNullReader.getString())
+                    deserializedSignalProcessItem.requestTimeZone = reader.getNullable(nonNullReader ->
+                        ZoneId.of(nonNullReader.getString())
                     );
                 } else {
                     reader.skipChildren();

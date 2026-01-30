@@ -89,16 +89,16 @@ public class ProcessItemOperations {
         List<UUID> tenantId = !options.getTenantIds().isEmpty() ? options.getTenantIds() : null;
 
         return this.service.findProcessItemsWithResponse(
-                size,
-                page,
-                sort,
-                processId,
-                type,
-                taskState,
-                processItemDefinitionCode,
-                tenantId,
-                context
-            );
+            size,
+            page,
+            sort,
+            processId,
+            type,
+            taskState,
+            processItemDefinitionCode,
+            tenantId,
+            context
+        );
     }
 
     /**

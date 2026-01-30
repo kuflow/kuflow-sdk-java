@@ -62,7 +62,10 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = { KuFlowClientImpl.class })
 public final class KuFlowClientImplBuilder
     implements
-        HttpTrait<KuFlowClientImplBuilder>, ConfigurationTrait<KuFlowClientImplBuilder>, TokenCredentialTrait<KuFlowClientImplBuilder> {
+        HttpTrait<KuFlowClientImplBuilder>,
+        ConfigurationTrait<KuFlowClientImplBuilder>,
+        TokenCredentialTrait<KuFlowClientImplBuilder>
+{
 
     @Generated
     private static final String SDK_NAME = "name";
@@ -300,14 +303,18 @@ public final class KuFlowClientImplBuilder
         if (headers != null) {
             policies.add(new AddHeadersPolicy(headers));
         }
-        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL).forEach(p -> policies.add(p));
+        this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            .forEach(p -> policies.add(p));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", host)));
         }
-        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY).forEach(p -> policies.add(p));
+        this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+            .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(localHttpLogOptions));
         HttpPipeline httpPipeline = new HttpPipelineBuilder()

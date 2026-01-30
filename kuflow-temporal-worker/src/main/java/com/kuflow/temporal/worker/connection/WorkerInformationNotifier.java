@@ -159,7 +159,7 @@ public class WorkerInformationNotifier {
                 Math.min(
                     delay,
                     this.configuration.getBackoffSleep().toSeconds() *
-                    Math.pow(this.configuration.getBackoffExponentialRate(), this.consecutiveFailures)
+                        Math.pow(this.configuration.getBackoffExponentialRate(), this.consecutiveFailures)
                 )
             );
         }
@@ -175,14 +175,14 @@ public class WorkerInformationNotifier {
             this.scheduleCreateOrUpdateWorkerFuture.cancel(false);
         }
         this.scheduleCreateOrUpdateWorkerFuture = this.scheduledExecutorService.scheduleAtFixedRate(
-                () -> {
-                    this.createOrUpdateWorkers();
-                    this.scheduleCreateOrUpdateWorkers();
-                },
-                delay,
-                delay,
-                TimeUnit.SECONDS
-            );
+            () -> {
+                this.createOrUpdateWorkers();
+                this.scheduleCreateOrUpdateWorkers();
+            },
+            delay,
+            delay,
+            TimeUnit.SECONDS
+        );
     }
 
     private <E> List<E> copyOf(Collection<? extends E> coll) {

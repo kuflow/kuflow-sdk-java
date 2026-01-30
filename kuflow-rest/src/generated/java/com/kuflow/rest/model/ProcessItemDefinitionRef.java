@@ -146,7 +146,8 @@ public final class ProcessItemDefinitionRef implements JsonSerializable<ProcessI
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedProcessItemDefinitionRef.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    deserializedProcessItemDefinitionRef.id = reader.getNullable(nonNullReader ->
+                        UUID.fromString(nonNullReader.getString())
                     );
                 } else if ("version".equals(fieldName)) {
                     deserializedProcessItemDefinitionRef.version = reader.getNullable(nonNullReader ->

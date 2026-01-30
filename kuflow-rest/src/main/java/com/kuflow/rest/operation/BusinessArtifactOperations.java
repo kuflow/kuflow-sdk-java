@@ -83,14 +83,14 @@ public class BusinessArtifactOperations {
             : null;
 
         return this.service.findBusinessArtifactsWithResponse(
-                size,
-                page,
-                sort,
-                tenantId,
-                businessArtifactDefinitionId,
-                businessArtifactDefinitionCode,
-                context
-            );
+            size,
+            page,
+            sort,
+            tenantId,
+            businessArtifactDefinitionId,
+            businessArtifactDefinitionCode,
+            context
+        );
     }
 
     /**

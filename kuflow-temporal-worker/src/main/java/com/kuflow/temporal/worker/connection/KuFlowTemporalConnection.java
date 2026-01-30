@@ -335,8 +335,9 @@ public class KuFlowTemporalConnection {
             new KuFlowAuthorizationTokenSupplier(this.kuFlowRestClient, this.workerInformation)
         );
 
-        WorkflowServiceStubsOptions options =
-            this.workflowServiceStubsBuilder.addGrpcMetadataProvider(authorizationGrpcMetadataProvider).validateAndBuildWithDefaults();
+        WorkflowServiceStubsOptions options = this.workflowServiceStubsBuilder.addGrpcMetadataProvider(
+            authorizationGrpcMetadataProvider
+        ).validateAndBuildWithDefaults();
 
         this.workflowServiceStubs = WorkflowServiceStubs.newServiceStubs(options);
 
@@ -352,11 +353,10 @@ public class KuFlowTemporalConnection {
 
         DataConverter dataConverter = this.dataConverter();
 
-        WorkflowClientOptions workflowClientOptions =
-            this.workflowClientBuilder.setContextPropagators(List.of(new MDCContextPropagator()))
-                .setDataConverter(dataConverter)
-                .setInterceptors(new EncryptionClientInterceptor())
-                .validateAndBuildWithDefaults();
+        WorkflowClientOptions workflowClientOptions = this.workflowClientBuilder.setContextPropagators(List.of(new MDCContextPropagator()))
+            .setDataConverter(dataConverter)
+            .setInterceptors(new EncryptionClientInterceptor())
+            .validateAndBuildWithDefaults();
 
         this.workflowClient = WorkflowClient.newInstance(workflowServiceStubs, workflowClientOptions);
 
@@ -421,8 +421,9 @@ public class KuFlowTemporalConnection {
 
         JacksonJsonPayloadConverter jacksonJsonPayloadConverter = new JacksonJsonPayloadConverter(objectMapper);
 
-        DefaultDataConverter dataConverter = DefaultDataConverter.newDefaultInstance()
-            .withPayloadConverterOverrides(new EncryptionPayloadConverter(jacksonJsonPayloadConverter));
+        DefaultDataConverter dataConverter = DefaultDataConverter.newDefaultInstance().withPayloadConverterOverrides(
+            new EncryptionPayloadConverter(jacksonJsonPayloadConverter)
+        );
 
         EncryptionPayloadCodec encryptionPayloadCodec = new EncryptionPayloadCodec(this.kuFlowRestClient);
 
@@ -439,24 +440,24 @@ public class KuFlowTemporalConnection {
         AuthenticationEngineCertificate authenticationEngineCertificate = authentication.getEngineCertificate();
 
         this.configureWorkflowServiceStubs(builder -> {
-                WorkflowServiceStubsOptions stubsOptions = builder.build();
-                if (stubsOptions.getSslContext() == null) {
-                    AuthenticationEngineCertificateTls tls = authenticationEngineCertificate.getTls();
-                    SslContext sslContext = SslContextBuilder.builder()
-                        .withCaData(tls.getServerRootCaCertificate())
-                        .withCertData(tls.getClientCertificate())
-                        .withKeyData(tls.getClientPrivateKey())
-                        .build();
+            WorkflowServiceStubsOptions stubsOptions = builder.build();
+            if (stubsOptions.getSslContext() == null) {
+                AuthenticationEngineCertificateTls tls = authenticationEngineCertificate.getTls();
+                SslContext sslContext = SslContextBuilder.builder()
+                    .withCaData(tls.getServerRootCaCertificate())
+                    .withCertData(tls.getClientCertificate())
+                    .withKeyData(tls.getClientPrivateKey())
+                    .build();
 
-                    builder.setSslContext(sslContext);
-                }
-            });
+                builder.setSslContext(sslContext);
+            }
+        });
 
         this.configureWorkflowClient(builder -> {
-                if (builder.build().getNamespace() == null) {
-                    builder.setNamespace(authenticationEngineCertificate.getNamespace());
-                }
-            });
+            if (builder.build().getNamespace() == null) {
+                builder.setNamespace(authenticationEngineCertificate.getNamespace());
+            }
+        });
     }
 
     private void checkIsNotStarted() {
