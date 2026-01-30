@@ -52,10 +52,10 @@ public class UIVisionActivitiesImpl implements UIVisionActivities {
             .build();
 
         this.uiVisionService.runMacro(
-                this.uiVisionActivityConfiguration.getLaunchCommand(),
-                arguments,
-                this.uiVisionActivityConfiguration.getExecutionTimeout()
-            );
+            this.uiVisionActivityConfiguration.getLaunchCommand(),
+            arguments,
+            this.uiVisionActivityConfiguration.getExecutionTimeout()
+        );
 
         ExecuteUIVisionMacroResponse response = new ExecuteUIVisionMacroResponse();
 

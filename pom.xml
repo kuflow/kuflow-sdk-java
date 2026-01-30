@@ -79,7 +79,7 @@
     <central-publishing-maven-plugin.version>0.9.0</central-publishing-maven-plugin.version>
     <checkstyle.version>10.21.2</checkstyle.version>
     <prettier-maven-plugin.version>0.22</prettier-maven-plugin.version>
-    <prettier-java.version>2.6.7</prettier-java.version>
+    <prettier-java.version>2.8.1</prettier-java.version>
     <build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
     <license-maven-plugin.version>4.6</license-maven-plugin.version>
 

@@ -106,7 +106,7 @@ public class EmailService {
             EmailResources emailResources = this.extractResources(html);
 
             MimeMessage mimeMessage = this.mailSender.createMimeMessage();
-            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true/* multipart */, StandardCharsets.UTF_8.name());
+            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true /* multipart */, StandardCharsets.UTF_8.name());
             message.setFrom(this.fromEmail);
 
             // Set recipients
@@ -133,7 +133,7 @@ public class EmailService {
             }
 
             message.setSubject(subject);
-            message.setText(emailResources.html, true/* isHtml */);
+            message.setText(emailResources.html, true /* isHtml */);
 
             // Add inline images
             for (Map.Entry<String, Resource> entry : emailResources.images.entrySet()) {

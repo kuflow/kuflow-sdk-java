@@ -326,7 +326,8 @@ public final class WorkerCreateParams implements JsonSerializable<WorkerCreatePa
                     );
                     deserializedWorkerCreateParams.robotIds = robotIds;
                 } else if ("tenantId".equals(fieldName)) {
-                    deserializedWorkerCreateParams.tenantId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    deserializedWorkerCreateParams.tenantId = reader.getNullable(nonNullReader ->
+                        UUID.fromString(nonNullReader.getString())
                     );
                 } else {
                     reader.skipChildren();

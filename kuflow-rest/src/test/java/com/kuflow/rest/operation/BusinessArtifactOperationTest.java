@@ -147,8 +147,9 @@ public class BusinessArtifactOperationTest extends AbstractOperationTest {
             )
         );
 
-        BusinessArtifact businessArtifact =
-            this.kuFlowRestClient.getBusinessArtifactOperations().retrieveBusinessArtifact(businessArtifactId);
+        BusinessArtifact businessArtifact = this.kuFlowRestClient.getBusinessArtifactOperations().retrieveBusinessArtifact(
+            businessArtifactId
+        );
 
         assertThat(businessArtifact.getId()).isEqualTo(businessArtifactId);
         assertThat(businessArtifact.getTenantId()).isEqualTo(UUID.fromString("00a9f1d4-3698-45a4-951c-66a468846aad"));

@@ -80,7 +80,9 @@ public class KuFlowPrincipal {
 
             String key = pair.substring(0, indexOfEquals).toLowerCase();
             String value = pair.substring(indexOfEquals + 1);
-            value = Optional.of(value).map(it -> URLDecoder.decode(it, StandardCharsets.UTF_8)).orElse(null);
+            value = Optional.of(value)
+                .map(it -> URLDecoder.decode(it, StandardCharsets.UTF_8))
+                .orElse(null);
             keyValueMap.put(key, value);
         }
 

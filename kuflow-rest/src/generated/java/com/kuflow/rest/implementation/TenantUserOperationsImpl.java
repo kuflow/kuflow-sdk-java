@@ -200,16 +200,28 @@ public final class TenantUserOperationsImpl {
         final String accept = "application/json";
         List<String> sortConverted = (sort == null)
             ? new ArrayList<>()
-            : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+            : sort
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         List<String> groupIdConverted = (groupId == null)
             ? new ArrayList<>()
-            : groupId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+            : groupId
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         List<String> emailConverted = (email == null)
             ? new ArrayList<>()
-            : email.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+            : email
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         List<String> tenantIdConverted = (tenantId == null)
             ? new ArrayList<>()
-            : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+            : tenantId
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         return service.findTenantUsers(
             this.client.getHost(),
             size,
@@ -254,7 +266,8 @@ public final class TenantUserOperationsImpl {
         List<String> email,
         List<UUID> tenantId
     ) {
-        return findTenantUsersWithResponseAsync(size, page, sort, groupId, email, tenantId).flatMap(res -> Mono.justOrEmpty(res.getValue())
+        return findTenantUsersWithResponseAsync(size, page, sort, groupId, email, tenantId).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
         );
     }
 
@@ -277,7 +290,8 @@ public final class TenantUserOperationsImpl {
         final List<UUID> groupId = null;
         final List<String> email = null;
         final List<UUID> tenantId = null;
-        return findTenantUsersWithResponseAsync(size, page, sort, groupId, email, tenantId).flatMap(res -> Mono.justOrEmpty(res.getValue())
+        return findTenantUsersWithResponseAsync(size, page, sort, groupId, email, tenantId).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
         );
     }
 
@@ -355,16 +369,28 @@ public final class TenantUserOperationsImpl {
         final String accept = "application/json";
         List<String> sortConverted = (sort == null)
             ? new ArrayList<>()
-            : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+            : sort
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         List<String> groupIdConverted = (groupId == null)
             ? new ArrayList<>()
-            : groupId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+            : groupId
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         List<String> emailConverted = (email == null)
             ? new ArrayList<>()
-            : email.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+            : email
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         List<String> tenantIdConverted = (tenantId == null)
             ? new ArrayList<>()
-            : tenantId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+            : tenantId
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         return service.findTenantUsersSync(
             this.client.getHost(),
             size,

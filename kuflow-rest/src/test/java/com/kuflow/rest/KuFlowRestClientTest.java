@@ -79,10 +79,9 @@ public class KuFlowRestClientTest {
             .getProcessOperations()
             .uploadProcessDocument(processItem.getProcessId(), document);
 
-        ProcessItemTaskDataUpdateParams updateParams = new ProcessItemTaskDataUpdateParams()
-            .setData(
-                new JsonValue().setValue(Map.of("TEXT_002", List.of("Value 1", "Value 2", "DOC_001", documentReference.getDocumentUri())))
-            );
+        ProcessItemTaskDataUpdateParams updateParams = new ProcessItemTaskDataUpdateParams().setData(
+            new JsonValue().setValue(Map.of("TEXT_002", List.of("Value 1", "Value 2", "DOC_001", documentReference.getDocumentUri())))
+        );
 
         kuFlowRestClient.getProcessItemOperations().updateProcessItemTaskData(processItem.getId(), updateParams);
     }

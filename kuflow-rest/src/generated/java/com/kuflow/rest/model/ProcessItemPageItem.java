@@ -352,7 +352,8 @@ public final class ProcessItemPageItem extends AbstractAudited {
                         UUID.fromString(nonNullReader.getString())
                     );
                 } else if ("ownerId".equals(fieldName)) {
-                    deserializedProcessItemPageItem.ownerId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())
+                    deserializedProcessItemPageItem.ownerId = reader.getNullable(nonNullReader ->
+                        UUID.fromString(nonNullReader.getString())
                     );
                 } else if ("processItemDefinitionRef".equals(fieldName)) {
                     deserializedProcessItemPageItem.processItemDefinitionRef = ProcessItemDefinitionRef.fromJson(reader);

@@ -72,7 +72,8 @@ import reactor.core.publisher.Mono;
  */
 @ServiceClientBuilder(serviceClients = { KuFlowRestClient.class })
 public final class KuFlowRestClientBuilder
-    implements ConfigurationTrait<KuFlowRestClientBuilder>, EndpointTrait<KuFlowRestClientBuilder>, HttpTrait<KuFlowRestClientBuilder> {
+    implements ConfigurationTrait<KuFlowRestClientBuilder>, EndpointTrait<KuFlowRestClientBuilder>, HttpTrait<KuFlowRestClientBuilder>
+{
 
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
@@ -400,7 +401,9 @@ public final class KuFlowRestClientBuilder
             policies.add(new AddHeadersPolicy(headers));
         }
         // Add additional policies
-        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL).forEach(policies::add);
+        this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            .forEach(policies::add);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(this.retryPolicy, this.retryOptions));
@@ -409,7 +412,9 @@ public final class KuFlowRestClientBuilder
         policies.add(this.createHttpPipelineAuthPolicy());
 
         // Add additional policies
-        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY).forEach(policies::add);
+        this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+            .forEach(policies::add);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
         // Add logging policy

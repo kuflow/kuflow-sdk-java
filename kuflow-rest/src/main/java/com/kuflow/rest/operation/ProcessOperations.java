@@ -350,14 +350,14 @@ public class ProcessOperations {
         long contentLength = file.getLength();
 
         return this.service.uploadProcessUserActionDocumentWithResponse(
-                id,
-                fileContentType,
-                fileName,
-                userActionValueId,
-                file,
-                contentLength,
-                context
-            );
+            id,
+            fileContentType,
+            fileName,
+            userActionValueId,
+            file,
+            contentLength,
+            context
+        );
     }
 
     /**

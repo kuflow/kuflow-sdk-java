@@ -428,8 +428,10 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
         try {
             validateProcessItemTaskDataPatchRequest(request);
 
-            ProcessItem processItem =
-                this.processItemOperations.patchProcessItemTaskData(request.getProcessItemId(), request.getJsonPatch());
+            ProcessItem processItem = this.processItemOperations.patchProcessItemTaskData(
+                request.getProcessItemId(),
+                request.getJsonPatch()
+            );
 
             ProcessItemTaskDataPatchResponse response = new ProcessItemTaskDataPatchResponse();
             response.setProcessItem(processItem);

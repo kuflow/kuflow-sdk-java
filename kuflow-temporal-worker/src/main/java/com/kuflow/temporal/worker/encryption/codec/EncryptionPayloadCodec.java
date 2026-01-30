@@ -143,12 +143,11 @@ public class EncryptionPayloadCodec implements PayloadCodec {
 
     private SecretKey retrieveSecretKey(String keyId) {
         try {
-            KmsKey kmsKey =
-                this.kmsKeyCache.get(keyId, () -> {
-                        LOGGER.info("Loading KMS key {} into cache", keyId);
+            KmsKey kmsKey = this.kmsKeyCache.get(keyId, () -> {
+                LOGGER.info("Loading KMS key {} into cache", keyId);
 
-                        return this.kmsOperations.retrieveKmsKey(keyId);
-                    });
+                return this.kmsOperations.retrieveKmsKey(keyId);
+            });
 
             return new SecretKeySpec(kmsKey.getValue(), "AES");
         } catch (ExecutionException e) {
