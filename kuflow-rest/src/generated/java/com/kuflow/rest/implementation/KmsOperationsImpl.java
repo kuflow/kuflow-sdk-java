@@ -70,7 +70,7 @@ public final class KmsOperationsImpl {
      * REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "KuFlowClientKmsOpera")
+    @ServiceInterface(name = "KuFlowClientKmsOperations")
     public interface KmsOperationsService {
         @Get("/kms/keys/{keyId}")
         @ExpectedResponses({ 200 })

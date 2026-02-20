@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -40,16 +41,19 @@ public final class JsonValueError implements JsonSerializable<JsonValueError> {
      *
      * ie: /user/name or /users/1/name
      */
+    @Generated
     private String propertyPath;
 
     /*
      * Error type.
      */
+    @Generated
     private String type;
 
     /**
      * Creates an instance of JsonValueError class.
      */
+    @Generated
     public JsonValueError() {}
 
     /**
@@ -60,6 +64,7 @@ public final class JsonValueError implements JsonSerializable<JsonValueError> {
      *
      * @return the propertyPath value.
      */
+    @Generated
     public String getPropertyPath() {
         return this.propertyPath;
     }
@@ -73,6 +78,7 @@ public final class JsonValueError implements JsonSerializable<JsonValueError> {
      * @param propertyPath the propertyPath value to set.
      * @return the JsonValueError object itself.
      */
+    @Generated
     public JsonValueError setPropertyPath(String propertyPath) {
         this.propertyPath = propertyPath;
         return this;
@@ -83,6 +89,7 @@ public final class JsonValueError implements JsonSerializable<JsonValueError> {
      *
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -93,6 +100,7 @@ public final class JsonValueError implements JsonSerializable<JsonValueError> {
      * @param type the type value to set.
      * @return the JsonValueError object itself.
      */
+    @Generated
     public JsonValueError setType(String type) {
         this.type = type;
         return this;
@@ -101,6 +109,7 @@ public final class JsonValueError implements JsonSerializable<JsonValueError> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -117,6 +126,7 @@ public final class JsonValueError implements JsonSerializable<JsonValueError> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the JsonValueError.
      */
+    @Generated
     public static JsonValueError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             JsonValueError deserializedJsonValueError = new JsonValueError();

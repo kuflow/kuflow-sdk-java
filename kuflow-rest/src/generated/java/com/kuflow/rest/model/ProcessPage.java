@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -38,11 +39,13 @@ public final class ProcessPage extends Page {
     /*
      * The content property.
      */
+    @Generated
     private List<ProcessPageItem> content;
 
     /**
      * Creates an instance of ProcessPage class.
      */
+    @Generated
     public ProcessPage() {}
 
     /**
@@ -50,6 +53,7 @@ public final class ProcessPage extends Page {
      *
      * @return the content value.
      */
+    @Generated
     public List<ProcessPageItem> getContent() {
         return this.content;
     }
@@ -60,6 +64,7 @@ public final class ProcessPage extends Page {
      * @param content the content value to set.
      * @return the ProcessPage object itself.
      */
+    @Generated
     public ProcessPage setContent(List<ProcessPageItem> content) {
         this.content = content;
         return this;
@@ -68,6 +73,7 @@ public final class ProcessPage extends Page {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ProcessPage setMetadata(PageMetadata metadata) {
         super.setMetadata(metadata);
@@ -77,6 +83,7 @@ public final class ProcessPage extends Page {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -94,6 +101,7 @@ public final class ProcessPage extends Page {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ProcessPage.
      */
+    @Generated
     public static ProcessPage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ProcessPage deserializedProcessPage = new ProcessPage();

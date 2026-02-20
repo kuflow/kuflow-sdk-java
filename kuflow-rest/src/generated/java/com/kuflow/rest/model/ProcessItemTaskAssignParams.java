@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -40,16 +41,19 @@ public final class ProcessItemTaskAssignParams implements JsonSerializable<Proce
     /*
      * The ownerId property.
      */
+    @Generated
     private UUID ownerId;
 
     /*
      * The ownerEmail property.
      */
+    @Generated
     private String ownerEmail;
 
     /**
      * Creates an instance of ProcessItemTaskAssignParams class.
      */
+    @Generated
     public ProcessItemTaskAssignParams() {}
 
     /**
@@ -57,6 +61,7 @@ public final class ProcessItemTaskAssignParams implements JsonSerializable<Proce
      *
      * @return the ownerId value.
      */
+    @Generated
     public UUID getOwnerId() {
         return this.ownerId;
     }
@@ -67,6 +72,7 @@ public final class ProcessItemTaskAssignParams implements JsonSerializable<Proce
      * @param ownerId the ownerId value to set.
      * @return the ProcessItemTaskAssignParams object itself.
      */
+    @Generated
     public ProcessItemTaskAssignParams setOwnerId(UUID ownerId) {
         this.ownerId = ownerId;
         return this;
@@ -77,6 +83,7 @@ public final class ProcessItemTaskAssignParams implements JsonSerializable<Proce
      *
      * @return the ownerEmail value.
      */
+    @Generated
     public String getOwnerEmail() {
         return this.ownerEmail;
     }
@@ -87,6 +94,7 @@ public final class ProcessItemTaskAssignParams implements JsonSerializable<Proce
      * @param ownerEmail the ownerEmail value to set.
      * @return the ProcessItemTaskAssignParams object itself.
      */
+    @Generated
     public ProcessItemTaskAssignParams setOwnerEmail(String ownerEmail) {
         this.ownerEmail = ownerEmail;
         return this;
@@ -95,6 +103,7 @@ public final class ProcessItemTaskAssignParams implements JsonSerializable<Proce
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -111,6 +120,7 @@ public final class ProcessItemTaskAssignParams implements JsonSerializable<Proce
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ProcessItemTaskAssignParams.
      */
+    @Generated
     public static ProcessItemTaskAssignParams fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ProcessItemTaskAssignParams deserializedProcessItemTaskAssignParams = new ProcessItemTaskAssignParams();

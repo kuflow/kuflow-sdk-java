@@ -78,7 +78,7 @@ public final class PrincipalOperationsImpl {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "KuFlowClientPrincipa")
+    @ServiceInterface(name = "KuFlowClientPrincipalOperations")
     public interface PrincipalOperationsService {
         @Get("/principals")
         @ExpectedResponses({ 200 })

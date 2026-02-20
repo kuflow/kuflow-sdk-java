@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -40,21 +41,25 @@ public final class PrincipalPageItem implements JsonSerializable<PrincipalPageIt
     /*
      * The id property.
      */
+    @Generated
     private UUID id;
 
     /*
      * The type property.
      */
+    @Generated
     private PrincipalType type;
 
     /*
      * The name property.
      */
+    @Generated
     private String name;
 
     /**
      * Creates an instance of PrincipalPageItem class.
      */
+    @Generated
     public PrincipalPageItem() {}
 
     /**
@@ -62,6 +67,7 @@ public final class PrincipalPageItem implements JsonSerializable<PrincipalPageIt
      *
      * @return the id value.
      */
+    @Generated
     public UUID getId() {
         return this.id;
     }
@@ -72,6 +78,7 @@ public final class PrincipalPageItem implements JsonSerializable<PrincipalPageIt
      * @param id the id value to set.
      * @return the PrincipalPageItem object itself.
      */
+    @Generated
     public PrincipalPageItem setId(UUID id) {
         this.id = id;
         return this;
@@ -82,6 +89,7 @@ public final class PrincipalPageItem implements JsonSerializable<PrincipalPageIt
      *
      * @return the type value.
      */
+    @Generated
     public PrincipalType getType() {
         return this.type;
     }
@@ -92,6 +100,7 @@ public final class PrincipalPageItem implements JsonSerializable<PrincipalPageIt
      * @param type the type value to set.
      * @return the PrincipalPageItem object itself.
      */
+    @Generated
     public PrincipalPageItem setType(PrincipalType type) {
         this.type = type;
         return this;
@@ -102,6 +111,7 @@ public final class PrincipalPageItem implements JsonSerializable<PrincipalPageIt
      *
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -112,6 +122,7 @@ public final class PrincipalPageItem implements JsonSerializable<PrincipalPageIt
      * @param name the name value to set.
      * @return the PrincipalPageItem object itself.
      */
+    @Generated
     public PrincipalPageItem setName(String name) {
         this.name = name;
         return this;
@@ -120,6 +131,7 @@ public final class PrincipalPageItem implements JsonSerializable<PrincipalPageIt
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -137,6 +149,7 @@ public final class PrincipalPageItem implements JsonSerializable<PrincipalPageIt
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the PrincipalPageItem.
      */
+    @Generated
     public static PrincipalPageItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PrincipalPageItem deserializedPrincipalPageItem = new PrincipalPageItem();

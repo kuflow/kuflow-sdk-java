@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -42,21 +43,25 @@ public final class BusinessArtifactPageItem extends AbstractAudited {
     /*
      * Business Artifact ID.
      */
+    @Generated
     private UUID id;
 
     /*
      * Tenant ID.
      */
+    @Generated
     private UUID tenantId;
 
     /*
      * The businessArtifactDefinitionRef property.
      */
+    @Generated
     private BusinessArtifactDefinitionRef businessArtifactDefinitionRef;
 
     /**
      * Creates an instance of BusinessArtifactPageItem class.
      */
+    @Generated
     public BusinessArtifactPageItem() {}
 
     /**
@@ -64,6 +69,7 @@ public final class BusinessArtifactPageItem extends AbstractAudited {
      *
      * @return the id value.
      */
+    @Generated
     public UUID getId() {
         return this.id;
     }
@@ -74,6 +80,7 @@ public final class BusinessArtifactPageItem extends AbstractAudited {
      * @param id the id value to set.
      * @return the BusinessArtifactPageItem object itself.
      */
+    @Generated
     public BusinessArtifactPageItem setId(UUID id) {
         this.id = id;
         return this;
@@ -84,6 +91,7 @@ public final class BusinessArtifactPageItem extends AbstractAudited {
      *
      * @return the tenantId value.
      */
+    @Generated
     public UUID getTenantId() {
         return this.tenantId;
     }
@@ -94,6 +102,7 @@ public final class BusinessArtifactPageItem extends AbstractAudited {
      * @param tenantId the tenantId value to set.
      * @return the BusinessArtifactPageItem object itself.
      */
+    @Generated
     public BusinessArtifactPageItem setTenantId(UUID tenantId) {
         this.tenantId = tenantId;
         return this;
@@ -104,6 +113,7 @@ public final class BusinessArtifactPageItem extends AbstractAudited {
      *
      * @return the businessArtifactDefinitionRef value.
      */
+    @Generated
     public BusinessArtifactDefinitionRef getBusinessArtifactDefinitionRef() {
         return this.businessArtifactDefinitionRef;
     }
@@ -114,6 +124,7 @@ public final class BusinessArtifactPageItem extends AbstractAudited {
      * @param businessArtifactDefinitionRef the businessArtifactDefinitionRef value to set.
      * @return the BusinessArtifactPageItem object itself.
      */
+    @Generated
     public BusinessArtifactPageItem setBusinessArtifactDefinitionRef(BusinessArtifactDefinitionRef businessArtifactDefinitionRef) {
         this.businessArtifactDefinitionRef = businessArtifactDefinitionRef;
         return this;
@@ -122,6 +133,7 @@ public final class BusinessArtifactPageItem extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public BusinessArtifactPageItem setCreatedBy(UUID createdBy) {
         super.setCreatedBy(createdBy);
@@ -131,6 +143,7 @@ public final class BusinessArtifactPageItem extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public BusinessArtifactPageItem setCreatedAt(OffsetDateTime createdAt) {
         super.setCreatedAt(createdAt);
@@ -140,6 +153,7 @@ public final class BusinessArtifactPageItem extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public BusinessArtifactPageItem setLastModifiedBy(UUID lastModifiedBy) {
         super.setLastModifiedBy(lastModifiedBy);
@@ -149,6 +163,7 @@ public final class BusinessArtifactPageItem extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public BusinessArtifactPageItem setLastModifiedAt(OffsetDateTime lastModifiedAt) {
         super.setLastModifiedAt(lastModifiedAt);
@@ -158,6 +173,7 @@ public final class BusinessArtifactPageItem extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -186,6 +202,7 @@ public final class BusinessArtifactPageItem extends AbstractAudited {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BusinessArtifactPageItem.
      */
+    @Generated
     public static BusinessArtifactPageItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BusinessArtifactPageItem deserializedBusinessArtifactPageItem = new BusinessArtifactPageItem();

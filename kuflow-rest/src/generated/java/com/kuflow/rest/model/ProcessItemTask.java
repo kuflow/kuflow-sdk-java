@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -39,21 +40,25 @@ public final class ProcessItemTask implements JsonSerializable<ProcessItemTask> 
     /*
      * Process Item Task state
      */
+    @Generated
     private ProcessItemTaskState state;
 
     /*
      * Json value.
      */
+    @Generated
     private JsonValue data;
 
     /*
      * The logs property.
      */
+    @Generated
     private List<ProcessItemTaskLog> logs;
 
     /**
      * Creates an instance of ProcessItemTask class.
      */
+    @Generated
     public ProcessItemTask() {}
 
     /**
@@ -61,6 +66,7 @@ public final class ProcessItemTask implements JsonSerializable<ProcessItemTask> 
      *
      * @return the state value.
      */
+    @Generated
     public ProcessItemTaskState getState() {
         return this.state;
     }
@@ -71,6 +77,7 @@ public final class ProcessItemTask implements JsonSerializable<ProcessItemTask> 
      * @param state the state value to set.
      * @return the ProcessItemTask object itself.
      */
+    @Generated
     public ProcessItemTask setState(ProcessItemTaskState state) {
         this.state = state;
         return this;
@@ -81,6 +88,7 @@ public final class ProcessItemTask implements JsonSerializable<ProcessItemTask> 
      *
      * @return the data value.
      */
+    @Generated
     public JsonValue getData() {
         return this.data;
     }
@@ -91,6 +99,7 @@ public final class ProcessItemTask implements JsonSerializable<ProcessItemTask> 
      * @param data the data value to set.
      * @return the ProcessItemTask object itself.
      */
+    @Generated
     public ProcessItemTask setData(JsonValue data) {
         this.data = data;
         return this;
@@ -101,6 +110,7 @@ public final class ProcessItemTask implements JsonSerializable<ProcessItemTask> 
      *
      * @return the logs value.
      */
+    @Generated
     public List<ProcessItemTaskLog> getLogs() {
         return this.logs;
     }
@@ -111,6 +121,7 @@ public final class ProcessItemTask implements JsonSerializable<ProcessItemTask> 
      * @param logs the logs value to set.
      * @return the ProcessItemTask object itself.
      */
+    @Generated
     public ProcessItemTask setLogs(List<ProcessItemTaskLog> logs) {
         this.logs = logs;
         return this;
@@ -119,6 +130,7 @@ public final class ProcessItemTask implements JsonSerializable<ProcessItemTask> 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -137,6 +149,7 @@ public final class ProcessItemTask implements JsonSerializable<ProcessItemTask> 
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ProcessItemTask.
      */
+    @Generated
     public static ProcessItemTask fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ProcessItemTask deserializedProcessItemTask = new ProcessItemTask();

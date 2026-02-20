@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -40,16 +41,19 @@ public final class TenantPageItem implements JsonSerializable<TenantPageItem> {
     /*
      * The id property.
      */
+    @Generated
     private UUID id;
 
     /*
      * The name property.
      */
+    @Generated
     private String name;
 
     /**
      * Creates an instance of TenantPageItem class.
      */
+    @Generated
     public TenantPageItem() {}
 
     /**
@@ -57,6 +61,7 @@ public final class TenantPageItem implements JsonSerializable<TenantPageItem> {
      *
      * @return the id value.
      */
+    @Generated
     public UUID getId() {
         return this.id;
     }
@@ -67,6 +72,7 @@ public final class TenantPageItem implements JsonSerializable<TenantPageItem> {
      * @param id the id value to set.
      * @return the TenantPageItem object itself.
      */
+    @Generated
     public TenantPageItem setId(UUID id) {
         this.id = id;
         return this;
@@ -77,6 +83,7 @@ public final class TenantPageItem implements JsonSerializable<TenantPageItem> {
      *
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -87,6 +94,7 @@ public final class TenantPageItem implements JsonSerializable<TenantPageItem> {
      * @param name the name value to set.
      * @return the TenantPageItem object itself.
      */
+    @Generated
     public TenantPageItem setName(String name) {
         this.name = name;
         return this;
@@ -95,6 +103,7 @@ public final class TenantPageItem implements JsonSerializable<TenantPageItem> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -112,6 +121,7 @@ public final class TenantPageItem implements JsonSerializable<TenantPageItem> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TenantPageItem.
      */
+    @Generated
     public static TenantPageItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TenantPageItem deserializedTenantPageItem = new TenantPageItem();

@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -38,11 +39,13 @@ public final class ProcessMetadataUpdateParams implements JsonSerializable<Proce
     /*
      * Json value.
      */
+    @Generated
     private JsonValue metadata;
 
     /**
      * Creates an instance of ProcessMetadataUpdateParams class.
      */
+    @Generated
     public ProcessMetadataUpdateParams() {}
 
     /**
@@ -50,6 +53,7 @@ public final class ProcessMetadataUpdateParams implements JsonSerializable<Proce
      *
      * @return the metadata value.
      */
+    @Generated
     public JsonValue getMetadata() {
         return this.metadata;
     }
@@ -60,6 +64,7 @@ public final class ProcessMetadataUpdateParams implements JsonSerializable<Proce
      * @param metadata the metadata value to set.
      * @return the ProcessMetadataUpdateParams object itself.
      */
+    @Generated
     public ProcessMetadataUpdateParams setMetadata(JsonValue metadata) {
         this.metadata = metadata;
         return this;
@@ -68,6 +73,7 @@ public final class ProcessMetadataUpdateParams implements JsonSerializable<Proce
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -84,6 +90,7 @@ public final class ProcessMetadataUpdateParams implements JsonSerializable<Proce
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ProcessMetadataUpdateParams.
      */
+    @Generated
     public static ProcessMetadataUpdateParams fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ProcessMetadataUpdateParams deserializedProcessMetadataUpdateParams = new ProcessMetadataUpdateParams();

@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -41,51 +42,61 @@ public final class WorkerCreateParams implements JsonSerializable<WorkerCreatePa
     /*
      * The identity property.
      */
+    @Generated
     private String identity;
 
     /*
      * The taskQueue property.
      */
+    @Generated
     private String taskQueue;
 
     /*
      * The workflowTypes property.
      */
+    @Generated
     private List<String> workflowTypes;
 
     /*
      * The activityTypes property.
      */
+    @Generated
     private List<String> activityTypes;
 
     /*
      * The hostname property.
      */
+    @Generated
     private String hostname;
 
     /*
      * The ip property.
      */
+    @Generated
     private String ip;
 
     /*
      * Installation Id.
      */
+    @Generated
     private UUID installationId;
 
     /*
      * Robot Ids that this worker implements.
      */
+    @Generated
     private List<UUID> robotIds;
 
     /*
      * Tenant ID.
      */
+    @Generated
     private UUID tenantId;
 
     /**
      * Creates an instance of WorkerCreateParams class.
      */
+    @Generated
     public WorkerCreateParams() {}
 
     /**
@@ -93,6 +104,7 @@ public final class WorkerCreateParams implements JsonSerializable<WorkerCreatePa
      *
      * @return the identity value.
      */
+    @Generated
     public String getIdentity() {
         return this.identity;
     }
@@ -103,6 +115,7 @@ public final class WorkerCreateParams implements JsonSerializable<WorkerCreatePa
      * @param identity the identity value to set.
      * @return the WorkerCreateParams object itself.
      */
+    @Generated
     public WorkerCreateParams setIdentity(String identity) {
         this.identity = identity;
         return this;
@@ -113,6 +126,7 @@ public final class WorkerCreateParams implements JsonSerializable<WorkerCreatePa
      *
      * @return the taskQueue value.
      */
+    @Generated
     public String getTaskQueue() {
         return this.taskQueue;
     }
@@ -123,6 +137,7 @@ public final class WorkerCreateParams implements JsonSerializable<WorkerCreatePa
      * @param taskQueue the taskQueue value to set.
      * @return the WorkerCreateParams object itself.
      */
+    @Generated
     public WorkerCreateParams setTaskQueue(String taskQueue) {
         this.taskQueue = taskQueue;
         return this;
@@ -133,6 +148,7 @@ public final class WorkerCreateParams implements JsonSerializable<WorkerCreatePa
      *
      * @return the workflowTypes value.
      */
+    @Generated
     public List<String> getWorkflowTypes() {
         return this.workflowTypes;
     }
@@ -143,6 +159,7 @@ public final class WorkerCreateParams implements JsonSerializable<WorkerCreatePa
      * @param workflowTypes the workflowTypes value to set.
      * @return the WorkerCreateParams object itself.
      */
+    @Generated
     public WorkerCreateParams setWorkflowTypes(List<String> workflowTypes) {
         this.workflowTypes = workflowTypes;
         return this;
@@ -153,6 +170,7 @@ public final class WorkerCreateParams implements JsonSerializable<WorkerCreatePa
      *
      * @return the activityTypes value.
      */
+    @Generated
     public List<String> getActivityTypes() {
         return this.activityTypes;
     }
@@ -163,6 +181,7 @@ public final class WorkerCreateParams implements JsonSerializable<WorkerCreatePa
      * @param activityTypes the activityTypes value to set.
      * @return the WorkerCreateParams object itself.
      */
+    @Generated
     public WorkerCreateParams setActivityTypes(List<String> activityTypes) {
         this.activityTypes = activityTypes;
         return this;
@@ -173,6 +192,7 @@ public final class WorkerCreateParams implements JsonSerializable<WorkerCreatePa
      *
      * @return the hostname value.
      */
+    @Generated
     public String getHostname() {
         return this.hostname;
     }
@@ -183,6 +203,7 @@ public final class WorkerCreateParams implements JsonSerializable<WorkerCreatePa
      * @param hostname the hostname value to set.
      * @return the WorkerCreateParams object itself.
      */
+    @Generated
     public WorkerCreateParams setHostname(String hostname) {
         this.hostname = hostname;
         return this;
@@ -193,6 +214,7 @@ public final class WorkerCreateParams implements JsonSerializable<WorkerCreatePa
      *
      * @return the ip value.
      */
+    @Generated
     public String getIp() {
         return this.ip;
     }
@@ -203,6 +225,7 @@ public final class WorkerCreateParams implements JsonSerializable<WorkerCreatePa
      * @param ip the ip value to set.
      * @return the WorkerCreateParams object itself.
      */
+    @Generated
     public WorkerCreateParams setIp(String ip) {
         this.ip = ip;
         return this;
@@ -213,6 +236,7 @@ public final class WorkerCreateParams implements JsonSerializable<WorkerCreatePa
      *
      * @return the installationId value.
      */
+    @Generated
     public UUID getInstallationId() {
         return this.installationId;
     }
@@ -223,6 +247,7 @@ public final class WorkerCreateParams implements JsonSerializable<WorkerCreatePa
      * @param installationId the installationId value to set.
      * @return the WorkerCreateParams object itself.
      */
+    @Generated
     public WorkerCreateParams setInstallationId(UUID installationId) {
         this.installationId = installationId;
         return this;
@@ -233,6 +258,7 @@ public final class WorkerCreateParams implements JsonSerializable<WorkerCreatePa
      *
      * @return the robotIds value.
      */
+    @Generated
     public List<UUID> getRobotIds() {
         return this.robotIds;
     }
@@ -243,6 +269,7 @@ public final class WorkerCreateParams implements JsonSerializable<WorkerCreatePa
      * @param robotIds the robotIds value to set.
      * @return the WorkerCreateParams object itself.
      */
+    @Generated
     public WorkerCreateParams setRobotIds(List<UUID> robotIds) {
         this.robotIds = robotIds;
         return this;
@@ -253,6 +280,7 @@ public final class WorkerCreateParams implements JsonSerializable<WorkerCreatePa
      *
      * @return the tenantId value.
      */
+    @Generated
     public UUID getTenantId() {
         return this.tenantId;
     }
@@ -263,6 +291,7 @@ public final class WorkerCreateParams implements JsonSerializable<WorkerCreatePa
      * @param tenantId the tenantId value to set.
      * @return the WorkerCreateParams object itself.
      */
+    @Generated
     public WorkerCreateParams setTenantId(UUID tenantId) {
         this.tenantId = tenantId;
         return this;
@@ -271,6 +300,7 @@ public final class WorkerCreateParams implements JsonSerializable<WorkerCreatePa
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -295,6 +325,7 @@ public final class WorkerCreateParams implements JsonSerializable<WorkerCreatePa
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WorkerCreateParams.
      */
+    @Generated
     public static WorkerCreateParams fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WorkerCreateParams deserializedWorkerCreateParams = new WorkerCreateParams();

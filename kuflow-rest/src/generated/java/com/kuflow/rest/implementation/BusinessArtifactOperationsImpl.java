@@ -88,7 +88,7 @@ public final class BusinessArtifactOperationsImpl {
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "KuFlowClientBusiness")
+    @ServiceInterface(name = "KuFlowClientBusinessArtifactOperations")
     public interface BusinessArtifactOperationsService {
         @Get("/business-artifacts")
         @ExpectedResponses({ 200 })

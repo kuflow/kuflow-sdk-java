@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -42,21 +43,25 @@ public final class TenantUserPageItem extends AbstractAudited {
     /*
      * The id property.
      */
+    @Generated
     private UUID id;
 
     /*
      * The principalId property.
      */
+    @Generated
     private UUID principalId;
 
     /*
      * The tenantId property.
      */
+    @Generated
     private UUID tenantId;
 
     /**
      * Creates an instance of TenantUserPageItem class.
      */
+    @Generated
     public TenantUserPageItem() {}
 
     /**
@@ -64,6 +69,7 @@ public final class TenantUserPageItem extends AbstractAudited {
      *
      * @return the id value.
      */
+    @Generated
     public UUID getId() {
         return this.id;
     }
@@ -73,6 +79,7 @@ public final class TenantUserPageItem extends AbstractAudited {
      *
      * @return the principalId value.
      */
+    @Generated
     public UUID getPrincipalId() {
         return this.principalId;
     }
@@ -82,6 +89,7 @@ public final class TenantUserPageItem extends AbstractAudited {
      *
      * @return the tenantId value.
      */
+    @Generated
     public UUID getTenantId() {
         return this.tenantId;
     }
@@ -89,6 +97,7 @@ public final class TenantUserPageItem extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TenantUserPageItem setCreatedBy(UUID createdBy) {
         super.setCreatedBy(createdBy);
@@ -98,6 +107,7 @@ public final class TenantUserPageItem extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TenantUserPageItem setCreatedAt(OffsetDateTime createdAt) {
         super.setCreatedAt(createdAt);
@@ -107,6 +117,7 @@ public final class TenantUserPageItem extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TenantUserPageItem setLastModifiedBy(UUID lastModifiedBy) {
         super.setLastModifiedBy(lastModifiedBy);
@@ -116,6 +127,7 @@ public final class TenantUserPageItem extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TenantUserPageItem setLastModifiedAt(OffsetDateTime lastModifiedAt) {
         super.setLastModifiedAt(lastModifiedAt);
@@ -125,6 +137,7 @@ public final class TenantUserPageItem extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -150,6 +163,7 @@ public final class TenantUserPageItem extends AbstractAudited {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TenantUserPageItem.
      */
+    @Generated
     public static TenantUserPageItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TenantUserPageItem deserializedTenantUserPageItem = new TenantUserPageItem();

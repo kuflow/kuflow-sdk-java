@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -38,16 +39,19 @@ public final class AuthenticationEngineCertificate implements JsonSerializable<A
     /*
      * The namespace property.
      */
+    @Generated
     private String namespace;
 
     /*
      * The tls property.
      */
+    @Generated
     private AuthenticationEngineCertificateTls tls;
 
     /**
      * Creates an instance of AuthenticationEngineCertificate class.
      */
+    @Generated
     public AuthenticationEngineCertificate() {}
 
     /**
@@ -55,6 +59,7 @@ public final class AuthenticationEngineCertificate implements JsonSerializable<A
      *
      * @return the namespace value.
      */
+    @Generated
     public String getNamespace() {
         return this.namespace;
     }
@@ -65,6 +70,7 @@ public final class AuthenticationEngineCertificate implements JsonSerializable<A
      * @param namespace the namespace value to set.
      * @return the AuthenticationEngineCertificate object itself.
      */
+    @Generated
     public AuthenticationEngineCertificate setNamespace(String namespace) {
         this.namespace = namespace;
         return this;
@@ -75,6 +81,7 @@ public final class AuthenticationEngineCertificate implements JsonSerializable<A
      *
      * @return the tls value.
      */
+    @Generated
     public AuthenticationEngineCertificateTls getTls() {
         return this.tls;
     }
@@ -85,6 +92,7 @@ public final class AuthenticationEngineCertificate implements JsonSerializable<A
      * @param tls the tls value to set.
      * @return the AuthenticationEngineCertificate object itself.
      */
+    @Generated
     public AuthenticationEngineCertificate setTls(AuthenticationEngineCertificateTls tls) {
         this.tls = tls;
         return this;
@@ -93,6 +101,7 @@ public final class AuthenticationEngineCertificate implements JsonSerializable<A
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -110,6 +119,7 @@ public final class AuthenticationEngineCertificate implements JsonSerializable<A
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AuthenticationEngineCertificate.
      */
+    @Generated
     public static AuthenticationEngineCertificate fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AuthenticationEngineCertificate deserializedAuthenticationEngineCertificate = new AuthenticationEngineCertificate();

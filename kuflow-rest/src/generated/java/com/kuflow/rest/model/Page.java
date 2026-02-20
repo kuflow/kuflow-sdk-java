@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -38,11 +39,13 @@ public class Page implements JsonSerializable<Page> {
     /*
      * The metadata property.
      */
+    @Generated
     private PageMetadata metadata;
 
     /**
      * Creates an instance of Page class.
      */
+    @Generated
     public Page() {}
 
     /**
@@ -50,6 +53,7 @@ public class Page implements JsonSerializable<Page> {
      *
      * @return the metadata value.
      */
+    @Generated
     public PageMetadata getMetadata() {
         return this.metadata;
     }
@@ -60,6 +64,7 @@ public class Page implements JsonSerializable<Page> {
      * @param metadata the metadata value to set.
      * @return the Page object itself.
      */
+    @Generated
     public Page setMetadata(PageMetadata metadata) {
         this.metadata = metadata;
         return this;
@@ -68,6 +73,7 @@ public class Page implements JsonSerializable<Page> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -84,6 +90,7 @@ public class Page implements JsonSerializable<Page> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Page.
      */
+    @Generated
     public static Page fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Page deserializedPage = new Page();

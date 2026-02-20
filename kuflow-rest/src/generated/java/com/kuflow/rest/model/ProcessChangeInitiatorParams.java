@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -40,16 +41,19 @@ public final class ProcessChangeInitiatorParams implements JsonSerializable<Proc
     /*
      * The initiatorId property.
      */
+    @Generated
     private UUID initiatorId;
 
     /*
      * The initiatorEmail property.
      */
+    @Generated
     private String initiatorEmail;
 
     /**
      * Creates an instance of ProcessChangeInitiatorParams class.
      */
+    @Generated
     public ProcessChangeInitiatorParams() {}
 
     /**
@@ -57,6 +61,7 @@ public final class ProcessChangeInitiatorParams implements JsonSerializable<Proc
      *
      * @return the initiatorId value.
      */
+    @Generated
     public UUID getInitiatorId() {
         return this.initiatorId;
     }
@@ -67,6 +72,7 @@ public final class ProcessChangeInitiatorParams implements JsonSerializable<Proc
      * @param initiatorId the initiatorId value to set.
      * @return the ProcessChangeInitiatorParams object itself.
      */
+    @Generated
     public ProcessChangeInitiatorParams setInitiatorId(UUID initiatorId) {
         this.initiatorId = initiatorId;
         return this;
@@ -77,6 +83,7 @@ public final class ProcessChangeInitiatorParams implements JsonSerializable<Proc
      *
      * @return the initiatorEmail value.
      */
+    @Generated
     public String getInitiatorEmail() {
         return this.initiatorEmail;
     }
@@ -87,6 +94,7 @@ public final class ProcessChangeInitiatorParams implements JsonSerializable<Proc
      * @param initiatorEmail the initiatorEmail value to set.
      * @return the ProcessChangeInitiatorParams object itself.
      */
+    @Generated
     public ProcessChangeInitiatorParams setInitiatorEmail(String initiatorEmail) {
         this.initiatorEmail = initiatorEmail;
         return this;
@@ -95,6 +103,7 @@ public final class ProcessChangeInitiatorParams implements JsonSerializable<Proc
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -111,6 +120,7 @@ public final class ProcessChangeInitiatorParams implements JsonSerializable<Proc
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ProcessChangeInitiatorParams.
      */
+    @Generated
     public static ProcessChangeInitiatorParams fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ProcessChangeInitiatorParams deserializedProcessChangeInitiatorParams = new ProcessChangeInitiatorParams();

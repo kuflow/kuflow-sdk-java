@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -38,21 +39,25 @@ public final class AuthenticationEngineCertificateTls implements JsonSerializabl
     /*
      * The serverRootCaCertificate property.
      */
+    @Generated
     private String serverRootCaCertificate;
 
     /*
      * The clientCertificate property.
      */
+    @Generated
     private String clientCertificate;
 
     /*
      * The clientPrivateKey property.
      */
+    @Generated
     private String clientPrivateKey;
 
     /**
      * Creates an instance of AuthenticationEngineCertificateTls class.
      */
+    @Generated
     public AuthenticationEngineCertificateTls() {}
 
     /**
@@ -60,6 +65,7 @@ public final class AuthenticationEngineCertificateTls implements JsonSerializabl
      *
      * @return the serverRootCaCertificate value.
      */
+    @Generated
     public String getServerRootCaCertificate() {
         return this.serverRootCaCertificate;
     }
@@ -70,6 +76,7 @@ public final class AuthenticationEngineCertificateTls implements JsonSerializabl
      * @param serverRootCaCertificate the serverRootCaCertificate value to set.
      * @return the AuthenticationEngineCertificateTls object itself.
      */
+    @Generated
     public AuthenticationEngineCertificateTls setServerRootCaCertificate(String serverRootCaCertificate) {
         this.serverRootCaCertificate = serverRootCaCertificate;
         return this;
@@ -80,6 +87,7 @@ public final class AuthenticationEngineCertificateTls implements JsonSerializabl
      *
      * @return the clientCertificate value.
      */
+    @Generated
     public String getClientCertificate() {
         return this.clientCertificate;
     }
@@ -90,6 +98,7 @@ public final class AuthenticationEngineCertificateTls implements JsonSerializabl
      * @param clientCertificate the clientCertificate value to set.
      * @return the AuthenticationEngineCertificateTls object itself.
      */
+    @Generated
     public AuthenticationEngineCertificateTls setClientCertificate(String clientCertificate) {
         this.clientCertificate = clientCertificate;
         return this;
@@ -100,6 +109,7 @@ public final class AuthenticationEngineCertificateTls implements JsonSerializabl
      *
      * @return the clientPrivateKey value.
      */
+    @Generated
     public String getClientPrivateKey() {
         return this.clientPrivateKey;
     }
@@ -110,6 +120,7 @@ public final class AuthenticationEngineCertificateTls implements JsonSerializabl
      * @param clientPrivateKey the clientPrivateKey value to set.
      * @return the AuthenticationEngineCertificateTls object itself.
      */
+    @Generated
     public AuthenticationEngineCertificateTls setClientPrivateKey(String clientPrivateKey) {
         this.clientPrivateKey = clientPrivateKey;
         return this;
@@ -118,6 +129,7 @@ public final class AuthenticationEngineCertificateTls implements JsonSerializabl
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -136,6 +148,7 @@ public final class AuthenticationEngineCertificateTls implements JsonSerializabl
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AuthenticationEngineCertificateTls.
      */
+    @Generated
     public static AuthenticationEngineCertificateTls fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AuthenticationEngineCertificateTls deserializedAuthenticationEngineCertificateTls = new AuthenticationEngineCertificateTls();

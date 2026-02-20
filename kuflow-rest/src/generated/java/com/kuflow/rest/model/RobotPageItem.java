@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -42,41 +43,49 @@ public final class RobotPageItem extends AbstractAudited {
     /*
      * Robot ID.
      */
+    @Generated
     private UUID id;
 
     /*
      * Robot Code.
      */
+    @Generated
     private String code;
 
     /*
      * Robot name.
      */
+    @Generated
     private String name;
 
     /*
      * Robot description.
      */
+    @Generated
     private String description;
 
     /*
      * Robot source type
      */
+    @Generated
     private RobotSourceType sourceType;
 
     /*
      * Robot source type
      */
+    @Generated
     private RobotSourceFile sourceFile;
 
     /*
      * Tenant ID.
      */
+    @Generated
     private UUID tenantId;
 
     /**
      * Creates an instance of RobotPageItem class.
      */
+    @Generated
     public RobotPageItem() {}
 
     /**
@@ -84,6 +93,7 @@ public final class RobotPageItem extends AbstractAudited {
      *
      * @return the id value.
      */
+    @Generated
     public UUID getId() {
         return this.id;
     }
@@ -94,6 +104,7 @@ public final class RobotPageItem extends AbstractAudited {
      * @param id the id value to set.
      * @return the RobotPageItem object itself.
      */
+    @Generated
     public RobotPageItem setId(UUID id) {
         this.id = id;
         return this;
@@ -104,6 +115,7 @@ public final class RobotPageItem extends AbstractAudited {
      *
      * @return the code value.
      */
+    @Generated
     public String getCode() {
         return this.code;
     }
@@ -114,6 +126,7 @@ public final class RobotPageItem extends AbstractAudited {
      * @param code the code value to set.
      * @return the RobotPageItem object itself.
      */
+    @Generated
     public RobotPageItem setCode(String code) {
         this.code = code;
         return this;
@@ -124,6 +137,7 @@ public final class RobotPageItem extends AbstractAudited {
      *
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -134,6 +148,7 @@ public final class RobotPageItem extends AbstractAudited {
      * @param name the name value to set.
      * @return the RobotPageItem object itself.
      */
+    @Generated
     public RobotPageItem setName(String name) {
         this.name = name;
         return this;
@@ -144,6 +159,7 @@ public final class RobotPageItem extends AbstractAudited {
      *
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -154,6 +170,7 @@ public final class RobotPageItem extends AbstractAudited {
      * @param description the description value to set.
      * @return the RobotPageItem object itself.
      */
+    @Generated
     public RobotPageItem setDescription(String description) {
         this.description = description;
         return this;
@@ -164,6 +181,7 @@ public final class RobotPageItem extends AbstractAudited {
      *
      * @return the sourceType value.
      */
+    @Generated
     public RobotSourceType getSourceType() {
         return this.sourceType;
     }
@@ -174,6 +192,7 @@ public final class RobotPageItem extends AbstractAudited {
      * @param sourceType the sourceType value to set.
      * @return the RobotPageItem object itself.
      */
+    @Generated
     public RobotPageItem setSourceType(RobotSourceType sourceType) {
         this.sourceType = sourceType;
         return this;
@@ -184,6 +203,7 @@ public final class RobotPageItem extends AbstractAudited {
      *
      * @return the sourceFile value.
      */
+    @Generated
     public RobotSourceFile getSourceFile() {
         return this.sourceFile;
     }
@@ -194,6 +214,7 @@ public final class RobotPageItem extends AbstractAudited {
      * @param sourceFile the sourceFile value to set.
      * @return the RobotPageItem object itself.
      */
+    @Generated
     public RobotPageItem setSourceFile(RobotSourceFile sourceFile) {
         this.sourceFile = sourceFile;
         return this;
@@ -204,6 +225,7 @@ public final class RobotPageItem extends AbstractAudited {
      *
      * @return the tenantId value.
      */
+    @Generated
     public UUID getTenantId() {
         return this.tenantId;
     }
@@ -214,6 +236,7 @@ public final class RobotPageItem extends AbstractAudited {
      * @param tenantId the tenantId value to set.
      * @return the RobotPageItem object itself.
      */
+    @Generated
     public RobotPageItem setTenantId(UUID tenantId) {
         this.tenantId = tenantId;
         return this;
@@ -222,6 +245,7 @@ public final class RobotPageItem extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public RobotPageItem setCreatedBy(UUID createdBy) {
         super.setCreatedBy(createdBy);
@@ -231,6 +255,7 @@ public final class RobotPageItem extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public RobotPageItem setCreatedAt(OffsetDateTime createdAt) {
         super.setCreatedAt(createdAt);
@@ -240,6 +265,7 @@ public final class RobotPageItem extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public RobotPageItem setLastModifiedBy(UUID lastModifiedBy) {
         super.setLastModifiedBy(lastModifiedBy);
@@ -249,6 +275,7 @@ public final class RobotPageItem extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public RobotPageItem setLastModifiedAt(OffsetDateTime lastModifiedAt) {
         super.setLastModifiedAt(lastModifiedAt);
@@ -258,6 +285,7 @@ public final class RobotPageItem extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -290,6 +318,7 @@ public final class RobotPageItem extends AbstractAudited {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RobotPageItem.
      */
+    @Generated
     public static RobotPageItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RobotPageItem deserializedRobotPageItem = new RobotPageItem();

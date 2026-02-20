@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -40,16 +41,19 @@ public final class PrincipalUser implements JsonSerializable<PrincipalUser> {
     /*
      * The id property.
      */
+    @Generated
     private UUID id;
 
     /*
      * The email property.
      */
+    @Generated
     private String email;
 
     /**
      * Creates an instance of PrincipalUser class.
      */
+    @Generated
     public PrincipalUser() {}
 
     /**
@@ -57,6 +61,7 @@ public final class PrincipalUser implements JsonSerializable<PrincipalUser> {
      *
      * @return the id value.
      */
+    @Generated
     public UUID getId() {
         return this.id;
     }
@@ -67,6 +72,7 @@ public final class PrincipalUser implements JsonSerializable<PrincipalUser> {
      * @param id the id value to set.
      * @return the PrincipalUser object itself.
      */
+    @Generated
     public PrincipalUser setId(UUID id) {
         this.id = id;
         return this;
@@ -77,6 +83,7 @@ public final class PrincipalUser implements JsonSerializable<PrincipalUser> {
      *
      * @return the email value.
      */
+    @Generated
     public String getEmail() {
         return this.email;
     }
@@ -87,6 +94,7 @@ public final class PrincipalUser implements JsonSerializable<PrincipalUser> {
      * @param email the email value to set.
      * @return the PrincipalUser object itself.
      */
+    @Generated
     public PrincipalUser setEmail(String email) {
         this.email = email;
         return this;
@@ -95,6 +103,7 @@ public final class PrincipalUser implements JsonSerializable<PrincipalUser> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -111,6 +120,7 @@ public final class PrincipalUser implements JsonSerializable<PrincipalUser> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the PrincipalUser.
      */
+    @Generated
     public static PrincipalUser fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PrincipalUser deserializedPrincipalUser = new PrincipalUser();

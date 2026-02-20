@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -43,26 +44,31 @@ public class WebhookEvent implements JsonSerializable<WebhookEvent> {
     /*
      * Type of the Event.
      */
+    @Generated
     private WebhookType type = WebhookType.fromString("WebhookEvent");
 
     /*
      * The id property.
      */
+    @Generated
     private UUID id;
 
     /*
      * The version property.
      */
+    @Generated
     private String version;
 
     /*
      * The timestamp property.
      */
+    @Generated
     private OffsetDateTime timestamp;
 
     /**
      * Creates an instance of WebhookEvent class.
      */
+    @Generated
     public WebhookEvent() {}
 
     /**
@@ -70,6 +76,7 @@ public class WebhookEvent implements JsonSerializable<WebhookEvent> {
      *
      * @return the type value.
      */
+    @Generated
     public WebhookType getType() {
         return this.type;
     }
@@ -79,6 +86,7 @@ public class WebhookEvent implements JsonSerializable<WebhookEvent> {
      *
      * @return the id value.
      */
+    @Generated
     public UUID getId() {
         return this.id;
     }
@@ -89,6 +97,7 @@ public class WebhookEvent implements JsonSerializable<WebhookEvent> {
      * @param id the id value to set.
      * @return the WebhookEvent object itself.
      */
+    @Generated
     public WebhookEvent setId(UUID id) {
         this.id = id;
         return this;
@@ -99,6 +108,7 @@ public class WebhookEvent implements JsonSerializable<WebhookEvent> {
      *
      * @return the version value.
      */
+    @Generated
     public String getVersion() {
         return this.version;
     }
@@ -109,6 +119,7 @@ public class WebhookEvent implements JsonSerializable<WebhookEvent> {
      * @param version the version value to set.
      * @return the WebhookEvent object itself.
      */
+    @Generated
     public WebhookEvent setVersion(String version) {
         this.version = version;
         return this;
@@ -119,6 +130,7 @@ public class WebhookEvent implements JsonSerializable<WebhookEvent> {
      *
      * @return the timestamp value.
      */
+    @Generated
     public OffsetDateTime getTimestamp() {
         return this.timestamp;
     }
@@ -129,6 +141,7 @@ public class WebhookEvent implements JsonSerializable<WebhookEvent> {
      * @param timestamp the timestamp value to set.
      * @return the WebhookEvent object itself.
      */
+    @Generated
     public WebhookEvent setTimestamp(OffsetDateTime timestamp) {
         this.timestamp = timestamp;
         return this;
@@ -137,6 +150,7 @@ public class WebhookEvent implements JsonSerializable<WebhookEvent> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -159,6 +173,7 @@ public class WebhookEvent implements JsonSerializable<WebhookEvent> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WebhookEvent.
      */
+    @Generated
     public static WebhookEvent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -190,6 +205,7 @@ public class WebhookEvent implements JsonSerializable<WebhookEvent> {
         });
     }
 
+    @Generated
     static WebhookEvent fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WebhookEvent deserializedWebhookEvent = new WebhookEvent();

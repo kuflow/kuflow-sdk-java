@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -40,31 +41,37 @@ public final class RobotSourceFile implements JsonSerializable<RobotSourceFile> 
     /*
      * Robot ID.
      */
+    @Generated
     private UUID id;
 
     /*
      * Source file name.
      */
+    @Generated
     private String name;
 
     /*
      * Source file content type.
      */
+    @Generated
     private String contentType;
 
     /*
      * Source file length.
      */
+    @Generated
     private long contentLength;
 
     /*
      * Source file to check the integrity.
      */
+    @Generated
     private String contentHash;
 
     /**
      * Creates an instance of RobotSourceFile class.
      */
+    @Generated
     public RobotSourceFile() {}
 
     /**
@@ -72,6 +79,7 @@ public final class RobotSourceFile implements JsonSerializable<RobotSourceFile> 
      *
      * @return the id value.
      */
+    @Generated
     public UUID getId() {
         return this.id;
     }
@@ -82,6 +90,7 @@ public final class RobotSourceFile implements JsonSerializable<RobotSourceFile> 
      * @param id the id value to set.
      * @return the RobotSourceFile object itself.
      */
+    @Generated
     public RobotSourceFile setId(UUID id) {
         this.id = id;
         return this;
@@ -92,6 +101,7 @@ public final class RobotSourceFile implements JsonSerializable<RobotSourceFile> 
      *
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -102,6 +112,7 @@ public final class RobotSourceFile implements JsonSerializable<RobotSourceFile> 
      * @param name the name value to set.
      * @return the RobotSourceFile object itself.
      */
+    @Generated
     public RobotSourceFile setName(String name) {
         this.name = name;
         return this;
@@ -112,6 +123,7 @@ public final class RobotSourceFile implements JsonSerializable<RobotSourceFile> 
      *
      * @return the contentType value.
      */
+    @Generated
     public String getContentType() {
         return this.contentType;
     }
@@ -122,6 +134,7 @@ public final class RobotSourceFile implements JsonSerializable<RobotSourceFile> 
      * @param contentType the contentType value to set.
      * @return the RobotSourceFile object itself.
      */
+    @Generated
     public RobotSourceFile setContentType(String contentType) {
         this.contentType = contentType;
         return this;
@@ -132,6 +145,7 @@ public final class RobotSourceFile implements JsonSerializable<RobotSourceFile> 
      *
      * @return the contentLength value.
      */
+    @Generated
     public long getContentLength() {
         return this.contentLength;
     }
@@ -142,6 +156,7 @@ public final class RobotSourceFile implements JsonSerializable<RobotSourceFile> 
      * @param contentLength the contentLength value to set.
      * @return the RobotSourceFile object itself.
      */
+    @Generated
     public RobotSourceFile setContentLength(long contentLength) {
         this.contentLength = contentLength;
         return this;
@@ -152,6 +167,7 @@ public final class RobotSourceFile implements JsonSerializable<RobotSourceFile> 
      *
      * @return the contentHash value.
      */
+    @Generated
     public String getContentHash() {
         return this.contentHash;
     }
@@ -162,6 +178,7 @@ public final class RobotSourceFile implements JsonSerializable<RobotSourceFile> 
      * @param contentHash the contentHash value to set.
      * @return the RobotSourceFile object itself.
      */
+    @Generated
     public RobotSourceFile setContentHash(String contentHash) {
         this.contentHash = contentHash;
         return this;
@@ -170,6 +187,7 @@ public final class RobotSourceFile implements JsonSerializable<RobotSourceFile> 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -190,6 +208,7 @@ public final class RobotSourceFile implements JsonSerializable<RobotSourceFile> 
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RobotSourceFile.
      */
+    @Generated
     public static RobotSourceFile fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RobotSourceFile deserializedRobotSourceFile = new RobotSourceFile();

@@ -22,6 +22,7 @@
  */
 package com.kuflow.rest.model;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -33,11 +34,13 @@ public final class RobotAssetArchitecture extends ExpandableStringEnum<RobotAsse
     /**
      * Static value X86_32 for RobotAssetArchitecture.
      */
+    @Generated
     public static final RobotAssetArchitecture X8632 = fromString("X86_32");
 
     /**
      * Static value X86_64 for RobotAssetArchitecture.
      */
+    @Generated
     public static final RobotAssetArchitecture X8664 = fromString("X86_64");
 
     /**
@@ -45,6 +48,7 @@ public final class RobotAssetArchitecture extends ExpandableStringEnum<RobotAsse
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public RobotAssetArchitecture() {}
 
@@ -54,6 +58,7 @@ public final class RobotAssetArchitecture extends ExpandableStringEnum<RobotAsse
      * @param name a name to look for.
      * @return the corresponding RobotAssetArchitecture.
      */
+    @Generated
     public static RobotAssetArchitecture fromString(String name) {
         return fromString(name, RobotAssetArchitecture.class);
     }
@@ -63,6 +68,7 @@ public final class RobotAssetArchitecture extends ExpandableStringEnum<RobotAsse
      *
      * @return known RobotAssetArchitecture values.
      */
+    @Generated
     public static Collection<RobotAssetArchitecture> values() {
         return values(RobotAssetArchitecture.class);
     }

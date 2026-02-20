@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -38,11 +39,13 @@ public final class ProcessItemTaskCreateParams implements JsonSerializable<Proce
     /*
      * Json value.
      */
+    @Generated
     private JsonValue data;
 
     /**
      * Creates an instance of ProcessItemTaskCreateParams class.
      */
+    @Generated
     public ProcessItemTaskCreateParams() {}
 
     /**
@@ -50,6 +53,7 @@ public final class ProcessItemTaskCreateParams implements JsonSerializable<Proce
      *
      * @return the data value.
      */
+    @Generated
     public JsonValue getData() {
         return this.data;
     }
@@ -60,6 +64,7 @@ public final class ProcessItemTaskCreateParams implements JsonSerializable<Proce
      * @param data the data value to set.
      * @return the ProcessItemTaskCreateParams object itself.
      */
+    @Generated
     public ProcessItemTaskCreateParams setData(JsonValue data) {
         this.data = data;
         return this;
@@ -68,6 +73,7 @@ public final class ProcessItemTaskCreateParams implements JsonSerializable<Proce
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -83,6 +89,7 @@ public final class ProcessItemTaskCreateParams implements JsonSerializable<Proce
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ProcessItemTaskCreateParams.
      */
+    @Generated
     public static ProcessItemTaskCreateParams fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ProcessItemTaskCreateParams deserializedProcessItemTaskCreateParams = new ProcessItemTaskCreateParams();

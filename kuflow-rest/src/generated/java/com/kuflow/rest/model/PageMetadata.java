@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -38,26 +39,31 @@ public final class PageMetadata implements JsonSerializable<PageMetadata> {
     /*
      * The size property.
      */
+    @Generated
     private int size;
 
     /*
      * The page property.
      */
+    @Generated
     private int page;
 
     /*
      * The totalElements property.
      */
+    @Generated
     private long totalElements;
 
     /*
      * The totalPages property.
      */
+    @Generated
     private int totalPages;
 
     /**
      * Creates an instance of PageMetadata class.
      */
+    @Generated
     public PageMetadata() {}
 
     /**
@@ -65,6 +71,7 @@ public final class PageMetadata implements JsonSerializable<PageMetadata> {
      *
      * @return the size value.
      */
+    @Generated
     public int getSize() {
         return this.size;
     }
@@ -75,6 +82,7 @@ public final class PageMetadata implements JsonSerializable<PageMetadata> {
      * @param size the size value to set.
      * @return the PageMetadata object itself.
      */
+    @Generated
     public PageMetadata setSize(int size) {
         this.size = size;
         return this;
@@ -85,6 +93,7 @@ public final class PageMetadata implements JsonSerializable<PageMetadata> {
      *
      * @return the page value.
      */
+    @Generated
     public int getPage() {
         return this.page;
     }
@@ -95,6 +104,7 @@ public final class PageMetadata implements JsonSerializable<PageMetadata> {
      * @param page the page value to set.
      * @return the PageMetadata object itself.
      */
+    @Generated
     public PageMetadata setPage(int page) {
         this.page = page;
         return this;
@@ -105,6 +115,7 @@ public final class PageMetadata implements JsonSerializable<PageMetadata> {
      *
      * @return the totalElements value.
      */
+    @Generated
     public long getTotalElements() {
         return this.totalElements;
     }
@@ -115,6 +126,7 @@ public final class PageMetadata implements JsonSerializable<PageMetadata> {
      * @param totalElements the totalElements value to set.
      * @return the PageMetadata object itself.
      */
+    @Generated
     public PageMetadata setTotalElements(long totalElements) {
         this.totalElements = totalElements;
         return this;
@@ -125,6 +137,7 @@ public final class PageMetadata implements JsonSerializable<PageMetadata> {
      *
      * @return the totalPages value.
      */
+    @Generated
     public int getTotalPages() {
         return this.totalPages;
     }
@@ -135,6 +148,7 @@ public final class PageMetadata implements JsonSerializable<PageMetadata> {
      * @param totalPages the totalPages value to set.
      * @return the PageMetadata object itself.
      */
+    @Generated
     public PageMetadata setTotalPages(int totalPages) {
         this.totalPages = totalPages;
         return this;
@@ -143,6 +157,7 @@ public final class PageMetadata implements JsonSerializable<PageMetadata> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -162,6 +177,7 @@ public final class PageMetadata implements JsonSerializable<PageMetadata> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PageMetadata.
      */
+    @Generated
     public static PageMetadata fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PageMetadata deserializedPageMetadata = new PageMetadata();

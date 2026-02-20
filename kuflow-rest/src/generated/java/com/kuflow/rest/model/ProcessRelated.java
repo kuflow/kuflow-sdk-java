@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -41,16 +42,19 @@ public final class ProcessRelated implements JsonSerializable<ProcessRelated> {
     /*
      * Processes whose relationship target is the current process.
      */
+    @Generated
     private List<UUID> incoming;
 
     /*
      * Processes to which the current process relates.
      */
+    @Generated
     private List<UUID> outcoming;
 
     /**
      * Creates an instance of ProcessRelated class.
      */
+    @Generated
     public ProcessRelated() {}
 
     /**
@@ -58,6 +62,7 @@ public final class ProcessRelated implements JsonSerializable<ProcessRelated> {
      *
      * @return the incoming value.
      */
+    @Generated
     public List<UUID> getIncoming() {
         return this.incoming;
     }
@@ -68,6 +73,7 @@ public final class ProcessRelated implements JsonSerializable<ProcessRelated> {
      * @param incoming the incoming value to set.
      * @return the ProcessRelated object itself.
      */
+    @Generated
     public ProcessRelated setIncoming(List<UUID> incoming) {
         this.incoming = incoming;
         return this;
@@ -78,6 +84,7 @@ public final class ProcessRelated implements JsonSerializable<ProcessRelated> {
      *
      * @return the outcoming value.
      */
+    @Generated
     public List<UUID> getOutcoming() {
         return this.outcoming;
     }
@@ -88,6 +95,7 @@ public final class ProcessRelated implements JsonSerializable<ProcessRelated> {
      * @param outcoming the outcoming value to set.
      * @return the ProcessRelated object itself.
      */
+    @Generated
     public ProcessRelated setOutcoming(List<UUID> outcoming) {
         this.outcoming = outcoming;
         return this;
@@ -96,6 +104,7 @@ public final class ProcessRelated implements JsonSerializable<ProcessRelated> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -112,6 +121,7 @@ public final class ProcessRelated implements JsonSerializable<ProcessRelated> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the ProcessRelated.
      */
+    @Generated
     public static ProcessRelated fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ProcessRelated deserializedProcessRelated = new ProcessRelated();

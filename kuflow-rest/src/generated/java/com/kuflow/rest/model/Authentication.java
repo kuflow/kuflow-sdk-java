@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -42,31 +43,37 @@ public final class Authentication extends AbstractAudited {
     /*
      * The id property.
      */
+    @Generated
     private UUID id;
 
     /*
      * The type property.
      */
+    @Generated
     private AuthenticationType type;
 
     /*
      * Tenant id. This attribute is required when an OAuth2 authentication is used.
      */
+    @Generated
     private UUID tenantId;
 
     /*
      * The engineToken property.
      */
+    @Generated
     private AuthenticationEngineToken engineToken;
 
     /*
      * The engineCertificate property.
      */
+    @Generated
     private AuthenticationEngineCertificate engineCertificate;
 
     /**
      * Creates an instance of Authentication class.
      */
+    @Generated
     public Authentication() {}
 
     /**
@@ -74,6 +81,7 @@ public final class Authentication extends AbstractAudited {
      *
      * @return the id value.
      */
+    @Generated
     public UUID getId() {
         return this.id;
     }
@@ -84,6 +92,7 @@ public final class Authentication extends AbstractAudited {
      * @param id the id value to set.
      * @return the Authentication object itself.
      */
+    @Generated
     public Authentication setId(UUID id) {
         this.id = id;
         return this;
@@ -94,6 +103,7 @@ public final class Authentication extends AbstractAudited {
      *
      * @return the type value.
      */
+    @Generated
     public AuthenticationType getType() {
         return this.type;
     }
@@ -104,6 +114,7 @@ public final class Authentication extends AbstractAudited {
      * @param type the type value to set.
      * @return the Authentication object itself.
      */
+    @Generated
     public Authentication setType(AuthenticationType type) {
         this.type = type;
         return this;
@@ -114,6 +125,7 @@ public final class Authentication extends AbstractAudited {
      *
      * @return the tenantId value.
      */
+    @Generated
     public UUID getTenantId() {
         return this.tenantId;
     }
@@ -124,6 +136,7 @@ public final class Authentication extends AbstractAudited {
      * @param tenantId the tenantId value to set.
      * @return the Authentication object itself.
      */
+    @Generated
     public Authentication setTenantId(UUID tenantId) {
         this.tenantId = tenantId;
         return this;
@@ -134,6 +147,7 @@ public final class Authentication extends AbstractAudited {
      *
      * @return the engineToken value.
      */
+    @Generated
     public AuthenticationEngineToken getEngineToken() {
         return this.engineToken;
     }
@@ -144,6 +158,7 @@ public final class Authentication extends AbstractAudited {
      * @param engineToken the engineToken value to set.
      * @return the Authentication object itself.
      */
+    @Generated
     public Authentication setEngineToken(AuthenticationEngineToken engineToken) {
         this.engineToken = engineToken;
         return this;
@@ -154,6 +169,7 @@ public final class Authentication extends AbstractAudited {
      *
      * @return the engineCertificate value.
      */
+    @Generated
     public AuthenticationEngineCertificate getEngineCertificate() {
         return this.engineCertificate;
     }
@@ -164,6 +180,7 @@ public final class Authentication extends AbstractAudited {
      * @param engineCertificate the engineCertificate value to set.
      * @return the Authentication object itself.
      */
+    @Generated
     public Authentication setEngineCertificate(AuthenticationEngineCertificate engineCertificate) {
         this.engineCertificate = engineCertificate;
         return this;
@@ -172,6 +189,7 @@ public final class Authentication extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Authentication setCreatedBy(UUID createdBy) {
         super.setCreatedBy(createdBy);
@@ -181,6 +199,7 @@ public final class Authentication extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Authentication setCreatedAt(OffsetDateTime createdAt) {
         super.setCreatedAt(createdAt);
@@ -190,6 +209,7 @@ public final class Authentication extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Authentication setLastModifiedBy(UUID lastModifiedBy) {
         super.setLastModifiedBy(lastModifiedBy);
@@ -199,6 +219,7 @@ public final class Authentication extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Authentication setLastModifiedAt(OffsetDateTime lastModifiedAt) {
         super.setLastModifiedAt(lastModifiedAt);
@@ -208,6 +229,7 @@ public final class Authentication extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -237,6 +259,7 @@ public final class Authentication extends AbstractAudited {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the Authentication.
      */
+    @Generated
     public static Authentication fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Authentication deserializedAuthentication = new Authentication();

@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -40,11 +41,13 @@ public final class DocumentReference implements JsonSerializable<DocumentReferen
      *
      * Example: `kuflow-file:uri=xxx-yyy-zzz;type=application/json;size=500;name=file.json;`
      */
+    @Generated
     private String documentUri;
 
     /**
      * Creates an instance of DocumentReference class.
      */
+    @Generated
     public DocumentReference() {}
 
     /**
@@ -54,6 +57,7 @@ public final class DocumentReference implements JsonSerializable<DocumentReferen
      *
      * @return the documentUri value.
      */
+    @Generated
     public String getDocumentUri() {
         return this.documentUri;
     }
@@ -66,6 +70,7 @@ public final class DocumentReference implements JsonSerializable<DocumentReferen
      * @param documentUri the documentUri value to set.
      * @return the DocumentReference object itself.
      */
+    @Generated
     public DocumentReference setDocumentUri(String documentUri) {
         this.documentUri = documentUri;
         return this;
@@ -74,6 +79,7 @@ public final class DocumentReference implements JsonSerializable<DocumentReferen
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -90,6 +96,7 @@ public final class DocumentReference implements JsonSerializable<DocumentReferen
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentReference.
      */
+    @Generated
     public static DocumentReference fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DocumentReference deserializedDocumentReference = new DocumentReference();

@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -38,11 +39,13 @@ public final class BusinessArtifactPage extends Page {
     /*
      * The content property.
      */
+    @Generated
     private List<BusinessArtifactPageItem> content;
 
     /**
      * Creates an instance of BusinessArtifactPage class.
      */
+    @Generated
     public BusinessArtifactPage() {}
 
     /**
@@ -50,6 +53,7 @@ public final class BusinessArtifactPage extends Page {
      *
      * @return the content value.
      */
+    @Generated
     public List<BusinessArtifactPageItem> getContent() {
         return this.content;
     }
@@ -60,6 +64,7 @@ public final class BusinessArtifactPage extends Page {
      * @param content the content value to set.
      * @return the BusinessArtifactPage object itself.
      */
+    @Generated
     public BusinessArtifactPage setContent(List<BusinessArtifactPageItem> content) {
         this.content = content;
         return this;
@@ -68,6 +73,7 @@ public final class BusinessArtifactPage extends Page {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public BusinessArtifactPage setMetadata(PageMetadata metadata) {
         super.setMetadata(metadata);
@@ -77,6 +83,7 @@ public final class BusinessArtifactPage extends Page {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -94,6 +101,7 @@ public final class BusinessArtifactPage extends Page {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BusinessArtifactPage.
      */
+    @Generated
     public static BusinessArtifactPage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BusinessArtifactPage deserializedBusinessArtifactPage = new BusinessArtifactPage();

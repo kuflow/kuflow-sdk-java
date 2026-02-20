@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -38,11 +39,13 @@ public final class BusinessArtifactDataUpdateParams implements JsonSerializable<
     /*
      * Json value.
      */
+    @Generated
     private JsonValue data;
 
     /**
      * Creates an instance of BusinessArtifactDataUpdateParams class.
      */
+    @Generated
     public BusinessArtifactDataUpdateParams() {}
 
     /**
@@ -50,6 +53,7 @@ public final class BusinessArtifactDataUpdateParams implements JsonSerializable<
      *
      * @return the data value.
      */
+    @Generated
     public JsonValue getData() {
         return this.data;
     }
@@ -60,6 +64,7 @@ public final class BusinessArtifactDataUpdateParams implements JsonSerializable<
      * @param data the data value to set.
      * @return the BusinessArtifactDataUpdateParams object itself.
      */
+    @Generated
     public BusinessArtifactDataUpdateParams setData(JsonValue data) {
         this.data = data;
         return this;
@@ -68,6 +73,7 @@ public final class BusinessArtifactDataUpdateParams implements JsonSerializable<
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -84,6 +90,7 @@ public final class BusinessArtifactDataUpdateParams implements JsonSerializable<
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BusinessArtifactDataUpdateParams.
      */
+    @Generated
     public static BusinessArtifactDataUpdateParams fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BusinessArtifactDataUpdateParams deserializedBusinessArtifactDataUpdateParams = new BusinessArtifactDataUpdateParams();

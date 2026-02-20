@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -38,16 +39,19 @@ public final class ProcessItemTaskAppendLogParams implements JsonSerializable<Pr
     /*
      * The message property.
      */
+    @Generated
     private String message;
 
     /*
      * The level property.
      */
+    @Generated
     private ProcessItemTaskLogLevel level;
 
     /**
      * Creates an instance of ProcessItemTaskAppendLogParams class.
      */
+    @Generated
     public ProcessItemTaskAppendLogParams() {}
 
     /**
@@ -55,6 +59,7 @@ public final class ProcessItemTaskAppendLogParams implements JsonSerializable<Pr
      *
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -65,6 +70,7 @@ public final class ProcessItemTaskAppendLogParams implements JsonSerializable<Pr
      * @param message the message value to set.
      * @return the ProcessItemTaskAppendLogParams object itself.
      */
+    @Generated
     public ProcessItemTaskAppendLogParams setMessage(String message) {
         this.message = message;
         return this;
@@ -75,6 +81,7 @@ public final class ProcessItemTaskAppendLogParams implements JsonSerializable<Pr
      *
      * @return the level value.
      */
+    @Generated
     public ProcessItemTaskLogLevel getLevel() {
         return this.level;
     }
@@ -85,6 +92,7 @@ public final class ProcessItemTaskAppendLogParams implements JsonSerializable<Pr
      * @param level the level value to set.
      * @return the ProcessItemTaskAppendLogParams object itself.
      */
+    @Generated
     public ProcessItemTaskAppendLogParams setLevel(ProcessItemTaskLogLevel level) {
         this.level = level;
         return this;
@@ -93,6 +101,7 @@ public final class ProcessItemTaskAppendLogParams implements JsonSerializable<Pr
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -110,6 +119,7 @@ public final class ProcessItemTaskAppendLogParams implements JsonSerializable<Pr
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ProcessItemTaskAppendLogParams.
      */
+    @Generated
     public static ProcessItemTaskAppendLogParams fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ProcessItemTaskAppendLogParams deserializedProcessItemTaskAppendLogParams = new ProcessItemTaskAppendLogParams();

@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -40,31 +41,37 @@ public final class ProcessCreateParams implements JsonSerializable<ProcessCreate
     /*
      * The id property.
      */
+    @Generated
     private UUID id;
 
     /*
      * The processDefinitionId property.
      */
+    @Generated
     private UUID processDefinitionId;
 
     /*
      * Json value.
      */
+    @Generated
     private JsonValue metadata;
 
     /*
      * The initiatorId property.
      */
+    @Generated
     private UUID initiatorId;
 
     /*
      * The initiatorEmail property.
      */
+    @Generated
     private String initiatorEmail;
 
     /**
      * Creates an instance of ProcessCreateParams class.
      */
+    @Generated
     public ProcessCreateParams() {}
 
     /**
@@ -72,6 +79,7 @@ public final class ProcessCreateParams implements JsonSerializable<ProcessCreate
      *
      * @return the id value.
      */
+    @Generated
     public UUID getId() {
         return this.id;
     }
@@ -82,6 +90,7 @@ public final class ProcessCreateParams implements JsonSerializable<ProcessCreate
      * @param id the id value to set.
      * @return the ProcessCreateParams object itself.
      */
+    @Generated
     public ProcessCreateParams setId(UUID id) {
         this.id = id;
         return this;
@@ -92,6 +101,7 @@ public final class ProcessCreateParams implements JsonSerializable<ProcessCreate
      *
      * @return the processDefinitionId value.
      */
+    @Generated
     public UUID getProcessDefinitionId() {
         return this.processDefinitionId;
     }
@@ -102,6 +112,7 @@ public final class ProcessCreateParams implements JsonSerializable<ProcessCreate
      * @param processDefinitionId the processDefinitionId value to set.
      * @return the ProcessCreateParams object itself.
      */
+    @Generated
     public ProcessCreateParams setProcessDefinitionId(UUID processDefinitionId) {
         this.processDefinitionId = processDefinitionId;
         return this;
@@ -112,6 +123,7 @@ public final class ProcessCreateParams implements JsonSerializable<ProcessCreate
      *
      * @return the metadata value.
      */
+    @Generated
     public JsonValue getMetadata() {
         return this.metadata;
     }
@@ -122,6 +134,7 @@ public final class ProcessCreateParams implements JsonSerializable<ProcessCreate
      * @param metadata the metadata value to set.
      * @return the ProcessCreateParams object itself.
      */
+    @Generated
     public ProcessCreateParams setMetadata(JsonValue metadata) {
         this.metadata = metadata;
         return this;
@@ -132,6 +145,7 @@ public final class ProcessCreateParams implements JsonSerializable<ProcessCreate
      *
      * @return the initiatorId value.
      */
+    @Generated
     public UUID getInitiatorId() {
         return this.initiatorId;
     }
@@ -142,6 +156,7 @@ public final class ProcessCreateParams implements JsonSerializable<ProcessCreate
      * @param initiatorId the initiatorId value to set.
      * @return the ProcessCreateParams object itself.
      */
+    @Generated
     public ProcessCreateParams setInitiatorId(UUID initiatorId) {
         this.initiatorId = initiatorId;
         return this;
@@ -152,6 +167,7 @@ public final class ProcessCreateParams implements JsonSerializable<ProcessCreate
      *
      * @return the initiatorEmail value.
      */
+    @Generated
     public String getInitiatorEmail() {
         return this.initiatorEmail;
     }
@@ -162,6 +178,7 @@ public final class ProcessCreateParams implements JsonSerializable<ProcessCreate
      * @param initiatorEmail the initiatorEmail value to set.
      * @return the ProcessCreateParams object itself.
      */
+    @Generated
     public ProcessCreateParams setInitiatorEmail(String initiatorEmail) {
         this.initiatorEmail = initiatorEmail;
         return this;
@@ -170,6 +187,7 @@ public final class ProcessCreateParams implements JsonSerializable<ProcessCreate
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -190,6 +208,7 @@ public final class ProcessCreateParams implements JsonSerializable<ProcessCreate
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ProcessCreateParams.
      */
+    @Generated
     public static ProcessCreateParams fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ProcessCreateParams deserializedProcessCreateParams = new ProcessCreateParams();

@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -40,46 +41,55 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
     /*
      * The id property.
      */
+    @Generated
     private UUID id;
 
     /*
      * Process Item Type
      */
+    @Generated
     private ProcessItemType type;
 
     /*
      * The processId property.
      */
+    @Generated
     private UUID processId;
 
     /*
      * The ownerId property.
      */
+    @Generated
     private UUID ownerId;
 
     /*
      * The ownerEmail property.
      */
+    @Generated
     private String ownerEmail;
 
     /*
      * The processItemDefinitionCode property.
      */
+    @Generated
     private String processItemDefinitionCode;
 
     /*
      * The task property.
      */
+    @Generated
     private ProcessItemTaskCreateParams task;
 
     /*
      * The message property.
      */
+    @Generated
     private ProcessItemMessageCreateParams message;
 
     /**
      * Creates an instance of ProcessItemCreateParams class.
      */
+    @Generated
     public ProcessItemCreateParams() {}
 
     /**
@@ -87,6 +97,7 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
      *
      * @return the id value.
      */
+    @Generated
     public UUID getId() {
         return this.id;
     }
@@ -97,6 +108,7 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
      * @param id the id value to set.
      * @return the ProcessItemCreateParams object itself.
      */
+    @Generated
     public ProcessItemCreateParams setId(UUID id) {
         this.id = id;
         return this;
@@ -107,6 +119,7 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
      *
      * @return the type value.
      */
+    @Generated
     public ProcessItemType getType() {
         return this.type;
     }
@@ -117,6 +130,7 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
      * @param type the type value to set.
      * @return the ProcessItemCreateParams object itself.
      */
+    @Generated
     public ProcessItemCreateParams setType(ProcessItemType type) {
         this.type = type;
         return this;
@@ -127,6 +141,7 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
      *
      * @return the processId value.
      */
+    @Generated
     public UUID getProcessId() {
         return this.processId;
     }
@@ -137,6 +152,7 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
      * @param processId the processId value to set.
      * @return the ProcessItemCreateParams object itself.
      */
+    @Generated
     public ProcessItemCreateParams setProcessId(UUID processId) {
         this.processId = processId;
         return this;
@@ -147,6 +163,7 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
      *
      * @return the ownerId value.
      */
+    @Generated
     public UUID getOwnerId() {
         return this.ownerId;
     }
@@ -157,6 +174,7 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
      * @param ownerId the ownerId value to set.
      * @return the ProcessItemCreateParams object itself.
      */
+    @Generated
     public ProcessItemCreateParams setOwnerId(UUID ownerId) {
         this.ownerId = ownerId;
         return this;
@@ -167,6 +185,7 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
      *
      * @return the ownerEmail value.
      */
+    @Generated
     public String getOwnerEmail() {
         return this.ownerEmail;
     }
@@ -177,6 +196,7 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
      * @param ownerEmail the ownerEmail value to set.
      * @return the ProcessItemCreateParams object itself.
      */
+    @Generated
     public ProcessItemCreateParams setOwnerEmail(String ownerEmail) {
         this.ownerEmail = ownerEmail;
         return this;
@@ -187,6 +207,7 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
      *
      * @return the processItemDefinitionCode value.
      */
+    @Generated
     public String getProcessItemDefinitionCode() {
         return this.processItemDefinitionCode;
     }
@@ -197,6 +218,7 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
      * @param processItemDefinitionCode the processItemDefinitionCode value to set.
      * @return the ProcessItemCreateParams object itself.
      */
+    @Generated
     public ProcessItemCreateParams setProcessItemDefinitionCode(String processItemDefinitionCode) {
         this.processItemDefinitionCode = processItemDefinitionCode;
         return this;
@@ -207,6 +229,7 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
      *
      * @return the task value.
      */
+    @Generated
     public ProcessItemTaskCreateParams getTask() {
         return this.task;
     }
@@ -217,6 +240,7 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
      * @param task the task value to set.
      * @return the ProcessItemCreateParams object itself.
      */
+    @Generated
     public ProcessItemCreateParams setTask(ProcessItemTaskCreateParams task) {
         this.task = task;
         return this;
@@ -227,6 +251,7 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
      *
      * @return the message value.
      */
+    @Generated
     public ProcessItemMessageCreateParams getMessage() {
         return this.message;
     }
@@ -237,6 +262,7 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
      * @param message the message value to set.
      * @return the ProcessItemCreateParams object itself.
      */
+    @Generated
     public ProcessItemCreateParams setMessage(ProcessItemMessageCreateParams message) {
         this.message = message;
         return this;
@@ -245,6 +271,7 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -268,6 +295,7 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ProcessItemCreateParams.
      */
+    @Generated
     public static ProcessItemCreateParams fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ProcessItemCreateParams deserializedProcessItemCreateParams = new ProcessItemCreateParams();

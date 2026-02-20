@@ -22,6 +22,7 @@
  */
 package com.kuflow.rest.model;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -33,11 +34,13 @@ public final class RobotSourceType extends ExpandableStringEnum<RobotSourceType>
     /**
      * Static value PACKAGE for RobotSourceType.
      */
+    @Generated
     public static final RobotSourceType PACKAGE = fromString("PACKAGE");
 
     /**
      * Static value UNKNOWN for RobotSourceType.
      */
+    @Generated
     public static final RobotSourceType UNKNOWN = fromString("UNKNOWN");
 
     /**
@@ -45,6 +48,7 @@ public final class RobotSourceType extends ExpandableStringEnum<RobotSourceType>
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public RobotSourceType() {}
 
@@ -54,6 +58,7 @@ public final class RobotSourceType extends ExpandableStringEnum<RobotSourceType>
      * @param name a name to look for.
      * @return the corresponding RobotSourceType.
      */
+    @Generated
     public static RobotSourceType fromString(String name) {
         return fromString(name, RobotSourceType.class);
     }
@@ -63,6 +68,7 @@ public final class RobotSourceType extends ExpandableStringEnum<RobotSourceType>
      *
      * @return known RobotSourceType values.
      */
+    @Generated
     public static Collection<RobotSourceType> values() {
         return values(RobotSourceType.class);
     }

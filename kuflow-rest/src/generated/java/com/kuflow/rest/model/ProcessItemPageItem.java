@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -42,46 +43,55 @@ public final class ProcessItemPageItem extends AbstractAudited {
     /*
      * The id property.
      */
+    @Generated
     private UUID id;
 
     /*
      * Process Item Type
      */
+    @Generated
     private ProcessItemType type;
 
     /*
      * The processId property.
      */
+    @Generated
     private UUID processId;
 
     /*
      * Principal ID.
      */
+    @Generated
     private UUID ownerId;
 
     /*
      * Tenant ID.
      */
+    @Generated
     private UUID tenantId;
 
     /*
      * The processItemDefinitionRef property.
      */
+    @Generated
     private ProcessItemDefinitionRef processItemDefinitionRef;
 
     /*
      * The task property.
      */
+    @Generated
     private ProcessItemTaskPageItem task;
 
     /*
      * The message property.
      */
+    @Generated
     private ProcessItemMessagePageItem message;
 
     /**
      * Creates an instance of ProcessItemPageItem class.
      */
+    @Generated
     public ProcessItemPageItem() {}
 
     /**
@@ -89,6 +99,7 @@ public final class ProcessItemPageItem extends AbstractAudited {
      *
      * @return the id value.
      */
+    @Generated
     public UUID getId() {
         return this.id;
     }
@@ -99,6 +110,7 @@ public final class ProcessItemPageItem extends AbstractAudited {
      * @param id the id value to set.
      * @return the ProcessItemPageItem object itself.
      */
+    @Generated
     public ProcessItemPageItem setId(UUID id) {
         this.id = id;
         return this;
@@ -109,6 +121,7 @@ public final class ProcessItemPageItem extends AbstractAudited {
      *
      * @return the type value.
      */
+    @Generated
     public ProcessItemType getType() {
         return this.type;
     }
@@ -119,6 +132,7 @@ public final class ProcessItemPageItem extends AbstractAudited {
      * @param type the type value to set.
      * @return the ProcessItemPageItem object itself.
      */
+    @Generated
     public ProcessItemPageItem setType(ProcessItemType type) {
         this.type = type;
         return this;
@@ -129,6 +143,7 @@ public final class ProcessItemPageItem extends AbstractAudited {
      *
      * @return the processId value.
      */
+    @Generated
     public UUID getProcessId() {
         return this.processId;
     }
@@ -139,6 +154,7 @@ public final class ProcessItemPageItem extends AbstractAudited {
      * @param processId the processId value to set.
      * @return the ProcessItemPageItem object itself.
      */
+    @Generated
     public ProcessItemPageItem setProcessId(UUID processId) {
         this.processId = processId;
         return this;
@@ -149,6 +165,7 @@ public final class ProcessItemPageItem extends AbstractAudited {
      *
      * @return the ownerId value.
      */
+    @Generated
     public UUID getOwnerId() {
         return this.ownerId;
     }
@@ -159,6 +176,7 @@ public final class ProcessItemPageItem extends AbstractAudited {
      * @param ownerId the ownerId value to set.
      * @return the ProcessItemPageItem object itself.
      */
+    @Generated
     public ProcessItemPageItem setOwnerId(UUID ownerId) {
         this.ownerId = ownerId;
         return this;
@@ -169,6 +187,7 @@ public final class ProcessItemPageItem extends AbstractAudited {
      *
      * @return the tenantId value.
      */
+    @Generated
     public UUID getTenantId() {
         return this.tenantId;
     }
@@ -179,6 +198,7 @@ public final class ProcessItemPageItem extends AbstractAudited {
      * @param tenantId the tenantId value to set.
      * @return the ProcessItemPageItem object itself.
      */
+    @Generated
     public ProcessItemPageItem setTenantId(UUID tenantId) {
         this.tenantId = tenantId;
         return this;
@@ -189,6 +209,7 @@ public final class ProcessItemPageItem extends AbstractAudited {
      *
      * @return the processItemDefinitionRef value.
      */
+    @Generated
     public ProcessItemDefinitionRef getProcessItemDefinitionRef() {
         return this.processItemDefinitionRef;
     }
@@ -199,6 +220,7 @@ public final class ProcessItemPageItem extends AbstractAudited {
      * @param processItemDefinitionRef the processItemDefinitionRef value to set.
      * @return the ProcessItemPageItem object itself.
      */
+    @Generated
     public ProcessItemPageItem setProcessItemDefinitionRef(ProcessItemDefinitionRef processItemDefinitionRef) {
         this.processItemDefinitionRef = processItemDefinitionRef;
         return this;
@@ -209,6 +231,7 @@ public final class ProcessItemPageItem extends AbstractAudited {
      *
      * @return the task value.
      */
+    @Generated
     public ProcessItemTaskPageItem getTask() {
         return this.task;
     }
@@ -219,6 +242,7 @@ public final class ProcessItemPageItem extends AbstractAudited {
      * @param task the task value to set.
      * @return the ProcessItemPageItem object itself.
      */
+    @Generated
     public ProcessItemPageItem setTask(ProcessItemTaskPageItem task) {
         this.task = task;
         return this;
@@ -229,6 +253,7 @@ public final class ProcessItemPageItem extends AbstractAudited {
      *
      * @return the message value.
      */
+    @Generated
     public ProcessItemMessagePageItem getMessage() {
         return this.message;
     }
@@ -239,6 +264,7 @@ public final class ProcessItemPageItem extends AbstractAudited {
      * @param message the message value to set.
      * @return the ProcessItemPageItem object itself.
      */
+    @Generated
     public ProcessItemPageItem setMessage(ProcessItemMessagePageItem message) {
         this.message = message;
         return this;
@@ -247,6 +273,7 @@ public final class ProcessItemPageItem extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ProcessItemPageItem setCreatedBy(UUID createdBy) {
         super.setCreatedBy(createdBy);
@@ -256,6 +283,7 @@ public final class ProcessItemPageItem extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ProcessItemPageItem setCreatedAt(OffsetDateTime createdAt) {
         super.setCreatedAt(createdAt);
@@ -265,6 +293,7 @@ public final class ProcessItemPageItem extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ProcessItemPageItem setLastModifiedBy(UUID lastModifiedBy) {
         super.setLastModifiedBy(lastModifiedBy);
@@ -274,6 +303,7 @@ public final class ProcessItemPageItem extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ProcessItemPageItem setLastModifiedAt(OffsetDateTime lastModifiedAt) {
         super.setLastModifiedAt(lastModifiedAt);
@@ -283,6 +313,7 @@ public final class ProcessItemPageItem extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -316,6 +347,7 @@ public final class ProcessItemPageItem extends AbstractAudited {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ProcessItemPageItem.
      */
+    @Generated
     public static ProcessItemPageItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ProcessItemPageItem deserializedProcessItemPageItem = new ProcessItemPageItem();

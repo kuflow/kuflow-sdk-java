@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -42,21 +43,25 @@ public final class Tenant extends AbstractAudited {
     /*
      * The id property.
      */
+    @Generated
     private UUID id;
 
     /*
      * The name property.
      */
+    @Generated
     private String name;
 
     /*
      * Tenant pricing plan
      */
+    @Generated
     private TenantPricingPlan plan;
 
     /**
      * Creates an instance of Tenant class.
      */
+    @Generated
     public Tenant() {}
 
     /**
@@ -64,6 +69,7 @@ public final class Tenant extends AbstractAudited {
      *
      * @return the id value.
      */
+    @Generated
     public UUID getId() {
         return this.id;
     }
@@ -74,6 +80,7 @@ public final class Tenant extends AbstractAudited {
      * @param id the id value to set.
      * @return the Tenant object itself.
      */
+    @Generated
     public Tenant setId(UUID id) {
         this.id = id;
         return this;
@@ -84,6 +91,7 @@ public final class Tenant extends AbstractAudited {
      *
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -94,6 +102,7 @@ public final class Tenant extends AbstractAudited {
      * @param name the name value to set.
      * @return the Tenant object itself.
      */
+    @Generated
     public Tenant setName(String name) {
         this.name = name;
         return this;
@@ -104,6 +113,7 @@ public final class Tenant extends AbstractAudited {
      *
      * @return the plan value.
      */
+    @Generated
     public TenantPricingPlan getPlan() {
         return this.plan;
     }
@@ -114,6 +124,7 @@ public final class Tenant extends AbstractAudited {
      * @param plan the plan value to set.
      * @return the Tenant object itself.
      */
+    @Generated
     public Tenant setPlan(TenantPricingPlan plan) {
         this.plan = plan;
         return this;
@@ -122,6 +133,7 @@ public final class Tenant extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Tenant setCreatedBy(UUID createdBy) {
         super.setCreatedBy(createdBy);
@@ -131,6 +143,7 @@ public final class Tenant extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Tenant setCreatedAt(OffsetDateTime createdAt) {
         super.setCreatedAt(createdAt);
@@ -140,6 +153,7 @@ public final class Tenant extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Tenant setLastModifiedBy(UUID lastModifiedBy) {
         super.setLastModifiedBy(lastModifiedBy);
@@ -149,6 +163,7 @@ public final class Tenant extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Tenant setLastModifiedAt(OffsetDateTime lastModifiedAt) {
         super.setLastModifiedAt(lastModifiedAt);
@@ -158,6 +173,7 @@ public final class Tenant extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -186,6 +202,7 @@ public final class Tenant extends AbstractAudited {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Tenant.
      */
+    @Generated
     public static Tenant fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Tenant deserializedTenant = new Tenant();

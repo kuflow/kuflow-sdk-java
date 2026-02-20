@@ -22,6 +22,7 @@
  */
 package com.kuflow.rest.model;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -33,16 +34,19 @@ public final class ProcessItemTaskLogLevel extends ExpandableStringEnum<ProcessI
     /**
      * Static value INFO for ProcessItemTaskLogLevel.
      */
+    @Generated
     public static final ProcessItemTaskLogLevel INFO = fromString("INFO");
 
     /**
      * Static value WARN for ProcessItemTaskLogLevel.
      */
+    @Generated
     public static final ProcessItemTaskLogLevel WARN = fromString("WARN");
 
     /**
      * Static value ERROR for ProcessItemTaskLogLevel.
      */
+    @Generated
     public static final ProcessItemTaskLogLevel ERROR = fromString("ERROR");
 
     /**
@@ -50,6 +54,7 @@ public final class ProcessItemTaskLogLevel extends ExpandableStringEnum<ProcessI
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ProcessItemTaskLogLevel() {}
 
@@ -59,6 +64,7 @@ public final class ProcessItemTaskLogLevel extends ExpandableStringEnum<ProcessI
      * @param name a name to look for.
      * @return the corresponding ProcessItemTaskLogLevel.
      */
+    @Generated
     public static ProcessItemTaskLogLevel fromString(String name) {
         return fromString(name, ProcessItemTaskLogLevel.class);
     }
@@ -68,6 +74,7 @@ public final class ProcessItemTaskLogLevel extends ExpandableStringEnum<ProcessI
      *
      * @return known ProcessItemTaskLogLevel values.
      */
+    @Generated
     public static Collection<ProcessItemTaskLogLevel> values() {
         return values(ProcessItemTaskLogLevel.class);
     }

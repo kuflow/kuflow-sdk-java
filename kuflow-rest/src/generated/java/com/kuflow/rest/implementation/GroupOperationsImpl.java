@@ -75,7 +75,7 @@ public final class GroupOperationsImpl {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "KuFlowClientGroupOpe")
+    @ServiceInterface(name = "KuFlowClientGroupOperations")
     public interface GroupOperationsService {
         @Get("/groups")
         @ExpectedResponses({ 200 })

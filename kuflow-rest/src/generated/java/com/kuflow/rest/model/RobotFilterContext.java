@@ -22,6 +22,7 @@
  */
 package com.kuflow.rest.model;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -35,11 +36,13 @@ public final class RobotFilterContext extends ExpandableStringEnum<RobotFilterCo
     /**
      * Static value READY for RobotFilterContext.
      */
+    @Generated
     public static final RobotFilterContext READY = fromString("READY");
 
     /**
      * Static value DEFAULT for RobotFilterContext.
      */
+    @Generated
     public static final RobotFilterContext DEFAULT = fromString("DEFAULT");
 
     /**
@@ -47,6 +50,7 @@ public final class RobotFilterContext extends ExpandableStringEnum<RobotFilterCo
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public RobotFilterContext() {}
 
@@ -56,6 +60,7 @@ public final class RobotFilterContext extends ExpandableStringEnum<RobotFilterCo
      * @param name a name to look for.
      * @return the corresponding RobotFilterContext.
      */
+    @Generated
     public static RobotFilterContext fromString(String name) {
         return fromString(name, RobotFilterContext.class);
     }
@@ -65,6 +70,7 @@ public final class RobotFilterContext extends ExpandableStringEnum<RobotFilterCo
      *
      * @return known RobotFilterContext values.
      */
+    @Generated
     public static Collection<RobotFilterContext> values() {
         return values(RobotFilterContext.class);
     }

@@ -90,7 +90,7 @@ public final class ProcessOperationsImpl {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "KuFlowClientProcessO")
+    @ServiceInterface(name = "KuFlowClientProcessOperations")
     public interface ProcessOperationsService {
         @Get("/processes")
         @ExpectedResponses({ 200 })

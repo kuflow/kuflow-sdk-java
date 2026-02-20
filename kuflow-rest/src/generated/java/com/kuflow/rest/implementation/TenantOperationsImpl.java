@@ -77,7 +77,7 @@ public final class TenantOperationsImpl {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "KuFlowClientTenantOp")
+    @ServiceInterface(name = "KuFlowClientTenantOperations")
     public interface TenantOperationsService {
         @Get("/tenants")
         @ExpectedResponses({ 200 })

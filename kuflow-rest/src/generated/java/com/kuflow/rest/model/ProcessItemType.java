@@ -22,6 +22,7 @@
  */
 package com.kuflow.rest.model;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -33,16 +34,19 @@ public final class ProcessItemType extends ExpandableStringEnum<ProcessItemType>
     /**
      * Static value TASK for ProcessItemType.
      */
+    @Generated
     public static final ProcessItemType TASK = fromString("TASK");
 
     /**
      * Static value MESSAGE for ProcessItemType.
      */
+    @Generated
     public static final ProcessItemType MESSAGE = fromString("MESSAGE");
 
     /**
      * Static value THREAD for ProcessItemType.
      */
+    @Generated
     public static final ProcessItemType THREAD = fromString("THREAD");
 
     /**
@@ -50,6 +54,7 @@ public final class ProcessItemType extends ExpandableStringEnum<ProcessItemType>
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ProcessItemType() {}
 
@@ -59,6 +64,7 @@ public final class ProcessItemType extends ExpandableStringEnum<ProcessItemType>
      * @param name a name to look for.
      * @return the corresponding ProcessItemType.
      */
+    @Generated
     public static ProcessItemType fromString(String name) {
         return fromString(name, ProcessItemType.class);
     }
@@ -68,6 +74,7 @@ public final class ProcessItemType extends ExpandableStringEnum<ProcessItemType>
      *
      * @return known ProcessItemType values.
      */
+    @Generated
     public static Collection<ProcessItemType> values() {
         return values(ProcessItemType.class);
     }
