@@ -22,6 +22,7 @@
  */
 package com.kuflow.rest.model;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -33,11 +34,13 @@ public final class AuthenticationType extends ExpandableStringEnum<Authenticatio
     /**
      * Static value ENGINE_TOKEN for AuthenticationType.
      */
+    @Generated
     public static final AuthenticationType ENGINE_TOKEN = fromString("ENGINE_TOKEN");
 
     /**
      * Static value ENGINE_CERTIFICATE for AuthenticationType.
      */
+    @Generated
     public static final AuthenticationType ENGINE_CERTIFICATE = fromString("ENGINE_CERTIFICATE");
 
     /**
@@ -45,6 +48,7 @@ public final class AuthenticationType extends ExpandableStringEnum<Authenticatio
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AuthenticationType() {}
 
@@ -54,6 +58,7 @@ public final class AuthenticationType extends ExpandableStringEnum<Authenticatio
      * @param name a name to look for.
      * @return the corresponding AuthenticationType.
      */
+    @Generated
     public static AuthenticationType fromString(String name) {
         return fromString(name, AuthenticationType.class);
     }
@@ -63,6 +68,7 @@ public final class AuthenticationType extends ExpandableStringEnum<Authenticatio
      *
      * @return known AuthenticationType values.
      */
+    @Generated
     public static Collection<AuthenticationType> values() {
         return values(AuthenticationType.class);
     }

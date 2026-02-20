@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -40,11 +41,13 @@ public final class PrincipalApplication implements JsonSerializable<PrincipalApp
     /*
      * The id property.
      */
+    @Generated
     private UUID id;
 
     /**
      * Creates an instance of PrincipalApplication class.
      */
+    @Generated
     public PrincipalApplication() {}
 
     /**
@@ -52,6 +55,7 @@ public final class PrincipalApplication implements JsonSerializable<PrincipalApp
      *
      * @return the id value.
      */
+    @Generated
     public UUID getId() {
         return this.id;
     }
@@ -62,6 +66,7 @@ public final class PrincipalApplication implements JsonSerializable<PrincipalApp
      * @param id the id value to set.
      * @return the PrincipalApplication object itself.
      */
+    @Generated
     public PrincipalApplication setId(UUID id) {
         this.id = id;
         return this;
@@ -70,6 +75,7 @@ public final class PrincipalApplication implements JsonSerializable<PrincipalApp
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -85,6 +91,7 @@ public final class PrincipalApplication implements JsonSerializable<PrincipalApp
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the PrincipalApplication.
      */
+    @Generated
     public static PrincipalApplication fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PrincipalApplication deserializedPrincipalApplication = new PrincipalApplication();

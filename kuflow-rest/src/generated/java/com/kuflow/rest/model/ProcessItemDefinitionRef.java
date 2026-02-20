@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -40,21 +41,25 @@ public final class ProcessItemDefinitionRef implements JsonSerializable<ProcessI
     /*
      * The id property.
      */
+    @Generated
     private UUID id;
 
     /*
      * The version property.
      */
+    @Generated
     private UUID version;
 
     /*
      * The code property.
      */
+    @Generated
     private String code;
 
     /**
      * Creates an instance of ProcessItemDefinitionRef class.
      */
+    @Generated
     public ProcessItemDefinitionRef() {}
 
     /**
@@ -62,6 +67,7 @@ public final class ProcessItemDefinitionRef implements JsonSerializable<ProcessI
      *
      * @return the id value.
      */
+    @Generated
     public UUID getId() {
         return this.id;
     }
@@ -72,6 +78,7 @@ public final class ProcessItemDefinitionRef implements JsonSerializable<ProcessI
      * @param id the id value to set.
      * @return the ProcessItemDefinitionRef object itself.
      */
+    @Generated
     public ProcessItemDefinitionRef setId(UUID id) {
         this.id = id;
         return this;
@@ -82,6 +89,7 @@ public final class ProcessItemDefinitionRef implements JsonSerializable<ProcessI
      *
      * @return the version value.
      */
+    @Generated
     public UUID getVersion() {
         return this.version;
     }
@@ -92,6 +100,7 @@ public final class ProcessItemDefinitionRef implements JsonSerializable<ProcessI
      * @param version the version value to set.
      * @return the ProcessItemDefinitionRef object itself.
      */
+    @Generated
     public ProcessItemDefinitionRef setVersion(UUID version) {
         this.version = version;
         return this;
@@ -102,6 +111,7 @@ public final class ProcessItemDefinitionRef implements JsonSerializable<ProcessI
      *
      * @return the code value.
      */
+    @Generated
     public String getCode() {
         return this.code;
     }
@@ -112,6 +122,7 @@ public final class ProcessItemDefinitionRef implements JsonSerializable<ProcessI
      * @param code the code value to set.
      * @return the ProcessItemDefinitionRef object itself.
      */
+    @Generated
     public ProcessItemDefinitionRef setCode(String code) {
         this.code = code;
         return this;
@@ -120,6 +131,7 @@ public final class ProcessItemDefinitionRef implements JsonSerializable<ProcessI
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -138,6 +150,7 @@ public final class ProcessItemDefinitionRef implements JsonSerializable<ProcessI
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ProcessItemDefinitionRef.
      */
+    @Generated
     public static ProcessItemDefinitionRef fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ProcessItemDefinitionRef deserializedProcessItemDefinitionRef = new ProcessItemDefinitionRef();

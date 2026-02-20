@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -40,16 +41,19 @@ public final class WebhookEventProcessCreatedData implements JsonSerializable<We
     /*
      * The processId property.
      */
+    @Generated
     private UUID processId;
 
     /*
      * Process state
      */
+    @Generated
     private ProcessState processState;
 
     /**
      * Creates an instance of WebhookEventProcessCreatedData class.
      */
+    @Generated
     public WebhookEventProcessCreatedData() {}
 
     /**
@@ -57,6 +61,7 @@ public final class WebhookEventProcessCreatedData implements JsonSerializable<We
      *
      * @return the processId value.
      */
+    @Generated
     public UUID getProcessId() {
         return this.processId;
     }
@@ -67,6 +72,7 @@ public final class WebhookEventProcessCreatedData implements JsonSerializable<We
      * @param processId the processId value to set.
      * @return the WebhookEventProcessCreatedData object itself.
      */
+    @Generated
     public WebhookEventProcessCreatedData setProcessId(UUID processId) {
         this.processId = processId;
         return this;
@@ -77,6 +83,7 @@ public final class WebhookEventProcessCreatedData implements JsonSerializable<We
      *
      * @return the processState value.
      */
+    @Generated
     public ProcessState getProcessState() {
         return this.processState;
     }
@@ -87,6 +94,7 @@ public final class WebhookEventProcessCreatedData implements JsonSerializable<We
      * @param processState the processState value to set.
      * @return the WebhookEventProcessCreatedData object itself.
      */
+    @Generated
     public WebhookEventProcessCreatedData setProcessState(ProcessState processState) {
         this.processState = processState;
         return this;
@@ -95,6 +103,7 @@ public final class WebhookEventProcessCreatedData implements JsonSerializable<We
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -112,6 +121,7 @@ public final class WebhookEventProcessCreatedData implements JsonSerializable<We
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WebhookEventProcessCreatedData.
      */
+    @Generated
     public static WebhookEventProcessCreatedData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WebhookEventProcessCreatedData deserializedWebhookEventProcessCreatedData = new WebhookEventProcessCreatedData();

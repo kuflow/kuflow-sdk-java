@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -40,16 +41,19 @@ public final class ProcessDefinitionRef implements JsonSerializable<ProcessDefin
     /*
      * The id property.
      */
+    @Generated
     private UUID id;
 
     /*
      * The version property.
      */
+    @Generated
     private UUID version;
 
     /**
      * Creates an instance of ProcessDefinitionRef class.
      */
+    @Generated
     public ProcessDefinitionRef() {}
 
     /**
@@ -57,6 +61,7 @@ public final class ProcessDefinitionRef implements JsonSerializable<ProcessDefin
      *
      * @return the id value.
      */
+    @Generated
     public UUID getId() {
         return this.id;
     }
@@ -67,6 +72,7 @@ public final class ProcessDefinitionRef implements JsonSerializable<ProcessDefin
      * @param id the id value to set.
      * @return the ProcessDefinitionRef object itself.
      */
+    @Generated
     public ProcessDefinitionRef setId(UUID id) {
         this.id = id;
         return this;
@@ -77,6 +83,7 @@ public final class ProcessDefinitionRef implements JsonSerializable<ProcessDefin
      *
      * @return the version value.
      */
+    @Generated
     public UUID getVersion() {
         return this.version;
     }
@@ -87,6 +94,7 @@ public final class ProcessDefinitionRef implements JsonSerializable<ProcessDefin
      * @param version the version value to set.
      * @return the ProcessDefinitionRef object itself.
      */
+    @Generated
     public ProcessDefinitionRef setVersion(UUID version) {
         this.version = version;
         return this;
@@ -95,6 +103,7 @@ public final class ProcessDefinitionRef implements JsonSerializable<ProcessDefin
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -112,6 +121,7 @@ public final class ProcessDefinitionRef implements JsonSerializable<ProcessDefin
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ProcessDefinitionRef.
      */
+    @Generated
     public static ProcessDefinitionRef fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ProcessDefinitionRef deserializedProcessDefinitionRef = new ProcessDefinitionRef();

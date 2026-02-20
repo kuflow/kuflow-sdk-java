@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -38,11 +39,13 @@ public final class ProcessItemTaskPageItem implements JsonSerializable<ProcessIt
     /*
      * Process Item Task state
      */
+    @Generated
     private ProcessItemTaskState state;
 
     /**
      * Creates an instance of ProcessItemTaskPageItem class.
      */
+    @Generated
     public ProcessItemTaskPageItem() {}
 
     /**
@@ -50,6 +53,7 @@ public final class ProcessItemTaskPageItem implements JsonSerializable<ProcessIt
      *
      * @return the state value.
      */
+    @Generated
     public ProcessItemTaskState getState() {
         return this.state;
     }
@@ -60,6 +64,7 @@ public final class ProcessItemTaskPageItem implements JsonSerializable<ProcessIt
      * @param state the state value to set.
      * @return the ProcessItemTaskPageItem object itself.
      */
+    @Generated
     public ProcessItemTaskPageItem setState(ProcessItemTaskState state) {
         this.state = state;
         return this;
@@ -68,6 +73,7 @@ public final class ProcessItemTaskPageItem implements JsonSerializable<ProcessIt
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -84,6 +90,7 @@ public final class ProcessItemTaskPageItem implements JsonSerializable<ProcessIt
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ProcessItemTaskPageItem.
      */
+    @Generated
     public static ProcessItemTaskPageItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ProcessItemTaskPageItem deserializedProcessItemTaskPageItem = new ProcessItemTaskPageItem();

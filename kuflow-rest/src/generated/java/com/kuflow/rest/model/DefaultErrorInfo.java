@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -38,26 +39,31 @@ public final class DefaultErrorInfo implements JsonSerializable<DefaultErrorInfo
     /*
      * The code property.
      */
+    @Generated
     private String code;
 
     /*
      * The message property.
      */
+    @Generated
     private String message;
 
     /*
      * The location property.
      */
+    @Generated
     private String location;
 
     /*
      * The locationType property.
      */
+    @Generated
     private String locationType;
 
     /**
      * Creates an instance of DefaultErrorInfo class.
      */
+    @Generated
     public DefaultErrorInfo() {}
 
     /**
@@ -65,6 +71,7 @@ public final class DefaultErrorInfo implements JsonSerializable<DefaultErrorInfo
      *
      * @return the code value.
      */
+    @Generated
     public String getCode() {
         return this.code;
     }
@@ -75,6 +82,7 @@ public final class DefaultErrorInfo implements JsonSerializable<DefaultErrorInfo
      * @param code the code value to set.
      * @return the DefaultErrorInfo object itself.
      */
+    @Generated
     public DefaultErrorInfo setCode(String code) {
         this.code = code;
         return this;
@@ -85,6 +93,7 @@ public final class DefaultErrorInfo implements JsonSerializable<DefaultErrorInfo
      *
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -95,6 +104,7 @@ public final class DefaultErrorInfo implements JsonSerializable<DefaultErrorInfo
      * @param message the message value to set.
      * @return the DefaultErrorInfo object itself.
      */
+    @Generated
     public DefaultErrorInfo setMessage(String message) {
         this.message = message;
         return this;
@@ -105,6 +115,7 @@ public final class DefaultErrorInfo implements JsonSerializable<DefaultErrorInfo
      *
      * @return the location value.
      */
+    @Generated
     public String getLocation() {
         return this.location;
     }
@@ -115,6 +126,7 @@ public final class DefaultErrorInfo implements JsonSerializable<DefaultErrorInfo
      * @param location the location value to set.
      * @return the DefaultErrorInfo object itself.
      */
+    @Generated
     public DefaultErrorInfo setLocation(String location) {
         this.location = location;
         return this;
@@ -125,6 +137,7 @@ public final class DefaultErrorInfo implements JsonSerializable<DefaultErrorInfo
      *
      * @return the locationType value.
      */
+    @Generated
     public String getLocationType() {
         return this.locationType;
     }
@@ -135,6 +148,7 @@ public final class DefaultErrorInfo implements JsonSerializable<DefaultErrorInfo
      * @param locationType the locationType value to set.
      * @return the DefaultErrorInfo object itself.
      */
+    @Generated
     public DefaultErrorInfo setLocationType(String locationType) {
         this.locationType = locationType;
         return this;
@@ -143,6 +157,7 @@ public final class DefaultErrorInfo implements JsonSerializable<DefaultErrorInfo
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -162,6 +177,7 @@ public final class DefaultErrorInfo implements JsonSerializable<DefaultErrorInfo
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DefaultErrorInfo.
      */
+    @Generated
     public static DefaultErrorInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DefaultErrorInfo deserializedDefaultErrorInfo = new DefaultErrorInfo();

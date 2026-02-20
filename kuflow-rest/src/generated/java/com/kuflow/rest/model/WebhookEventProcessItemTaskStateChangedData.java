@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -40,31 +41,37 @@ public final class WebhookEventProcessItemTaskStateChangedData implements JsonSe
     /*
      * The processId property.
      */
+    @Generated
     private UUID processId;
 
     /*
      * The processItemId property.
      */
+    @Generated
     private UUID processItemId;
 
     /*
      * Process Item Type
      */
+    @Generated
     private ProcessItemType processItemType;
 
     /*
      * Process Item Task state
      */
+    @Generated
     private ProcessItemTaskState processItemState;
 
     /*
      * The processItemDefinitionCode property.
      */
+    @Generated
     private String processItemDefinitionCode;
 
     /**
      * Creates an instance of WebhookEventProcessItemTaskStateChangedData class.
      */
+    @Generated
     public WebhookEventProcessItemTaskStateChangedData() {}
 
     /**
@@ -72,6 +79,7 @@ public final class WebhookEventProcessItemTaskStateChangedData implements JsonSe
      *
      * @return the processId value.
      */
+    @Generated
     public UUID getProcessId() {
         return this.processId;
     }
@@ -82,6 +90,7 @@ public final class WebhookEventProcessItemTaskStateChangedData implements JsonSe
      * @param processId the processId value to set.
      * @return the WebhookEventProcessItemTaskStateChangedData object itself.
      */
+    @Generated
     public WebhookEventProcessItemTaskStateChangedData setProcessId(UUID processId) {
         this.processId = processId;
         return this;
@@ -92,6 +101,7 @@ public final class WebhookEventProcessItemTaskStateChangedData implements JsonSe
      *
      * @return the processItemId value.
      */
+    @Generated
     public UUID getProcessItemId() {
         return this.processItemId;
     }
@@ -102,6 +112,7 @@ public final class WebhookEventProcessItemTaskStateChangedData implements JsonSe
      * @param processItemId the processItemId value to set.
      * @return the WebhookEventProcessItemTaskStateChangedData object itself.
      */
+    @Generated
     public WebhookEventProcessItemTaskStateChangedData setProcessItemId(UUID processItemId) {
         this.processItemId = processItemId;
         return this;
@@ -112,6 +123,7 @@ public final class WebhookEventProcessItemTaskStateChangedData implements JsonSe
      *
      * @return the processItemType value.
      */
+    @Generated
     public ProcessItemType getProcessItemType() {
         return this.processItemType;
     }
@@ -122,6 +134,7 @@ public final class WebhookEventProcessItemTaskStateChangedData implements JsonSe
      * @param processItemType the processItemType value to set.
      * @return the WebhookEventProcessItemTaskStateChangedData object itself.
      */
+    @Generated
     public WebhookEventProcessItemTaskStateChangedData setProcessItemType(ProcessItemType processItemType) {
         this.processItemType = processItemType;
         return this;
@@ -132,6 +145,7 @@ public final class WebhookEventProcessItemTaskStateChangedData implements JsonSe
      *
      * @return the processItemState value.
      */
+    @Generated
     public ProcessItemTaskState getProcessItemState() {
         return this.processItemState;
     }
@@ -142,6 +156,7 @@ public final class WebhookEventProcessItemTaskStateChangedData implements JsonSe
      * @param processItemState the processItemState value to set.
      * @return the WebhookEventProcessItemTaskStateChangedData object itself.
      */
+    @Generated
     public WebhookEventProcessItemTaskStateChangedData setProcessItemState(ProcessItemTaskState processItemState) {
         this.processItemState = processItemState;
         return this;
@@ -152,6 +167,7 @@ public final class WebhookEventProcessItemTaskStateChangedData implements JsonSe
      *
      * @return the processItemDefinitionCode value.
      */
+    @Generated
     public String getProcessItemDefinitionCode() {
         return this.processItemDefinitionCode;
     }
@@ -162,6 +178,7 @@ public final class WebhookEventProcessItemTaskStateChangedData implements JsonSe
      * @param processItemDefinitionCode the processItemDefinitionCode value to set.
      * @return the WebhookEventProcessItemTaskStateChangedData object itself.
      */
+    @Generated
     public WebhookEventProcessItemTaskStateChangedData setProcessItemDefinitionCode(String processItemDefinitionCode) {
         this.processItemDefinitionCode = processItemDefinitionCode;
         return this;
@@ -170,6 +187,7 @@ public final class WebhookEventProcessItemTaskStateChangedData implements JsonSe
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -190,6 +208,7 @@ public final class WebhookEventProcessItemTaskStateChangedData implements JsonSe
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WebhookEventProcessItemTaskStateChangedData.
      */
+    @Generated
     public static WebhookEventProcessItemTaskStateChangedData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WebhookEventProcessItemTaskStateChangedData deserializedWebhookEventProcessItemTaskStateChangedData =

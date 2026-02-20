@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -38,11 +39,13 @@ public final class ProcessItemTaskDataUpdateParams implements JsonSerializable<P
     /*
      * Json value.
      */
+    @Generated
     private JsonValue data;
 
     /**
      * Creates an instance of ProcessItemTaskDataUpdateParams class.
      */
+    @Generated
     public ProcessItemTaskDataUpdateParams() {}
 
     /**
@@ -50,6 +53,7 @@ public final class ProcessItemTaskDataUpdateParams implements JsonSerializable<P
      *
      * @return the data value.
      */
+    @Generated
     public JsonValue getData() {
         return this.data;
     }
@@ -60,6 +64,7 @@ public final class ProcessItemTaskDataUpdateParams implements JsonSerializable<P
      * @param data the data value to set.
      * @return the ProcessItemTaskDataUpdateParams object itself.
      */
+    @Generated
     public ProcessItemTaskDataUpdateParams setData(JsonValue data) {
         this.data = data;
         return this;
@@ -68,6 +73,7 @@ public final class ProcessItemTaskDataUpdateParams implements JsonSerializable<P
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -84,6 +90,7 @@ public final class ProcessItemTaskDataUpdateParams implements JsonSerializable<P
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ProcessItemTaskDataUpdateParams.
      */
+    @Generated
     public static ProcessItemTaskDataUpdateParams fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ProcessItemTaskDataUpdateParams deserializedProcessItemTaskDataUpdateParams = new ProcessItemTaskDataUpdateParams();

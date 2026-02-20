@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -40,16 +41,19 @@ public final class BusinessArtifactDefinitionRef implements JsonSerializable<Bus
     /*
      * The id property.
      */
+    @Generated
     private UUID id;
 
     /*
      * The code property.
      */
+    @Generated
     private String code;
 
     /**
      * Creates an instance of BusinessArtifactDefinitionRef class.
      */
+    @Generated
     public BusinessArtifactDefinitionRef() {}
 
     /**
@@ -57,6 +61,7 @@ public final class BusinessArtifactDefinitionRef implements JsonSerializable<Bus
      *
      * @return the id value.
      */
+    @Generated
     public UUID getId() {
         return this.id;
     }
@@ -67,6 +72,7 @@ public final class BusinessArtifactDefinitionRef implements JsonSerializable<Bus
      * @param id the id value to set.
      * @return the BusinessArtifactDefinitionRef object itself.
      */
+    @Generated
     public BusinessArtifactDefinitionRef setId(UUID id) {
         this.id = id;
         return this;
@@ -77,6 +83,7 @@ public final class BusinessArtifactDefinitionRef implements JsonSerializable<Bus
      *
      * @return the code value.
      */
+    @Generated
     public String getCode() {
         return this.code;
     }
@@ -87,6 +94,7 @@ public final class BusinessArtifactDefinitionRef implements JsonSerializable<Bus
      * @param code the code value to set.
      * @return the BusinessArtifactDefinitionRef object itself.
      */
+    @Generated
     public BusinessArtifactDefinitionRef setCode(String code) {
         this.code = code;
         return this;
@@ -95,6 +103,7 @@ public final class BusinessArtifactDefinitionRef implements JsonSerializable<Bus
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -112,6 +121,7 @@ public final class BusinessArtifactDefinitionRef implements JsonSerializable<Bus
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BusinessArtifactDefinitionRef.
      */
+    @Generated
     public static BusinessArtifactDefinitionRef fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BusinessArtifactDefinitionRef deserializedBusinessArtifactDefinitionRef = new BusinessArtifactDefinitionRef();

@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -38,11 +39,13 @@ public final class ProcessEntityUpdateParams implements JsonSerializable<Process
     /*
      * Json value.
      */
+    @Generated
     private JsonValue entity;
 
     /**
      * Creates an instance of ProcessEntityUpdateParams class.
      */
+    @Generated
     public ProcessEntityUpdateParams() {}
 
     /**
@@ -50,6 +53,7 @@ public final class ProcessEntityUpdateParams implements JsonSerializable<Process
      *
      * @return the entity value.
      */
+    @Generated
     public JsonValue getEntity() {
         return this.entity;
     }
@@ -60,6 +64,7 @@ public final class ProcessEntityUpdateParams implements JsonSerializable<Process
      * @param entity the entity value to set.
      * @return the ProcessEntityUpdateParams object itself.
      */
+    @Generated
     public ProcessEntityUpdateParams setEntity(JsonValue entity) {
         this.entity = entity;
         return this;
@@ -68,6 +73,7 @@ public final class ProcessEntityUpdateParams implements JsonSerializable<Process
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -84,6 +90,7 @@ public final class ProcessEntityUpdateParams implements JsonSerializable<Process
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ProcessEntityUpdateParams.
      */
+    @Generated
     public static ProcessEntityUpdateParams fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ProcessEntityUpdateParams deserializedProcessEntityUpdateParams = new ProcessEntityUpdateParams();

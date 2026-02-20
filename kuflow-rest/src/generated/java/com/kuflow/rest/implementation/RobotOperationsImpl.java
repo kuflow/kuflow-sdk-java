@@ -82,7 +82,7 @@ public final class RobotOperationsImpl {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "KuFlowClientRobotOpe")
+    @ServiceInterface(name = "KuFlowClientRobotOperations")
     public interface RobotOperationsService {
         @Get("/robots")
         @ExpectedResponses({ 200 })

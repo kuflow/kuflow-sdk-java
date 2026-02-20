@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -38,26 +39,31 @@ public final class JsonPatchOperation implements JsonSerializable<JsonPatchOpera
     /*
      * The operation to perform.
      */
+    @Generated
     private JsonPatchOperationType op;
 
     /*
      * A JSON Pointer path used when op is "copy" or "move".
      */
+    @Generated
     private String from;
 
     /*
      * A JSON Pointer path.
      */
+    @Generated
     private String path;
 
     /*
      * The value to "add", "replace" or "test".
      */
+    @Generated
     private Object value;
 
     /**
      * Creates an instance of JsonPatchOperation class.
      */
+    @Generated
     public JsonPatchOperation() {}
 
     /**
@@ -65,6 +71,7 @@ public final class JsonPatchOperation implements JsonSerializable<JsonPatchOpera
      *
      * @return the op value.
      */
+    @Generated
     public JsonPatchOperationType getOp() {
         return this.op;
     }
@@ -75,6 +82,7 @@ public final class JsonPatchOperation implements JsonSerializable<JsonPatchOpera
      * @param op the op value to set.
      * @return the JsonPatchOperation object itself.
      */
+    @Generated
     public JsonPatchOperation setOp(JsonPatchOperationType op) {
         this.op = op;
         return this;
@@ -85,6 +93,7 @@ public final class JsonPatchOperation implements JsonSerializable<JsonPatchOpera
      *
      * @return the from value.
      */
+    @Generated
     public String getFrom() {
         return this.from;
     }
@@ -95,6 +104,7 @@ public final class JsonPatchOperation implements JsonSerializable<JsonPatchOpera
      * @param from the from value to set.
      * @return the JsonPatchOperation object itself.
      */
+    @Generated
     public JsonPatchOperation setFrom(String from) {
         this.from = from;
         return this;
@@ -105,6 +115,7 @@ public final class JsonPatchOperation implements JsonSerializable<JsonPatchOpera
      *
      * @return the path value.
      */
+    @Generated
     public String getPath() {
         return this.path;
     }
@@ -115,6 +126,7 @@ public final class JsonPatchOperation implements JsonSerializable<JsonPatchOpera
      * @param path the path value to set.
      * @return the JsonPatchOperation object itself.
      */
+    @Generated
     public JsonPatchOperation setPath(String path) {
         this.path = path;
         return this;
@@ -125,6 +137,7 @@ public final class JsonPatchOperation implements JsonSerializable<JsonPatchOpera
      *
      * @return the value value.
      */
+    @Generated
     public Object getValue() {
         return this.value;
     }
@@ -135,6 +148,7 @@ public final class JsonPatchOperation implements JsonSerializable<JsonPatchOpera
      * @param value the value value to set.
      * @return the JsonPatchOperation object itself.
      */
+    @Generated
     public JsonPatchOperation setValue(Object value) {
         this.value = value;
         return this;
@@ -143,13 +157,16 @@ public final class JsonPatchOperation implements JsonSerializable<JsonPatchOpera
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("op", this.op == null ? null : this.op.toString());
         jsonWriter.writeStringField("path", this.path);
         jsonWriter.writeStringField("from", this.from);
-        jsonWriter.writeUntypedField("value", this.value);
+        if (this.value != null) {
+            jsonWriter.writeUntypedField("value", this.value);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -162,6 +179,7 @@ public final class JsonPatchOperation implements JsonSerializable<JsonPatchOpera
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the JsonPatchOperation.
      */
+    @Generated
     public static JsonPatchOperation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             JsonPatchOperation deserializedJsonPatchOperation = new JsonPatchOperation();

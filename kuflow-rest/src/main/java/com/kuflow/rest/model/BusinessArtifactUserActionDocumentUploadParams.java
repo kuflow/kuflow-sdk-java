@@ -22,54 +22,40 @@
  */
 package com.kuflow.rest.model;
 
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.ExpandableStringEnum;
-import java.util.Collection;
+import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.UUID;
 
-/**
- * Robot source type.
- */
-public final class RobotSourceType extends ExpandableStringEnum<RobotSourceType> {
+/** The BusinessArtifactUserActionDocumentUploadParams model. */
+@Fluent
+public final class BusinessArtifactUserActionDocumentUploadParams {
 
-    /**
-     * Static value PACKAGE for RobotSourceType.
+    /*
+     * The userActionValueId property.
      */
-    @Generated
-    public static final RobotSourceType PACKAGE = fromString("PACKAGE");
+    @JsonProperty(value = "userActionValueId", required = true)
+    private UUID userActionValueId;
+
+    /** Creates an instance of BusinessArtifactUserActionDocumentUploadParams class. */
+    public BusinessArtifactUserActionDocumentUploadParams() {}
 
     /**
-     * Static value UNKNOWN for RobotSourceType.
-     */
-    @Generated
-    public static final RobotSourceType UNKNOWN = fromString("UNKNOWN");
-
-    /**
-     * Creates a new instance of RobotSourceType value.
+     * Get the userActionValueId property: The userActionValueId property.
      *
-     * @deprecated Use the {@link #fromString(String)} factory method.
+     * @return the userActionValueId value.
      */
-    @Generated
-    @Deprecated
-    public RobotSourceType() {}
-
-    /**
-     * Creates or finds a RobotSourceType from its string representation.
-     *
-     * @param name a name to look for.
-     * @return the corresponding RobotSourceType.
-     */
-    @Generated
-    public static RobotSourceType fromString(String name) {
-        return fromString(name, RobotSourceType.class);
+    public UUID getUserActionValueId() {
+        return this.userActionValueId;
     }
 
     /**
-     * Gets known RobotSourceType values.
+     * Set the userActionValueId property: The userActionValueId property.
      *
-     * @return known RobotSourceType values.
+     * @param userActionValueId the userActionValueId value to set.
+     * @return the BusinessArtifactUserActionDocumentUploadParams object itself.
      */
-    @Generated
-    public static Collection<RobotSourceType> values() {
-        return values(RobotSourceType.class);
+    public BusinessArtifactUserActionDocumentUploadParams setUserActionValueId(UUID userActionValueId) {
+        this.userActionValueId = userActionValueId;
+        return this;
     }
 }

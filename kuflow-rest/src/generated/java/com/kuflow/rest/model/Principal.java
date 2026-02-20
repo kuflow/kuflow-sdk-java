@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -40,31 +41,37 @@ public final class Principal implements JsonSerializable<Principal> {
     /*
      * The id property.
      */
+    @Generated
     private UUID id;
 
     /*
      * The type property.
      */
+    @Generated
     private PrincipalType type;
 
     /*
      * The name property.
      */
+    @Generated
     private String name;
 
     /*
      * The user property.
      */
+    @Generated
     private PrincipalUser user;
 
     /*
      * The application property.
      */
+    @Generated
     private PrincipalApplication application;
 
     /**
      * Creates an instance of Principal class.
      */
+    @Generated
     public Principal() {}
 
     /**
@@ -72,6 +79,7 @@ public final class Principal implements JsonSerializable<Principal> {
      *
      * @return the id value.
      */
+    @Generated
     public UUID getId() {
         return this.id;
     }
@@ -82,6 +90,7 @@ public final class Principal implements JsonSerializable<Principal> {
      * @param id the id value to set.
      * @return the Principal object itself.
      */
+    @Generated
     public Principal setId(UUID id) {
         this.id = id;
         return this;
@@ -92,6 +101,7 @@ public final class Principal implements JsonSerializable<Principal> {
      *
      * @return the type value.
      */
+    @Generated
     public PrincipalType getType() {
         return this.type;
     }
@@ -102,6 +112,7 @@ public final class Principal implements JsonSerializable<Principal> {
      * @param type the type value to set.
      * @return the Principal object itself.
      */
+    @Generated
     public Principal setType(PrincipalType type) {
         this.type = type;
         return this;
@@ -112,6 +123,7 @@ public final class Principal implements JsonSerializable<Principal> {
      *
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -122,6 +134,7 @@ public final class Principal implements JsonSerializable<Principal> {
      * @param name the name value to set.
      * @return the Principal object itself.
      */
+    @Generated
     public Principal setName(String name) {
         this.name = name;
         return this;
@@ -132,6 +145,7 @@ public final class Principal implements JsonSerializable<Principal> {
      *
      * @return the user value.
      */
+    @Generated
     public PrincipalUser getUser() {
         return this.user;
     }
@@ -142,6 +156,7 @@ public final class Principal implements JsonSerializable<Principal> {
      * @param user the user value to set.
      * @return the Principal object itself.
      */
+    @Generated
     public Principal setUser(PrincipalUser user) {
         this.user = user;
         return this;
@@ -152,6 +167,7 @@ public final class Principal implements JsonSerializable<Principal> {
      *
      * @return the application value.
      */
+    @Generated
     public PrincipalApplication getApplication() {
         return this.application;
     }
@@ -162,6 +178,7 @@ public final class Principal implements JsonSerializable<Principal> {
      * @param application the application value to set.
      * @return the Principal object itself.
      */
+    @Generated
     public Principal setApplication(PrincipalApplication application) {
         this.application = application;
         return this;
@@ -170,6 +187,7 @@ public final class Principal implements JsonSerializable<Principal> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -189,6 +207,7 @@ public final class Principal implements JsonSerializable<Principal> {
      * to JSON null.
      * @throws IOException If an error occurs while reading the Principal.
      */
+    @Generated
     public static Principal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Principal deserializedPrincipal = new Principal();

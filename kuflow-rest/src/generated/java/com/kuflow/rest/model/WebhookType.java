@@ -22,6 +22,7 @@
  */
 package com.kuflow.rest.model;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -33,21 +34,25 @@ public final class WebhookType extends ExpandableStringEnum<WebhookType> {
     /**
      * Static value PROCESS.CREATED for WebhookType.
      */
+    @Generated
     public static final WebhookType PROCESS_CREATED = fromString("PROCESS.CREATED");
 
     /**
      * Static value PROCESS.STATE_CHANGED for WebhookType.
      */
+    @Generated
     public static final WebhookType PROCESS_STATE_CHANGED = fromString("PROCESS.STATE_CHANGED");
 
     /**
      * Static value PROCESS_ITEM.CREATED for WebhookType.
      */
+    @Generated
     public static final WebhookType PROCESS_ITEM_CREATED = fromString("PROCESS_ITEM.CREATED");
 
     /**
      * Static value PROCESS_ITEM.TASK_STATE_CHANGED for WebhookType.
      */
+    @Generated
     public static final WebhookType PROCESS_ITEM_TASK_STATE_CHANGED = fromString("PROCESS_ITEM.TASK_STATE_CHANGED");
 
     /**
@@ -55,6 +60,7 @@ public final class WebhookType extends ExpandableStringEnum<WebhookType> {
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public WebhookType() {}
 
@@ -64,6 +70,7 @@ public final class WebhookType extends ExpandableStringEnum<WebhookType> {
      * @param name a name to look for.
      * @return the corresponding WebhookType.
      */
+    @Generated
     public static WebhookType fromString(String name) {
         return fromString(name, WebhookType.class);
     }
@@ -73,6 +80,7 @@ public final class WebhookType extends ExpandableStringEnum<WebhookType> {
      *
      * @return known WebhookType values.
      */
+    @Generated
     public static Collection<WebhookType> values() {
         return values(WebhookType.class);
     }

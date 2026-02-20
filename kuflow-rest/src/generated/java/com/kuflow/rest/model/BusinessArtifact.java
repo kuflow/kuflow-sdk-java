@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -42,26 +43,31 @@ public final class BusinessArtifact extends AbstractAudited {
     /*
      * Business Artifact ID.
      */
+    @Generated
     private UUID id;
 
     /*
      * Tenant ID.
      */
+    @Generated
     private UUID tenantId;
 
     /*
      * The businessArtifactDefinitionRef property.
      */
+    @Generated
     private BusinessArtifactDefinitionRef businessArtifactDefinitionRef;
 
     /*
      * Json value.
      */
+    @Generated
     private JsonValue data;
 
     /**
      * Creates an instance of BusinessArtifact class.
      */
+    @Generated
     public BusinessArtifact() {}
 
     /**
@@ -69,6 +75,7 @@ public final class BusinessArtifact extends AbstractAudited {
      *
      * @return the id value.
      */
+    @Generated
     public UUID getId() {
         return this.id;
     }
@@ -79,6 +86,7 @@ public final class BusinessArtifact extends AbstractAudited {
      * @param id the id value to set.
      * @return the BusinessArtifact object itself.
      */
+    @Generated
     public BusinessArtifact setId(UUID id) {
         this.id = id;
         return this;
@@ -89,6 +97,7 @@ public final class BusinessArtifact extends AbstractAudited {
      *
      * @return the tenantId value.
      */
+    @Generated
     public UUID getTenantId() {
         return this.tenantId;
     }
@@ -99,6 +108,7 @@ public final class BusinessArtifact extends AbstractAudited {
      * @param tenantId the tenantId value to set.
      * @return the BusinessArtifact object itself.
      */
+    @Generated
     public BusinessArtifact setTenantId(UUID tenantId) {
         this.tenantId = tenantId;
         return this;
@@ -109,6 +119,7 @@ public final class BusinessArtifact extends AbstractAudited {
      *
      * @return the businessArtifactDefinitionRef value.
      */
+    @Generated
     public BusinessArtifactDefinitionRef getBusinessArtifactDefinitionRef() {
         return this.businessArtifactDefinitionRef;
     }
@@ -119,6 +130,7 @@ public final class BusinessArtifact extends AbstractAudited {
      * @param businessArtifactDefinitionRef the businessArtifactDefinitionRef value to set.
      * @return the BusinessArtifact object itself.
      */
+    @Generated
     public BusinessArtifact setBusinessArtifactDefinitionRef(BusinessArtifactDefinitionRef businessArtifactDefinitionRef) {
         this.businessArtifactDefinitionRef = businessArtifactDefinitionRef;
         return this;
@@ -129,6 +141,7 @@ public final class BusinessArtifact extends AbstractAudited {
      *
      * @return the data value.
      */
+    @Generated
     public JsonValue getData() {
         return this.data;
     }
@@ -139,6 +152,7 @@ public final class BusinessArtifact extends AbstractAudited {
      * @param data the data value to set.
      * @return the BusinessArtifact object itself.
      */
+    @Generated
     public BusinessArtifact setData(JsonValue data) {
         this.data = data;
         return this;
@@ -147,6 +161,7 @@ public final class BusinessArtifact extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public BusinessArtifact setCreatedBy(UUID createdBy) {
         super.setCreatedBy(createdBy);
@@ -156,6 +171,7 @@ public final class BusinessArtifact extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public BusinessArtifact setCreatedAt(OffsetDateTime createdAt) {
         super.setCreatedAt(createdAt);
@@ -165,6 +181,7 @@ public final class BusinessArtifact extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public BusinessArtifact setLastModifiedBy(UUID lastModifiedBy) {
         super.setLastModifiedBy(lastModifiedBy);
@@ -174,6 +191,7 @@ public final class BusinessArtifact extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public BusinessArtifact setLastModifiedAt(OffsetDateTime lastModifiedAt) {
         super.setLastModifiedAt(lastModifiedAt);
@@ -183,6 +201,7 @@ public final class BusinessArtifact extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -212,6 +231,7 @@ public final class BusinessArtifact extends AbstractAudited {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BusinessArtifact.
      */
+    @Generated
     public static BusinessArtifact fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BusinessArtifact deserializedBusinessArtifact = new BusinessArtifact();

@@ -22,6 +22,7 @@
  */
 package com.kuflow.rest.model;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -33,16 +34,19 @@ public final class TenantPricingPlan extends ExpandableStringEnum<TenantPricingP
     /**
      * Static value FREE for TenantPricingPlan.
      */
+    @Generated
     public static final TenantPricingPlan FREE = fromString("FREE");
 
     /**
      * Static value PREMIUM for TenantPricingPlan.
      */
+    @Generated
     public static final TenantPricingPlan PREMIUM = fromString("PREMIUM");
 
     /**
      * Static value UNLIMITED for TenantPricingPlan.
      */
+    @Generated
     public static final TenantPricingPlan UNLIMITED = fromString("UNLIMITED");
 
     /**
@@ -50,6 +54,7 @@ public final class TenantPricingPlan extends ExpandableStringEnum<TenantPricingP
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public TenantPricingPlan() {}
 
@@ -59,6 +64,7 @@ public final class TenantPricingPlan extends ExpandableStringEnum<TenantPricingP
      * @param name a name to look for.
      * @return the corresponding TenantPricingPlan.
      */
+    @Generated
     public static TenantPricingPlan fromString(String name) {
         return fromString(name, TenantPricingPlan.class);
     }
@@ -68,6 +74,7 @@ public final class TenantPricingPlan extends ExpandableStringEnum<TenantPricingP
      *
      * @return known TenantPricingPlan values.
      */
+    @Generated
     public static Collection<TenantPricingPlan> values() {
         return values(TenantPricingPlan.class);
     }

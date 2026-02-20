@@ -22,6 +22,7 @@
  */
 package com.kuflow.rest.model;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -33,16 +34,19 @@ public final class RobotAssetType extends ExpandableStringEnum<RobotAssetType> {
     /**
      * Static value PYTHON for RobotAssetType.
      */
+    @Generated
     public static final RobotAssetType PYTHON = fromString("PYTHON");
 
     /**
      * Static value PYTHON_PIP for RobotAssetType.
      */
+    @Generated
     public static final RobotAssetType PYTHON_PIP = fromString("PYTHON_PIP");
 
     /**
      * Static value NODEJS for RobotAssetType.
      */
+    @Generated
     public static final RobotAssetType NODEJS = fromString("NODEJS");
 
     /**
@@ -50,6 +54,7 @@ public final class RobotAssetType extends ExpandableStringEnum<RobotAssetType> {
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public RobotAssetType() {}
 
@@ -59,6 +64,7 @@ public final class RobotAssetType extends ExpandableStringEnum<RobotAssetType> {
      * @param name a name to look for.
      * @return the corresponding RobotAssetType.
      */
+    @Generated
     public static RobotAssetType fromString(String name) {
         return fromString(name, RobotAssetType.class);
     }
@@ -68,6 +74,7 @@ public final class RobotAssetType extends ExpandableStringEnum<RobotAssetType> {
      *
      * @return known RobotAssetType values.
      */
+    @Generated
     public static Collection<RobotAssetType> values() {
         return values(RobotAssetType.class);
     }

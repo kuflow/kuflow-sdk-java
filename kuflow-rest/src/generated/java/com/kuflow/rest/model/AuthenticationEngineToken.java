@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -41,16 +42,19 @@ public final class AuthenticationEngineToken implements JsonSerializable<Authent
     /*
      * Engine authentication token
      */
+    @Generated
     private String token;
 
     /*
      * The expiredAt property.
      */
+    @Generated
     private OffsetDateTime expiredAt;
 
     /**
      * Creates an instance of AuthenticationEngineToken class.
      */
+    @Generated
     public AuthenticationEngineToken() {}
 
     /**
@@ -58,6 +62,7 @@ public final class AuthenticationEngineToken implements JsonSerializable<Authent
      *
      * @return the token value.
      */
+    @Generated
     public String getToken() {
         return this.token;
     }
@@ -68,6 +73,7 @@ public final class AuthenticationEngineToken implements JsonSerializable<Authent
      * @param token the token value to set.
      * @return the AuthenticationEngineToken object itself.
      */
+    @Generated
     public AuthenticationEngineToken setToken(String token) {
         this.token = token;
         return this;
@@ -78,6 +84,7 @@ public final class AuthenticationEngineToken implements JsonSerializable<Authent
      *
      * @return the expiredAt value.
      */
+    @Generated
     public OffsetDateTime getExpiredAt() {
         return this.expiredAt;
     }
@@ -88,6 +95,7 @@ public final class AuthenticationEngineToken implements JsonSerializable<Authent
      * @param expiredAt the expiredAt value to set.
      * @return the AuthenticationEngineToken object itself.
      */
+    @Generated
     public AuthenticationEngineToken setExpiredAt(OffsetDateTime expiredAt) {
         this.expiredAt = expiredAt;
         return this;
@@ -96,6 +104,7 @@ public final class AuthenticationEngineToken implements JsonSerializable<Authent
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -116,6 +125,7 @@ public final class AuthenticationEngineToken implements JsonSerializable<Authent
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AuthenticationEngineToken.
      */
+    @Generated
     public static AuthenticationEngineToken fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AuthenticationEngineToken deserializedAuthenticationEngineToken = new AuthenticationEngineToken();

@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -43,56 +44,67 @@ public final class Worker extends AbstractAudited {
     /*
      * The id property.
      */
+    @Generated
     private UUID id;
 
     /*
      * The identity property.
      */
+    @Generated
     private String identity;
 
     /*
      * The taskQueue property.
      */
+    @Generated
     private String taskQueue;
 
     /*
      * The workflowTypes property.
      */
+    @Generated
     private List<String> workflowTypes;
 
     /*
      * The activityTypes property.
      */
+    @Generated
     private List<String> activityTypes;
 
     /*
      * The hostname property.
      */
+    @Generated
     private String hostname;
 
     /*
      * The ip property.
      */
+    @Generated
     private String ip;
 
     /*
      * Installation Id.
      */
+    @Generated
     private UUID installationId;
 
     /*
      * Robot Ids that this worker implements.
      */
+    @Generated
     private List<UUID> robotIds;
 
     /*
      * Tenant ID.
      */
+    @Generated
     private UUID tenantId;
 
     /**
      * Creates an instance of Worker class.
      */
+    @Generated
     public Worker() {}
 
     /**
@@ -100,6 +112,7 @@ public final class Worker extends AbstractAudited {
      *
      * @return the id value.
      */
+    @Generated
     public UUID getId() {
         return this.id;
     }
@@ -110,6 +123,7 @@ public final class Worker extends AbstractAudited {
      * @param id the id value to set.
      * @return the Worker object itself.
      */
+    @Generated
     public Worker setId(UUID id) {
         this.id = id;
         return this;
@@ -120,6 +134,7 @@ public final class Worker extends AbstractAudited {
      *
      * @return the identity value.
      */
+    @Generated
     public String getIdentity() {
         return this.identity;
     }
@@ -130,6 +145,7 @@ public final class Worker extends AbstractAudited {
      * @param identity the identity value to set.
      * @return the Worker object itself.
      */
+    @Generated
     public Worker setIdentity(String identity) {
         this.identity = identity;
         return this;
@@ -140,6 +156,7 @@ public final class Worker extends AbstractAudited {
      *
      * @return the taskQueue value.
      */
+    @Generated
     public String getTaskQueue() {
         return this.taskQueue;
     }
@@ -150,6 +167,7 @@ public final class Worker extends AbstractAudited {
      * @param taskQueue the taskQueue value to set.
      * @return the Worker object itself.
      */
+    @Generated
     public Worker setTaskQueue(String taskQueue) {
         this.taskQueue = taskQueue;
         return this;
@@ -160,6 +178,7 @@ public final class Worker extends AbstractAudited {
      *
      * @return the workflowTypes value.
      */
+    @Generated
     public List<String> getWorkflowTypes() {
         return this.workflowTypes;
     }
@@ -170,6 +189,7 @@ public final class Worker extends AbstractAudited {
      * @param workflowTypes the workflowTypes value to set.
      * @return the Worker object itself.
      */
+    @Generated
     public Worker setWorkflowTypes(List<String> workflowTypes) {
         this.workflowTypes = workflowTypes;
         return this;
@@ -180,6 +200,7 @@ public final class Worker extends AbstractAudited {
      *
      * @return the activityTypes value.
      */
+    @Generated
     public List<String> getActivityTypes() {
         return this.activityTypes;
     }
@@ -190,6 +211,7 @@ public final class Worker extends AbstractAudited {
      * @param activityTypes the activityTypes value to set.
      * @return the Worker object itself.
      */
+    @Generated
     public Worker setActivityTypes(List<String> activityTypes) {
         this.activityTypes = activityTypes;
         return this;
@@ -200,6 +222,7 @@ public final class Worker extends AbstractAudited {
      *
      * @return the hostname value.
      */
+    @Generated
     public String getHostname() {
         return this.hostname;
     }
@@ -210,6 +233,7 @@ public final class Worker extends AbstractAudited {
      * @param hostname the hostname value to set.
      * @return the Worker object itself.
      */
+    @Generated
     public Worker setHostname(String hostname) {
         this.hostname = hostname;
         return this;
@@ -220,6 +244,7 @@ public final class Worker extends AbstractAudited {
      *
      * @return the ip value.
      */
+    @Generated
     public String getIp() {
         return this.ip;
     }
@@ -230,6 +255,7 @@ public final class Worker extends AbstractAudited {
      * @param ip the ip value to set.
      * @return the Worker object itself.
      */
+    @Generated
     public Worker setIp(String ip) {
         this.ip = ip;
         return this;
@@ -240,6 +266,7 @@ public final class Worker extends AbstractAudited {
      *
      * @return the installationId value.
      */
+    @Generated
     public UUID getInstallationId() {
         return this.installationId;
     }
@@ -250,6 +277,7 @@ public final class Worker extends AbstractAudited {
      * @param installationId the installationId value to set.
      * @return the Worker object itself.
      */
+    @Generated
     public Worker setInstallationId(UUID installationId) {
         this.installationId = installationId;
         return this;
@@ -260,6 +288,7 @@ public final class Worker extends AbstractAudited {
      *
      * @return the robotIds value.
      */
+    @Generated
     public List<UUID> getRobotIds() {
         return this.robotIds;
     }
@@ -270,6 +299,7 @@ public final class Worker extends AbstractAudited {
      * @param robotIds the robotIds value to set.
      * @return the Worker object itself.
      */
+    @Generated
     public Worker setRobotIds(List<UUID> robotIds) {
         this.robotIds = robotIds;
         return this;
@@ -280,6 +310,7 @@ public final class Worker extends AbstractAudited {
      *
      * @return the tenantId value.
      */
+    @Generated
     public UUID getTenantId() {
         return this.tenantId;
     }
@@ -290,6 +321,7 @@ public final class Worker extends AbstractAudited {
      * @param tenantId the tenantId value to set.
      * @return the Worker object itself.
      */
+    @Generated
     public Worker setTenantId(UUID tenantId) {
         this.tenantId = tenantId;
         return this;
@@ -298,6 +330,7 @@ public final class Worker extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Worker setCreatedBy(UUID createdBy) {
         super.setCreatedBy(createdBy);
@@ -307,6 +340,7 @@ public final class Worker extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Worker setCreatedAt(OffsetDateTime createdAt) {
         super.setCreatedAt(createdAt);
@@ -316,6 +350,7 @@ public final class Worker extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Worker setLastModifiedBy(UUID lastModifiedBy) {
         super.setLastModifiedBy(lastModifiedBy);
@@ -325,6 +360,7 @@ public final class Worker extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Worker setLastModifiedAt(OffsetDateTime lastModifiedAt) {
         super.setLastModifiedAt(lastModifiedAt);
@@ -334,6 +370,7 @@ public final class Worker extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -369,6 +406,7 @@ public final class Worker extends AbstractAudited {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Worker.
      */
+    @Generated
     public static Worker fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Worker deserializedWorker = new Worker();

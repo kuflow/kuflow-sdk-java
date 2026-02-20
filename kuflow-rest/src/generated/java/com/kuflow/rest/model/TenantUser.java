@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -42,26 +43,31 @@ public final class TenantUser extends AbstractAudited {
     /*
      * The id property.
      */
+    @Generated
     private UUID id;
 
     /*
      * Json value.
      */
+    @Generated
     private JsonValue metadata;
 
     /*
      * The principal property.
      */
+    @Generated
     private Principal principal;
 
     /*
      * The tenantId property.
      */
+    @Generated
     private UUID tenantId;
 
     /**
      * Creates an instance of TenantUser class.
      */
+    @Generated
     public TenantUser() {}
 
     /**
@@ -69,6 +75,7 @@ public final class TenantUser extends AbstractAudited {
      *
      * @return the id value.
      */
+    @Generated
     public UUID getId() {
         return this.id;
     }
@@ -79,6 +86,7 @@ public final class TenantUser extends AbstractAudited {
      * @param id the id value to set.
      * @return the TenantUser object itself.
      */
+    @Generated
     public TenantUser setId(UUID id) {
         this.id = id;
         return this;
@@ -89,6 +97,7 @@ public final class TenantUser extends AbstractAudited {
      *
      * @return the metadata value.
      */
+    @Generated
     public JsonValue getMetadata() {
         return this.metadata;
     }
@@ -99,6 +108,7 @@ public final class TenantUser extends AbstractAudited {
      * @param metadata the metadata value to set.
      * @return the TenantUser object itself.
      */
+    @Generated
     public TenantUser setMetadata(JsonValue metadata) {
         this.metadata = metadata;
         return this;
@@ -109,6 +119,7 @@ public final class TenantUser extends AbstractAudited {
      *
      * @return the principal value.
      */
+    @Generated
     public Principal getPrincipal() {
         return this.principal;
     }
@@ -119,6 +130,7 @@ public final class TenantUser extends AbstractAudited {
      * @param principal the principal value to set.
      * @return the TenantUser object itself.
      */
+    @Generated
     public TenantUser setPrincipal(Principal principal) {
         this.principal = principal;
         return this;
@@ -129,6 +141,7 @@ public final class TenantUser extends AbstractAudited {
      *
      * @return the tenantId value.
      */
+    @Generated
     public UUID getTenantId() {
         return this.tenantId;
     }
@@ -136,6 +149,7 @@ public final class TenantUser extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TenantUser setCreatedBy(UUID createdBy) {
         super.setCreatedBy(createdBy);
@@ -145,6 +159,7 @@ public final class TenantUser extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TenantUser setCreatedAt(OffsetDateTime createdAt) {
         super.setCreatedAt(createdAt);
@@ -154,6 +169,7 @@ public final class TenantUser extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TenantUser setLastModifiedBy(UUID lastModifiedBy) {
         super.setLastModifiedBy(lastModifiedBy);
@@ -163,6 +179,7 @@ public final class TenantUser extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TenantUser setLastModifiedAt(OffsetDateTime lastModifiedAt) {
         super.setLastModifiedAt(lastModifiedAt);
@@ -172,6 +189,7 @@ public final class TenantUser extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -200,6 +218,7 @@ public final class TenantUser extends AbstractAudited {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TenantUser.
      */
+    @Generated
     public static TenantUser fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TenantUser deserializedTenantUser = new TenantUser();

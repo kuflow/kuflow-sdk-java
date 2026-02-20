@@ -71,7 +71,7 @@ public final class AuthenticationOperationsImpl {
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "KuFlowClientAuthenti")
+    @ServiceInterface(name = "KuFlowClientAuthenticationOperations")
     public interface AuthenticationOperationsService {
         @Post("/authentications")
         @ExpectedResponses({ 200 })

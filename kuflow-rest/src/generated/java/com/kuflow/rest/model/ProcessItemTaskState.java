@@ -22,6 +22,7 @@
  */
 package com.kuflow.rest.model;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -33,21 +34,25 @@ public final class ProcessItemTaskState extends ExpandableStringEnum<ProcessItem
     /**
      * Static value READY for ProcessItemTaskState.
      */
+    @Generated
     public static final ProcessItemTaskState READY = fromString("READY");
 
     /**
      * Static value CLAIMED for ProcessItemTaskState.
      */
+    @Generated
     public static final ProcessItemTaskState CLAIMED = fromString("CLAIMED");
 
     /**
      * Static value COMPLETED for ProcessItemTaskState.
      */
+    @Generated
     public static final ProcessItemTaskState COMPLETED = fromString("COMPLETED");
 
     /**
      * Static value CANCELLED for ProcessItemTaskState.
      */
+    @Generated
     public static final ProcessItemTaskState CANCELLED = fromString("CANCELLED");
 
     /**
@@ -55,6 +60,7 @@ public final class ProcessItemTaskState extends ExpandableStringEnum<ProcessItem
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ProcessItemTaskState() {}
 
@@ -64,6 +70,7 @@ public final class ProcessItemTaskState extends ExpandableStringEnum<ProcessItem
      * @param name a name to look for.
      * @return the corresponding ProcessItemTaskState.
      */
+    @Generated
     public static ProcessItemTaskState fromString(String name) {
         return fromString(name, ProcessItemTaskState.class);
     }
@@ -73,6 +80,7 @@ public final class ProcessItemTaskState extends ExpandableStringEnum<ProcessItem
      *
      * @return known ProcessItemTaskState values.
      */
+    @Generated
     public static Collection<ProcessItemTaskState> values() {
         return values(ProcessItemTaskState.class);
     }

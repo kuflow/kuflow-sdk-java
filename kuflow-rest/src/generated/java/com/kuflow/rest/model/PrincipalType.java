@@ -22,6 +22,7 @@
  */
 package com.kuflow.rest.model;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -33,16 +34,19 @@ public final class PrincipalType extends ExpandableStringEnum<PrincipalType> {
     /**
      * Static value USER for PrincipalType.
      */
+    @Generated
     public static final PrincipalType USER = fromString("USER");
 
     /**
      * Static value APPLICATION for PrincipalType.
      */
+    @Generated
     public static final PrincipalType APPLICATION = fromString("APPLICATION");
 
     /**
      * Static value SYSTEM for PrincipalType.
      */
+    @Generated
     public static final PrincipalType SYSTEM = fromString("SYSTEM");
 
     /**
@@ -50,6 +54,7 @@ public final class PrincipalType extends ExpandableStringEnum<PrincipalType> {
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PrincipalType() {}
 
@@ -59,6 +64,7 @@ public final class PrincipalType extends ExpandableStringEnum<PrincipalType> {
      * @param name a name to look for.
      * @return the corresponding PrincipalType.
      */
+    @Generated
     public static PrincipalType fromString(String name) {
         return fromString(name, PrincipalType.class);
     }
@@ -68,6 +74,7 @@ public final class PrincipalType extends ExpandableStringEnum<PrincipalType> {
      *
      * @return known PrincipalType values.
      */
+    @Generated
     public static Collection<PrincipalType> values() {
         return values(PrincipalType.class);
     }

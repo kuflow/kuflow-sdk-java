@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -41,31 +42,37 @@ public final class BusinessArtifactCreateParams implements JsonSerializable<Busi
     /*
      * The id property.
      */
+    @Generated
     private UUID id;
 
     /*
      * The businessArtifactDefinitionId property.
      */
+    @Generated
     private UUID businessArtifactDefinitionId;
 
     /*
      * The tenantId property.
      */
+    @Generated
     private UUID tenantId;
 
     /*
      * The businessArtifactDefinitionCode property.
      */
+    @Generated
     private String businessArtifactDefinitionCode;
 
     /*
      * Json value.
      */
+    @Generated
     private JsonValue data;
 
     /**
      * Creates an instance of BusinessArtifactCreateParams class.
      */
+    @Generated
     public BusinessArtifactCreateParams() {}
 
     /**
@@ -73,6 +80,7 @@ public final class BusinessArtifactCreateParams implements JsonSerializable<Busi
      *
      * @return the id value.
      */
+    @Generated
     public UUID getId() {
         return this.id;
     }
@@ -83,6 +91,7 @@ public final class BusinessArtifactCreateParams implements JsonSerializable<Busi
      * @param id the id value to set.
      * @return the BusinessArtifactCreateParams object itself.
      */
+    @Generated
     public BusinessArtifactCreateParams setId(UUID id) {
         this.id = id;
         return this;
@@ -93,6 +102,7 @@ public final class BusinessArtifactCreateParams implements JsonSerializable<Busi
      *
      * @return the businessArtifactDefinitionId value.
      */
+    @Generated
     public UUID getBusinessArtifactDefinitionId() {
         return this.businessArtifactDefinitionId;
     }
@@ -103,6 +113,7 @@ public final class BusinessArtifactCreateParams implements JsonSerializable<Busi
      * @param businessArtifactDefinitionId the businessArtifactDefinitionId value to set.
      * @return the BusinessArtifactCreateParams object itself.
      */
+    @Generated
     public BusinessArtifactCreateParams setBusinessArtifactDefinitionId(UUID businessArtifactDefinitionId) {
         this.businessArtifactDefinitionId = businessArtifactDefinitionId;
         return this;
@@ -113,6 +124,7 @@ public final class BusinessArtifactCreateParams implements JsonSerializable<Busi
      *
      * @return the tenantId value.
      */
+    @Generated
     public UUID getTenantId() {
         return this.tenantId;
     }
@@ -123,6 +135,7 @@ public final class BusinessArtifactCreateParams implements JsonSerializable<Busi
      * @param tenantId the tenantId value to set.
      * @return the BusinessArtifactCreateParams object itself.
      */
+    @Generated
     public BusinessArtifactCreateParams setTenantId(UUID tenantId) {
         this.tenantId = tenantId;
         return this;
@@ -133,6 +146,7 @@ public final class BusinessArtifactCreateParams implements JsonSerializable<Busi
      *
      * @return the businessArtifactDefinitionCode value.
      */
+    @Generated
     public String getBusinessArtifactDefinitionCode() {
         return this.businessArtifactDefinitionCode;
     }
@@ -143,6 +157,7 @@ public final class BusinessArtifactCreateParams implements JsonSerializable<Busi
      * @param businessArtifactDefinitionCode the businessArtifactDefinitionCode value to set.
      * @return the BusinessArtifactCreateParams object itself.
      */
+    @Generated
     public BusinessArtifactCreateParams setBusinessArtifactDefinitionCode(String businessArtifactDefinitionCode) {
         this.businessArtifactDefinitionCode = businessArtifactDefinitionCode;
         return this;
@@ -153,6 +168,7 @@ public final class BusinessArtifactCreateParams implements JsonSerializable<Busi
      *
      * @return the data value.
      */
+    @Generated
     public JsonValue getData() {
         return this.data;
     }
@@ -163,6 +179,7 @@ public final class BusinessArtifactCreateParams implements JsonSerializable<Busi
      * @param data the data value to set.
      * @return the BusinessArtifactCreateParams object itself.
      */
+    @Generated
     public BusinessArtifactCreateParams setData(JsonValue data) {
         this.data = data;
         return this;
@@ -171,6 +188,7 @@ public final class BusinessArtifactCreateParams implements JsonSerializable<Busi
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -190,6 +208,7 @@ public final class BusinessArtifactCreateParams implements JsonSerializable<Busi
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the BusinessArtifactCreateParams.
      */
+    @Generated
     public static BusinessArtifactCreateParams fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BusinessArtifactCreateParams deserializedBusinessArtifactCreateParams = new BusinessArtifactCreateParams();

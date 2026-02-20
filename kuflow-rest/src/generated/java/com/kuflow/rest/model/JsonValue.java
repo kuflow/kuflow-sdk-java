@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -40,21 +41,25 @@ public final class JsonValue implements JsonSerializable<JsonValue> {
     /*
      * true if the data complain the related json schema.
      */
+    @Generated
     private Boolean valid;
 
     /*
      * json value filled that complain with the related json schema.
      */
+    @Generated
     private Map<String, Object> value;
 
     /*
      * The errors property.
      */
+    @Generated
     private List<JsonValueError> errors;
 
     /**
      * Creates an instance of JsonValue class.
      */
+    @Generated
     public JsonValue() {}
 
     /**
@@ -62,6 +67,7 @@ public final class JsonValue implements JsonSerializable<JsonValue> {
      *
      * @return the valid value.
      */
+    @Generated
     public Boolean isValid() {
         return this.valid;
     }
@@ -71,6 +77,7 @@ public final class JsonValue implements JsonSerializable<JsonValue> {
      *
      * @return the value value.
      */
+    @Generated
     public Map<String, Object> getValue() {
         return this.value;
     }
@@ -81,6 +88,7 @@ public final class JsonValue implements JsonSerializable<JsonValue> {
      * @param value the value value to set.
      * @return the JsonValue object itself.
      */
+    @Generated
     public JsonValue setValue(Map<String, Object> value) {
         this.value = value;
         return this;
@@ -91,6 +99,7 @@ public final class JsonValue implements JsonSerializable<JsonValue> {
      *
      * @return the errors value.
      */
+    @Generated
     public List<JsonValueError> getErrors() {
         return this.errors;
     }
@@ -98,6 +107,7 @@ public final class JsonValue implements JsonSerializable<JsonValue> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -114,6 +124,7 @@ public final class JsonValue implements JsonSerializable<JsonValue> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the JsonValue.
      */
+    @Generated
     public static JsonValue fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             JsonValue deserializedJsonValue = new JsonValue();

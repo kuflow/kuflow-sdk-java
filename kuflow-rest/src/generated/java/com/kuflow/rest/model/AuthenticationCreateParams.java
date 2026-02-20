@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -40,16 +41,19 @@ public final class AuthenticationCreateParams implements JsonSerializable<Authen
     /*
      * The type property.
      */
+    @Generated
     private AuthenticationType type;
 
     /*
      * Tenant id. This attribute is required when an OAuth2 authentication is used.
      */
+    @Generated
     private UUID tenantId;
 
     /**
      * Creates an instance of AuthenticationCreateParams class.
      */
+    @Generated
     public AuthenticationCreateParams() {}
 
     /**
@@ -57,6 +61,7 @@ public final class AuthenticationCreateParams implements JsonSerializable<Authen
      *
      * @return the type value.
      */
+    @Generated
     public AuthenticationType getType() {
         return this.type;
     }
@@ -67,6 +72,7 @@ public final class AuthenticationCreateParams implements JsonSerializable<Authen
      * @param type the type value to set.
      * @return the AuthenticationCreateParams object itself.
      */
+    @Generated
     public AuthenticationCreateParams setType(AuthenticationType type) {
         this.type = type;
         return this;
@@ -77,6 +83,7 @@ public final class AuthenticationCreateParams implements JsonSerializable<Authen
      *
      * @return the tenantId value.
      */
+    @Generated
     public UUID getTenantId() {
         return this.tenantId;
     }
@@ -87,6 +94,7 @@ public final class AuthenticationCreateParams implements JsonSerializable<Authen
      * @param tenantId the tenantId value to set.
      * @return the AuthenticationCreateParams object itself.
      */
+    @Generated
     public AuthenticationCreateParams setTenantId(UUID tenantId) {
         this.tenantId = tenantId;
         return this;
@@ -95,6 +103,7 @@ public final class AuthenticationCreateParams implements JsonSerializable<Authen
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -112,6 +121,7 @@ public final class AuthenticationCreateParams implements JsonSerializable<Authen
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AuthenticationCreateParams.
      */
+    @Generated
     public static AuthenticationCreateParams fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AuthenticationCreateParams deserializedAuthenticationCreateParams = new AuthenticationCreateParams();

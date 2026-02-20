@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -42,16 +43,19 @@ public final class WebhookEventProcessStateChanged extends WebhookEvent {
     /*
      * Type of the Event.
      */
+    @Generated
     private WebhookType type = WebhookType.PROCESS_STATE_CHANGED;
 
     /*
      * The data property.
      */
+    @Generated
     private WebhookEventProcessStateChangedData data;
 
     /**
      * Creates an instance of WebhookEventProcessStateChanged class.
      */
+    @Generated
     public WebhookEventProcessStateChanged() {}
 
     /**
@@ -59,6 +63,7 @@ public final class WebhookEventProcessStateChanged extends WebhookEvent {
      *
      * @return the type value.
      */
+    @Generated
     @Override
     public WebhookType getType() {
         return this.type;
@@ -69,6 +74,7 @@ public final class WebhookEventProcessStateChanged extends WebhookEvent {
      *
      * @return the data value.
      */
+    @Generated
     public WebhookEventProcessStateChangedData getData() {
         return this.data;
     }
@@ -79,6 +85,7 @@ public final class WebhookEventProcessStateChanged extends WebhookEvent {
      * @param data the data value to set.
      * @return the WebhookEventProcessStateChanged object itself.
      */
+    @Generated
     public WebhookEventProcessStateChanged setData(WebhookEventProcessStateChangedData data) {
         this.data = data;
         return this;
@@ -87,6 +94,7 @@ public final class WebhookEventProcessStateChanged extends WebhookEvent {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebhookEventProcessStateChanged setId(UUID id) {
         super.setId(id);
@@ -96,6 +104,7 @@ public final class WebhookEventProcessStateChanged extends WebhookEvent {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebhookEventProcessStateChanged setVersion(String version) {
         super.setVersion(version);
@@ -105,6 +114,7 @@ public final class WebhookEventProcessStateChanged extends WebhookEvent {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebhookEventProcessStateChanged setTimestamp(OffsetDateTime timestamp) {
         super.setTimestamp(timestamp);
@@ -114,6 +124,7 @@ public final class WebhookEventProcessStateChanged extends WebhookEvent {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -137,6 +148,7 @@ public final class WebhookEventProcessStateChanged extends WebhookEvent {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WebhookEventProcessStateChanged.
      */
+    @Generated
     public static WebhookEventProcessStateChanged fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WebhookEventProcessStateChanged deserializedWebhookEventProcessStateChanged = new WebhookEventProcessStateChanged();

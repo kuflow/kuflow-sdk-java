@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -43,26 +44,31 @@ public class AbstractAudited implements JsonSerializable<AbstractAudited> {
     /*
      * Who create this model.
      */
+    @Generated
     private UUID createdBy;
 
     /*
      * When this model was created.
      */
+    @Generated
     private OffsetDateTime createdAt;
 
     /*
      * Who was last update this model.
      */
+    @Generated
     private UUID lastModifiedBy;
 
     /*
      * When this model type was last updated.
      */
+    @Generated
     private OffsetDateTime lastModifiedAt;
 
     /**
      * Creates an instance of AbstractAudited class.
      */
+    @Generated
     public AbstractAudited() {}
 
     /**
@@ -70,6 +76,7 @@ public class AbstractAudited implements JsonSerializable<AbstractAudited> {
      *
      * @return the createdBy value.
      */
+    @Generated
     public UUID getCreatedBy() {
         return this.createdBy;
     }
@@ -80,6 +87,7 @@ public class AbstractAudited implements JsonSerializable<AbstractAudited> {
      * @param createdBy the createdBy value to set.
      * @return the AbstractAudited object itself.
      */
+    @Generated
     public AbstractAudited setCreatedBy(UUID createdBy) {
         this.createdBy = createdBy;
         return this;
@@ -90,6 +98,7 @@ public class AbstractAudited implements JsonSerializable<AbstractAudited> {
      *
      * @return the createdAt value.
      */
+    @Generated
     public OffsetDateTime getCreatedAt() {
         return this.createdAt;
     }
@@ -100,6 +109,7 @@ public class AbstractAudited implements JsonSerializable<AbstractAudited> {
      * @param createdAt the createdAt value to set.
      * @return the AbstractAudited object itself.
      */
+    @Generated
     public AbstractAudited setCreatedAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
         return this;
@@ -110,6 +120,7 @@ public class AbstractAudited implements JsonSerializable<AbstractAudited> {
      *
      * @return the lastModifiedBy value.
      */
+    @Generated
     public UUID getLastModifiedBy() {
         return this.lastModifiedBy;
     }
@@ -120,6 +131,7 @@ public class AbstractAudited implements JsonSerializable<AbstractAudited> {
      * @param lastModifiedBy the lastModifiedBy value to set.
      * @return the AbstractAudited object itself.
      */
+    @Generated
     public AbstractAudited setLastModifiedBy(UUID lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
         return this;
@@ -130,6 +142,7 @@ public class AbstractAudited implements JsonSerializable<AbstractAudited> {
      *
      * @return the lastModifiedAt value.
      */
+    @Generated
     public OffsetDateTime getLastModifiedAt() {
         return this.lastModifiedAt;
     }
@@ -140,6 +153,7 @@ public class AbstractAudited implements JsonSerializable<AbstractAudited> {
      * @param lastModifiedAt the lastModifiedAt value to set.
      * @return the AbstractAudited object itself.
      */
+    @Generated
     public AbstractAudited setLastModifiedAt(OffsetDateTime lastModifiedAt) {
         this.lastModifiedAt = lastModifiedAt;
         return this;
@@ -148,6 +162,7 @@ public class AbstractAudited implements JsonSerializable<AbstractAudited> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -172,6 +187,7 @@ public class AbstractAudited implements JsonSerializable<AbstractAudited> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the AbstractAudited.
      */
+    @Generated
     public static AbstractAudited fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AbstractAudited deserializedAbstractAudited = new AbstractAudited();

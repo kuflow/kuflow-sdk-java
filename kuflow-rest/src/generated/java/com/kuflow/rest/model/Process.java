@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -42,46 +43,55 @@ public final class Process extends AbstractAudited {
     /*
      * Process ID.
      */
+    @Generated
     private UUID id;
 
     /*
      * Process state
      */
+    @Generated
     private ProcessState state;
 
     /*
      * The processDefinitionRef property.
      */
+    @Generated
     private ProcessDefinitionRef processDefinitionRef;
 
     /*
      * Json value.
      */
+    @Generated
     private JsonValue metadata;
 
     /*
      * Json value.
      */
+    @Generated
     private JsonValue entity;
 
     /*
      * The processRelated property.
      */
+    @Generated
     private ProcessRelated processRelated;
 
     /*
      * Process initiator id, Principal ID.
      */
+    @Generated
     private UUID initiatorId;
 
     /*
      * Tenant ID.
      */
+    @Generated
     private UUID tenantId;
 
     /**
      * Creates an instance of Process class.
      */
+    @Generated
     public Process() {}
 
     /**
@@ -89,6 +99,7 @@ public final class Process extends AbstractAudited {
      *
      * @return the id value.
      */
+    @Generated
     public UUID getId() {
         return this.id;
     }
@@ -99,6 +110,7 @@ public final class Process extends AbstractAudited {
      * @param id the id value to set.
      * @return the Process object itself.
      */
+    @Generated
     public Process setId(UUID id) {
         this.id = id;
         return this;
@@ -109,6 +121,7 @@ public final class Process extends AbstractAudited {
      *
      * @return the state value.
      */
+    @Generated
     public ProcessState getState() {
         return this.state;
     }
@@ -119,6 +132,7 @@ public final class Process extends AbstractAudited {
      * @param state the state value to set.
      * @return the Process object itself.
      */
+    @Generated
     public Process setState(ProcessState state) {
         this.state = state;
         return this;
@@ -129,6 +143,7 @@ public final class Process extends AbstractAudited {
      *
      * @return the processDefinitionRef value.
      */
+    @Generated
     public ProcessDefinitionRef getProcessDefinitionRef() {
         return this.processDefinitionRef;
     }
@@ -139,6 +154,7 @@ public final class Process extends AbstractAudited {
      * @param processDefinitionRef the processDefinitionRef value to set.
      * @return the Process object itself.
      */
+    @Generated
     public Process setProcessDefinitionRef(ProcessDefinitionRef processDefinitionRef) {
         this.processDefinitionRef = processDefinitionRef;
         return this;
@@ -149,6 +165,7 @@ public final class Process extends AbstractAudited {
      *
      * @return the metadata value.
      */
+    @Generated
     public JsonValue getMetadata() {
         return this.metadata;
     }
@@ -159,6 +176,7 @@ public final class Process extends AbstractAudited {
      * @param metadata the metadata value to set.
      * @return the Process object itself.
      */
+    @Generated
     public Process setMetadata(JsonValue metadata) {
         this.metadata = metadata;
         return this;
@@ -169,6 +187,7 @@ public final class Process extends AbstractAudited {
      *
      * @return the entity value.
      */
+    @Generated
     public JsonValue getEntity() {
         return this.entity;
     }
@@ -179,6 +198,7 @@ public final class Process extends AbstractAudited {
      * @param entity the entity value to set.
      * @return the Process object itself.
      */
+    @Generated
     public Process setEntity(JsonValue entity) {
         this.entity = entity;
         return this;
@@ -189,6 +209,7 @@ public final class Process extends AbstractAudited {
      *
      * @return the processRelated value.
      */
+    @Generated
     public ProcessRelated getProcessRelated() {
         return this.processRelated;
     }
@@ -199,6 +220,7 @@ public final class Process extends AbstractAudited {
      * @param processRelated the processRelated value to set.
      * @return the Process object itself.
      */
+    @Generated
     public Process setProcessRelated(ProcessRelated processRelated) {
         this.processRelated = processRelated;
         return this;
@@ -209,6 +231,7 @@ public final class Process extends AbstractAudited {
      *
      * @return the initiatorId value.
      */
+    @Generated
     public UUID getInitiatorId() {
         return this.initiatorId;
     }
@@ -219,6 +242,7 @@ public final class Process extends AbstractAudited {
      * @param initiatorId the initiatorId value to set.
      * @return the Process object itself.
      */
+    @Generated
     public Process setInitiatorId(UUID initiatorId) {
         this.initiatorId = initiatorId;
         return this;
@@ -229,6 +253,7 @@ public final class Process extends AbstractAudited {
      *
      * @return the tenantId value.
      */
+    @Generated
     public UUID getTenantId() {
         return this.tenantId;
     }
@@ -239,6 +264,7 @@ public final class Process extends AbstractAudited {
      * @param tenantId the tenantId value to set.
      * @return the Process object itself.
      */
+    @Generated
     public Process setTenantId(UUID tenantId) {
         this.tenantId = tenantId;
         return this;
@@ -247,6 +273,7 @@ public final class Process extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Process setCreatedBy(UUID createdBy) {
         super.setCreatedBy(createdBy);
@@ -256,6 +283,7 @@ public final class Process extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Process setCreatedAt(OffsetDateTime createdAt) {
         super.setCreatedAt(createdAt);
@@ -265,6 +293,7 @@ public final class Process extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Process setLastModifiedBy(UUID lastModifiedBy) {
         super.setLastModifiedBy(lastModifiedBy);
@@ -274,6 +303,7 @@ public final class Process extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Process setLastModifiedAt(OffsetDateTime lastModifiedAt) {
         super.setLastModifiedAt(lastModifiedAt);
@@ -283,6 +313,7 @@ public final class Process extends AbstractAudited {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -316,6 +347,7 @@ public final class Process extends AbstractAudited {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Process.
      */
+    @Generated
     public static Process fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Process deserializedProcess = new Process();

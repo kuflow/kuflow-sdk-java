@@ -22,6 +22,7 @@
  */
 package com.kuflow.rest.model;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -33,16 +34,19 @@ public final class RobotAssetPlatform extends ExpandableStringEnum<RobotAssetPla
     /**
      * Static value WINDOWS for RobotAssetPlatform.
      */
+    @Generated
     public static final RobotAssetPlatform WINDOWS = fromString("WINDOWS");
 
     /**
      * Static value MAC_OS for RobotAssetPlatform.
      */
+    @Generated
     public static final RobotAssetPlatform MACOS = fromString("MAC_OS");
 
     /**
      * Static value LINUX for RobotAssetPlatform.
      */
+    @Generated
     public static final RobotAssetPlatform LINUX = fromString("LINUX");
 
     /**
@@ -50,6 +54,7 @@ public final class RobotAssetPlatform extends ExpandableStringEnum<RobotAssetPla
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public RobotAssetPlatform() {}
 
@@ -59,6 +64,7 @@ public final class RobotAssetPlatform extends ExpandableStringEnum<RobotAssetPla
      * @param name a name to look for.
      * @return the corresponding RobotAssetPlatform.
      */
+    @Generated
     public static RobotAssetPlatform fromString(String name) {
         return fromString(name, RobotAssetPlatform.class);
     }
@@ -68,6 +74,7 @@ public final class RobotAssetPlatform extends ExpandableStringEnum<RobotAssetPla
      *
      * @return known RobotAssetPlatform values.
      */
+    @Generated
     public static Collection<RobotAssetPlatform> values() {
         return values(RobotAssetPlatform.class);
     }

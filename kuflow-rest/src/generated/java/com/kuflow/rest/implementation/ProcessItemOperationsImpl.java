@@ -89,7 +89,7 @@ public final class ProcessItemOperationsImpl {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "KuFlowClientProcessI")
+    @ServiceInterface(name = "KuFlowClientProcessItemOperations")
     public interface ProcessItemOperationsService {
         @Get("/process-items")
         @ExpectedResponses({ 200 })

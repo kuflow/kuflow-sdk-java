@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -43,26 +44,31 @@ public final class ProcessItemTaskLog implements JsonSerializable<ProcessItemTas
     /*
      * The id property.
      */
+    @Generated
     private UUID id;
 
     /*
      * When this model was created.
      */
+    @Generated
     private OffsetDateTime timestamp;
 
     /*
      * The message property.
      */
+    @Generated
     private String message;
 
     /*
      * The level property.
      */
+    @Generated
     private ProcessItemTaskLogLevel level;
 
     /**
      * Creates an instance of ProcessItemTaskLog class.
      */
+    @Generated
     public ProcessItemTaskLog() {}
 
     /**
@@ -70,6 +76,7 @@ public final class ProcessItemTaskLog implements JsonSerializable<ProcessItemTas
      *
      * @return the id value.
      */
+    @Generated
     public UUID getId() {
         return this.id;
     }
@@ -80,6 +87,7 @@ public final class ProcessItemTaskLog implements JsonSerializable<ProcessItemTas
      * @param id the id value to set.
      * @return the ProcessItemTaskLog object itself.
      */
+    @Generated
     public ProcessItemTaskLog setId(UUID id) {
         this.id = id;
         return this;
@@ -90,6 +98,7 @@ public final class ProcessItemTaskLog implements JsonSerializable<ProcessItemTas
      *
      * @return the timestamp value.
      */
+    @Generated
     public OffsetDateTime getTimestamp() {
         return this.timestamp;
     }
@@ -100,6 +109,7 @@ public final class ProcessItemTaskLog implements JsonSerializable<ProcessItemTas
      * @param timestamp the timestamp value to set.
      * @return the ProcessItemTaskLog object itself.
      */
+    @Generated
     public ProcessItemTaskLog setTimestamp(OffsetDateTime timestamp) {
         this.timestamp = timestamp;
         return this;
@@ -110,6 +120,7 @@ public final class ProcessItemTaskLog implements JsonSerializable<ProcessItemTas
      *
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -120,6 +131,7 @@ public final class ProcessItemTaskLog implements JsonSerializable<ProcessItemTas
      * @param message the message value to set.
      * @return the ProcessItemTaskLog object itself.
      */
+    @Generated
     public ProcessItemTaskLog setMessage(String message) {
         this.message = message;
         return this;
@@ -130,6 +142,7 @@ public final class ProcessItemTaskLog implements JsonSerializable<ProcessItemTas
      *
      * @return the level value.
      */
+    @Generated
     public ProcessItemTaskLogLevel getLevel() {
         return this.level;
     }
@@ -140,6 +153,7 @@ public final class ProcessItemTaskLog implements JsonSerializable<ProcessItemTas
      * @param level the level value to set.
      * @return the ProcessItemTaskLog object itself.
      */
+    @Generated
     public ProcessItemTaskLog setLevel(ProcessItemTaskLogLevel level) {
         this.level = level;
         return this;
@@ -148,6 +162,7 @@ public final class ProcessItemTaskLog implements JsonSerializable<ProcessItemTas
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -170,6 +185,7 @@ public final class ProcessItemTaskLog implements JsonSerializable<ProcessItemTas
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ProcessItemTaskLog.
      */
+    @Generated
     public static ProcessItemTaskLog fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ProcessItemTaskLog deserializedProcessItemTaskLog = new ProcessItemTaskLog();

@@ -22,6 +22,7 @@
  */
 package com.kuflow.rest.model;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -33,16 +34,19 @@ public final class ProcessState extends ExpandableStringEnum<ProcessState> {
     /**
      * Static value RUNNING for ProcessState.
      */
+    @Generated
     public static final ProcessState RUNNING = fromString("RUNNING");
 
     /**
      * Static value COMPLETED for ProcessState.
      */
+    @Generated
     public static final ProcessState COMPLETED = fromString("COMPLETED");
 
     /**
      * Static value CANCELLED for ProcessState.
      */
+    @Generated
     public static final ProcessState CANCELLED = fromString("CANCELLED");
 
     /**
@@ -50,6 +54,7 @@ public final class ProcessState extends ExpandableStringEnum<ProcessState> {
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ProcessState() {}
 
@@ -59,6 +64,7 @@ public final class ProcessState extends ExpandableStringEnum<ProcessState> {
      * @param name a name to look for.
      * @return the corresponding ProcessState.
      */
+    @Generated
     public static ProcessState fromString(String name) {
         return fromString(name, ProcessState.class);
     }
@@ -68,6 +74,7 @@ public final class ProcessState extends ExpandableStringEnum<ProcessState> {
      *
      * @return known ProcessState values.
      */
+    @Generated
     public static Collection<ProcessState> values() {
         return values(ProcessState.class);
     }

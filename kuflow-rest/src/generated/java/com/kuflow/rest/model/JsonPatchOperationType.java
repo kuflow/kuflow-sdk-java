@@ -22,6 +22,7 @@
  */
 package com.kuflow.rest.model;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -33,31 +34,37 @@ public final class JsonPatchOperationType extends ExpandableStringEnum<JsonPatch
     /**
      * Static value add for JsonPatchOperationType.
      */
+    @Generated
     public static final JsonPatchOperationType ADD = fromString("add");
 
     /**
      * Static value remove for JsonPatchOperationType.
      */
+    @Generated
     public static final JsonPatchOperationType REMOVE = fromString("remove");
 
     /**
      * Static value replace for JsonPatchOperationType.
      */
+    @Generated
     public static final JsonPatchOperationType REPLACE = fromString("replace");
 
     /**
      * Static value move for JsonPatchOperationType.
      */
+    @Generated
     public static final JsonPatchOperationType MOVE = fromString("move");
 
     /**
      * Static value copy for JsonPatchOperationType.
      */
+    @Generated
     public static final JsonPatchOperationType COPY = fromString("copy");
 
     /**
      * Static value test for JsonPatchOperationType.
      */
+    @Generated
     public static final JsonPatchOperationType TEST = fromString("test");
 
     /**
@@ -65,6 +72,7 @@ public final class JsonPatchOperationType extends ExpandableStringEnum<JsonPatch
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public JsonPatchOperationType() {}
 
@@ -74,6 +82,7 @@ public final class JsonPatchOperationType extends ExpandableStringEnum<JsonPatch
      * @param name a name to look for.
      * @return the corresponding JsonPatchOperationType.
      */
+    @Generated
     public static JsonPatchOperationType fromString(String name) {
         return fromString(name, JsonPatchOperationType.class);
     }
@@ -83,6 +92,7 @@ public final class JsonPatchOperationType extends ExpandableStringEnum<JsonPatch
      *
      * @return known JsonPatchOperationType values.
      */
+    @Generated
     public static Collection<JsonPatchOperationType> values() {
         return values(JsonPatchOperationType.class);
     }

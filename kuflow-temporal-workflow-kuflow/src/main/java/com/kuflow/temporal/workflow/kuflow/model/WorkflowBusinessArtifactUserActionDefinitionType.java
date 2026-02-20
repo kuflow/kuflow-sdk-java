@@ -20,62 +20,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.rest.model;
 
-import com.azure.core.annotation.Generated;
+package com.kuflow.temporal.workflow.kuflow.model;
+
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/**
- * Defines values for ProcessItemTaskLogLevel.
- */
-public final class ProcessItemTaskLogLevel extends ExpandableStringEnum<ProcessItemTaskLogLevel> {
+public class WorkflowBusinessArtifactUserActionDefinitionType
+    extends ExpandableStringEnum<WorkflowBusinessArtifactUserActionDefinitionType>
+{
+
+    public static final WorkflowBusinessArtifactUserActionDefinitionType DOWNLOADABLE = fromString("DOWNLOADABLE");
+
+    public static final WorkflowBusinessArtifactUserActionDefinitionType START_PROCESS = fromString("START_PROCESS");
+
+    public static final WorkflowBusinessArtifactUserActionDefinitionType START_WORKFLOW = fromString("START_WORKFLOW");
 
     /**
-     * Static value INFO for ProcessItemTaskLogLevel.
-     */
-    @Generated
-    public static final ProcessItemTaskLogLevel INFO = fromString("INFO");
-
-    /**
-     * Static value WARN for ProcessItemTaskLogLevel.
-     */
-    @Generated
-    public static final ProcessItemTaskLogLevel WARN = fromString("WARN");
-
-    /**
-     * Static value ERROR for ProcessItemTaskLogLevel.
-     */
-    @Generated
-    public static final ProcessItemTaskLogLevel ERROR = fromString("ERROR");
-
-    /**
-     * Creates a new instance of ProcessItemTaskLogLevel value.
+     * Creates a new instance of ProcessState value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
-    public ProcessItemTaskLogLevel() {}
+    public WorkflowBusinessArtifactUserActionDefinitionType() {}
 
     /**
-     * Creates or finds a ProcessItemTaskLogLevel from its string representation.
+     * Creates or finds a UserActionDefinitionType from its string representation.
      *
      * @param name a name to look for.
-     * @return the corresponding ProcessItemTaskLogLevel.
+     * @return the corresponding UserActionDefinitionType.
      */
-    @Generated
-    public static ProcessItemTaskLogLevel fromString(String name) {
-        return fromString(name, ProcessItemTaskLogLevel.class);
+    public static WorkflowBusinessArtifactUserActionDefinitionType fromString(String name) {
+        return fromString(name, WorkflowBusinessArtifactUserActionDefinitionType.class);
     }
 
     /**
-     * Gets known ProcessItemTaskLogLevel values.
+     * Gets known UserActionDefinitionType values.
      *
-     * @return known ProcessItemTaskLogLevel values.
+     * @return known UserActionDefinitionType values.
      */
-    @Generated
-    public static Collection<ProcessItemTaskLogLevel> values() {
-        return values(ProcessItemTaskLogLevel.class);
+    public static Collection<WorkflowBusinessArtifactUserActionDefinitionType> values() {
+        return values(WorkflowBusinessArtifactUserActionDefinitionType.class);
     }
 }

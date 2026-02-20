@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -40,21 +41,25 @@ public final class GroupPageItem implements JsonSerializable<GroupPageItem> {
     /*
      * The id property.
      */
+    @Generated
     private UUID id;
 
     /*
      * The name property.
      */
+    @Generated
     private String name;
 
     /*
      * Tenant ID.
      */
+    @Generated
     private UUID tenantId;
 
     /**
      * Creates an instance of GroupPageItem class.
      */
+    @Generated
     public GroupPageItem() {}
 
     /**
@@ -62,6 +67,7 @@ public final class GroupPageItem implements JsonSerializable<GroupPageItem> {
      *
      * @return the id value.
      */
+    @Generated
     public UUID getId() {
         return this.id;
     }
@@ -72,6 +78,7 @@ public final class GroupPageItem implements JsonSerializable<GroupPageItem> {
      * @param id the id value to set.
      * @return the GroupPageItem object itself.
      */
+    @Generated
     public GroupPageItem setId(UUID id) {
         this.id = id;
         return this;
@@ -82,6 +89,7 @@ public final class GroupPageItem implements JsonSerializable<GroupPageItem> {
      *
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -92,6 +100,7 @@ public final class GroupPageItem implements JsonSerializable<GroupPageItem> {
      * @param name the name value to set.
      * @return the GroupPageItem object itself.
      */
+    @Generated
     public GroupPageItem setName(String name) {
         this.name = name;
         return this;
@@ -102,6 +111,7 @@ public final class GroupPageItem implements JsonSerializable<GroupPageItem> {
      *
      * @return the tenantId value.
      */
+    @Generated
     public UUID getTenantId() {
         return this.tenantId;
     }
@@ -112,6 +122,7 @@ public final class GroupPageItem implements JsonSerializable<GroupPageItem> {
      * @param tenantId the tenantId value to set.
      * @return the GroupPageItem object itself.
      */
+    @Generated
     public GroupPageItem setTenantId(UUID tenantId) {
         this.tenantId = tenantId;
         return this;
@@ -120,6 +131,7 @@ public final class GroupPageItem implements JsonSerializable<GroupPageItem> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -138,6 +150,7 @@ public final class GroupPageItem implements JsonSerializable<GroupPageItem> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the GroupPageItem.
      */
+    @Generated
     public static GroupPageItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GroupPageItem deserializedGroupPageItem = new GroupPageItem();

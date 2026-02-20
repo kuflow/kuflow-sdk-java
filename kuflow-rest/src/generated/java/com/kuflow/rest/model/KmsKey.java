@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -39,16 +40,19 @@ public final class KmsKey implements JsonSerializable<KmsKey> {
     /*
      * Key Id
      */
+    @Generated
     private String id;
 
     /*
      * Encryption/decryption key
      */
+    @Generated
     private byte[] value;
 
     /**
      * Creates an instance of KmsKey class.
      */
+    @Generated
     public KmsKey() {}
 
     /**
@@ -56,6 +60,7 @@ public final class KmsKey implements JsonSerializable<KmsKey> {
      *
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -66,6 +71,7 @@ public final class KmsKey implements JsonSerializable<KmsKey> {
      * @param id the id value to set.
      * @return the KmsKey object itself.
      */
+    @Generated
     public KmsKey setId(String id) {
         this.id = id;
         return this;
@@ -76,6 +82,7 @@ public final class KmsKey implements JsonSerializable<KmsKey> {
      *
      * @return the value value.
      */
+    @Generated
     public byte[] getValue() {
         return CoreUtils.clone(this.value);
     }
@@ -86,6 +93,7 @@ public final class KmsKey implements JsonSerializable<KmsKey> {
      * @param value the value value to set.
      * @return the KmsKey object itself.
      */
+    @Generated
     public KmsKey setValue(byte[] value) {
         this.value = CoreUtils.clone(value);
         return this;
@@ -94,6 +102,7 @@ public final class KmsKey implements JsonSerializable<KmsKey> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -111,6 +120,7 @@ public final class KmsKey implements JsonSerializable<KmsKey> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KmsKey.
      */
+    @Generated
     public static KmsKey fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             KmsKey deserializedKmsKey = new KmsKey();

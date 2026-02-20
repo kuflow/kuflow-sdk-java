@@ -23,6 +23,7 @@
 package com.kuflow.rest.model;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -38,21 +39,25 @@ public final class ProcessItemMessage implements JsonSerializable<ProcessItemMes
     /*
      * Message text in Markdown format according to the specification https://spec.commonmark.org/
      */
+    @Generated
     private String text;
 
     /*
      * Json value.
      */
+    @Generated
     private JsonValue data;
 
     /*
      * The dataStructureDataDefinitionCode property.
      */
+    @Generated
     private String dataStructureDataDefinitionCode;
 
     /**
      * Creates an instance of ProcessItemMessage class.
      */
+    @Generated
     public ProcessItemMessage() {}
 
     /**
@@ -61,6 +66,7 @@ public final class ProcessItemMessage implements JsonSerializable<ProcessItemMes
      *
      * @return the text value.
      */
+    @Generated
     public String getText() {
         return this.text;
     }
@@ -72,6 +78,7 @@ public final class ProcessItemMessage implements JsonSerializable<ProcessItemMes
      * @param text the text value to set.
      * @return the ProcessItemMessage object itself.
      */
+    @Generated
     public ProcessItemMessage setText(String text) {
         this.text = text;
         return this;
@@ -82,6 +89,7 @@ public final class ProcessItemMessage implements JsonSerializable<ProcessItemMes
      *
      * @return the data value.
      */
+    @Generated
     public JsonValue getData() {
         return this.data;
     }
@@ -92,6 +100,7 @@ public final class ProcessItemMessage implements JsonSerializable<ProcessItemMes
      * @param data the data value to set.
      * @return the ProcessItemMessage object itself.
      */
+    @Generated
     public ProcessItemMessage setData(JsonValue data) {
         this.data = data;
         return this;
@@ -102,6 +111,7 @@ public final class ProcessItemMessage implements JsonSerializable<ProcessItemMes
      *
      * @return the dataStructureDataDefinitionCode value.
      */
+    @Generated
     public String getDataStructureDataDefinitionCode() {
         return this.dataStructureDataDefinitionCode;
     }
@@ -112,6 +122,7 @@ public final class ProcessItemMessage implements JsonSerializable<ProcessItemMes
      * @param dataStructureDataDefinitionCode the dataStructureDataDefinitionCode value to set.
      * @return the ProcessItemMessage object itself.
      */
+    @Generated
     public ProcessItemMessage setDataStructureDataDefinitionCode(String dataStructureDataDefinitionCode) {
         this.dataStructureDataDefinitionCode = dataStructureDataDefinitionCode;
         return this;
@@ -120,6 +131,7 @@ public final class ProcessItemMessage implements JsonSerializable<ProcessItemMes
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -137,6 +149,7 @@ public final class ProcessItemMessage implements JsonSerializable<ProcessItemMes
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the ProcessItemMessage.
      */
+    @Generated
     public static ProcessItemMessage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ProcessItemMessage deserializedProcessItemMessage = new ProcessItemMessage();

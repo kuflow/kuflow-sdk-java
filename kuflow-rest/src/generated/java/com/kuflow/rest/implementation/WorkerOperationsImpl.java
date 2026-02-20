@@ -71,7 +71,7 @@ public final class WorkerOperationsImpl {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "KuFlowClientWorkerOp")
+    @ServiceInterface(name = "KuFlowClientWorkerOperations")
     public interface WorkerOperationsService {
         @Post("/workers")
         @ExpectedResponses({ 200, 201 })
