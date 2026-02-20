@@ -35,24 +35,20 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * @deprecated Use {@link WorkflowProcessUserActionRequest} instead.
- */
-@Deprecated
-public class WorkflowUserActionRequest implements JsonSerializable<SignalProcessItem> {
+public class WorkflowBusinessArtifactUserActionRequest implements JsonSerializable<SignalProcessItem> {
 
     /**
-     * The unique identifier of a process.
-     * This identifier is used to track, manage, and reference a specific process
+     * The unique identifier of a business artifact.
+     * This identifier is used to track, manage, and reference a specific business artifact
      * within the workflow system.
      */
-    private UUID processId;
+    private UUID businessArtifactId;
 
     /**
      * The type of user action definition associated with this user action request.
      * This variable indicates the specific action type that a user has initiated.
      */
-    private WorkflowUserActionDefinitionType userActionDefinitionType;
+    private WorkflowBusinessArtifactUserActionDefinitionType userActionDefinitionType;
 
     /**
      * The code that defines a user action.
@@ -89,19 +85,19 @@ public class WorkflowUserActionRequest implements JsonSerializable<SignalProcess
      */
     private ZoneId requestTimeZone;
 
-    public UUID getProcessId() {
-        return this.processId;
+    public UUID getBusinessArtifactId() {
+        return this.businessArtifactId;
     }
 
-    public void setProcessId(UUID processId) {
-        this.processId = processId;
+    public void setBusinessArtifactId(UUID businessArtifactId) {
+        this.businessArtifactId = businessArtifactId;
     }
 
-    public WorkflowUserActionDefinitionType getUserActionDefinitionType() {
+    public WorkflowBusinessArtifactUserActionDefinitionType getUserActionDefinitionType() {
         return this.userActionDefinitionType;
     }
 
-    public void setUserActionDefinitionType(WorkflowUserActionDefinitionType userActionDefinitionType) {
+    public void setUserActionDefinitionType(WorkflowBusinessArtifactUserActionDefinitionType userActionDefinitionType) {
         this.userActionDefinitionType = userActionDefinitionType;
     }
 
@@ -148,7 +144,7 @@ public class WorkflowUserActionRequest implements JsonSerializable<SignalProcess
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("processId", Objects.toString(this.processId, null));
+        jsonWriter.writeStringField("businessArtifactId", Objects.toString(this.businessArtifactId, null));
         jsonWriter.writeStringField("userActionDefinitionType", Objects.toString(this.userActionDefinitionType, null));
         jsonWriter.writeStringField("userActionDefinitionCode", this.userActionDefinitionCode);
         jsonWriter.writeStringField("userActionId", Objects.toString(this.userActionId, null));
@@ -161,18 +157,18 @@ public class WorkflowUserActionRequest implements JsonSerializable<SignalProcess
         return jsonWriter.writeEndObject();
     }
 
-    public static WorkflowUserActionRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static WorkflowBusinessArtifactUserActionRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            WorkflowUserActionRequest value = new WorkflowUserActionRequest();
+            WorkflowBusinessArtifactUserActionRequest value = new WorkflowBusinessArtifactUserActionRequest();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("processId".equals(fieldName)) {
-                    value.processId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                if ("businessArtifactId".equals(fieldName)) {
+                    value.businessArtifactId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("userActionDefinitionType".equals(fieldName)) {
                     value.userActionDefinitionType = reader.getNullable(nonNullReader ->
-                        WorkflowUserActionDefinitionType.fromString(nonNullReader.getString())
+                        WorkflowBusinessArtifactUserActionDefinitionType.fromString(nonNullReader.getString())
                     );
                 } else if ("userActionDefinitionCode".equals(fieldName)) {
                     value.userActionDefinitionCode = reader.getNullable(JsonReader::getString);

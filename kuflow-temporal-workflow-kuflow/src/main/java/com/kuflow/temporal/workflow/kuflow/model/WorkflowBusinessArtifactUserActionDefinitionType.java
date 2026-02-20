@@ -26,23 +26,15 @@ package com.kuflow.temporal.workflow.kuflow.model;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/**
- * @deprecated Use {@link WorkflowProcessUserActionDefinitionType} instead.
- */
-@Deprecated
-public class WorkflowUserActionDefinitionType extends ExpandableStringEnum<WorkflowUserActionDefinitionType> {
+public class WorkflowBusinessArtifactUserActionDefinitionType
+    extends ExpandableStringEnum<WorkflowBusinessArtifactUserActionDefinitionType>
+{
 
-    public static final WorkflowUserActionDefinitionType DOWNLOADABLE = fromString("DOWNLOADABLE");
+    public static final WorkflowBusinessArtifactUserActionDefinitionType DOWNLOADABLE = fromString("DOWNLOADABLE");
 
-    public static final WorkflowUserActionDefinitionType START_RELATED_PROCESS = fromString("START_RELATED_PROCESS");
+    public static final WorkflowBusinessArtifactUserActionDefinitionType START_PROCESS = fromString("START_PROCESS");
 
-    public static final WorkflowUserActionDefinitionType START_WORKFLOW = fromString("START_WORKFLOW");
-
-    public static final WorkflowUserActionDefinitionType CREATE_TASK = fromString("CREATE_TASK");
-
-    public static final WorkflowUserActionDefinitionType CREATE_PROCESS_ITEM_MESSAGE = fromString("CREATE_PROCESS_ITEM_MESSAGE");
-
-    public static final WorkflowUserActionDefinitionType CREATE_PROCESS_ITEM_THREAD = fromString("CREATE_PROCESS_ITEM_THREAD");
+    public static final WorkflowBusinessArtifactUserActionDefinitionType START_WORKFLOW = fromString("START_WORKFLOW");
 
     /**
      * Creates a new instance of ProcessState value.
@@ -50,7 +42,7 @@ public class WorkflowUserActionDefinitionType extends ExpandableStringEnum<Workf
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public WorkflowUserActionDefinitionType() {}
+    public WorkflowBusinessArtifactUserActionDefinitionType() {}
 
     /**
      * Creates or finds a UserActionDefinitionType from its string representation.
@@ -58,8 +50,8 @@ public class WorkflowUserActionDefinitionType extends ExpandableStringEnum<Workf
      * @param name a name to look for.
      * @return the corresponding UserActionDefinitionType.
      */
-    public static WorkflowUserActionDefinitionType fromString(String name) {
-        return fromString(name, WorkflowUserActionDefinitionType.class);
+    public static WorkflowBusinessArtifactUserActionDefinitionType fromString(String name) {
+        return fromString(name, WorkflowBusinessArtifactUserActionDefinitionType.class);
     }
 
     /**
@@ -67,7 +59,7 @@ public class WorkflowUserActionDefinitionType extends ExpandableStringEnum<Workf
      *
      * @return known UserActionDefinitionType values.
      */
-    public static Collection<WorkflowUserActionDefinitionType> values() {
-        return values(WorkflowUserActionDefinitionType.class);
+    public static Collection<WorkflowBusinessArtifactUserActionDefinitionType> values() {
+        return values(WorkflowBusinessArtifactUserActionDefinitionType.class);
     }
 }

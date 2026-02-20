@@ -35,11 +35,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * @deprecated Use {@link WorkflowProcessUserActionRequest} instead.
- */
-@Deprecated
-public class WorkflowUserActionRequest implements JsonSerializable<SignalProcessItem> {
+public class WorkflowProcessUserActionRequest implements JsonSerializable<SignalProcessItem> {
 
     /**
      * The unique identifier of a process.
@@ -52,7 +48,7 @@ public class WorkflowUserActionRequest implements JsonSerializable<SignalProcess
      * The type of user action definition associated with this user action request.
      * This variable indicates the specific action type that a user has initiated.
      */
-    private WorkflowUserActionDefinitionType userActionDefinitionType;
+    private WorkflowProcessUserActionDefinitionType userActionDefinitionType;
 
     /**
      * The code that defines a user action.
@@ -97,11 +93,11 @@ public class WorkflowUserActionRequest implements JsonSerializable<SignalProcess
         this.processId = processId;
     }
 
-    public WorkflowUserActionDefinitionType getUserActionDefinitionType() {
+    public WorkflowProcessUserActionDefinitionType getUserActionDefinitionType() {
         return this.userActionDefinitionType;
     }
 
-    public void setUserActionDefinitionType(WorkflowUserActionDefinitionType userActionDefinitionType) {
+    public void setUserActionDefinitionType(WorkflowProcessUserActionDefinitionType userActionDefinitionType) {
         this.userActionDefinitionType = userActionDefinitionType;
     }
 
@@ -161,9 +157,9 @@ public class WorkflowUserActionRequest implements JsonSerializable<SignalProcess
         return jsonWriter.writeEndObject();
     }
 
-    public static WorkflowUserActionRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static WorkflowProcessUserActionRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            WorkflowUserActionRequest value = new WorkflowUserActionRequest();
+            WorkflowProcessUserActionRequest value = new WorkflowProcessUserActionRequest();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -172,7 +168,7 @@ public class WorkflowUserActionRequest implements JsonSerializable<SignalProcess
                     value.processId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("userActionDefinitionType".equals(fieldName)) {
                     value.userActionDefinitionType = reader.getNullable(nonNullReader ->
-                        WorkflowUserActionDefinitionType.fromString(nonNullReader.getString())
+                        WorkflowProcessUserActionDefinitionType.fromString(nonNullReader.getString())
                     );
                 } else if ("userActionDefinitionCode".equals(fieldName)) {
                     value.userActionDefinitionCode = reader.getNullable(JsonReader::getString);

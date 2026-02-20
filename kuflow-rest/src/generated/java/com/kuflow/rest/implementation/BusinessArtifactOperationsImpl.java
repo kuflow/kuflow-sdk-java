@@ -40,6 +40,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.kuflow.rest.model.BusinessArtifact;
@@ -48,11 +49,13 @@ import com.kuflow.rest.model.BusinessArtifactDataUpdateParams;
 import com.kuflow.rest.model.BusinessArtifactPage;
 import com.kuflow.rest.model.DefaultErrorException;
 import com.kuflow.rest.model.JsonPatchOperation;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -217,6 +220,51 @@ public final class BusinessArtifactOperationsImpl {
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @BodyParam("application/json-patch+json") List<JsonPatchOperation> jsonPatch,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/business-artifacts/{id}/~actions/upload-user-action-document")
+        @ExpectedResponses({ 200, 304 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<BusinessArtifact>> uploadBusinessArtifactUserActionDocument(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("fileContentType") String fileContentType,
+            @QueryParam("fileName") String fileName,
+            @QueryParam("userActionValueId") UUID userActionValueId,
+            @BodyParam("application/octet-stream") Flux<ByteBuffer> file,
+            @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/business-artifacts/{id}/~actions/upload-user-action-document")
+        @ExpectedResponses({ 200, 304 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<BusinessArtifact>> uploadBusinessArtifactUserActionDocument(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("fileContentType") String fileContentType,
+            @QueryParam("fileName") String fileName,
+            @QueryParam("userActionValueId") UUID userActionValueId,
+            @BodyParam("application/octet-stream") BinaryData file,
+            @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/business-artifacts/{id}/~actions/upload-user-action-document")
+        @ExpectedResponses({ 200, 304 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<BusinessArtifact> uploadBusinessArtifactUserActionDocumentSync(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("fileContentType") String fileContentType,
+            @QueryParam("fileName") String fileName,
+            @QueryParam("userActionValueId") UUID userActionValueId,
+            @BodyParam("application/octet-stream") BinaryData file,
+            @HeaderParam("Content-Length") long contentLength,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -1168,5 +1216,386 @@ public final class BusinessArtifactOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BusinessArtifact patchBusinessArtifactData(UUID id, List<JsonPatchOperation> jsonPatch) {
         return patchBusinessArtifactDataWithResponse(id, jsonPatch, Context.NONE).getValue();
+    }
+
+    /**
+     * Upload and save a document in a user action
+     *
+     * Allow saving a user action document uploading the content.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param userActionValueId User action value ID related to de document.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BusinessArtifact>> uploadBusinessArtifactUserActionDocumentWithResponseAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        UUID userActionValueId,
+        Flux<ByteBuffer> file,
+        long contentLength
+    ) {
+        return FluxUtil.withContext(context ->
+            uploadBusinessArtifactUserActionDocumentWithResponseAsync(
+                id,
+                fileContentType,
+                fileName,
+                userActionValueId,
+                file,
+                contentLength,
+                context
+            )
+        );
+    }
+
+    /**
+     * Upload and save a document in a user action
+     *
+     * Allow saving a user action document uploading the content.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param userActionValueId User action value ID related to de document.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BusinessArtifact>> uploadBusinessArtifactUserActionDocumentWithResponseAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        UUID userActionValueId,
+        Flux<ByteBuffer> file,
+        long contentLength,
+        Context context
+    ) {
+        final String accept = "application/json";
+        return service.uploadBusinessArtifactUserActionDocument(
+            this.client.getHost(),
+            id,
+            fileContentType,
+            fileName,
+            userActionValueId,
+            file,
+            contentLength,
+            accept,
+            context
+        );
+    }
+
+    /**
+     * Upload and save a document in a user action
+     *
+     * Allow saving a user action document uploading the content.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param userActionValueId User action value ID related to de document.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BusinessArtifact> uploadBusinessArtifactUserActionDocumentAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        UUID userActionValueId,
+        Flux<ByteBuffer> file,
+        long contentLength
+    ) {
+        return uploadBusinessArtifactUserActionDocumentWithResponseAsync(
+            id,
+            fileContentType,
+            fileName,
+            userActionValueId,
+            file,
+            contentLength
+        ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Upload and save a document in a user action
+     *
+     * Allow saving a user action document uploading the content.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param userActionValueId User action value ID related to de document.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BusinessArtifact> uploadBusinessArtifactUserActionDocumentAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        UUID userActionValueId,
+        Flux<ByteBuffer> file,
+        long contentLength,
+        Context context
+    ) {
+        return uploadBusinessArtifactUserActionDocumentWithResponseAsync(
+            id,
+            fileContentType,
+            fileName,
+            userActionValueId,
+            file,
+            contentLength,
+            context
+        ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Upload and save a document in a user action
+     *
+     * Allow saving a user action document uploading the content.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param userActionValueId User action value ID related to de document.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BusinessArtifact>> uploadBusinessArtifactUserActionDocumentWithResponseAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        UUID userActionValueId,
+        BinaryData file,
+        long contentLength
+    ) {
+        return FluxUtil.withContext(context ->
+            uploadBusinessArtifactUserActionDocumentWithResponseAsync(
+                id,
+                fileContentType,
+                fileName,
+                userActionValueId,
+                file,
+                contentLength,
+                context
+            )
+        );
+    }
+
+    /**
+     * Upload and save a document in a user action
+     *
+     * Allow saving a user action document uploading the content.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param userActionValueId User action value ID related to de document.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BusinessArtifact>> uploadBusinessArtifactUserActionDocumentWithResponseAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        UUID userActionValueId,
+        BinaryData file,
+        long contentLength,
+        Context context
+    ) {
+        final String accept = "application/json";
+        return service.uploadBusinessArtifactUserActionDocument(
+            this.client.getHost(),
+            id,
+            fileContentType,
+            fileName,
+            userActionValueId,
+            file,
+            contentLength,
+            accept,
+            context
+        );
+    }
+
+    /**
+     * Upload and save a document in a user action
+     *
+     * Allow saving a user action document uploading the content.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param userActionValueId User action value ID related to de document.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BusinessArtifact> uploadBusinessArtifactUserActionDocumentAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        UUID userActionValueId,
+        BinaryData file,
+        long contentLength
+    ) {
+        return uploadBusinessArtifactUserActionDocumentWithResponseAsync(
+            id,
+            fileContentType,
+            fileName,
+            userActionValueId,
+            file,
+            contentLength
+        ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Upload and save a document in a user action
+     *
+     * Allow saving a user action document uploading the content.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param userActionValueId User action value ID related to de document.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BusinessArtifact> uploadBusinessArtifactUserActionDocumentAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        UUID userActionValueId,
+        BinaryData file,
+        long contentLength,
+        Context context
+    ) {
+        return uploadBusinessArtifactUserActionDocumentWithResponseAsync(
+            id,
+            fileContentType,
+            fileName,
+            userActionValueId,
+            file,
+            contentLength,
+            context
+        ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Upload and save a document in a user action
+     *
+     * Allow saving a user action document uploading the content.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param userActionValueId User action value ID related to de document.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BusinessArtifact> uploadBusinessArtifactUserActionDocumentWithResponse(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        UUID userActionValueId,
+        BinaryData file,
+        long contentLength,
+        Context context
+    ) {
+        final String accept = "application/json";
+        return service.uploadBusinessArtifactUserActionDocumentSync(
+            this.client.getHost(),
+            id,
+            fileContentType,
+            fileName,
+            userActionValueId,
+            file,
+            contentLength,
+            accept,
+            context
+        );
+    }
+
+    /**
+     * Upload and save a document in a user action
+     *
+     * Allow saving a user action document uploading the content.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param userActionValueId User action value ID related to de document.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BusinessArtifact uploadBusinessArtifactUserActionDocument(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        UUID userActionValueId,
+        BinaryData file,
+        long contentLength
+    ) {
+        return uploadBusinessArtifactUserActionDocumentWithResponse(
+            id,
+            fileContentType,
+            fileName,
+            userActionValueId,
+            file,
+            contentLength,
+            Context.NONE
+        ).getValue();
     }
 }

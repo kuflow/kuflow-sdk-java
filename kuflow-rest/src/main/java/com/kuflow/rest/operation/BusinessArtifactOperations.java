@@ -25,6 +25,7 @@ package com.kuflow.rest.operation;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.kuflow.rest.implementation.BusinessArtifactOperationsImpl;
 import com.kuflow.rest.implementation.KuFlowClientImpl;
@@ -33,9 +34,12 @@ import com.kuflow.rest.model.BusinessArtifactCreateParams;
 import com.kuflow.rest.model.BusinessArtifactDataUpdateParams;
 import com.kuflow.rest.model.BusinessArtifactFindOptions;
 import com.kuflow.rest.model.BusinessArtifactPage;
+import com.kuflow.rest.model.BusinessArtifactUserActionDocumentUploadParams;
 import com.kuflow.rest.model.DefaultErrorException;
+import com.kuflow.rest.model.Document;
 import com.kuflow.rest.model.JsonPatchOperation;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 /** An instance of this class provides access to all the operations defined in BusinessArtifactOperations. */
@@ -305,5 +309,74 @@ public class BusinessArtifactOperations {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BusinessArtifact patchBusinessArtifactData(UUID id, List<JsonPatchOperation> jsonPatch) {
         return this.patchBusinessArtifactDataWithResponse(id, jsonPatch, Context.NONE).getValue();
+    }
+
+    /**
+     * Upload and save a document in a user action
+     *
+     * <p>Allow saving a user action document uploading the content.
+     *
+     * @param id The resource ID.
+     * @param params Params info.
+     * @param document Document to upload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BusinessArtifact> uploadBusinessArtifactUserActionDocumentWithResponse(
+        UUID id,
+        BusinessArtifactUserActionDocumentUploadParams params,
+        Document document,
+        Context context
+    ) {
+        Objects.requireNonNull(document, "'document' is required");
+        Objects.requireNonNull(document.getFileContent(), "'document.fileContent' is required");
+        Objects.requireNonNull(document.getFileContent().getLength(), "'document.fileContent.length' is required");
+        Objects.requireNonNull(document.getFileName(), "'document.fileName' is required");
+        Objects.requireNonNull(document.getContentType(), "'document.contentType' is required");
+        if (document.getFileContent().getLength() == 0) {
+            throw new IllegalArgumentException("File size must be greater that 0");
+        }
+
+        String fileContentType = document.getContentType();
+        String fileName = document.getFileName();
+        UUID userActionValueId = params.getUserActionValueId();
+        BinaryData file = document.getFileContent();
+        long contentLength = file.getLength();
+
+        return this.service.uploadBusinessArtifactUserActionDocumentWithResponse(
+            id,
+            fileContentType,
+            fileName,
+            userActionValueId,
+            file,
+            contentLength,
+            context
+        );
+    }
+
+    /**
+     * Upload and save a document in a user action
+     *
+     * <p>Allow saving a user action document uploading the content.
+     *
+     * @param id The resource ID.
+     * @param command Command info.
+     * @param document Document to upload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BusinessArtifact uploadBusinessArtifactUserActionDocument(
+        UUID id,
+        BusinessArtifactUserActionDocumentUploadParams command,
+        Document document
+    ) {
+        return this.uploadBusinessArtifactUserActionDocumentWithResponse(id, command, document, Context.NONE).getValue();
     }
 }

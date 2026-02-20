@@ -23,11 +23,7 @@
 
 package com.kuflow.temporal.workflow.kuflow.model;
 
-/**
- * @deprecated Use {@link WorkflowProcessUserActionResponse} instead.
- */
-@Deprecated
-public class WorkflowUserActionResponse {
+public class WorkflowBusinessArtifactUserActionResponse {
 
     private String message;
 
