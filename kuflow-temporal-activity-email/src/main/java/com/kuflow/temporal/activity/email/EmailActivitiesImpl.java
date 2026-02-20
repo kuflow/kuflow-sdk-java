@@ -62,6 +62,7 @@ public class EmailActivitiesImpl implements EmailActivities {
             .withAttachments(email.getAttachments())
             .withSubjectOverride(email.getSubjectOverride())
             .withReplyTo(email.getReplyTo())
+            .withFromName(email.getFromName())
             .withPriority(email.getPriority());
 
         EmailDto emailDto = builder.build();

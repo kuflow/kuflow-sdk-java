@@ -69,12 +69,15 @@ public class EmailService {
 
     private final String fromEmail;
 
+    private final String fromName;
+
     private EmailService(
         JavaMailSender mailSender,
         ITemplateEngine templateEngine,
         Map<String, Map<String, Object>> templateVariables,
         ApplicationContext applicationContext,
-        String fromEmail
+        String fromEmail,
+        String fromName
     ) {
         Objects.requireNonNull(mailSender, "'mailSender' is required");
         Objects.requireNonNull(templateEngine, "'templateEngine' is required");
@@ -87,6 +90,7 @@ public class EmailService {
         this.templateVariables = templateVariables;
         this.applicationContext = applicationContext;
         this.fromEmail = fromEmail;
+        this.fromName = fromName;
     }
 
     public void sendEmail(EmailDto email) {
@@ -107,7 +111,13 @@ public class EmailService {
 
             MimeMessage mimeMessage = this.mailSender.createMimeMessage();
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true /* multipart */, StandardCharsets.UTF_8.name());
-            message.setFrom(this.fromEmail);
+            String emailFromName = email.getFromName();
+            String effectiveFromName = (emailFromName != null && !emailFromName.isBlank()) ? emailFromName : this.fromName;
+            if (effectiveFromName != null && !effectiveFromName.isBlank()) {
+                message.setFrom(this.fromEmail, effectiveFromName);
+            } else {
+                message.setFrom(this.fromEmail);
+            }
 
             // Set recipients
             if (!email.getToAddresses().isEmpty()) {
@@ -214,6 +224,8 @@ public class EmailService {
         private ApplicationContext applicationContext;
         private String fromEmail;
 
+        private String fromName;
+
         private EmailServiceBuilder() {}
 
         public EmailServiceBuilder withMailSender(JavaMailSender mailSender) {
@@ -246,8 +258,21 @@ public class EmailService {
             return this;
         }
 
+        public EmailServiceBuilder withFromName(String fromName) {
+            this.fromName = fromName;
+
+            return this;
+        }
+
         public EmailService build() {
-            return new EmailService(this.mailSender, this.templateEngine, this.templateVariables, this.applicationContext, this.fromEmail);
+            return new EmailService(
+                this.mailSender,
+                this.templateEngine,
+                this.templateVariables,
+                this.applicationContext,
+                this.fromEmail,
+                this.fromName
+            );
         }
     }
 }
