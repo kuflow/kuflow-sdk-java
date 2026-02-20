@@ -107,11 +107,14 @@ public class EmailActivitiesAutoConfiguration {
             fromEmail = mailProperties.getUsername();
         }
 
+        String fromName = mailProperties.getProperties().get("from-name");
+
         return EmailService.builder()
             .withMailSender(mailSender)
             .withTemplateEngine(templateEngine)
             .withApplicationContext(applicationContext)
             .withFromEmail(fromEmail)
+            .withFromName(fromName)
             .withTemplateVariables(emailActivitiesProperties.getTemplateVariables())
             .build();
     }

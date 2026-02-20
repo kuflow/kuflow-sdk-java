@@ -56,6 +56,8 @@ public class Email {
 
     private String replyTo;
 
+    private String fromName;
+
     private EmailPriority priority;
 
     public Locale getLocale() {
@@ -229,6 +231,14 @@ public class Email {
 
     public void setReplyTo(String replyTo) {
         this.replyTo = replyTo;
+    }
+
+    public String getFromName() {
+        return this.fromName;
+    }
+
+    public void setFromName(String fromName) {
+        this.fromName = fromName;
     }
 
     public EmailPriority getPriority() {
