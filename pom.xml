@@ -61,7 +61,7 @@
   </modules>
 
   <properties>
-    <maven.version>3.9.6</maven.version>
+    <maven.version>3.9.12</maven.version>
     <java.version>17</java.version>
     <argLine>-Djava.security.egd=file:/dev/./urandom -Xmx256m</argLine>
 
