@@ -26,6 +26,9 @@ package com.kuflow.temporal.activity.kuflow.util;
 import static com.kuflow.temporal.activity.kuflow.KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE;
 
 import com.kuflow.rest.model.ProcessItemType;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactPatchRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactRetrieveRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactUpdateRequest;
 import com.kuflow.temporal.activity.kuflow.model.PrincipalRetrieveRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessEntityPatchRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessEntityUpdateRequest;
@@ -45,6 +48,27 @@ import com.kuflow.temporal.activity.kuflow.model.TenantUserRetrieveRequest;
 import io.temporal.failure.ApplicationFailure;
 
 public class KuFlowActivitiesValidation {
+
+    public static void validateBusinessArtifactRetrieveRequest(BusinessArtifactRetrieveRequest request) {
+        if (request.getBusinessArtifactId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'businessArtifactId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+    }
+
+    public static void validateBusinessArtifactUpdateRequest(BusinessArtifactUpdateRequest request) {
+        if (request.getBusinessArtifactId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'businessArtifactId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+        if (request.getData() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'data' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+    }
+
+    public static void validateBusinessArtifactPatchRequest(BusinessArtifactPatchRequest request) {
+        if (request.getBusinessArtifactId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'businessArtifactId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+    }
 
     public static void validatePrincipalRetrieveRequest(PrincipalRetrieveRequest request) {
         if (request.getPrincipalId() == null) {

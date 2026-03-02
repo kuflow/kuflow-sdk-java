@@ -22,6 +22,12 @@
  */
 package com.kuflow.temporal.activity.kuflow;
 
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactPatchRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactPatchResponse;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactRetrieveRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactRetrieveResponse;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactUpdateRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactUpdateResponse;
 import com.kuflow.temporal.activity.kuflow.model.PrincipalRetrieveRequest;
 import com.kuflow.temporal.activity.kuflow.model.PrincipalRetrieveResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessEntityPatchRequest;
@@ -258,4 +264,40 @@ public interface KuFlowActivities {
     @ActivityMethod
     @Nonnull
     ProcessItemTaskLoggAppendResponse appendProcessItemTaskLog(@Nonnull ProcessItemTaskLoggAppendRequest request);
+
+    /**
+     * Retrieve a Business Artifact.
+     *
+     * @param request must not be {@literal null}.
+     * @return business artifact
+     */
+    @ActivityMethod
+    @Nonnull
+    BusinessArtifactRetrieveResponse retrieveBusinessArtifact(@Nonnull BusinessArtifactRetrieveRequest request);
+
+    /**
+     * Update a Business Artifact data.
+     *
+     * <p>Allow to save a JSON data validating that the data follow the related schema. If the data is invalid, then the
+     * json form is marked as invalid.
+     *
+     * @param request must not be {@literal null}.
+     * @return business artifact updated
+     */
+    @ActivityMethod
+    @Nonnull
+    BusinessArtifactUpdateResponse updateBusinessArtifact(@Nonnull BusinessArtifactUpdateRequest request);
+
+    /**
+     * Patch a Business Artifact data.
+     *
+     * <p>Allow to save a JSON data validating that the data follow the related schema. If the data is invalid, then the
+     * json form is marked as invalid.
+     *
+     * @param request must not be {@literal null}.
+     * @return business artifact patched
+     */
+    @ActivityMethod
+    @Nonnull
+    BusinessArtifactPatchResponse patchBusinessArtifact(@Nonnull BusinessArtifactPatchRequest request);
 }
