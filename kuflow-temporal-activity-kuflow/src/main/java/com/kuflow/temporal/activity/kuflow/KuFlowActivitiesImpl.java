@@ -23,6 +23,9 @@
 package com.kuflow.temporal.activity.kuflow;
 
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesFailure.createApplicationFailure;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateBusinessArtifactPatchRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateBusinessArtifactRetrieveRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateBusinessArtifactUpdateRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateClaimTaskRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validatePrincipalRetrieveRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessEntityPatchRequest;
@@ -41,6 +44,8 @@ import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidatio
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateTenantUserRetrieveRequest;
 
 import com.kuflow.rest.KuFlowRestClient;
+import com.kuflow.rest.model.BusinessArtifact;
+import com.kuflow.rest.model.BusinessArtifactDataUpdateParams;
 import com.kuflow.rest.model.Principal;
 import com.kuflow.rest.model.Process;
 import com.kuflow.rest.model.ProcessChangeInitiatorParams;
@@ -56,10 +61,17 @@ import com.kuflow.rest.model.ProcessItemTaskDataUpdateParams;
 import com.kuflow.rest.model.ProcessMetadataUpdateParams;
 import com.kuflow.rest.model.ProcessPage;
 import com.kuflow.rest.model.TenantUser;
+import com.kuflow.rest.operation.BusinessArtifactOperations;
 import com.kuflow.rest.operation.PrincipalOperations;
 import com.kuflow.rest.operation.ProcessItemOperations;
 import com.kuflow.rest.operation.ProcessOperations;
 import com.kuflow.rest.operation.TenantUserOperations;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactPatchRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactPatchResponse;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactRetrieveRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactRetrieveResponse;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactUpdateRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactUpdateResponse;
 import com.kuflow.temporal.activity.kuflow.model.PrincipalRetrieveRequest;
 import com.kuflow.temporal.activity.kuflow.model.PrincipalRetrieveResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessEntityPatchRequest;
@@ -108,11 +120,14 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
     private final ProcessItemOperations processItemOperations;
 
+    private final BusinessArtifactOperations businessArtifactOperations;
+
     public KuFlowActivitiesImpl(KuFlowRestClient kuFlowRestClient) {
         this.principalOperations = kuFlowRestClient.getPrincipalOperations();
         this.tenantUserOperations = kuFlowRestClient.getTenantUserOperations();
         this.processOperations = kuFlowRestClient.getProcessOperations();
         this.processItemOperations = kuFlowRestClient.getProcessItemOperations();
+        this.businessArtifactOperations = kuFlowRestClient.getBusinessArtifactOperations();
     }
 
     @Nonnull
@@ -456,6 +471,65 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
             ProcessItemTaskLoggAppendResponse response = new ProcessItemTaskLoggAppendResponse();
             response.setProcessItem(processItem);
+
+            return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Nonnull
+    @Override
+    public BusinessArtifactRetrieveResponse retrieveBusinessArtifact(@Nonnull BusinessArtifactRetrieveRequest request) {
+        try {
+            validateBusinessArtifactRetrieveRequest(request);
+
+            BusinessArtifact businessArtifact = this.businessArtifactOperations.retrieveBusinessArtifact(request.getBusinessArtifactId());
+
+            BusinessArtifactRetrieveResponse response = new BusinessArtifactRetrieveResponse();
+            response.setBusinessArtifact(businessArtifact);
+
+            return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Nonnull
+    @Override
+    public BusinessArtifactUpdateResponse updateBusinessArtifact(@Nonnull BusinessArtifactUpdateRequest request) {
+        try {
+            validateBusinessArtifactUpdateRequest(request);
+
+            BusinessArtifactDataUpdateParams params = new BusinessArtifactDataUpdateParams().setData(request.getData());
+
+            BusinessArtifact businessArtifact = this.businessArtifactOperations.updateBusinessArtifactData(
+                request.getBusinessArtifactId(),
+                params
+            );
+
+            BusinessArtifactUpdateResponse response = new BusinessArtifactUpdateResponse();
+            response.setBusinessArtifact(businessArtifact);
+
+            return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Nonnull
+    @Override
+    public BusinessArtifactPatchResponse patchBusinessArtifact(@Nonnull BusinessArtifactPatchRequest request) {
+        try {
+            validateBusinessArtifactPatchRequest(request);
+
+            BusinessArtifact businessArtifact = this.businessArtifactOperations.patchBusinessArtifactData(
+                request.getBusinessArtifactId(),
+                request.getJsonPatch()
+            );
+
+            BusinessArtifactPatchResponse response = new BusinessArtifactPatchResponse();
+            response.setBusinessArtifact(businessArtifact);
 
             return response;
         } catch (Exception e) {
