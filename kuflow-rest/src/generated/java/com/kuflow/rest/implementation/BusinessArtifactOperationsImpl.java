@@ -48,6 +48,7 @@ import com.kuflow.rest.model.BusinessArtifactCreateParams;
 import com.kuflow.rest.model.BusinessArtifactDataUpdateParams;
 import com.kuflow.rest.model.BusinessArtifactPage;
 import com.kuflow.rest.model.DefaultErrorException;
+import com.kuflow.rest.model.DocumentReference;
 import com.kuflow.rest.model.JsonPatchOperation;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -265,6 +266,70 @@ public final class BusinessArtifactOperationsImpl {
             @QueryParam("userActionValueId") UUID userActionValueId,
             @BodyParam("application/octet-stream") BinaryData file,
             @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/business-artifacts/{id}/~actions/upload-document")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<DocumentReference>> uploadBusinessArtifactDocument(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("fileContentType") String fileContentType,
+            @QueryParam("fileName") String fileName,
+            @BodyParam("application/octet-stream") Flux<ByteBuffer> file,
+            @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/business-artifacts/{id}/~actions/upload-document")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<DocumentReference>> uploadBusinessArtifactDocument(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("fileContentType") String fileContentType,
+            @QueryParam("fileName") String fileName,
+            @BodyParam("application/octet-stream") BinaryData file,
+            @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/business-artifacts/{id}/~actions/upload-document")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<DocumentReference> uploadBusinessArtifactDocumentSync(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("fileContentType") String fileContentType,
+            @QueryParam("fileName") String fileName,
+            @BodyParam("application/octet-stream") BinaryData file,
+            @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Get("/business-artifacts/{id}/~actions/download-document")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<BinaryData>> downloadBusinessArtifactDocument(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("documentUri") String documentUri,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Get("/business-artifacts/{id}/~actions/download-document")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<BinaryData> downloadBusinessArtifactDocumentSync(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("documentUri") String documentUri,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -1597,5 +1662,484 @@ public final class BusinessArtifactOperationsImpl {
             contentLength,
             Context.NONE
         ).getValue();
+    }
+
+    /**
+     * Upload a temporal document into the business artifact that later on must be linked with a business
+     * artifact domain resource
+     *
+     *
+     * Upload a temporal document into the business artifact that later on must be linked with a business artifact
+     * domain resource.
+     *
+     * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
+     * business artifact.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DocumentReference>> uploadBusinessArtifactDocumentWithResponseAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        Flux<ByteBuffer> file,
+        long contentLength
+    ) {
+        return FluxUtil.withContext(context ->
+            uploadBusinessArtifactDocumentWithResponseAsync(id, fileContentType, fileName, file, contentLength, context)
+        );
+    }
+
+    /**
+     * Upload a temporal document into the business artifact that later on must be linked with a business
+     * artifact domain resource
+     *
+     *
+     * Upload a temporal document into the business artifact that later on must be linked with a business artifact
+     * domain resource.
+     *
+     * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
+     * business artifact.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DocumentReference>> uploadBusinessArtifactDocumentWithResponseAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        Flux<ByteBuffer> file,
+        long contentLength,
+        Context context
+    ) {
+        final String accept = "application/json";
+        return service.uploadBusinessArtifactDocument(
+            this.client.getHost(),
+            id,
+            fileContentType,
+            fileName,
+            file,
+            contentLength,
+            accept,
+            context
+        );
+    }
+
+    /**
+     * Upload a temporal document into the business artifact that later on must be linked with a business
+     * artifact domain resource
+     *
+     *
+     * Upload a temporal document into the business artifact that later on must be linked with a business artifact
+     * domain resource.
+     *
+     * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
+     * business artifact.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DocumentReference> uploadBusinessArtifactDocumentAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        Flux<ByteBuffer> file,
+        long contentLength
+    ) {
+        return uploadBusinessArtifactDocumentWithResponseAsync(id, fileContentType, fileName, file, contentLength).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
+        );
+    }
+
+    /**
+     * Upload a temporal document into the business artifact that later on must be linked with a business
+     * artifact domain resource
+     *
+     *
+     * Upload a temporal document into the business artifact that later on must be linked with a business artifact
+     * domain resource.
+     *
+     * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
+     * business artifact.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DocumentReference> uploadBusinessArtifactDocumentAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        Flux<ByteBuffer> file,
+        long contentLength,
+        Context context
+    ) {
+        return uploadBusinessArtifactDocumentWithResponseAsync(id, fileContentType, fileName, file, contentLength, context).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
+        );
+    }
+
+    /**
+     * Upload a temporal document into the business artifact that later on must be linked with a business
+     * artifact domain resource
+     *
+     *
+     * Upload a temporal document into the business artifact that later on must be linked with a business artifact
+     * domain resource.
+     *
+     * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
+     * business artifact.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DocumentReference>> uploadBusinessArtifactDocumentWithResponseAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        BinaryData file,
+        long contentLength
+    ) {
+        return FluxUtil.withContext(context ->
+            uploadBusinessArtifactDocumentWithResponseAsync(id, fileContentType, fileName, file, contentLength, context)
+        );
+    }
+
+    /**
+     * Upload a temporal document into the business artifact that later on must be linked with a business
+     * artifact domain resource
+     *
+     *
+     * Upload a temporal document into the business artifact that later on must be linked with a business artifact
+     * domain resource.
+     *
+     * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
+     * business artifact.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DocumentReference>> uploadBusinessArtifactDocumentWithResponseAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        BinaryData file,
+        long contentLength,
+        Context context
+    ) {
+        final String accept = "application/json";
+        return service.uploadBusinessArtifactDocument(
+            this.client.getHost(),
+            id,
+            fileContentType,
+            fileName,
+            file,
+            contentLength,
+            accept,
+            context
+        );
+    }
+
+    /**
+     * Upload a temporal document into the business artifact that later on must be linked with a business
+     * artifact domain resource
+     *
+     *
+     * Upload a temporal document into the business artifact that later on must be linked with a business artifact
+     * domain resource.
+     *
+     * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
+     * business artifact.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DocumentReference> uploadBusinessArtifactDocumentAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        BinaryData file,
+        long contentLength
+    ) {
+        return uploadBusinessArtifactDocumentWithResponseAsync(id, fileContentType, fileName, file, contentLength).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
+        );
+    }
+
+    /**
+     * Upload a temporal document into the business artifact that later on must be linked with a business
+     * artifact domain resource
+     *
+     *
+     * Upload a temporal document into the business artifact that later on must be linked with a business artifact
+     * domain resource.
+     *
+     * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
+     * business artifact.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DocumentReference> uploadBusinessArtifactDocumentAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        BinaryData file,
+        long contentLength,
+        Context context
+    ) {
+        return uploadBusinessArtifactDocumentWithResponseAsync(id, fileContentType, fileName, file, contentLength, context).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
+        );
+    }
+
+    /**
+     * Upload a temporal document into the business artifact that later on must be linked with a business
+     * artifact domain resource
+     *
+     *
+     * Upload a temporal document into the business artifact that later on must be linked with a business artifact
+     * domain resource.
+     *
+     * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
+     * business artifact.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DocumentReference> uploadBusinessArtifactDocumentWithResponse(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        BinaryData file,
+        long contentLength,
+        Context context
+    ) {
+        final String accept = "application/json";
+        return service.uploadBusinessArtifactDocumentSync(
+            this.client.getHost(),
+            id,
+            fileContentType,
+            fileName,
+            file,
+            contentLength,
+            accept,
+            context
+        );
+    }
+
+    /**
+     * Upload a temporal document into the business artifact that later on must be linked with a business
+     * artifact domain resource
+     *
+     *
+     * Upload a temporal document into the business artifact that later on must be linked with a business artifact
+     * domain resource.
+     *
+     * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
+     * business artifact.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DocumentReference uploadBusinessArtifactDocument(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        BinaryData file,
+        long contentLength
+    ) {
+        return uploadBusinessArtifactDocumentWithResponse(id, fileContentType, fileName, file, contentLength, Context.NONE).getValue();
+    }
+
+    /**
+     * Download document
+     *
+     * Given a document uri download a document.
+     *
+     * @param id The resource ID.
+     * @param documentUri Document URI to download.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> downloadBusinessArtifactDocumentWithResponseAsync(UUID id, String documentUri) {
+        return FluxUtil.withContext(context -> downloadBusinessArtifactDocumentWithResponseAsync(id, documentUri, context));
+    }
+
+    /**
+     * Download document
+     *
+     * Given a document uri download a document.
+     *
+     * @param id The resource ID.
+     * @param documentUri Document URI to download.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> downloadBusinessArtifactDocumentWithResponseAsync(UUID id, String documentUri, Context context) {
+        final String accept = "application/octet-stream, application/json";
+        return service.downloadBusinessArtifactDocument(this.client.getHost(), id, documentUri, accept, context);
+    }
+
+    /**
+     * Download document
+     *
+     * Given a document uri download a document.
+     *
+     * @param id The resource ID.
+     * @param documentUri Document URI to download.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> downloadBusinessArtifactDocumentAsync(UUID id, String documentUri) {
+        return downloadBusinessArtifactDocumentWithResponseAsync(id, documentUri).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Download document
+     *
+     * Given a document uri download a document.
+     *
+     * @param id The resource ID.
+     * @param documentUri Document URI to download.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> downloadBusinessArtifactDocumentAsync(UUID id, String documentUri, Context context) {
+        return downloadBusinessArtifactDocumentWithResponseAsync(id, documentUri, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Download document
+     *
+     * Given a document uri download a document.
+     *
+     * @param id The resource ID.
+     * @param documentUri Document URI to download.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> downloadBusinessArtifactDocumentWithResponse(UUID id, String documentUri, Context context) {
+        final String accept = "application/octet-stream, application/json";
+        return service.downloadBusinessArtifactDocumentSync(this.client.getHost(), id, documentUri, accept, context);
+    }
+
+    /**
+     * Download document
+     *
+     * Given a document uri download a document.
+     *
+     * @param id The resource ID.
+     * @param documentUri Document URI to download.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData downloadBusinessArtifactDocument(UUID id, String documentUri) {
+        return downloadBusinessArtifactDocumentWithResponse(id, documentUri, Context.NONE).getValue();
     }
 }

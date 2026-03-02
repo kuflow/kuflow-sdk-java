@@ -37,6 +37,7 @@ import com.kuflow.rest.model.BusinessArtifactPage;
 import com.kuflow.rest.model.BusinessArtifactUserActionDocumentUploadParams;
 import com.kuflow.rest.model.DefaultErrorException;
 import com.kuflow.rest.model.Document;
+import com.kuflow.rest.model.DocumentReference;
 import com.kuflow.rest.model.JsonPatchOperation;
 import java.util.List;
 import java.util.Objects;
@@ -378,5 +379,93 @@ public class BusinessArtifactOperations {
         Document document
     ) {
         return this.uploadBusinessArtifactUserActionDocumentWithResponse(id, command, document, Context.NONE).getValue();
+    }
+
+    /**
+     * Upload a temporal document
+     *
+     * <p>Upload a temporal document that can be later linked to a business artifact.
+     * <p>
+     * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked.
+     *
+     * @param id The resource ID.
+     * @param document Document to upload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DocumentReference> uploadBusinessArtifactDocumentWithResponse(UUID id, Document document, Context context) {
+        Objects.requireNonNull(document, "'document' is required");
+        Objects.requireNonNull(document.getFileContent(), "'document.fileContent' is required");
+        Objects.requireNonNull(document.getFileContent().getLength(), "'document.fileContent.length' is required");
+        Objects.requireNonNull(document.getFileName(), "'document.fileName' is required");
+        Objects.requireNonNull(document.getContentType(), "'document.contentType' is required");
+        if (document.getFileContent().getLength() == 0) {
+            throw new IllegalArgumentException("File size must be greater that 0");
+        }
+
+        String fileContentType = document.getContentType();
+        String fileName = document.getFileName();
+        BinaryData file = document.getFileContent();
+        long contentLength = file.getLength();
+
+        return this.service.uploadBusinessArtifactDocumentWithResponse(id, fileContentType, fileName, file, contentLength, context);
+    }
+
+    /**
+     * Upload a temporal document
+     *
+     * <p>Upload a temporal document that can be later linked to a business artifact.
+     * <p>
+     * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked.
+     *
+     * @param id The resource ID.
+     * @param document Document to upload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DocumentReference uploadBusinessArtifactDocument(UUID id, Document document) {
+        return this.uploadBusinessArtifactDocumentWithResponse(id, document, Context.NONE).getValue();
+    }
+
+    /**
+     * Download document
+     * <p>
+     * Given a document uri, download a document from a business artifact.
+     *
+     * @param id The resource ID.
+     * @param documentUri Document URI to download.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> downloadBusinessArtifactDocumentWithResponse(UUID id, String documentUri, Context context) {
+        return this.service.downloadBusinessArtifactDocumentWithResponse(id, documentUri, context);
+    }
+
+    /**
+     * Download document
+     * <p>
+     * Given a document uri, download a document from a business artifact.
+     *
+     * @param id The resource ID.
+     * @param documentUri Document URI to download.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData downloadBusinessArtifactDocument(UUID id, String documentUri) {
+        return this.downloadBusinessArtifactDocumentWithResponse(id, documentUri, Context.NONE).getValue();
     }
 }

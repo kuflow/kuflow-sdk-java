@@ -37,6 +37,7 @@ import com.kuflow.rest.model.BusinessArtifactFindOptions;
 import com.kuflow.rest.model.BusinessArtifactPage;
 import com.kuflow.rest.model.BusinessArtifactUserActionDocumentUploadParams;
 import com.kuflow.rest.model.Document;
+import com.kuflow.rest.model.DocumentReference;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
@@ -235,5 +236,77 @@ public class BusinessArtifactOperationTest extends AbstractOperationTest {
         )
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("File size must be greater that 0");
+    }
+
+    @Test
+    @DisplayName("GIVEN an authenticated user WHEN upload document THEN the query parameters are sent and response is parsed")
+    public void givenAnAuthenticatedUserWhenUploadDocumentThenTheQueryParametersAreSentAndResponseIsParsed() {
+        UUID businessArtifactId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
+
+        givenThat(
+            post(urlPathEqualTo("/v2024-06-14/business-artifacts/" + businessArtifactId + "/~actions/upload-document"))
+                .withQueryParam("fileContentType", equalTo("text/plain"))
+                .withQueryParam("fileName", equalTo("test.txt"))
+                .willReturn(
+                    ok().withHeader("Content-Type", "application/json").withBodyFile("business-artifacts-api.upload-document.ok.json")
+                )
+        );
+
+        BinaryData fileContent = BinaryData.fromBytes("test content".getBytes(StandardCharsets.UTF_8));
+        Document document = new Document().setFileContent(fileContent).setFileName("test.txt").setContentType("text/plain");
+
+        DocumentReference documentReference = this.kuFlowRestClient.getBusinessArtifactOperations().uploadBusinessArtifactDocument(
+            businessArtifactId,
+            document
+        );
+
+        assertThat(documentReference.getDocumentUri()).isEqualTo("kuflow-file:uri=aaa-bbb-ccc;type=text/plain;size=12;name=test.txt;");
+    }
+
+    @Test
+    @DisplayName("GIVEN a null document WHEN upload document THEN a NullPointerException is thrown")
+    public void givenANullDocumentWhenUploadDocumentThenANullPointerExceptionIsThrown() {
+        UUID businessArtifactId = UUID.randomUUID();
+
+        assertThatThrownBy(() ->
+            this.kuFlowRestClient.getBusinessArtifactOperations().uploadBusinessArtifactDocument(businessArtifactId, null)
+        )
+            .isInstanceOf(NullPointerException.class)
+            .hasMessageContaining("'document' is required");
+    }
+
+    @Test
+    @DisplayName("GIVEN an empty file WHEN upload document THEN an IllegalArgumentException is thrown")
+    public void givenAnEmptyFileWhenUploadDocumentThenAnIllegalArgumentExceptionIsThrown() {
+        UUID businessArtifactId = UUID.randomUUID();
+
+        BinaryData emptyContent = BinaryData.fromBytes(new byte[0]);
+        Document document = new Document().setFileContent(emptyContent).setFileName("empty.txt").setContentType("text/plain");
+
+        assertThatThrownBy(() ->
+            this.kuFlowRestClient.getBusinessArtifactOperations().uploadBusinessArtifactDocument(businessArtifactId, document)
+        )
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("File size must be greater that 0");
+    }
+
+    @Test
+    @DisplayName("GIVEN an authenticated user WHEN download document THEN the query parameters are sent and response is parsed")
+    public void givenAnAuthenticatedUserWhenDownloadDocumentThenTheQueryParametersAreSentAndResponseIsParsed() {
+        UUID businessArtifactId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
+        String documentUri = "kuflow-file:uri=aaa-bbb-ccc;type=text/plain;size=12;name=test.txt;";
+
+        givenThat(
+            get(urlPathEqualTo("/v2024-06-14/business-artifacts/" + businessArtifactId + "/~actions/download-document"))
+                .withQueryParam("documentUri", equalTo(documentUri))
+                .willReturn(ok().withHeader("Content-Type", "application/octet-stream").withBody("test content"))
+        );
+
+        BinaryData result = this.kuFlowRestClient.getBusinessArtifactOperations().downloadBusinessArtifactDocument(
+            businessArtifactId,
+            documentUri
+        );
+
+        assertThat(result.toString()).isEqualTo("test content");
     }
 }
