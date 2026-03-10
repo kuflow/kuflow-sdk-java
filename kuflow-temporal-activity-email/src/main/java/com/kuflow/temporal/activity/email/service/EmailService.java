@@ -111,12 +111,14 @@ public class EmailService {
 
             MimeMessage mimeMessage = this.mailSender.createMimeMessage();
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true /* multipart */, StandardCharsets.UTF_8.name());
+            String emailFromEmail = email.getFromEmail();
+            String effectiveFromEmail = (emailFromEmail != null && !emailFromEmail.isBlank()) ? emailFromEmail : this.fromEmail;
             String emailFromName = email.getFromName();
             String effectiveFromName = (emailFromName != null && !emailFromName.isBlank()) ? emailFromName : this.fromName;
             if (effectiveFromName != null && !effectiveFromName.isBlank()) {
-                message.setFrom(this.fromEmail, effectiveFromName);
+                message.setFrom(effectiveFromEmail, effectiveFromName);
             } else {
-                message.setFrom(this.fromEmail);
+                message.setFrom(effectiveFromEmail);
             }
 
             // Set recipients

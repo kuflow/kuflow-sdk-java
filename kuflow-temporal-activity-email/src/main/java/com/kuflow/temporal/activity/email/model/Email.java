@@ -56,6 +56,8 @@ public class Email {
 
     private String replyTo;
 
+    private String fromEmail;
+
     private String fromName;
 
     private EmailPriority priority;
@@ -231,6 +233,14 @@ public class Email {
 
     public void setReplyTo(String replyTo) {
         this.replyTo = replyTo;
+    }
+
+    public String getFromEmail() {
+        return this.fromEmail;
+    }
+
+    public void setFromEmail(String fromEmail) {
+        this.fromEmail = fromEmail;
     }
 
     public String getFromName() {
