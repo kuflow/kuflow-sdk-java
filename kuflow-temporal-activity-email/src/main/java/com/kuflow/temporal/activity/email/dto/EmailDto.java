@@ -72,6 +72,9 @@ public final class EmailDto {
     private final String replyTo;
 
     @Nullable
+    private final String fromEmail;
+
+    @Nullable
     private final String fromName;
 
     @Nullable
@@ -88,6 +91,7 @@ public final class EmailDto {
         @Nonnull List<EmailAttachment> attachments,
         @Nullable String subjectOverride,
         @Nullable String replyTo,
+        @Nullable String fromEmail,
         @Nullable String fromName,
         @Nullable EmailPriority priority
     ) {
@@ -117,6 +121,7 @@ public final class EmailDto {
         this.attachments = Collections.unmodifiableList(new LinkedList<>(attachments));
         this.subjectOverride = subjectOverride;
         this.replyTo = replyTo;
+        this.fromEmail = fromEmail;
         this.fromName = fromName;
         this.priority = priority;
     }
@@ -172,6 +177,11 @@ public final class EmailDto {
     }
 
     @Nullable
+    public String getFromEmail() {
+        return this.fromEmail;
+    }
+
+    @Nullable
     public String getFromName() {
         return this.fromName;
     }
@@ -202,6 +212,8 @@ public final class EmailDto {
         private String subjectOverride;
 
         private String replyTo;
+
+        private String fromEmail;
 
         private String fromName;
 
@@ -320,6 +332,12 @@ public final class EmailDto {
             return this;
         }
 
+        public EmailDtoBuilder withFromEmail(String fromEmail) {
+            this.fromEmail = fromEmail;
+
+            return this;
+        }
+
         public EmailDtoBuilder withFromName(String fromName) {
             this.fromName = fromName;
 
@@ -344,6 +362,7 @@ public final class EmailDto {
                 this.attachments,
                 this.subjectOverride,
                 this.replyTo,
+                this.fromEmail,
                 this.fromName,
                 this.priority
             );
