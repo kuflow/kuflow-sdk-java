@@ -41,6 +41,8 @@ public class DataSourceQueryRequest extends DataSourceActivityRequest {
 
     private String query;
 
+    private String filter;
+
     private Integer pageNumber;
 
     private Integer pageSize;
@@ -53,6 +55,14 @@ public class DataSourceQueryRequest extends DataSourceActivityRequest {
 
     public String getQuery() {
         return this.query;
+    }
+
+    public String getFilter() {
+        return this.filter;
+    }
+
+    public void setFilter(String filter) {
+        this.filter = filter;
     }
 
     public Integer getPageNumber() {
