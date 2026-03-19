@@ -56,6 +56,8 @@ import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskDataUpdateReques
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskDataUpdateResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskLoggAppendRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskLoggAppendResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemsCancelRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemsCancelResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessMetadataPatchRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessMetadataPatchResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessMetadataUpdateRequest;
@@ -164,6 +166,17 @@ public interface KuFlowActivities {
     @ActivityMethod
     @Nonnull
     ProcessInitiatorChangeResponse changeProcessInitiator(@Nonnull ProcessInitiatorChangeRequest request);
+
+    /**
+     * Cancel process items. When no specific process item IDs are provided, all active
+     * process items in the process will be cancelled.
+     *
+     * @param request must not be {@literal null}.
+     * @return process with cancelled items
+     */
+    @ActivityMethod
+    @Nonnull
+    ProcessItemsCancelResponse cancelProcessItems(@Nonnull ProcessItemsCancelRequest request);
 
     /**
      * List all the Process Items that have been created and the credentials has access.

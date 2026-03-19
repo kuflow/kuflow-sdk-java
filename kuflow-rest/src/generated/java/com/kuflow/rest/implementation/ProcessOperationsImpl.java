@@ -198,6 +198,28 @@ public final class ProcessOperationsImpl {
             Context context
         );
 
+        @Post("/processes/{id}/~actions/cancel-process-items")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<Process>> cancelProcessItems(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam(value = "processItemId", multipleQueryParams = true) List<String> processItemId,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/processes/{id}/~actions/cancel-process-items")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<Process> cancelProcessItemsSync(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam(value = "processItemId", multipleQueryParams = true) List<String> processItemId,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
         @Post("/processes/{id}/~actions/change-initiator")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
@@ -1099,6 +1121,229 @@ public final class ProcessOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Process cancelProcess(UUID id) {
         return cancelProcessWithResponse(id, Context.NONE).getValue();
+    }
+
+    /**
+     * Cancel Process Items
+     *
+     * Cancel Process Items in a Process.
+     *
+     * When processItemId query parameters are provided, only those specific
+     * process items are cancelled. When omitted, all active process items
+     * in the process are cancelled.
+     *
+     * For task process items, tasks in a cancellable state (ready, claimed)
+     * are set to 'cancelled'. Already cancelled tasks are treated as a no-op.
+     * The Process itself is not affected.
+     *
+     * @param id The resource ID.
+     * @param processItemId Optional list of process item IDs to cancel. If omitted, all active process items are
+     * cancelled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Process>> cancelProcessItemsWithResponseAsync(UUID id, List<UUID> processItemId) {
+        return FluxUtil.withContext(context -> cancelProcessItemsWithResponseAsync(id, processItemId, context));
+    }
+
+    /**
+     * Cancel Process Items
+     *
+     * Cancel Process Items in a Process.
+     *
+     * When processItemId query parameters are provided, only those specific
+     * process items are cancelled. When omitted, all active process items
+     * in the process are cancelled.
+     *
+     * For task process items, tasks in a cancellable state (ready, claimed)
+     * are set to 'cancelled'. Already cancelled tasks are treated as a no-op.
+     * The Process itself is not affected.
+     *
+     * @param id The resource ID.
+     * @param processItemId Optional list of process item IDs to cancel. If omitted, all active process items are
+     * cancelled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Process>> cancelProcessItemsWithResponseAsync(UUID id, List<UUID> processItemId, Context context) {
+        final String accept = "application/json";
+        List<String> processItemIdConverted = (processItemId == null)
+            ? new ArrayList<>()
+            : processItemId
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
+        return service.cancelProcessItems(this.client.getHost(), id, processItemIdConverted, accept, context);
+    }
+
+    /**
+     * Cancel Process Items
+     *
+     * Cancel Process Items in a Process.
+     *
+     * When processItemId query parameters are provided, only those specific
+     * process items are cancelled. When omitted, all active process items
+     * in the process are cancelled.
+     *
+     * For task process items, tasks in a cancellable state (ready, claimed)
+     * are set to 'cancelled'. Already cancelled tasks are treated as a no-op.
+     * The Process itself is not affected.
+     *
+     * @param id The resource ID.
+     * @param processItemId Optional list of process item IDs to cancel. If omitted, all active process items are
+     * cancelled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Process> cancelProcessItemsAsync(UUID id, List<UUID> processItemId) {
+        return cancelProcessItemsWithResponseAsync(id, processItemId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Cancel Process Items
+     *
+     * Cancel Process Items in a Process.
+     *
+     * When processItemId query parameters are provided, only those specific
+     * process items are cancelled. When omitted, all active process items
+     * in the process are cancelled.
+     *
+     * For task process items, tasks in a cancellable state (ready, claimed)
+     * are set to 'cancelled'. Already cancelled tasks are treated as a no-op.
+     * The Process itself is not affected.
+     *
+     * @param id The resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Process> cancelProcessItemsAsync(UUID id) {
+        final List<UUID> processItemId = null;
+        return cancelProcessItemsWithResponseAsync(id, processItemId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Cancel Process Items
+     *
+     * Cancel Process Items in a Process.
+     *
+     * When processItemId query parameters are provided, only those specific
+     * process items are cancelled. When omitted, all active process items
+     * in the process are cancelled.
+     *
+     * For task process items, tasks in a cancellable state (ready, claimed)
+     * are set to 'cancelled'. Already cancelled tasks are treated as a no-op.
+     * The Process itself is not affected.
+     *
+     * @param id The resource ID.
+     * @param processItemId Optional list of process item IDs to cancel. If omitted, all active process items are
+     * cancelled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Process> cancelProcessItemsAsync(UUID id, List<UUID> processItemId, Context context) {
+        return cancelProcessItemsWithResponseAsync(id, processItemId, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Cancel Process Items
+     *
+     * Cancel Process Items in a Process.
+     *
+     * When processItemId query parameters are provided, only those specific
+     * process items are cancelled. When omitted, all active process items
+     * in the process are cancelled.
+     *
+     * For task process items, tasks in a cancellable state (ready, claimed)
+     * are set to 'cancelled'. Already cancelled tasks are treated as a no-op.
+     * The Process itself is not affected.
+     *
+     * @param id The resource ID.
+     * @param processItemId Optional list of process item IDs to cancel. If omitted, all active process items are
+     * cancelled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Process> cancelProcessItemsWithResponse(UUID id, List<UUID> processItemId, Context context) {
+        final String accept = "application/json";
+        List<String> processItemIdConverted = (processItemId == null)
+            ? new ArrayList<>()
+            : processItemId
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
+        return service.cancelProcessItemsSync(this.client.getHost(), id, processItemIdConverted, accept, context);
+    }
+
+    /**
+     * Cancel Process Items
+     *
+     * Cancel Process Items in a Process.
+     *
+     * When processItemId query parameters are provided, only those specific
+     * process items are cancelled. When omitted, all active process items
+     * in the process are cancelled.
+     *
+     * For task process items, tasks in a cancellable state (ready, claimed)
+     * are set to 'cancelled'. Already cancelled tasks are treated as a no-op.
+     * The Process itself is not affected.
+     *
+     * @param id The resource ID.
+     * @param processItemId Optional list of process item IDs to cancel. If omitted, all active process items are
+     * cancelled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Process cancelProcessItems(UUID id, List<UUID> processItemId) {
+        return cancelProcessItemsWithResponse(id, processItemId, Context.NONE).getValue();
+    }
+
+    /**
+     * Cancel Process Items
+     *
+     * Cancel Process Items in a Process.
+     *
+     * When processItemId query parameters are provided, only those specific
+     * process items are cancelled. When omitted, all active process items
+     * in the process are cancelled.
+     *
+     * For task process items, tasks in a cancellable state (ready, claimed)
+     * are set to 'cancelled'. Already cancelled tasks are treated as a no-op.
+     * The Process itself is not affected.
+     *
+     * @param id The resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Process cancelProcessItems(UUID id) {
+        final List<UUID> processItemId = null;
+        return cancelProcessItemsWithResponse(id, processItemId, Context.NONE).getValue();
     }
 
     /**
