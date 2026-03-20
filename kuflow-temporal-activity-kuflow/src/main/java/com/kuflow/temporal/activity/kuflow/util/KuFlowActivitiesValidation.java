@@ -41,6 +41,7 @@ import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskCompleteRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskDataPatchRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskDataUpdateRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskLoggAppendRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemsCancelRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessMetadataPatchRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessMetadataUpdateRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessRetrieveRequest;
@@ -128,6 +129,12 @@ public class KuFlowActivitiesValidation {
                 "'initiatorId' or 'initiatorEmail' is required",
                 ACTIVITIES_VALIDATION_FAILURE.getType()
             );
+        }
+    }
+
+    public static void validateProcessItemsCancelRequest(ProcessItemsCancelRequest request) {
+        if (request.getProcessId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 

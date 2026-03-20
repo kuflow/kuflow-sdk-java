@@ -269,6 +269,94 @@ public class ProcessOperations {
     }
 
     /**
+     * Cancel Process Items
+     *
+     * <p>Cancel Process Items in a Process.
+     *
+     * <p>When processItemId is provided, only those specific process items are cancelled.
+     * When omitted, all active process items in the process are cancelled.
+     *
+     * <p>For task process items, tasks in a cancellable state (ready, claimed) are set to 'cancelled'.
+     * Already cancelled tasks are treated as a no-op. The Process itself is not affected.
+     *
+     * @param id The resource ID.
+     * @param processItemId Optional list of process item IDs to cancel. If omitted, all active process items are
+     * cancelled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Process> cancelProcessItemsWithResponse(UUID id, List<UUID> processItemId, Context context) {
+        return this.service.cancelProcessItemsWithResponse(id, processItemId, context);
+    }
+
+    /**
+     * Cancel Process Items
+     *
+     * <p>Cancel Process Items in a Process.
+     *
+     * <p>When processItemId is provided, only those specific process items are cancelled.
+     * When omitted, all active process items in the process are cancelled.
+     *
+     * <p>For task process items, tasks in a cancellable state (ready, claimed) are set to 'cancelled'.
+     * Already cancelled tasks are treated as a no-op. The Process itself is not affected.
+     *
+     * @param id The resource ID.
+     * @param processItemId Optional list of process item IDs to cancel. If omitted, all active process items are
+     * cancelled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Process cancelProcessItems(UUID id, List<UUID> processItemId) {
+        return this.cancelProcessItemsWithResponse(id, processItemId, Context.NONE).getValue();
+    }
+
+    /**
+     * Cancel Process Items
+     *
+     * <p>Cancel all active Process Items in a Process.
+     *
+     * <p>For task process items, tasks in a cancellable state (ready, claimed) are set to 'cancelled'.
+     * Already cancelled tasks are treated as a no-op. The Process itself is not affected.
+     *
+     * @param id The resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Process> cancelProcessItemsWithResponse(UUID id, Context context) {
+        return this.cancelProcessItemsWithResponse(id, null, context);
+    }
+
+    /**
+     * Cancel Process Items
+     *
+     * <p>Cancel all active Process Items in a Process.
+     *
+     * <p>For task process items, tasks in a cancellable state (ready, claimed) are set to 'cancelled'.
+     * Already cancelled tasks are treated as a no-op. The Process itself is not affected.
+     *
+     * @param id The resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Process cancelProcessItems(UUID id) {
+        return this.cancelProcessItemsWithResponse(id, null, Context.NONE).getValue();
+    }
+
+    /**
      * Change process initiator
      *
      * <p>Change the current initiator of a process.

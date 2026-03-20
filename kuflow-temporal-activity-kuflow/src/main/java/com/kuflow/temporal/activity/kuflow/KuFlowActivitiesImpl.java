@@ -38,6 +38,7 @@ import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidatio
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemTaskDataPatchRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemTaskDataUpdateRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemTaskLoggAppendRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemsCancelRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessMetadataPatchRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessMetadataUpdateRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessRetrieveRequest;
@@ -100,6 +101,8 @@ import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskDataUpdateReques
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskDataUpdateResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskLoggAppendRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskLoggAppendResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemsCancelRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemsCancelResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessMetadataPatchRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessMetadataPatchResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessMetadataUpdateRequest;
@@ -286,6 +289,23 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
             Process process = this.processOperations.changeProcessInitiator(request.getProcessId(), params);
 
             ProcessInitiatorChangeResponse response = new ProcessInitiatorChangeResponse();
+            response.setProcess(process);
+
+            return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Nonnull
+    @Override
+    public ProcessItemsCancelResponse cancelProcessItems(@Nonnull ProcessItemsCancelRequest request) {
+        try {
+            validateProcessItemsCancelRequest(request);
+
+            Process process = this.processOperations.cancelProcessItems(request.getProcessId(), request.getProcessItemIds());
+
+            ProcessItemsCancelResponse response = new ProcessItemsCancelResponse();
             response.setProcess(process);
 
             return response;
