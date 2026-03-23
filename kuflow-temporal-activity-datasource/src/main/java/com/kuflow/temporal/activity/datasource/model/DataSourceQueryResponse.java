@@ -26,9 +26,7 @@ import com.kuflow.common.Experimental;
 import jakarta.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Response DTO for data source query workflows.
@@ -45,7 +43,7 @@ public class DataSourceQueryResponse {
 
     private int totalPages;
 
-    private List<Map<String, Object>> items;
+    private List<DataSourceItem> items;
 
     private String error;
 
@@ -81,25 +79,25 @@ public class DataSourceQueryResponse {
         this.totalPages = totalPages;
     }
 
-    public List<Map<String, Object>> getItems() {
+    public List<DataSourceItem> getItems() {
         if (this.items == null) {
             return List.of();
         }
         return Collections.unmodifiableList(this.items);
     }
 
-    public void setItems(@Nullable List<Map<String, Object>> items) {
+    public void setItems(@Nullable List<DataSourceItem> items) {
         this.items = null;
         if (items != null) {
             items.forEach(this::addItem);
         }
     }
 
-    public void addItem(Map<String, Object> item) {
+    public void addItem(DataSourceItem item) {
         if (this.items == null) {
             this.items = new ArrayList<>();
         }
-        this.items.add(new LinkedHashMap<>(item));
+        this.items.add(item);
     }
 
     public String getError() {
