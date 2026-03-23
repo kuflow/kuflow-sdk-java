@@ -37,6 +37,15 @@ import java.util.Map;
 @Experimental
 public class DataSourceItem {
 
+    public static DataSourceItem of(String id, Map<String, Object> properties) {
+        DataSourceItem item = new DataSourceItem();
+        item.setId(id);
+        if (properties != null) {
+            properties.forEach(item::setProperty);
+        }
+        return item;
+    }
+
     private String id;
 
     private Map<String, Object> properties;
@@ -57,14 +66,30 @@ public class DataSourceItem {
         return Collections.unmodifiableMap(this.properties);
     }
 
+    public Object getProperty(String key) {
+        if (this.properties == null) {
+            return null;
+        }
+        return this.properties.get(key);
+    }
+
+    public void setProperties(Map<String, Object> properties) {
+        this.properties = null;
+        if (properties != null) {
+            properties.forEach(this::setProperty);
+        }
+    }
+
     @JsonAnySetter
     public void setProperty(String key, Object value) {
         if ("id".equals(key)) {
             throw new IllegalArgumentException("Cannot set 'id' as a property. Use setId() instead.");
         }
+
         if (this.properties == null) {
             this.properties = new LinkedHashMap<>();
         }
+
         this.properties.put(key, value);
     }
 }
