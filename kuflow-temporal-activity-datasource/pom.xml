@@ -50,6 +50,10 @@
       <groupId>com.kuflow</groupId>
       <artifactId>kuflow-temporal-common</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+    </dependency>
   </dependencies>
 
   <build>
