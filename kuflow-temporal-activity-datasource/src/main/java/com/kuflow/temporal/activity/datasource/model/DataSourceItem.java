@@ -43,6 +43,7 @@ public class DataSourceItem {
         if (properties != null) {
             properties.forEach(item::setProperty);
         }
+
         return item;
     }
 
@@ -63,6 +64,7 @@ public class DataSourceItem {
         if (this.properties == null) {
             return Map.of();
         }
+
         return Collections.unmodifiableMap(this.properties);
     }
 
@@ -70,6 +72,7 @@ public class DataSourceItem {
         if (this.properties == null) {
             return null;
         }
+
         return this.properties.get(key);
     }
 
