@@ -75,10 +75,11 @@ public class TenantUserOperations {
         Integer page = options.getPage();
         List<String> sort = !options.getSorts().isEmpty() ? options.getSorts() : null;
         List<UUID> groupId = !options.getGroupIds().isEmpty() ? options.getGroupIds() : null;
+        List<String> groupCode = !options.getGroupCodes().isEmpty() ? options.getGroupCodes() : null;
         List<String> email = !options.getEmails().isEmpty() ? options.getEmails() : null;
         List<UUID> tenantId = !options.getTenantIds().isEmpty() ? options.getTenantIds() : null;
 
-        return this.service.findTenantUsersWithResponse(size, page, sort, groupId, email, tenantId, context);
+        return this.service.findTenantUsersWithResponse(size, page, sort, groupId, groupCode, email, tenantId, context);
     }
 
     /**

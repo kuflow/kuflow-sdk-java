@@ -35,6 +35,7 @@ import com.kuflow.temporal.activity.kuflow.model.ProcessEntityUpdateRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessInitiatorChangeRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemCreateRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemRetrieveRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAiAssistanceRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAssignRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskClaimRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskCompleteRequest;
@@ -239,6 +240,12 @@ public class KuFlowActivitiesValidation {
         }
         if (request.getMessage() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'message' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+    }
+
+    public static void validateProcessItemTaskAiAssistanceRequest(ProcessItemTaskAiAssistanceRequest request) {
+        if (request.getProcessItemId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'processItemId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 }

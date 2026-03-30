@@ -33,6 +33,7 @@ import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidatio
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessInitiatorChangeRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemCreateRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemRetrieve;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemTaskAiAssistanceRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemTaskAssignRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemTaskCompleteRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemTaskDataPatchRequest;
@@ -56,6 +57,7 @@ import com.kuflow.rest.model.ProcessItem;
 import com.kuflow.rest.model.ProcessItemCreateParams;
 import com.kuflow.rest.model.ProcessItemFindOptions;
 import com.kuflow.rest.model.ProcessItemPage;
+import com.kuflow.rest.model.ProcessItemTaskAiAssistanceResponse;
 import com.kuflow.rest.model.ProcessItemTaskAppendLogParams;
 import com.kuflow.rest.model.ProcessItemTaskAssignParams;
 import com.kuflow.rest.model.ProcessItemTaskDataUpdateParams;
@@ -89,6 +91,8 @@ import com.kuflow.temporal.activity.kuflow.model.ProcessItemFindRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemFindResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemRetrieveRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemRetrieveResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAiAssistanceGenerateResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAiAssistanceRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAssignRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAssignResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskClaimRequest;
@@ -174,7 +178,9 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
             ProcessFindOptions options = new ProcessFindOptions()
                 .setPage(request.getPage())
                 .setSize(request.getSize())
-                .setSorts(request.getSorts());
+                .setSorts(request.getSorts())
+                .setProcessDefinitionIds(request.getProcessDefinitionIds())
+                .setProcessDefinitionCodes(request.getProcessDefinitionCodes());
 
             ProcessPage processes = this.processOperations.findProcesses(options);
 
@@ -326,7 +332,9 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
                 .setProcessIds(request.getProcessIds())
                 .setTypes(request.getTypes())
                 .setTaskStates(request.getTaskStates())
-                .setProcessItemDefinitionCode(request.getProcessItemDefinitionCodes());
+                .setProcessItemDefinitionCode(request.getProcessItemDefinitionCodes())
+                .setProcessDefinitionIds(request.getProcessDefinitionIds())
+                .setProcessDefinitionCodes(request.getProcessDefinitionCodes());
 
             ProcessItemPage processItems = this.processItemOperations.findProcessItems(options);
 
@@ -491,6 +499,27 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
             ProcessItemTaskLoggAppendResponse response = new ProcessItemTaskLoggAppendResponse();
             response.setProcessItem(processItem);
+
+            return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Nonnull
+    @Override
+    public ProcessItemTaskAiAssistanceGenerateResponse generateProcessItemTaskAiAssistance(
+        @Nonnull ProcessItemTaskAiAssistanceRequest request
+    ) {
+        try {
+            validateProcessItemTaskAiAssistanceRequest(request);
+
+            ProcessItemTaskAiAssistanceResponse aiResponse = this.processItemOperations.generateProcessItemTaskAiAssistance(
+                request.getProcessItemId()
+            );
+
+            ProcessItemTaskAiAssistanceGenerateResponse response = new ProcessItemTaskAiAssistanceGenerateResponse();
+            response.setProcessItemTaskAiAssistanceResponse(aiResponse);
 
             return response;
         } catch (Exception e) {

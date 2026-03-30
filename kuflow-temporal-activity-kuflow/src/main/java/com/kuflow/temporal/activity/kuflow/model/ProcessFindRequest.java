@@ -28,6 +28,7 @@ import com.kuflow.temporal.common.model.AbstractModel;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 public class ProcessFindRequest extends AbstractModel {
 
@@ -36,6 +37,16 @@ public class ProcessFindRequest extends AbstractModel {
     private Integer size;
 
     private List<String> sorts;
+
+    /**
+     * Filter by process definition ids.
+     */
+    private final List<UUID> processDefinitionIds = new LinkedList<>();
+
+    /**
+     * Filter by process definition codes.
+     */
+    private final List<String> processDefinitionCodes = new LinkedList<>();
 
     public Integer getPage() {
         return this.page;
@@ -78,5 +89,75 @@ public class ProcessFindRequest extends AbstractModel {
     public void removeSort(String sort) {
         Objects.requireNonNull(sort, "'sort' is required");
         this.sorts.remove(sort);
+    }
+
+    public List<UUID> getProcessDefinitionIds() {
+        return unmodifiableList(this.processDefinitionIds);
+    }
+
+    public ProcessFindRequest setProcessDefinitionIds(List<UUID> processDefinitionIds) {
+        this.processDefinitionIds.clear();
+        if (processDefinitionIds != null) {
+            this.processDefinitionIds.addAll(processDefinitionIds);
+        }
+
+        return this;
+    }
+
+    public ProcessFindRequest setProcessDefinitionId(UUID processDefinitionId) {
+        Objects.requireNonNull(processDefinitionId, "'processDefinitionId' is required");
+
+        return this.setProcessDefinitionIds(List.of(processDefinitionId));
+    }
+
+    public ProcessFindRequest addProcessDefinitionId(UUID processDefinitionId) {
+        Objects.requireNonNull(processDefinitionId, "'processDefinitionId' is required");
+        if (!this.processDefinitionIds.contains(processDefinitionId)) {
+            this.processDefinitionIds.add(processDefinitionId);
+        }
+
+        return this;
+    }
+
+    public ProcessFindRequest removeProcessDefinitionId(UUID processDefinitionId) {
+        Objects.requireNonNull(processDefinitionId, "'processDefinitionId' is required");
+        this.processDefinitionIds.remove(processDefinitionId);
+
+        return this;
+    }
+
+    public List<String> getProcessDefinitionCodes() {
+        return unmodifiableList(this.processDefinitionCodes);
+    }
+
+    public ProcessFindRequest setProcessDefinitionCodes(List<String> processDefinitionCodes) {
+        this.processDefinitionCodes.clear();
+        if (processDefinitionCodes != null) {
+            this.processDefinitionCodes.addAll(processDefinitionCodes);
+        }
+
+        return this;
+    }
+
+    public ProcessFindRequest setProcessDefinitionCode(String processDefinitionCode) {
+        Objects.requireNonNull(processDefinitionCode, "'processDefinitionCode' is required");
+
+        return this.setProcessDefinitionCodes(List.of(processDefinitionCode));
+    }
+
+    public ProcessFindRequest addProcessDefinitionCode(String processDefinitionCode) {
+        Objects.requireNonNull(processDefinitionCode, "'processDefinitionCode' is required");
+        if (!this.processDefinitionCodes.contains(processDefinitionCode)) {
+            this.processDefinitionCodes.add(processDefinitionCode);
+        }
+
+        return this;
+    }
+
+    public ProcessFindRequest removeProcessDefinitionCode(String processDefinitionCode) {
+        Objects.requireNonNull(processDefinitionCode, "'processDefinitionCode' is required");
+        this.processDefinitionCodes.remove(processDefinitionCode);
+
+        return this;
     }
 }

@@ -51,6 +51,12 @@ public final class GroupPageItem implements JsonSerializable<GroupPageItem> {
     private String name;
 
     /*
+     * The code property.
+     */
+    @Generated
+    private String code;
+
+    /*
      * Tenant ID.
      */
     @Generated
@@ -107,6 +113,28 @@ public final class GroupPageItem implements JsonSerializable<GroupPageItem> {
     }
 
     /**
+     * Get the code property: The code property.
+     *
+     * @return the code value.
+     */
+    @Generated
+    public String getCode() {
+        return this.code;
+    }
+
+    /**
+     * Set the code property: The code property.
+     *
+     * @param code the code value to set.
+     * @return the GroupPageItem object itself.
+     */
+    @Generated
+    public GroupPageItem setCode(String code) {
+        this.code = code;
+        return this;
+    }
+
+    /**
      * Get the tenantId property: Tenant ID.
      *
      * @return the tenantId value.
@@ -137,6 +165,7 @@ public final class GroupPageItem implements JsonSerializable<GroupPageItem> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", Objects.toString(this.id, null));
         jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("code", this.code);
         jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
         return jsonWriter.writeEndObject();
     }
@@ -162,6 +191,8 @@ public final class GroupPageItem implements JsonSerializable<GroupPageItem> {
                     deserializedGroupPageItem.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("name".equals(fieldName)) {
                     deserializedGroupPageItem.name = reader.getString();
+                } else if ("code".equals(fieldName)) {
+                    deserializedGroupPageItem.code = reader.getString();
                 } else if ("tenantId".equals(fieldName)) {
                     deserializedGroupPageItem.tenantId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else {

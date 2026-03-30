@@ -44,6 +44,8 @@ import com.kuflow.temporal.activity.kuflow.model.ProcessItemFindRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemFindResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemRetrieveRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemRetrieveResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAiAssistanceGenerateResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAiAssistanceRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAssignRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAssignResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskClaimRequest;
@@ -277,6 +279,19 @@ public interface KuFlowActivities {
     @ActivityMethod
     @Nonnull
     ProcessItemTaskLoggAppendResponse appendProcessItemTaskLog(@Nonnull ProcessItemTaskLoggAppendRequest request);
+
+    /**
+     * Generate AI assistance for a Process Item Task.
+     *
+     * <p>Allow to generate AI assistance for a task and apply the results.
+     * The AI prompt configuration comes from the task definition.
+     *
+     * @param request must not be {@literal null}.
+     * @return AI assistance response with updated process item and AI metadata
+     */
+    @ActivityMethod
+    @Nonnull
+    ProcessItemTaskAiAssistanceGenerateResponse generateProcessItemTaskAiAssistance(@Nonnull ProcessItemTaskAiAssistanceRequest request);
 
     /**
      * Retrieve a Business Artifact.

@@ -101,6 +101,8 @@ public final class ProcessOperationsImpl {
             @QueryParam("page") Integer page,
             @QueryParam(value = "sort", multipleQueryParams = true) List<String> sort,
             @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
+            @QueryParam(value = "processDefinitionId", multipleQueryParams = true) List<String> processDefinitionId,
+            @QueryParam(value = "processDefinitionCode", multipleQueryParams = true) List<String> processDefinitionCode,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -114,6 +116,8 @@ public final class ProcessOperationsImpl {
             @QueryParam("page") Integer page,
             @QueryParam(value = "sort", multipleQueryParams = true) List<String> sort,
             @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
+            @QueryParam(value = "processDefinitionId", multipleQueryParams = true) List<String> processDefinitionId,
+            @QueryParam(value = "processDefinitionCode", multipleQueryParams = true) List<String> processDefinitionCode,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -455,14 +459,25 @@ public final class ProcessOperationsImpl {
      *
      * Please refer to the method description for supported properties.
      * @param tenantId Filter by tenantId.
+     * @param processDefinitionId Filter by process definition ids.
+     * @param processDefinitionCode Filter by process definition codes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ProcessPage>> findProcessesWithResponseAsync(Integer size, Integer page, List<String> sort, List<UUID> tenantId) {
-        return FluxUtil.withContext(context -> findProcessesWithResponseAsync(size, page, sort, tenantId, context));
+    public Mono<Response<ProcessPage>> findProcessesWithResponseAsync(
+        Integer size,
+        Integer page,
+        List<String> sort,
+        List<UUID> tenantId,
+        List<UUID> processDefinitionId,
+        List<String> processDefinitionCode
+    ) {
+        return FluxUtil.withContext(context ->
+            findProcessesWithResponseAsync(size, page, sort, tenantId, processDefinitionId, processDefinitionCode, context)
+        );
     }
 
     /**
@@ -480,6 +495,8 @@ public final class ProcessOperationsImpl {
      *
      * Please refer to the method description for supported properties.
      * @param tenantId Filter by tenantId.
+     * @param processDefinitionId Filter by process definition ids.
+     * @param processDefinitionCode Filter by process definition codes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -492,6 +509,8 @@ public final class ProcessOperationsImpl {
         Integer page,
         List<String> sort,
         List<UUID> tenantId,
+        List<UUID> processDefinitionId,
+        List<String> processDefinitionCode,
         Context context
     ) {
         final String accept = "application/json";
@@ -507,7 +526,29 @@ public final class ProcessOperationsImpl {
                   .stream()
                   .map(item -> Objects.toString(item, ""))
                   .collect(Collectors.toList());
-        return service.findProcesses(this.client.getHost(), size, page, sortConverted, tenantIdConverted, accept, context);
+        List<String> processDefinitionIdConverted = (processDefinitionId == null)
+            ? new ArrayList<>()
+            : processDefinitionId
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
+        List<String> processDefinitionCodeConverted = (processDefinitionCode == null)
+            ? new ArrayList<>()
+            : processDefinitionCode
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
+        return service.findProcesses(
+            this.client.getHost(),
+            size,
+            page,
+            sortConverted,
+            tenantIdConverted,
+            processDefinitionIdConverted,
+            processDefinitionCodeConverted,
+            accept,
+            context
+        );
     }
 
     /**
@@ -525,14 +566,25 @@ public final class ProcessOperationsImpl {
      *
      * Please refer to the method description for supported properties.
      * @param tenantId Filter by tenantId.
+     * @param processDefinitionId Filter by process definition ids.
+     * @param processDefinitionCode Filter by process definition codes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProcessPage> findProcessesAsync(Integer size, Integer page, List<String> sort, List<UUID> tenantId) {
-        return findProcessesWithResponseAsync(size, page, sort, tenantId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<ProcessPage> findProcessesAsync(
+        Integer size,
+        Integer page,
+        List<String> sort,
+        List<UUID> tenantId,
+        List<UUID> processDefinitionId,
+        List<String> processDefinitionCode
+    ) {
+        return findProcessesWithResponseAsync(size, page, sort, tenantId, processDefinitionId, processDefinitionCode).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
+        );
     }
 
     /**
@@ -552,7 +604,11 @@ public final class ProcessOperationsImpl {
         final Integer page = null;
         final List<String> sort = null;
         final List<UUID> tenantId = null;
-        return findProcessesWithResponseAsync(size, page, sort, tenantId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        final List<UUID> processDefinitionId = null;
+        final List<String> processDefinitionCode = null;
+        return findProcessesWithResponseAsync(size, page, sort, tenantId, processDefinitionId, processDefinitionCode).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
+        );
     }
 
     /**
@@ -570,6 +626,8 @@ public final class ProcessOperationsImpl {
      *
      * Please refer to the method description for supported properties.
      * @param tenantId Filter by tenantId.
+     * @param processDefinitionId Filter by process definition ids.
+     * @param processDefinitionCode Filter by process definition codes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -577,8 +635,18 @@ public final class ProcessOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProcessPage> findProcessesAsync(Integer size, Integer page, List<String> sort, List<UUID> tenantId, Context context) {
-        return findProcessesWithResponseAsync(size, page, sort, tenantId, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<ProcessPage> findProcessesAsync(
+        Integer size,
+        Integer page,
+        List<String> sort,
+        List<UUID> tenantId,
+        List<UUID> processDefinitionId,
+        List<String> processDefinitionCode,
+        Context context
+    ) {
+        return findProcessesWithResponseAsync(size, page, sort, tenantId, processDefinitionId, processDefinitionCode, context).flatMap(
+            res -> Mono.justOrEmpty(res.getValue())
+        );
     }
 
     /**
@@ -596,6 +664,8 @@ public final class ProcessOperationsImpl {
      *
      * Please refer to the method description for supported properties.
      * @param tenantId Filter by tenantId.
+     * @param processDefinitionId Filter by process definition ids.
+     * @param processDefinitionCode Filter by process definition codes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -608,6 +678,8 @@ public final class ProcessOperationsImpl {
         Integer page,
         List<String> sort,
         List<UUID> tenantId,
+        List<UUID> processDefinitionId,
+        List<String> processDefinitionCode,
         Context context
     ) {
         final String accept = "application/json";
@@ -623,7 +695,29 @@ public final class ProcessOperationsImpl {
                   .stream()
                   .map(item -> Objects.toString(item, ""))
                   .collect(Collectors.toList());
-        return service.findProcessesSync(this.client.getHost(), size, page, sortConverted, tenantIdConverted, accept, context);
+        List<String> processDefinitionIdConverted = (processDefinitionId == null)
+            ? new ArrayList<>()
+            : processDefinitionId
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
+        List<String> processDefinitionCodeConverted = (processDefinitionCode == null)
+            ? new ArrayList<>()
+            : processDefinitionCode
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
+        return service.findProcessesSync(
+            this.client.getHost(),
+            size,
+            page,
+            sortConverted,
+            tenantIdConverted,
+            processDefinitionIdConverted,
+            processDefinitionCodeConverted,
+            accept,
+            context
+        );
     }
 
     /**
@@ -641,14 +735,23 @@ public final class ProcessOperationsImpl {
      *
      * Please refer to the method description for supported properties.
      * @param tenantId Filter by tenantId.
+     * @param processDefinitionId Filter by process definition ids.
+     * @param processDefinitionCode Filter by process definition codes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProcessPage findProcesses(Integer size, Integer page, List<String> sort, List<UUID> tenantId) {
-        return findProcessesWithResponse(size, page, sort, tenantId, Context.NONE).getValue();
+    public ProcessPage findProcesses(
+        Integer size,
+        Integer page,
+        List<String> sort,
+        List<UUID> tenantId,
+        List<UUID> processDefinitionId,
+        List<String> processDefinitionCode
+    ) {
+        return findProcessesWithResponse(size, page, sort, tenantId, processDefinitionId, processDefinitionCode, Context.NONE).getValue();
     }
 
     /**
@@ -668,7 +771,9 @@ public final class ProcessOperationsImpl {
         final Integer page = null;
         final List<String> sort = null;
         final List<UUID> tenantId = null;
-        return findProcessesWithResponse(size, page, sort, tenantId, Context.NONE).getValue();
+        final List<UUID> processDefinitionId = null;
+        final List<String> processDefinitionCode = null;
+        return findProcessesWithResponse(size, page, sort, tenantId, processDefinitionId, processDefinitionCode, Context.NONE).getValue();
     }
 
     /**

@@ -88,6 +88,7 @@ public final class TenantUserOperationsImpl {
             @QueryParam("page") Integer page,
             @QueryParam(value = "sort", multipleQueryParams = true) List<String> sort,
             @QueryParam(value = "groupId", multipleQueryParams = true) List<String> groupId,
+            @QueryParam(value = "groupCode", multipleQueryParams = true) List<String> groupCode,
             @QueryParam(value = "email", multipleQueryParams = true) List<String> email,
             @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
             @HeaderParam("Accept") String accept,
@@ -103,6 +104,7 @@ public final class TenantUserOperationsImpl {
             @QueryParam("page") Integer page,
             @QueryParam(value = "sort", multipleQueryParams = true) List<String> sort,
             @QueryParam(value = "groupId", multipleQueryParams = true) List<String> groupId,
+            @QueryParam(value = "groupCode", multipleQueryParams = true) List<String> groupCode,
             @QueryParam(value = "email", multipleQueryParams = true) List<String> email,
             @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
             @HeaderParam("Accept") String accept,
@@ -145,6 +147,7 @@ public final class TenantUserOperationsImpl {
      *
      * Please refer to the method description for supported properties.
      * @param groupId Filter by group ids.
+     * @param groupCode Filter by group codes.
      * @param email Filter by email.
      * @param tenantId Filter by tenantId.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -158,10 +161,13 @@ public final class TenantUserOperationsImpl {
         Integer page,
         List<String> sort,
         List<UUID> groupId,
+        List<String> groupCode,
         List<String> email,
         List<UUID> tenantId
     ) {
-        return FluxUtil.withContext(context -> findTenantUsersWithResponseAsync(size, page, sort, groupId, email, tenantId, context));
+        return FluxUtil.withContext(context ->
+            findTenantUsersWithResponseAsync(size, page, sort, groupId, groupCode, email, tenantId, context)
+        );
     }
 
     /**
@@ -179,6 +185,7 @@ public final class TenantUserOperationsImpl {
      *
      * Please refer to the method description for supported properties.
      * @param groupId Filter by group ids.
+     * @param groupCode Filter by group codes.
      * @param email Filter by email.
      * @param tenantId Filter by tenantId.
      * @param context The context to associate with this operation.
@@ -193,6 +200,7 @@ public final class TenantUserOperationsImpl {
         Integer page,
         List<String> sort,
         List<UUID> groupId,
+        List<String> groupCode,
         List<String> email,
         List<UUID> tenantId,
         Context context
@@ -207,6 +215,12 @@ public final class TenantUserOperationsImpl {
         List<String> groupIdConverted = (groupId == null)
             ? new ArrayList<>()
             : groupId
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
+        List<String> groupCodeConverted = (groupCode == null)
+            ? new ArrayList<>()
+            : groupCode
                   .stream()
                   .map(item -> Objects.toString(item, ""))
                   .collect(Collectors.toList());
@@ -228,6 +242,7 @@ public final class TenantUserOperationsImpl {
             page,
             sortConverted,
             groupIdConverted,
+            groupCodeConverted,
             emailConverted,
             tenantIdConverted,
             accept,
@@ -250,6 +265,7 @@ public final class TenantUserOperationsImpl {
      *
      * Please refer to the method description for supported properties.
      * @param groupId Filter by group ids.
+     * @param groupCode Filter by group codes.
      * @param email Filter by email.
      * @param tenantId Filter by tenantId.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -263,10 +279,11 @@ public final class TenantUserOperationsImpl {
         Integer page,
         List<String> sort,
         List<UUID> groupId,
+        List<String> groupCode,
         List<String> email,
         List<UUID> tenantId
     ) {
-        return findTenantUsersWithResponseAsync(size, page, sort, groupId, email, tenantId).flatMap(res ->
+        return findTenantUsersWithResponseAsync(size, page, sort, groupId, groupCode, email, tenantId).flatMap(res ->
             Mono.justOrEmpty(res.getValue())
         );
     }
@@ -288,9 +305,10 @@ public final class TenantUserOperationsImpl {
         final Integer page = null;
         final List<String> sort = null;
         final List<UUID> groupId = null;
+        final List<String> groupCode = null;
         final List<String> email = null;
         final List<UUID> tenantId = null;
-        return findTenantUsersWithResponseAsync(size, page, sort, groupId, email, tenantId).flatMap(res ->
+        return findTenantUsersWithResponseAsync(size, page, sort, groupId, groupCode, email, tenantId).flatMap(res ->
             Mono.justOrEmpty(res.getValue())
         );
     }
@@ -310,6 +328,7 @@ public final class TenantUserOperationsImpl {
      *
      * Please refer to the method description for supported properties.
      * @param groupId Filter by group ids.
+     * @param groupCode Filter by group codes.
      * @param email Filter by email.
      * @param tenantId Filter by tenantId.
      * @param context The context to associate with this operation.
@@ -324,11 +343,12 @@ public final class TenantUserOperationsImpl {
         Integer page,
         List<String> sort,
         List<UUID> groupId,
+        List<String> groupCode,
         List<String> email,
         List<UUID> tenantId,
         Context context
     ) {
-        return findTenantUsersWithResponseAsync(size, page, sort, groupId, email, tenantId, context).flatMap(res ->
+        return findTenantUsersWithResponseAsync(size, page, sort, groupId, groupCode, email, tenantId, context).flatMap(res ->
             Mono.justOrEmpty(res.getValue())
         );
     }
@@ -348,6 +368,7 @@ public final class TenantUserOperationsImpl {
      *
      * Please refer to the method description for supported properties.
      * @param groupId Filter by group ids.
+     * @param groupCode Filter by group codes.
      * @param email Filter by email.
      * @param tenantId Filter by tenantId.
      * @param context The context to associate with this operation.
@@ -362,6 +383,7 @@ public final class TenantUserOperationsImpl {
         Integer page,
         List<String> sort,
         List<UUID> groupId,
+        List<String> groupCode,
         List<String> email,
         List<UUID> tenantId,
         Context context
@@ -376,6 +398,12 @@ public final class TenantUserOperationsImpl {
         List<String> groupIdConverted = (groupId == null)
             ? new ArrayList<>()
             : groupId
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
+        List<String> groupCodeConverted = (groupCode == null)
+            ? new ArrayList<>()
+            : groupCode
                   .stream()
                   .map(item -> Objects.toString(item, ""))
                   .collect(Collectors.toList());
@@ -397,6 +425,7 @@ public final class TenantUserOperationsImpl {
             page,
             sortConverted,
             groupIdConverted,
+            groupCodeConverted,
             emailConverted,
             tenantIdConverted,
             accept,
@@ -419,6 +448,7 @@ public final class TenantUserOperationsImpl {
      *
      * Please refer to the method description for supported properties.
      * @param groupId Filter by group ids.
+     * @param groupCode Filter by group codes.
      * @param email Filter by email.
      * @param tenantId Filter by tenantId.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -432,10 +462,11 @@ public final class TenantUserOperationsImpl {
         Integer page,
         List<String> sort,
         List<UUID> groupId,
+        List<String> groupCode,
         List<String> email,
         List<UUID> tenantId
     ) {
-        return findTenantUsersWithResponse(size, page, sort, groupId, email, tenantId, Context.NONE).getValue();
+        return findTenantUsersWithResponse(size, page, sort, groupId, groupCode, email, tenantId, Context.NONE).getValue();
     }
 
     /**
@@ -455,9 +486,10 @@ public final class TenantUserOperationsImpl {
         final Integer page = null;
         final List<String> sort = null;
         final List<UUID> groupId = null;
+        final List<String> groupCode = null;
         final List<String> email = null;
         final List<UUID> tenantId = null;
-        return findTenantUsersWithResponse(size, page, sort, groupId, email, tenantId, Context.NONE).getValue();
+        return findTenantUsersWithResponse(size, page, sort, groupId, groupCode, email, tenantId, Context.NONE).getValue();
     }
 
     /**

@@ -63,6 +63,11 @@ public class BusinessArtifactFindOptions {
      */
     private final List<String> businessArtifactDefinitionCodes = new LinkedList<>();
 
+    /**
+     * Filter by indexed field values.
+     */
+    private final List<String> values = new LinkedList<>();
+
     public Integer getSize() {
         return this.size;
     }
@@ -219,6 +224,41 @@ public class BusinessArtifactFindOptions {
     public BusinessArtifactFindOptions removeBusinessArtifactDefinitionCode(String businessArtifactDefinitionCode) {
         Objects.requireNonNull(businessArtifactDefinitionCode, "'businessArtifactDefinitionCode' is required");
         this.businessArtifactDefinitionCodes.remove(businessArtifactDefinitionCode);
+
+        return this;
+    }
+
+    public List<String> getValues() {
+        return unmodifiableList(this.values);
+    }
+
+    public BusinessArtifactFindOptions setValues(List<String> values) {
+        this.values.clear();
+        if (values != null) {
+            this.values.addAll(values);
+        }
+
+        return this;
+    }
+
+    public BusinessArtifactFindOptions setValue(String value) {
+        Objects.requireNonNull(value, "'value' is required");
+
+        return this.setValues(List.of(value));
+    }
+
+    public BusinessArtifactFindOptions addValue(String value) {
+        Objects.requireNonNull(value, "'value' is required");
+        if (!this.values.contains(value)) {
+            this.values.add(value);
+        }
+
+        return this;
+    }
+
+    public BusinessArtifactFindOptions removeValue(String value) {
+        Objects.requireNonNull(value, "'value' is required");
+        this.values.remove(value);
 
         return this;
     }
