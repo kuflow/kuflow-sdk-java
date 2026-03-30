@@ -23,6 +23,8 @@
 package com.kuflow.temporal.activity.kuflow;
 
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesFailure.createApplicationFailure;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateBusinessArtifactCreateRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateBusinessArtifactDeleteRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateBusinessArtifactPatchRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateBusinessArtifactRetrieveRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateBusinessArtifactUpdateRequest;
@@ -47,7 +49,10 @@ import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidatio
 
 import com.kuflow.rest.KuFlowRestClient;
 import com.kuflow.rest.model.BusinessArtifact;
+import com.kuflow.rest.model.BusinessArtifactCreateParams;
 import com.kuflow.rest.model.BusinessArtifactDataUpdateParams;
+import com.kuflow.rest.model.BusinessArtifactFindOptions;
+import com.kuflow.rest.model.BusinessArtifactPage;
 import com.kuflow.rest.model.Principal;
 import com.kuflow.rest.model.Process;
 import com.kuflow.rest.model.ProcessChangeInitiatorParams;
@@ -69,6 +74,12 @@ import com.kuflow.rest.operation.PrincipalOperations;
 import com.kuflow.rest.operation.ProcessItemOperations;
 import com.kuflow.rest.operation.ProcessOperations;
 import com.kuflow.rest.operation.TenantUserOperations;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateResponse;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactDeleteRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactDeleteResponse;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFindRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFindResponse;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactPatchRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactPatchResponse;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactRetrieveRequest;
@@ -529,6 +540,54 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
     @Nonnull
     @Override
+    public BusinessArtifactFindResponse findBusinessArtifacts(BusinessArtifactFindRequest request) {
+        try {
+            BusinessArtifactFindOptions options = new BusinessArtifactFindOptions()
+                .setSize(request.getSize())
+                .setPage(request.getPage())
+                .setSorts(request.getSorts())
+                .setTenantIds(request.getTenantIds())
+                .setBusinessArtifactDefinitionIds(request.getBusinessArtifactDefinitionIds())
+                .setBusinessArtifactDefinitionCodes(request.getBusinessArtifactDefinitionCodes())
+                .setValues(request.getValues());
+
+            BusinessArtifactPage businessArtifacts = this.businessArtifactOperations.findBusinessArtifacts(options);
+
+            BusinessArtifactFindResponse response = new BusinessArtifactFindResponse();
+            response.setBusinessArtifacts(businessArtifacts);
+
+            return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Nonnull
+    @Override
+    public BusinessArtifactCreateResponse createBusinessArtifact(@Nonnull BusinessArtifactCreateRequest request) {
+        try {
+            validateBusinessArtifactCreateRequest(request);
+
+            BusinessArtifactCreateParams params = new BusinessArtifactCreateParams()
+                .setId(request.getId())
+                .setBusinessArtifactDefinitionId(request.getBusinessArtifactDefinitionId())
+                .setTenantId(request.getTenantId())
+                .setBusinessArtifactDefinitionCode(request.getBusinessArtifactDefinitionCode())
+                .setData(request.getData());
+
+            BusinessArtifact businessArtifact = this.businessArtifactOperations.createBusinessArtifact(params);
+
+            BusinessArtifactCreateResponse response = new BusinessArtifactCreateResponse();
+            response.setBusinessArtifact(businessArtifact);
+
+            return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Nonnull
+    @Override
     public BusinessArtifactRetrieveResponse retrieveBusinessArtifact(@Nonnull BusinessArtifactRetrieveRequest request) {
         try {
             validateBusinessArtifactRetrieveRequest(request);
@@ -539,6 +598,20 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
             response.setBusinessArtifact(businessArtifact);
 
             return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Nonnull
+    @Override
+    public BusinessArtifactDeleteResponse deleteBusinessArtifact(@Nonnull BusinessArtifactDeleteRequest request) {
+        try {
+            validateBusinessArtifactDeleteRequest(request);
+
+            this.businessArtifactOperations.deleteBusinessArtifact(request.getBusinessArtifactId());
+
+            return new BusinessArtifactDeleteResponse();
         } catch (Exception e) {
             throw createApplicationFailure(e);
         }

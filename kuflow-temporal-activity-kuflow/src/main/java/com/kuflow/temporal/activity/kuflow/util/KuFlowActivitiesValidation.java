@@ -26,6 +26,8 @@ package com.kuflow.temporal.activity.kuflow.util;
 import static com.kuflow.temporal.activity.kuflow.KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE;
 
 import com.kuflow.rest.model.ProcessItemType;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactDeleteRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactPatchRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactRetrieveRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactUpdateRequest;
@@ -50,6 +52,21 @@ import com.kuflow.temporal.activity.kuflow.model.TenantUserRetrieveRequest;
 import io.temporal.failure.ApplicationFailure;
 
 public class KuFlowActivitiesValidation {
+
+    public static void validateBusinessArtifactCreateRequest(BusinessArtifactCreateRequest request) {
+        if (request.getBusinessArtifactDefinitionId() == null && request.getBusinessArtifactDefinitionCode() == null) {
+            throw ApplicationFailure.newNonRetryableFailure(
+                "'businessArtifactDefinitionId' or 'businessArtifactDefinitionCode' is required",
+                ACTIVITIES_VALIDATION_FAILURE.getType()
+            );
+        }
+    }
+
+    public static void validateBusinessArtifactDeleteRequest(BusinessArtifactDeleteRequest request) {
+        if (request.getBusinessArtifactId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'businessArtifactId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+    }
 
     public static void validateBusinessArtifactRetrieveRequest(BusinessArtifactRetrieveRequest request) {
         if (request.getBusinessArtifactId() == null) {

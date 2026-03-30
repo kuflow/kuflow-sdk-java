@@ -22,6 +22,12 @@
  */
 package com.kuflow.temporal.activity.kuflow;
 
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateResponse;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactDeleteRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactDeleteResponse;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFindRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFindResponse;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactPatchRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactPatchResponse;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactRetrieveRequest;
@@ -294,6 +300,28 @@ public interface KuFlowActivities {
     ProcessItemTaskAiAssistanceGenerateResponse generateProcessItemTaskAiAssistance(@Nonnull ProcessItemTaskAiAssistanceRequest request);
 
     /**
+     * Find all accessible Business Artifacts.
+     *
+     * @param request must not be {@literal null}.
+     * @return business artifacts found paginated
+     */
+    @ActivityMethod
+    @Nonnull
+    BusinessArtifactFindResponse findBusinessArtifacts(BusinessArtifactFindRequest request);
+
+    /**
+     * Create a Business Artifact.
+     *
+     * <p>If you want the method to be idempotent, please specify the `id` field in the request body.
+     *
+     * @param request must not be {@literal null}.
+     * @return business artifact created
+     */
+    @ActivityMethod
+    @Nonnull
+    BusinessArtifactCreateResponse createBusinessArtifact(@Nonnull BusinessArtifactCreateRequest request);
+
+    /**
      * Retrieve a Business Artifact.
      *
      * @param request must not be {@literal null}.
@@ -302,6 +330,16 @@ public interface KuFlowActivities {
     @ActivityMethod
     @Nonnull
     BusinessArtifactRetrieveResponse retrieveBusinessArtifact(@Nonnull BusinessArtifactRetrieveRequest request);
+
+    /**
+     * Delete a Business Artifact.
+     *
+     * @param request must not be {@literal null}.
+     * @return empty response
+     */
+    @ActivityMethod
+    @Nonnull
+    BusinessArtifactDeleteResponse deleteBusinessArtifact(@Nonnull BusinessArtifactDeleteRequest request);
 
     /**
      * Update a Business Artifact data.
