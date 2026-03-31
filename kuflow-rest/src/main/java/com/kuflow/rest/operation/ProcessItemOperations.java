@@ -38,6 +38,7 @@ import com.kuflow.rest.model.ProcessItemPage;
 import com.kuflow.rest.model.ProcessItemTaskAiAssistanceResponse;
 import com.kuflow.rest.model.ProcessItemTaskAppendLogParams;
 import com.kuflow.rest.model.ProcessItemTaskAssignParams;
+import com.kuflow.rest.model.ProcessItemTaskContextDataUpdateParams;
 import com.kuflow.rest.model.ProcessItemTaskDataUpdateParams;
 import com.kuflow.rest.model.ProcessItemTaskState;
 import com.kuflow.rest.model.ProcessItemType;
@@ -438,6 +439,50 @@ public class ProcessItemOperations {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProcessItem patchProcessItemTaskData(UUID id, List<JsonPatchOperation> jsonPatch) {
         return this.patchProcessItemTaskDataWithResponse(id, jsonPatch, Context.NONE).getValue();
+    }
+
+    /**
+     * Save JSON context data
+     * <p>
+     * Allow to save a JSON context data validating that the data follow the related schema. If the data is invalid, then
+     * the json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param processItemTaskContextDataUpdateParams Params used to update the JSON context data value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ProcessItem> updateProcessItemTaskContextDataWithResponse(
+        UUID id,
+        ProcessItemTaskContextDataUpdateParams processItemTaskContextDataUpdateParams,
+        Context context
+    ) {
+        return this.service.updateProcessItemTaskContextDataWithResponse(id, processItemTaskContextDataUpdateParams, context);
+    }
+
+    /**
+     * Save JSON context data
+     * <p>
+     * Allow to save a JSON context data validating that the data follow the related schema. If the data is invalid, then
+     * the json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param processItemTaskContextDataUpdateParams Params used to update the JSON context data value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProcessItem updateProcessItemTaskContextData(
+        UUID id,
+        ProcessItemTaskContextDataUpdateParams processItemTaskContextDataUpdateParams
+    ) {
+        return this.updateProcessItemTaskContextDataWithResponse(id, processItemTaskContextDataUpdateParams, Context.NONE).getValue();
     }
 
     /**

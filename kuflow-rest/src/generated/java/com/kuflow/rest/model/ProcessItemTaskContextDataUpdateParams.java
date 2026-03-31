@@ -31,10 +31,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ProcessItemTaskCreateParams model.
+ * The ProcessItemTaskContextDataUpdateParams model.
  */
 @Fluent
-public final class ProcessItemTaskCreateParams implements JsonSerializable<ProcessItemTaskCreateParams> {
+public final class ProcessItemTaskContextDataUpdateParams implements JsonSerializable<ProcessItemTaskContextDataUpdateParams> {
 
     /*
      * Json value.
@@ -42,17 +42,11 @@ public final class ProcessItemTaskCreateParams implements JsonSerializable<Proce
     @Generated
     private JsonValue data;
 
-    /*
-     * Json value.
-     */
-    @Generated
-    private JsonValue contextData;
-
     /**
-     * Creates an instance of ProcessItemTaskCreateParams class.
+     * Creates an instance of ProcessItemTaskContextDataUpdateParams class.
      */
     @Generated
-    public ProcessItemTaskCreateParams() {}
+    public ProcessItemTaskContextDataUpdateParams() {}
 
     /**
      * Get the data property: Json value.
@@ -68,33 +62,11 @@ public final class ProcessItemTaskCreateParams implements JsonSerializable<Proce
      * Set the data property: Json value.
      *
      * @param data the data value to set.
-     * @return the ProcessItemTaskCreateParams object itself.
+     * @return the ProcessItemTaskContextDataUpdateParams object itself.
      */
     @Generated
-    public ProcessItemTaskCreateParams setData(JsonValue data) {
+    public ProcessItemTaskContextDataUpdateParams setData(JsonValue data) {
         this.data = data;
-        return this;
-    }
-
-    /**
-     * Get the contextData property: Json value.
-     *
-     * @return the contextData value.
-     */
-    @Generated
-    public JsonValue getContextData() {
-        return this.contextData;
-    }
-
-    /**
-     * Set the contextData property: Json value.
-     *
-     * @param contextData the contextData value to set.
-     * @return the ProcessItemTaskCreateParams object itself.
-     */
-    @Generated
-    public ProcessItemTaskCreateParams setContextData(JsonValue contextData) {
-        this.contextData = contextData;
         return this;
     }
 
@@ -106,36 +78,35 @@ public final class ProcessItemTaskCreateParams implements JsonSerializable<Proce
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("data", this.data);
-        jsonWriter.writeJsonField("contextData", this.contextData);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of ProcessItemTaskCreateParams from the JsonReader.
+     * Reads an instance of ProcessItemTaskContextDataUpdateParams from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ProcessItemTaskCreateParams if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ProcessItemTaskCreateParams.
+     * @return An instance of ProcessItemTaskContextDataUpdateParams if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ProcessItemTaskContextDataUpdateParams.
      */
     @Generated
-    public static ProcessItemTaskCreateParams fromJson(JsonReader jsonReader) throws IOException {
+    public static ProcessItemTaskContextDataUpdateParams fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ProcessItemTaskCreateParams deserializedProcessItemTaskCreateParams = new ProcessItemTaskCreateParams();
+            ProcessItemTaskContextDataUpdateParams deserializedProcessItemTaskContextDataUpdateParams =
+                new ProcessItemTaskContextDataUpdateParams();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("data".equals(fieldName)) {
-                    deserializedProcessItemTaskCreateParams.data = JsonValue.fromJson(reader);
-                } else if ("contextData".equals(fieldName)) {
-                    deserializedProcessItemTaskCreateParams.contextData = JsonValue.fromJson(reader);
+                    deserializedProcessItemTaskContextDataUpdateParams.data = JsonValue.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedProcessItemTaskCreateParams;
+            return deserializedProcessItemTaskContextDataUpdateParams;
         });
     }
 }

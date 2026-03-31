@@ -58,6 +58,8 @@ import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskClaimRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskClaimResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskCompleteRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskCompleteResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskContextDataUpdateRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskContextDataUpdateResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskDataPatchRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskDataPatchResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskDataUpdateRequest;
@@ -260,6 +262,19 @@ public interface KuFlowActivities {
     @ActivityMethod
     @Nonnull
     ProcessItemTaskDataUpdateResponse updateProcessItemTaskData(@Nonnull ProcessItemTaskDataUpdateRequest request);
+
+    /**
+     * Save JSON context data
+     *
+     * <p>Allow to save a JSON context data validating that the data follow the related schema. If the data is invalid, then the
+     * json form is marked as invalid.
+     *
+     * @param request must not be {@literal null}.
+     * @return process item with task updated
+     */
+    @ActivityMethod
+    @Nonnull
+    ProcessItemTaskContextDataUpdateResponse updateProcessItemTaskContextData(@Nonnull ProcessItemTaskContextDataUpdateRequest request);
 
     /**
      * Patch JSON data

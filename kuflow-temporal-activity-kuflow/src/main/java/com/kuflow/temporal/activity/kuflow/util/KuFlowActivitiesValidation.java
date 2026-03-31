@@ -41,6 +41,7 @@ import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAiAssistanceRequ
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAssignRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskClaimRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskCompleteRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskContextDataUpdateRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskDataPatchRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskDataUpdateRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskLoggAppendRequest;
@@ -233,6 +234,12 @@ public class KuFlowActivitiesValidation {
                 "'email' or 'principalId' is required",
                 ACTIVITIES_VALIDATION_FAILURE.getType()
             );
+        }
+    }
+
+    public static void validateProcessItemTaskContextDataUpdateRequest(ProcessItemTaskContextDataUpdateRequest request) {
+        if (request.getProcessItemId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'processItemId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 

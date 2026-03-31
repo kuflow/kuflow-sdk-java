@@ -38,6 +38,7 @@ import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidatio
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemTaskAiAssistanceRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemTaskAssignRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemTaskCompleteRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemTaskContextDataUpdateRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemTaskDataPatchRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemTaskDataUpdateRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemTaskLoggAppendRequest;
@@ -65,6 +66,7 @@ import com.kuflow.rest.model.ProcessItemPage;
 import com.kuflow.rest.model.ProcessItemTaskAiAssistanceResponse;
 import com.kuflow.rest.model.ProcessItemTaskAppendLogParams;
 import com.kuflow.rest.model.ProcessItemTaskAssignParams;
+import com.kuflow.rest.model.ProcessItemTaskContextDataUpdateParams;
 import com.kuflow.rest.model.ProcessItemTaskDataUpdateParams;
 import com.kuflow.rest.model.ProcessMetadataUpdateParams;
 import com.kuflow.rest.model.ProcessPage;
@@ -110,6 +112,8 @@ import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskClaimRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskClaimResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskCompleteRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskCompleteResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskContextDataUpdateRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskContextDataUpdateResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskDataPatchRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskDataPatchResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskDataUpdateRequest;
@@ -468,6 +472,27 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
             ProcessItem processItem = this.processItemOperations.updateProcessItemTaskData(request.getProcessItemId(), params);
 
             ProcessItemTaskDataUpdateResponse response = new ProcessItemTaskDataUpdateResponse();
+            response.setProcessItem(processItem);
+
+            return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Nonnull
+    @Override
+    public ProcessItemTaskContextDataUpdateResponse updateProcessItemTaskContextData(
+        @Nonnull ProcessItemTaskContextDataUpdateRequest request
+    ) {
+        try {
+            validateProcessItemTaskContextDataUpdateRequest(request);
+
+            ProcessItemTaskContextDataUpdateParams params = new ProcessItemTaskContextDataUpdateParams().setData(request.getData());
+
+            ProcessItem processItem = this.processItemOperations.updateProcessItemTaskContextData(request.getProcessItemId(), params);
+
+            ProcessItemTaskContextDataUpdateResponse response = new ProcessItemTaskContextDataUpdateResponse();
             response.setProcessItem(processItem);
 
             return response;
