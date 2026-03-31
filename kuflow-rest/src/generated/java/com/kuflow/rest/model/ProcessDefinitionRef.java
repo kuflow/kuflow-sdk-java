@@ -50,6 +50,12 @@ public final class ProcessDefinitionRef implements JsonSerializable<ProcessDefin
     @Generated
     private UUID version;
 
+    /*
+     * The code property.
+     */
+    @Generated
+    private String code;
+
     /**
      * Creates an instance of ProcessDefinitionRef class.
      */
@@ -101,6 +107,28 @@ public final class ProcessDefinitionRef implements JsonSerializable<ProcessDefin
     }
 
     /**
+     * Get the code property: The code property.
+     *
+     * @return the code value.
+     */
+    @Generated
+    public String getCode() {
+        return this.code;
+    }
+
+    /**
+     * Set the code property: The code property.
+     *
+     * @param code the code value to set.
+     * @return the ProcessDefinitionRef object itself.
+     */
+    @Generated
+    public ProcessDefinitionRef setCode(String code) {
+        this.code = code;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -109,6 +137,7 @@ public final class ProcessDefinitionRef implements JsonSerializable<ProcessDefin
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", Objects.toString(this.id, null));
         jsonWriter.writeStringField("version", Objects.toString(this.version, null));
+        jsonWriter.writeStringField("code", this.code);
         return jsonWriter.writeEndObject();
     }
 
@@ -135,6 +164,8 @@ public final class ProcessDefinitionRef implements JsonSerializable<ProcessDefin
                     deserializedProcessDefinitionRef.version = reader.getNullable(nonNullReader ->
                         UUID.fromString(nonNullReader.getString())
                     );
+                } else if ("code".equals(fieldName)) {
+                    deserializedProcessDefinitionRef.code = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

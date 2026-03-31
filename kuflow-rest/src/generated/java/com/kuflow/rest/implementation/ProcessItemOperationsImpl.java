@@ -47,8 +47,10 @@ import com.kuflow.rest.model.JsonPatchOperation;
 import com.kuflow.rest.model.ProcessItem;
 import com.kuflow.rest.model.ProcessItemCreateParams;
 import com.kuflow.rest.model.ProcessItemPage;
+import com.kuflow.rest.model.ProcessItemTaskAiAssistanceResponse;
 import com.kuflow.rest.model.ProcessItemTaskAppendLogParams;
 import com.kuflow.rest.model.ProcessItemTaskAssignParams;
+import com.kuflow.rest.model.ProcessItemTaskContextDataUpdateParams;
 import com.kuflow.rest.model.ProcessItemTaskDataUpdateParams;
 import com.kuflow.rest.model.ProcessItemTaskState;
 import com.kuflow.rest.model.ProcessItemType;
@@ -103,6 +105,8 @@ public final class ProcessItemOperationsImpl {
             @QueryParam(value = "type", multipleQueryParams = true) List<String> type,
             @QueryParam(value = "taskState", multipleQueryParams = true) List<String> taskState,
             @QueryParam(value = "processItemDefinitionCode", multipleQueryParams = true) List<String> processItemDefinitionCode,
+            @QueryParam(value = "processDefinitionId", multipleQueryParams = true) List<String> processDefinitionId,
+            @QueryParam(value = "processDefinitionCode", multipleQueryParams = true) List<String> processDefinitionCode,
             @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
             @HeaderParam("Accept") String accept,
             Context context
@@ -120,6 +124,8 @@ public final class ProcessItemOperationsImpl {
             @QueryParam(value = "type", multipleQueryParams = true) List<String> type,
             @QueryParam(value = "taskState", multipleQueryParams = true) List<String> taskState,
             @QueryParam(value = "processItemDefinitionCode", multipleQueryParams = true) List<String> processItemDefinitionCode,
+            @QueryParam(value = "processDefinitionId", multipleQueryParams = true) List<String> processDefinitionId,
+            @QueryParam(value = "processDefinitionCode", multipleQueryParams = true) List<String> processDefinitionCode,
             @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
             @HeaderParam("Accept") String accept,
             Context context
@@ -249,6 +255,26 @@ public final class ProcessItemOperationsImpl {
             Context context
         );
 
+        @Post("/process-items/{id}/task/~actions/ai-assistance")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<ProcessItemTaskAiAssistanceResponse>> generateProcessItemTaskAiAssistance(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/process-items/{id}/task/~actions/ai-assistance")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<ProcessItemTaskAiAssistanceResponse> generateProcessItemTaskAiAssistanceSync(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
         @Put("/process-items/{id}/task/data")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
@@ -289,6 +315,28 @@ public final class ProcessItemOperationsImpl {
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @BodyParam("application/json-patch+json") List<JsonPatchOperation> jsonPatch,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Put("/process-items/{id}/task/context-data")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<ProcessItem>> updateProcessItemTaskContextData(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") ProcessItemTaskContextDataUpdateParams processItemTaskContextDataUpdateParams,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Put("/process-items/{id}/task/context-data")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<ProcessItem> updateProcessItemTaskContextDataSync(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") ProcessItemTaskContextDataUpdateParams processItemTaskContextDataUpdateParams,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -334,6 +382,8 @@ public final class ProcessItemOperationsImpl {
      * @param type Filter by an array of type.
      * @param taskState Filter by an array of task states.
      * @param processItemDefinitionCode Filter by an array of task definition codes.
+     * @param processDefinitionId Filter by process definition ids.
+     * @param processDefinitionCode Filter by process definition codes.
      * @param tenantId Filter by tenantId.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -349,10 +399,24 @@ public final class ProcessItemOperationsImpl {
         List<ProcessItemType> type,
         List<ProcessItemTaskState> taskState,
         List<String> processItemDefinitionCode,
+        List<UUID> processDefinitionId,
+        List<String> processDefinitionCode,
         List<UUID> tenantId
     ) {
         return FluxUtil.withContext(context ->
-            findProcessItemsWithResponseAsync(size, page, sort, processId, type, taskState, processItemDefinitionCode, tenantId, context)
+            findProcessItemsWithResponseAsync(
+                size,
+                page,
+                sort,
+                processId,
+                type,
+                taskState,
+                processItemDefinitionCode,
+                processDefinitionId,
+                processDefinitionCode,
+                tenantId,
+                context
+            )
         );
     }
 
@@ -374,6 +438,8 @@ public final class ProcessItemOperationsImpl {
      * @param type Filter by an array of type.
      * @param taskState Filter by an array of task states.
      * @param processItemDefinitionCode Filter by an array of task definition codes.
+     * @param processDefinitionId Filter by process definition ids.
+     * @param processDefinitionCode Filter by process definition codes.
      * @param tenantId Filter by tenantId.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -390,6 +456,8 @@ public final class ProcessItemOperationsImpl {
         List<ProcessItemType> type,
         List<ProcessItemTaskState> taskState,
         List<String> processItemDefinitionCode,
+        List<UUID> processDefinitionId,
+        List<String> processDefinitionCode,
         List<UUID> tenantId,
         Context context
     ) {
@@ -424,6 +492,18 @@ public final class ProcessItemOperationsImpl {
                   .stream()
                   .map(item -> Objects.toString(item, ""))
                   .collect(Collectors.toList());
+        List<String> processDefinitionIdConverted = (processDefinitionId == null)
+            ? new ArrayList<>()
+            : processDefinitionId
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
+        List<String> processDefinitionCodeConverted = (processDefinitionCode == null)
+            ? new ArrayList<>()
+            : processDefinitionCode
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         List<String> tenantIdConverted = (tenantId == null)
             ? new ArrayList<>()
             : tenantId
@@ -439,6 +519,8 @@ public final class ProcessItemOperationsImpl {
             typeConverted,
             taskStateConverted,
             processItemDefinitionCodeConverted,
+            processDefinitionIdConverted,
+            processDefinitionCodeConverted,
             tenantIdConverted,
             accept,
             context
@@ -463,6 +545,8 @@ public final class ProcessItemOperationsImpl {
      * @param type Filter by an array of type.
      * @param taskState Filter by an array of task states.
      * @param processItemDefinitionCode Filter by an array of task definition codes.
+     * @param processDefinitionId Filter by process definition ids.
+     * @param processDefinitionCode Filter by process definition codes.
      * @param tenantId Filter by tenantId.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -478,11 +562,22 @@ public final class ProcessItemOperationsImpl {
         List<ProcessItemType> type,
         List<ProcessItemTaskState> taskState,
         List<String> processItemDefinitionCode,
+        List<UUID> processDefinitionId,
+        List<String> processDefinitionCode,
         List<UUID> tenantId
     ) {
-        return findProcessItemsWithResponseAsync(size, page, sort, processId, type, taskState, processItemDefinitionCode, tenantId).flatMap(
-            res -> Mono.justOrEmpty(res.getValue())
-        );
+        return findProcessItemsWithResponseAsync(
+            size,
+            page,
+            sort,
+            processId,
+            type,
+            taskState,
+            processItemDefinitionCode,
+            processDefinitionId,
+            processDefinitionCode,
+            tenantId
+        ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -505,10 +600,21 @@ public final class ProcessItemOperationsImpl {
         final List<ProcessItemType> type = null;
         final List<ProcessItemTaskState> taskState = null;
         final List<String> processItemDefinitionCode = null;
+        final List<UUID> processDefinitionId = null;
+        final List<String> processDefinitionCode = null;
         final List<UUID> tenantId = null;
-        return findProcessItemsWithResponseAsync(size, page, sort, processId, type, taskState, processItemDefinitionCode, tenantId).flatMap(
-            res -> Mono.justOrEmpty(res.getValue())
-        );
+        return findProcessItemsWithResponseAsync(
+            size,
+            page,
+            sort,
+            processId,
+            type,
+            taskState,
+            processItemDefinitionCode,
+            processDefinitionId,
+            processDefinitionCode,
+            tenantId
+        ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -529,6 +635,8 @@ public final class ProcessItemOperationsImpl {
      * @param type Filter by an array of type.
      * @param taskState Filter by an array of task states.
      * @param processItemDefinitionCode Filter by an array of task definition codes.
+     * @param processDefinitionId Filter by process definition ids.
+     * @param processDefinitionCode Filter by process definition codes.
      * @param tenantId Filter by tenantId.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -545,6 +653,8 @@ public final class ProcessItemOperationsImpl {
         List<ProcessItemType> type,
         List<ProcessItemTaskState> taskState,
         List<String> processItemDefinitionCode,
+        List<UUID> processDefinitionId,
+        List<String> processDefinitionCode,
         List<UUID> tenantId,
         Context context
     ) {
@@ -556,6 +666,8 @@ public final class ProcessItemOperationsImpl {
             type,
             taskState,
             processItemDefinitionCode,
+            processDefinitionId,
+            processDefinitionCode,
             tenantId,
             context
         ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -579,6 +691,8 @@ public final class ProcessItemOperationsImpl {
      * @param type Filter by an array of type.
      * @param taskState Filter by an array of task states.
      * @param processItemDefinitionCode Filter by an array of task definition codes.
+     * @param processDefinitionId Filter by process definition ids.
+     * @param processDefinitionCode Filter by process definition codes.
      * @param tenantId Filter by tenantId.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -595,6 +709,8 @@ public final class ProcessItemOperationsImpl {
         List<ProcessItemType> type,
         List<ProcessItemTaskState> taskState,
         List<String> processItemDefinitionCode,
+        List<UUID> processDefinitionId,
+        List<String> processDefinitionCode,
         List<UUID> tenantId,
         Context context
     ) {
@@ -629,6 +745,18 @@ public final class ProcessItemOperationsImpl {
                   .stream()
                   .map(item -> Objects.toString(item, ""))
                   .collect(Collectors.toList());
+        List<String> processDefinitionIdConverted = (processDefinitionId == null)
+            ? new ArrayList<>()
+            : processDefinitionId
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
+        List<String> processDefinitionCodeConverted = (processDefinitionCode == null)
+            ? new ArrayList<>()
+            : processDefinitionCode
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         List<String> tenantIdConverted = (tenantId == null)
             ? new ArrayList<>()
             : tenantId
@@ -644,6 +772,8 @@ public final class ProcessItemOperationsImpl {
             typeConverted,
             taskStateConverted,
             processItemDefinitionCodeConverted,
+            processDefinitionIdConverted,
+            processDefinitionCodeConverted,
             tenantIdConverted,
             accept,
             context
@@ -668,6 +798,8 @@ public final class ProcessItemOperationsImpl {
      * @param type Filter by an array of type.
      * @param taskState Filter by an array of task states.
      * @param processItemDefinitionCode Filter by an array of task definition codes.
+     * @param processDefinitionId Filter by process definition ids.
+     * @param processDefinitionCode Filter by process definition codes.
      * @param tenantId Filter by tenantId.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -683,6 +815,8 @@ public final class ProcessItemOperationsImpl {
         List<ProcessItemType> type,
         List<ProcessItemTaskState> taskState,
         List<String> processItemDefinitionCode,
+        List<UUID> processDefinitionId,
+        List<String> processDefinitionCode,
         List<UUID> tenantId
     ) {
         return findProcessItemsWithResponse(
@@ -693,6 +827,8 @@ public final class ProcessItemOperationsImpl {
             type,
             taskState,
             processItemDefinitionCode,
+            processDefinitionId,
+            processDefinitionCode,
             tenantId,
             Context.NONE
         ).getValue();
@@ -718,6 +854,8 @@ public final class ProcessItemOperationsImpl {
         final List<ProcessItemType> type = null;
         final List<ProcessItemTaskState> taskState = null;
         final List<String> processItemDefinitionCode = null;
+        final List<UUID> processDefinitionId = null;
+        final List<String> processDefinitionCode = null;
         final List<UUID> tenantId = null;
         return findProcessItemsWithResponse(
             size,
@@ -727,6 +865,8 @@ public final class ProcessItemOperationsImpl {
             type,
             taskState,
             processItemDefinitionCode,
+            processDefinitionId,
+            processDefinitionCode,
             tenantId,
             Context.NONE
         ).getValue();
@@ -1422,6 +1562,120 @@ public final class ProcessItemOperationsImpl {
     }
 
     /**
+     * Generate and apply AI assistance for a process item task
+     *
+     * Allow to generate AI assistance for a task and apply the results. The AI prompt configuration
+     * comes from the task definition. The response includes the updated process item and AI metadata.
+     *
+     * @param id The resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of an AI assistance action applied to a process item task along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ProcessItemTaskAiAssistanceResponse>> generateProcessItemTaskAiAssistanceWithResponseAsync(UUID id) {
+        return FluxUtil.withContext(context -> generateProcessItemTaskAiAssistanceWithResponseAsync(id, context));
+    }
+
+    /**
+     * Generate and apply AI assistance for a process item task
+     *
+     * Allow to generate AI assistance for a task and apply the results. The AI prompt configuration
+     * comes from the task definition. The response includes the updated process item and AI metadata.
+     *
+     * @param id The resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of an AI assistance action applied to a process item task along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ProcessItemTaskAiAssistanceResponse>> generateProcessItemTaskAiAssistanceWithResponseAsync(
+        UUID id,
+        Context context
+    ) {
+        final String accept = "application/json";
+        return service.generateProcessItemTaskAiAssistance(this.client.getHost(), id, accept, context);
+    }
+
+    /**
+     * Generate and apply AI assistance for a process item task
+     *
+     * Allow to generate AI assistance for a task and apply the results. The AI prompt configuration
+     * comes from the task definition. The response includes the updated process item and AI metadata.
+     *
+     * @param id The resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of an AI assistance action applied to a process item task on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ProcessItemTaskAiAssistanceResponse> generateProcessItemTaskAiAssistanceAsync(UUID id) {
+        return generateProcessItemTaskAiAssistanceWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Generate and apply AI assistance for a process item task
+     *
+     * Allow to generate AI assistance for a task and apply the results. The AI prompt configuration
+     * comes from the task definition. The response includes the updated process item and AI metadata.
+     *
+     * @param id The resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of an AI assistance action applied to a process item task on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ProcessItemTaskAiAssistanceResponse> generateProcessItemTaskAiAssistanceAsync(UUID id, Context context) {
+        return generateProcessItemTaskAiAssistanceWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Generate and apply AI assistance for a process item task
+     *
+     * Allow to generate AI assistance for a task and apply the results. The AI prompt configuration
+     * comes from the task definition. The response includes the updated process item and AI metadata.
+     *
+     * @param id The resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of an AI assistance action applied to a process item task along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ProcessItemTaskAiAssistanceResponse> generateProcessItemTaskAiAssistanceWithResponse(UUID id, Context context) {
+        final String accept = "application/json";
+        return service.generateProcessItemTaskAiAssistanceSync(this.client.getHost(), id, accept, context);
+    }
+
+    /**
+     * Generate and apply AI assistance for a process item task
+     *
+     * Allow to generate AI assistance for a task and apply the results. The AI prompt configuration
+     * comes from the task definition. The response includes the updated process item and AI metadata.
+     *
+     * @param id The resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of an AI assistance action applied to a process item task.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProcessItemTaskAiAssistanceResponse generateProcessItemTaskAiAssistance(UUID id) {
+        return generateProcessItemTaskAiAssistanceWithResponse(id, Context.NONE).getValue();
+    }
+
+    /**
      * Save JSON data
      *
      * Allow to save a JSON data validating that the data follow the related schema. If the data is invalid, then
@@ -1668,6 +1922,158 @@ public final class ProcessItemOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProcessItem patchProcessItemTaskData(UUID id, List<JsonPatchOperation> jsonPatch) {
         return patchProcessItemTaskDataWithResponse(id, jsonPatch, Context.NONE).getValue();
+    }
+
+    /**
+     * Save JSON context data
+     *
+     * Allow to save a JSON context data validating that the data follow the related schema. If the data is invalid,
+     * then
+     * the json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param processItemTaskContextDataUpdateParams Params used to update the JSON context data value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ProcessItem>> updateProcessItemTaskContextDataWithResponseAsync(
+        UUID id,
+        ProcessItemTaskContextDataUpdateParams processItemTaskContextDataUpdateParams
+    ) {
+        return FluxUtil.withContext(context ->
+            updateProcessItemTaskContextDataWithResponseAsync(id, processItemTaskContextDataUpdateParams, context)
+        );
+    }
+
+    /**
+     * Save JSON context data
+     *
+     * Allow to save a JSON context data validating that the data follow the related schema. If the data is invalid,
+     * then
+     * the json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param processItemTaskContextDataUpdateParams Params used to update the JSON context data value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ProcessItem>> updateProcessItemTaskContextDataWithResponseAsync(
+        UUID id,
+        ProcessItemTaskContextDataUpdateParams processItemTaskContextDataUpdateParams,
+        Context context
+    ) {
+        final String accept = "application/json";
+        return service.updateProcessItemTaskContextData(this.client.getHost(), id, processItemTaskContextDataUpdateParams, accept, context);
+    }
+
+    /**
+     * Save JSON context data
+     *
+     * Allow to save a JSON context data validating that the data follow the related schema. If the data is invalid,
+     * then
+     * the json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param processItemTaskContextDataUpdateParams Params used to update the JSON context data value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ProcessItem> updateProcessItemTaskContextDataAsync(
+        UUID id,
+        ProcessItemTaskContextDataUpdateParams processItemTaskContextDataUpdateParams
+    ) {
+        return updateProcessItemTaskContextDataWithResponseAsync(id, processItemTaskContextDataUpdateParams).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
+        );
+    }
+
+    /**
+     * Save JSON context data
+     *
+     * Allow to save a JSON context data validating that the data follow the related schema. If the data is invalid,
+     * then
+     * the json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param processItemTaskContextDataUpdateParams Params used to update the JSON context data value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ProcessItem> updateProcessItemTaskContextDataAsync(
+        UUID id,
+        ProcessItemTaskContextDataUpdateParams processItemTaskContextDataUpdateParams,
+        Context context
+    ) {
+        return updateProcessItemTaskContextDataWithResponseAsync(id, processItemTaskContextDataUpdateParams, context).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
+        );
+    }
+
+    /**
+     * Save JSON context data
+     *
+     * Allow to save a JSON context data validating that the data follow the related schema. If the data is invalid,
+     * then
+     * the json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param processItemTaskContextDataUpdateParams Params used to update the JSON context data value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ProcessItem> updateProcessItemTaskContextDataWithResponse(
+        UUID id,
+        ProcessItemTaskContextDataUpdateParams processItemTaskContextDataUpdateParams,
+        Context context
+    ) {
+        final String accept = "application/json";
+        return service.updateProcessItemTaskContextDataSync(
+            this.client.getHost(),
+            id,
+            processItemTaskContextDataUpdateParams,
+            accept,
+            context
+        );
+    }
+
+    /**
+     * Save JSON context data
+     *
+     * Allow to save a JSON context data validating that the data follow the related schema. If the data is invalid,
+     * then
+     * the json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param processItemTaskContextDataUpdateParams Params used to update the JSON context data value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProcessItem updateProcessItemTaskContextData(
+        UUID id,
+        ProcessItemTaskContextDataUpdateParams processItemTaskContextDataUpdateParams
+    ) {
+        return updateProcessItemTaskContextDataWithResponse(id, processItemTaskContextDataUpdateParams, Context.NONE).getValue();
     }
 
     /**

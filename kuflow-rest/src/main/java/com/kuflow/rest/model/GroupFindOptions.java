@@ -63,6 +63,11 @@ public class GroupFindOptions {
      */
     private final List<UUID> groupIds = new LinkedList<>();
 
+    /**
+     * Filter by group codes.
+     */
+    private final List<String> groupCodes = new LinkedList<>();
+
     public Integer getSize() {
         return this.size;
     }
@@ -194,6 +199,41 @@ public class GroupFindOptions {
     public GroupFindOptions removeGroupId(UUID groupId) {
         Objects.requireNonNull(groupId, "'groupId' is required");
         this.groupIds.remove(groupId);
+
+        return this;
+    }
+
+    public List<String> getGroupCodes() {
+        return unmodifiableList(this.groupCodes);
+    }
+
+    public GroupFindOptions setGroupCodes(List<String> groupCodes) {
+        this.groupCodes.clear();
+        if (groupCodes != null) {
+            this.groupCodes.addAll(groupCodes);
+        }
+
+        return this;
+    }
+
+    public GroupFindOptions setGroupCode(String groupCode) {
+        Objects.requireNonNull(groupCode, "'groupCode' is required");
+
+        return this.setGroupCodes(List.of(groupCode));
+    }
+
+    public GroupFindOptions addGroupCode(String groupCode) {
+        Objects.requireNonNull(groupCode, "'groupCode' is required");
+        if (!this.groupCodes.contains(groupCode)) {
+            this.groupCodes.add(groupCode);
+        }
+
+        return this;
+    }
+
+    public GroupFindOptions removeGroupCode(String groupCode) {
+        Objects.requireNonNull(groupCode, "'groupCode' is required");
+        this.groupCodes.remove(groupCode);
 
         return this;
     }

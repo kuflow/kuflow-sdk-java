@@ -90,6 +90,7 @@ public final class PrincipalOperationsImpl {
             @QueryParam(value = "sort", multipleQueryParams = true) List<String> sort,
             @QueryParam("type") PrincipalType type,
             @QueryParam(value = "groupId", multipleQueryParams = true) List<String> groupId,
+            @QueryParam(value = "groupCode", multipleQueryParams = true) List<String> groupCode,
             @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
             @HeaderParam("Accept") String accept,
             Context context
@@ -105,6 +106,7 @@ public final class PrincipalOperationsImpl {
             @QueryParam(value = "sort", multipleQueryParams = true) List<String> sort,
             @QueryParam("type") PrincipalType type,
             @QueryParam(value = "groupId", multipleQueryParams = true) List<String> groupId,
+            @QueryParam(value = "groupCode", multipleQueryParams = true) List<String> groupCode,
             @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
             @HeaderParam("Accept") String accept,
             Context context
@@ -147,6 +149,7 @@ public final class PrincipalOperationsImpl {
      * Please refer to the method description for supported properties.
      * @param type Filter principals by type.
      * @param groupId Filter by group ids.
+     * @param groupCode Filter by group codes.
      * @param tenantId Filter by tenantId.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -160,9 +163,12 @@ public final class PrincipalOperationsImpl {
         List<String> sort,
         PrincipalType type,
         List<UUID> groupId,
+        List<String> groupCode,
         List<UUID> tenantId
     ) {
-        return FluxUtil.withContext(context -> findPrincipalsWithResponseAsync(size, page, sort, type, groupId, tenantId, context));
+        return FluxUtil.withContext(context ->
+            findPrincipalsWithResponseAsync(size, page, sort, type, groupId, groupCode, tenantId, context)
+        );
     }
 
     /**
@@ -181,6 +187,7 @@ public final class PrincipalOperationsImpl {
      * Please refer to the method description for supported properties.
      * @param type Filter principals by type.
      * @param groupId Filter by group ids.
+     * @param groupCode Filter by group codes.
      * @param tenantId Filter by tenantId.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -195,6 +202,7 @@ public final class PrincipalOperationsImpl {
         List<String> sort,
         PrincipalType type,
         List<UUID> groupId,
+        List<String> groupCode,
         List<UUID> tenantId,
         Context context
     ) {
@@ -211,6 +219,12 @@ public final class PrincipalOperationsImpl {
                   .stream()
                   .map(item -> Objects.toString(item, ""))
                   .collect(Collectors.toList());
+        List<String> groupCodeConverted = (groupCode == null)
+            ? new ArrayList<>()
+            : groupCode
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         List<String> tenantIdConverted = (tenantId == null)
             ? new ArrayList<>()
             : tenantId
@@ -224,6 +238,7 @@ public final class PrincipalOperationsImpl {
             sortConverted,
             type,
             groupIdConverted,
+            groupCodeConverted,
             tenantIdConverted,
             accept,
             context
@@ -246,6 +261,7 @@ public final class PrincipalOperationsImpl {
      * Please refer to the method description for supported properties.
      * @param type Filter principals by type.
      * @param groupId Filter by group ids.
+     * @param groupCode Filter by group codes.
      * @param tenantId Filter by tenantId.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -259,9 +275,12 @@ public final class PrincipalOperationsImpl {
         List<String> sort,
         PrincipalType type,
         List<UUID> groupId,
+        List<String> groupCode,
         List<UUID> tenantId
     ) {
-        return findPrincipalsWithResponseAsync(size, page, sort, type, groupId, tenantId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return findPrincipalsWithResponseAsync(size, page, sort, type, groupId, groupCode, tenantId).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
+        );
     }
 
     /**
@@ -282,44 +301,9 @@ public final class PrincipalOperationsImpl {
         final List<String> sort = null;
         final PrincipalType type = null;
         final List<UUID> groupId = null;
+        final List<String> groupCode = null;
         final List<UUID> tenantId = null;
-        return findPrincipalsWithResponseAsync(size, page, sort, type, groupId, tenantId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Find all accessible Principals
-     *
-     * List all the Principals that have been created and the used credentials has access.
-     *
-     * Available sort query values: id, name.
-     *
-     * @param size The number of records returned within a single API call.
-     * @param page The page number of the current page in the returned records, 0 is the first page.
-     * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-     *
-     * Default sort order is ascending. Multiple sort criteria are supported.
-     *
-     * Please refer to the method description for supported properties.
-     * @param type Filter principals by type.
-     * @param groupId Filter by group ids.
-     * @param tenantId Filter by tenantId.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrincipalPage> findPrincipalsAsync(
-        Integer size,
-        Integer page,
-        List<String> sort,
-        PrincipalType type,
-        List<UUID> groupId,
-        List<UUID> tenantId,
-        Context context
-    ) {
-        return findPrincipalsWithResponseAsync(size, page, sort, type, groupId, tenantId, context).flatMap(res ->
+        return findPrincipalsWithResponseAsync(size, page, sort, type, groupId, groupCode, tenantId).flatMap(res ->
             Mono.justOrEmpty(res.getValue())
         );
     }
@@ -340,6 +324,47 @@ public final class PrincipalOperationsImpl {
      * Please refer to the method description for supported properties.
      * @param type Filter principals by type.
      * @param groupId Filter by group ids.
+     * @param groupCode Filter by group codes.
+     * @param tenantId Filter by tenantId.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PrincipalPage> findPrincipalsAsync(
+        Integer size,
+        Integer page,
+        List<String> sort,
+        PrincipalType type,
+        List<UUID> groupId,
+        List<String> groupCode,
+        List<UUID> tenantId,
+        Context context
+    ) {
+        return findPrincipalsWithResponseAsync(size, page, sort, type, groupId, groupCode, tenantId, context).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
+        );
+    }
+
+    /**
+     * Find all accessible Principals
+     *
+     * List all the Principals that have been created and the used credentials has access.
+     *
+     * Available sort query values: id, name.
+     *
+     * @param size The number of records returned within a single API call.
+     * @param page The page number of the current page in the returned records, 0 is the first page.
+     * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
+     *
+     * Default sort order is ascending. Multiple sort criteria are supported.
+     *
+     * Please refer to the method description for supported properties.
+     * @param type Filter principals by type.
+     * @param groupId Filter by group ids.
+     * @param groupCode Filter by group codes.
      * @param tenantId Filter by tenantId.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -354,6 +379,7 @@ public final class PrincipalOperationsImpl {
         List<String> sort,
         PrincipalType type,
         List<UUID> groupId,
+        List<String> groupCode,
         List<UUID> tenantId,
         Context context
     ) {
@@ -370,6 +396,12 @@ public final class PrincipalOperationsImpl {
                   .stream()
                   .map(item -> Objects.toString(item, ""))
                   .collect(Collectors.toList());
+        List<String> groupCodeConverted = (groupCode == null)
+            ? new ArrayList<>()
+            : groupCode
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         List<String> tenantIdConverted = (tenantId == null)
             ? new ArrayList<>()
             : tenantId
@@ -383,6 +415,7 @@ public final class PrincipalOperationsImpl {
             sortConverted,
             type,
             groupIdConverted,
+            groupCodeConverted,
             tenantIdConverted,
             accept,
             context
@@ -405,6 +438,7 @@ public final class PrincipalOperationsImpl {
      * Please refer to the method description for supported properties.
      * @param type Filter principals by type.
      * @param groupId Filter by group ids.
+     * @param groupCode Filter by group codes.
      * @param tenantId Filter by tenantId.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -418,9 +452,10 @@ public final class PrincipalOperationsImpl {
         List<String> sort,
         PrincipalType type,
         List<UUID> groupId,
+        List<String> groupCode,
         List<UUID> tenantId
     ) {
-        return findPrincipalsWithResponse(size, page, sort, type, groupId, tenantId, Context.NONE).getValue();
+        return findPrincipalsWithResponse(size, page, sort, type, groupId, groupCode, tenantId, Context.NONE).getValue();
     }
 
     /**
@@ -441,8 +476,9 @@ public final class PrincipalOperationsImpl {
         final List<String> sort = null;
         final PrincipalType type = null;
         final List<UUID> groupId = null;
+        final List<String> groupCode = null;
         final List<UUID> tenantId = null;
-        return findPrincipalsWithResponse(size, page, sort, type, groupId, tenantId, Context.NONE).getValue();
+        return findPrincipalsWithResponse(size, page, sort, type, groupId, groupCode, tenantId, Context.NONE).getValue();
     }
 
     /**

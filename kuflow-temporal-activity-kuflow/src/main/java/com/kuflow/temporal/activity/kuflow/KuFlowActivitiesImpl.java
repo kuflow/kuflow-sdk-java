@@ -23,6 +23,8 @@
 package com.kuflow.temporal.activity.kuflow;
 
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesFailure.createApplicationFailure;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateBusinessArtifactCreateRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateBusinessArtifactDeleteRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateBusinessArtifactPatchRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateBusinessArtifactRetrieveRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateBusinessArtifactUpdateRequest;
@@ -33,8 +35,10 @@ import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidatio
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessInitiatorChangeRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemCreateRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemRetrieve;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemTaskAiAssistanceRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemTaskAssignRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemTaskCompleteRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemTaskContextDataUpdateRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemTaskDataPatchRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemTaskDataUpdateRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessItemTaskLoggAppendRequest;
@@ -46,7 +50,10 @@ import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidatio
 
 import com.kuflow.rest.KuFlowRestClient;
 import com.kuflow.rest.model.BusinessArtifact;
+import com.kuflow.rest.model.BusinessArtifactCreateParams;
 import com.kuflow.rest.model.BusinessArtifactDataUpdateParams;
+import com.kuflow.rest.model.BusinessArtifactFindOptions;
+import com.kuflow.rest.model.BusinessArtifactPage;
 import com.kuflow.rest.model.Principal;
 import com.kuflow.rest.model.Process;
 import com.kuflow.rest.model.ProcessChangeInitiatorParams;
@@ -56,8 +63,10 @@ import com.kuflow.rest.model.ProcessItem;
 import com.kuflow.rest.model.ProcessItemCreateParams;
 import com.kuflow.rest.model.ProcessItemFindOptions;
 import com.kuflow.rest.model.ProcessItemPage;
+import com.kuflow.rest.model.ProcessItemTaskAiAssistanceResponse;
 import com.kuflow.rest.model.ProcessItemTaskAppendLogParams;
 import com.kuflow.rest.model.ProcessItemTaskAssignParams;
+import com.kuflow.rest.model.ProcessItemTaskContextDataUpdateParams;
 import com.kuflow.rest.model.ProcessItemTaskDataUpdateParams;
 import com.kuflow.rest.model.ProcessMetadataUpdateParams;
 import com.kuflow.rest.model.ProcessPage;
@@ -67,6 +76,12 @@ import com.kuflow.rest.operation.PrincipalOperations;
 import com.kuflow.rest.operation.ProcessItemOperations;
 import com.kuflow.rest.operation.ProcessOperations;
 import com.kuflow.rest.operation.TenantUserOperations;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateResponse;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactDeleteRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactDeleteResponse;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFindRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFindResponse;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactPatchRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactPatchResponse;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactRetrieveRequest;
@@ -89,12 +104,16 @@ import com.kuflow.temporal.activity.kuflow.model.ProcessItemFindRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemFindResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemRetrieveRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemRetrieveResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAiAssistanceGenerateResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAiAssistanceRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAssignRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAssignResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskClaimRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskClaimResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskCompleteRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskCompleteResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskContextDataUpdateRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskContextDataUpdateResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskDataPatchRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskDataPatchResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskDataUpdateRequest;
@@ -174,7 +193,9 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
             ProcessFindOptions options = new ProcessFindOptions()
                 .setPage(request.getPage())
                 .setSize(request.getSize())
-                .setSorts(request.getSorts());
+                .setSorts(request.getSorts())
+                .setProcessDefinitionIds(request.getProcessDefinitionIds())
+                .setProcessDefinitionCodes(request.getProcessDefinitionCodes());
 
             ProcessPage processes = this.processOperations.findProcesses(options);
 
@@ -326,7 +347,9 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
                 .setProcessIds(request.getProcessIds())
                 .setTypes(request.getTypes())
                 .setTaskStates(request.getTaskStates())
-                .setProcessItemDefinitionCode(request.getProcessItemDefinitionCodes());
+                .setProcessItemDefinitionCode(request.getProcessItemDefinitionCodes())
+                .setProcessDefinitionIds(request.getProcessDefinitionIds())
+                .setProcessDefinitionCodes(request.getProcessDefinitionCodes());
 
             ProcessItemPage processItems = this.processItemOperations.findProcessItems(options);
 
@@ -459,6 +482,27 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
     @Nonnull
     @Override
+    public ProcessItemTaskContextDataUpdateResponse updateProcessItemTaskContextData(
+        @Nonnull ProcessItemTaskContextDataUpdateRequest request
+    ) {
+        try {
+            validateProcessItemTaskContextDataUpdateRequest(request);
+
+            ProcessItemTaskContextDataUpdateParams params = new ProcessItemTaskContextDataUpdateParams().setData(request.getData());
+
+            ProcessItem processItem = this.processItemOperations.updateProcessItemTaskContextData(request.getProcessItemId(), params);
+
+            ProcessItemTaskContextDataUpdateResponse response = new ProcessItemTaskContextDataUpdateResponse();
+            response.setProcessItem(processItem);
+
+            return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Nonnull
+    @Override
     public ProcessItemTaskDataPatchResponse patchProcessItemTaskData(@Nonnull ProcessItemTaskDataPatchRequest request) {
         try {
             validateProcessItemTaskDataPatchRequest(request);
@@ -500,6 +544,75 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
     @Nonnull
     @Override
+    public ProcessItemTaskAiAssistanceGenerateResponse generateProcessItemTaskAiAssistance(
+        @Nonnull ProcessItemTaskAiAssistanceRequest request
+    ) {
+        try {
+            validateProcessItemTaskAiAssistanceRequest(request);
+
+            ProcessItemTaskAiAssistanceResponse aiResponse = this.processItemOperations.generateProcessItemTaskAiAssistance(
+                request.getProcessItemId()
+            );
+
+            ProcessItemTaskAiAssistanceGenerateResponse response = new ProcessItemTaskAiAssistanceGenerateResponse();
+            response.setProcessItemTaskAiAssistanceResponse(aiResponse);
+
+            return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Nonnull
+    @Override
+    public BusinessArtifactFindResponse findBusinessArtifacts(BusinessArtifactFindRequest request) {
+        try {
+            BusinessArtifactFindOptions options = new BusinessArtifactFindOptions()
+                .setSize(request.getSize())
+                .setPage(request.getPage())
+                .setSorts(request.getSorts())
+                .setTenantIds(request.getTenantIds())
+                .setBusinessArtifactDefinitionIds(request.getBusinessArtifactDefinitionIds())
+                .setBusinessArtifactDefinitionCodes(request.getBusinessArtifactDefinitionCodes())
+                .setValues(request.getValues());
+
+            BusinessArtifactPage businessArtifacts = this.businessArtifactOperations.findBusinessArtifacts(options);
+
+            BusinessArtifactFindResponse response = new BusinessArtifactFindResponse();
+            response.setBusinessArtifacts(businessArtifacts);
+
+            return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Nonnull
+    @Override
+    public BusinessArtifactCreateResponse createBusinessArtifact(@Nonnull BusinessArtifactCreateRequest request) {
+        try {
+            validateBusinessArtifactCreateRequest(request);
+
+            BusinessArtifactCreateParams params = new BusinessArtifactCreateParams()
+                .setId(request.getId())
+                .setBusinessArtifactDefinitionId(request.getBusinessArtifactDefinitionId())
+                .setTenantId(request.getTenantId())
+                .setBusinessArtifactDefinitionCode(request.getBusinessArtifactDefinitionCode())
+                .setData(request.getData());
+
+            BusinessArtifact businessArtifact = this.businessArtifactOperations.createBusinessArtifact(params);
+
+            BusinessArtifactCreateResponse response = new BusinessArtifactCreateResponse();
+            response.setBusinessArtifact(businessArtifact);
+
+            return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Nonnull
+    @Override
     public BusinessArtifactRetrieveResponse retrieveBusinessArtifact(@Nonnull BusinessArtifactRetrieveRequest request) {
         try {
             validateBusinessArtifactRetrieveRequest(request);
@@ -510,6 +623,20 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
             response.setBusinessArtifact(businessArtifact);
 
             return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Nonnull
+    @Override
+    public BusinessArtifactDeleteResponse deleteBusinessArtifact(@Nonnull BusinessArtifactDeleteRequest request) {
+        try {
+            validateBusinessArtifactDeleteRequest(request);
+
+            this.businessArtifactOperations.deleteBusinessArtifact(request.getBusinessArtifactId());
+
+            return new BusinessArtifactDeleteResponse();
         } catch (Exception e) {
             throw createApplicationFailure(e);
         }

@@ -33,7 +33,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * The ProcessCreateParams model.
+ * Params to create a Process. Either `processDefinitionId` or
+ * `processDefinitionCode` (with `tenantId`) must be provided.
  */
 @Fluent
 public final class ProcessCreateParams implements JsonSerializable<ProcessCreateParams> {
@@ -49,6 +50,18 @@ public final class ProcessCreateParams implements JsonSerializable<ProcessCreate
      */
     @Generated
     private UUID processDefinitionId;
+
+    /*
+     * The tenantId property.
+     */
+    @Generated
+    private UUID tenantId;
+
+    /*
+     * The processDefinitionCode property.
+     */
+    @Generated
+    private String processDefinitionCode;
 
     /*
      * Json value.
@@ -115,6 +128,50 @@ public final class ProcessCreateParams implements JsonSerializable<ProcessCreate
     @Generated
     public ProcessCreateParams setProcessDefinitionId(UUID processDefinitionId) {
         this.processDefinitionId = processDefinitionId;
+        return this;
+    }
+
+    /**
+     * Get the tenantId property: The tenantId property.
+     *
+     * @return the tenantId value.
+     */
+    @Generated
+    public UUID getTenantId() {
+        return this.tenantId;
+    }
+
+    /**
+     * Set the tenantId property: The tenantId property.
+     *
+     * @param tenantId the tenantId value to set.
+     * @return the ProcessCreateParams object itself.
+     */
+    @Generated
+    public ProcessCreateParams setTenantId(UUID tenantId) {
+        this.tenantId = tenantId;
+        return this;
+    }
+
+    /**
+     * Get the processDefinitionCode property: The processDefinitionCode property.
+     *
+     * @return the processDefinitionCode value.
+     */
+    @Generated
+    public String getProcessDefinitionCode() {
+        return this.processDefinitionCode;
+    }
+
+    /**
+     * Set the processDefinitionCode property: The processDefinitionCode property.
+     *
+     * @param processDefinitionCode the processDefinitionCode value to set.
+     * @return the ProcessCreateParams object itself.
+     */
+    @Generated
+    public ProcessCreateParams setProcessDefinitionCode(String processDefinitionCode) {
+        this.processDefinitionCode = processDefinitionCode;
         return this;
     }
 
@@ -191,8 +248,10 @@ public final class ProcessCreateParams implements JsonSerializable<ProcessCreate
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("processDefinitionId", Objects.toString(this.processDefinitionId, null));
         jsonWriter.writeStringField("id", Objects.toString(this.id, null));
+        jsonWriter.writeStringField("processDefinitionId", Objects.toString(this.processDefinitionId, null));
+        jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
+        jsonWriter.writeStringField("processDefinitionCode", this.processDefinitionCode);
         jsonWriter.writeJsonField("metadata", this.metadata);
         jsonWriter.writeStringField("initiatorId", Objects.toString(this.initiatorId, null));
         jsonWriter.writeStringField("initiatorEmail", this.initiatorEmail);
@@ -205,7 +264,6 @@ public final class ProcessCreateParams implements JsonSerializable<ProcessCreate
      * @param jsonReader The JsonReader being read.
      * @return An instance of ProcessCreateParams if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ProcessCreateParams.
      */
     @Generated
@@ -216,12 +274,18 @@ public final class ProcessCreateParams implements JsonSerializable<ProcessCreate
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("processDefinitionId".equals(fieldName)) {
+                if ("id".equals(fieldName)) {
+                    deserializedProcessCreateParams.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("processDefinitionId".equals(fieldName)) {
                     deserializedProcessCreateParams.processDefinitionId = reader.getNullable(nonNullReader ->
                         UUID.fromString(nonNullReader.getString())
                     );
-                } else if ("id".equals(fieldName)) {
-                    deserializedProcessCreateParams.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedProcessCreateParams.tenantId = reader.getNullable(nonNullReader ->
+                        UUID.fromString(nonNullReader.getString())
+                    );
+                } else if ("processDefinitionCode".equals(fieldName)) {
+                    deserializedProcessCreateParams.processDefinitionCode = reader.getString();
                 } else if ("metadata".equals(fieldName)) {
                     deserializedProcessCreateParams.metadata = JsonValue.fromJson(reader);
                 } else if ("initiatorId".equals(fieldName)) {

@@ -50,6 +50,12 @@ public final class ProcessItemTask implements JsonSerializable<ProcessItemTask> 
     private JsonValue data;
 
     /*
+     * Json value.
+     */
+    @Generated
+    private JsonValue contextData;
+
+    /*
      * The logs property.
      */
     @Generated
@@ -106,6 +112,28 @@ public final class ProcessItemTask implements JsonSerializable<ProcessItemTask> 
     }
 
     /**
+     * Get the contextData property: Json value.
+     *
+     * @return the contextData value.
+     */
+    @Generated
+    public JsonValue getContextData() {
+        return this.contextData;
+    }
+
+    /**
+     * Set the contextData property: Json value.
+     *
+     * @param contextData the contextData value to set.
+     * @return the ProcessItemTask object itself.
+     */
+    @Generated
+    public ProcessItemTask setContextData(JsonValue contextData) {
+        this.contextData = contextData;
+        return this;
+    }
+
+    /**
      * Get the logs property: The logs property.
      *
      * @return the logs value.
@@ -136,6 +164,7 @@ public final class ProcessItemTask implements JsonSerializable<ProcessItemTask> 
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
         jsonWriter.writeJsonField("data", this.data);
+        jsonWriter.writeJsonField("contextData", this.contextData);
         jsonWriter.writeArrayField("logs", this.logs, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -161,6 +190,8 @@ public final class ProcessItemTask implements JsonSerializable<ProcessItemTask> 
                     deserializedProcessItemTask.state = ProcessItemTaskState.fromString(reader.getString());
                 } else if ("data".equals(fieldName)) {
                     deserializedProcessItemTask.data = JsonValue.fromJson(reader);
+                } else if ("contextData".equals(fieldName)) {
+                    deserializedProcessItemTask.contextData = JsonValue.fromJson(reader);
                 } else if ("logs".equals(fieldName)) {
                     List<ProcessItemTaskLog> logs = reader.readArray(reader1 -> ProcessItemTaskLog.fromJson(reader1));
                     deserializedProcessItemTask.logs = logs;

@@ -22,6 +22,12 @@
  */
 package com.kuflow.temporal.activity.kuflow;
 
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateResponse;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactDeleteRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactDeleteResponse;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFindRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFindResponse;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactPatchRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactPatchResponse;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactRetrieveRequest;
@@ -44,12 +50,16 @@ import com.kuflow.temporal.activity.kuflow.model.ProcessItemFindRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemFindResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemRetrieveRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemRetrieveResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAiAssistanceGenerateResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAiAssistanceRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAssignRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAssignResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskClaimRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskClaimResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskCompleteRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskCompleteResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskContextDataUpdateRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskContextDataUpdateResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskDataPatchRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskDataPatchResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskDataUpdateRequest;
@@ -254,6 +264,19 @@ public interface KuFlowActivities {
     ProcessItemTaskDataUpdateResponse updateProcessItemTaskData(@Nonnull ProcessItemTaskDataUpdateRequest request);
 
     /**
+     * Save JSON context data
+     *
+     * <p>Allow to save a JSON context data validating that the data follow the related schema. If the data is invalid, then the
+     * json form is marked as invalid.
+     *
+     * @param request must not be {@literal null}.
+     * @return process item with task updated
+     */
+    @ActivityMethod
+    @Nonnull
+    ProcessItemTaskContextDataUpdateResponse updateProcessItemTaskContextData(@Nonnull ProcessItemTaskContextDataUpdateRequest request);
+
+    /**
      * Patch JSON data
      *
      * <p>Allow to save a JSON data validating that the data follow the related schema. If the data is invalid, then the
@@ -279,6 +302,41 @@ public interface KuFlowActivities {
     ProcessItemTaskLoggAppendResponse appendProcessItemTaskLog(@Nonnull ProcessItemTaskLoggAppendRequest request);
 
     /**
+     * Generate AI assistance for a Process Item Task.
+     *
+     * <p>Allow to generate AI assistance for a task and apply the results.
+     * The AI prompt configuration comes from the task definition.
+     *
+     * @param request must not be {@literal null}.
+     * @return AI assistance response with updated process item and AI metadata
+     */
+    @ActivityMethod
+    @Nonnull
+    ProcessItemTaskAiAssistanceGenerateResponse generateProcessItemTaskAiAssistance(@Nonnull ProcessItemTaskAiAssistanceRequest request);
+
+    /**
+     * Find all accessible Business Artifacts.
+     *
+     * @param request must not be {@literal null}.
+     * @return business artifacts found paginated
+     */
+    @ActivityMethod
+    @Nonnull
+    BusinessArtifactFindResponse findBusinessArtifacts(BusinessArtifactFindRequest request);
+
+    /**
+     * Create a Business Artifact.
+     *
+     * <p>If you want the method to be idempotent, please specify the `id` field in the request body.
+     *
+     * @param request must not be {@literal null}.
+     * @return business artifact created
+     */
+    @ActivityMethod
+    @Nonnull
+    BusinessArtifactCreateResponse createBusinessArtifact(@Nonnull BusinessArtifactCreateRequest request);
+
+    /**
      * Retrieve a Business Artifact.
      *
      * @param request must not be {@literal null}.
@@ -287,6 +345,16 @@ public interface KuFlowActivities {
     @ActivityMethod
     @Nonnull
     BusinessArtifactRetrieveResponse retrieveBusinessArtifact(@Nonnull BusinessArtifactRetrieveRequest request);
+
+    /**
+     * Delete a Business Artifact.
+     *
+     * @param request must not be {@literal null}.
+     * @return empty response
+     */
+    @ActivityMethod
+    @Nonnull
+    BusinessArtifactDeleteResponse deleteBusinessArtifact(@Nonnull BusinessArtifactDeleteRequest request);
 
     /**
      * Update a Business Artifact data.

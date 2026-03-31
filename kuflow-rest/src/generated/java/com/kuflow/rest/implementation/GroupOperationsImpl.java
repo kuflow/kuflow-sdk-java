@@ -88,6 +88,7 @@ public final class GroupOperationsImpl {
             @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
             @QueryParam("principalId") UUID principalId,
             @QueryParam(value = "groupId", multipleQueryParams = true) List<String> groupId,
+            @QueryParam(value = "groupCode", multipleQueryParams = true) List<String> groupCode,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -103,6 +104,7 @@ public final class GroupOperationsImpl {
             @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
             @QueryParam("principalId") UUID principalId,
             @QueryParam(value = "groupId", multipleQueryParams = true) List<String> groupId,
+            @QueryParam(value = "groupCode", multipleQueryParams = true) List<String> groupCode,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -125,6 +127,7 @@ public final class GroupOperationsImpl {
      * @param tenantId Filter by tenantId.
      * @param principalId Filter by principalId.
      * @param groupId Filter by group ids.
+     * @param groupCode Filter by group codes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -137,9 +140,12 @@ public final class GroupOperationsImpl {
         List<String> sort,
         List<UUID> tenantId,
         UUID principalId,
-        List<UUID> groupId
+        List<UUID> groupId,
+        List<String> groupCode
     ) {
-        return FluxUtil.withContext(context -> findGroupsWithResponseAsync(size, page, sort, tenantId, principalId, groupId, context));
+        return FluxUtil.withContext(context ->
+            findGroupsWithResponseAsync(size, page, sort, tenantId, principalId, groupId, groupCode, context)
+        );
     }
 
     /**
@@ -159,6 +165,7 @@ public final class GroupOperationsImpl {
      * @param tenantId Filter by tenantId.
      * @param principalId Filter by principalId.
      * @param groupId Filter by group ids.
+     * @param groupCode Filter by group codes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -173,6 +180,7 @@ public final class GroupOperationsImpl {
         List<UUID> tenantId,
         UUID principalId,
         List<UUID> groupId,
+        List<String> groupCode,
         Context context
     ) {
         final String accept = "application/json";
@@ -194,6 +202,12 @@ public final class GroupOperationsImpl {
                   .stream()
                   .map(item -> Objects.toString(item, ""))
                   .collect(Collectors.toList());
+        List<String> groupCodeConverted = (groupCode == null)
+            ? new ArrayList<>()
+            : groupCode
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         return service.findGroups(
             this.client.getHost(),
             size,
@@ -202,6 +216,7 @@ public final class GroupOperationsImpl {
             tenantIdConverted,
             principalId,
             groupIdConverted,
+            groupCodeConverted,
             accept,
             context
         );
@@ -224,6 +239,7 @@ public final class GroupOperationsImpl {
      * @param tenantId Filter by tenantId.
      * @param principalId Filter by principalId.
      * @param groupId Filter by group ids.
+     * @param groupCode Filter by group codes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -236,9 +252,10 @@ public final class GroupOperationsImpl {
         List<String> sort,
         List<UUID> tenantId,
         UUID principalId,
-        List<UUID> groupId
+        List<UUID> groupId,
+        List<String> groupCode
     ) {
-        return findGroupsWithResponseAsync(size, page, sort, tenantId, principalId, groupId).flatMap(res ->
+        return findGroupsWithResponseAsync(size, page, sort, tenantId, principalId, groupId, groupCode).flatMap(res ->
             Mono.justOrEmpty(res.getValue())
         );
     }
@@ -262,7 +279,8 @@ public final class GroupOperationsImpl {
         final List<UUID> tenantId = null;
         final UUID principalId = null;
         final List<UUID> groupId = null;
-        return findGroupsWithResponseAsync(size, page, sort, tenantId, principalId, groupId).flatMap(res ->
+        final List<String> groupCode = null;
+        return findGroupsWithResponseAsync(size, page, sort, tenantId, principalId, groupId, groupCode).flatMap(res ->
             Mono.justOrEmpty(res.getValue())
         );
     }
@@ -284,6 +302,7 @@ public final class GroupOperationsImpl {
      * @param tenantId Filter by tenantId.
      * @param principalId Filter by principalId.
      * @param groupId Filter by group ids.
+     * @param groupCode Filter by group codes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -298,9 +317,10 @@ public final class GroupOperationsImpl {
         List<UUID> tenantId,
         UUID principalId,
         List<UUID> groupId,
+        List<String> groupCode,
         Context context
     ) {
-        return findGroupsWithResponseAsync(size, page, sort, tenantId, principalId, groupId, context).flatMap(res ->
+        return findGroupsWithResponseAsync(size, page, sort, tenantId, principalId, groupId, groupCode, context).flatMap(res ->
             Mono.justOrEmpty(res.getValue())
         );
     }
@@ -322,6 +342,7 @@ public final class GroupOperationsImpl {
      * @param tenantId Filter by tenantId.
      * @param principalId Filter by principalId.
      * @param groupId Filter by group ids.
+     * @param groupCode Filter by group codes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -336,6 +357,7 @@ public final class GroupOperationsImpl {
         List<UUID> tenantId,
         UUID principalId,
         List<UUID> groupId,
+        List<String> groupCode,
         Context context
     ) {
         final String accept = "application/json";
@@ -357,6 +379,12 @@ public final class GroupOperationsImpl {
                   .stream()
                   .map(item -> Objects.toString(item, ""))
                   .collect(Collectors.toList());
+        List<String> groupCodeConverted = (groupCode == null)
+            ? new ArrayList<>()
+            : groupCode
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         return service.findGroupsSync(
             this.client.getHost(),
             size,
@@ -365,6 +393,7 @@ public final class GroupOperationsImpl {
             tenantIdConverted,
             principalId,
             groupIdConverted,
+            groupCodeConverted,
             accept,
             context
         );
@@ -387,14 +416,23 @@ public final class GroupOperationsImpl {
      * @param tenantId Filter by tenantId.
      * @param principalId Filter by principalId.
      * @param groupId Filter by group ids.
+     * @param groupCode Filter by group codes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GroupPage findGroups(Integer size, Integer page, List<String> sort, List<UUID> tenantId, UUID principalId, List<UUID> groupId) {
-        return findGroupsWithResponse(size, page, sort, tenantId, principalId, groupId, Context.NONE).getValue();
+    public GroupPage findGroups(
+        Integer size,
+        Integer page,
+        List<String> sort,
+        List<UUID> tenantId,
+        UUID principalId,
+        List<UUID> groupId,
+        List<String> groupCode
+    ) {
+        return findGroupsWithResponse(size, page, sort, tenantId, principalId, groupId, groupCode, Context.NONE).getValue();
     }
 
     /**
@@ -416,6 +454,7 @@ public final class GroupOperationsImpl {
         final List<UUID> tenantId = null;
         final UUID principalId = null;
         final List<UUID> groupId = null;
-        return findGroupsWithResponse(size, page, sort, tenantId, principalId, groupId, Context.NONE).getValue();
+        final List<String> groupCode = null;
+        return findGroupsWithResponse(size, page, sort, tenantId, principalId, groupId, groupCode, Context.NONE).getValue();
     }
 }

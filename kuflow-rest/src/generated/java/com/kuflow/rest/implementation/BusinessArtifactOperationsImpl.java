@@ -102,6 +102,7 @@ public final class BusinessArtifactOperationsImpl {
             @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
             @QueryParam(value = "businessArtifactDefinitionId", multipleQueryParams = true) List<String> businessArtifactDefinitionId,
             @QueryParam(value = "businessArtifactDefinitionCode", multipleQueryParams = true) List<String> businessArtifactDefinitionCode,
+            @QueryParam(value = "value", multipleQueryParams = true) List<String> value,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -117,6 +118,7 @@ public final class BusinessArtifactOperationsImpl {
             @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
             @QueryParam(value = "businessArtifactDefinitionId", multipleQueryParams = true) List<String> businessArtifactDefinitionId,
             @QueryParam(value = "businessArtifactDefinitionCode", multipleQueryParams = true) List<String> businessArtifactDefinitionCode,
+            @QueryParam(value = "value", multipleQueryParams = true) List<String> value,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -352,6 +354,10 @@ public final class BusinessArtifactOperationsImpl {
      * @param tenantId Filter by tenantId.
      * @param businessArtifactDefinitionId Filter by an array of business artifact definition ids.
      * @param businessArtifactDefinitionCode Filter by an array of business artifact definition codes.
+     * @param value Filter by indexed field values. Each value is an expression with the format
+     * `fieldCode operation value1 value2...` (space-separated).
+     *
+     * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -364,7 +370,8 @@ public final class BusinessArtifactOperationsImpl {
         List<String> sort,
         List<UUID> tenantId,
         List<UUID> businessArtifactDefinitionId,
-        List<String> businessArtifactDefinitionCode
+        List<String> businessArtifactDefinitionCode,
+        List<String> value
     ) {
         return FluxUtil.withContext(context ->
             findBusinessArtifactsWithResponseAsync(
@@ -374,6 +381,7 @@ public final class BusinessArtifactOperationsImpl {
                 tenantId,
                 businessArtifactDefinitionId,
                 businessArtifactDefinitionCode,
+                value,
                 context
             )
         );
@@ -396,6 +404,10 @@ public final class BusinessArtifactOperationsImpl {
      * @param tenantId Filter by tenantId.
      * @param businessArtifactDefinitionId Filter by an array of business artifact definition ids.
      * @param businessArtifactDefinitionCode Filter by an array of business artifact definition codes.
+     * @param value Filter by indexed field values. Each value is an expression with the format
+     * `fieldCode operation value1 value2...` (space-separated).
+     *
+     * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -410,6 +422,7 @@ public final class BusinessArtifactOperationsImpl {
         List<UUID> tenantId,
         List<UUID> businessArtifactDefinitionId,
         List<String> businessArtifactDefinitionCode,
+        List<String> value,
         Context context
     ) {
         final String accept = "application/json";
@@ -437,6 +450,12 @@ public final class BusinessArtifactOperationsImpl {
                   .stream()
                   .map(item -> Objects.toString(item, ""))
                   .collect(Collectors.toList());
+        List<String> valueConverted = (value == null)
+            ? new ArrayList<>()
+            : value
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         return service.findBusinessArtifacts(
             this.client.getHost(),
             size,
@@ -445,6 +464,7 @@ public final class BusinessArtifactOperationsImpl {
             tenantIdConverted,
             businessArtifactDefinitionIdConverted,
             businessArtifactDefinitionCodeConverted,
+            valueConverted,
             accept,
             context
         );
@@ -467,6 +487,10 @@ public final class BusinessArtifactOperationsImpl {
      * @param tenantId Filter by tenantId.
      * @param businessArtifactDefinitionId Filter by an array of business artifact definition ids.
      * @param businessArtifactDefinitionCode Filter by an array of business artifact definition codes.
+     * @param value Filter by indexed field values. Each value is an expression with the format
+     * `fieldCode operation value1 value2...` (space-separated).
+     *
+     * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -479,7 +503,8 @@ public final class BusinessArtifactOperationsImpl {
         List<String> sort,
         List<UUID> tenantId,
         List<UUID> businessArtifactDefinitionId,
-        List<String> businessArtifactDefinitionCode
+        List<String> businessArtifactDefinitionCode,
+        List<String> value
     ) {
         return findBusinessArtifactsWithResponseAsync(
             size,
@@ -487,7 +512,8 @@ public final class BusinessArtifactOperationsImpl {
             sort,
             tenantId,
             businessArtifactDefinitionId,
-            businessArtifactDefinitionCode
+            businessArtifactDefinitionCode,
+            value
         ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -510,13 +536,15 @@ public final class BusinessArtifactOperationsImpl {
         final List<UUID> tenantId = null;
         final List<UUID> businessArtifactDefinitionId = null;
         final List<String> businessArtifactDefinitionCode = null;
+        final List<String> value = null;
         return findBusinessArtifactsWithResponseAsync(
             size,
             page,
             sort,
             tenantId,
             businessArtifactDefinitionId,
-            businessArtifactDefinitionCode
+            businessArtifactDefinitionCode,
+            value
         ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -537,6 +565,10 @@ public final class BusinessArtifactOperationsImpl {
      * @param tenantId Filter by tenantId.
      * @param businessArtifactDefinitionId Filter by an array of business artifact definition ids.
      * @param businessArtifactDefinitionCode Filter by an array of business artifact definition codes.
+     * @param value Filter by indexed field values. Each value is an expression with the format
+     * `fieldCode operation value1 value2...` (space-separated).
+     *
+     * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -551,6 +583,7 @@ public final class BusinessArtifactOperationsImpl {
         List<UUID> tenantId,
         List<UUID> businessArtifactDefinitionId,
         List<String> businessArtifactDefinitionCode,
+        List<String> value,
         Context context
     ) {
         return findBusinessArtifactsWithResponseAsync(
@@ -560,6 +593,7 @@ public final class BusinessArtifactOperationsImpl {
             tenantId,
             businessArtifactDefinitionId,
             businessArtifactDefinitionCode,
+            value,
             context
         ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -581,6 +615,10 @@ public final class BusinessArtifactOperationsImpl {
      * @param tenantId Filter by tenantId.
      * @param businessArtifactDefinitionId Filter by an array of business artifact definition ids.
      * @param businessArtifactDefinitionCode Filter by an array of business artifact definition codes.
+     * @param value Filter by indexed field values. Each value is an expression with the format
+     * `fieldCode operation value1 value2...` (space-separated).
+     *
+     * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -595,6 +633,7 @@ public final class BusinessArtifactOperationsImpl {
         List<UUID> tenantId,
         List<UUID> businessArtifactDefinitionId,
         List<String> businessArtifactDefinitionCode,
+        List<String> value,
         Context context
     ) {
         final String accept = "application/json";
@@ -622,6 +661,12 @@ public final class BusinessArtifactOperationsImpl {
                   .stream()
                   .map(item -> Objects.toString(item, ""))
                   .collect(Collectors.toList());
+        List<String> valueConverted = (value == null)
+            ? new ArrayList<>()
+            : value
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         return service.findBusinessArtifactsSync(
             this.client.getHost(),
             size,
@@ -630,6 +675,7 @@ public final class BusinessArtifactOperationsImpl {
             tenantIdConverted,
             businessArtifactDefinitionIdConverted,
             businessArtifactDefinitionCodeConverted,
+            valueConverted,
             accept,
             context
         );
@@ -652,6 +698,10 @@ public final class BusinessArtifactOperationsImpl {
      * @param tenantId Filter by tenantId.
      * @param businessArtifactDefinitionId Filter by an array of business artifact definition ids.
      * @param businessArtifactDefinitionCode Filter by an array of business artifact definition codes.
+     * @param value Filter by indexed field values. Each value is an expression with the format
+     * `fieldCode operation value1 value2...` (space-separated).
+     *
+     * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -664,7 +714,8 @@ public final class BusinessArtifactOperationsImpl {
         List<String> sort,
         List<UUID> tenantId,
         List<UUID> businessArtifactDefinitionId,
-        List<String> businessArtifactDefinitionCode
+        List<String> businessArtifactDefinitionCode,
+        List<String> value
     ) {
         return findBusinessArtifactsWithResponse(
             size,
@@ -673,6 +724,7 @@ public final class BusinessArtifactOperationsImpl {
             tenantId,
             businessArtifactDefinitionId,
             businessArtifactDefinitionCode,
+            value,
             Context.NONE
         ).getValue();
     }
@@ -696,6 +748,7 @@ public final class BusinessArtifactOperationsImpl {
         final List<UUID> tenantId = null;
         final List<UUID> businessArtifactDefinitionId = null;
         final List<String> businessArtifactDefinitionCode = null;
+        final List<String> value = null;
         return findBusinessArtifactsWithResponse(
             size,
             page,
@@ -703,6 +756,7 @@ public final class BusinessArtifactOperationsImpl {
             tenantId,
             businessArtifactDefinitionId,
             businessArtifactDefinitionCode,
+            value,
             Context.NONE
         ).getValue();
     }

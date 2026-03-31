@@ -73,6 +73,16 @@ public class ProcessItemFindOptions {
      */
     private List<String> processItemDefinitionCode = new LinkedList<>();
 
+    /**
+     * Filter by process definition ids.
+     */
+    private final List<UUID> processDefinitionIds = new LinkedList<>();
+
+    /**
+     * Filter by process definition codes.
+     */
+    private final List<String> processDefinitionCodes = new LinkedList<>();
+
     public Integer getSize() {
         return this.size;
     }
@@ -319,6 +329,76 @@ public class ProcessItemFindOptions {
     public ProcessItemFindOptions removeProcessItemDefinitionCode(String processItemDefinitionCode) {
         Objects.requireNonNull(processItemDefinitionCode, "'processItemDefinitionCode' is required");
         this.processItemDefinitionCode.remove(processItemDefinitionCode);
+
+        return this;
+    }
+
+    public List<UUID> getProcessDefinitionIds() {
+        return unmodifiableList(this.processDefinitionIds);
+    }
+
+    public ProcessItemFindOptions setProcessDefinitionIds(List<UUID> processDefinitionIds) {
+        this.processDefinitionIds.clear();
+        if (processDefinitionIds != null) {
+            this.processDefinitionIds.addAll(processDefinitionIds);
+        }
+
+        return this;
+    }
+
+    public ProcessItemFindOptions setProcessDefinitionId(UUID processDefinitionId) {
+        Objects.requireNonNull(processDefinitionId, "'processDefinitionId' is required");
+
+        return this.setProcessDefinitionIds(List.of(processDefinitionId));
+    }
+
+    public ProcessItemFindOptions addProcessDefinitionId(UUID processDefinitionId) {
+        Objects.requireNonNull(processDefinitionId, "'processDefinitionId' is required");
+        if (!this.processDefinitionIds.contains(processDefinitionId)) {
+            this.processDefinitionIds.add(processDefinitionId);
+        }
+
+        return this;
+    }
+
+    public ProcessItemFindOptions removeProcessDefinitionId(UUID processDefinitionId) {
+        Objects.requireNonNull(processDefinitionId, "'processDefinitionId' is required");
+        this.processDefinitionIds.remove(processDefinitionId);
+
+        return this;
+    }
+
+    public List<String> getProcessDefinitionCodes() {
+        return unmodifiableList(this.processDefinitionCodes);
+    }
+
+    public ProcessItemFindOptions setProcessDefinitionCodes(List<String> processDefinitionCodes) {
+        this.processDefinitionCodes.clear();
+        if (processDefinitionCodes != null) {
+            this.processDefinitionCodes.addAll(processDefinitionCodes);
+        }
+
+        return this;
+    }
+
+    public ProcessItemFindOptions setProcessDefinitionCode(String processDefinitionCode) {
+        Objects.requireNonNull(processDefinitionCode, "'processDefinitionCode' is required");
+
+        return this.setProcessDefinitionCodes(List.of(processDefinitionCode));
+    }
+
+    public ProcessItemFindOptions addProcessDefinitionCode(String processDefinitionCode) {
+        Objects.requireNonNull(processDefinitionCode, "'processDefinitionCode' is required");
+        if (!this.processDefinitionCodes.contains(processDefinitionCode)) {
+            this.processDefinitionCodes.add(processDefinitionCode);
+        }
+
+        return this;
+    }
+
+    public ProcessItemFindOptions removeProcessDefinitionCode(String processDefinitionCode) {
+        Objects.requireNonNull(processDefinitionCode, "'processDefinitionCode' is required");
+        this.processDefinitionCodes.remove(processDefinitionCode);
 
         return this;
     }

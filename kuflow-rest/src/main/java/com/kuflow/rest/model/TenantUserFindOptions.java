@@ -59,6 +59,11 @@ public class TenantUserFindOptions {
     private final List<UUID> groupIds = new LinkedList<>();
 
     /**
+     * Filter by group codes.
+     */
+    private final List<String> groupCodes = new LinkedList<>();
+
+    /**
      * Filter tenant users that have one of the emails.
      */
     private final List<String> emails = new LinkedList<>();
@@ -183,6 +188,41 @@ public class TenantUserFindOptions {
     public TenantUserFindOptions removeGroupId(UUID groupId) {
         Objects.requireNonNull(groupId, "'groupId' is required");
         this.groupIds.remove(groupId);
+
+        return this;
+    }
+
+    public List<String> getGroupCodes() {
+        return unmodifiableList(this.groupCodes);
+    }
+
+    public TenantUserFindOptions setGroupCodes(List<String> groupCodes) {
+        this.groupCodes.clear();
+        if (groupCodes != null) {
+            this.groupCodes.addAll(groupCodes);
+        }
+
+        return this;
+    }
+
+    public TenantUserFindOptions setGroupCode(String groupCode) {
+        Objects.requireNonNull(groupCode, "'groupCode' is required");
+
+        return this.setGroupCodes(List.of(groupCode));
+    }
+
+    public TenantUserFindOptions addGroupCode(String groupCode) {
+        Objects.requireNonNull(groupCode, "'groupCode' is required");
+        if (!this.groupCodes.contains(groupCode)) {
+            this.groupCodes.add(groupCode);
+        }
+
+        return this;
+    }
+
+    public TenantUserFindOptions removeGroupCode(String groupCode) {
+        Objects.requireNonNull(groupCode, "'groupCode' is required");
+        this.groupCodes.remove(groupCode);
 
         return this;
     }

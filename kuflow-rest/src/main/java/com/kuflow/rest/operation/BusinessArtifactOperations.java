@@ -86,6 +86,7 @@ public class BusinessArtifactOperations {
         List<String> businessArtifactDefinitionCode = !options.getBusinessArtifactDefinitionCodes().isEmpty()
             ? options.getBusinessArtifactDefinitionCodes()
             : null;
+        List<String> value = !options.getValues().isEmpty() ? options.getValues() : null;
 
         return this.service.findBusinessArtifactsWithResponse(
             size,
@@ -94,6 +95,7 @@ public class BusinessArtifactOperations {
             tenantId,
             businessArtifactDefinitionId,
             businessArtifactDefinitionCode,
+            value,
             context
         );
     }

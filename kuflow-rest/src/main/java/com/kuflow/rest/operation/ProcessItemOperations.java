@@ -35,8 +35,10 @@ import com.kuflow.rest.model.ProcessItem;
 import com.kuflow.rest.model.ProcessItemCreateParams;
 import com.kuflow.rest.model.ProcessItemFindOptions;
 import com.kuflow.rest.model.ProcessItemPage;
+import com.kuflow.rest.model.ProcessItemTaskAiAssistanceResponse;
 import com.kuflow.rest.model.ProcessItemTaskAppendLogParams;
 import com.kuflow.rest.model.ProcessItemTaskAssignParams;
+import com.kuflow.rest.model.ProcessItemTaskContextDataUpdateParams;
 import com.kuflow.rest.model.ProcessItemTaskDataUpdateParams;
 import com.kuflow.rest.model.ProcessItemTaskState;
 import com.kuflow.rest.model.ProcessItemType;
@@ -86,6 +88,8 @@ public class ProcessItemOperations {
         List<String> processItemDefinitionCode = !options.getProcessItemDefinitionCode().isEmpty()
             ? options.getProcessItemDefinitionCode()
             : null;
+        List<UUID> processDefinitionId = !options.getProcessDefinitionIds().isEmpty() ? options.getProcessDefinitionIds() : null;
+        List<String> processDefinitionCode = !options.getProcessDefinitionCodes().isEmpty() ? options.getProcessDefinitionCodes() : null;
         List<UUID> tenantId = !options.getTenantIds().isEmpty() ? options.getTenantIds() : null;
 
         return this.service.findProcessItemsWithResponse(
@@ -96,6 +100,8 @@ public class ProcessItemOperations {
             type,
             taskState,
             processItemDefinitionCode,
+            processDefinitionId,
+            processDefinitionCode,
             tenantId,
             context
         );
@@ -436,6 +442,50 @@ public class ProcessItemOperations {
     }
 
     /**
+     * Save JSON context data
+     * <p>
+     * Allow to save a JSON context data validating that the data follow the related schema. If the data is invalid, then
+     * the json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param processItemTaskContextDataUpdateParams Params used to update the JSON context data value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ProcessItem> updateProcessItemTaskContextDataWithResponse(
+        UUID id,
+        ProcessItemTaskContextDataUpdateParams processItemTaskContextDataUpdateParams,
+        Context context
+    ) {
+        return this.service.updateProcessItemTaskContextDataWithResponse(id, processItemTaskContextDataUpdateParams, context);
+    }
+
+    /**
+     * Save JSON context data
+     * <p>
+     * Allow to save a JSON context data validating that the data follow the related schema. If the data is invalid, then
+     * the json form is marked as invalid.
+     *
+     * @param id The resource ID.
+     * @param processItemTaskContextDataUpdateParams Params used to update the JSON context data value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProcessItem updateProcessItemTaskContextData(
+        UUID id,
+        ProcessItemTaskContextDataUpdateParams processItemTaskContextDataUpdateParams
+    ) {
+        return this.updateProcessItemTaskContextDataWithResponse(id, processItemTaskContextDataUpdateParams, Context.NONE).getValue();
+    }
+
+    /**
      * Download a Form rendered as PDF or Zip of PDFs (when the element is multiple)
      * <p>
      * Given a task, generate a PDF from a Form type element with the data filled in, if any. If there are multiple form
@@ -478,5 +528,40 @@ public class ProcessItemOperations {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData downloadProcessItemTaskDataWebformsAsDocumentWithResponse(UUID id, String propertyPath) {
         return this.downloadProcessItemTaskDataWebformsAsDocumentWithResponse(id, propertyPath, Context.NONE).getValue();
+    }
+
+    /**
+     * Generate AI assistance for a process item task
+     * <p>
+     * Allow to generate AI assistance for a task and apply the results. The AI prompt configuration comes from
+     * the task definition. The response includes the updated process item and AI metadata.
+     *
+     * @param id The resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ProcessItemTaskAiAssistanceResponse> generateProcessItemTaskAiAssistanceWithResponse(UUID id, Context context) {
+        return this.service.generateProcessItemTaskAiAssistanceWithResponse(id, context);
+    }
+
+    /**
+     * Generate AI assistance for a process item task
+     * <p>
+     * Allow to generate AI assistance for a task and apply the results. The AI prompt configuration comes from
+     * the task definition. The response includes the updated process item and AI metadata.
+     *
+     * @param id The resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProcessItemTaskAiAssistanceResponse generateProcessItemTaskAiAssistance(UUID id) {
+        return this.generateProcessItemTaskAiAssistanceWithResponse(id, Context.NONE).getValue();
     }
 }

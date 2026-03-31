@@ -82,8 +82,10 @@ public class ProcessOperations {
         Integer page = options.getPage();
         List<String> sort = !options.getSorts().isEmpty() ? options.getSorts() : null;
         List<UUID> tenantId = !options.getTenantIds().isEmpty() ? options.getTenantIds() : null;
+        List<UUID> processDefinitionId = !options.getProcessDefinitionIds().isEmpty() ? options.getProcessDefinitionIds() : null;
+        List<String> processDefinitionCode = !options.getProcessDefinitionCodes().isEmpty() ? options.getProcessDefinitionCodes() : null;
 
-        return this.service.findProcessesWithResponse(size, page, sort, tenantId, context);
+        return this.service.findProcessesWithResponse(size, page, sort, tenantId, processDefinitionId, processDefinitionCode, context);
     }
 
     /**
