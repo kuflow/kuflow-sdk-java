@@ -25,7 +25,7 @@ package com.kuflow.temporal.activity.kuflow.model;
 import com.kuflow.temporal.common.model.AbstractModel;
 import java.util.UUID;
 
-public class ProcessItemTaskAiAssistanceRequest extends AbstractModel {
+public class ProcessItemTaskAiAssistanceRetrieveRequest extends AbstractModel {
 
     private UUID processItemId;
 

@@ -35,7 +35,8 @@ import com.kuflow.rest.model.ProcessItem;
 import com.kuflow.rest.model.ProcessItemCreateParams;
 import com.kuflow.rest.model.ProcessItemFindOptions;
 import com.kuflow.rest.model.ProcessItemPage;
-import com.kuflow.rest.model.ProcessItemTaskAiAssistanceResponse;
+import com.kuflow.rest.model.ProcessItemTaskAiAssistance;
+import com.kuflow.rest.model.ProcessItemTaskAiAssistanceGenerateParams;
 import com.kuflow.rest.model.ProcessItemTaskAppendLogParams;
 import com.kuflow.rest.model.ProcessItemTaskAssignParams;
 import com.kuflow.rest.model.ProcessItemTaskContextDataUpdateParams;
@@ -531,37 +532,91 @@ public class ProcessItemOperations {
     }
 
     /**
-     * Generate AI assistance for a process item task
+     * Trigger or poll AI assistance for a process item task
      * <p>
-     * Allow to generate AI assistance for a task and apply the results. The AI prompt configuration comes from
-     * the task definition. The response includes the updated process item and AI metadata.
+     * Trigger an asynchronous AI assistance run for a task and return its current state, identified by a client-supplied
+     * {@code requestId} (UUID). The {@code requestId} makes the call idempotent and lets a client launch successive AI
+     * assistance attempts on the same task — one at a time. Use the same {@code requestId} to poll your own attempt;
+     * use a new one to start a fresh run once the previous one has reached a final state. While a run is PENDING,
+     * calling this endpoint with a different {@code requestId} is rejected with 409. The AI prompt configuration comes
+     * from the task definition.
+     *
+     * @param id The resource ID.
+     * @param processItemTaskAiAssistanceGenerateParams Params identifying this AI assistance attempt.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status of the latest AI assistance run for a process item task along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ProcessItemTaskAiAssistance> generateProcessItemTaskAiAssistanceWithResponse(
+        UUID id,
+        ProcessItemTaskAiAssistanceGenerateParams processItemTaskAiAssistanceGenerateParams,
+        Context context
+    ) {
+        return this.service.generateProcessItemTaskAiAssistanceWithResponse(id, processItemTaskAiAssistanceGenerateParams, context);
+    }
+
+    /**
+     * Trigger or poll AI assistance for a process item task
+     * <p>
+     * Trigger an asynchronous AI assistance run for a task and return its current state, identified by a client-supplied
+     * {@code requestId} (UUID). The {@code requestId} makes the call idempotent and lets a client launch successive AI
+     * assistance attempts on the same task — one at a time. Use the same {@code requestId} to poll your own attempt;
+     * use a new one to start a fresh run once the previous one has reached a final state. While a run is PENDING,
+     * calling this endpoint with a different {@code requestId} is rejected with 409. The AI prompt configuration comes
+     * from the task definition.
+     *
+     * @param id The resource ID.
+     * @param processItemTaskAiAssistanceGenerateParams Params identifying this AI assistance attempt.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status of the latest AI assistance run for a process item task.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProcessItemTaskAiAssistance generateProcessItemTaskAiAssistance(
+        UUID id,
+        ProcessItemTaskAiAssistanceGenerateParams processItemTaskAiAssistanceGenerateParams
+    ) {
+        return this.generateProcessItemTaskAiAssistanceWithResponse(id, processItemTaskAiAssistanceGenerateParams, Context.NONE).getValue();
+    }
+
+    /**
+     * Get the current AI assistance run status for a process item task
+     * <p>
+     * Return the status of the latest AI assistance run for the given process item task. Poll this endpoint
+     * after triggering {@code generateProcessItemTaskAiAssistance} to determine when the run has finished.
+     * Returns 404 when no run has ever been triggered for the task.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return status of the latest AI assistance run for a process item task along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProcessItemTaskAiAssistanceResponse> generateProcessItemTaskAiAssistanceWithResponse(UUID id, Context context) {
-        return this.service.generateProcessItemTaskAiAssistanceWithResponse(id, context);
+    public Response<ProcessItemTaskAiAssistance> retrieveProcessItemTaskAiAssistanceWithResponse(UUID id, Context context) {
+        return this.service.retrieveProcessItemTaskAiAssistanceWithResponse(id, context);
     }
 
     /**
-     * Generate AI assistance for a process item task
+     * Get the current AI assistance run status for a process item task
      * <p>
-     * Allow to generate AI assistance for a task and apply the results. The AI prompt configuration comes from
-     * the task definition. The response includes the updated process item and AI metadata.
+     * Return the status of the latest AI assistance run for the given process item task. Poll this endpoint
+     * after triggering {@code generateProcessItemTaskAiAssistance} to determine when the run has finished.
+     * Returns 404 when no run has ever been triggered for the task.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return status of the latest AI assistance run for a process item task.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProcessItemTaskAiAssistanceResponse generateProcessItemTaskAiAssistance(UUID id) {
-        return this.generateProcessItemTaskAiAssistanceWithResponse(id, Context.NONE).getValue();
+    public ProcessItemTaskAiAssistance retrieveProcessItemTaskAiAssistance(UUID id) {
+        return this.retrieveProcessItemTaskAiAssistanceWithResponse(id, Context.NONE).getValue();
     }
 }
