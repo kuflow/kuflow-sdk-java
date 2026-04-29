@@ -25,7 +25,7 @@ package com.kuflow.temporal.activity.kuflow.model;
 import com.kuflow.rest.model.ProcessItemTaskAiAssistance;
 import com.kuflow.temporal.common.model.AbstractModel;
 
-public class ProcessItemTaskAiAssistanceGenerateResponse extends AbstractModel {
+public class ProcessItemTaskAiAssistanceRetrieveResponse extends AbstractModel {
 
     private ProcessItemTaskAiAssistance processItemTaskAiAssistance;
 
