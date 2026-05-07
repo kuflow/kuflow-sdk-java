@@ -30,11 +30,14 @@ import com.azure.core.util.Context;
 import com.kuflow.rest.implementation.BusinessArtifactOperationsImpl;
 import com.kuflow.rest.implementation.KuFlowClientImpl;
 import com.kuflow.rest.model.BusinessArtifact;
+import com.kuflow.rest.model.BusinessArtifactAction;
+import com.kuflow.rest.model.BusinessArtifactActionCreateParams;
+import com.kuflow.rest.model.BusinessArtifactCreateArtifactPrepare;
+import com.kuflow.rest.model.BusinessArtifactCreateArtifactPrepareParams;
 import com.kuflow.rest.model.BusinessArtifactCreateParams;
 import com.kuflow.rest.model.BusinessArtifactDataUpdateParams;
 import com.kuflow.rest.model.BusinessArtifactFindOptions;
 import com.kuflow.rest.model.BusinessArtifactPage;
-import com.kuflow.rest.model.BusinessArtifactUserActionDocumentUploadParams;
 import com.kuflow.rest.model.DefaultErrorException;
 import com.kuflow.rest.model.Document;
 import com.kuflow.rest.model.DocumentReference;
@@ -315,75 +318,6 @@ public class BusinessArtifactOperations {
     }
 
     /**
-     * Upload and save a document in a user action
-     *
-     * <p>Allow saving a user action document uploading the content.
-     *
-     * @param id The resource ID.
-     * @param params Params info.
-     * @param document Document to upload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BusinessArtifact> uploadBusinessArtifactUserActionDocumentWithResponse(
-        UUID id,
-        BusinessArtifactUserActionDocumentUploadParams params,
-        Document document,
-        Context context
-    ) {
-        Objects.requireNonNull(document, "'document' is required");
-        Objects.requireNonNull(document.getFileContent(), "'document.fileContent' is required");
-        Objects.requireNonNull(document.getFileContent().getLength(), "'document.fileContent.length' is required");
-        Objects.requireNonNull(document.getFileName(), "'document.fileName' is required");
-        Objects.requireNonNull(document.getContentType(), "'document.contentType' is required");
-        if (document.getFileContent().getLength() == 0) {
-            throw new IllegalArgumentException("File size must be greater that 0");
-        }
-
-        String fileContentType = document.getContentType();
-        String fileName = document.getFileName();
-        UUID userActionValueId = params.getUserActionValueId();
-        BinaryData file = document.getFileContent();
-        long contentLength = file.getLength();
-
-        return this.service.uploadBusinessArtifactUserActionDocumentWithResponse(
-            id,
-            fileContentType,
-            fileName,
-            userActionValueId,
-            file,
-            contentLength,
-            context
-        );
-    }
-
-    /**
-     * Upload and save a document in a user action
-     *
-     * <p>Allow saving a user action document uploading the content.
-     *
-     * @param id The resource ID.
-     * @param command Command info.
-     * @param document Document to upload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BusinessArtifact uploadBusinessArtifactUserActionDocument(
-        UUID id,
-        BusinessArtifactUserActionDocumentUploadParams command,
-        Document document
-    ) {
-        return this.uploadBusinessArtifactUserActionDocumentWithResponse(id, command, document, Context.NONE).getValue();
-    }
-
-    /**
      * Upload a temporal document
      *
      * <p>Upload a temporal document that can be later linked to a business artifact.
@@ -469,5 +403,150 @@ public class BusinessArtifactOperations {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData downloadBusinessArtifactDocument(UUID id, String documentUri) {
         return this.downloadBusinessArtifactDocumentWithResponse(id, documentUri, Context.NONE).getValue();
+    }
+
+    /**
+     * Create a Business Artifact Action.
+     * <p>
+     * Triggers an action defined in the Business Artifact definition. Asynchronous actions
+     * (e.g. {@code START_WORKFLOW}, {@code DOWNLOADABLE}) return immediately with status {@code REQUESTED};
+     * synchronous ones complete with status {@code COMPLETED}. Use {@code retrieveBusinessArtifactAction}
+     * to track progress.
+     *
+     * @param id The Business Artifact ID.
+     * @param params Action create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BusinessArtifactAction> createBusinessArtifactActionWithResponse(
+        UUID id,
+        BusinessArtifactActionCreateParams params,
+        Context context
+    ) {
+        return this.service.createBusinessArtifactActionWithResponse(id, params, context);
+    }
+
+    /**
+     * Create a Business Artifact Action.
+     *
+     * @param id The Business Artifact ID.
+     * @param params Action create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BusinessArtifactAction createBusinessArtifactAction(UUID id, BusinessArtifactActionCreateParams params) {
+        return this.createBusinessArtifactActionWithResponse(id, params, Context.NONE).getValue();
+    }
+
+    /**
+     * Retrieve a Business Artifact Action.
+     *
+     * @param id The Business Artifact ID.
+     * @param actionId The Action ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BusinessArtifactAction> retrieveBusinessArtifactActionWithResponse(UUID id, UUID actionId, Context context) {
+        return this.service.retrieveBusinessArtifactActionWithResponse(id, actionId, context);
+    }
+
+    /**
+     * Retrieve a Business Artifact Action.
+     *
+     * @param id The Business Artifact ID.
+     * @param actionId The Action ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BusinessArtifactAction retrieveBusinessArtifactAction(UUID id, UUID actionId) {
+        return this.retrieveBusinessArtifactActionWithResponse(id, actionId, Context.NONE).getValue();
+    }
+
+    /**
+     * Cancel a Business Artifact Action.
+     * <p>
+     * Cancels asynchronous actions in {@code REQUESTED} state. Terminal-state actions are returned unchanged.
+     *
+     * @param id The Business Artifact ID.
+     * @param actionId The Action ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BusinessArtifactAction> cancelBusinessArtifactActionWithResponse(UUID id, UUID actionId, Context context) {
+        return this.service.cancelBusinessArtifactActionWithResponse(id, actionId, context);
+    }
+
+    /**
+     * Cancel a Business Artifact Action.
+     *
+     * @param id The Business Artifact ID.
+     * @param actionId The Action ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BusinessArtifactAction cancelBusinessArtifactAction(UUID id, UUID actionId) {
+        return this.cancelBusinessArtifactActionWithResponse(id, actionId, Context.NONE).getValue();
+    }
+
+    /**
+     * Prepare the value that a {@code CREATE_BUSINESS_ARTIFACT} action would produce.
+     * <p>
+     * Computes the pre-filled artifact value without persisting any state, so it can be reviewed
+     * or edited before the actual action is executed.
+     *
+     * @param id The Business Artifact ID.
+     * @param params Identifier of the action definition to prepare.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BusinessArtifactCreateArtifactPrepare> prepareBusinessArtifactCreateArtifactWithResponse(
+        UUID id,
+        BusinessArtifactCreateArtifactPrepareParams params,
+        Context context
+    ) {
+        return this.service.prepareBusinessArtifactCreateArtifactWithResponse(id, params, context);
+    }
+
+    /**
+     * Prepare the value that a {@code CREATE_BUSINESS_ARTIFACT} action would produce.
+     *
+     * @param id The Business Artifact ID.
+     * @param params Identifier of the action definition to prepare.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BusinessArtifactCreateArtifactPrepare prepareBusinessArtifactCreateArtifact(
+        UUID id,
+        BusinessArtifactCreateArtifactPrepareParams params
+    ) {
+        return this.prepareBusinessArtifactCreateArtifactWithResponse(id, params, Context.NONE).getValue();
     }
 }

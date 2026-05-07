@@ -35,7 +35,6 @@ import com.azure.core.util.BinaryData;
 import com.kuflow.rest.model.BusinessArtifact;
 import com.kuflow.rest.model.BusinessArtifactFindOptions;
 import com.kuflow.rest.model.BusinessArtifactPage;
-import com.kuflow.rest.model.BusinessArtifactUserActionDocumentUploadParams;
 import com.kuflow.rest.model.Document;
 import com.kuflow.rest.model.DocumentReference;
 import java.nio.charset.StandardCharsets;
@@ -162,80 +161,6 @@ public class BusinessArtifactOperationTest extends AbstractOperationTest {
         assertThat(businessArtifact.getTenantId()).isEqualTo(UUID.fromString("00a9f1d4-3698-45a4-951c-66a468846aad"));
         assertThat(businessArtifact.getBusinessArtifactDefinitionRef()).isNotNull();
         assertThat(businessArtifact.getBusinessArtifactDefinitionRef().getCode()).isEqualTo("ARTIFACT_DEF_CODE");
-    }
-
-    @Test
-    @DisplayName("GIVEN an authenticated user WHEN upload user action document THEN the query parameters are sent and response is parsed")
-    public void givenAnAuthenticatedUserWhenUploadUserActionDocumentThenTheQueryParametersAreSentAndResponseIsParsed() {
-        UUID businessArtifactId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
-        UUID userActionValueId = UUID.randomUUID();
-
-        givenThat(
-            post(urlPathEqualTo("/v2024-06-14/business-artifacts/" + businessArtifactId + "/~actions/upload-user-action-document"))
-                .withQueryParam("fileContentType", equalTo("text/plain"))
-                .withQueryParam("fileName", equalTo("test.txt"))
-                .withQueryParam("userActionValueId", equalTo(userActionValueId.toString()))
-                .willReturn(
-                    ok()
-                        .withHeader("Content-Type", "application/json")
-                        .withBodyFile("business-artifacts-api.upload-user-action-document.ok.json")
-                )
-        );
-
-        BusinessArtifactUserActionDocumentUploadParams params = new BusinessArtifactUserActionDocumentUploadParams().setUserActionValueId(
-            userActionValueId
-        );
-
-        BinaryData fileContent = BinaryData.fromBytes("test content".getBytes(StandardCharsets.UTF_8));
-        Document document = new Document().setFileContent(fileContent).setFileName("test.txt").setContentType("text/plain");
-
-        BusinessArtifact businessArtifact = this.kuFlowRestClient.getBusinessArtifactOperations().uploadBusinessArtifactUserActionDocument(
-            businessArtifactId,
-            params,
-            document
-        );
-
-        assertThat(businessArtifact.getId()).isEqualTo(businessArtifactId);
-        assertThat(businessArtifact.getTenantId()).isEqualTo(UUID.fromString("00a9f1d4-3698-45a4-951c-66a468846aad"));
-        assertThat(businessArtifact.getBusinessArtifactDefinitionRef()).isNotNull();
-        assertThat(businessArtifact.getBusinessArtifactDefinitionRef().getCode()).isEqualTo("ARTIFACT_DEF_CODE");
-    }
-
-    @Test
-    @DisplayName("GIVEN a null document WHEN upload user action document THEN a NullPointerException is thrown")
-    public void givenANullDocumentWhenUploadUserActionDocumentThenANullPointerExceptionIsThrown() {
-        UUID businessArtifactId = UUID.randomUUID();
-        BusinessArtifactUserActionDocumentUploadParams params = new BusinessArtifactUserActionDocumentUploadParams().setUserActionValueId(
-            UUID.randomUUID()
-        );
-
-        assertThatThrownBy(() ->
-            this.kuFlowRestClient.getBusinessArtifactOperations().uploadBusinessArtifactUserActionDocument(businessArtifactId, params, null)
-        )
-            .isInstanceOf(NullPointerException.class)
-            .hasMessageContaining("'document' is required");
-    }
-
-    @Test
-    @DisplayName("GIVEN an empty file WHEN upload user action document THEN an IllegalArgumentException is thrown")
-    public void givenAnEmptyFileWhenUploadUserActionDocumentThenAnIllegalArgumentExceptionIsThrown() {
-        UUID businessArtifactId = UUID.randomUUID();
-        BusinessArtifactUserActionDocumentUploadParams params = new BusinessArtifactUserActionDocumentUploadParams().setUserActionValueId(
-            UUID.randomUUID()
-        );
-
-        BinaryData emptyContent = BinaryData.fromBytes(new byte[0]);
-        Document document = new Document().setFileContent(emptyContent).setFileName("empty.txt").setContentType("text/plain");
-
-        assertThatThrownBy(() ->
-            this.kuFlowRestClient.getBusinessArtifactOperations().uploadBusinessArtifactUserActionDocument(
-                businessArtifactId,
-                params,
-                document
-            )
-        )
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("File size must be greater that 0");
     }
 
     @Test

@@ -35,7 +35,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.UUID;
 
-public class WorkflowProcessUserActionRequest implements JsonSerializable<SignalProcessItem> {
+public class WorkflowProcessUserActionRequest implements JsonSerializable<WorkflowProcessUserActionRequest> {
 
     /**
      * The unique identifier of a process.

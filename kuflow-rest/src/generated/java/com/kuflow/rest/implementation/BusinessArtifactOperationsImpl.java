@@ -44,6 +44,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.kuflow.rest.model.BusinessArtifact;
+import com.kuflow.rest.model.BusinessArtifactAction;
+import com.kuflow.rest.model.BusinessArtifactActionCreateParams;
+import com.kuflow.rest.model.BusinessArtifactCreateArtifactPrepare;
+import com.kuflow.rest.model.BusinessArtifactCreateArtifactPrepareParams;
 import com.kuflow.rest.model.BusinessArtifactCreateParams;
 import com.kuflow.rest.model.BusinessArtifactDataUpdateParams;
 import com.kuflow.rest.model.BusinessArtifactPage;
@@ -227,47 +231,90 @@ public final class BusinessArtifactOperationsImpl {
             Context context
         );
 
-        @Post("/business-artifacts/{id}/~actions/upload-user-action-document")
-        @ExpectedResponses({ 200, 304 })
+        @Post("/business-artifacts/{id}/actions")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<BusinessArtifact>> uploadBusinessArtifactUserActionDocument(
+        Mono<Response<BusinessArtifactAction>> createBusinessArtifactAction(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
-            @QueryParam("fileContentType") String fileContentType,
-            @QueryParam("fileName") String fileName,
-            @QueryParam("userActionValueId") UUID userActionValueId,
-            @BodyParam("application/octet-stream") Flux<ByteBuffer> file,
-            @HeaderParam("Content-Length") long contentLength,
+            @BodyParam("application/json") BusinessArtifactActionCreateParams businessArtifactActionCreateParams,
             @HeaderParam("Accept") String accept,
             Context context
         );
 
-        @Post("/business-artifacts/{id}/~actions/upload-user-action-document")
-        @ExpectedResponses({ 200, 304 })
+        @Post("/business-artifacts/{id}/actions")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<BusinessArtifact>> uploadBusinessArtifactUserActionDocument(
+        Response<BusinessArtifactAction> createBusinessArtifactActionSync(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
-            @QueryParam("fileContentType") String fileContentType,
-            @QueryParam("fileName") String fileName,
-            @QueryParam("userActionValueId") UUID userActionValueId,
-            @BodyParam("application/octet-stream") BinaryData file,
-            @HeaderParam("Content-Length") long contentLength,
+            @BodyParam("application/json") BusinessArtifactActionCreateParams businessArtifactActionCreateParams,
             @HeaderParam("Accept") String accept,
             Context context
         );
 
-        @Post("/business-artifacts/{id}/~actions/upload-user-action-document")
-        @ExpectedResponses({ 200, 304 })
+        @Get("/business-artifacts/{id}/actions/{actionId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Response<BusinessArtifact> uploadBusinessArtifactUserActionDocumentSync(
+        Mono<Response<BusinessArtifactAction>> retrieveBusinessArtifactAction(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
-            @QueryParam("fileContentType") String fileContentType,
-            @QueryParam("fileName") String fileName,
-            @QueryParam("userActionValueId") UUID userActionValueId,
-            @BodyParam("application/octet-stream") BinaryData file,
-            @HeaderParam("Content-Length") long contentLength,
+            @PathParam("actionId") UUID actionId,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Get("/business-artifacts/{id}/actions/{actionId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<BusinessArtifactAction> retrieveBusinessArtifactActionSync(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @PathParam("actionId") UUID actionId,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/business-artifacts/{id}/actions/{actionId}/~actions/cancel")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<BusinessArtifactAction>> cancelBusinessArtifactAction(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @PathParam("actionId") UUID actionId,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/business-artifacts/{id}/actions/{actionId}/~actions/cancel")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<BusinessArtifactAction> cancelBusinessArtifactActionSync(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @PathParam("actionId") UUID actionId,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/business-artifacts/{id}/~actions/prepare-create-artifact")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<BusinessArtifactCreateArtifactPrepare>> prepareBusinessArtifactCreateArtifact(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") BusinessArtifactCreateArtifactPrepareParams businessArtifactCreateArtifactPrepareParams,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/business-artifacts/{id}/~actions/prepare-create-artifact")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<BusinessArtifactCreateArtifactPrepare> prepareBusinessArtifactCreateArtifactSync(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") BusinessArtifactCreateArtifactPrepareParams businessArtifactCreateArtifactPrepareParams,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -1338,384 +1385,625 @@ public final class BusinessArtifactOperationsImpl {
     }
 
     /**
-     * Upload and save a document in a user action
+     * Invoke a Business Artifact action
      *
-     * Allow saving a user action document uploading the content.
+     * Invoke an action on a Business Artifact.
+     *
+     * Whether the call returns synchronously or asynchronously depends on the action type:
+     *
+     * - `START_WORKFLOW`, `DOWNLOADABLE`: dispatched to a background worker. The
+     * response returns immediately with `status=REQUESTED`. Poll
+     * `retrieveBusinessArtifactAction` for the final state.
+     * - `START_PROCESS`, `CREATE_BUSINESS_ARTIFACT`: completed synchronously. The
+     * response returns with `status=COMPLETED` (or an error status).
+     *
+     * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
      * @param id The resource ID.
-     * @param fileContentType Document content type.
-     * @param fileName Document name.
-     * @param userActionValueId User action value ID related to de document.
-     * @param file Document to save.
-     * @param contentLength The Content-Length header for the request.
+     * @param businessArtifactActionCreateParams Params identifying the action to invoke.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return a Business Artifact action invocation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BusinessArtifact>> uploadBusinessArtifactUserActionDocumentWithResponseAsync(
+    public Mono<Response<BusinessArtifactAction>> createBusinessArtifactActionWithResponseAsync(
         UUID id,
-        String fileContentType,
-        String fileName,
-        UUID userActionValueId,
-        Flux<ByteBuffer> file,
-        long contentLength
+        BusinessArtifactActionCreateParams businessArtifactActionCreateParams
     ) {
         return FluxUtil.withContext(context ->
-            uploadBusinessArtifactUserActionDocumentWithResponseAsync(
-                id,
-                fileContentType,
-                fileName,
-                userActionValueId,
-                file,
-                contentLength,
-                context
-            )
+            createBusinessArtifactActionWithResponseAsync(id, businessArtifactActionCreateParams, context)
         );
     }
 
     /**
-     * Upload and save a document in a user action
+     * Invoke a Business Artifact action
      *
-     * Allow saving a user action document uploading the content.
+     * Invoke an action on a Business Artifact.
+     *
+     * Whether the call returns synchronously or asynchronously depends on the action type:
+     *
+     * - `START_WORKFLOW`, `DOWNLOADABLE`: dispatched to a background worker. The
+     * response returns immediately with `status=REQUESTED`. Poll
+     * `retrieveBusinessArtifactAction` for the final state.
+     * - `START_PROCESS`, `CREATE_BUSINESS_ARTIFACT`: completed synchronously. The
+     * response returns with `status=COMPLETED` (or an error status).
+     *
+     * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
      * @param id The resource ID.
-     * @param fileContentType Document content type.
-     * @param fileName Document name.
-     * @param userActionValueId User action value ID related to de document.
-     * @param file Document to save.
-     * @param contentLength The Content-Length header for the request.
+     * @param businessArtifactActionCreateParams Params identifying the action to invoke.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return a Business Artifact action invocation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BusinessArtifact>> uploadBusinessArtifactUserActionDocumentWithResponseAsync(
+    public Mono<Response<BusinessArtifactAction>> createBusinessArtifactActionWithResponseAsync(
         UUID id,
-        String fileContentType,
-        String fileName,
-        UUID userActionValueId,
-        Flux<ByteBuffer> file,
-        long contentLength,
+        BusinessArtifactActionCreateParams businessArtifactActionCreateParams,
         Context context
     ) {
         final String accept = "application/json";
-        return service.uploadBusinessArtifactUserActionDocument(
-            this.client.getHost(),
-            id,
-            fileContentType,
-            fileName,
-            userActionValueId,
-            file,
-            contentLength,
-            accept,
-            context
+        return service.createBusinessArtifactAction(this.client.getHost(), id, businessArtifactActionCreateParams, accept, context);
+    }
+
+    /**
+     * Invoke a Business Artifact action
+     *
+     * Invoke an action on a Business Artifact.
+     *
+     * Whether the call returns synchronously or asynchronously depends on the action type:
+     *
+     * - `START_WORKFLOW`, `DOWNLOADABLE`: dispatched to a background worker. The
+     * response returns immediately with `status=REQUESTED`. Poll
+     * `retrieveBusinessArtifactAction` for the final state.
+     * - `START_PROCESS`, `CREATE_BUSINESS_ARTIFACT`: completed synchronously. The
+     * response returns with `status=COMPLETED` (or an error status).
+     *
+     * If you want the method to be idempotent, please specify the `id` field in the request body.
+     *
+     * @param id The resource ID.
+     * @param businessArtifactActionCreateParams Params identifying the action to invoke.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Business Artifact action invocation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BusinessArtifactAction> createBusinessArtifactActionAsync(
+        UUID id,
+        BusinessArtifactActionCreateParams businessArtifactActionCreateParams
+    ) {
+        return createBusinessArtifactActionWithResponseAsync(id, businessArtifactActionCreateParams).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
         );
     }
 
     /**
-     * Upload and save a document in a user action
+     * Invoke a Business Artifact action
      *
-     * Allow saving a user action document uploading the content.
+     * Invoke an action on a Business Artifact.
      *
-     * @param id The resource ID.
-     * @param fileContentType Document content type.
-     * @param fileName Document name.
-     * @param userActionValueId User action value ID related to de document.
-     * @param file Document to save.
-     * @param contentLength The Content-Length header for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BusinessArtifact> uploadBusinessArtifactUserActionDocumentAsync(
-        UUID id,
-        String fileContentType,
-        String fileName,
-        UUID userActionValueId,
-        Flux<ByteBuffer> file,
-        long contentLength
-    ) {
-        return uploadBusinessArtifactUserActionDocumentWithResponseAsync(
-            id,
-            fileContentType,
-            fileName,
-            userActionValueId,
-            file,
-            contentLength
-        ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Upload and save a document in a user action
+     * Whether the call returns synchronously or asynchronously depends on the action type:
      *
-     * Allow saving a user action document uploading the content.
+     * - `START_WORKFLOW`, `DOWNLOADABLE`: dispatched to a background worker. The
+     * response returns immediately with `status=REQUESTED`. Poll
+     * `retrieveBusinessArtifactAction` for the final state.
+     * - `START_PROCESS`, `CREATE_BUSINESS_ARTIFACT`: completed synchronously. The
+     * response returns with `status=COMPLETED` (or an error status).
+     *
+     * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
      * @param id The resource ID.
-     * @param fileContentType Document content type.
-     * @param fileName Document name.
-     * @param userActionValueId User action value ID related to de document.
-     * @param file Document to save.
-     * @param contentLength The Content-Length header for the request.
+     * @param businessArtifactActionCreateParams Params identifying the action to invoke.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return a Business Artifact action invocation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BusinessArtifact> uploadBusinessArtifactUserActionDocumentAsync(
+    public Mono<BusinessArtifactAction> createBusinessArtifactActionAsync(
         UUID id,
-        String fileContentType,
-        String fileName,
-        UUID userActionValueId,
-        Flux<ByteBuffer> file,
-        long contentLength,
+        BusinessArtifactActionCreateParams businessArtifactActionCreateParams,
         Context context
     ) {
-        return uploadBusinessArtifactUserActionDocumentWithResponseAsync(
-            id,
-            fileContentType,
-            fileName,
-            userActionValueId,
-            file,
-            contentLength,
-            context
-        ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return createBusinessArtifactActionWithResponseAsync(id, businessArtifactActionCreateParams, context).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
+        );
     }
 
     /**
-     * Upload and save a document in a user action
+     * Invoke a Business Artifact action
      *
-     * Allow saving a user action document uploading the content.
+     * Invoke an action on a Business Artifact.
+     *
+     * Whether the call returns synchronously or asynchronously depends on the action type:
+     *
+     * - `START_WORKFLOW`, `DOWNLOADABLE`: dispatched to a background worker. The
+     * response returns immediately with `status=REQUESTED`. Poll
+     * `retrieveBusinessArtifactAction` for the final state.
+     * - `START_PROCESS`, `CREATE_BUSINESS_ARTIFACT`: completed synchronously. The
+     * response returns with `status=COMPLETED` (or an error status).
+     *
+     * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
      * @param id The resource ID.
-     * @param fileContentType Document content type.
-     * @param fileName Document name.
-     * @param userActionValueId User action value ID related to de document.
-     * @param file Document to save.
-     * @param contentLength The Content-Length header for the request.
+     * @param businessArtifactActionCreateParams Params identifying the action to invoke.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return a Business Artifact action invocation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BusinessArtifact>> uploadBusinessArtifactUserActionDocumentWithResponseAsync(
+    public Response<BusinessArtifactAction> createBusinessArtifactActionWithResponse(
         UUID id,
-        String fileContentType,
-        String fileName,
-        UUID userActionValueId,
-        BinaryData file,
-        long contentLength
+        BusinessArtifactActionCreateParams businessArtifactActionCreateParams,
+        Context context
+    ) {
+        final String accept = "application/json";
+        return service.createBusinessArtifactActionSync(this.client.getHost(), id, businessArtifactActionCreateParams, accept, context);
+    }
+
+    /**
+     * Invoke a Business Artifact action
+     *
+     * Invoke an action on a Business Artifact.
+     *
+     * Whether the call returns synchronously or asynchronously depends on the action type:
+     *
+     * - `START_WORKFLOW`, `DOWNLOADABLE`: dispatched to a background worker. The
+     * response returns immediately with `status=REQUESTED`. Poll
+     * `retrieveBusinessArtifactAction` for the final state.
+     * - `START_PROCESS`, `CREATE_BUSINESS_ARTIFACT`: completed synchronously. The
+     * response returns with `status=COMPLETED` (or an error status).
+     *
+     * If you want the method to be idempotent, please specify the `id` field in the request body.
+     *
+     * @param id The resource ID.
+     * @param businessArtifactActionCreateParams Params identifying the action to invoke.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Business Artifact action invocation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BusinessArtifactAction createBusinessArtifactAction(
+        UUID id,
+        BusinessArtifactActionCreateParams businessArtifactActionCreateParams
+    ) {
+        return createBusinessArtifactActionWithResponse(id, businessArtifactActionCreateParams, Context.NONE).getValue();
+    }
+
+    /**
+     * Get a Business Artifact action by ID
+     *
+     * Returns a Business Artifact action by its ID.
+     *
+     * @param id The resource ID.
+     * @param actionId The Business Artifact action ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Business Artifact action invocation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BusinessArtifactAction>> retrieveBusinessArtifactActionWithResponseAsync(UUID id, UUID actionId) {
+        return FluxUtil.withContext(context -> retrieveBusinessArtifactActionWithResponseAsync(id, actionId, context));
+    }
+
+    /**
+     * Get a Business Artifact action by ID
+     *
+     * Returns a Business Artifact action by its ID.
+     *
+     * @param id The resource ID.
+     * @param actionId The Business Artifact action ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Business Artifact action invocation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BusinessArtifactAction>> retrieveBusinessArtifactActionWithResponseAsync(UUID id, UUID actionId, Context context) {
+        final String accept = "application/json";
+        return service.retrieveBusinessArtifactAction(this.client.getHost(), id, actionId, accept, context);
+    }
+
+    /**
+     * Get a Business Artifact action by ID
+     *
+     * Returns a Business Artifact action by its ID.
+     *
+     * @param id The resource ID.
+     * @param actionId The Business Artifact action ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Business Artifact action invocation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BusinessArtifactAction> retrieveBusinessArtifactActionAsync(UUID id, UUID actionId) {
+        return retrieveBusinessArtifactActionWithResponseAsync(id, actionId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get a Business Artifact action by ID
+     *
+     * Returns a Business Artifact action by its ID.
+     *
+     * @param id The resource ID.
+     * @param actionId The Business Artifact action ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Business Artifact action invocation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BusinessArtifactAction> retrieveBusinessArtifactActionAsync(UUID id, UUID actionId, Context context) {
+        return retrieveBusinessArtifactActionWithResponseAsync(id, actionId, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get a Business Artifact action by ID
+     *
+     * Returns a Business Artifact action by its ID.
+     *
+     * @param id The resource ID.
+     * @param actionId The Business Artifact action ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Business Artifact action invocation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BusinessArtifactAction> retrieveBusinessArtifactActionWithResponse(UUID id, UUID actionId, Context context) {
+        final String accept = "application/json";
+        return service.retrieveBusinessArtifactActionSync(this.client.getHost(), id, actionId, accept, context);
+    }
+
+    /**
+     * Get a Business Artifact action by ID
+     *
+     * Returns a Business Artifact action by its ID.
+     *
+     * @param id The resource ID.
+     * @param actionId The Business Artifact action ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Business Artifact action invocation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BusinessArtifactAction retrieveBusinessArtifactAction(UUID id, UUID actionId) {
+        return retrieveBusinessArtifactActionWithResponse(id, actionId, Context.NONE).getValue();
+    }
+
+    /**
+     * Cancel a Business Artifact action
+     *
+     * Cancel a Business Artifact action.
+     *
+     * Only meaningful for asynchronous actions still in `REQUESTED` state. The
+     * action's status is set to `CANCELED`. If the action is already in a
+     * terminal state, no transition occurs.
+     *
+     * @param id The resource ID.
+     * @param actionId The Business Artifact action ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Business Artifact action invocation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BusinessArtifactAction>> cancelBusinessArtifactActionWithResponseAsync(UUID id, UUID actionId) {
+        return FluxUtil.withContext(context -> cancelBusinessArtifactActionWithResponseAsync(id, actionId, context));
+    }
+
+    /**
+     * Cancel a Business Artifact action
+     *
+     * Cancel a Business Artifact action.
+     *
+     * Only meaningful for asynchronous actions still in `REQUESTED` state. The
+     * action's status is set to `CANCELED`. If the action is already in a
+     * terminal state, no transition occurs.
+     *
+     * @param id The resource ID.
+     * @param actionId The Business Artifact action ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Business Artifact action invocation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BusinessArtifactAction>> cancelBusinessArtifactActionWithResponseAsync(UUID id, UUID actionId, Context context) {
+        final String accept = "application/json";
+        return service.cancelBusinessArtifactAction(this.client.getHost(), id, actionId, accept, context);
+    }
+
+    /**
+     * Cancel a Business Artifact action
+     *
+     * Cancel a Business Artifact action.
+     *
+     * Only meaningful for asynchronous actions still in `REQUESTED` state. The
+     * action's status is set to `CANCELED`. If the action is already in a
+     * terminal state, no transition occurs.
+     *
+     * @param id The resource ID.
+     * @param actionId The Business Artifact action ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Business Artifact action invocation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BusinessArtifactAction> cancelBusinessArtifactActionAsync(UUID id, UUID actionId) {
+        return cancelBusinessArtifactActionWithResponseAsync(id, actionId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Cancel a Business Artifact action
+     *
+     * Cancel a Business Artifact action.
+     *
+     * Only meaningful for asynchronous actions still in `REQUESTED` state. The
+     * action's status is set to `CANCELED`. If the action is already in a
+     * terminal state, no transition occurs.
+     *
+     * @param id The resource ID.
+     * @param actionId The Business Artifact action ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Business Artifact action invocation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BusinessArtifactAction> cancelBusinessArtifactActionAsync(UUID id, UUID actionId, Context context) {
+        return cancelBusinessArtifactActionWithResponseAsync(id, actionId, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Cancel a Business Artifact action
+     *
+     * Cancel a Business Artifact action.
+     *
+     * Only meaningful for asynchronous actions still in `REQUESTED` state. The
+     * action's status is set to `CANCELED`. If the action is already in a
+     * terminal state, no transition occurs.
+     *
+     * @param id The resource ID.
+     * @param actionId The Business Artifact action ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Business Artifact action invocation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BusinessArtifactAction> cancelBusinessArtifactActionWithResponse(UUID id, UUID actionId, Context context) {
+        final String accept = "application/json";
+        return service.cancelBusinessArtifactActionSync(this.client.getHost(), id, actionId, accept, context);
+    }
+
+    /**
+     * Cancel a Business Artifact action
+     *
+     * Cancel a Business Artifact action.
+     *
+     * Only meaningful for asynchronous actions still in `REQUESTED` state. The
+     * action's status is set to `CANCELED`. If the action is already in a
+     * terminal state, no transition occurs.
+     *
+     * @param id The resource ID.
+     * @param actionId The Business Artifact action ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Business Artifact action invocation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BusinessArtifactAction cancelBusinessArtifactAction(UUID id, UUID actionId) {
+        return cancelBusinessArtifactActionWithResponse(id, actionId, Context.NONE).getValue();
+    }
+
+    /**
+     * Prepare the data for a CREATE_BUSINESS_ARTIFACT action
+     *
+     * Compute the pre-filled value that a `CREATE_BUSINESS_ARTIFACT` action would produce
+     * for this Business Artifact, without invoking the action or persisting any state.
+     *
+     * Use it to populate a form that the user can review and edit. Once the user submits,
+     * the filled value is sent back via `createBusinessArtifactAction` (in the
+     * `createArtifact.value` field).
+     *
+     * @param id The resource ID.
+     * @param businessArtifactCreateArtifactPrepareParams Params identifying the CREATE_BUSINESS_ARTIFACT action to
+     * prepare.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return pre-filled value for a CREATE_BUSINESS_ARTIFACT action along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BusinessArtifactCreateArtifactPrepare>> prepareBusinessArtifactCreateArtifactWithResponseAsync(
+        UUID id,
+        BusinessArtifactCreateArtifactPrepareParams businessArtifactCreateArtifactPrepareParams
     ) {
         return FluxUtil.withContext(context ->
-            uploadBusinessArtifactUserActionDocumentWithResponseAsync(
-                id,
-                fileContentType,
-                fileName,
-                userActionValueId,
-                file,
-                contentLength,
-                context
-            )
+            prepareBusinessArtifactCreateArtifactWithResponseAsync(id, businessArtifactCreateArtifactPrepareParams, context)
         );
     }
 
     /**
-     * Upload and save a document in a user action
+     * Prepare the data for a CREATE_BUSINESS_ARTIFACT action
      *
-     * Allow saving a user action document uploading the content.
+     * Compute the pre-filled value that a `CREATE_BUSINESS_ARTIFACT` action would produce
+     * for this Business Artifact, without invoking the action or persisting any state.
+     *
+     * Use it to populate a form that the user can review and edit. Once the user submits,
+     * the filled value is sent back via `createBusinessArtifactAction` (in the
+     * `createArtifact.value` field).
      *
      * @param id The resource ID.
-     * @param fileContentType Document content type.
-     * @param fileName Document name.
-     * @param userActionValueId User action value ID related to de document.
-     * @param file Document to save.
-     * @param contentLength The Content-Length header for the request.
+     * @param businessArtifactCreateArtifactPrepareParams Params identifying the CREATE_BUSINESS_ARTIFACT action to
+     * prepare.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return pre-filled value for a CREATE_BUSINESS_ARTIFACT action along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BusinessArtifact>> uploadBusinessArtifactUserActionDocumentWithResponseAsync(
+    public Mono<Response<BusinessArtifactCreateArtifactPrepare>> prepareBusinessArtifactCreateArtifactWithResponseAsync(
         UUID id,
-        String fileContentType,
-        String fileName,
-        UUID userActionValueId,
-        BinaryData file,
-        long contentLength,
+        BusinessArtifactCreateArtifactPrepareParams businessArtifactCreateArtifactPrepareParams,
         Context context
     ) {
         final String accept = "application/json";
-        return service.uploadBusinessArtifactUserActionDocument(
+        return service.prepareBusinessArtifactCreateArtifact(
             this.client.getHost(),
             id,
-            fileContentType,
-            fileName,
-            userActionValueId,
-            file,
-            contentLength,
+            businessArtifactCreateArtifactPrepareParams,
             accept,
             context
         );
     }
 
     /**
-     * Upload and save a document in a user action
+     * Prepare the data for a CREATE_BUSINESS_ARTIFACT action
      *
-     * Allow saving a user action document uploading the content.
+     * Compute the pre-filled value that a `CREATE_BUSINESS_ARTIFACT` action would produce
+     * for this Business Artifact, without invoking the action or persisting any state.
+     *
+     * Use it to populate a form that the user can review and edit. Once the user submits,
+     * the filled value is sent back via `createBusinessArtifactAction` (in the
+     * `createArtifact.value` field).
      *
      * @param id The resource ID.
-     * @param fileContentType Document content type.
-     * @param fileName Document name.
-     * @param userActionValueId User action value ID related to de document.
-     * @param file Document to save.
-     * @param contentLength The Content-Length header for the request.
+     * @param businessArtifactCreateArtifactPrepareParams Params identifying the CREATE_BUSINESS_ARTIFACT action to
+     * prepare.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return pre-filled value for a CREATE_BUSINESS_ARTIFACT action on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BusinessArtifact> uploadBusinessArtifactUserActionDocumentAsync(
+    public Mono<BusinessArtifactCreateArtifactPrepare> prepareBusinessArtifactCreateArtifactAsync(
         UUID id,
-        String fileContentType,
-        String fileName,
-        UUID userActionValueId,
-        BinaryData file,
-        long contentLength
+        BusinessArtifactCreateArtifactPrepareParams businessArtifactCreateArtifactPrepareParams
     ) {
-        return uploadBusinessArtifactUserActionDocumentWithResponseAsync(
-            id,
-            fileContentType,
-            fileName,
-            userActionValueId,
-            file,
-            contentLength
-        ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return prepareBusinessArtifactCreateArtifactWithResponseAsync(id, businessArtifactCreateArtifactPrepareParams).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
+        );
     }
 
     /**
-     * Upload and save a document in a user action
+     * Prepare the data for a CREATE_BUSINESS_ARTIFACT action
      *
-     * Allow saving a user action document uploading the content.
+     * Compute the pre-filled value that a `CREATE_BUSINESS_ARTIFACT` action would produce
+     * for this Business Artifact, without invoking the action or persisting any state.
+     *
+     * Use it to populate a form that the user can review and edit. Once the user submits,
+     * the filled value is sent back via `createBusinessArtifactAction` (in the
+     * `createArtifact.value` field).
      *
      * @param id The resource ID.
-     * @param fileContentType Document content type.
-     * @param fileName Document name.
-     * @param userActionValueId User action value ID related to de document.
-     * @param file Document to save.
-     * @param contentLength The Content-Length header for the request.
+     * @param businessArtifactCreateArtifactPrepareParams Params identifying the CREATE_BUSINESS_ARTIFACT action to
+     * prepare.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return pre-filled value for a CREATE_BUSINESS_ARTIFACT action on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BusinessArtifact> uploadBusinessArtifactUserActionDocumentAsync(
+    public Mono<BusinessArtifactCreateArtifactPrepare> prepareBusinessArtifactCreateArtifactAsync(
         UUID id,
-        String fileContentType,
-        String fileName,
-        UUID userActionValueId,
-        BinaryData file,
-        long contentLength,
+        BusinessArtifactCreateArtifactPrepareParams businessArtifactCreateArtifactPrepareParams,
         Context context
     ) {
-        return uploadBusinessArtifactUserActionDocumentWithResponseAsync(
-            id,
-            fileContentType,
-            fileName,
-            userActionValueId,
-            file,
-            contentLength,
-            context
-        ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return prepareBusinessArtifactCreateArtifactWithResponseAsync(id, businessArtifactCreateArtifactPrepareParams, context).flatMap(
+            res -> Mono.justOrEmpty(res.getValue())
+        );
     }
 
     /**
-     * Upload and save a document in a user action
+     * Prepare the data for a CREATE_BUSINESS_ARTIFACT action
      *
-     * Allow saving a user action document uploading the content.
+     * Compute the pre-filled value that a `CREATE_BUSINESS_ARTIFACT` action would produce
+     * for this Business Artifact, without invoking the action or persisting any state.
+     *
+     * Use it to populate a form that the user can review and edit. Once the user submits,
+     * the filled value is sent back via `createBusinessArtifactAction` (in the
+     * `createArtifact.value` field).
      *
      * @param id The resource ID.
-     * @param fileContentType Document content type.
-     * @param fileName Document name.
-     * @param userActionValueId User action value ID related to de document.
-     * @param file Document to save.
-     * @param contentLength The Content-Length header for the request.
+     * @param businessArtifactCreateArtifactPrepareParams Params identifying the CREATE_BUSINESS_ARTIFACT action to
+     * prepare.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return pre-filled value for a CREATE_BUSINESS_ARTIFACT action along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BusinessArtifact> uploadBusinessArtifactUserActionDocumentWithResponse(
+    public Response<BusinessArtifactCreateArtifactPrepare> prepareBusinessArtifactCreateArtifactWithResponse(
         UUID id,
-        String fileContentType,
-        String fileName,
-        UUID userActionValueId,
-        BinaryData file,
-        long contentLength,
+        BusinessArtifactCreateArtifactPrepareParams businessArtifactCreateArtifactPrepareParams,
         Context context
     ) {
         final String accept = "application/json";
-        return service.uploadBusinessArtifactUserActionDocumentSync(
+        return service.prepareBusinessArtifactCreateArtifactSync(
             this.client.getHost(),
             id,
-            fileContentType,
-            fileName,
-            userActionValueId,
-            file,
-            contentLength,
+            businessArtifactCreateArtifactPrepareParams,
             accept,
             context
         );
     }
 
     /**
-     * Upload and save a document in a user action
+     * Prepare the data for a CREATE_BUSINESS_ARTIFACT action
      *
-     * Allow saving a user action document uploading the content.
+     * Compute the pre-filled value that a `CREATE_BUSINESS_ARTIFACT` action would produce
+     * for this Business Artifact, without invoking the action or persisting any state.
+     *
+     * Use it to populate a form that the user can review and edit. Once the user submits,
+     * the filled value is sent back via `createBusinessArtifactAction` (in the
+     * `createArtifact.value` field).
      *
      * @param id The resource ID.
-     * @param fileContentType Document content type.
-     * @param fileName Document name.
-     * @param userActionValueId User action value ID related to de document.
-     * @param file Document to save.
-     * @param contentLength The Content-Length header for the request.
+     * @param businessArtifactCreateArtifactPrepareParams Params identifying the CREATE_BUSINESS_ARTIFACT action to
+     * prepare.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return pre-filled value for a CREATE_BUSINESS_ARTIFACT action.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BusinessArtifact uploadBusinessArtifactUserActionDocument(
+    public BusinessArtifactCreateArtifactPrepare prepareBusinessArtifactCreateArtifact(
         UUID id,
-        String fileContentType,
-        String fileName,
-        UUID userActionValueId,
-        BinaryData file,
-        long contentLength
+        BusinessArtifactCreateArtifactPrepareParams businessArtifactCreateArtifactPrepareParams
     ) {
-        return uploadBusinessArtifactUserActionDocumentWithResponse(
-            id,
-            fileContentType,
-            fileName,
-            userActionValueId,
-            file,
-            contentLength,
-            Context.NONE
-        ).getValue();
+        return prepareBusinessArtifactCreateArtifactWithResponse(id, businessArtifactCreateArtifactPrepareParams, Context.NONE).getValue();
     }
 
     /**

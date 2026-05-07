@@ -3,17 +3,16 @@
   "version": "0.0.1",
   "private": true,
   "devDependencies": {
-    "autorest": "3.7.2",
-    "shx": "0.4.0"
+    "autorest": "3.8.0"
   },
   "scripts": {
     "autorest": "autorest",
-    "generate": "npm run generate:autorest && npm run generate:move && npm run generate:prettier && npm run generate:license",
-    "generate:autorest": "AUTOREST_HOME=$(pwd) autorest --version=3.10.8 readme.md",
-    "generate:move": "npm run generate:move:mkdir && npm run generate:move:cp && npm run generate:move:rm",
-    "generate:move:mkdir": "shx mkdir -p ../src/generated/java/",
-    "generate:move:cp": "shx cp -r ../target/openapi-generated/src/main/java/* ../src/generated/java/",
-    "generate:move:rm": "shx rm -rf ../target/openapi-generated",
+    "generate": "pnpm run generate:autorest && pnpm run generate:move && pnpm run generate:prettier && pnpm run generate:license",
+    "generate:autorest": "AUTOREST_HOME=$(pwd) autorest --version=3.10.9 readme.md",
+    "generate:move": "pnpm run generate:move:mkdir && pnpm run generate:move:cp && pnpm run generate:move:rm",
+    "generate:move:mkdir": "mkdir -p ../src/generated/java/",
+    "generate:move:cp": "cp -r ../target/openapi-generated/src/main/java/* ../src/generated/java/",
+    "generate:move:rm": "rm -rf ../target/openapi-generated",
     "generate:prettier": "cd ../../ && ./mvnw prettier:write -pl kuflow-rest",
     "generate:license": "cd ../../ && ./mvnw license:format -pl kuflow-rest"
   }

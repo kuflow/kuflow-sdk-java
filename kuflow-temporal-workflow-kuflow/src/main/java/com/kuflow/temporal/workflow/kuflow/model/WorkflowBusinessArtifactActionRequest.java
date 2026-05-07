@@ -35,7 +35,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.UUID;
 
-public class WorkflowBusinessArtifactUserActionRequest implements JsonSerializable<SignalProcessItem> {
+/**
+ * Request payload sent to the user's workflow when an action is triggered on a business artifact.
+ * Carries the artifact reference, the action definition that fired, and metadata about who/when
+ * requested it so the workflow can run with the proper context.
+ */
+public class WorkflowBusinessArtifactActionRequest implements JsonSerializable<WorkflowBusinessArtifactActionRequest> {
 
     /**
      * The unique identifier of a business artifact.
@@ -45,24 +50,24 @@ public class WorkflowBusinessArtifactUserActionRequest implements JsonSerializab
     private UUID businessArtifactId;
 
     /**
-     * The type of user action definition associated with this user action request.
-     * This variable indicates the specific action type that a user has initiated.
+     * The type of action definition associated with this action request.
+     * This variable indicates the specific action type that has been initiated.
      */
-    private WorkflowBusinessArtifactUserActionDefinitionType userActionDefinitionType;
+    private WorkflowBusinessArtifactActionDefinitionType businessArtifactActionDefinitionType;
 
     /**
-     * The code that defines a user action.
-     * This code is used to identify and differentiate among various user actions
+     * The code that defines an action.
+     * This code is used to identify and differentiate among various actions
      * within a workflow system.
      */
-    private String userActionDefinitionCode;
+    private String businessArtifactActionDefinitionCode;
 
     /**
-     * The unique identifier for a user action.
-     * This identifier is used to track and manage a specific user action
+     * The unique identifier for an action.
+     * This identifier is used to track and manage a specific action
      * within the workflow system.
      */
-    private UUID userActionId;
+    private UUID businessArtifactActionValueId;
 
     /**
      * The unique identifier of the principal (user or system)
@@ -93,28 +98,28 @@ public class WorkflowBusinessArtifactUserActionRequest implements JsonSerializab
         this.businessArtifactId = businessArtifactId;
     }
 
-    public WorkflowBusinessArtifactUserActionDefinitionType getUserActionDefinitionType() {
-        return this.userActionDefinitionType;
+    public WorkflowBusinessArtifactActionDefinitionType getBusinessArtifactActionDefinitionType() {
+        return this.businessArtifactActionDefinitionType;
     }
 
-    public void setUserActionDefinitionType(WorkflowBusinessArtifactUserActionDefinitionType userActionDefinitionType) {
-        this.userActionDefinitionType = userActionDefinitionType;
+    public void setBusinessArtifactActionDefinitionType(WorkflowBusinessArtifactActionDefinitionType businessArtifactActionDefinitionType) {
+        this.businessArtifactActionDefinitionType = businessArtifactActionDefinitionType;
     }
 
-    public String getUserActionDefinitionCode() {
-        return this.userActionDefinitionCode;
+    public String getBusinessArtifactActionDefinitionCode() {
+        return this.businessArtifactActionDefinitionCode;
     }
 
-    public void setUserActionDefinitionCode(String userActionDefinitionCode) {
-        this.userActionDefinitionCode = userActionDefinitionCode;
+    public void setBusinessArtifactActionDefinitionCode(String businessArtifactActionDefinitionCode) {
+        this.businessArtifactActionDefinitionCode = businessArtifactActionDefinitionCode;
     }
 
-    public UUID getUserActionId() {
-        return this.userActionId;
+    public UUID getBusinessArtifactActionValueId() {
+        return this.businessArtifactActionValueId;
     }
 
-    public void setUserActionId(UUID userActionId) {
-        this.userActionId = userActionId;
+    public void setBusinessArtifactActionValueId(UUID businessArtifactActionValueId) {
+        this.businessArtifactActionValueId = businessArtifactActionValueId;
     }
 
     public UUID getRequestorPrincipalId() {
@@ -145,9 +150,12 @@ public class WorkflowBusinessArtifactUserActionRequest implements JsonSerializab
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("businessArtifactId", Objects.toString(this.businessArtifactId, null));
-        jsonWriter.writeStringField("userActionDefinitionType", Objects.toString(this.userActionDefinitionType, null));
-        jsonWriter.writeStringField("userActionDefinitionCode", this.userActionDefinitionCode);
-        jsonWriter.writeStringField("userActionId", Objects.toString(this.userActionId, null));
+        jsonWriter.writeStringField(
+            "businessArtifactActionDefinitionType",
+            Objects.toString(this.businessArtifactActionDefinitionType, null)
+        );
+        jsonWriter.writeStringField("businessArtifactActionDefinitionCode", this.businessArtifactActionDefinitionCode);
+        jsonWriter.writeStringField("businessArtifactActionValueId", Objects.toString(this.businessArtifactActionValueId, null));
         jsonWriter.writeStringField("requestorPrincipalId", Objects.toString(this.requestorPrincipalId, null));
         jsonWriter.writeStringField(
             "requestTime",
@@ -157,23 +165,23 @@ public class WorkflowBusinessArtifactUserActionRequest implements JsonSerializab
         return jsonWriter.writeEndObject();
     }
 
-    public static WorkflowBusinessArtifactUserActionRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static WorkflowBusinessArtifactActionRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            WorkflowBusinessArtifactUserActionRequest value = new WorkflowBusinessArtifactUserActionRequest();
+            WorkflowBusinessArtifactActionRequest value = new WorkflowBusinessArtifactActionRequest();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("businessArtifactId".equals(fieldName)) {
                     value.businessArtifactId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
-                } else if ("userActionDefinitionType".equals(fieldName)) {
-                    value.userActionDefinitionType = reader.getNullable(nonNullReader ->
-                        WorkflowBusinessArtifactUserActionDefinitionType.fromString(nonNullReader.getString())
+                } else if ("businessArtifactActionDefinitionType".equals(fieldName)) {
+                    value.businessArtifactActionDefinitionType = reader.getNullable(nonNullReader ->
+                        WorkflowBusinessArtifactActionDefinitionType.fromString(nonNullReader.getString())
                     );
-                } else if ("userActionDefinitionCode".equals(fieldName)) {
-                    value.userActionDefinitionCode = reader.getNullable(JsonReader::getString);
-                } else if ("userActionId".equals(fieldName)) {
-                    value.userActionId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("businessArtifactActionDefinitionCode".equals(fieldName)) {
+                    value.businessArtifactActionDefinitionCode = reader.getNullable(JsonReader::getString);
+                } else if ("businessArtifactActionValueId".equals(fieldName)) {
+                    value.businessArtifactActionValueId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("requestorPrincipalId".equals(fieldName)) {
                     value.requestorPrincipalId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("requestTime".equals(fieldName)) {

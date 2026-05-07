@@ -23,6 +23,10 @@
 package com.kuflow.temporal.activity.kuflow;
 
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesFailure.createApplicationFailure;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateBusinessArtifactActionCancelRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateBusinessArtifactActionCreateRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateBusinessArtifactActionRetrieveRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateBusinessArtifactCreateArtifactPrepareRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateBusinessArtifactCreateRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateBusinessArtifactDeleteRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateBusinessArtifactPatchRequest;
@@ -51,6 +55,10 @@ import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidatio
 
 import com.kuflow.rest.KuFlowRestClient;
 import com.kuflow.rest.model.BusinessArtifact;
+import com.kuflow.rest.model.BusinessArtifactAction;
+import com.kuflow.rest.model.BusinessArtifactActionCreateParams;
+import com.kuflow.rest.model.BusinessArtifactCreateArtifactPrepare;
+import com.kuflow.rest.model.BusinessArtifactCreateArtifactPrepareParams;
 import com.kuflow.rest.model.BusinessArtifactCreateParams;
 import com.kuflow.rest.model.BusinessArtifactDataUpdateParams;
 import com.kuflow.rest.model.BusinessArtifactFindOptions;
@@ -78,6 +86,14 @@ import com.kuflow.rest.operation.PrincipalOperations;
 import com.kuflow.rest.operation.ProcessItemOperations;
 import com.kuflow.rest.operation.ProcessOperations;
 import com.kuflow.rest.operation.TenantUserOperations;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionCancelRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionCancelResponse;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionCreateRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionCreateResponse;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionRetrieveRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionRetrieveResponse;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateArtifactPrepareRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateArtifactPrepareResponse;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateResponse;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactDeleteRequest;
@@ -703,6 +719,101 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
             BusinessArtifactPatchResponse response = new BusinessArtifactPatchResponse();
             response.setBusinessArtifact(businessArtifact);
+
+            return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Nonnull
+    @Override
+    public BusinessArtifactActionCreateResponse createBusinessArtifactAction(@Nonnull BusinessArtifactActionCreateRequest request) {
+        try {
+            validateBusinessArtifactActionCreateRequest(request);
+
+            BusinessArtifactActionCreateParams params = new BusinessArtifactActionCreateParams()
+                .setId(request.getId())
+                .setBusinessArtifactActionDefinitionCode(request.getBusinessArtifactActionDefinitionCode())
+                .setStartWorkflow(request.getStartWorkflow())
+                .setDownloadable(request.getDownloadable())
+                .setStartProcess(request.getStartProcess())
+                .setCreateArtifact(request.getCreateArtifact());
+
+            BusinessArtifactAction businessArtifactAction = this.businessArtifactOperations.createBusinessArtifactAction(
+                request.getBusinessArtifactId(),
+                params
+            );
+
+            BusinessArtifactActionCreateResponse response = new BusinessArtifactActionCreateResponse();
+            response.setBusinessArtifactAction(businessArtifactAction);
+
+            return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Nonnull
+    @Override
+    public BusinessArtifactActionRetrieveResponse retrieveBusinessArtifactAction(@Nonnull BusinessArtifactActionRetrieveRequest request) {
+        try {
+            validateBusinessArtifactActionRetrieveRequest(request);
+
+            BusinessArtifactAction businessArtifactAction = this.businessArtifactOperations.retrieveBusinessArtifactAction(
+                request.getBusinessArtifactId(),
+                request.getBusinessArtifactActionId()
+            );
+
+            BusinessArtifactActionRetrieveResponse response = new BusinessArtifactActionRetrieveResponse();
+            response.setBusinessArtifactAction(businessArtifactAction);
+
+            return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Nonnull
+    @Override
+    public BusinessArtifactActionCancelResponse cancelBusinessArtifactAction(@Nonnull BusinessArtifactActionCancelRequest request) {
+        try {
+            validateBusinessArtifactActionCancelRequest(request);
+
+            BusinessArtifactAction businessArtifactAction = this.businessArtifactOperations.cancelBusinessArtifactAction(
+                request.getBusinessArtifactId(),
+                request.getBusinessArtifactActionId()
+            );
+
+            BusinessArtifactActionCancelResponse response = new BusinessArtifactActionCancelResponse();
+            response.setBusinessArtifactAction(businessArtifactAction);
+
+            return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Nonnull
+    @Override
+    public BusinessArtifactCreateArtifactPrepareResponse prepareBusinessArtifactCreateArtifact(
+        @Nonnull BusinessArtifactCreateArtifactPrepareRequest request
+    ) {
+        try {
+            validateBusinessArtifactCreateArtifactPrepareRequest(request);
+
+            BusinessArtifactCreateArtifactPrepareParams params =
+                new BusinessArtifactCreateArtifactPrepareParams().setBusinessArtifactActionDefinitionCode(
+                    request.getBusinessArtifactActionDefinitionCode()
+                );
+
+            BusinessArtifactCreateArtifactPrepare prepare = this.businessArtifactOperations.prepareBusinessArtifactCreateArtifact(
+                request.getBusinessArtifactId(),
+                params
+            );
+
+            BusinessArtifactCreateArtifactPrepareResponse response = new BusinessArtifactCreateArtifactPrepareResponse();
+            response.setBusinessArtifactCreateArtifactPrepare(prepare);
 
             return response;
         } catch (Exception e) {

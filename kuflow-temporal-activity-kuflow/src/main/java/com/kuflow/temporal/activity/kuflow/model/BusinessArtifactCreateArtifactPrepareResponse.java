@@ -20,18 +20,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package com.kuflow.temporal.activity.kuflow.model;
 
-package com.kuflow.temporal.workflow.kuflow.model;
+import com.kuflow.rest.model.BusinessArtifactCreateArtifactPrepare;
+import com.kuflow.temporal.common.model.AbstractModel;
 
-public class WorkflowBusinessArtifactUserActionResponse {
+public class BusinessArtifactCreateArtifactPrepareResponse extends AbstractModel {
 
-    private String message;
+    private BusinessArtifactCreateArtifactPrepare businessArtifactCreateArtifactPrepare;
 
-    public String getMessage() {
-        return this.message;
+    public BusinessArtifactCreateArtifactPrepare getBusinessArtifactCreateArtifactPrepare() {
+        return this.businessArtifactCreateArtifactPrepare;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setBusinessArtifactCreateArtifactPrepare(BusinessArtifactCreateArtifactPrepare businessArtifactCreateArtifactPrepare) {
+        this.businessArtifactCreateArtifactPrepare = businessArtifactCreateArtifactPrepare;
     }
 }
