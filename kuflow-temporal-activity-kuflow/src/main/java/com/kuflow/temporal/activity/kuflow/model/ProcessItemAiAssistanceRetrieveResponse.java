@@ -22,18 +22,18 @@
  */
 package com.kuflow.temporal.activity.kuflow.model;
 
-import com.kuflow.rest.model.ProcessItemTaskAiAssistance;
+import com.kuflow.rest.model.ProcessItemAiAssistance;
 import com.kuflow.temporal.common.model.AbstractModel;
 
-public class ProcessItemTaskAiAssistanceGenerateResponse extends AbstractModel {
+public class ProcessItemAiAssistanceRetrieveResponse extends AbstractModel {
 
-    private ProcessItemTaskAiAssistance processItemTaskAiAssistance;
+    private ProcessItemAiAssistance processItemAiAssistance;
 
-    public ProcessItemTaskAiAssistance getProcessItemTaskAiAssistance() {
-        return this.processItemTaskAiAssistance;
+    public ProcessItemAiAssistance getProcessItemAiAssistance() {
+        return this.processItemAiAssistance;
     }
 
-    public void setProcessItemTaskAiAssistance(ProcessItemTaskAiAssistance processItemTaskAiAssistance) {
-        this.processItemTaskAiAssistance = processItemTaskAiAssistance;
+    public void setProcessItemAiAssistance(ProcessItemAiAssistance processItemAiAssistance) {
+        this.processItemAiAssistance = processItemAiAssistance;
     }
 }

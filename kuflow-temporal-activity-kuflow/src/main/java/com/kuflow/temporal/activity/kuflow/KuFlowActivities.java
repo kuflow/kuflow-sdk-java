@@ -44,16 +44,16 @@ import com.kuflow.temporal.activity.kuflow.model.ProcessFindRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessFindResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessInitiatorChangeRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessInitiatorChangeResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemAiAssistanceGenerateRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemAiAssistanceGenerateResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemAiAssistanceRetrieveRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemAiAssistanceRetrieveResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemCreateRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemCreateResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemFindRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemFindResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemRetrieveRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemRetrieveResponse;
-import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAiAssistanceGenerateRequest;
-import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAiAssistanceGenerateResponse;
-import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAiAssistanceRetrieveRequest;
-import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAiAssistanceRetrieveResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAssignRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAssignResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskClaimRequest;
@@ -304,38 +304,34 @@ public interface KuFlowActivities {
     ProcessItemTaskLoggAppendResponse appendProcessItemTaskLog(@Nonnull ProcessItemTaskLoggAppendRequest request);
 
     /**
-     * Trigger or poll AI assistance for a Process Item Task.
+     * Trigger or poll AI assistance for a Process Item.
      *
-     * <p>Triggers an asynchronous AI assistance run for the task identified by the request {@code requestId} and
-     * returns its current state. Reusing the same {@code requestId} returns the current state of that run without
+     * <p>Triggers an asynchronous AI assistance run for the process item identified by the request {@code requestId}
+     * and returns its current state. Reusing the same {@code requestId} returns the current state of that run without
      * scheduling a new one — use it to poll your own attempt. A new {@code requestId} schedules a fresh run once
      * the previous one has reached a final state; while a run is PENDING, calling with a different {@code requestId}
-     * is rejected. The AI prompt configuration comes from the task definition.
+     * is rejected. The AI prompt configuration comes from the process item definition.
      *
      * @param request must not be {@literal null}.
-     * @return current state of the latest AI assistance run for the task
+     * @return current state of the latest AI assistance run for the process item
      */
     @ActivityMethod
     @Nonnull
-    ProcessItemTaskAiAssistanceGenerateResponse generateProcessItemTaskAiAssistance(
-        @Nonnull ProcessItemTaskAiAssistanceGenerateRequest request
-    );
+    ProcessItemAiAssistanceGenerateResponse generateProcessItemAiAssistance(@Nonnull ProcessItemAiAssistanceGenerateRequest request);
 
     /**
-     * Retrieve the current AI assistance run status for a Process Item Task.
+     * Retrieve the current AI assistance run status for a Process Item.
      *
-     * <p>Returns the status of the latest AI assistance run for the given process item task. Use after
-     * {@link #generateProcessItemTaskAiAssistance(ProcessItemTaskAiAssistanceGenerateRequest)} to poll for completion.
-     * Fails when no run has ever been triggered for the task.
+     * <p>Returns the status of the latest AI assistance run for the given process item. Use after
+     * {@link #generateProcessItemAiAssistance(ProcessItemAiAssistanceGenerateRequest)} to poll for completion.
+     * Fails when no run has ever been triggered for the process item.
      *
      * @param request must not be {@literal null}.
-     * @return current state of the latest AI assistance run for the task
+     * @return current state of the latest AI assistance run for the process item
      */
     @ActivityMethod
     @Nonnull
-    ProcessItemTaskAiAssistanceRetrieveResponse retrieveProcessItemTaskAiAssistance(
-        @Nonnull ProcessItemTaskAiAssistanceRetrieveRequest request
-    );
+    ProcessItemAiAssistanceRetrieveResponse retrieveProcessItemAiAssistance(@Nonnull ProcessItemAiAssistanceRetrieveRequest request);
 
     /**
      * Find all accessible Business Artifacts.

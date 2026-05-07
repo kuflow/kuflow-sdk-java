@@ -33,10 +33,10 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * Params identifying a logical AI assistance attempt for a process item task.
+ * Params identifying a logical AI assistance attempt for a process item.
  */
 @Fluent
-public final class ProcessItemTaskAiAssistanceGenerateParams implements JsonSerializable<ProcessItemTaskAiAssistanceGenerateParams> {
+public final class ProcessItemAiAssistanceGenerateParams implements JsonSerializable<ProcessItemAiAssistanceGenerateParams> {
 
     /*
      * Client-supplied UUID identifying this logical AI assistance attempt. Use the same
@@ -48,10 +48,10 @@ public final class ProcessItemTaskAiAssistanceGenerateParams implements JsonSeri
     private UUID requestId;
 
     /**
-     * Creates an instance of ProcessItemTaskAiAssistanceGenerateParams class.
+     * Creates an instance of ProcessItemAiAssistanceGenerateParams class.
      */
     @Generated
-    public ProcessItemTaskAiAssistanceGenerateParams() {}
+    public ProcessItemAiAssistanceGenerateParams() {}
 
     /**
      * Get the requestId property: Client-supplied UUID identifying this logical AI assistance attempt. Use the same
@@ -73,10 +73,10 @@ public final class ProcessItemTaskAiAssistanceGenerateParams implements JsonSeri
      * calling this endpoint with a different `requestId` is rejected with 409.
      *
      * @param requestId the requestId value to set.
-     * @return the ProcessItemTaskAiAssistanceGenerateParams object itself.
+     * @return the ProcessItemAiAssistanceGenerateParams object itself.
      */
     @Generated
-    public ProcessItemTaskAiAssistanceGenerateParams setRequestId(UUID requestId) {
+    public ProcessItemAiAssistanceGenerateParams setRequestId(UUID requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -93,25 +93,25 @@ public final class ProcessItemTaskAiAssistanceGenerateParams implements JsonSeri
     }
 
     /**
-     * Reads an instance of ProcessItemTaskAiAssistanceGenerateParams from the JsonReader.
+     * Reads an instance of ProcessItemAiAssistanceGenerateParams from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ProcessItemTaskAiAssistanceGenerateParams if the JsonReader was pointing to an instance of
-     * it, or null if it was pointing to JSON null.
+     * @return An instance of ProcessItemAiAssistanceGenerateParams if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ProcessItemTaskAiAssistanceGenerateParams.
+     * @throws IOException If an error occurs while reading the ProcessItemAiAssistanceGenerateParams.
      */
     @Generated
-    public static ProcessItemTaskAiAssistanceGenerateParams fromJson(JsonReader jsonReader) throws IOException {
+    public static ProcessItemAiAssistanceGenerateParams fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ProcessItemTaskAiAssistanceGenerateParams deserializedProcessItemTaskAiAssistanceGenerateParams =
-                new ProcessItemTaskAiAssistanceGenerateParams();
+            ProcessItemAiAssistanceGenerateParams deserializedProcessItemAiAssistanceGenerateParams =
+                new ProcessItemAiAssistanceGenerateParams();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("requestId".equals(fieldName)) {
-                    deserializedProcessItemTaskAiAssistanceGenerateParams.requestId = reader.getNullable(nonNullReader ->
+                    deserializedProcessItemAiAssistanceGenerateParams.requestId = reader.getNullable(nonNullReader ->
                         UUID.fromString(nonNullReader.getString())
                     );
                 } else {
@@ -119,7 +119,7 @@ public final class ProcessItemTaskAiAssistanceGenerateParams implements JsonSeri
                 }
             }
 
-            return deserializedProcessItemTaskAiAssistanceGenerateParams;
+            return deserializedProcessItemAiAssistanceGenerateParams;
         });
     }
 }

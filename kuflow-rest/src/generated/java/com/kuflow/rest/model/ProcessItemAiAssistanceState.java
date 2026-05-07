@@ -29,53 +29,53 @@ import java.util.Collection;
 /**
  * State of an AI assistance run.
  */
-public final class ProcessItemTaskAiAssistanceState extends ExpandableStringEnum<ProcessItemTaskAiAssistanceState> {
+public final class ProcessItemAiAssistanceState extends ExpandableStringEnum<ProcessItemAiAssistanceState> {
 
     /**
-     * Static value PENDING for ProcessItemTaskAiAssistanceState.
+     * Static value PENDING for ProcessItemAiAssistanceState.
      */
     @Generated
-    public static final ProcessItemTaskAiAssistanceState PENDING = fromString("PENDING");
+    public static final ProcessItemAiAssistanceState PENDING = fromString("PENDING");
 
     /**
-     * Static value COMPLETED for ProcessItemTaskAiAssistanceState.
+     * Static value COMPLETED for ProcessItemAiAssistanceState.
      */
     @Generated
-    public static final ProcessItemTaskAiAssistanceState COMPLETED = fromString("COMPLETED");
+    public static final ProcessItemAiAssistanceState COMPLETED = fromString("COMPLETED");
 
     /**
-     * Static value FAILED for ProcessItemTaskAiAssistanceState.
+     * Static value FAILED for ProcessItemAiAssistanceState.
      */
     @Generated
-    public static final ProcessItemTaskAiAssistanceState FAILED = fromString("FAILED");
+    public static final ProcessItemAiAssistanceState FAILED = fromString("FAILED");
 
     /**
-     * Creates a new instance of ProcessItemTaskAiAssistanceState value.
+     * Creates a new instance of ProcessItemAiAssistanceState value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public ProcessItemTaskAiAssistanceState() {}
+    public ProcessItemAiAssistanceState() {}
 
     /**
-     * Creates or finds a ProcessItemTaskAiAssistanceState from its string representation.
+     * Creates or finds a ProcessItemAiAssistanceState from its string representation.
      *
      * @param name a name to look for.
-     * @return the corresponding ProcessItemTaskAiAssistanceState.
+     * @return the corresponding ProcessItemAiAssistanceState.
      */
     @Generated
-    public static ProcessItemTaskAiAssistanceState fromString(String name) {
-        return fromString(name, ProcessItemTaskAiAssistanceState.class);
+    public static ProcessItemAiAssistanceState fromString(String name) {
+        return fromString(name, ProcessItemAiAssistanceState.class);
     }
 
     /**
-     * Gets known ProcessItemTaskAiAssistanceState values.
+     * Gets known ProcessItemAiAssistanceState values.
      *
-     * @return known ProcessItemTaskAiAssistanceState values.
+     * @return known ProcessItemAiAssistanceState values.
      */
     @Generated
-    public static Collection<ProcessItemTaskAiAssistanceState> values() {
-        return values(ProcessItemTaskAiAssistanceState.class);
+    public static Collection<ProcessItemAiAssistanceState> values() {
+        return values(ProcessItemAiAssistanceState.class);
     }
 }

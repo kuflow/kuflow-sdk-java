@@ -36,10 +36,10 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * Status of the latest AI assistance run for a process item task.
+ * Status of the latest AI assistance run for a process item.
  */
 @Fluent
-public final class ProcessItemTaskAiAssistance implements JsonSerializable<ProcessItemTaskAiAssistance> {
+public final class ProcessItemAiAssistance implements JsonSerializable<ProcessItemAiAssistance> {
 
     /*
      * Client-supplied UUID identifying the logical AI assistance attempt this run represents.
@@ -51,7 +51,7 @@ public final class ProcessItemTaskAiAssistance implements JsonSerializable<Proce
      * State of an AI assistance run.
      */
     @Generated
-    private ProcessItemTaskAiAssistanceState state;
+    private ProcessItemAiAssistanceState state;
 
     /*
      * Number of document embeddings still queued. Only present when state is PENDING.
@@ -108,10 +108,10 @@ public final class ProcessItemTaskAiAssistance implements JsonSerializable<Proce
     private OffsetDateTime finishedAt;
 
     /**
-     * Creates an instance of ProcessItemTaskAiAssistance class.
+     * Creates an instance of ProcessItemAiAssistance class.
      */
     @Generated
-    public ProcessItemTaskAiAssistance() {}
+    public ProcessItemAiAssistance() {}
 
     /**
      * Get the requestId property: Client-supplied UUID identifying the logical AI assistance attempt this run
@@ -129,10 +129,10 @@ public final class ProcessItemTaskAiAssistance implements JsonSerializable<Proce
      * represents.
      *
      * @param requestId the requestId value to set.
-     * @return the ProcessItemTaskAiAssistance object itself.
+     * @return the ProcessItemAiAssistance object itself.
      */
     @Generated
-    public ProcessItemTaskAiAssistance setRequestId(UUID requestId) {
+    public ProcessItemAiAssistance setRequestId(UUID requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -143,7 +143,7 @@ public final class ProcessItemTaskAiAssistance implements JsonSerializable<Proce
      * @return the state value.
      */
     @Generated
-    public ProcessItemTaskAiAssistanceState getState() {
+    public ProcessItemAiAssistanceState getState() {
         return this.state;
     }
 
@@ -151,10 +151,10 @@ public final class ProcessItemTaskAiAssistance implements JsonSerializable<Proce
      * Set the state property: State of an AI assistance run.
      *
      * @param state the state value to set.
-     * @return the ProcessItemTaskAiAssistance object itself.
+     * @return the ProcessItemAiAssistance object itself.
      */
     @Generated
-    public ProcessItemTaskAiAssistance setState(ProcessItemTaskAiAssistanceState state) {
+    public ProcessItemAiAssistance setState(ProcessItemAiAssistanceState state) {
         this.state = state;
         return this;
     }
@@ -175,10 +175,10 @@ public final class ProcessItemTaskAiAssistance implements JsonSerializable<Proce
      * PENDING.
      *
      * @param embeddingPending the embeddingPending value to set.
-     * @return the ProcessItemTaskAiAssistance object itself.
+     * @return the ProcessItemAiAssistance object itself.
      */
     @Generated
-    public ProcessItemTaskAiAssistance setEmbeddingPending(Integer embeddingPending) {
+    public ProcessItemAiAssistance setEmbeddingPending(Integer embeddingPending) {
         this.embeddingPending = embeddingPending;
         return this;
     }
@@ -199,10 +199,10 @@ public final class ProcessItemTaskAiAssistance implements JsonSerializable<Proce
      * is PENDING.
      *
      * @param embeddingProcessing the embeddingProcessing value to set.
-     * @return the ProcessItemTaskAiAssistance object itself.
+     * @return the ProcessItemAiAssistance object itself.
      */
     @Generated
-    public ProcessItemTaskAiAssistance setEmbeddingProcessing(Integer embeddingProcessing) {
+    public ProcessItemAiAssistance setEmbeddingProcessing(Integer embeddingProcessing) {
         this.embeddingProcessing = embeddingProcessing;
         return this;
     }
@@ -223,10 +223,10 @@ public final class ProcessItemTaskAiAssistance implements JsonSerializable<Proce
      * state is PENDING.
      *
      * @param retryAfterSeconds the retryAfterSeconds value to set.
-     * @return the ProcessItemTaskAiAssistance object itself.
+     * @return the ProcessItemAiAssistance object itself.
      */
     @Generated
-    public ProcessItemTaskAiAssistance setRetryAfterSeconds(Integer retryAfterSeconds) {
+    public ProcessItemAiAssistance setRetryAfterSeconds(Integer retryAfterSeconds) {
         this.retryAfterSeconds = retryAfterSeconds;
         return this;
     }
@@ -245,10 +245,10 @@ public final class ProcessItemTaskAiAssistance implements JsonSerializable<Proce
      * Set the model property: The AI model used for the assistance. Only present when state is COMPLETED.
      *
      * @param model the model value to set.
-     * @return the ProcessItemTaskAiAssistance object itself.
+     * @return the ProcessItemAiAssistance object itself.
      */
     @Generated
-    public ProcessItemTaskAiAssistance setModel(String model) {
+    public ProcessItemAiAssistance setModel(String model) {
         this.model = model;
         return this;
     }
@@ -267,10 +267,10 @@ public final class ProcessItemTaskAiAssistance implements JsonSerializable<Proce
      * Set the finishReason property: The reason the AI model stopped generating. Only present when state is COMPLETED.
      *
      * @param finishReason the finishReason value to set.
-     * @return the ProcessItemTaskAiAssistance object itself.
+     * @return the ProcessItemAiAssistance object itself.
      */
     @Generated
-    public ProcessItemTaskAiAssistance setFinishReason(String finishReason) {
+    public ProcessItemAiAssistance setFinishReason(String finishReason) {
         this.finishReason = finishReason;
         return this;
     }
@@ -289,10 +289,10 @@ public final class ProcessItemTaskAiAssistance implements JsonSerializable<Proce
      * Set the errorCode property: Error code. Only present when state is FAILED.
      *
      * @param errorCode the errorCode value to set.
-     * @return the ProcessItemTaskAiAssistance object itself.
+     * @return the ProcessItemAiAssistance object itself.
      */
     @Generated
-    public ProcessItemTaskAiAssistance setErrorCode(String errorCode) {
+    public ProcessItemAiAssistance setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }
@@ -311,10 +311,10 @@ public final class ProcessItemTaskAiAssistance implements JsonSerializable<Proce
      * Set the errorMessage property: Human-readable error description. Only present when state is FAILED.
      *
      * @param errorMessage the errorMessage value to set.
-     * @return the ProcessItemTaskAiAssistance object itself.
+     * @return the ProcessItemAiAssistance object itself.
      */
     @Generated
-    public ProcessItemTaskAiAssistance setErrorMessage(String errorMessage) {
+    public ProcessItemAiAssistance setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
         return this;
     }
@@ -333,10 +333,10 @@ public final class ProcessItemTaskAiAssistance implements JsonSerializable<Proce
      * Set the startedAt property: When this run was started.
      *
      * @param startedAt the startedAt value to set.
-     * @return the ProcessItemTaskAiAssistance object itself.
+     * @return the ProcessItemAiAssistance object itself.
      */
     @Generated
-    public ProcessItemTaskAiAssistance setStartedAt(OffsetDateTime startedAt) {
+    public ProcessItemAiAssistance setStartedAt(OffsetDateTime startedAt) {
         this.startedAt = startedAt;
         return this;
     }
@@ -355,10 +355,10 @@ public final class ProcessItemTaskAiAssistance implements JsonSerializable<Proce
      * Set the finishedAt property: When this run finished (COMPLETED or FAILED). Absent while PENDING.
      *
      * @param finishedAt the finishedAt value to set.
-     * @return the ProcessItemTaskAiAssistance object itself.
+     * @return the ProcessItemAiAssistance object itself.
      */
     @Generated
-    public ProcessItemTaskAiAssistance setFinishedAt(OffsetDateTime finishedAt) {
+    public ProcessItemAiAssistance setFinishedAt(OffsetDateTime finishedAt) {
         this.finishedAt = finishedAt;
         return this;
     }
@@ -391,48 +391,48 @@ public final class ProcessItemTaskAiAssistance implements JsonSerializable<Proce
     }
 
     /**
-     * Reads an instance of ProcessItemTaskAiAssistance from the JsonReader.
+     * Reads an instance of ProcessItemAiAssistance from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ProcessItemTaskAiAssistance if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
+     * @return An instance of ProcessItemAiAssistance if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ProcessItemTaskAiAssistance.
+     * @throws IOException If an error occurs while reading the ProcessItemAiAssistance.
      */
     @Generated
-    public static ProcessItemTaskAiAssistance fromJson(JsonReader jsonReader) throws IOException {
+    public static ProcessItemAiAssistance fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ProcessItemTaskAiAssistance deserializedProcessItemTaskAiAssistance = new ProcessItemTaskAiAssistance();
+            ProcessItemAiAssistance deserializedProcessItemAiAssistance = new ProcessItemAiAssistance();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("requestId".equals(fieldName)) {
-                    deserializedProcessItemTaskAiAssistance.requestId = reader.getNullable(nonNullReader ->
+                    deserializedProcessItemAiAssistance.requestId = reader.getNullable(nonNullReader ->
                         UUID.fromString(nonNullReader.getString())
                     );
                 } else if ("state".equals(fieldName)) {
-                    deserializedProcessItemTaskAiAssistance.state = ProcessItemTaskAiAssistanceState.fromString(reader.getString());
+                    deserializedProcessItemAiAssistance.state = ProcessItemAiAssistanceState.fromString(reader.getString());
                 } else if ("startedAt".equals(fieldName)) {
-                    deserializedProcessItemTaskAiAssistance.startedAt = reader.getNullable(nonNullReader ->
+                    deserializedProcessItemAiAssistance.startedAt = reader.getNullable(nonNullReader ->
                         CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())
                     );
                 } else if ("embeddingPending".equals(fieldName)) {
-                    deserializedProcessItemTaskAiAssistance.embeddingPending = reader.getNullable(JsonReader::getInt);
+                    deserializedProcessItemAiAssistance.embeddingPending = reader.getNullable(JsonReader::getInt);
                 } else if ("embeddingProcessing".equals(fieldName)) {
-                    deserializedProcessItemTaskAiAssistance.embeddingProcessing = reader.getNullable(JsonReader::getInt);
+                    deserializedProcessItemAiAssistance.embeddingProcessing = reader.getNullable(JsonReader::getInt);
                 } else if ("retryAfterSeconds".equals(fieldName)) {
-                    deserializedProcessItemTaskAiAssistance.retryAfterSeconds = reader.getNullable(JsonReader::getInt);
+                    deserializedProcessItemAiAssistance.retryAfterSeconds = reader.getNullable(JsonReader::getInt);
                 } else if ("model".equals(fieldName)) {
-                    deserializedProcessItemTaskAiAssistance.model = reader.getString();
+                    deserializedProcessItemAiAssistance.model = reader.getString();
                 } else if ("finishReason".equals(fieldName)) {
-                    deserializedProcessItemTaskAiAssistance.finishReason = reader.getString();
+                    deserializedProcessItemAiAssistance.finishReason = reader.getString();
                 } else if ("errorCode".equals(fieldName)) {
-                    deserializedProcessItemTaskAiAssistance.errorCode = reader.getString();
+                    deserializedProcessItemAiAssistance.errorCode = reader.getString();
                 } else if ("errorMessage".equals(fieldName)) {
-                    deserializedProcessItemTaskAiAssistance.errorMessage = reader.getString();
+                    deserializedProcessItemAiAssistance.errorMessage = reader.getString();
                 } else if ("finishedAt".equals(fieldName)) {
-                    deserializedProcessItemTaskAiAssistance.finishedAt = reader.getNullable(nonNullReader ->
+                    deserializedProcessItemAiAssistance.finishedAt = reader.getNullable(nonNullReader ->
                         CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())
                     );
                 } else {
@@ -440,7 +440,7 @@ public final class ProcessItemTaskAiAssistance implements JsonSerializable<Proce
                 }
             }
 
-            return deserializedProcessItemTaskAiAssistance;
+            return deserializedProcessItemAiAssistance;
         });
     }
 }

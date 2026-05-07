@@ -25,11 +25,9 @@ package com.kuflow.temporal.activity.kuflow.model;
 import com.kuflow.temporal.common.model.AbstractModel;
 import java.util.UUID;
 
-public class ProcessItemTaskAiAssistanceGenerateRequest extends AbstractModel {
+public class ProcessItemAiAssistanceRetrieveRequest extends AbstractModel {
 
     private UUID processItemId;
-
-    private UUID requestId;
 
     public UUID getProcessItemId() {
         return this.processItemId;
@@ -37,13 +35,5 @@ public class ProcessItemTaskAiAssistanceGenerateRequest extends AbstractModel {
 
     public void setProcessItemId(UUID processItemId) {
         this.processItemId = processItemId;
-    }
-
-    public UUID getRequestId() {
-        return this.requestId;
-    }
-
-    public void setRequestId(UUID requestId) {
-        this.requestId = requestId;
     }
 }
