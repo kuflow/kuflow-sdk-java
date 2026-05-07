@@ -22,18 +22,18 @@
  */
 package com.kuflow.temporal.activity.kuflow.model;
 
+import com.kuflow.rest.model.ProcessItemAiAssistance;
 import com.kuflow.temporal.common.model.AbstractModel;
-import java.util.UUID;
 
-public class ProcessItemTaskAiAssistanceRequest extends AbstractModel {
+public class ProcessItemAiAssistanceRetrieveResponse extends AbstractModel {
 
-    private UUID processItemId;
+    private ProcessItemAiAssistance processItemAiAssistance;
 
-    public UUID getProcessItemId() {
-        return this.processItemId;
+    public ProcessItemAiAssistance getProcessItemAiAssistance() {
+        return this.processItemAiAssistance;
     }
 
-    public void setProcessItemId(UUID processItemId) {
-        this.processItemId = processItemId;
+    public void setProcessItemAiAssistance(ProcessItemAiAssistance processItemAiAssistance) {
+        this.processItemAiAssistance = processItemAiAssistance;
     }
 }

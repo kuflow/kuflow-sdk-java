@@ -45,9 +45,10 @@ import com.azure.core.util.FluxUtil;
 import com.kuflow.rest.model.DefaultErrorException;
 import com.kuflow.rest.model.JsonPatchOperation;
 import com.kuflow.rest.model.ProcessItem;
+import com.kuflow.rest.model.ProcessItemAiAssistance;
+import com.kuflow.rest.model.ProcessItemAiAssistanceGenerateParams;
 import com.kuflow.rest.model.ProcessItemCreateParams;
 import com.kuflow.rest.model.ProcessItemPage;
-import com.kuflow.rest.model.ProcessItemTaskAiAssistanceResponse;
 import com.kuflow.rest.model.ProcessItemTaskAppendLogParams;
 import com.kuflow.rest.model.ProcessItemTaskAssignParams;
 import com.kuflow.rest.model.ProcessItemTaskContextDataUpdateParams;
@@ -171,6 +172,48 @@ public final class ProcessItemOperationsImpl {
             Context context
         );
 
+        @Get("/process-items/{id}/~actions/ai-assistance")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<ProcessItemAiAssistance>> retrieveProcessItemAiAssistance(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Get("/process-items/{id}/~actions/ai-assistance")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<ProcessItemAiAssistance> retrieveProcessItemAiAssistanceSync(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/process-items/{id}/~actions/ai-assistance")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<ProcessItemAiAssistance>> generateProcessItemAiAssistance(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") ProcessItemAiAssistanceGenerateParams processItemAiAssistanceGenerateParams,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/process-items/{id}/~actions/ai-assistance")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<ProcessItemAiAssistance> generateProcessItemAiAssistanceSync(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") ProcessItemAiAssistanceGenerateParams processItemAiAssistanceGenerateParams,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
         @Post("/process-items/{id}/task/~actions/claim")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
@@ -251,26 +294,6 @@ public final class ProcessItemOperationsImpl {
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @BodyParam("application/json") ProcessItemTaskAppendLogParams processItemTaskAppendLogParams,
-            @HeaderParam("Accept") String accept,
-            Context context
-        );
-
-        @Post("/process-items/{id}/task/~actions/ai-assistance")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<ProcessItemTaskAiAssistanceResponse>> generateProcessItemTaskAiAssistance(
-            @HostParam("$host") String host,
-            @PathParam("id") UUID id,
-            @HeaderParam("Accept") String accept,
-            Context context
-        );
-
-        @Post("/process-items/{id}/task/~actions/ai-assistance")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Response<ProcessItemTaskAiAssistanceResponse> generateProcessItemTaskAiAssistanceSync(
-            @HostParam("$host") String host,
-            @PathParam("id") UUID id,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -1114,6 +1137,353 @@ public final class ProcessItemOperationsImpl {
     }
 
     /**
+     * Get the current AI assistance run status for a process item
+     *
+     * Return the status of the latest AI assistance run for the given process item.
+     *
+     * Poll this endpoint after triggering `generateProcessItemAiAssistance` to determine when
+     * the run has finished. Returns 404 when no run has ever been triggered for the process item.
+     *
+     * @param id The resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status of the latest AI assistance run for a process item along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ProcessItemAiAssistance>> retrieveProcessItemAiAssistanceWithResponseAsync(UUID id) {
+        return FluxUtil.withContext(context -> retrieveProcessItemAiAssistanceWithResponseAsync(id, context));
+    }
+
+    /**
+     * Get the current AI assistance run status for a process item
+     *
+     * Return the status of the latest AI assistance run for the given process item.
+     *
+     * Poll this endpoint after triggering `generateProcessItemAiAssistance` to determine when
+     * the run has finished. Returns 404 when no run has ever been triggered for the process item.
+     *
+     * @param id The resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status of the latest AI assistance run for a process item along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ProcessItemAiAssistance>> retrieveProcessItemAiAssistanceWithResponseAsync(UUID id, Context context) {
+        final String accept = "application/json";
+        return service.retrieveProcessItemAiAssistance(this.client.getHost(), id, accept, context);
+    }
+
+    /**
+     * Get the current AI assistance run status for a process item
+     *
+     * Return the status of the latest AI assistance run for the given process item.
+     *
+     * Poll this endpoint after triggering `generateProcessItemAiAssistance` to determine when
+     * the run has finished. Returns 404 when no run has ever been triggered for the process item.
+     *
+     * @param id The resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status of the latest AI assistance run for a process item on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ProcessItemAiAssistance> retrieveProcessItemAiAssistanceAsync(UUID id) {
+        return retrieveProcessItemAiAssistanceWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get the current AI assistance run status for a process item
+     *
+     * Return the status of the latest AI assistance run for the given process item.
+     *
+     * Poll this endpoint after triggering `generateProcessItemAiAssistance` to determine when
+     * the run has finished. Returns 404 when no run has ever been triggered for the process item.
+     *
+     * @param id The resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status of the latest AI assistance run for a process item on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ProcessItemAiAssistance> retrieveProcessItemAiAssistanceAsync(UUID id, Context context) {
+        return retrieveProcessItemAiAssistanceWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get the current AI assistance run status for a process item
+     *
+     * Return the status of the latest AI assistance run for the given process item.
+     *
+     * Poll this endpoint after triggering `generateProcessItemAiAssistance` to determine when
+     * the run has finished. Returns 404 when no run has ever been triggered for the process item.
+     *
+     * @param id The resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status of the latest AI assistance run for a process item along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ProcessItemAiAssistance> retrieveProcessItemAiAssistanceWithResponse(UUID id, Context context) {
+        final String accept = "application/json";
+        return service.retrieveProcessItemAiAssistanceSync(this.client.getHost(), id, accept, context);
+    }
+
+    /**
+     * Get the current AI assistance run status for a process item
+     *
+     * Return the status of the latest AI assistance run for the given process item.
+     *
+     * Poll this endpoint after triggering `generateProcessItemAiAssistance` to determine when
+     * the run has finished. Returns 404 when no run has ever been triggered for the process item.
+     *
+     * @param id The resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status of the latest AI assistance run for a process item.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProcessItemAiAssistance retrieveProcessItemAiAssistance(UUID id) {
+        return retrieveProcessItemAiAssistanceWithResponse(id, Context.NONE).getValue();
+    }
+
+    /**
+     * Trigger or poll AI assistance for a process item
+     *
+     * Trigger an asynchronous AI assistance run for a process item and return its current state, identified
+     * by a client-supplied `requestId` (UUID). The `requestId` makes the call idempotent and lets a
+     * client launch successive AI assistance attempts on the same process item — one at a time.
+     *
+     * Behavior given the latest persisted run (if any) for the process item:
+     *
+     * - No prior run → schedules a new run and returns the initial PENDING state (202).
+     * - The stored `requestId` matches the incoming one → returns the current state of that run
+     * without scheduling a new one (200). Use this to poll your own attempt.
+     * - The stored `requestId` differs and the run is in a final state (COMPLETED or FAILED) →
+     * schedules a new run on the same record, replacing the previous result (202).
+     * - The stored `requestId` differs and the run is still PENDING → rejected with 409, since
+     * another AI assistance attempt is already in progress on this process item.
+     *
+     * The AI prompt configuration comes from the process item definition.
+     *
+     * @param id The resource ID.
+     * @param processItemAiAssistanceGenerateParams Params identifying this AI assistance attempt.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status of the latest AI assistance run for a process item along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ProcessItemAiAssistance>> generateProcessItemAiAssistanceWithResponseAsync(
+        UUID id,
+        ProcessItemAiAssistanceGenerateParams processItemAiAssistanceGenerateParams
+    ) {
+        return FluxUtil.withContext(context ->
+            generateProcessItemAiAssistanceWithResponseAsync(id, processItemAiAssistanceGenerateParams, context)
+        );
+    }
+
+    /**
+     * Trigger or poll AI assistance for a process item
+     *
+     * Trigger an asynchronous AI assistance run for a process item and return its current state, identified
+     * by a client-supplied `requestId` (UUID). The `requestId` makes the call idempotent and lets a
+     * client launch successive AI assistance attempts on the same process item — one at a time.
+     *
+     * Behavior given the latest persisted run (if any) for the process item:
+     *
+     * - No prior run → schedules a new run and returns the initial PENDING state (202).
+     * - The stored `requestId` matches the incoming one → returns the current state of that run
+     * without scheduling a new one (200). Use this to poll your own attempt.
+     * - The stored `requestId` differs and the run is in a final state (COMPLETED or FAILED) →
+     * schedules a new run on the same record, replacing the previous result (202).
+     * - The stored `requestId` differs and the run is still PENDING → rejected with 409, since
+     * another AI assistance attempt is already in progress on this process item.
+     *
+     * The AI prompt configuration comes from the process item definition.
+     *
+     * @param id The resource ID.
+     * @param processItemAiAssistanceGenerateParams Params identifying this AI assistance attempt.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status of the latest AI assistance run for a process item along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ProcessItemAiAssistance>> generateProcessItemAiAssistanceWithResponseAsync(
+        UUID id,
+        ProcessItemAiAssistanceGenerateParams processItemAiAssistanceGenerateParams,
+        Context context
+    ) {
+        final String accept = "application/json";
+        return service.generateProcessItemAiAssistance(this.client.getHost(), id, processItemAiAssistanceGenerateParams, accept, context);
+    }
+
+    /**
+     * Trigger or poll AI assistance for a process item
+     *
+     * Trigger an asynchronous AI assistance run for a process item and return its current state, identified
+     * by a client-supplied `requestId` (UUID). The `requestId` makes the call idempotent and lets a
+     * client launch successive AI assistance attempts on the same process item — one at a time.
+     *
+     * Behavior given the latest persisted run (if any) for the process item:
+     *
+     * - No prior run → schedules a new run and returns the initial PENDING state (202).
+     * - The stored `requestId` matches the incoming one → returns the current state of that run
+     * without scheduling a new one (200). Use this to poll your own attempt.
+     * - The stored `requestId` differs and the run is in a final state (COMPLETED or FAILED) →
+     * schedules a new run on the same record, replacing the previous result (202).
+     * - The stored `requestId` differs and the run is still PENDING → rejected with 409, since
+     * another AI assistance attempt is already in progress on this process item.
+     *
+     * The AI prompt configuration comes from the process item definition.
+     *
+     * @param id The resource ID.
+     * @param processItemAiAssistanceGenerateParams Params identifying this AI assistance attempt.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status of the latest AI assistance run for a process item on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ProcessItemAiAssistance> generateProcessItemAiAssistanceAsync(
+        UUID id,
+        ProcessItemAiAssistanceGenerateParams processItemAiAssistanceGenerateParams
+    ) {
+        return generateProcessItemAiAssistanceWithResponseAsync(id, processItemAiAssistanceGenerateParams).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
+        );
+    }
+
+    /**
+     * Trigger or poll AI assistance for a process item
+     *
+     * Trigger an asynchronous AI assistance run for a process item and return its current state, identified
+     * by a client-supplied `requestId` (UUID). The `requestId` makes the call idempotent and lets a
+     * client launch successive AI assistance attempts on the same process item — one at a time.
+     *
+     * Behavior given the latest persisted run (if any) for the process item:
+     *
+     * - No prior run → schedules a new run and returns the initial PENDING state (202).
+     * - The stored `requestId` matches the incoming one → returns the current state of that run
+     * without scheduling a new one (200). Use this to poll your own attempt.
+     * - The stored `requestId` differs and the run is in a final state (COMPLETED or FAILED) →
+     * schedules a new run on the same record, replacing the previous result (202).
+     * - The stored `requestId` differs and the run is still PENDING → rejected with 409, since
+     * another AI assistance attempt is already in progress on this process item.
+     *
+     * The AI prompt configuration comes from the process item definition.
+     *
+     * @param id The resource ID.
+     * @param processItemAiAssistanceGenerateParams Params identifying this AI assistance attempt.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status of the latest AI assistance run for a process item on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ProcessItemAiAssistance> generateProcessItemAiAssistanceAsync(
+        UUID id,
+        ProcessItemAiAssistanceGenerateParams processItemAiAssistanceGenerateParams,
+        Context context
+    ) {
+        return generateProcessItemAiAssistanceWithResponseAsync(id, processItemAiAssistanceGenerateParams, context).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
+        );
+    }
+
+    /**
+     * Trigger or poll AI assistance for a process item
+     *
+     * Trigger an asynchronous AI assistance run for a process item and return its current state, identified
+     * by a client-supplied `requestId` (UUID). The `requestId` makes the call idempotent and lets a
+     * client launch successive AI assistance attempts on the same process item — one at a time.
+     *
+     * Behavior given the latest persisted run (if any) for the process item:
+     *
+     * - No prior run → schedules a new run and returns the initial PENDING state (202).
+     * - The stored `requestId` matches the incoming one → returns the current state of that run
+     * without scheduling a new one (200). Use this to poll your own attempt.
+     * - The stored `requestId` differs and the run is in a final state (COMPLETED or FAILED) →
+     * schedules a new run on the same record, replacing the previous result (202).
+     * - The stored `requestId` differs and the run is still PENDING → rejected with 409, since
+     * another AI assistance attempt is already in progress on this process item.
+     *
+     * The AI prompt configuration comes from the process item definition.
+     *
+     * @param id The resource ID.
+     * @param processItemAiAssistanceGenerateParams Params identifying this AI assistance attempt.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status of the latest AI assistance run for a process item along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ProcessItemAiAssistance> generateProcessItemAiAssistanceWithResponse(
+        UUID id,
+        ProcessItemAiAssistanceGenerateParams processItemAiAssistanceGenerateParams,
+        Context context
+    ) {
+        final String accept = "application/json";
+        return service.generateProcessItemAiAssistanceSync(
+            this.client.getHost(),
+            id,
+            processItemAiAssistanceGenerateParams,
+            accept,
+            context
+        );
+    }
+
+    /**
+     * Trigger or poll AI assistance for a process item
+     *
+     * Trigger an asynchronous AI assistance run for a process item and return its current state, identified
+     * by a client-supplied `requestId` (UUID). The `requestId` makes the call idempotent and lets a
+     * client launch successive AI assistance attempts on the same process item — one at a time.
+     *
+     * Behavior given the latest persisted run (if any) for the process item:
+     *
+     * - No prior run → schedules a new run and returns the initial PENDING state (202).
+     * - The stored `requestId` matches the incoming one → returns the current state of that run
+     * without scheduling a new one (200). Use this to poll your own attempt.
+     * - The stored `requestId` differs and the run is in a final state (COMPLETED or FAILED) →
+     * schedules a new run on the same record, replacing the previous result (202).
+     * - The stored `requestId` differs and the run is still PENDING → rejected with 409, since
+     * another AI assistance attempt is already in progress on this process item.
+     *
+     * The AI prompt configuration comes from the process item definition.
+     *
+     * @param id The resource ID.
+     * @param processItemAiAssistanceGenerateParams Params identifying this AI assistance attempt.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status of the latest AI assistance run for a process item.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProcessItemAiAssistance generateProcessItemAiAssistance(
+        UUID id,
+        ProcessItemAiAssistanceGenerateParams processItemAiAssistanceGenerateParams
+    ) {
+        return generateProcessItemAiAssistanceWithResponse(id, processItemAiAssistanceGenerateParams, Context.NONE).getValue();
+    }
+
+    /**
      * Claim a process item task
      *
      * Allow to claim a task.
@@ -1559,120 +1929,6 @@ public final class ProcessItemOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProcessItem appendProcessItemTaskLog(UUID id, ProcessItemTaskAppendLogParams processItemTaskAppendLogParams) {
         return appendProcessItemTaskLogWithResponse(id, processItemTaskAppendLogParams, Context.NONE).getValue();
-    }
-
-    /**
-     * Generate and apply AI assistance for a process item task
-     *
-     * Allow to generate AI assistance for a task and apply the results. The AI prompt configuration
-     * comes from the task definition. The response includes the updated process item and AI metadata.
-     *
-     * @param id The resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of an AI assistance action applied to a process item task along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ProcessItemTaskAiAssistanceResponse>> generateProcessItemTaskAiAssistanceWithResponseAsync(UUID id) {
-        return FluxUtil.withContext(context -> generateProcessItemTaskAiAssistanceWithResponseAsync(id, context));
-    }
-
-    /**
-     * Generate and apply AI assistance for a process item task
-     *
-     * Allow to generate AI assistance for a task and apply the results. The AI prompt configuration
-     * comes from the task definition. The response includes the updated process item and AI metadata.
-     *
-     * @param id The resource ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of an AI assistance action applied to a process item task along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ProcessItemTaskAiAssistanceResponse>> generateProcessItemTaskAiAssistanceWithResponseAsync(
-        UUID id,
-        Context context
-    ) {
-        final String accept = "application/json";
-        return service.generateProcessItemTaskAiAssistance(this.client.getHost(), id, accept, context);
-    }
-
-    /**
-     * Generate and apply AI assistance for a process item task
-     *
-     * Allow to generate AI assistance for a task and apply the results. The AI prompt configuration
-     * comes from the task definition. The response includes the updated process item and AI metadata.
-     *
-     * @param id The resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of an AI assistance action applied to a process item task on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProcessItemTaskAiAssistanceResponse> generateProcessItemTaskAiAssistanceAsync(UUID id) {
-        return generateProcessItemTaskAiAssistanceWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Generate and apply AI assistance for a process item task
-     *
-     * Allow to generate AI assistance for a task and apply the results. The AI prompt configuration
-     * comes from the task definition. The response includes the updated process item and AI metadata.
-     *
-     * @param id The resource ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of an AI assistance action applied to a process item task on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProcessItemTaskAiAssistanceResponse> generateProcessItemTaskAiAssistanceAsync(UUID id, Context context) {
-        return generateProcessItemTaskAiAssistanceWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Generate and apply AI assistance for a process item task
-     *
-     * Allow to generate AI assistance for a task and apply the results. The AI prompt configuration
-     * comes from the task definition. The response includes the updated process item and AI metadata.
-     *
-     * @param id The resource ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of an AI assistance action applied to a process item task along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProcessItemTaskAiAssistanceResponse> generateProcessItemTaskAiAssistanceWithResponse(UUID id, Context context) {
-        final String accept = "application/json";
-        return service.generateProcessItemTaskAiAssistanceSync(this.client.getHost(), id, accept, context);
-    }
-
-    /**
-     * Generate and apply AI assistance for a process item task
-     *
-     * Allow to generate AI assistance for a task and apply the results. The AI prompt configuration
-     * comes from the task definition. The response includes the updated process item and AI metadata.
-     *
-     * @param id The resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of an AI assistance action applied to a process item task.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProcessItemTaskAiAssistanceResponse generateProcessItemTaskAiAssistance(UUID id) {
-        return generateProcessItemTaskAiAssistanceWithResponse(id, Context.NONE).getValue();
     }
 
     /**

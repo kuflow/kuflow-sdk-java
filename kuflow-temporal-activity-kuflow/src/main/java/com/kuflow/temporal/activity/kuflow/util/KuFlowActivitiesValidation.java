@@ -35,9 +35,10 @@ import com.kuflow.temporal.activity.kuflow.model.PrincipalRetrieveRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessEntityPatchRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessEntityUpdateRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessInitiatorChangeRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemAiAssistanceGenerateRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemAiAssistanceRetrieveRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemCreateRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemRetrieveRequest;
-import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAiAssistanceRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskAssignRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskClaimRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessItemTaskCompleteRequest;
@@ -267,7 +268,16 @@ public class KuFlowActivitiesValidation {
         }
     }
 
-    public static void validateProcessItemTaskAiAssistanceRequest(ProcessItemTaskAiAssistanceRequest request) {
+    public static void validateProcessItemAiAssistanceGenerateRequest(ProcessItemAiAssistanceGenerateRequest request) {
+        if (request.getProcessItemId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'processItemId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+        if (request.getRequestId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'requestId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+    }
+
+    public static void validateProcessItemAiAssistanceRetrieveRequest(ProcessItemAiAssistanceRetrieveRequest request) {
         if (request.getProcessItemId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'processItemId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
