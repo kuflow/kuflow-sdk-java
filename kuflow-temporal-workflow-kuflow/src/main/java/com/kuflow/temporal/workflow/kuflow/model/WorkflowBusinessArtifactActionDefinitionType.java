@@ -26,40 +26,42 @@ package com.kuflow.temporal.workflow.kuflow.model;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-public class WorkflowBusinessArtifactUserActionDefinitionType
-    extends ExpandableStringEnum<WorkflowBusinessArtifactUserActionDefinitionType>
-{
+/**
+ * Enumerates the action definition types that can be attached to a business artifact and trigger
+ * a workflow when invoked from the KuFlow UI.
+ */
+public class WorkflowBusinessArtifactActionDefinitionType extends ExpandableStringEnum<WorkflowBusinessArtifactActionDefinitionType> {
 
-    public static final WorkflowBusinessArtifactUserActionDefinitionType DOWNLOADABLE = fromString("DOWNLOADABLE");
+    public static final WorkflowBusinessArtifactActionDefinitionType DOWNLOADABLE = fromString("DOWNLOADABLE");
 
-    public static final WorkflowBusinessArtifactUserActionDefinitionType START_PROCESS = fromString("START_PROCESS");
+    public static final WorkflowBusinessArtifactActionDefinitionType START_PROCESS = fromString("START_PROCESS");
 
-    public static final WorkflowBusinessArtifactUserActionDefinitionType START_WORKFLOW = fromString("START_WORKFLOW");
+    public static final WorkflowBusinessArtifactActionDefinitionType START_WORKFLOW = fromString("START_WORKFLOW");
 
     /**
-     * Creates a new instance of ProcessState value.
+     * Creates a new instance of WorkflowBusinessArtifactActionDefinitionType value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public WorkflowBusinessArtifactUserActionDefinitionType() {}
+    public WorkflowBusinessArtifactActionDefinitionType() {}
 
     /**
-     * Creates or finds a UserActionDefinitionType from its string representation.
+     * Creates or finds a WorkflowBusinessArtifactActionDefinitionType from its string representation.
      *
      * @param name a name to look for.
-     * @return the corresponding UserActionDefinitionType.
+     * @return the corresponding WorkflowBusinessArtifactActionDefinitionType.
      */
-    public static WorkflowBusinessArtifactUserActionDefinitionType fromString(String name) {
-        return fromString(name, WorkflowBusinessArtifactUserActionDefinitionType.class);
+    public static WorkflowBusinessArtifactActionDefinitionType fromString(String name) {
+        return fromString(name, WorkflowBusinessArtifactActionDefinitionType.class);
     }
 
     /**
-     * Gets known UserActionDefinitionType values.
+     * Gets known WorkflowBusinessArtifactActionDefinitionType values.
      *
-     * @return known UserActionDefinitionType values.
+     * @return known WorkflowBusinessArtifactActionDefinitionType values.
      */
-    public static Collection<WorkflowBusinessArtifactUserActionDefinitionType> values() {
-        return values(WorkflowBusinessArtifactUserActionDefinitionType.class);
+    public static Collection<WorkflowBusinessArtifactActionDefinitionType> values() {
+        return values(WorkflowBusinessArtifactActionDefinitionType.class);
     }
 }

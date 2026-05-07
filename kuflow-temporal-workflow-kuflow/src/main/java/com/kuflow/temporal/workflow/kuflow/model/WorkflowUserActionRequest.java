@@ -39,7 +39,7 @@ import java.util.UUID;
  * @deprecated Use {@link WorkflowProcessUserActionRequest} instead.
  */
 @Deprecated
-public class WorkflowUserActionRequest implements JsonSerializable<SignalProcessItem> {
+public class WorkflowUserActionRequest implements JsonSerializable<WorkflowUserActionRequest> {
 
     /**
      * The unique identifier of a process.

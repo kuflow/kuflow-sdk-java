@@ -22,6 +22,14 @@
  */
 package com.kuflow.temporal.activity.kuflow;
 
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionCancelRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionCancelResponse;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionCreateRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionCreateResponse;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionRetrieveRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionRetrieveResponse;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateArtifactPrepareRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateArtifactPrepareResponse;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateResponse;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactDeleteRequest;
@@ -400,4 +408,54 @@ public interface KuFlowActivities {
     @ActivityMethod
     @Nonnull
     BusinessArtifactPatchResponse patchBusinessArtifact(@Nonnull BusinessArtifactPatchRequest request);
+
+    /**
+     * Create a Business Artifact Action.
+     *
+     * <p>Triggers an action defined for a Business Artifact. Asynchronous types
+     * ({@code START_WORKFLOW}, {@code DOWNLOADABLE}) return with status {@code REQUESTED};
+     * synchronous types complete immediately.
+     *
+     * @param request must not be {@literal null}.
+     * @return business artifact action created
+     */
+    @ActivityMethod
+    @Nonnull
+    BusinessArtifactActionCreateResponse createBusinessArtifactAction(@Nonnull BusinessArtifactActionCreateRequest request);
+
+    /**
+     * Retrieve a Business Artifact Action.
+     *
+     * @param request must not be {@literal null}.
+     * @return business artifact action
+     */
+    @ActivityMethod
+    @Nonnull
+    BusinessArtifactActionRetrieveResponse retrieveBusinessArtifactAction(@Nonnull BusinessArtifactActionRetrieveRequest request);
+
+    /**
+     * Cancel a Business Artifact Action.
+     *
+     * <p>Cancels asynchronous actions in {@code REQUESTED} state. Terminal-state actions are returned unchanged.
+     *
+     * @param request must not be {@literal null}.
+     * @return business artifact action with the resulting state
+     */
+    @ActivityMethod
+    @Nonnull
+    BusinessArtifactActionCancelResponse cancelBusinessArtifactAction(@Nonnull BusinessArtifactActionCancelRequest request);
+
+    /**
+     * Prepare the value that a {@code CREATE_BUSINESS_ARTIFACT} action would produce.
+     *
+     * <p>Computes the pre-filled artifact value without persisting any state.
+     *
+     * @param request must not be {@literal null}.
+     * @return prepared business artifact value
+     */
+    @ActivityMethod
+    @Nonnull
+    BusinessArtifactCreateArtifactPrepareResponse prepareBusinessArtifactCreateArtifact(
+        @Nonnull BusinessArtifactCreateArtifactPrepareRequest request
+    );
 }

@@ -11,8 +11,8 @@ This is the AutoRest configuration file for KuFlow.
 To build the SDK for KuFlow, simply do the following in this folder:
 
 ```bash
-$> npm ci
-$> npm run generate
+$> pnpm install
+$> pnpm run generate
 ```
 
 ---
@@ -27,7 +27,7 @@ java: true
 title: KuFlow
 override-client-name: KuFlowClient
 
-input-file: https://raw.githubusercontent.com/kuflow/kuflow-openapi/c4538605f5c0963dbe809790e63743e2f4fae232/specs/api.kuflow.com/v2024-06-14/openapi.yaml
+input-file: https://raw.githubusercontent.com/kuflow/kuflow-openapi/3435171917783e9014d4272041e6e5ed85318c4d/specs/api.kuflow.com/v2024-06-14/openapi.yaml
 output-folder: ../target/openapi-generated
 
 openapi-type: data-plane
@@ -43,7 +43,7 @@ pass-discriminator-to-child-deserialization: false
 models-subpackage: model
 
 use-extension:
-  "@autorest/java": "4.1.62"
+  "@autorest/java": "4.1.63"
 
 modelerfour:
   seal-single-value-enum-by-default: false

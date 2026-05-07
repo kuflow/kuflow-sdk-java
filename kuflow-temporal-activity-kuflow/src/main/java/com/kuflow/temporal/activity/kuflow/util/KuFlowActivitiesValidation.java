@@ -26,6 +26,10 @@ package com.kuflow.temporal.activity.kuflow.util;
 import static com.kuflow.temporal.activity.kuflow.KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE;
 
 import com.kuflow.rest.model.ProcessItemType;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionCancelRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionCreateRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionRetrieveRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateArtifactPrepareRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactDeleteRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactPatchRequest;
@@ -88,6 +92,54 @@ public class KuFlowActivitiesValidation {
     public static void validateBusinessArtifactPatchRequest(BusinessArtifactPatchRequest request) {
         if (request.getBusinessArtifactId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'businessArtifactId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+    }
+
+    public static void validateBusinessArtifactActionCreateRequest(BusinessArtifactActionCreateRequest request) {
+        if (request.getBusinessArtifactId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'businessArtifactId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+        if (request.getBusinessArtifactActionDefinitionCode() == null) {
+            throw ApplicationFailure.newNonRetryableFailure(
+                "'businessArtifactActionDefinitionCode' is required",
+                ACTIVITIES_VALIDATION_FAILURE.getType()
+            );
+        }
+    }
+
+    public static void validateBusinessArtifactActionRetrieveRequest(BusinessArtifactActionRetrieveRequest request) {
+        if (request.getBusinessArtifactId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'businessArtifactId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+        if (request.getBusinessArtifactActionId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure(
+                "'businessArtifactActionId' is required",
+                ACTIVITIES_VALIDATION_FAILURE.getType()
+            );
+        }
+    }
+
+    public static void validateBusinessArtifactActionCancelRequest(BusinessArtifactActionCancelRequest request) {
+        if (request.getBusinessArtifactId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'businessArtifactId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+        if (request.getBusinessArtifactActionId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure(
+                "'businessArtifactActionId' is required",
+                ACTIVITIES_VALIDATION_FAILURE.getType()
+            );
+        }
+    }
+
+    public static void validateBusinessArtifactCreateArtifactPrepareRequest(BusinessArtifactCreateArtifactPrepareRequest request) {
+        if (request.getBusinessArtifactId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'businessArtifactId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+        if (request.getBusinessArtifactActionDefinitionCode() == null) {
+            throw ApplicationFailure.newNonRetryableFailure(
+                "'businessArtifactActionDefinitionCode' is required",
+                ACTIVITIES_VALIDATION_FAILURE.getType()
+            );
         }
     }
 
