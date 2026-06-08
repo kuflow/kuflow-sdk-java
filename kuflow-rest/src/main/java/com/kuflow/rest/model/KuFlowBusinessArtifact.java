@@ -22,6 +22,7 @@
  */
 package com.kuflow.rest.model;
 
+import com.kuflow.rest.util.UUIDUtils;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -56,12 +57,8 @@ public class KuFlowBusinessArtifact {
     }
 
     public static Optional<KuFlowBusinessArtifact> from(String source) {
-        if (source == null || source.isEmpty()) {
-            return Optional.empty();
-        }
-
-        if (!source.toLowerCase().startsWith(PREFIX)) {
-            LOGGER.debug(String.format("Input string '%s' does not start with the expected prefix '%s'", source, PREFIX));
+        if (source == null || !source.toLowerCase().startsWith(PREFIX)) {
+            LOGGER.debug("Input string '{}' does not start with the expected prefix '{}'", source, PREFIX);
 
             return Optional.empty();
         }
@@ -77,7 +74,7 @@ public class KuFlowBusinessArtifact {
 
             int indexOfEquals = pair.indexOf("=");
             if (indexOfEquals == -1) {
-                LOGGER.debug(String.format("Invalid format in key-value pair '%s' on value '%s' ", pair, source));
+                LOGGER.debug("Invalid format in key-value pair '{}' on value '{}' ", pair, source);
 
                 return Optional.empty();
             }
@@ -90,12 +87,12 @@ public class KuFlowBusinessArtifact {
             keyValueMap.put(key, value);
         }
 
-        UUID id = parseUuid(keyValueMap.remove(METADATA_ID));
-        UUID definitionId = parseUuid(keyValueMap.remove(METADATA_DEFINITION_ID.toLowerCase()));
+        UUID id = UUIDUtils.parseUuid(keyValueMap.remove(METADATA_ID));
+        UUID definitionId = UUIDUtils.parseUuid(keyValueMap.remove(METADATA_DEFINITION_ID.toLowerCase()));
         String title = keyValueMap.remove(METADATA_TITLE);
 
         if (id == null || definitionId == null) {
-            LOGGER.debug(String.format("Wrong format some parts are missing 'id=%s' 'definitionId=%s'", id, definitionId));
+            LOGGER.debug("Wrong format some parts are missing 'id={}' 'definitionId={}'", id, definitionId);
 
             return Optional.empty();
         }
@@ -157,18 +154,6 @@ public class KuFlowBusinessArtifact {
     @Override
     public int hashCode() {
         return Objects.hash(this.source);
-    }
-
-    private static UUID parseUuid(String value) {
-        if (value == null) {
-            return null;
-        }
-
-        try {
-            return UUID.fromString(value);
-        } catch (Exception ex) {
-            return null;
-        }
     }
 
     private static String generateValue(UUID id, UUID definitionId, String title) {

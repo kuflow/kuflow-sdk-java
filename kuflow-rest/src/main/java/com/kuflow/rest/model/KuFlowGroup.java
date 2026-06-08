@@ -22,6 +22,7 @@
  */
 package com.kuflow.rest.model;
 
+import com.kuflow.rest.util.UUIDUtils;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -29,8 +30,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class KuFlowGroup {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(KuFlowGroup.class);
 
     public static final String PREFIX = "kuflow-group:";
 
@@ -47,7 +52,7 @@ public class KuFlowGroup {
     }
 
     public static Optional<KuFlowGroup> from(String source) {
-        if (!source.toLowerCase().startsWith(PREFIX)) {
+        if (source == null || !source.toLowerCase().startsWith(PREFIX)) {
             return Optional.empty();
         }
 
@@ -58,6 +63,8 @@ public class KuFlowGroup {
         for (String pair : keyValuePairs) {
             int indexOfEquals = pair.indexOf("=");
             if (indexOfEquals == -1) {
+                LOGGER.debug("Invalid format in key-value pair '{}' on value '{}' ", pair, source);
+
                 return Optional.empty();
             }
 
@@ -69,11 +76,15 @@ public class KuFlowGroup {
             keyValueMap.put(key, value);
         }
 
-        UUID id = UUID.fromString(keyValueMap.remove(METADATA_ID));
-
+        UUID id = UUIDUtils.parseUuid(keyValueMap.remove(METADATA_ID));
         String type = keyValueMap.remove(METADATA_TYPE);
-
         String name = keyValueMap.remove(METADATA_NAME);
+
+        if (id == null || type == null) {
+            LOGGER.debug("Wrong format some parts are missing 'id={}' 'type={}'", id, type);
+
+            return Optional.empty();
+        }
 
         return Optional.of(new KuFlowGroup(source, id, type, name));
     }
