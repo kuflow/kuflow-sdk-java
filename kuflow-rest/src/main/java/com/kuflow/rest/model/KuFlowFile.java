@@ -49,12 +49,8 @@ public class KuFlowFile {
     private static final String METADATA_ORIGINAL_NAME = "original-name";
 
     public static Optional<KuFlowFile> from(String source) {
-        if (source == null || source.isEmpty()) {
-            return Optional.empty();
-        }
-
-        if (!source.toLowerCase().startsWith(PREFIX)) {
-            LOGGER.debug(String.format("Input string '%s' does not start with the expected prefix '%s'", source, PREFIX));
+        if (source == null || !source.toLowerCase().startsWith(PREFIX)) {
+            LOGGER.debug("Input string '{}' does not start with the expected prefix '{}'", source, PREFIX);
 
             return Optional.empty();
         }
@@ -66,7 +62,7 @@ public class KuFlowFile {
         for (String pair : keyValuePairs) {
             int indexOfEquals = pair.indexOf("=");
             if (indexOfEquals == -1) {
-                LOGGER.debug(String.format("Invalid format in key-value pair '%s' on value '%s' ", pair, source));
+                LOGGER.debug("Invalid format in key-value pair '{}' on value '{}' ", pair, source);
 
                 return Optional.empty();
             }
@@ -80,22 +76,16 @@ public class KuFlowFile {
         }
 
         String uri = keyValueMap.remove(METADATA_URI);
-
         String type = keyValueMap.remove(METADATA_TYPE);
-
         String name = keyValueMap.remove(METADATA_NAME);
-
         Long size = parseLong(keyValueMap.remove(METADATA_SIZE));
+        String originalName = keyValueMap.remove(METADATA_ORIGINAL_NAME);
 
         if (uri == null || type == null || name == null || size == null) {
-            LOGGER.debug(
-                String.format("Wrong format some parts are missing 'uri=%s' 'type=%s' 'name=%s' 'size=%s'", uri, type, name, size)
-            );
+            LOGGER.debug("Wrong format some parts are missing 'uri={}' 'type={}' 'name={}' 'size={}'", uri, type, name, size);
 
             return Optional.empty();
         }
-
-        String originalName = keyValueMap.remove(METADATA_ORIGINAL_NAME);
 
         KuFlowFile value = new KuFlowFile(source, uri, type, name, size, originalName, keyValueMap);
 

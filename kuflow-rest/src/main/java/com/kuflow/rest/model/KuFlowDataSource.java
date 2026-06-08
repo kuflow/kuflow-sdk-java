@@ -28,40 +28,28 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class KuFlowPrincipal {
+public class KuFlowDataSource {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(KuFlowPrincipal.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(KuFlowDataSource.class);
 
-    private static final String PREFIX = "kuflow-principal:";
+    public static final String PREFIX = "kuflow-data-source:";
 
     private static final String METADATA_ID = "id";
-
-    private static final String METADATA_TYPE = "type";
-
     private static final String METADATA_NAME = "name";
 
-    public static KuFlowPrincipal from(UUID id, PrincipalType type) {
-        return from(id, type, null);
+    public static KuFlowDataSource from(UUID id, String name) {
+        String source = generateValue(id, name);
+
+        return new KuFlowDataSource(source, id, name);
     }
 
-    public static KuFlowPrincipal from(UUID id, PrincipalType type, String name) {
-        String source = generateValue(id, type, name);
-
-        return new KuFlowPrincipal(source, id, type, name);
-    }
-
-    public static Optional<KuFlowPrincipal> from(String source) {
-        if (source == null || source.isEmpty()) {
-            return Optional.empty();
-        }
-
-        if (!source.toLowerCase().startsWith(PREFIX)) {
+    public static Optional<KuFlowDataSource> from(String source) {
+        if (source == null || !source.toLowerCase().startsWith(PREFIX)) {
             LOGGER.debug("Input string '{}' does not start with the expected prefix '{}'", source, PREFIX);
 
             return Optional.empty();
@@ -72,6 +60,10 @@ public class KuFlowPrincipal {
         Map<String, String> keyValueMap = new HashMap<>();
 
         for (String pair : keyValuePairs) {
+            if (pair == null || pair.trim().isEmpty()) {
+                continue;
+            }
+
             int indexOfEquals = pair.indexOf("=");
             if (indexOfEquals == -1) {
                 LOGGER.debug("Invalid format in key-value pair '{}' on value '{}' ", pair, source);
@@ -88,45 +80,31 @@ public class KuFlowPrincipal {
         }
 
         UUID id = UUIDUtils.parseUuid(keyValueMap.remove(METADATA_ID));
-        String type = keyValueMap.remove(METADATA_TYPE);
         String name = keyValueMap.remove(METADATA_NAME);
 
-        if (id == null || type == null || name == null) {
-            LOGGER.debug("Wrong format some parts are missing 'id={}' 'type={}' 'name={}'", id, type, name);
+        if (id == null) {
+            LOGGER.debug("Wrong format some parts are missing 'id={}'", id);
 
             return Optional.empty();
         }
 
-        KuFlowPrincipal value = new KuFlowPrincipal(source, id, PrincipalType.fromString(type), name);
-
-        return Optional.of(value);
+        return Optional.of(new KuFlowDataSource(source, id, name));
     }
 
     private final String source;
 
     private final UUID id;
 
-    private final PrincipalType type;
-
     private final String name;
 
-    public KuFlowPrincipal(String source, UUID id, PrincipalType type, String name) {
+    private KuFlowDataSource(String source, UUID id, String name) {
         this.source = source;
         this.id = id;
-        this.type = type;
         this.name = name;
-    }
-
-    public String getSource() {
-        return this.source;
     }
 
     public UUID getId() {
         return this.id;
-    }
-
-    public PrincipalType getType() {
-        return this.type;
     }
 
     public String getName() {
@@ -138,47 +116,18 @@ public class KuFlowPrincipal {
         return this.source;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
+    private static String generateValue(UUID id, String name) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(PREFIX).append(METADATA_ID).append("=").append(encode(id.toString())).append(";");
+
+        if (name != null) {
+            sb.append(METADATA_NAME).append("=").append(encode(name)).append(";");
         }
-        if (o == null || this.getClass() != o.getClass()) {
-            return false;
-        }
-        KuFlowPrincipal that = (KuFlowPrincipal) o;
 
-        return Objects.equals(this.source, that.source);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.source);
-    }
-
-    private static String generateValue(UUID id, PrincipalType type, String name) {
-        return (
-            PREFIX +
-            METADATA_ID +
-            "=" +
-            encode(id.toString()) +
-            ";" +
-            METADATA_TYPE +
-            "=" +
-            encode(type.getValue()) +
-            ";" +
-            METADATA_NAME +
-            "=" +
-            encode(name) +
-            ";"
-        );
+        return sb.toString();
     }
 
     private static String encode(String value) {
-        if (value == null) {
-            return "";
-        }
-
         return URLEncoder.encode(value.trim(), StandardCharsets.UTF_8).replaceAll("\\+", "%20");
     }
 }
