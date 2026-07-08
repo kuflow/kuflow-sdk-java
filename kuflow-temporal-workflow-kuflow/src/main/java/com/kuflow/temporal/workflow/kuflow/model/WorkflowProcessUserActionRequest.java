@@ -32,8 +32,13 @@ import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class WorkflowProcessUserActionRequest implements JsonSerializable<WorkflowProcessUserActionRequest> {
 
@@ -84,6 +89,14 @@ public class WorkflowProcessUserActionRequest implements JsonSerializable<Workfl
      * or offset from UTC.
      */
     private ZoneId requestTimeZone;
+
+    /**
+     * Free-form bag of additional values associated with this request.
+     * Workflows can read entries to receive arbitrary context from the caller
+     * without changing the request schema.
+     */
+    @Nullable
+    private Map<String, Object> extras;
 
     public UUID getProcessId() {
         return this.processId;
@@ -139,6 +152,46 @@ public class WorkflowProcessUserActionRequest implements JsonSerializable<Workfl
 
     public void setRequestTimeZone(ZoneId requestTimeZone) {
         this.requestTimeZone = requestTimeZone;
+    }
+
+    @Nonnull
+    public Map<String, Object> getExtras() {
+        if (this.extras == null) {
+            return Objects.requireNonNull(Map.of());
+        }
+
+        return Objects.requireNonNull(Collections.unmodifiableMap(this.extras));
+    }
+
+    public void setExtras(@Nullable Map<String, Object> extras) {
+        if (this.extras == null) {
+            this.extras = new HashMap<>();
+        }
+
+        final Map<String, Object> currentExtras = Objects.requireNonNull(this.extras);
+        currentExtras.clear();
+
+        if (extras != null && !extras.isEmpty()) {
+            currentExtras.putAll(extras);
+        }
+    }
+
+    public void putExtraItem(@Nonnull String name, @Nonnull Object value) {
+        Objects.requireNonNull(name, "'name' is required");
+        Objects.requireNonNull(value, "'value' is required");
+
+        if (this.extras == null) {
+            this.extras = new HashMap<>();
+        }
+
+        Objects.requireNonNull(this.extras).put(name, value);
+    }
+
+    @Nullable
+    public Object getExtraItem(@Nonnull String name) {
+        Objects.requireNonNull(name, "'name' is required");
+
+        return this.getExtras().get(name);
     }
 
     @Override

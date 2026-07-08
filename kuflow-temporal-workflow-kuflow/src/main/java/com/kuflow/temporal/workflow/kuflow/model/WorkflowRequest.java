@@ -54,7 +54,13 @@ public class WorkflowRequest {
      */
     private ZoneId requestTimeZone;
 
-    private Map<String, Object> extras = null;
+    /**
+     * Free-form bag of additional values associated with this request.
+     * Workflows can read entries to receive arbitrary context from the caller
+     * without changing the request schema.
+     */
+    @Nullable
+    private Map<String, Object> extras;
 
     public UUID getProcessId() {
         return this.processId;
@@ -89,15 +95,17 @@ public class WorkflowRequest {
         return Collections.unmodifiableMap(this.extras);
     }
 
-    public void setExtra(@Nullable Map<String, Object> extras) {
-        if (this.extras == null) {
-            this.extras = new HashMap<>();
+    public void setExtras(@Nullable Map<String, Object> extras) {
+        Map<String, Object> currentExtras = this.extras;
+        if (currentExtras == null) {
+            currentExtras = new HashMap<>();
+            this.extras = currentExtras;
         }
 
-        this.extras.clear();
+        currentExtras.clear();
 
         if (extras != null && !extras.isEmpty()) {
-            this.extras.putAll(extras);
+            currentExtras.putAll(extras);
         }
     }
 
@@ -105,15 +113,19 @@ public class WorkflowRequest {
         Objects.requireNonNull(name, "'name' is required");
         Objects.requireNonNull(value, "'value' is required");
 
-        if (this.extras == null) {
-            this.extras = new HashMap<>();
+        Map<String, Object> currentExtras = this.extras;
+        if (currentExtras == null) {
+            currentExtras = new HashMap<>();
+            this.extras = currentExtras;
         }
 
-        this.extras.put(name, value);
+        currentExtras.put(name, value);
     }
 
     @Nullable
-    public Object getExtraItem(String name) {
+    public Object getExtraItem(@Nonnull String name) {
+        Objects.requireNonNull(name, "'name' is required");
+
         return this.getExtras().get(name);
     }
 }
