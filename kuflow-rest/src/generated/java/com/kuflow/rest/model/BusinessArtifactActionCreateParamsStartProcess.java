@@ -45,6 +45,15 @@ public final class BusinessArtifactActionCreateParamsStartProcess
     @Generated
     private Map<String, Object> metadata;
 
+    /*
+     * Entity data applied to the process created by this action. Validated
+     * against the process definition entity schema; validation errors are
+     * recorded on the process entity value. Ignored if empty or if the
+     * process definition has no entity structure.
+     */
+    @Generated
+    private Map<String, Object> entity;
+
     /**
      * Creates an instance of BusinessArtifactActionCreateParamsStartProcess class.
      */
@@ -74,6 +83,34 @@ public final class BusinessArtifactActionCreateParamsStartProcess
     }
 
     /**
+     * Get the entity property: Entity data applied to the process created by this action. Validated
+     * against the process definition entity schema; validation errors are
+     * recorded on the process entity value. Ignored if empty or if the
+     * process definition has no entity structure.
+     *
+     * @return the entity value.
+     */
+    @Generated
+    public Map<String, Object> getEntity() {
+        return this.entity;
+    }
+
+    /**
+     * Set the entity property: Entity data applied to the process created by this action. Validated
+     * against the process definition entity schema; validation errors are
+     * recorded on the process entity value. Ignored if empty or if the
+     * process definition has no entity structure.
+     *
+     * @param entity the entity value to set.
+     * @return the BusinessArtifactActionCreateParamsStartProcess object itself.
+     */
+    @Generated
+    public BusinessArtifactActionCreateParamsStartProcess setEntity(Map<String, Object> entity) {
+        this.entity = entity;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -81,6 +118,7 @@ public final class BusinessArtifactActionCreateParamsStartProcess
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("entity", this.entity, (writer, element) -> writer.writeUntyped(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -104,6 +142,9 @@ public final class BusinessArtifactActionCreateParamsStartProcess
                 if ("metadata".equals(fieldName)) {
                     Map<String, Object> metadata = reader.readMap(reader1 -> reader1.readUntyped());
                     deserializedBusinessArtifactActionCreateParamsStartProcess.metadata = metadata;
+                } else if ("entity".equals(fieldName)) {
+                    Map<String, Object> entity = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedBusinessArtifactActionCreateParamsStartProcess.entity = entity;
                 } else {
                     reader.skipChildren();
                 }

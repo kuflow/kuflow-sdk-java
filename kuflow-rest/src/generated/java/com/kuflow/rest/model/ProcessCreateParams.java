@@ -70,6 +70,12 @@ public final class ProcessCreateParams implements JsonSerializable<ProcessCreate
     private JsonValue metadata;
 
     /*
+     * Json value.
+     */
+    @Generated
+    private JsonValue entity;
+
+    /*
      * The initiatorId property.
      */
     @Generated
@@ -198,6 +204,28 @@ public final class ProcessCreateParams implements JsonSerializable<ProcessCreate
     }
 
     /**
+     * Get the entity property: Json value.
+     *
+     * @return the entity value.
+     */
+    @Generated
+    public JsonValue getEntity() {
+        return this.entity;
+    }
+
+    /**
+     * Set the entity property: Json value.
+     *
+     * @param entity the entity value to set.
+     * @return the ProcessCreateParams object itself.
+     */
+    @Generated
+    public ProcessCreateParams setEntity(JsonValue entity) {
+        this.entity = entity;
+        return this;
+    }
+
+    /**
      * Get the initiatorId property: The initiatorId property.
      *
      * @return the initiatorId value.
@@ -253,6 +281,7 @@ public final class ProcessCreateParams implements JsonSerializable<ProcessCreate
         jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
         jsonWriter.writeStringField("processDefinitionCode", this.processDefinitionCode);
         jsonWriter.writeJsonField("metadata", this.metadata);
+        jsonWriter.writeJsonField("entity", this.entity);
         jsonWriter.writeStringField("initiatorId", Objects.toString(this.initiatorId, null));
         jsonWriter.writeStringField("initiatorEmail", this.initiatorEmail);
         return jsonWriter.writeEndObject();
@@ -288,6 +317,8 @@ public final class ProcessCreateParams implements JsonSerializable<ProcessCreate
                     deserializedProcessCreateParams.processDefinitionCode = reader.getString();
                 } else if ("metadata".equals(fieldName)) {
                     deserializedProcessCreateParams.metadata = JsonValue.fromJson(reader);
+                } else if ("entity".equals(fieldName)) {
+                    deserializedProcessCreateParams.entity = JsonValue.fromJson(reader);
                 } else if ("initiatorId".equals(fieldName)) {
                     deserializedProcessCreateParams.initiatorId = reader.getNullable(nonNullReader ->
                         UUID.fromString(nonNullReader.getString())
