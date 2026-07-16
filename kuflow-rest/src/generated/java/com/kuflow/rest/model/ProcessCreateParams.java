@@ -87,6 +87,13 @@ public final class ProcessCreateParams implements JsonSerializable<ProcessCreate
     @Generated
     private String initiatorEmail;
 
+    /*
+     * Optional id of another process to which the created process is
+     * related. Surfaced on read as `Process.processRelated.outcoming`.
+     */
+    @Generated
+    private UUID relatedProcessId;
+
     /**
      * Creates an instance of ProcessCreateParams class.
      */
@@ -270,6 +277,30 @@ public final class ProcessCreateParams implements JsonSerializable<ProcessCreate
     }
 
     /**
+     * Get the relatedProcessId property: Optional id of another process to which the created process is
+     * related. Surfaced on read as `Process.processRelated.outcoming`.
+     *
+     * @return the relatedProcessId value.
+     */
+    @Generated
+    public UUID getRelatedProcessId() {
+        return this.relatedProcessId;
+    }
+
+    /**
+     * Set the relatedProcessId property: Optional id of another process to which the created process is
+     * related. Surfaced on read as `Process.processRelated.outcoming`.
+     *
+     * @param relatedProcessId the relatedProcessId value to set.
+     * @return the ProcessCreateParams object itself.
+     */
+    @Generated
+    public ProcessCreateParams setRelatedProcessId(UUID relatedProcessId) {
+        this.relatedProcessId = relatedProcessId;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -284,6 +315,7 @@ public final class ProcessCreateParams implements JsonSerializable<ProcessCreate
         jsonWriter.writeJsonField("entity", this.entity);
         jsonWriter.writeStringField("initiatorId", Objects.toString(this.initiatorId, null));
         jsonWriter.writeStringField("initiatorEmail", this.initiatorEmail);
+        jsonWriter.writeStringField("relatedProcessId", Objects.toString(this.relatedProcessId, null));
         return jsonWriter.writeEndObject();
     }
 
@@ -325,6 +357,10 @@ public final class ProcessCreateParams implements JsonSerializable<ProcessCreate
                     );
                 } else if ("initiatorEmail".equals(fieldName)) {
                     deserializedProcessCreateParams.initiatorEmail = reader.getString();
+                } else if ("relatedProcessId".equals(fieldName)) {
+                    deserializedProcessCreateParams.relatedProcessId = reader.getNullable(nonNullReader ->
+                        UUID.fromString(nonNullReader.getString())
+                    );
                 } else {
                     reader.skipChildren();
                 }
