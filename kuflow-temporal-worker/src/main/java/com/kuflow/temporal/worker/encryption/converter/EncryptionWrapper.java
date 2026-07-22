@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package com.kuflow.temporal.worker.encryption.converter;
 
 import com.kuflow.temporal.worker.encryption.EncryptionState;

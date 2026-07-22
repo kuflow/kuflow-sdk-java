@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package com.kuflow.temporal.activity.email;
 
 import com.kuflow.temporal.activity.email.dto.EmailDto;
@@ -79,10 +80,10 @@ public class EmailActivitiesImpl implements EmailActivities {
     private void validateEmail(Email email) {
         // Check at least one recipient exists (backward compatible with deprecated 'to' field)
         boolean hasRecipients =
-            (email.getTo() != null) ||
-            (!email.getToAddresses().isEmpty()) ||
-            (!email.getCcAddresses().isEmpty()) ||
-            (!email.getBccAddresses().isEmpty());
+            email.getTo() != null ||
+            !email.getToAddresses().isEmpty() ||
+            !email.getCcAddresses().isEmpty() ||
+            !email.getBccAddresses().isEmpty();
 
         if (!hasRecipients) {
             throw ApplicationFailure.newNonRetryableFailure(

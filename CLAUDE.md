@@ -22,14 +22,17 @@ Use `-am` (`./mvnw test -pl <module> -am`) to also build the modules a target de
 
 ### Code style — runs in the `validate` phase of every build
 
-The build **fails** on style violations. Three gates run during `validate`: Checkstyle (`etc/checkstyle/`), prettier-java, and license headers. To auto-fix instead of just checking:
+The build **fails** on style violations. Two gates run during `validate`: Checkstyle (`etc/checkstyle/`) and Spotless (prettier-java formatting, unused-import removal, and license headers via `etc/spotless/license-header.txt`). To auto-fix instead of just checking:
 
 ```bash
-./mvnw prettier:write     # format Java sources
-./mvnw license:format     # apply/refresh MIT license headers
+./mvnw spotless:apply     # format Java sources, remove unused imports, apply/refresh MIT license headers
 ```
 
-Every source file must carry the MIT header (`The MIT License / Copyright © 2021-present KuFlow S.L.`). New files without it will fail the build.
+```bash
+./mvnw spotless:check     # verify formatting without changing anything
+```
+
+Every source file must carry the MIT header (`The MIT License / Copyright © 2021-present KuFlow S.L.`, see `etc/spotless/license-header.txt`). New files without it will fail the build.
 
 ## Module Architecture
 

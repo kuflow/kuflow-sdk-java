@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package com.kuflow.temporal.common.util;
 
 import com.kuflow.temporal.common.error.KuFlowTemporalException;
@@ -37,7 +38,7 @@ public final class TemporalUtils {
     public static String getTemporalTokenAsString(ActivityExecutionContext context) {
         byte[] taskToken = context.getTaskToken();
 
-        return (taskToken != null) ? Base64.getEncoder().encodeToString(taskToken) : null;
+        return taskToken != null ? Base64.getEncoder().encodeToString(taskToken) : null;
     }
 
     public static String getActivityType(Class<?> activityInterface, String activityMethod) {

@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package com.kuflow.temporal.activity.kuflow.util;
 
 import static com.kuflow.temporal.activity.kuflow.KuFlowFailureType.ACTIVITIES_REST_FAILURE;

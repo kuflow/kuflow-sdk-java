@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package com.kuflow.temporal.activity.email.service;
 
 import com.kuflow.temporal.activity.email.dto.EmailDto;
@@ -112,9 +113,9 @@ public class EmailService {
             MimeMessage mimeMessage = this.mailSender.createMimeMessage();
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true /* multipart */, StandardCharsets.UTF_8.name());
             String emailFromEmail = email.getFromEmail();
-            String effectiveFromEmail = (emailFromEmail != null && !emailFromEmail.isBlank()) ? emailFromEmail : this.fromEmail;
+            String effectiveFromEmail = emailFromEmail != null && !emailFromEmail.isBlank() ? emailFromEmail : this.fromEmail;
             String emailFromName = email.getFromName();
-            String effectiveFromName = (emailFromName != null && !emailFromName.isBlank()) ? emailFromName : this.fromName;
+            String effectiveFromName = emailFromName != null && !emailFromName.isBlank() ? emailFromName : this.fromName;
             if (effectiveFromName != null && !effectiveFromName.isBlank()) {
                 message.setFrom(effectiveFromEmail, effectiveFromName);
             } else {

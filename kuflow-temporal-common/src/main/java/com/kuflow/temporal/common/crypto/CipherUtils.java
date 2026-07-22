@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package com.kuflow.temporal.common.crypto;
 
 import java.nio.ByteBuffer;
@@ -72,7 +73,10 @@ public class CipherUtils {
 
                 byte[] encryptedData = cipher.doFinal(plainText);
 
-                return ByteBuffer.allocate(nonce.length + encryptedData.length).put(nonce).put(encryptedData).array();
+                return ByteBuffer.allocate(nonce.length + encryptedData.length)
+                    .put(nonce)
+                    .put(encryptedData)
+                    .array();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

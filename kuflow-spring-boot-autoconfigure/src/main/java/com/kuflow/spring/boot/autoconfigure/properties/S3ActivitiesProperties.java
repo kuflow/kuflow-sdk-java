@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package com.kuflow.spring.boot.autoconfigure.properties;
 
 import jakarta.validation.constraints.NotEmpty;

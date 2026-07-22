@@ -157,19 +157,8 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>com.mycila</groupId>
-        <artifactId>license-maven-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>com.hubspot.maven.plugins</groupId>
-        <artifactId>prettier-maven-plugin</artifactId>
-        <configuration>
-          <inputGlobs>
-            <inputGlob>src/main/java/**/*.java</inputGlob>
-            <inputGlob>src/test/java/**/*.java</inputGlob>
-            <inputGlob>src/generated/java/**/*.java</inputGlob>
-          </inputGlobs>
-        </configuration>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

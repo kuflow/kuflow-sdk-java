@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package com.kuflow.spring.boot.autoconfigure.validation;
 
 import jakarta.validation.ConstraintValidator;
@@ -62,6 +63,6 @@ public class NotFillMeAttributesValuesValidator implements ConstraintValidator<N
             return false;
         }
 
-        return (value.toString().toUpperCase().contains(FILL_ME));
+        return value.toString().toUpperCase().contains(FILL_ME);
     }
 }

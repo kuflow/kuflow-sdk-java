@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package com.kuflow.rest.operation;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
@@ -170,9 +171,9 @@ public class BusinessArtifactOperationTest extends AbstractOperationTest {
             )
         );
 
-        BusinessArtifact businessArtifact = this.kuFlowRestClient.getBusinessArtifactOperations().retrieveBusinessArtifact(
-            businessArtifactId
-        );
+        BusinessArtifact businessArtifact = this.kuFlowRestClient
+            .getBusinessArtifactOperations()
+            .retrieveBusinessArtifact(businessArtifactId);
 
         assertThat(businessArtifact.getId()).isEqualTo(businessArtifactId);
         assertThat(businessArtifact.getTenantId()).isEqualTo(UUID.fromString("00a9f1d4-3698-45a4-951c-66a468846aad"));
@@ -197,10 +198,9 @@ public class BusinessArtifactOperationTest extends AbstractOperationTest {
         BinaryData fileContent = BinaryData.fromBytes("test content".getBytes(StandardCharsets.UTF_8));
         Document document = new Document().setFileContent(fileContent).setFileName("test.txt").setContentType("text/plain");
 
-        DocumentReference documentReference = this.kuFlowRestClient.getBusinessArtifactOperations().uploadBusinessArtifactDocument(
-            businessArtifactId,
-            document
-        );
+        DocumentReference documentReference = this.kuFlowRestClient
+            .getBusinessArtifactOperations()
+            .uploadBusinessArtifactDocument(businessArtifactId, document);
 
         assertThat(documentReference.getDocumentUri()).isEqualTo("kuflow-file:uri=aaa-bbb-ccc;type=text/plain;size=12;name=test.txt;");
     }
@@ -244,10 +244,9 @@ public class BusinessArtifactOperationTest extends AbstractOperationTest {
                 .willReturn(ok().withHeader("Content-Type", "application/octet-stream").withBody("test content"))
         );
 
-        BinaryData result = this.kuFlowRestClient.getBusinessArtifactOperations().downloadBusinessArtifactDocument(
-            businessArtifactId,
-            documentUri
-        );
+        BinaryData result = this.kuFlowRestClient
+            .getBusinessArtifactOperations()
+            .downloadBusinessArtifactDocument(businessArtifactId, documentUri);
 
         assertThat(result.toString()).isEqualTo("test content");
     }
