@@ -37,6 +37,7 @@ import com.kuflow.rest.model.BusinessArtifactFindOptions;
 import com.kuflow.rest.model.BusinessArtifactPage;
 import com.kuflow.rest.model.Document;
 import com.kuflow.rest.model.DocumentReference;
+import com.kuflow.rest.util.SearchCriteriaUtils;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
@@ -140,6 +141,22 @@ public class BusinessArtifactOperationTest extends AbstractOperationTest {
         assertThat(businessArtifacts.getContent()).hasSize(2);
         assertThat(businessArtifacts.getContent().get(0).getId()).isEqualTo(UUID.fromString("4f2467f1-00fa-4a6c-88ca-16ae8eac7b56"));
         assertThat(businessArtifacts.getContent().get(1).getId()).isEqualTo(UUID.fromString("2fd90b51-e1d8-44e3-89bd-8c4c9fc4164b"));
+    }
+
+    @Test
+    @DisplayName("GIVEN a value filter built from parts with a space WHEN list business artifacts THEN the encoded query parameter is sent")
+    public void givenValueFilterBuiltFromPartsWithASpaceWhenListBusinessArtifactsThenTheEncodedQueryParameterIsSent() {
+        String expectedValueParam = SearchCriteriaUtils.encodeFilterExpression("invoiceNumber", "eq", "INV 001");
+
+        givenThat(
+            get(urlPathEqualTo("/v2024-06-14/business-artifacts"))
+                .withQueryParam("value", equalTo(expectedValueParam))
+                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("business-artifacts-api.list.ok.json"))
+        );
+
+        BusinessArtifactFindOptions options = new BusinessArtifactFindOptions().addValue("invoiceNumber", "eq", "INV 001");
+
+        this.kuFlowRestClient.getBusinessArtifactOperations().findBusinessArtifacts(options);
     }
 
     @Test

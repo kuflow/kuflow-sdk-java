@@ -22,8 +22,7 @@
  */
 package com.kuflow.rest.model;
 
-import static java.util.Collections.unmodifiableList;
-
+import com.kuflow.rest.util.SearchCriteriaUtils;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -89,7 +88,7 @@ public class BusinessArtifactFindOptions {
     }
 
     public List<String> getSorts() {
-        return unmodifiableList(this.sorts);
+        return List.copyOf(this.sorts);
     }
 
     public BusinessArtifactFindOptions setSorts(List<String> sorts) {
@@ -124,7 +123,7 @@ public class BusinessArtifactFindOptions {
     }
 
     public List<UUID> getTenantIds() {
-        return unmodifiableList(this.tenantIds);
+        return List.copyOf(this.tenantIds);
     }
 
     public BusinessArtifactFindOptions setTenantIds(List<UUID> tenantIds) {
@@ -159,7 +158,7 @@ public class BusinessArtifactFindOptions {
     }
 
     public List<UUID> getBusinessArtifactDefinitionIds() {
-        return unmodifiableList(this.businessArtifactDefinitionIds);
+        return List.copyOf(this.businessArtifactDefinitionIds);
     }
 
     public BusinessArtifactFindOptions setBusinessArtifactDefinitionIds(List<UUID> businessArtifactDefinitionIds) {
@@ -194,7 +193,7 @@ public class BusinessArtifactFindOptions {
     }
 
     public List<String> getBusinessArtifactDefinitionCodes() {
-        return unmodifiableList(this.businessArtifactDefinitionCodes);
+        return List.copyOf(this.businessArtifactDefinitionCodes);
     }
 
     public BusinessArtifactFindOptions setBusinessArtifactDefinitionCodes(List<String> businessArtifactDefinitionCodes) {
@@ -229,7 +228,7 @@ public class BusinessArtifactFindOptions {
     }
 
     public List<String> getValues() {
-        return unmodifiableList(this.values);
+        return List.copyOf(this.values);
     }
 
     public BusinessArtifactFindOptions setValues(List<String> values) {
@@ -247,6 +246,22 @@ public class BusinessArtifactFindOptions {
         return this.setValues(List.of(value));
     }
 
+    /**
+     * Sets a single "code operation value1 value2..." filter expression, built from its parts and safely
+     * encoded so that a value containing a space (or any character requiring percent-encoding) still
+     * round-trips correctly. See {@link com.kuflow.rest.util.SearchCriteriaUtils#encodeFilterExpression}
+     * for details on the encoding.
+     *
+     * @param code the field code to filter/sort by
+     * @param operation the operation code, e.g. "eq", "le", "ge", "between", "contains", "in"
+     * @param values one or more values for the operation
+     */
+    public BusinessArtifactFindOptions setValue(String code, String operation, String... values) {
+        String encoded = SearchCriteriaUtils.encodeFilterExpression(code, operation, values);
+
+        return this.setValue(encoded);
+    }
+
     public BusinessArtifactFindOptions addValue(String value) {
         Objects.requireNonNull(value, "'value' is required");
         if (!this.values.contains(value)) {
@@ -256,9 +271,31 @@ public class BusinessArtifactFindOptions {
         return this;
     }
 
+    /**
+     * Adds a single "code operation value1 value2..." filter expression, built from its parts and safely
+     * encoded so that a value containing a space (or any character requiring percent-encoding) still
+     * round-trips correctly. See {@link com.kuflow.rest.util.SearchCriteriaUtils#encodeFilterExpression}
+     * for details on the encoding.
+     *
+     * @param code the field code to filter/sort by
+     * @param operation the operation code, e.g. "eq", "le", "ge", "between", "contains", "in"
+     * @param values one or more values for the operation
+     */
+    public BusinessArtifactFindOptions addValue(String code, String operation, String... values) {
+        String encoded = SearchCriteriaUtils.encodeFilterExpression(code, operation, values);
+
+        return this.addValue(encoded);
+    }
+
     public BusinessArtifactFindOptions removeValue(String value) {
         Objects.requireNonNull(value, "'value' is required");
         this.values.remove(value);
+
+        return this;
+    }
+
+    public BusinessArtifactFindOptions removeValues() {
+        this.values.clear();
 
         return this;
     }
