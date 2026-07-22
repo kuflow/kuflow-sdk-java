@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package com.kuflow.temporal.activity.uivision.service;
 
 import com.kuflow.temporal.activity.uivision.dto.UIVisionArgumentDto;

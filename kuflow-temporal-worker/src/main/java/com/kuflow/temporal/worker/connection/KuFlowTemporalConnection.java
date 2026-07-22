@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package com.kuflow.temporal.worker.connection;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -335,9 +336,9 @@ public class KuFlowTemporalConnection {
             new KuFlowAuthorizationTokenSupplier(this.kuFlowRestClient, this.workerInformation)
         );
 
-        WorkflowServiceStubsOptions options = this.workflowServiceStubsBuilder.addGrpcMetadataProvider(
-            authorizationGrpcMetadataProvider
-        ).validateAndBuildWithDefaults();
+        WorkflowServiceStubsOptions options = this.workflowServiceStubsBuilder
+            .addGrpcMetadataProvider(authorizationGrpcMetadataProvider)
+            .validateAndBuildWithDefaults();
 
         this.workflowServiceStubs = WorkflowServiceStubs.newServiceStubs(options);
 
@@ -353,7 +354,8 @@ public class KuFlowTemporalConnection {
 
         DataConverter dataConverter = this.dataConverter();
 
-        WorkflowClientOptions workflowClientOptions = this.workflowClientBuilder.setContextPropagators(List.of(new MDCContextPropagator()))
+        WorkflowClientOptions workflowClientOptions = this.workflowClientBuilder
+            .setContextPropagators(List.of(new MDCContextPropagator()))
             .setDataConverter(dataConverter)
             .setInterceptors(new EncryptionClientInterceptor())
             .validateAndBuildWithDefaults();

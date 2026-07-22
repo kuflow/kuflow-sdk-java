@@ -30,8 +30,6 @@
 		<property name="file" value="${checkstyle.suppressions.location}" />
 	</module>
 
-  <module name="FileTabCharacter"/>
-
   <!-- Allow suppression with comments
      // CHECKSTYLE:OFF
      ... ignored content ...
@@ -41,11 +39,7 @@
 
   <module name="com.puppycrawl.tools.checkstyle.TreeWalker">
 
-    <!-- Block Checks -->
-    <module name="com.puppycrawl.tools.checkstyle.checks.blocks.RightCurlyCheck" />
-
     <!-- Imports -->
-    <module name="UnusedImports" />
     <module name="AvoidStarImport" />
     <module name="RedundantImport" />
 
@@ -68,12 +62,6 @@
       <property name="message" value="Please use AssertJ imports." />
       <property name="ignoreComments" value="true" />
     </module>
-    <module name="com.puppycrawl.tools.checkstyle.checks.regexp.RegexpCheck">
-      <property name="format" value="[ \t]+$" />
-      <property name="illegalPattern" value="true" />
-      <property name="message" value="Trailing whitespace" />
-    </module>
-
     <module name="com.puppycrawl.tools.checkstyle.checks.coding.RequireThisCheck">
       <property name="validateOnlyOverlapping" value="false" />
     </module>

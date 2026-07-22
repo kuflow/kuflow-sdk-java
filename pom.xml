@@ -78,10 +78,10 @@
     <flatten-maven-plugin.version>1.6.0</flatten-maven-plugin.version>
     <central-publishing-maven-plugin.version>0.9.0</central-publishing-maven-plugin.version>
     <checkstyle.version>10.21.2</checkstyle.version>
-    <prettier-maven-plugin.version>0.22</prettier-maven-plugin.version>
-    <prettier-java.version>2.8.1</prettier-java.version>
+    <prettier.npm.version>3.9.6</prettier.npm.version>
+    <prettier-plugin-java.npm.version>2.10.3</prettier-plugin-java.npm.version>
+    <spotless-maven-plugin.version>3.8.0</spotless-maven-plugin.version>
     <build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
-    <license-maven-plugin.version>4.6</license-maven-plugin.version>
 
     <!-- Spring dependencies -->
     <spring-boot.version>3.3.8</spring-boot.version>
@@ -274,8 +274,6 @@
                 <consoleOutput>true</consoleOutput>
                 <includeTestSourceDirectory>true</includeTestSourceDirectory>
                 <configLocation>${maven.multiModuleProjectDirectory}/etc/checkstyle/checkstyle.xml</configLocation>
-                <headerLocation>
-                  ${maven.multiModuleProjectDirectory}/etc/checkstyle/checkstyle-header.txt</headerLocation>
                 <suppressionsLocation>
                   ${maven.multiModuleProjectDirectory}/etc/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
                 <suppressionsFileExpression>checkstyle.suppressions.location</suppressionsFileExpression>
@@ -284,50 +282,87 @@
           </executions>
         </plugin>
         <plugin>
-          <groupId>com.hubspot.maven.plugins</groupId>
-          <artifactId>prettier-maven-plugin</artifactId>
-          <version>${prettier-maven-plugin.version}</version>
+          <groupId>com.diffplug.spotless</groupId>
+          <artifactId>spotless-maven-plugin</artifactId>
+          <version>${spotless-maven-plugin.version}</version>
+          <!--
+            Plugin-level configuration so the direct CLI goals (spotless:apply / spotless:check)
+            also work, not just the bound executions. Executions reuse/override this config.
+          -->
           <configuration>
-            <prettierJavaVersion>${prettier-java.version}</prettierJavaVersion>
-            <ignoreEditorConfig>false</ignoreEditorConfig>
+            <java>
+              <includes>
+                <include>src/main/java/**/*.java</include>
+                <include>src/test/java/**/*.java</include>
+              </includes>
+
+              <!-- Replaces checkstyle UnusedImports (this one also auto-removes them) -->
+              <removeUnusedImports />
+
+              <forbidWildcardImports />
+
+              <prettier>
+                <devDependencies>
+                  <prettier>${prettier.npm.version}</prettier>
+                  <prettier-plugin-java>${prettier-plugin-java.npm.version}</prettier-plugin-java>
+                </devDependencies>
+                <config>
+                  <parser>java</parser>
+                  <plugins>prettier-plugin-java</plugins>
+                  <printWidth>140</printWidth>
+                  <tabWidth>4</tabWidth>
+                </config>
+                <!-- Node/npm are expected on the system PATH (provided by mise locally, by the CI image setup) -->
+                <npmInstallCache>${maven.multiModuleProjectDirectory}/.cache/spotless-npm</npmInstallCache>
+              </prettier>
+
+              <!-- Replaces license-maven-plugin (this one also auto-inserts the header) -->
+              <licenseHeader>
+                <file>${maven.multiModuleProjectDirectory}/etc/spotless/license-header.txt</file>
+              </licenseHeader>
+            </java>
           </configuration>
           <executions>
+            <!-- Validates formatting of src/main|test/java in validate phase -->
             <execution>
+              <id>spotless-check</id>
               <goals>
                 <goal>check</goal>
               </goals>
               <phase>validate</phase>
             </execution>
-          </executions>
-        </plugin>
-        <plugin>
-          <groupId>com.mycila</groupId>
-          <artifactId>license-maven-plugin</artifactId>
-          <version>${license-maven-plugin.version}</version>
-          <configuration>
-            <properties>
-              <owner>KuFlow S.L.</owner>
-              <email>kuflow@kuflow.com</email>
-              <year>2021-present</year>
-            </properties>
-            <licenseSets>
-              <licenseSet>
-                <header>com/mycila/maven/plugin/license/templates/MIT.txt</header>
-                <excludes>
-                  <exclude>**/README</exclude>
-                  <exclude>**/fix-discriminators.js</exclude>
-                  <exclude>src/test/resources/**</exclude>
-                  <exclude>src/main/resources/**</exclude>
-                </excludes>
-              </licenseSet>
-            </licenseSets>
-          </configuration>
-          <executions>
+            <!-- Checks formatting + license header of the generated REST client sources.
+                 No removeUnusedImports/forbidWildcardImports here: checkstyle-suppressions.xml
+                 exempts src/generated from those checks too, so spotless must match that. -->
             <execution>
+              <id>spotless-check-generated</id>
               <goals>
                 <goal>check</goal>
               </goals>
               <phase>validate</phase>
+              <configuration>
+                <java combine.self="override">
+                  <includes>
+                    <include>src/generated/java/**/*.java</include>
+                  </includes>
+                  <prettier>
+                    <devDependencies>
+                      <prettier>${prettier.npm.version}</prettier>
+                      <prettier-plugin-java>${prettier-plugin-java.npm.version}</prettier-plugin-java>
+                    </devDependencies>
+                    <config>
+                      <parser>java</parser>
+                      <plugins>prettier-plugin-java</plugins>
+                      <printWidth>140</printWidth>
+                      <tabWidth>4</tabWidth>
+                    </config>
+                    <npmInstallCache>${maven.multiModuleProjectDirectory}/.cache/spotless-npm</npmInstallCache>
+                  </prettier>
+                  <licenseHeader>
+                    <file>${maven.multiModuleProjectDirectory}/etc/spotless/license-header.txt</file>
+                  </licenseHeader>
+                </java>
+              </configuration>
             </execution>
           </executions>
         </plugin>

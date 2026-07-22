@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package com.kuflow.rest;
 
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -383,9 +384,9 @@ public final class KuFlowRestClientBuilder
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'clientId/clientSecret' or 'credential' is required."));
         }
 
-        Configuration localConfiguration = (this.configuration == null) ? Configuration.getGlobalConfiguration() : this.configuration;
-        ClientOptions localClientOptions = (this.clientOptions == null) ? new ClientOptions() : this.clientOptions;
-        HttpLogOptions localLogOptions = (this.httpLogOptions == null) ? new HttpLogOptions() : this.httpLogOptions;
+        Configuration localConfiguration = this.configuration == null ? Configuration.getGlobalConfiguration() : this.configuration;
+        ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
+        HttpLogOptions localLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
 
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
@@ -401,7 +402,8 @@ public final class KuFlowRestClientBuilder
             policies.add(new AddHeadersPolicy(headers));
         }
         // Add additional policies
-        this.pipelinePolicies.stream()
+        this.pipelinePolicies
+            .stream()
             .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
             .forEach(policies::add);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
@@ -412,7 +414,8 @@ public final class KuFlowRestClientBuilder
         policies.add(this.createHttpPipelineAuthPolicy());
 
         // Add additional policies
-        this.pipelinePolicies.stream()
+        this.pipelinePolicies
+            .stream()
             .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
             .forEach(policies::add);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
@@ -517,7 +520,7 @@ public final class KuFlowRestClientBuilder
      * check in the global configuration.
      */
     private static boolean isTelemetryDisabled(Configuration configuration) {
-        return (configuration == null)
+        return configuration == null
             ? Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, false)
             : configuration.get(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, false);
     }
