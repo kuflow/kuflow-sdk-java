@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package com.kuflow.rest.implementation;
 
 import com.azure.core.annotation.BodyParam;
@@ -473,36 +474,41 @@ public final class BusinessArtifactOperationsImpl {
         Context context
     ) {
         final String accept = "application/json";
-        List<String> sortConverted = (sort == null)
-            ? new ArrayList<>()
-            : sort
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> tenantIdConverted = (tenantId == null)
-            ? new ArrayList<>()
-            : tenantId
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> businessArtifactDefinitionIdConverted = (businessArtifactDefinitionId == null)
-            ? new ArrayList<>()
-            : businessArtifactDefinitionId
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> businessArtifactDefinitionCodeConverted = (businessArtifactDefinitionCode == null)
-            ? new ArrayList<>()
-            : businessArtifactDefinitionCode
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> valueConverted = (value == null)
-            ? new ArrayList<>()
-            : value
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
+        List<String> sortConverted =
+            sort == null
+                ? new ArrayList<>()
+                : sort
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> tenantIdConverted =
+            tenantId == null
+                ? new ArrayList<>()
+                : tenantId
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> businessArtifactDefinitionIdConverted =
+            businessArtifactDefinitionId == null
+                ? new ArrayList<>()
+                : businessArtifactDefinitionId
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> businessArtifactDefinitionCodeConverted =
+            businessArtifactDefinitionCode == null
+                ? new ArrayList<>()
+                : businessArtifactDefinitionCode
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> valueConverted =
+            value == null
+                ? new ArrayList<>()
+                : value
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
         return service.findBusinessArtifacts(
             this.client.getHost(),
             size,
@@ -684,36 +690,41 @@ public final class BusinessArtifactOperationsImpl {
         Context context
     ) {
         final String accept = "application/json";
-        List<String> sortConverted = (sort == null)
-            ? new ArrayList<>()
-            : sort
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> tenantIdConverted = (tenantId == null)
-            ? new ArrayList<>()
-            : tenantId
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> businessArtifactDefinitionIdConverted = (businessArtifactDefinitionId == null)
-            ? new ArrayList<>()
-            : businessArtifactDefinitionId
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> businessArtifactDefinitionCodeConverted = (businessArtifactDefinitionCode == null)
-            ? new ArrayList<>()
-            : businessArtifactDefinitionCode
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> valueConverted = (value == null)
-            ? new ArrayList<>()
-            : value
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
+        List<String> sortConverted =
+            sort == null
+                ? new ArrayList<>()
+                : sort
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> tenantIdConverted =
+            tenantId == null
+                ? new ArrayList<>()
+                : tenantId
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> businessArtifactDefinitionIdConverted =
+            businessArtifactDefinitionId == null
+                ? new ArrayList<>()
+                : businessArtifactDefinitionId
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> businessArtifactDefinitionCodeConverted =
+            businessArtifactDefinitionCode == null
+                ? new ArrayList<>()
+                : businessArtifactDefinitionCode
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> valueConverted =
+            value == null
+                ? new ArrayList<>()
+                : value
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
         return service.findBusinessArtifactsSync(
             this.client.getHost(),
             size,

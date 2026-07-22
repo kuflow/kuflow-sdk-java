@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package com.kuflow.rest.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
@@ -207,30 +208,34 @@ public final class PrincipalOperationsImpl {
         Context context
     ) {
         final String accept = "application/json";
-        List<String> sortConverted = (sort == null)
-            ? new ArrayList<>()
-            : sort
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> groupIdConverted = (groupId == null)
-            ? new ArrayList<>()
-            : groupId
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> groupCodeConverted = (groupCode == null)
-            ? new ArrayList<>()
-            : groupCode
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> tenantIdConverted = (tenantId == null)
-            ? new ArrayList<>()
-            : tenantId
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
+        List<String> sortConverted =
+            sort == null
+                ? new ArrayList<>()
+                : sort
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> groupIdConverted =
+            groupId == null
+                ? new ArrayList<>()
+                : groupId
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> groupCodeConverted =
+            groupCode == null
+                ? new ArrayList<>()
+                : groupCode
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> tenantIdConverted =
+            tenantId == null
+                ? new ArrayList<>()
+                : tenantId
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
         return service.findPrincipals(
             this.client.getHost(),
             size,
@@ -384,30 +389,34 @@ public final class PrincipalOperationsImpl {
         Context context
     ) {
         final String accept = "application/json";
-        List<String> sortConverted = (sort == null)
-            ? new ArrayList<>()
-            : sort
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> groupIdConverted = (groupId == null)
-            ? new ArrayList<>()
-            : groupId
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> groupCodeConverted = (groupCode == null)
-            ? new ArrayList<>()
-            : groupCode
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> tenantIdConverted = (tenantId == null)
-            ? new ArrayList<>()
-            : tenantId
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
+        List<String> sortConverted =
+            sort == null
+                ? new ArrayList<>()
+                : sort
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> groupIdConverted =
+            groupId == null
+                ? new ArrayList<>()
+                : groupId
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> groupCodeConverted =
+            groupCode == null
+                ? new ArrayList<>()
+                : groupCode
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> tenantIdConverted =
+            tenantId == null
+                ? new ArrayList<>()
+                : tenantId
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
         return service.findPrincipalsSync(
             this.client.getHost(),
             size,

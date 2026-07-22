@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package com.kuflow.rest.implementation;
 
 import com.azure.core.annotation.BodyParam;
@@ -485,54 +486,62 @@ public final class ProcessItemOperationsImpl {
         Context context
     ) {
         final String accept = "application/json";
-        List<String> sortConverted = (sort == null)
-            ? new ArrayList<>()
-            : sort
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> processIdConverted = (processId == null)
-            ? new ArrayList<>()
-            : processId
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> typeConverted = (type == null)
-            ? new ArrayList<>()
-            : type
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> taskStateConverted = (taskState == null)
-            ? new ArrayList<>()
-            : taskState
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> processItemDefinitionCodeConverted = (processItemDefinitionCode == null)
-            ? new ArrayList<>()
-            : processItemDefinitionCode
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> processDefinitionIdConverted = (processDefinitionId == null)
-            ? new ArrayList<>()
-            : processDefinitionId
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> processDefinitionCodeConverted = (processDefinitionCode == null)
-            ? new ArrayList<>()
-            : processDefinitionCode
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> tenantIdConverted = (tenantId == null)
-            ? new ArrayList<>()
-            : tenantId
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
+        List<String> sortConverted =
+            sort == null
+                ? new ArrayList<>()
+                : sort
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> processIdConverted =
+            processId == null
+                ? new ArrayList<>()
+                : processId
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> typeConverted =
+            type == null
+                ? new ArrayList<>()
+                : type
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> taskStateConverted =
+            taskState == null
+                ? new ArrayList<>()
+                : taskState
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> processItemDefinitionCodeConverted =
+            processItemDefinitionCode == null
+                ? new ArrayList<>()
+                : processItemDefinitionCode
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> processDefinitionIdConverted =
+            processDefinitionId == null
+                ? new ArrayList<>()
+                : processDefinitionId
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> processDefinitionCodeConverted =
+            processDefinitionCode == null
+                ? new ArrayList<>()
+                : processDefinitionCode
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> tenantIdConverted =
+            tenantId == null
+                ? new ArrayList<>()
+                : tenantId
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
         return service.findProcessItems(
             this.client.getHost(),
             size,
@@ -738,54 +747,62 @@ public final class ProcessItemOperationsImpl {
         Context context
     ) {
         final String accept = "application/json";
-        List<String> sortConverted = (sort == null)
-            ? new ArrayList<>()
-            : sort
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> processIdConverted = (processId == null)
-            ? new ArrayList<>()
-            : processId
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> typeConverted = (type == null)
-            ? new ArrayList<>()
-            : type
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> taskStateConverted = (taskState == null)
-            ? new ArrayList<>()
-            : taskState
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> processItemDefinitionCodeConverted = (processItemDefinitionCode == null)
-            ? new ArrayList<>()
-            : processItemDefinitionCode
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> processDefinitionIdConverted = (processDefinitionId == null)
-            ? new ArrayList<>()
-            : processDefinitionId
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> processDefinitionCodeConverted = (processDefinitionCode == null)
-            ? new ArrayList<>()
-            : processDefinitionCode
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> tenantIdConverted = (tenantId == null)
-            ? new ArrayList<>()
-            : tenantId
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
+        List<String> sortConverted =
+            sort == null
+                ? new ArrayList<>()
+                : sort
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> processIdConverted =
+            processId == null
+                ? new ArrayList<>()
+                : processId
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> typeConverted =
+            type == null
+                ? new ArrayList<>()
+                : type
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> taskStateConverted =
+            taskState == null
+                ? new ArrayList<>()
+                : taskState
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> processItemDefinitionCodeConverted =
+            processItemDefinitionCode == null
+                ? new ArrayList<>()
+                : processItemDefinitionCode
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> processDefinitionIdConverted =
+            processDefinitionId == null
+                ? new ArrayList<>()
+                : processDefinitionId
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> processDefinitionCodeConverted =
+            processDefinitionCode == null
+                ? new ArrayList<>()
+                : processDefinitionCode
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> tenantIdConverted =
+            tenantId == null
+                ? new ArrayList<>()
+                : tenantId
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
         return service.findProcessItemsSync(
             this.client.getHost(),
             size,

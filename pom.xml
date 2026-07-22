@@ -331,20 +331,28 @@
               </goals>
               <phase>validate</phase>
             </execution>
-            <!-- Checks formatting + license header of the generated REST client sources.
-                 No removeUnusedImports/forbidWildcardImports here: checkstyle-suppressions.xml
-                 exempts src/generated from those checks too, so spotless must match that. -->
+            <!-- Formats (not just checks) the generated REST client sources: the codegen
+                 pipeline (kuflow-rest/openapi) doesn't reliably emit already-formatted output,
+                 so we fix it up at build time instead of failing. No removeUnusedImports/
+                 forbidWildcardImports here: checkstyle-suppressions.xml exempts src/generated
+                 from those checks too, so spotless must match that. -->
             <execution>
-              <id>spotless-check-generated</id>
+              <id>spotless-apply-generated</id>
               <goals>
-                <goal>check</goal>
+                <goal>apply</goal>
               </goals>
-              <phase>validate</phase>
+              <phase>generate-sources</phase>
               <configuration>
                 <java combine.self="override">
                   <includes>
                     <include>src/generated/java/**/*.java</include>
                   </includes>
+
+                  <!-- Replaces checkstyle UnusedImports (this one also auto-removes them) -->
+                  <removeUnusedImports />
+
+                  <forbidWildcardImports />
+
                   <prettier>
                     <devDependencies>
                       <prettier>${prettier.npm.version}</prettier>
@@ -356,8 +364,11 @@
                       <printWidth>140</printWidth>
                       <tabWidth>4</tabWidth>
                     </config>
+                    <!-- Node/npm are expected on the system PATH (provided by mise locally, by the CI image setup) -->
                     <npmInstallCache>${maven.multiModuleProjectDirectory}/.cache/spotless-npm</npmInstallCache>
                   </prettier>
+
+                  <!-- Replaces license-maven-plugin (this one also auto-inserts the header) -->
                   <licenseHeader>
                     <file>${maven.multiModuleProjectDirectory}/etc/spotless/license-header.txt</file>
                   </licenseHeader>

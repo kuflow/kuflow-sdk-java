@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package com.kuflow.rest.implementation;
 
 import com.azure.core.annotation.Generated;
@@ -276,11 +277,10 @@ public final class KuFlowClientImplBuilder
     @Generated
     public KuFlowClientImpl buildClient() {
         this.validateClient();
-        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        String localHost = (host != null) ? host : "https://api.kuflow.com/v2024-06-14";
-        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
-            ? serializerAdapter
-            : JacksonAdapter.createDefaultSerializerAdapter();
+        HttpPipeline localPipeline = pipeline != null ? pipeline : createHttpPipeline();
+        String localHost = host != null ? host : "https://api.kuflow.com/v2024-06-14";
+        SerializerAdapter localSerializerAdapter =
+            serializerAdapter != null ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         KuFlowClientImpl client = new KuFlowClientImpl(localPipeline, localSerializerAdapter, localHost);
         return client;
     }
@@ -293,7 +293,7 @@ public final class KuFlowClientImplBuilder
 
     @Generated
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration = configuration == null ? Configuration.getGlobalConfiguration() : configuration;
         HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
         ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -307,7 +307,8 @@ public final class KuFlowClientImplBuilder
         if (headers != null) {
             policies.add(new AddHeadersPolicy(headers));
         }
-        this.pipelinePolicies.stream()
+        this.pipelinePolicies
+            .stream()
             .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
@@ -316,7 +317,8 @@ public final class KuFlowClientImplBuilder
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", host)));
         }
-        this.pipelinePolicies.stream()
+        this.pipelinePolicies
+            .stream()
             .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);

@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package com.kuflow.rest.implementation;
 
 import com.azure.core.annotation.BodyParam;
@@ -530,36 +531,41 @@ public final class ProcessOperationsImpl {
         Context context
     ) {
         final String accept = "application/json";
-        List<String> sortConverted = (sort == null)
-            ? new ArrayList<>()
-            : sort
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> tenantIdConverted = (tenantId == null)
-            ? new ArrayList<>()
-            : tenantId
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> processDefinitionIdConverted = (processDefinitionId == null)
-            ? new ArrayList<>()
-            : processDefinitionId
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> processDefinitionCodeConverted = (processDefinitionCode == null)
-            ? new ArrayList<>()
-            : processDefinitionCode
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> metadataConverted = (metadata == null)
-            ? new ArrayList<>()
-            : metadata
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
+        List<String> sortConverted =
+            sort == null
+                ? new ArrayList<>()
+                : sort
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> tenantIdConverted =
+            tenantId == null
+                ? new ArrayList<>()
+                : tenantId
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> processDefinitionIdConverted =
+            processDefinitionId == null
+                ? new ArrayList<>()
+                : processDefinitionId
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> processDefinitionCodeConverted =
+            processDefinitionCode == null
+                ? new ArrayList<>()
+                : processDefinitionCode
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> metadataConverted =
+            metadata == null
+                ? new ArrayList<>()
+                : metadata
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
         return service.findProcesses(
             this.client.getHost(),
             size,
@@ -735,36 +741,41 @@ public final class ProcessOperationsImpl {
         Context context
     ) {
         final String accept = "application/json";
-        List<String> sortConverted = (sort == null)
-            ? new ArrayList<>()
-            : sort
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> tenantIdConverted = (tenantId == null)
-            ? new ArrayList<>()
-            : tenantId
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> processDefinitionIdConverted = (processDefinitionId == null)
-            ? new ArrayList<>()
-            : processDefinitionId
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> processDefinitionCodeConverted = (processDefinitionCode == null)
-            ? new ArrayList<>()
-            : processDefinitionCode
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
-        List<String> metadataConverted = (metadata == null)
-            ? new ArrayList<>()
-            : metadata
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
+        List<String> sortConverted =
+            sort == null
+                ? new ArrayList<>()
+                : sort
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> tenantIdConverted =
+            tenantId == null
+                ? new ArrayList<>()
+                : tenantId
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> processDefinitionIdConverted =
+            processDefinitionId == null
+                ? new ArrayList<>()
+                : processDefinitionId
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> processDefinitionCodeConverted =
+            processDefinitionCode == null
+                ? new ArrayList<>()
+                : processDefinitionCode
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> metadataConverted =
+            metadata == null
+                ? new ArrayList<>()
+                : metadata
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
         return service.findProcessesSync(
             this.client.getHost(),
             size,
@@ -1364,12 +1375,13 @@ public final class ProcessOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Process>> cancelProcessItemsWithResponseAsync(UUID id, List<UUID> processItemId, Context context) {
         final String accept = "application/json";
-        List<String> processItemIdConverted = (processItemId == null)
-            ? new ArrayList<>()
-            : processItemId
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
+        List<String> processItemIdConverted =
+            processItemId == null
+                ? new ArrayList<>()
+                : processItemId
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
         return service.cancelProcessItems(this.client.getHost(), id, processItemIdConverted, accept, context);
     }
 
@@ -1476,12 +1488,13 @@ public final class ProcessOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Process> cancelProcessItemsWithResponse(UUID id, List<UUID> processItemId, Context context) {
         final String accept = "application/json";
-        List<String> processItemIdConverted = (processItemId == null)
-            ? new ArrayList<>()
-            : processItemId
-                  .stream()
-                  .map(item -> Objects.toString(item, ""))
-                  .collect(Collectors.toList());
+        List<String> processItemIdConverted =
+            processItemId == null
+                ? new ArrayList<>()
+                : processItemId
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
         return service.cancelProcessItemsSync(this.client.getHost(), id, processItemIdConverted, accept, context);
     }
 
