@@ -22,8 +22,7 @@
  */
 package com.kuflow.rest.model;
 
-import static java.util.Collections.unmodifiableList;
-
+import com.kuflow.rest.util.SearchCriteriaUtils;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -63,6 +62,11 @@ public class ProcessFindOptions {
      */
     private final List<String> processDefinitionCodes = new LinkedList<>();
 
+    /**
+     * Filter by indexed metadata field values.
+     */
+    private final List<String> metadata = new LinkedList<>();
+
     public Integer getSize() {
         return this.size;
     }
@@ -84,7 +88,7 @@ public class ProcessFindOptions {
     }
 
     public List<String> getSorts() {
-        return unmodifiableList(this.sorts);
+        return List.copyOf(this.sorts);
     }
 
     public ProcessFindOptions setSorts(List<String> sorts) {
@@ -119,7 +123,7 @@ public class ProcessFindOptions {
     }
 
     public List<UUID> getTenantIds() {
-        return unmodifiableList(this.tenantIds);
+        return List.copyOf(this.tenantIds);
     }
 
     public ProcessFindOptions setTenantIds(List<UUID> tenantIds) {
@@ -154,7 +158,7 @@ public class ProcessFindOptions {
     }
 
     public List<UUID> getProcessDefinitionIds() {
-        return unmodifiableList(this.processDefinitionIds);
+        return List.copyOf(this.processDefinitionIds);
     }
 
     public ProcessFindOptions setProcessDefinitionIds(List<UUID> processDefinitionIds) {
@@ -189,7 +193,7 @@ public class ProcessFindOptions {
     }
 
     public List<String> getProcessDefinitionCodes() {
-        return unmodifiableList(this.processDefinitionCodes);
+        return List.copyOf(this.processDefinitionCodes);
     }
 
     public ProcessFindOptions setProcessDefinitionCodes(List<String> processDefinitionCodes) {
@@ -219,6 +223,79 @@ public class ProcessFindOptions {
     public ProcessFindOptions removeProcessDefinitionCode(String processDefinitionCode) {
         Objects.requireNonNull(processDefinitionCode, "'processDefinitionCode' is required");
         this.processDefinitionCodes.remove(processDefinitionCode);
+
+        return this;
+    }
+
+    public List<String> getMetadata() {
+        return List.copyOf(this.metadata);
+    }
+
+    public ProcessFindOptions setMetadata(List<String> metadata) {
+        this.metadata.clear();
+        if (metadata != null) {
+            this.metadata.addAll(metadata);
+        }
+
+        return this;
+    }
+
+    public ProcessFindOptions setMetadata(String metadata) {
+        Objects.requireNonNull(metadata, "'metadata' is required");
+
+        return this.setMetadata(List.of(metadata));
+    }
+
+    /**
+     * Sets a single "code operation value1 value2..." filter expression, built from its parts and safely
+     * encoded so that a value containing a space (or any character requiring percent-encoding) still
+     * round-trips correctly. See {@link com.kuflow.rest.util.SearchCriteriaUtils#encodeFilterExpression}
+     * for details on the encoding.
+     *
+     * @param code the metadata field code to filter/sort by
+     * @param operation the operation code, e.g. "eq", "le", "ge", "between", "contains", "in"
+     * @param values one or more values for the operation
+     */
+    public ProcessFindOptions setMetadata(String code, String operation, String... values) {
+        String encoded = SearchCriteriaUtils.encodeFilterExpression(code, operation, values);
+
+        return this.setMetadata(encoded);
+    }
+
+    public ProcessFindOptions addMetadata(String metadata) {
+        Objects.requireNonNull(metadata, "'metadata' is required");
+        if (!this.metadata.contains(metadata)) {
+            this.metadata.add(metadata);
+        }
+
+        return this;
+    }
+
+    /**
+     * Adds a single "code operation value1 value2..." filter expression, built from its parts and safely
+     * encoded so that a value containing a space (or any character requiring percent-encoding) still
+     * round-trips correctly. See {@link com.kuflow.rest.util.SearchCriteriaUtils#encodeFilterExpression}
+     * for details on the encoding.
+     *
+     * @param code the metadata field code to filter/sort by
+     * @param operation the operation code, e.g. "eq", "le", "ge", "between", "contains", "in"
+     * @param values one or more values for the operation
+     */
+    public ProcessFindOptions addMetadata(String code, String operation, String... values) {
+        String encoded = SearchCriteriaUtils.encodeFilterExpression(code, operation, values);
+
+        return this.addMetadata(encoded);
+    }
+
+    public ProcessFindOptions removeMetadata(String metadata) {
+        Objects.requireNonNull(metadata, "'metadata' is required");
+        this.metadata.remove(metadata);
+
+        return this;
+    }
+
+    public ProcessFindOptions removeMetadata() {
+        this.metadata.clear();
 
         return this;
     }

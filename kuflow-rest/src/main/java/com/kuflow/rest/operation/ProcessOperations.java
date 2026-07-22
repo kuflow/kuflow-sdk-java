@@ -84,8 +84,18 @@ public class ProcessOperations {
         List<UUID> tenantId = !options.getTenantIds().isEmpty() ? options.getTenantIds() : null;
         List<UUID> processDefinitionId = !options.getProcessDefinitionIds().isEmpty() ? options.getProcessDefinitionIds() : null;
         List<String> processDefinitionCode = !options.getProcessDefinitionCodes().isEmpty() ? options.getProcessDefinitionCodes() : null;
+        List<String> metadata = !options.getMetadata().isEmpty() ? options.getMetadata() : null;
 
-        return this.service.findProcessesWithResponse(size, page, sort, tenantId, processDefinitionId, processDefinitionCode, context);
+        return this.service.findProcessesWithResponse(
+            size,
+            page,
+            sort,
+            tenantId,
+            processDefinitionId,
+            processDefinitionCode,
+            metadata,
+            context
+        );
     }
 
     /**

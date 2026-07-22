@@ -179,6 +179,6 @@ public class KuFlowPrincipal {
             return "";
         }
 
-        return URLEncoder.encode(value.trim(), StandardCharsets.UTF_8).replaceAll("\\+", "%20");
+        return URLEncoder.encode(value.trim(), StandardCharsets.UTF_8).replace("+", "%20");
     }
 }

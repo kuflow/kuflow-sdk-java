@@ -34,6 +34,7 @@ import com.kuflow.rest.model.ProcessFindOptions;
 import com.kuflow.rest.model.ProcessPage;
 import com.kuflow.rest.model.ProcessPageItem;
 import com.kuflow.rest.model.ProcessState;
+import com.kuflow.rest.util.SearchCriteriaUtils;
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -114,6 +115,22 @@ public class ProcessOperationTest extends AbstractOperationTest {
             .addSort("order2")
             .addTenantId(tenantId1)
             .addTenantId(tenantId2);
+
+        this.kuFlowRestClient.getProcessOperations().findProcesses(options);
+    }
+
+    @Test
+    @DisplayName("GIVEN a metadata filter built from parts with a space WHEN list processes THEN the encoded query parameter is sent")
+    public void givenMetadataFilterBuiltFromPartsWithASpaceWhenListProcessesThenTheEncodedQueryParameterIsSent() {
+        String expectedMetadataParam = SearchCriteriaUtils.encodeFilterExpression("FIELD_STRING", "eq", "Text value");
+
+        givenThat(
+            get(urlPathEqualTo("/v2024-06-14/processes"))
+                .withQueryParam("metadata", equalTo(expectedMetadataParam))
+                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.list.ok.json"))
+        );
+
+        ProcessFindOptions options = new ProcessFindOptions().addMetadata("FIELD_STRING", "eq", "Text value");
 
         this.kuFlowRestClient.getProcessOperations().findProcesses(options);
     }

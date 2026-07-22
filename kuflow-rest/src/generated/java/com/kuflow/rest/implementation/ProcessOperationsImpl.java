@@ -103,6 +103,7 @@ public final class ProcessOperationsImpl {
             @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
             @QueryParam(value = "processDefinitionId", multipleQueryParams = true) List<String> processDefinitionId,
             @QueryParam(value = "processDefinitionCode", multipleQueryParams = true) List<String> processDefinitionCode,
+            @QueryParam(value = "metadata", multipleQueryParams = true) List<String> metadata,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -118,6 +119,7 @@ public final class ProcessOperationsImpl {
             @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
             @QueryParam(value = "processDefinitionId", multipleQueryParams = true) List<String> processDefinitionId,
             @QueryParam(value = "processDefinitionCode", multipleQueryParams = true) List<String> processDefinitionCode,
+            @QueryParam(value = "metadata", multipleQueryParams = true) List<String> metadata,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -461,6 +463,12 @@ public final class ProcessOperationsImpl {
      * @param tenantId Filter by tenantId.
      * @param processDefinitionId Filter by process definition ids.
      * @param processDefinitionCode Filter by process definition codes.
+     * @param metadata Filter by process metadata field values. Each value is an expression with the format
+     * `fieldCode operation value1 value2...` (space-separated).
+     *
+     * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
+     *
+     * Filtering by metadata requires specifying exactly one `processDefinitionId` or `processDefinitionCode`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -473,10 +481,11 @@ public final class ProcessOperationsImpl {
         List<String> sort,
         List<UUID> tenantId,
         List<UUID> processDefinitionId,
-        List<String> processDefinitionCode
+        List<String> processDefinitionCode,
+        List<String> metadata
     ) {
         return FluxUtil.withContext(context ->
-            findProcessesWithResponseAsync(size, page, sort, tenantId, processDefinitionId, processDefinitionCode, context)
+            findProcessesWithResponseAsync(size, page, sort, tenantId, processDefinitionId, processDefinitionCode, metadata, context)
         );
     }
 
@@ -497,6 +506,12 @@ public final class ProcessOperationsImpl {
      * @param tenantId Filter by tenantId.
      * @param processDefinitionId Filter by process definition ids.
      * @param processDefinitionCode Filter by process definition codes.
+     * @param metadata Filter by process metadata field values. Each value is an expression with the format
+     * `fieldCode operation value1 value2...` (space-separated).
+     *
+     * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
+     *
+     * Filtering by metadata requires specifying exactly one `processDefinitionId` or `processDefinitionCode`.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -511,6 +526,7 @@ public final class ProcessOperationsImpl {
         List<UUID> tenantId,
         List<UUID> processDefinitionId,
         List<String> processDefinitionCode,
+        List<String> metadata,
         Context context
     ) {
         final String accept = "application/json";
@@ -538,6 +554,12 @@ public final class ProcessOperationsImpl {
                   .stream()
                   .map(item -> Objects.toString(item, ""))
                   .collect(Collectors.toList());
+        List<String> metadataConverted = (metadata == null)
+            ? new ArrayList<>()
+            : metadata
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         return service.findProcesses(
             this.client.getHost(),
             size,
@@ -546,6 +568,7 @@ public final class ProcessOperationsImpl {
             tenantIdConverted,
             processDefinitionIdConverted,
             processDefinitionCodeConverted,
+            metadataConverted,
             accept,
             context
         );
@@ -568,6 +591,12 @@ public final class ProcessOperationsImpl {
      * @param tenantId Filter by tenantId.
      * @param processDefinitionId Filter by process definition ids.
      * @param processDefinitionCode Filter by process definition codes.
+     * @param metadata Filter by process metadata field values. Each value is an expression with the format
+     * `fieldCode operation value1 value2...` (space-separated).
+     *
+     * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
+     *
+     * Filtering by metadata requires specifying exactly one `processDefinitionId` or `processDefinitionCode`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -580,10 +609,11 @@ public final class ProcessOperationsImpl {
         List<String> sort,
         List<UUID> tenantId,
         List<UUID> processDefinitionId,
-        List<String> processDefinitionCode
+        List<String> processDefinitionCode,
+        List<String> metadata
     ) {
-        return findProcessesWithResponseAsync(size, page, sort, tenantId, processDefinitionId, processDefinitionCode).flatMap(res ->
-            Mono.justOrEmpty(res.getValue())
+        return findProcessesWithResponseAsync(size, page, sort, tenantId, processDefinitionId, processDefinitionCode, metadata).flatMap(
+            res -> Mono.justOrEmpty(res.getValue())
         );
     }
 
@@ -606,45 +636,8 @@ public final class ProcessOperationsImpl {
         final List<UUID> tenantId = null;
         final List<UUID> processDefinitionId = null;
         final List<String> processDefinitionCode = null;
-        return findProcessesWithResponseAsync(size, page, sort, tenantId, processDefinitionId, processDefinitionCode).flatMap(res ->
-            Mono.justOrEmpty(res.getValue())
-        );
-    }
-
-    /**
-     * Find all accessible Processes
-     *
-     * List all the Processes that have been created and the credentials has access.
-     *
-     * Available sort query values: id, createdAt, lastModifiedAt.
-     *
-     * @param size The number of records returned within a single API call.
-     * @param page The page number of the current page in the returned records, 0 is the first page.
-     * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-     *
-     * Default sort order is ascending. Multiple sort criteria are supported.
-     *
-     * Please refer to the method description for supported properties.
-     * @param tenantId Filter by tenantId.
-     * @param processDefinitionId Filter by process definition ids.
-     * @param processDefinitionCode Filter by process definition codes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProcessPage> findProcessesAsync(
-        Integer size,
-        Integer page,
-        List<String> sort,
-        List<UUID> tenantId,
-        List<UUID> processDefinitionId,
-        List<String> processDefinitionCode,
-        Context context
-    ) {
-        return findProcessesWithResponseAsync(size, page, sort, tenantId, processDefinitionId, processDefinitionCode, context).flatMap(
+        final List<String> metadata = null;
+        return findProcessesWithResponseAsync(size, page, sort, tenantId, processDefinitionId, processDefinitionCode, metadata).flatMap(
             res -> Mono.justOrEmpty(res.getValue())
         );
     }
@@ -666,6 +659,64 @@ public final class ProcessOperationsImpl {
      * @param tenantId Filter by tenantId.
      * @param processDefinitionId Filter by process definition ids.
      * @param processDefinitionCode Filter by process definition codes.
+     * @param metadata Filter by process metadata field values. Each value is an expression with the format
+     * `fieldCode operation value1 value2...` (space-separated).
+     *
+     * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
+     *
+     * Filtering by metadata requires specifying exactly one `processDefinitionId` or `processDefinitionCode`.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ProcessPage> findProcessesAsync(
+        Integer size,
+        Integer page,
+        List<String> sort,
+        List<UUID> tenantId,
+        List<UUID> processDefinitionId,
+        List<String> processDefinitionCode,
+        List<String> metadata,
+        Context context
+    ) {
+        return findProcessesWithResponseAsync(
+            size,
+            page,
+            sort,
+            tenantId,
+            processDefinitionId,
+            processDefinitionCode,
+            metadata,
+            context
+        ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Find all accessible Processes
+     *
+     * List all the Processes that have been created and the credentials has access.
+     *
+     * Available sort query values: id, createdAt, lastModifiedAt.
+     *
+     * @param size The number of records returned within a single API call.
+     * @param page The page number of the current page in the returned records, 0 is the first page.
+     * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
+     *
+     * Default sort order is ascending. Multiple sort criteria are supported.
+     *
+     * Please refer to the method description for supported properties.
+     * @param tenantId Filter by tenantId.
+     * @param processDefinitionId Filter by process definition ids.
+     * @param processDefinitionCode Filter by process definition codes.
+     * @param metadata Filter by process metadata field values. Each value is an expression with the format
+     * `fieldCode operation value1 value2...` (space-separated).
+     *
+     * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
+     *
+     * Filtering by metadata requires specifying exactly one `processDefinitionId` or `processDefinitionCode`.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -680,6 +731,7 @@ public final class ProcessOperationsImpl {
         List<UUID> tenantId,
         List<UUID> processDefinitionId,
         List<String> processDefinitionCode,
+        List<String> metadata,
         Context context
     ) {
         final String accept = "application/json";
@@ -707,6 +759,12 @@ public final class ProcessOperationsImpl {
                   .stream()
                   .map(item -> Objects.toString(item, ""))
                   .collect(Collectors.toList());
+        List<String> metadataConverted = (metadata == null)
+            ? new ArrayList<>()
+            : metadata
+                  .stream()
+                  .map(item -> Objects.toString(item, ""))
+                  .collect(Collectors.toList());
         return service.findProcessesSync(
             this.client.getHost(),
             size,
@@ -715,6 +773,7 @@ public final class ProcessOperationsImpl {
             tenantIdConverted,
             processDefinitionIdConverted,
             processDefinitionCodeConverted,
+            metadataConverted,
             accept,
             context
         );
@@ -737,6 +796,12 @@ public final class ProcessOperationsImpl {
      * @param tenantId Filter by tenantId.
      * @param processDefinitionId Filter by process definition ids.
      * @param processDefinitionCode Filter by process definition codes.
+     * @param metadata Filter by process metadata field values. Each value is an expression with the format
+     * `fieldCode operation value1 value2...` (space-separated).
+     *
+     * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
+     *
+     * Filtering by metadata requires specifying exactly one `processDefinitionId` or `processDefinitionCode`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -749,9 +814,19 @@ public final class ProcessOperationsImpl {
         List<String> sort,
         List<UUID> tenantId,
         List<UUID> processDefinitionId,
-        List<String> processDefinitionCode
+        List<String> processDefinitionCode,
+        List<String> metadata
     ) {
-        return findProcessesWithResponse(size, page, sort, tenantId, processDefinitionId, processDefinitionCode, Context.NONE).getValue();
+        return findProcessesWithResponse(
+            size,
+            page,
+            sort,
+            tenantId,
+            processDefinitionId,
+            processDefinitionCode,
+            metadata,
+            Context.NONE
+        ).getValue();
     }
 
     /**
@@ -773,7 +848,17 @@ public final class ProcessOperationsImpl {
         final List<UUID> tenantId = null;
         final List<UUID> processDefinitionId = null;
         final List<String> processDefinitionCode = null;
-        return findProcessesWithResponse(size, page, sort, tenantId, processDefinitionId, processDefinitionCode, Context.NONE).getValue();
+        final List<String> metadata = null;
+        return findProcessesWithResponse(
+            size,
+            page,
+            sort,
+            tenantId,
+            processDefinitionId,
+            processDefinitionCode,
+            metadata,
+            Context.NONE
+        ).getValue();
     }
 
     /**
