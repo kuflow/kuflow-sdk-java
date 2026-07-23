@@ -25,6 +25,7 @@ package com.kuflow.temporal.activity.kuflow.model;
 
 import static java.util.Collections.unmodifiableList;
 
+import com.kuflow.rest.util.SearchCriteriaUtils;
 import com.kuflow.temporal.common.model.AbstractModel;
 import java.util.LinkedList;
 import java.util.List;
@@ -249,6 +250,22 @@ public class BusinessArtifactFindRequest extends AbstractModel {
         return this.setValues(List.of(value));
     }
 
+    /**
+     * Sets a single "code operation value1 value2..." filter expression, built from its parts and safely
+     * encoded so that a value containing a space (or any character requiring percent-encoding) still
+     * round-trips correctly. See {@link SearchCriteriaUtils#encodeFilterExpression} for details on the
+     * encoding.
+     *
+     * @param code the field code to filter/sort by
+     * @param operation the operation code, e.g. "eq", "le", "ge", "between", "contains", "in"
+     * @param values one or more values for the operation
+     */
+    public BusinessArtifactFindRequest setValue(String code, String operation, String... values) {
+        String encoded = SearchCriteriaUtils.encodeFilterExpression(code, operation, values);
+
+        return this.setValue(encoded);
+    }
+
     public BusinessArtifactFindRequest addValue(String value) {
         Objects.requireNonNull(value, "'value' is required");
         if (!this.values.contains(value)) {
@@ -256,6 +273,22 @@ public class BusinessArtifactFindRequest extends AbstractModel {
         }
 
         return this;
+    }
+
+    /**
+     * Adds a single "code operation value1 value2..." filter expression, built from its parts and safely
+     * encoded so that a value containing a space (or any character requiring percent-encoding) still
+     * round-trips correctly. See {@link SearchCriteriaUtils#encodeFilterExpression} for details on the
+     * encoding.
+     *
+     * @param code the field code to filter/sort by
+     * @param operation the operation code, e.g. "eq", "le", "ge", "between", "contains", "in"
+     * @param values one or more values for the operation
+     */
+    public BusinessArtifactFindRequest addValue(String code, String operation, String... values) {
+        String encoded = SearchCriteriaUtils.encodeFilterExpression(code, operation, values);
+
+        return this.addValue(encoded);
     }
 
     public BusinessArtifactFindRequest removeValue(String value) {
