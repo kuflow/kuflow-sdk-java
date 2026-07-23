@@ -215,8 +215,10 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
                 .setPage(request.getPage())
                 .setSize(request.getSize())
                 .setSorts(request.getSorts())
+                .setTenantIds(request.getTenantIds())
                 .setProcessDefinitionIds(request.getProcessDefinitionIds())
-                .setProcessDefinitionCodes(request.getProcessDefinitionCodes());
+                .setProcessDefinitionCodes(request.getProcessDefinitionCodes())
+                .setMetadata(request.getMetadata());
 
             ProcessPage processes = this.processOperations.findProcesses(options);
 

@@ -25,6 +25,7 @@ package com.kuflow.temporal.activity.kuflow.model;
 
 import static java.util.Collections.unmodifiableList;
 
+import com.kuflow.rest.util.SearchCriteriaUtils;
 import com.kuflow.temporal.common.model.AbstractModel;
 import java.util.LinkedList;
 import java.util.List;
@@ -40,6 +41,11 @@ public class ProcessFindRequest extends AbstractModel {
     private List<String> sorts;
 
     /**
+     * Filter by tenantId.
+     */
+    private final List<UUID> tenantIds = new LinkedList<>();
+
+    /**
      * Filter by process definition ids.
      */
     private final List<UUID> processDefinitionIds = new LinkedList<>();
@@ -48,6 +54,11 @@ public class ProcessFindRequest extends AbstractModel {
      * Filter by process definition codes.
      */
     private final List<String> processDefinitionCodes = new LinkedList<>();
+
+    /**
+     * Filter by indexed metadata field values.
+     */
+    private final List<String> metadata = new LinkedList<>();
 
     public Integer getPage() {
         return this.page;
@@ -90,6 +101,41 @@ public class ProcessFindRequest extends AbstractModel {
     public void removeSort(String sort) {
         Objects.requireNonNull(sort, "'sort' is required");
         this.sorts.remove(sort);
+    }
+
+    public List<UUID> getTenantIds() {
+        return unmodifiableList(this.tenantIds);
+    }
+
+    public ProcessFindRequest setTenantIds(List<UUID> tenantIds) {
+        this.tenantIds.clear();
+        if (tenantIds != null) {
+            this.tenantIds.addAll(tenantIds);
+        }
+
+        return this;
+    }
+
+    public ProcessFindRequest setTenantId(UUID tenantId) {
+        Objects.requireNonNull(tenantId, "'tenantId' is required");
+
+        return this.setTenantIds(List.of(tenantId));
+    }
+
+    public ProcessFindRequest addTenantId(UUID tenantId) {
+        Objects.requireNonNull(tenantId, "'tenantId' is required");
+        if (!this.tenantIds.contains(tenantId)) {
+            this.tenantIds.add(tenantId);
+        }
+
+        return this;
+    }
+
+    public ProcessFindRequest removeTenantId(UUID tenantId) {
+        Objects.requireNonNull(tenantId, "'tenantId' is required");
+        this.tenantIds.remove(tenantId);
+
+        return this;
     }
 
     public List<UUID> getProcessDefinitionIds() {
@@ -158,6 +204,73 @@ public class ProcessFindRequest extends AbstractModel {
     public ProcessFindRequest removeProcessDefinitionCode(String processDefinitionCode) {
         Objects.requireNonNull(processDefinitionCode, "'processDefinitionCode' is required");
         this.processDefinitionCodes.remove(processDefinitionCode);
+
+        return this;
+    }
+
+    public List<String> getMetadata() {
+        return unmodifiableList(this.metadata);
+    }
+
+    public ProcessFindRequest setMetadata(List<String> metadata) {
+        this.metadata.clear();
+        if (metadata != null) {
+            this.metadata.addAll(metadata);
+        }
+
+        return this;
+    }
+
+    public ProcessFindRequest setMetadata(String metadata) {
+        Objects.requireNonNull(metadata, "'metadata' is required");
+
+        return this.setMetadata(List.of(metadata));
+    }
+
+    /**
+     * Sets a single "code operation value1 value2..." filter expression, built from its parts and safely
+     * encoded so that a value containing a space (or any character requiring percent-encoding) still
+     * round-trips correctly. See {@link SearchCriteriaUtils#encodeFilterExpression} for details on the
+     * encoding.
+     *
+     * @param code the metadata field code to filter/sort by
+     * @param operation the operation code, e.g. "eq", "le", "ge", "between", "contains", "in"
+     * @param values one or more values for the operation
+     */
+    public ProcessFindRequest setMetadata(String code, String operation, String... values) {
+        String encoded = SearchCriteriaUtils.encodeFilterExpression(code, operation, values);
+
+        return this.setMetadata(encoded);
+    }
+
+    public ProcessFindRequest addMetadata(String metadata) {
+        Objects.requireNonNull(metadata, "'metadata' is required");
+        if (!this.metadata.contains(metadata)) {
+            this.metadata.add(metadata);
+        }
+
+        return this;
+    }
+
+    /**
+     * Adds a single "code operation value1 value2..." filter expression, built from its parts and safely
+     * encoded so that a value containing a space (or any character requiring percent-encoding) still
+     * round-trips correctly. See {@link SearchCriteriaUtils#encodeFilterExpression} for details on the
+     * encoding.
+     *
+     * @param code the metadata field code to filter/sort by
+     * @param operation the operation code, e.g. "eq", "le", "ge", "between", "contains", "in"
+     * @param values one or more values for the operation
+     */
+    public ProcessFindRequest addMetadata(String code, String operation, String... values) {
+        String encoded = SearchCriteriaUtils.encodeFilterExpression(code, operation, values);
+
+        return this.addMetadata(encoded);
+    }
+
+    public ProcessFindRequest removeMetadata(String metadata) {
+        Objects.requireNonNull(metadata, "'metadata' is required");
+        this.metadata.remove(metadata);
 
         return this;
     }
