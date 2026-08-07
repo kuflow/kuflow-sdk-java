@@ -29,14 +29,14 @@ import com.kuflow.temporal.activity.datasource.model.DataSourceQueryResponse;
 import com.kuflow.temporal.activity.datasource.model.DataSourceValidateValueRequest;
 import com.kuflow.temporal.activity.datasource.model.DataSourceValidateValueResponse;
 import io.temporal.activity.ActivityInterface;
-import io.temporal.workflow.WorkflowMethod;
+import io.temporal.activity.ActivityMethod;
 
 @Experimental
 @ActivityInterface(namePrefix = "KuFlow_DataSource_")
 public interface DataSourceActivities {
-    @WorkflowMethod
+    @ActivityMethod
     DataSourceQueryResponse runQuery(DataSourceQueryRequest request);
 
-    @WorkflowMethod
+    @ActivityMethod
     DataSourceValidateValueResponse validateValue(DataSourceValidateValueRequest request);
 }
