@@ -52,6 +52,7 @@ import com.kuflow.rest.model.ProcessCreateParams;
 import com.kuflow.rest.model.ProcessEntityUpdateParams;
 import com.kuflow.rest.model.ProcessMetadataUpdateParams;
 import com.kuflow.rest.model.ProcessPage;
+import com.kuflow.rest.model.ProcessState;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -104,6 +105,9 @@ public final class ProcessOperationsImpl {
             @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
             @QueryParam(value = "processDefinitionId", multipleQueryParams = true) List<String> processDefinitionId,
             @QueryParam(value = "processDefinitionCode", multipleQueryParams = true) List<String> processDefinitionCode,
+            @QueryParam(value = "state", multipleQueryParams = true) List<String> state,
+            @QueryParam(value = "initiatorId", multipleQueryParams = true) List<String> initiatorId,
+            @QueryParam(value = "initiatorEmail", multipleQueryParams = true) List<String> initiatorEmail,
             @QueryParam(value = "metadata", multipleQueryParams = true) List<String> metadata,
             @HeaderParam("Accept") String accept,
             Context context
@@ -120,6 +124,9 @@ public final class ProcessOperationsImpl {
             @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
             @QueryParam(value = "processDefinitionId", multipleQueryParams = true) List<String> processDefinitionId,
             @QueryParam(value = "processDefinitionCode", multipleQueryParams = true) List<String> processDefinitionCode,
+            @QueryParam(value = "state", multipleQueryParams = true) List<String> state,
+            @QueryParam(value = "initiatorId", multipleQueryParams = true) List<String> initiatorId,
+            @QueryParam(value = "initiatorEmail", multipleQueryParams = true) List<String> initiatorEmail,
             @QueryParam(value = "metadata", multipleQueryParams = true) List<String> metadata,
             @HeaderParam("Accept") String accept,
             Context context
@@ -464,6 +471,9 @@ public final class ProcessOperationsImpl {
      * @param tenantId Filter by tenantId.
      * @param processDefinitionId Filter by process definition ids.
      * @param processDefinitionCode Filter by process definition codes.
+     * @param state Filter by an array of process states.
+     * @param initiatorId Filter by an array of initiator ids, Principal ID.
+     * @param initiatorEmail Filter by an array of initiator emails.
      * @param metadata Filter by process metadata field values. Each value is an expression with the format
      * `fieldCode operation value1 value2...` (space-separated).
      *
@@ -483,10 +493,25 @@ public final class ProcessOperationsImpl {
         List<UUID> tenantId,
         List<UUID> processDefinitionId,
         List<String> processDefinitionCode,
+        List<ProcessState> state,
+        List<UUID> initiatorId,
+        List<String> initiatorEmail,
         List<String> metadata
     ) {
         return FluxUtil.withContext(context ->
-            findProcessesWithResponseAsync(size, page, sort, tenantId, processDefinitionId, processDefinitionCode, metadata, context)
+            findProcessesWithResponseAsync(
+                size,
+                page,
+                sort,
+                tenantId,
+                processDefinitionId,
+                processDefinitionCode,
+                state,
+                initiatorId,
+                initiatorEmail,
+                metadata,
+                context
+            )
         );
     }
 
@@ -507,6 +532,9 @@ public final class ProcessOperationsImpl {
      * @param tenantId Filter by tenantId.
      * @param processDefinitionId Filter by process definition ids.
      * @param processDefinitionCode Filter by process definition codes.
+     * @param state Filter by an array of process states.
+     * @param initiatorId Filter by an array of initiator ids, Principal ID.
+     * @param initiatorEmail Filter by an array of initiator emails.
      * @param metadata Filter by process metadata field values. Each value is an expression with the format
      * `fieldCode operation value1 value2...` (space-separated).
      *
@@ -527,6 +555,9 @@ public final class ProcessOperationsImpl {
         List<UUID> tenantId,
         List<UUID> processDefinitionId,
         List<String> processDefinitionCode,
+        List<ProcessState> state,
+        List<UUID> initiatorId,
+        List<String> initiatorEmail,
         List<String> metadata,
         Context context
     ) {
@@ -559,6 +590,27 @@ public final class ProcessOperationsImpl {
                       .stream()
                       .map(item -> Objects.toString(item, ""))
                       .collect(Collectors.toList());
+        List<String> stateConverted =
+            state == null
+                ? new ArrayList<>()
+                : state
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> initiatorIdConverted =
+            initiatorId == null
+                ? new ArrayList<>()
+                : initiatorId
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> initiatorEmailConverted =
+            initiatorEmail == null
+                ? new ArrayList<>()
+                : initiatorEmail
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
         List<String> metadataConverted =
             metadata == null
                 ? new ArrayList<>()
@@ -574,6 +626,9 @@ public final class ProcessOperationsImpl {
             tenantIdConverted,
             processDefinitionIdConverted,
             processDefinitionCodeConverted,
+            stateConverted,
+            initiatorIdConverted,
+            initiatorEmailConverted,
             metadataConverted,
             accept,
             context
@@ -597,6 +652,9 @@ public final class ProcessOperationsImpl {
      * @param tenantId Filter by tenantId.
      * @param processDefinitionId Filter by process definition ids.
      * @param processDefinitionCode Filter by process definition codes.
+     * @param state Filter by an array of process states.
+     * @param initiatorId Filter by an array of initiator ids, Principal ID.
+     * @param initiatorEmail Filter by an array of initiator emails.
      * @param metadata Filter by process metadata field values. Each value is an expression with the format
      * `fieldCode operation value1 value2...` (space-separated).
      *
@@ -616,11 +674,23 @@ public final class ProcessOperationsImpl {
         List<UUID> tenantId,
         List<UUID> processDefinitionId,
         List<String> processDefinitionCode,
+        List<ProcessState> state,
+        List<UUID> initiatorId,
+        List<String> initiatorEmail,
         List<String> metadata
     ) {
-        return findProcessesWithResponseAsync(size, page, sort, tenantId, processDefinitionId, processDefinitionCode, metadata).flatMap(
-            res -> Mono.justOrEmpty(res.getValue())
-        );
+        return findProcessesWithResponseAsync(
+            size,
+            page,
+            sort,
+            tenantId,
+            processDefinitionId,
+            processDefinitionCode,
+            state,
+            initiatorId,
+            initiatorEmail,
+            metadata
+        ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -642,10 +712,22 @@ public final class ProcessOperationsImpl {
         final List<UUID> tenantId = null;
         final List<UUID> processDefinitionId = null;
         final List<String> processDefinitionCode = null;
+        final List<ProcessState> state = null;
+        final List<UUID> initiatorId = null;
+        final List<String> initiatorEmail = null;
         final List<String> metadata = null;
-        return findProcessesWithResponseAsync(size, page, sort, tenantId, processDefinitionId, processDefinitionCode, metadata).flatMap(
-            res -> Mono.justOrEmpty(res.getValue())
-        );
+        return findProcessesWithResponseAsync(
+            size,
+            page,
+            sort,
+            tenantId,
+            processDefinitionId,
+            processDefinitionCode,
+            state,
+            initiatorId,
+            initiatorEmail,
+            metadata
+        ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -665,6 +747,9 @@ public final class ProcessOperationsImpl {
      * @param tenantId Filter by tenantId.
      * @param processDefinitionId Filter by process definition ids.
      * @param processDefinitionCode Filter by process definition codes.
+     * @param state Filter by an array of process states.
+     * @param initiatorId Filter by an array of initiator ids, Principal ID.
+     * @param initiatorEmail Filter by an array of initiator emails.
      * @param metadata Filter by process metadata field values. Each value is an expression with the format
      * `fieldCode operation value1 value2...` (space-separated).
      *
@@ -685,6 +770,9 @@ public final class ProcessOperationsImpl {
         List<UUID> tenantId,
         List<UUID> processDefinitionId,
         List<String> processDefinitionCode,
+        List<ProcessState> state,
+        List<UUID> initiatorId,
+        List<String> initiatorEmail,
         List<String> metadata,
         Context context
     ) {
@@ -695,6 +783,9 @@ public final class ProcessOperationsImpl {
             tenantId,
             processDefinitionId,
             processDefinitionCode,
+            state,
+            initiatorId,
+            initiatorEmail,
             metadata,
             context
         ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -717,6 +808,9 @@ public final class ProcessOperationsImpl {
      * @param tenantId Filter by tenantId.
      * @param processDefinitionId Filter by process definition ids.
      * @param processDefinitionCode Filter by process definition codes.
+     * @param state Filter by an array of process states.
+     * @param initiatorId Filter by an array of initiator ids, Principal ID.
+     * @param initiatorEmail Filter by an array of initiator emails.
      * @param metadata Filter by process metadata field values. Each value is an expression with the format
      * `fieldCode operation value1 value2...` (space-separated).
      *
@@ -737,6 +831,9 @@ public final class ProcessOperationsImpl {
         List<UUID> tenantId,
         List<UUID> processDefinitionId,
         List<String> processDefinitionCode,
+        List<ProcessState> state,
+        List<UUID> initiatorId,
+        List<String> initiatorEmail,
         List<String> metadata,
         Context context
     ) {
@@ -769,6 +866,27 @@ public final class ProcessOperationsImpl {
                       .stream()
                       .map(item -> Objects.toString(item, ""))
                       .collect(Collectors.toList());
+        List<String> stateConverted =
+            state == null
+                ? new ArrayList<>()
+                : state
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> initiatorIdConverted =
+            initiatorId == null
+                ? new ArrayList<>()
+                : initiatorId
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
+        List<String> initiatorEmailConverted =
+            initiatorEmail == null
+                ? new ArrayList<>()
+                : initiatorEmail
+                      .stream()
+                      .map(item -> Objects.toString(item, ""))
+                      .collect(Collectors.toList());
         List<String> metadataConverted =
             metadata == null
                 ? new ArrayList<>()
@@ -784,6 +902,9 @@ public final class ProcessOperationsImpl {
             tenantIdConverted,
             processDefinitionIdConverted,
             processDefinitionCodeConverted,
+            stateConverted,
+            initiatorIdConverted,
+            initiatorEmailConverted,
             metadataConverted,
             accept,
             context
@@ -807,6 +928,9 @@ public final class ProcessOperationsImpl {
      * @param tenantId Filter by tenantId.
      * @param processDefinitionId Filter by process definition ids.
      * @param processDefinitionCode Filter by process definition codes.
+     * @param state Filter by an array of process states.
+     * @param initiatorId Filter by an array of initiator ids, Principal ID.
+     * @param initiatorEmail Filter by an array of initiator emails.
      * @param metadata Filter by process metadata field values. Each value is an expression with the format
      * `fieldCode operation value1 value2...` (space-separated).
      *
@@ -826,6 +950,9 @@ public final class ProcessOperationsImpl {
         List<UUID> tenantId,
         List<UUID> processDefinitionId,
         List<String> processDefinitionCode,
+        List<ProcessState> state,
+        List<UUID> initiatorId,
+        List<String> initiatorEmail,
         List<String> metadata
     ) {
         return findProcessesWithResponse(
@@ -835,6 +962,9 @@ public final class ProcessOperationsImpl {
             tenantId,
             processDefinitionId,
             processDefinitionCode,
+            state,
+            initiatorId,
+            initiatorEmail,
             metadata,
             Context.NONE
         ).getValue();
@@ -859,6 +989,9 @@ public final class ProcessOperationsImpl {
         final List<UUID> tenantId = null;
         final List<UUID> processDefinitionId = null;
         final List<String> processDefinitionCode = null;
+        final List<ProcessState> state = null;
+        final List<UUID> initiatorId = null;
+        final List<String> initiatorEmail = null;
         final List<String> metadata = null;
         return findProcessesWithResponse(
             size,
@@ -867,6 +1000,9 @@ public final class ProcessOperationsImpl {
             tenantId,
             processDefinitionId,
             processDefinitionCode,
+            state,
+            initiatorId,
+            initiatorEmail,
             metadata,
             Context.NONE
         ).getValue();

@@ -64,6 +64,21 @@ public class ProcessFindOptions {
     private final List<String> processDefinitionCodes = new LinkedList<>();
 
     /**
+     * Filter by an array of process states.
+     */
+    private final List<ProcessState> states = new LinkedList<>();
+
+    /**
+     * Filter by an array of initiator ids.
+     */
+    private final List<UUID> initiatorIds = new LinkedList<>();
+
+    /**
+     * Filter by an array of initiator emails.
+     */
+    private final List<String> initiatorEmails = new LinkedList<>();
+
+    /**
      * Filter by indexed metadata field values.
      */
     private final List<String> metadata = new LinkedList<>();
@@ -224,6 +239,111 @@ public class ProcessFindOptions {
     public ProcessFindOptions removeProcessDefinitionCode(String processDefinitionCode) {
         Objects.requireNonNull(processDefinitionCode, "'processDefinitionCode' is required");
         this.processDefinitionCodes.remove(processDefinitionCode);
+
+        return this;
+    }
+
+    public List<ProcessState> getStates() {
+        return List.copyOf(this.states);
+    }
+
+    public ProcessFindOptions setStates(List<ProcessState> states) {
+        this.states.clear();
+        if (states != null) {
+            this.states.addAll(states);
+        }
+
+        return this;
+    }
+
+    public ProcessFindOptions setState(ProcessState state) {
+        Objects.requireNonNull(state, "'state' is required");
+
+        return this.setStates(List.of(state));
+    }
+
+    public ProcessFindOptions addState(ProcessState state) {
+        Objects.requireNonNull(state, "'state' is required");
+        if (!this.states.contains(state)) {
+            this.states.add(state);
+        }
+
+        return this;
+    }
+
+    public ProcessFindOptions removeState(ProcessState state) {
+        Objects.requireNonNull(state, "'state' is required");
+        this.states.remove(state);
+
+        return this;
+    }
+
+    public List<UUID> getInitiatorIds() {
+        return List.copyOf(this.initiatorIds);
+    }
+
+    public ProcessFindOptions setInitiatorIds(List<UUID> initiatorIds) {
+        this.initiatorIds.clear();
+        if (initiatorIds != null) {
+            this.initiatorIds.addAll(initiatorIds);
+        }
+
+        return this;
+    }
+
+    public ProcessFindOptions setInitiatorId(UUID initiatorId) {
+        Objects.requireNonNull(initiatorId, "'initiatorId' is required");
+
+        return this.setInitiatorIds(List.of(initiatorId));
+    }
+
+    public ProcessFindOptions addInitiatorId(UUID initiatorId) {
+        Objects.requireNonNull(initiatorId, "'initiatorId' is required");
+        if (!this.initiatorIds.contains(initiatorId)) {
+            this.initiatorIds.add(initiatorId);
+        }
+
+        return this;
+    }
+
+    public ProcessFindOptions removeInitiatorId(UUID initiatorId) {
+        Objects.requireNonNull(initiatorId, "'initiatorId' is required");
+        this.initiatorIds.remove(initiatorId);
+
+        return this;
+    }
+
+    public List<String> getInitiatorEmails() {
+        return List.copyOf(this.initiatorEmails);
+    }
+
+    public ProcessFindOptions setInitiatorEmails(List<String> initiatorEmails) {
+        this.initiatorEmails.clear();
+        if (initiatorEmails != null) {
+            this.initiatorEmails.addAll(initiatorEmails);
+        }
+
+        return this;
+    }
+
+    public ProcessFindOptions setInitiatorEmail(String initiatorEmail) {
+        Objects.requireNonNull(initiatorEmail, "'initiatorEmail' is required");
+
+        return this.setInitiatorEmails(List.of(initiatorEmail));
+    }
+
+    public ProcessFindOptions addInitiatorEmail(String initiatorEmail) {
+        Objects.requireNonNull(initiatorEmail, "'initiatorEmail' is required");
+        if (!this.initiatorEmails.contains(initiatorEmail)) {
+            this.initiatorEmails.add(initiatorEmail);
+        }
+
+        return this;
+    }
+
+    public ProcessFindOptions removeInitiatorEmail(String initiatorEmail) {
+        Objects.requireNonNull(initiatorEmail, "'initiatorEmail' is required");
+        this.initiatorEmails.remove(initiatorEmail);
 
         return this;
     }
