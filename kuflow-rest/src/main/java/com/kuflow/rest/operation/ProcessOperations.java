@@ -41,6 +41,7 @@ import com.kuflow.rest.model.ProcessEntityUpdateParams;
 import com.kuflow.rest.model.ProcessFindOptions;
 import com.kuflow.rest.model.ProcessMetadataUpdateParams;
 import com.kuflow.rest.model.ProcessPage;
+import com.kuflow.rest.model.ProcessState;
 import com.kuflow.rest.model.ProcessUserActionDocumentUploadParams;
 import java.util.List;
 import java.util.Objects;
@@ -85,6 +86,9 @@ public class ProcessOperations {
         List<UUID> tenantId = !options.getTenantIds().isEmpty() ? options.getTenantIds() : null;
         List<UUID> processDefinitionId = !options.getProcessDefinitionIds().isEmpty() ? options.getProcessDefinitionIds() : null;
         List<String> processDefinitionCode = !options.getProcessDefinitionCodes().isEmpty() ? options.getProcessDefinitionCodes() : null;
+        List<ProcessState> state = !options.getStates().isEmpty() ? options.getStates() : null;
+        List<UUID> initiatorId = !options.getInitiatorIds().isEmpty() ? options.getInitiatorIds() : null;
+        List<String> initiatorEmail = !options.getInitiatorEmails().isEmpty() ? options.getInitiatorEmails() : null;
         List<String> metadata = !options.getMetadata().isEmpty() ? options.getMetadata() : null;
 
         return this.service.findProcessesWithResponse(
@@ -94,6 +98,9 @@ public class ProcessOperations {
             tenantId,
             processDefinitionId,
             processDefinitionCode,
+            state,
+            initiatorId,
+            initiatorEmail,
             metadata,
             context
         );

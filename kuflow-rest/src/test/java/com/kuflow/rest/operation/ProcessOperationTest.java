@@ -137,6 +137,29 @@ public class ProcessOperationTest extends AbstractOperationTest {
     }
 
     @Test
+    @DisplayName("GIVEN state and initiator filters WHEN list processes THEN the query parameters are sent")
+    public void givenStateAndInitiatorFiltersWhenListProcessesThenTheQueryParametersAreSent() {
+        UUID initiatorId = UUID.randomUUID();
+
+        givenThat(
+            get(urlPathEqualTo("/v2024-06-14/processes"))
+                .withQueryParam("state", equalTo("RUNNING"))
+                .withQueryParam("state", equalTo("COMPLETED"))
+                .withQueryParam("initiatorId", equalTo(initiatorId.toString()))
+                .withQueryParam("initiatorEmail", equalTo("jdoe@example.com"))
+                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.list.ok.json"))
+        );
+
+        ProcessFindOptions options = new ProcessFindOptions()
+            .addState(ProcessState.RUNNING)
+            .addState(ProcessState.COMPLETED)
+            .addInitiatorId(initiatorId)
+            .addInitiatorEmail("jdoe@example.com");
+
+        this.kuFlowRestClient.getProcessOperations().findProcesses(options);
+    }
+
+    @Test
     @DisplayName("GIVEN an authenticated user WHEN retrieve processes THEN body is parsed correctly")
     public void givenAnAuthenticatedUserWhenRetrieveProcessesThenBodyIsParsedCorrectly() {
         UUID processId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");

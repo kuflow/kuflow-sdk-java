@@ -25,6 +25,7 @@ package com.kuflow.temporal.activity.kuflow.model;
 
 import static java.util.Collections.unmodifiableList;
 
+import com.kuflow.rest.model.ProcessState;
 import com.kuflow.rest.util.SearchCriteriaUtils;
 import com.kuflow.temporal.common.model.AbstractModel;
 import java.util.LinkedList;
@@ -54,6 +55,21 @@ public class ProcessFindRequest extends AbstractModel {
      * Filter by process definition codes.
      */
     private final List<String> processDefinitionCodes = new LinkedList<>();
+
+    /**
+     * Filter by an array of process states.
+     */
+    private final List<ProcessState> states = new LinkedList<>();
+
+    /**
+     * Filter by an array of initiator ids.
+     */
+    private final List<UUID> initiatorIds = new LinkedList<>();
+
+    /**
+     * Filter by an array of initiator emails.
+     */
+    private final List<String> initiatorEmails = new LinkedList<>();
 
     /**
      * Filter by indexed metadata field values.
@@ -204,6 +220,111 @@ public class ProcessFindRequest extends AbstractModel {
     public ProcessFindRequest removeProcessDefinitionCode(String processDefinitionCode) {
         Objects.requireNonNull(processDefinitionCode, "'processDefinitionCode' is required");
         this.processDefinitionCodes.remove(processDefinitionCode);
+
+        return this;
+    }
+
+    public List<ProcessState> getStates() {
+        return unmodifiableList(this.states);
+    }
+
+    public ProcessFindRequest setStates(List<ProcessState> states) {
+        this.states.clear();
+        if (states != null) {
+            this.states.addAll(states);
+        }
+
+        return this;
+    }
+
+    public ProcessFindRequest setState(ProcessState state) {
+        Objects.requireNonNull(state, "'state' is required");
+
+        return this.setStates(List.of(state));
+    }
+
+    public ProcessFindRequest addState(ProcessState state) {
+        Objects.requireNonNull(state, "'state' is required");
+        if (!this.states.contains(state)) {
+            this.states.add(state);
+        }
+
+        return this;
+    }
+
+    public ProcessFindRequest removeState(ProcessState state) {
+        Objects.requireNonNull(state, "'state' is required");
+        this.states.remove(state);
+
+        return this;
+    }
+
+    public List<UUID> getInitiatorIds() {
+        return unmodifiableList(this.initiatorIds);
+    }
+
+    public ProcessFindRequest setInitiatorIds(List<UUID> initiatorIds) {
+        this.initiatorIds.clear();
+        if (initiatorIds != null) {
+            this.initiatorIds.addAll(initiatorIds);
+        }
+
+        return this;
+    }
+
+    public ProcessFindRequest setInitiatorId(UUID initiatorId) {
+        Objects.requireNonNull(initiatorId, "'initiatorId' is required");
+
+        return this.setInitiatorIds(List.of(initiatorId));
+    }
+
+    public ProcessFindRequest addInitiatorId(UUID initiatorId) {
+        Objects.requireNonNull(initiatorId, "'initiatorId' is required");
+        if (!this.initiatorIds.contains(initiatorId)) {
+            this.initiatorIds.add(initiatorId);
+        }
+
+        return this;
+    }
+
+    public ProcessFindRequest removeInitiatorId(UUID initiatorId) {
+        Objects.requireNonNull(initiatorId, "'initiatorId' is required");
+        this.initiatorIds.remove(initiatorId);
+
+        return this;
+    }
+
+    public List<String> getInitiatorEmails() {
+        return unmodifiableList(this.initiatorEmails);
+    }
+
+    public ProcessFindRequest setInitiatorEmails(List<String> initiatorEmails) {
+        this.initiatorEmails.clear();
+        if (initiatorEmails != null) {
+            this.initiatorEmails.addAll(initiatorEmails);
+        }
+
+        return this;
+    }
+
+    public ProcessFindRequest setInitiatorEmail(String initiatorEmail) {
+        Objects.requireNonNull(initiatorEmail, "'initiatorEmail' is required");
+
+        return this.setInitiatorEmails(List.of(initiatorEmail));
+    }
+
+    public ProcessFindRequest addInitiatorEmail(String initiatorEmail) {
+        Objects.requireNonNull(initiatorEmail, "'initiatorEmail' is required");
+        if (!this.initiatorEmails.contains(initiatorEmail)) {
+            this.initiatorEmails.add(initiatorEmail);
+        }
+
+        return this;
+    }
+
+    public ProcessFindRequest removeInitiatorEmail(String initiatorEmail) {
+        Objects.requireNonNull(initiatorEmail, "'initiatorEmail' is required");
+        this.initiatorEmails.remove(initiatorEmail);
 
         return this;
     }
