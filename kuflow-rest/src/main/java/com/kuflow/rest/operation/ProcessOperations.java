@@ -44,7 +44,6 @@ import com.kuflow.rest.model.ProcessFindOptions;
 import com.kuflow.rest.model.ProcessMetadataUpdateParams;
 import com.kuflow.rest.model.ProcessPage;
 import com.kuflow.rest.model.ProcessState;
-import com.kuflow.rest.model.ProcessUserActionDocumentUploadParams;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -312,6 +311,56 @@ public class ProcessOperations {
     }
 
     /**
+     * Upload the document produced by a DOWNLOADABLE Process action.
+     * <p>
+     * Uploads the document and completes the action with it. Only meaningful for actions still in
+     * {@code REQUESTED} state.
+     *
+     * @param id The Process ID.
+     * @param actionId The Action ID.
+     * @param document Document to upload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ProcessAction> uploadProcessActionDocumentWithResponse(UUID id, UUID actionId, Document document, Context context) {
+        Objects.requireNonNull(document, "'document' is required");
+        Objects.requireNonNull(document.getFileContent(), "'document.fileContent' is required");
+        Objects.requireNonNull(document.getFileContent().getLength(), "'document.fileContent.length' is required");
+        Objects.requireNonNull(document.getFileName(), "'document.fileName' is required");
+        Objects.requireNonNull(document.getContentType(), "'document.contentType' is required");
+        if (document.getFileContent().getLength() == 0) {
+            throw new IllegalArgumentException("File size must be greater that 0");
+        }
+
+        String fileContentType = document.getContentType();
+        String fileName = document.getFileName();
+        BinaryData file = document.getFileContent();
+        long contentLength = file.getLength();
+
+        return this.service.uploadProcessActionDocumentWithResponse(id, actionId, fileContentType, fileName, file, contentLength, context);
+    }
+
+    /**
+     * Upload the document produced by a DOWNLOADABLE Process action.
+     *
+     * @param id The Process ID.
+     * @param actionId The Action ID.
+     * @param document Document to upload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProcessAction uploadProcessActionDocument(UUID id, UUID actionId, Document document) {
+        return this.uploadProcessActionDocumentWithResponse(id, actionId, document, Context.NONE).getValue();
+    }
+
+    /**
      * Complete a Process
      *
      * <p>Complete a Process. The state of Process is set to 'completed'.
@@ -520,71 +569,6 @@ public class ProcessOperations {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Process changeProcessInitiator(UUID id, ProcessChangeInitiatorParams processChangeInitiatorParams) {
         return this.changeProcessInitiatorWithResponse(id, processChangeInitiatorParams, Context.NONE).getValue();
-    }
-
-    /**
-     * Upload and save a document in a user action
-     *
-     * <p>Allow saving a user action document uploading the content.
-     *
-     * @param id The resource ID.
-     * @param params Params info.
-     * @param document Document to upload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Process> uploadProcessUserActionDocumentWithResponse(
-        UUID id,
-        ProcessUserActionDocumentUploadParams params,
-        Document document,
-        Context context
-    ) {
-        Objects.requireNonNull(document, "'document' is required");
-        Objects.requireNonNull(document.getFileContent(), "'document.fileContent' is required");
-        Objects.requireNonNull(document.getFileContent().getLength(), "'document.fileContent.length' is required");
-        Objects.requireNonNull(document.getFileName(), "'document.fileName' is required");
-        Objects.requireNonNull(document.getContentType(), "'document.contentType' is required");
-        if (document.getFileContent().getLength() == 0) {
-            throw new IllegalArgumentException("File size must be greater that 0");
-        }
-
-        String fileContentType = document.getContentType();
-        String fileName = document.getFileName();
-        UUID userActionValueId = params.getUserActionValueId();
-        BinaryData file = document.getFileContent();
-        long contentLength = file.getLength();
-
-        return this.service.uploadProcessUserActionDocumentWithResponse(
-            id,
-            fileContentType,
-            fileName,
-            userActionValueId,
-            file,
-            contentLength,
-            context
-        );
-    }
-
-    /**
-     * Upload and save a document in a user action
-     *
-     * <p>Allow saving a user action document uploading the content.
-     *
-     * @param id The resource ID.
-     * @param command Command info.
-     * @param document Document to upload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Process uploadProcessUserActionDocument(UUID id, ProcessUserActionDocumentUploadParams command, Document document) {
-        return this.uploadProcessUserActionDocumentWithResponse(id, command, document, Context.NONE).getValue();
     }
 
     /**
