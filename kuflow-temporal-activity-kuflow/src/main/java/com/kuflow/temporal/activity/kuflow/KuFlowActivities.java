@@ -45,6 +45,12 @@ import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactUpdateRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactUpdateResponse;
 import com.kuflow.temporal.activity.kuflow.model.PrincipalRetrieveRequest;
 import com.kuflow.temporal.activity.kuflow.model.PrincipalRetrieveResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessActionCancelRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessActionCancelResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessActionCreateRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessActionCreateResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessActionRetrieveRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessActionRetrieveResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessEntityPatchRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessEntityPatchResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessEntityUpdateRequest;
@@ -187,6 +193,42 @@ public interface KuFlowActivities {
     @ActivityMethod
     @Nonnull
     ProcessInitiatorChangeResponse changeProcessInitiator(@Nonnull ProcessInitiatorChangeRequest request);
+
+    /**
+     * Create a Process Action.
+     *
+     * <p>Triggers an action defined for a Process. Asynchronous types
+     * ({@code START_WORKFLOW}, {@code DOWNLOADABLE}) return with status {@code REQUESTED};
+     * synchronous types complete immediately.
+     *
+     * @param request must not be {@literal null}.
+     * @return process action created
+     */
+    @ActivityMethod
+    @Nonnull
+    ProcessActionCreateResponse createProcessAction(@Nonnull ProcessActionCreateRequest request);
+
+    /**
+     * Retrieve a Process Action.
+     *
+     * @param request must not be {@literal null}.
+     * @return process action
+     */
+    @ActivityMethod
+    @Nonnull
+    ProcessActionRetrieveResponse retrieveProcessAction(@Nonnull ProcessActionRetrieveRequest request);
+
+    /**
+     * Cancel a Process Action.
+     *
+     * <p>Cancels asynchronous actions in {@code REQUESTED} state. Terminal-state actions are returned unchanged.
+     *
+     * @param request must not be {@literal null}.
+     * @return process action with the resulting state
+     */
+    @ActivityMethod
+    @Nonnull
+    ProcessActionCancelResponse cancelProcessAction(@Nonnull ProcessActionCancelRequest request);
 
     /**
      * Cancel process items. When no specific process item IDs are provided, all active

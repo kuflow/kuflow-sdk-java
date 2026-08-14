@@ -26,11 +26,17 @@ package com.kuflow.rest.operation;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
+import static com.github.tomakehurst.wiremock.client.WireMock.matchingJsonPath;
 import static com.github.tomakehurst.wiremock.client.WireMock.ok;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.kuflow.rest.model.Process;
+import com.kuflow.rest.model.ProcessAction;
+import com.kuflow.rest.model.ProcessActionCreateParams;
+import com.kuflow.rest.model.ProcessActionStatus;
+import com.kuflow.rest.model.ProcessActionType;
 import com.kuflow.rest.model.ProcessFindOptions;
 import com.kuflow.rest.model.ProcessPage;
 import com.kuflow.rest.model.ProcessPageItem;
@@ -173,5 +179,63 @@ public class ProcessOperationTest extends AbstractOperationTest {
         Process process = this.kuFlowRestClient.getProcessOperations().retrieveProcess(processId);
 
         assertThat(process.getState()).isEqualTo(ProcessState.RUNNING);
+    }
+
+    @Test
+    @DisplayName("GIVEN an authenticated user WHEN create a process action THEN the params are sent and the body is parsed correctly")
+    public void givenAnAuthenticatedUserWhenCreateAProcessActionThenTheParamsAreSentAndTheBodyIsParsedCorrectly() {
+        UUID processId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
+
+        givenThat(
+            post("/v2024-06-14/processes/" + processId + "/actions")
+                .withRequestBody(matchingJsonPath("$.processActionDefinitionCode", equalTo("ACTION_DOWNLOADABLE")))
+                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.action-retrieve.ok.json"))
+        );
+
+        ProcessActionCreateParams params = new ProcessActionCreateParams().setProcessActionDefinitionCode("ACTION_DOWNLOADABLE");
+
+        ProcessAction processAction = this.kuFlowRestClient.getProcessOperations().createProcessAction(processId, params);
+
+        assertThat(processAction.getId()).isEqualTo(UUID.fromString("b9d7a2a1-0b52-4c6b-a44f-4c78bbcd8a01"));
+        assertThat(processAction.getType()).isEqualTo(ProcessActionType.DOWNLOADABLE);
+        assertThat(processAction.getStatus()).isEqualTo(ProcessActionStatus.COMPLETED);
+    }
+
+    @Test
+    @DisplayName("GIVEN an authenticated user WHEN retrieve a process action THEN the body is parsed correctly")
+    public void givenAnAuthenticatedUserWhenRetrieveAProcessActionThenTheBodyIsParsedCorrectly() {
+        UUID processId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
+        UUID actionId = UUID.fromString("b9d7a2a1-0b52-4c6b-a44f-4c78bbcd8a01");
+
+        givenThat(
+            get("/v2024-06-14/processes/" + processId + "/actions/" + actionId).willReturn(
+                ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.action-retrieve.ok.json")
+            )
+        );
+
+        ProcessAction processAction = this.kuFlowRestClient.getProcessOperations().retrieveProcessAction(processId, actionId);
+
+        assertThat(processAction.getId()).isEqualTo(actionId);
+        assertThat(processAction.getProcessActionDefinitionRef().getCode()).isEqualTo("ACTION_DOWNLOADABLE");
+        assertThat(processAction.getDownloadable()).isNotNull();
+        assertThat(processAction.getDownloadable().getDocumentUri()).startsWith("kuflow-file:uri=ku:process-action-value/");
+        assertThat(processAction.getDownloadable().isDocumentExpired()).isFalse();
+    }
+
+    @Test
+    @DisplayName("GIVEN an authenticated user WHEN cancel a process action THEN the body is parsed correctly")
+    public void givenAnAuthenticatedUserWhenCancelAProcessActionThenTheBodyIsParsedCorrectly() {
+        UUID processId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
+        UUID actionId = UUID.fromString("b9d7a2a1-0b52-4c6b-a44f-4c78bbcd8a01");
+
+        givenThat(
+            post("/v2024-06-14/processes/" + processId + "/actions/" + actionId + "/~actions/cancel").willReturn(
+                ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.action-retrieve.ok.json")
+            )
+        );
+
+        ProcessAction processAction = this.kuFlowRestClient.getProcessOperations().cancelProcessAction(processId, actionId);
+
+        assertThat(processAction.getId()).isEqualTo(actionId);
     }
 }

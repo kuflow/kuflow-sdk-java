@@ -35,6 +35,8 @@ import com.kuflow.rest.model.Document;
 import com.kuflow.rest.model.DocumentReference;
 import com.kuflow.rest.model.JsonPatchOperation;
 import com.kuflow.rest.model.Process;
+import com.kuflow.rest.model.ProcessAction;
+import com.kuflow.rest.model.ProcessActionCreateParams;
 import com.kuflow.rest.model.ProcessChangeInitiatorParams;
 import com.kuflow.rest.model.ProcessCreateParams;
 import com.kuflow.rest.model.ProcessEntityUpdateParams;
@@ -208,6 +210,105 @@ public class ProcessOperations {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Process retrieveProcess(UUID id) {
         return this.retrieveProcessWithResponse(id, Context.NONE).getValue();
+    }
+
+    /**
+     * Create a Process Action.
+     * <p>
+     * Invokes an action on the process. Asynchronous action types ({@code START_WORKFLOW}, {@code DOWNLOADABLE})
+     * return {@code status=REQUESTED}; poll {@code retrieveProcessAction} to track progress. The remaining types
+     * complete synchronously.
+     *
+     * @param id The Process ID.
+     * @param params Action create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ProcessAction> createProcessActionWithResponse(UUID id, ProcessActionCreateParams params, Context context) {
+        return this.service.createProcessActionWithResponse(id, params, context);
+    }
+
+    /**
+     * Create a Process Action.
+     *
+     * @param id The Process ID.
+     * @param params Action create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProcessAction createProcessAction(UUID id, ProcessActionCreateParams params) {
+        return this.createProcessActionWithResponse(id, params, Context.NONE).getValue();
+    }
+
+    /**
+     * Retrieve a Process Action.
+     *
+     * @param id The Process ID.
+     * @param actionId The Action ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ProcessAction> retrieveProcessActionWithResponse(UUID id, UUID actionId, Context context) {
+        return this.service.retrieveProcessActionWithResponse(id, actionId, context);
+    }
+
+    /**
+     * Retrieve a Process Action.
+     *
+     * @param id The Process ID.
+     * @param actionId The Action ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProcessAction retrieveProcessAction(UUID id, UUID actionId) {
+        return this.retrieveProcessActionWithResponse(id, actionId, Context.NONE).getValue();
+    }
+
+    /**
+     * Cancel a Process Action.
+     * <p>
+     * Cancels asynchronous actions in {@code REQUESTED} state. Terminal-state actions are returned unchanged.
+     *
+     * @param id The Process ID.
+     * @param actionId The Action ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ProcessAction> cancelProcessActionWithResponse(UUID id, UUID actionId, Context context) {
+        return this.service.cancelProcessActionWithResponse(id, actionId, context);
+    }
+
+    /**
+     * Cancel a Process Action.
+     *
+     * @param id The Process ID.
+     * @param actionId The Action ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProcessAction cancelProcessAction(UUID id, UUID actionId) {
+        return this.cancelProcessActionWithResponse(id, actionId, Context.NONE).getValue();
     }
 
     /**

@@ -1,0 +1,111 @@
+/*
+ * The MIT License
+ * Copyright © 2021-present KuFlow S.L.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+package com.kuflow.rest.model;
+
+import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+
+/**
+ * Action details for actions of type SEND_WORKFLOW_SIGNAL.
+ */
+@Fluent
+public final class ProcessActionSendWorkflowSignal implements JsonSerializable<ProcessActionSendWorkflowSignal> {
+
+    /*
+     * Name of the signal sent to the Process workflow.
+     */
+    @Generated
+    private String signalName;
+
+    /**
+     * Creates an instance of ProcessActionSendWorkflowSignal class.
+     */
+    @Generated
+    public ProcessActionSendWorkflowSignal() {}
+
+    /**
+     * Get the signalName property: Name of the signal sent to the Process workflow.
+     *
+     * @return the signalName value.
+     */
+    @Generated
+    public String getSignalName() {
+        return this.signalName;
+    }
+
+    /**
+     * Set the signalName property: Name of the signal sent to the Process workflow.
+     *
+     * @param signalName the signalName value to set.
+     * @return the ProcessActionSendWorkflowSignal object itself.
+     */
+    @Generated
+    public ProcessActionSendWorkflowSignal setSignalName(String signalName) {
+        this.signalName = signalName;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("signalName", this.signalName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProcessActionSendWorkflowSignal from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProcessActionSendWorkflowSignal if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProcessActionSendWorkflowSignal.
+     */
+    @Generated
+    public static ProcessActionSendWorkflowSignal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProcessActionSendWorkflowSignal deserializedProcessActionSendWorkflowSignal = new ProcessActionSendWorkflowSignal();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("signalName".equals(fieldName)) {
+                    deserializedProcessActionSendWorkflowSignal.signalName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProcessActionSendWorkflowSignal;
+        });
+    }
+}
