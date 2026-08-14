@@ -47,6 +47,8 @@ import com.kuflow.rest.model.DefaultErrorException;
 import com.kuflow.rest.model.DocumentReference;
 import com.kuflow.rest.model.JsonPatchOperation;
 import com.kuflow.rest.model.Process;
+import com.kuflow.rest.model.ProcessAction;
+import com.kuflow.rest.model.ProcessActionCreateParams;
 import com.kuflow.rest.model.ProcessChangeInitiatorParams;
 import com.kuflow.rest.model.ProcessCreateParams;
 import com.kuflow.rest.model.ProcessEntityUpdateParams;
@@ -172,6 +174,117 @@ public final class ProcessOperationsImpl {
             Context context
         );
 
+        @Post("/processes/{id}/actions")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<ProcessAction>> createProcessAction(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") ProcessActionCreateParams processActionCreateParams,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/processes/{id}/actions")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<ProcessAction> createProcessActionSync(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") ProcessActionCreateParams processActionCreateParams,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Get("/processes/{id}/actions/{actionId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<ProcessAction>> retrieveProcessAction(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @PathParam("actionId") UUID actionId,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Get("/processes/{id}/actions/{actionId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<ProcessAction> retrieveProcessActionSync(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @PathParam("actionId") UUID actionId,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/processes/{id}/actions/{actionId}/~actions/cancel")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<ProcessAction>> cancelProcessAction(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @PathParam("actionId") UUID actionId,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/processes/{id}/actions/{actionId}/~actions/cancel")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<ProcessAction> cancelProcessActionSync(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @PathParam("actionId") UUID actionId,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/processes/{id}/actions/{actionId}/~actions/upload-document")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<ProcessAction>> uploadProcessActionDocument(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @PathParam("actionId") UUID actionId,
+            @QueryParam("fileContentType") String fileContentType,
+            @QueryParam("fileName") String fileName,
+            @BodyParam("application/octet-stream") Flux<ByteBuffer> file,
+            @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/processes/{id}/actions/{actionId}/~actions/upload-document")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<ProcessAction>> uploadProcessActionDocument(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @PathParam("actionId") UUID actionId,
+            @QueryParam("fileContentType") String fileContentType,
+            @QueryParam("fileName") String fileName,
+            @BodyParam("application/octet-stream") BinaryData file,
+            @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/processes/{id}/actions/{actionId}/~actions/upload-document")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<ProcessAction> uploadProcessActionDocumentSync(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @PathParam("actionId") UUID actionId,
+            @QueryParam("fileContentType") String fileContentType,
+            @QueryParam("fileName") String fileName,
+            @BodyParam("application/octet-stream") BinaryData file,
+            @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
         @Post("/processes/{id}/~actions/complete")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
@@ -252,51 +365,6 @@ public final class ProcessOperationsImpl {
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @BodyParam("application/json") ProcessChangeInitiatorParams processChangeInitiatorParams,
-            @HeaderParam("Accept") String accept,
-            Context context
-        );
-
-        @Post("/processes/{id}/~actions/upload-user-action-document")
-        @ExpectedResponses({ 200, 304 })
-        @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<Process>> uploadProcessUserActionDocument(
-            @HostParam("$host") String host,
-            @PathParam("id") UUID id,
-            @QueryParam("fileContentType") String fileContentType,
-            @QueryParam("fileName") String fileName,
-            @QueryParam("userActionValueId") UUID userActionValueId,
-            @BodyParam("application/octet-stream") Flux<ByteBuffer> file,
-            @HeaderParam("Content-Length") long contentLength,
-            @HeaderParam("Accept") String accept,
-            Context context
-        );
-
-        @Post("/processes/{id}/~actions/upload-user-action-document")
-        @ExpectedResponses({ 200, 304 })
-        @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<Process>> uploadProcessUserActionDocument(
-            @HostParam("$host") String host,
-            @PathParam("id") UUID id,
-            @QueryParam("fileContentType") String fileContentType,
-            @QueryParam("fileName") String fileName,
-            @QueryParam("userActionValueId") UUID userActionValueId,
-            @BodyParam("application/octet-stream") BinaryData file,
-            @HeaderParam("Content-Length") long contentLength,
-            @HeaderParam("Accept") String accept,
-            Context context
-        );
-
-        @Post("/processes/{id}/~actions/upload-user-action-document")
-        @ExpectedResponses({ 200, 304 })
-        @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Response<Process> uploadProcessUserActionDocumentSync(
-            @HostParam("$host") String host,
-            @PathParam("id") UUID id,
-            @QueryParam("fileContentType") String fileContentType,
-            @QueryParam("fileName") String fileName,
-            @QueryParam("userActionValueId") UUID userActionValueId,
-            @BodyParam("application/octet-stream") BinaryData file,
-            @HeaderParam("Content-Length") long contentLength,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -1223,6 +1291,783 @@ public final class ProcessOperationsImpl {
     }
 
     /**
+     * Invoke a Process action
+     *
+     * Invoke an action on a Process.
+     *
+     * Whether the call returns synchronously or asynchronously depends on the action type:
+     *
+     * - `START_WORKFLOW`, `DOWNLOADABLE`: dispatched to a background worker. The
+     * response returns immediately with `status=REQUESTED`. Poll
+     * `retrieveProcessAction` for the final state.
+     * - `START_RELATED_PROCESS`, `CREATE_TASK`, `CREATE_PROCESS_ITEM_MESSAGE`,
+     * `CREATE_PROCESS_ITEM_THREAD`, `SEND_WORKFLOW_SIGNAL`: completed synchronously.
+     * The response returns with `status=COMPLETED` (or an error status).
+     *
+     * If you want the method to be idempotent, please specify the `id` field in the request body.
+     *
+     * @param id The resource ID.
+     * @param processActionCreateParams Params identifying the action to invoke.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ProcessAction>> createProcessActionWithResponseAsync(
+        UUID id,
+        ProcessActionCreateParams processActionCreateParams
+    ) {
+        return FluxUtil.withContext(context -> createProcessActionWithResponseAsync(id, processActionCreateParams, context));
+    }
+
+    /**
+     * Invoke a Process action
+     *
+     * Invoke an action on a Process.
+     *
+     * Whether the call returns synchronously or asynchronously depends on the action type:
+     *
+     * - `START_WORKFLOW`, `DOWNLOADABLE`: dispatched to a background worker. The
+     * response returns immediately with `status=REQUESTED`. Poll
+     * `retrieveProcessAction` for the final state.
+     * - `START_RELATED_PROCESS`, `CREATE_TASK`, `CREATE_PROCESS_ITEM_MESSAGE`,
+     * `CREATE_PROCESS_ITEM_THREAD`, `SEND_WORKFLOW_SIGNAL`: completed synchronously.
+     * The response returns with `status=COMPLETED` (or an error status).
+     *
+     * If you want the method to be idempotent, please specify the `id` field in the request body.
+     *
+     * @param id The resource ID.
+     * @param processActionCreateParams Params identifying the action to invoke.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ProcessAction>> createProcessActionWithResponseAsync(
+        UUID id,
+        ProcessActionCreateParams processActionCreateParams,
+        Context context
+    ) {
+        final String accept = "application/json";
+        return service.createProcessAction(this.client.getHost(), id, processActionCreateParams, accept, context);
+    }
+
+    /**
+     * Invoke a Process action
+     *
+     * Invoke an action on a Process.
+     *
+     * Whether the call returns synchronously or asynchronously depends on the action type:
+     *
+     * - `START_WORKFLOW`, `DOWNLOADABLE`: dispatched to a background worker. The
+     * response returns immediately with `status=REQUESTED`. Poll
+     * `retrieveProcessAction` for the final state.
+     * - `START_RELATED_PROCESS`, `CREATE_TASK`, `CREATE_PROCESS_ITEM_MESSAGE`,
+     * `CREATE_PROCESS_ITEM_THREAD`, `SEND_WORKFLOW_SIGNAL`: completed synchronously.
+     * The response returns with `status=COMPLETED` (or an error status).
+     *
+     * If you want the method to be idempotent, please specify the `id` field in the request body.
+     *
+     * @param id The resource ID.
+     * @param processActionCreateParams Params identifying the action to invoke.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ProcessAction> createProcessActionAsync(UUID id, ProcessActionCreateParams processActionCreateParams) {
+        return createProcessActionWithResponseAsync(id, processActionCreateParams).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Invoke a Process action
+     *
+     * Invoke an action on a Process.
+     *
+     * Whether the call returns synchronously or asynchronously depends on the action type:
+     *
+     * - `START_WORKFLOW`, `DOWNLOADABLE`: dispatched to a background worker. The
+     * response returns immediately with `status=REQUESTED`. Poll
+     * `retrieveProcessAction` for the final state.
+     * - `START_RELATED_PROCESS`, `CREATE_TASK`, `CREATE_PROCESS_ITEM_MESSAGE`,
+     * `CREATE_PROCESS_ITEM_THREAD`, `SEND_WORKFLOW_SIGNAL`: completed synchronously.
+     * The response returns with `status=COMPLETED` (or an error status).
+     *
+     * If you want the method to be idempotent, please specify the `id` field in the request body.
+     *
+     * @param id The resource ID.
+     * @param processActionCreateParams Params identifying the action to invoke.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ProcessAction> createProcessActionAsync(UUID id, ProcessActionCreateParams processActionCreateParams, Context context) {
+        return createProcessActionWithResponseAsync(id, processActionCreateParams, context).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
+        );
+    }
+
+    /**
+     * Invoke a Process action
+     *
+     * Invoke an action on a Process.
+     *
+     * Whether the call returns synchronously or asynchronously depends on the action type:
+     *
+     * - `START_WORKFLOW`, `DOWNLOADABLE`: dispatched to a background worker. The
+     * response returns immediately with `status=REQUESTED`. Poll
+     * `retrieveProcessAction` for the final state.
+     * - `START_RELATED_PROCESS`, `CREATE_TASK`, `CREATE_PROCESS_ITEM_MESSAGE`,
+     * `CREATE_PROCESS_ITEM_THREAD`, `SEND_WORKFLOW_SIGNAL`: completed synchronously.
+     * The response returns with `status=COMPLETED` (or an error status).
+     *
+     * If you want the method to be idempotent, please specify the `id` field in the request body.
+     *
+     * @param id The resource ID.
+     * @param processActionCreateParams Params identifying the action to invoke.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ProcessAction> createProcessActionWithResponse(
+        UUID id,
+        ProcessActionCreateParams processActionCreateParams,
+        Context context
+    ) {
+        final String accept = "application/json";
+        return service.createProcessActionSync(this.client.getHost(), id, processActionCreateParams, accept, context);
+    }
+
+    /**
+     * Invoke a Process action
+     *
+     * Invoke an action on a Process.
+     *
+     * Whether the call returns synchronously or asynchronously depends on the action type:
+     *
+     * - `START_WORKFLOW`, `DOWNLOADABLE`: dispatched to a background worker. The
+     * response returns immediately with `status=REQUESTED`. Poll
+     * `retrieveProcessAction` for the final state.
+     * - `START_RELATED_PROCESS`, `CREATE_TASK`, `CREATE_PROCESS_ITEM_MESSAGE`,
+     * `CREATE_PROCESS_ITEM_THREAD`, `SEND_WORKFLOW_SIGNAL`: completed synchronously.
+     * The response returns with `status=COMPLETED` (or an error status).
+     *
+     * If you want the method to be idempotent, please specify the `id` field in the request body.
+     *
+     * @param id The resource ID.
+     * @param processActionCreateParams Params identifying the action to invoke.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProcessAction createProcessAction(UUID id, ProcessActionCreateParams processActionCreateParams) {
+        return createProcessActionWithResponse(id, processActionCreateParams, Context.NONE).getValue();
+    }
+
+    /**
+     * Get a Process action by ID
+     *
+     * Returns a Process action by its ID.
+     *
+     * @param id The resource ID.
+     * @param actionId The Process action ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ProcessAction>> retrieveProcessActionWithResponseAsync(UUID id, UUID actionId) {
+        return FluxUtil.withContext(context -> retrieveProcessActionWithResponseAsync(id, actionId, context));
+    }
+
+    /**
+     * Get a Process action by ID
+     *
+     * Returns a Process action by its ID.
+     *
+     * @param id The resource ID.
+     * @param actionId The Process action ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ProcessAction>> retrieveProcessActionWithResponseAsync(UUID id, UUID actionId, Context context) {
+        final String accept = "application/json";
+        return service.retrieveProcessAction(this.client.getHost(), id, actionId, accept, context);
+    }
+
+    /**
+     * Get a Process action by ID
+     *
+     * Returns a Process action by its ID.
+     *
+     * @param id The resource ID.
+     * @param actionId The Process action ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ProcessAction> retrieveProcessActionAsync(UUID id, UUID actionId) {
+        return retrieveProcessActionWithResponseAsync(id, actionId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get a Process action by ID
+     *
+     * Returns a Process action by its ID.
+     *
+     * @param id The resource ID.
+     * @param actionId The Process action ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ProcessAction> retrieveProcessActionAsync(UUID id, UUID actionId, Context context) {
+        return retrieveProcessActionWithResponseAsync(id, actionId, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get a Process action by ID
+     *
+     * Returns a Process action by its ID.
+     *
+     * @param id The resource ID.
+     * @param actionId The Process action ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ProcessAction> retrieveProcessActionWithResponse(UUID id, UUID actionId, Context context) {
+        final String accept = "application/json";
+        return service.retrieveProcessActionSync(this.client.getHost(), id, actionId, accept, context);
+    }
+
+    /**
+     * Get a Process action by ID
+     *
+     * Returns a Process action by its ID.
+     *
+     * @param id The resource ID.
+     * @param actionId The Process action ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProcessAction retrieveProcessAction(UUID id, UUID actionId) {
+        return retrieveProcessActionWithResponse(id, actionId, Context.NONE).getValue();
+    }
+
+    /**
+     * Cancel a Process action
+     *
+     * Cancel a Process action.
+     *
+     * Only meaningful for asynchronous actions still in `REQUESTED` state. The
+     * action's status is set to `CANCELED`. If the action is already in a
+     * terminal state, no transition occurs.
+     *
+     * @param id The resource ID.
+     * @param actionId The Process action ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ProcessAction>> cancelProcessActionWithResponseAsync(UUID id, UUID actionId) {
+        return FluxUtil.withContext(context -> cancelProcessActionWithResponseAsync(id, actionId, context));
+    }
+
+    /**
+     * Cancel a Process action
+     *
+     * Cancel a Process action.
+     *
+     * Only meaningful for asynchronous actions still in `REQUESTED` state. The
+     * action's status is set to `CANCELED`. If the action is already in a
+     * terminal state, no transition occurs.
+     *
+     * @param id The resource ID.
+     * @param actionId The Process action ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ProcessAction>> cancelProcessActionWithResponseAsync(UUID id, UUID actionId, Context context) {
+        final String accept = "application/json";
+        return service.cancelProcessAction(this.client.getHost(), id, actionId, accept, context);
+    }
+
+    /**
+     * Cancel a Process action
+     *
+     * Cancel a Process action.
+     *
+     * Only meaningful for asynchronous actions still in `REQUESTED` state. The
+     * action's status is set to `CANCELED`. If the action is already in a
+     * terminal state, no transition occurs.
+     *
+     * @param id The resource ID.
+     * @param actionId The Process action ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ProcessAction> cancelProcessActionAsync(UUID id, UUID actionId) {
+        return cancelProcessActionWithResponseAsync(id, actionId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Cancel a Process action
+     *
+     * Cancel a Process action.
+     *
+     * Only meaningful for asynchronous actions still in `REQUESTED` state. The
+     * action's status is set to `CANCELED`. If the action is already in a
+     * terminal state, no transition occurs.
+     *
+     * @param id The resource ID.
+     * @param actionId The Process action ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ProcessAction> cancelProcessActionAsync(UUID id, UUID actionId, Context context) {
+        return cancelProcessActionWithResponseAsync(id, actionId, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Cancel a Process action
+     *
+     * Cancel a Process action.
+     *
+     * Only meaningful for asynchronous actions still in `REQUESTED` state. The
+     * action's status is set to `CANCELED`. If the action is already in a
+     * terminal state, no transition occurs.
+     *
+     * @param id The resource ID.
+     * @param actionId The Process action ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ProcessAction> cancelProcessActionWithResponse(UUID id, UUID actionId, Context context) {
+        final String accept = "application/json";
+        return service.cancelProcessActionSync(this.client.getHost(), id, actionId, accept, context);
+    }
+
+    /**
+     * Cancel a Process action
+     *
+     * Cancel a Process action.
+     *
+     * Only meaningful for asynchronous actions still in `REQUESTED` state. The
+     * action's status is set to `CANCELED`. If the action is already in a
+     * terminal state, no transition occurs.
+     *
+     * @param id The resource ID.
+     * @param actionId The Process action ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProcessAction cancelProcessAction(UUID id, UUID actionId) {
+        return cancelProcessActionWithResponse(id, actionId, Context.NONE).getValue();
+    }
+
+    /**
+     * Upload the document produced by a DOWNLOADABLE Process action
+     *
+     * Upload the document produced by a `DOWNLOADABLE` action and complete the
+     * action with it. Only meaningful for actions still in `REQUESTED` state.
+     *
+     * @param id The resource ID.
+     * @param actionId The Process action ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ProcessAction>> uploadProcessActionDocumentWithResponseAsync(
+        UUID id,
+        UUID actionId,
+        String fileContentType,
+        String fileName,
+        Flux<ByteBuffer> file,
+        long contentLength
+    ) {
+        return FluxUtil.withContext(context ->
+            uploadProcessActionDocumentWithResponseAsync(id, actionId, fileContentType, fileName, file, contentLength, context)
+        );
+    }
+
+    /**
+     * Upload the document produced by a DOWNLOADABLE Process action
+     *
+     * Upload the document produced by a `DOWNLOADABLE` action and complete the
+     * action with it. Only meaningful for actions still in `REQUESTED` state.
+     *
+     * @param id The resource ID.
+     * @param actionId The Process action ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ProcessAction>> uploadProcessActionDocumentWithResponseAsync(
+        UUID id,
+        UUID actionId,
+        String fileContentType,
+        String fileName,
+        Flux<ByteBuffer> file,
+        long contentLength,
+        Context context
+    ) {
+        final String accept = "application/json";
+        return service.uploadProcessActionDocument(
+            this.client.getHost(),
+            id,
+            actionId,
+            fileContentType,
+            fileName,
+            file,
+            contentLength,
+            accept,
+            context
+        );
+    }
+
+    /**
+     * Upload the document produced by a DOWNLOADABLE Process action
+     *
+     * Upload the document produced by a `DOWNLOADABLE` action and complete the
+     * action with it. Only meaningful for actions still in `REQUESTED` state.
+     *
+     * @param id The resource ID.
+     * @param actionId The Process action ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ProcessAction> uploadProcessActionDocumentAsync(
+        UUID id,
+        UUID actionId,
+        String fileContentType,
+        String fileName,
+        Flux<ByteBuffer> file,
+        long contentLength
+    ) {
+        return uploadProcessActionDocumentWithResponseAsync(id, actionId, fileContentType, fileName, file, contentLength).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
+        );
+    }
+
+    /**
+     * Upload the document produced by a DOWNLOADABLE Process action
+     *
+     * Upload the document produced by a `DOWNLOADABLE` action and complete the
+     * action with it. Only meaningful for actions still in `REQUESTED` state.
+     *
+     * @param id The resource ID.
+     * @param actionId The Process action ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ProcessAction> uploadProcessActionDocumentAsync(
+        UUID id,
+        UUID actionId,
+        String fileContentType,
+        String fileName,
+        Flux<ByteBuffer> file,
+        long contentLength,
+        Context context
+    ) {
+        return uploadProcessActionDocumentWithResponseAsync(id, actionId, fileContentType, fileName, file, contentLength, context).flatMap(
+            res -> Mono.justOrEmpty(res.getValue())
+        );
+    }
+
+    /**
+     * Upload the document produced by a DOWNLOADABLE Process action
+     *
+     * Upload the document produced by a `DOWNLOADABLE` action and complete the
+     * action with it. Only meaningful for actions still in `REQUESTED` state.
+     *
+     * @param id The resource ID.
+     * @param actionId The Process action ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ProcessAction>> uploadProcessActionDocumentWithResponseAsync(
+        UUID id,
+        UUID actionId,
+        String fileContentType,
+        String fileName,
+        BinaryData file,
+        long contentLength
+    ) {
+        return FluxUtil.withContext(context ->
+            uploadProcessActionDocumentWithResponseAsync(id, actionId, fileContentType, fileName, file, contentLength, context)
+        );
+    }
+
+    /**
+     * Upload the document produced by a DOWNLOADABLE Process action
+     *
+     * Upload the document produced by a `DOWNLOADABLE` action and complete the
+     * action with it. Only meaningful for actions still in `REQUESTED` state.
+     *
+     * @param id The resource ID.
+     * @param actionId The Process action ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ProcessAction>> uploadProcessActionDocumentWithResponseAsync(
+        UUID id,
+        UUID actionId,
+        String fileContentType,
+        String fileName,
+        BinaryData file,
+        long contentLength,
+        Context context
+    ) {
+        final String accept = "application/json";
+        return service.uploadProcessActionDocument(
+            this.client.getHost(),
+            id,
+            actionId,
+            fileContentType,
+            fileName,
+            file,
+            contentLength,
+            accept,
+            context
+        );
+    }
+
+    /**
+     * Upload the document produced by a DOWNLOADABLE Process action
+     *
+     * Upload the document produced by a `DOWNLOADABLE` action and complete the
+     * action with it. Only meaningful for actions still in `REQUESTED` state.
+     *
+     * @param id The resource ID.
+     * @param actionId The Process action ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ProcessAction> uploadProcessActionDocumentAsync(
+        UUID id,
+        UUID actionId,
+        String fileContentType,
+        String fileName,
+        BinaryData file,
+        long contentLength
+    ) {
+        return uploadProcessActionDocumentWithResponseAsync(id, actionId, fileContentType, fileName, file, contentLength).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
+        );
+    }
+
+    /**
+     * Upload the document produced by a DOWNLOADABLE Process action
+     *
+     * Upload the document produced by a `DOWNLOADABLE` action and complete the
+     * action with it. Only meaningful for actions still in `REQUESTED` state.
+     *
+     * @param id The resource ID.
+     * @param actionId The Process action ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ProcessAction> uploadProcessActionDocumentAsync(
+        UUID id,
+        UUID actionId,
+        String fileContentType,
+        String fileName,
+        BinaryData file,
+        long contentLength,
+        Context context
+    ) {
+        return uploadProcessActionDocumentWithResponseAsync(id, actionId, fileContentType, fileName, file, contentLength, context).flatMap(
+            res -> Mono.justOrEmpty(res.getValue())
+        );
+    }
+
+    /**
+     * Upload the document produced by a DOWNLOADABLE Process action
+     *
+     * Upload the document produced by a `DOWNLOADABLE` action and complete the
+     * action with it. Only meaningful for actions still in `REQUESTED` state.
+     *
+     * @param id The resource ID.
+     * @param actionId The Process action ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ProcessAction> uploadProcessActionDocumentWithResponse(
+        UUID id,
+        UUID actionId,
+        String fileContentType,
+        String fileName,
+        BinaryData file,
+        long contentLength,
+        Context context
+    ) {
+        final String accept = "application/json";
+        return service.uploadProcessActionDocumentSync(
+            this.client.getHost(),
+            id,
+            actionId,
+            fileContentType,
+            fileName,
+            file,
+            contentLength,
+            accept,
+            context
+        );
+    }
+
+    /**
+     * Upload the document produced by a DOWNLOADABLE Process action
+     *
+     * Upload the document produced by a `DOWNLOADABLE` action and complete the
+     * action with it. Only meaningful for actions still in `REQUESTED` state.
+     *
+     * @param id The resource ID.
+     * @param actionId The Process action ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProcessAction uploadProcessActionDocument(
+        UUID id,
+        UUID actionId,
+        String fileContentType,
+        String fileName,
+        BinaryData file,
+        long contentLength
+    ) {
+        return uploadProcessActionDocumentWithResponse(
+            id,
+            actionId,
+            fileContentType,
+            fileName,
+            file,
+            contentLength,
+            Context.NONE
+        ).getValue();
+    }
+
+    /**
      * Complete a Process
      *
      * Complete a Process. The state of Process is set to 'completed'.
@@ -1821,371 +2666,6 @@ public final class ProcessOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Process changeProcessInitiator(UUID id, ProcessChangeInitiatorParams processChangeInitiatorParams) {
         return changeProcessInitiatorWithResponse(id, processChangeInitiatorParams, Context.NONE).getValue();
-    }
-
-    /**
-     * Upload and save a document in a user action
-     *
-     * Allow saving a user action document uploading the content.
-     *
-     * @param id The resource ID.
-     * @param fileContentType Document content type.
-     * @param fileName Document name.
-     * @param userActionValueId User action value ID related to de document.
-     * @param file Document to save.
-     * @param contentLength The Content-Length header for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Process>> uploadProcessUserActionDocumentWithResponseAsync(
-        UUID id,
-        String fileContentType,
-        String fileName,
-        UUID userActionValueId,
-        Flux<ByteBuffer> file,
-        long contentLength
-    ) {
-        return FluxUtil.withContext(context ->
-            uploadProcessUserActionDocumentWithResponseAsync(id, fileContentType, fileName, userActionValueId, file, contentLength, context)
-        );
-    }
-
-    /**
-     * Upload and save a document in a user action
-     *
-     * Allow saving a user action document uploading the content.
-     *
-     * @param id The resource ID.
-     * @param fileContentType Document content type.
-     * @param fileName Document name.
-     * @param userActionValueId User action value ID related to de document.
-     * @param file Document to save.
-     * @param contentLength The Content-Length header for the request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Process>> uploadProcessUserActionDocumentWithResponseAsync(
-        UUID id,
-        String fileContentType,
-        String fileName,
-        UUID userActionValueId,
-        Flux<ByteBuffer> file,
-        long contentLength,
-        Context context
-    ) {
-        final String accept = "application/json";
-        return service.uploadProcessUserActionDocument(
-            this.client.getHost(),
-            id,
-            fileContentType,
-            fileName,
-            userActionValueId,
-            file,
-            contentLength,
-            accept,
-            context
-        );
-    }
-
-    /**
-     * Upload and save a document in a user action
-     *
-     * Allow saving a user action document uploading the content.
-     *
-     * @param id The resource ID.
-     * @param fileContentType Document content type.
-     * @param fileName Document name.
-     * @param userActionValueId User action value ID related to de document.
-     * @param file Document to save.
-     * @param contentLength The Content-Length header for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Process> uploadProcessUserActionDocumentAsync(
-        UUID id,
-        String fileContentType,
-        String fileName,
-        UUID userActionValueId,
-        Flux<ByteBuffer> file,
-        long contentLength
-    ) {
-        return uploadProcessUserActionDocumentWithResponseAsync(
-            id,
-            fileContentType,
-            fileName,
-            userActionValueId,
-            file,
-            contentLength
-        ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Upload and save a document in a user action
-     *
-     * Allow saving a user action document uploading the content.
-     *
-     * @param id The resource ID.
-     * @param fileContentType Document content type.
-     * @param fileName Document name.
-     * @param userActionValueId User action value ID related to de document.
-     * @param file Document to save.
-     * @param contentLength The Content-Length header for the request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Process> uploadProcessUserActionDocumentAsync(
-        UUID id,
-        String fileContentType,
-        String fileName,
-        UUID userActionValueId,
-        Flux<ByteBuffer> file,
-        long contentLength,
-        Context context
-    ) {
-        return uploadProcessUserActionDocumentWithResponseAsync(
-            id,
-            fileContentType,
-            fileName,
-            userActionValueId,
-            file,
-            contentLength,
-            context
-        ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Upload and save a document in a user action
-     *
-     * Allow saving a user action document uploading the content.
-     *
-     * @param id The resource ID.
-     * @param fileContentType Document content type.
-     * @param fileName Document name.
-     * @param userActionValueId User action value ID related to de document.
-     * @param file Document to save.
-     * @param contentLength The Content-Length header for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Process>> uploadProcessUserActionDocumentWithResponseAsync(
-        UUID id,
-        String fileContentType,
-        String fileName,
-        UUID userActionValueId,
-        BinaryData file,
-        long contentLength
-    ) {
-        return FluxUtil.withContext(context ->
-            uploadProcessUserActionDocumentWithResponseAsync(id, fileContentType, fileName, userActionValueId, file, contentLength, context)
-        );
-    }
-
-    /**
-     * Upload and save a document in a user action
-     *
-     * Allow saving a user action document uploading the content.
-     *
-     * @param id The resource ID.
-     * @param fileContentType Document content type.
-     * @param fileName Document name.
-     * @param userActionValueId User action value ID related to de document.
-     * @param file Document to save.
-     * @param contentLength The Content-Length header for the request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Process>> uploadProcessUserActionDocumentWithResponseAsync(
-        UUID id,
-        String fileContentType,
-        String fileName,
-        UUID userActionValueId,
-        BinaryData file,
-        long contentLength,
-        Context context
-    ) {
-        final String accept = "application/json";
-        return service.uploadProcessUserActionDocument(
-            this.client.getHost(),
-            id,
-            fileContentType,
-            fileName,
-            userActionValueId,
-            file,
-            contentLength,
-            accept,
-            context
-        );
-    }
-
-    /**
-     * Upload and save a document in a user action
-     *
-     * Allow saving a user action document uploading the content.
-     *
-     * @param id The resource ID.
-     * @param fileContentType Document content type.
-     * @param fileName Document name.
-     * @param userActionValueId User action value ID related to de document.
-     * @param file Document to save.
-     * @param contentLength The Content-Length header for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Process> uploadProcessUserActionDocumentAsync(
-        UUID id,
-        String fileContentType,
-        String fileName,
-        UUID userActionValueId,
-        BinaryData file,
-        long contentLength
-    ) {
-        return uploadProcessUserActionDocumentWithResponseAsync(
-            id,
-            fileContentType,
-            fileName,
-            userActionValueId,
-            file,
-            contentLength
-        ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Upload and save a document in a user action
-     *
-     * Allow saving a user action document uploading the content.
-     *
-     * @param id The resource ID.
-     * @param fileContentType Document content type.
-     * @param fileName Document name.
-     * @param userActionValueId User action value ID related to de document.
-     * @param file Document to save.
-     * @param contentLength The Content-Length header for the request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Process> uploadProcessUserActionDocumentAsync(
-        UUID id,
-        String fileContentType,
-        String fileName,
-        UUID userActionValueId,
-        BinaryData file,
-        long contentLength,
-        Context context
-    ) {
-        return uploadProcessUserActionDocumentWithResponseAsync(
-            id,
-            fileContentType,
-            fileName,
-            userActionValueId,
-            file,
-            contentLength,
-            context
-        ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Upload and save a document in a user action
-     *
-     * Allow saving a user action document uploading the content.
-     *
-     * @param id The resource ID.
-     * @param fileContentType Document content type.
-     * @param fileName Document name.
-     * @param userActionValueId User action value ID related to de document.
-     * @param file Document to save.
-     * @param contentLength The Content-Length header for the request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Process> uploadProcessUserActionDocumentWithResponse(
-        UUID id,
-        String fileContentType,
-        String fileName,
-        UUID userActionValueId,
-        BinaryData file,
-        long contentLength,
-        Context context
-    ) {
-        final String accept = "application/json";
-        return service.uploadProcessUserActionDocumentSync(
-            this.client.getHost(),
-            id,
-            fileContentType,
-            fileName,
-            userActionValueId,
-            file,
-            contentLength,
-            accept,
-            context
-        );
-    }
-
-    /**
-     * Upload and save a document in a user action
-     *
-     * Allow saving a user action document uploading the content.
-     *
-     * @param id The resource ID.
-     * @param fileContentType Document content type.
-     * @param fileName Document name.
-     * @param userActionValueId User action value ID related to de document.
-     * @param file Document to save.
-     * @param contentLength The Content-Length header for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Process uploadProcessUserActionDocument(
-        UUID id,
-        String fileContentType,
-        String fileName,
-        UUID userActionValueId,
-        BinaryData file,
-        long contentLength
-    ) {
-        return uploadProcessUserActionDocumentWithResponse(
-            id,
-            fileContentType,
-            fileName,
-            userActionValueId,
-            file,
-            contentLength,
-            Context.NONE
-        ).getValue();
     }
 
     /**

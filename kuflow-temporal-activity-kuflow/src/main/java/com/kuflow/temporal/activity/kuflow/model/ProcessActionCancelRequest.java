@@ -21,42 +21,30 @@
  * THE SOFTWARE.
  */
 
-package com.kuflow.rest.model;
+package com.kuflow.temporal.activity.kuflow.model;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.kuflow.temporal.common.model.AbstractModel;
 import java.util.UUID;
 
-/** The ProcessUserActionDocumentUploadParams model. */
-@Fluent
-public final class ProcessUserActionDocumentUploadParams {
+public class ProcessActionCancelRequest extends AbstractModel {
 
-    /*
-     * The userActionValueId property.
-     */
-    @JsonProperty(value = "userActionValueId", required = true)
-    private UUID userActionValueId;
+    private UUID processId;
 
-    /** Creates an instance of ProcessUserActionDocumentUploadParams class. */
-    public ProcessUserActionDocumentUploadParams() {}
+    private UUID processActionId;
 
-    /**
-     * Get the userActionValueId property: The userActionValueId property.
-     *
-     * @return the userActionValueId value.
-     */
-    public UUID getUserActionValueId() {
-        return this.userActionValueId;
+    public UUID getProcessId() {
+        return this.processId;
     }
 
-    /**
-     * Set the userActionValueId property: The userActionValueId property.
-     *
-     * @param userActionValueId the userActionValueId value to set.
-     * @return the ProcessUserActionDocumentUploadParams object itself.
-     */
-    public ProcessUserActionDocumentUploadParams setUserActionValueId(UUID userActionValueId) {
-        this.userActionValueId = userActionValueId;
-        return this;
+    public void setProcessId(UUID processId) {
+        this.processId = processId;
+    }
+
+    public UUID getProcessActionId() {
+        return this.processActionId;
+    }
+
+    public void setProcessActionId(UUID processActionId) {
+        this.processActionId = processActionId;
     }
 }

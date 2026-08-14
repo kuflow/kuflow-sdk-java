@@ -1,0 +1,17 @@
+{
+  "id": "b9d7a2a1-0b52-4c6b-a44f-4c78bbcd8a01",
+  "type": "DOWNLOADABLE",
+  "status": "COMPLETED",
+  "processActionDefinitionRef": {
+    "id": "3b9f7d5e-1a2b-4c3d-8e9f-0a1b2c3d4e5f",
+    "code": "ACTION_DOWNLOADABLE"
+  },
+  "downloadable": {
+    "documentUri": "kuflow-file:uri=ku:process-action-value/b9d7a2a1-0b52-4c6b-a44f-4c78bbcd8a01/document/0c52a1c4-3f7a-4f4b-9a3c-1f2e3d4c5b6a;type=application/pdf;size=500;name=file.pdf;",
+    "documentExpired": false
+  },
+  "createdBy": "b9e9d4b0-3b2a-4e2b-9c3d-5a6b7c8d9e0f",
+  "createdAt": "2024-06-14T10:00:00Z",
+  "lastModifiedBy": "b9e9d4b0-3b2a-4e2b-9c3d-5a6b7c8d9e0f",
+  "lastModifiedAt": "2024-06-14T10:05:00Z"
+}

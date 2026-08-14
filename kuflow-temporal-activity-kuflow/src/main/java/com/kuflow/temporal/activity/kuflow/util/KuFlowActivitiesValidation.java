@@ -36,6 +36,9 @@ import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactPatchRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactRetrieveRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactUpdateRequest;
 import com.kuflow.temporal.activity.kuflow.model.PrincipalRetrieveRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessActionCancelRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessActionCreateRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessActionRetrieveRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessEntityPatchRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessEntityUpdateRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessInitiatorChangeRequest;
@@ -201,6 +204,36 @@ public class KuFlowActivitiesValidation {
                 "'initiatorId' or 'initiatorEmail' is required",
                 ACTIVITIES_VALIDATION_FAILURE.getType()
             );
+        }
+    }
+
+    public static void validateProcessActionCreateRequest(ProcessActionCreateRequest request) {
+        if (request.getProcessId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+        if (request.getProcessActionDefinitionCode() == null) {
+            throw ApplicationFailure.newNonRetryableFailure(
+                "'processActionDefinitionCode' is required",
+                ACTIVITIES_VALIDATION_FAILURE.getType()
+            );
+        }
+    }
+
+    public static void validateProcessActionRetrieveRequest(ProcessActionRetrieveRequest request) {
+        if (request.getProcessId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+        if (request.getProcessActionId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'processActionId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+    }
+
+    public static void validateProcessActionCancelRequest(ProcessActionCancelRequest request) {
+        if (request.getProcessId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+        if (request.getProcessActionId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'processActionId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 

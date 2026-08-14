@@ -35,6 +35,9 @@ import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidatio
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateBusinessArtifactUpdateRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateClaimTaskRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validatePrincipalRetrieveRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessActionCancelRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessActionCreateRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessActionRetrieveRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessEntityPatchRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessEntityUpdateRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessInitiatorChangeRequest;
@@ -66,6 +69,8 @@ import com.kuflow.rest.model.BusinessArtifactFindOptions;
 import com.kuflow.rest.model.BusinessArtifactPage;
 import com.kuflow.rest.model.Principal;
 import com.kuflow.rest.model.Process;
+import com.kuflow.rest.model.ProcessAction;
+import com.kuflow.rest.model.ProcessActionCreateParams;
 import com.kuflow.rest.model.ProcessChangeInitiatorParams;
 import com.kuflow.rest.model.ProcessEntityUpdateParams;
 import com.kuflow.rest.model.ProcessFindOptions;
@@ -109,6 +114,12 @@ import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactUpdateRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactUpdateResponse;
 import com.kuflow.temporal.activity.kuflow.model.PrincipalRetrieveRequest;
 import com.kuflow.temporal.activity.kuflow.model.PrincipalRetrieveResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessActionCancelRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessActionCancelResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessActionCreateRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessActionCreateResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessActionRetrieveRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessActionRetrieveResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessEntityPatchRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessEntityPatchResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessEntityUpdateRequest;
@@ -337,6 +348,67 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
             ProcessInitiatorChangeResponse response = new ProcessInitiatorChangeResponse();
             response.setProcess(process);
+
+            return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Nonnull
+    @Override
+    public ProcessActionCreateResponse createProcessAction(@Nonnull ProcessActionCreateRequest request) {
+        try {
+            validateProcessActionCreateRequest(request);
+
+            ProcessActionCreateParams params = new ProcessActionCreateParams()
+                .setId(request.getId())
+                .setProcessActionDefinitionCode(request.getProcessActionDefinitionCode())
+                .setCreateTask(request.getCreateTask())
+                .setCreateProcessItemMessage(request.getCreateProcessItemMessage())
+                .setStartRelatedProcess(request.getStartRelatedProcess());
+
+            ProcessAction processAction = this.processOperations.createProcessAction(request.getProcessId(), params);
+
+            ProcessActionCreateResponse response = new ProcessActionCreateResponse();
+            response.setProcessAction(processAction);
+
+            return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Nonnull
+    @Override
+    public ProcessActionRetrieveResponse retrieveProcessAction(@Nonnull ProcessActionRetrieveRequest request) {
+        try {
+            validateProcessActionRetrieveRequest(request);
+
+            ProcessAction processAction = this.processOperations.retrieveProcessAction(
+                request.getProcessId(),
+                request.getProcessActionId()
+            );
+
+            ProcessActionRetrieveResponse response = new ProcessActionRetrieveResponse();
+            response.setProcessAction(processAction);
+
+            return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Nonnull
+    @Override
+    public ProcessActionCancelResponse cancelProcessAction(@Nonnull ProcessActionCancelRequest request) {
+        try {
+            validateProcessActionCancelRequest(request);
+
+            ProcessAction processAction = this.processOperations.cancelProcessAction(request.getProcessId(), request.getProcessActionId());
+
+            ProcessActionCancelResponse response = new ProcessActionCancelResponse();
+            response.setProcessAction(processAction);
 
             return response;
         } catch (Exception e) {
