@@ -41,12 +41,6 @@ public abstract class DataSourceActivityRequest {
     @NotNull
     private String code;
 
-    private String invocationActivityName;
-
-    private Duration invocationTimeout;
-
-    private String invocationTaskQueue;
-
     public UUID getTenantId() {
         return this.tenantId;
     }
@@ -61,29 +55,5 @@ public abstract class DataSourceActivityRequest {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public String getInvocationActivityName() {
-        return this.invocationActivityName;
-    }
-
-    public void setInvocationActivityName(String invocationActivityName) {
-        this.invocationActivityName = invocationActivityName;
-    }
-
-    public Duration getInvocationTimeout() {
-        return this.invocationTimeout;
-    }
-
-    public void setInvocationTimeout(Duration invocationTimeout) {
-        this.invocationTimeout = invocationTimeout;
-    }
-
-    public String getInvocationTaskQueue() {
-        return this.invocationTaskQueue;
-    }
-
-    public void setInvocationTaskQueue(String invocationTaskQueue) {
-        this.invocationTaskQueue = invocationTaskQueue;
     }
 }
