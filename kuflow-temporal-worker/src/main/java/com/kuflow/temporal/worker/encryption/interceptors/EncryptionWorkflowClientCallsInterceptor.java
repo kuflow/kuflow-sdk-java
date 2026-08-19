@@ -29,11 +29,20 @@ import io.temporal.client.WorkflowUpdateHandle;
 import io.temporal.common.interceptors.Header;
 import io.temporal.common.interceptors.WorkflowClientCallsInterceptor;
 import io.temporal.common.interceptors.WorkflowClientCallsInterceptorBase;
-import java.util.concurrent.TimeoutException;
 
-public class EncryptionClientCallsInterceptor extends WorkflowClientCallsInterceptorBase {
+/**
+ * Marks the payloads sent from the client so that EncryptionPayloadConverter and EncryptionPayloadCodec encrypt them.
+ *
+ * <p>Overridden, because they carry caller payloads: start, signal, signalWithStart, updateWithStart, query and
+ * startUpdate.
+ *
+ * <p>Not overridden, because there is nothing to mark: getResult, getResultAsync and pollWorkflowUpdate only read
+ * results, already decrypted by the codec; cancel, terminate and describe carry no payload; listWorkflowExecutions and
+ * countWorkflows only send a visibility query resolved server side.
+ */
+public class EncryptionWorkflowClientCallsInterceptor extends WorkflowClientCallsInterceptorBase {
 
-    public EncryptionClientCallsInterceptor(WorkflowClientCallsInterceptor next) {
+    public EncryptionWorkflowClientCallsInterceptor(WorkflowClientCallsInterceptor next) {
         super(next);
     }
 
@@ -131,16 +140,6 @@ public class EncryptionClientCallsInterceptor extends WorkflowClientCallsInterce
     }
 
     @Override
-    public <R> GetResultOutput<R> getResult(GetResultInput<R> input) throws TimeoutException {
-        return super.getResult(input);
-    }
-
-    @Override
-    public <R> GetResultAsyncOutput<R> getResultAsync(GetResultInput<R> input) {
-        return super.getResultAsync(input);
-    }
-
-    @Override
     public <R> QueryOutput<R> query(QueryInput<R> input) {
         Header header = input.getHeader();
         Object[] arguments = input.getArguments();
@@ -186,25 +185,5 @@ public class EncryptionClientCallsInterceptor extends WorkflowClientCallsInterce
                 input.getWaitPolicy()
             )
         );
-    }
-
-    @Override
-    public <R> PollWorkflowUpdateOutput<R> pollWorkflowUpdate(PollWorkflowUpdateInput<R> input) {
-        return super.pollWorkflowUpdate(input);
-    }
-
-    @Override
-    public CancelOutput cancel(CancelInput input) {
-        return super.cancel(input);
-    }
-
-    @Override
-    public TerminateOutput terminate(TerminateInput input) {
-        return super.terminate(input);
-    }
-
-    @Override
-    public DescribeWorkflowOutput describe(DescribeWorkflowInput input) {
-        return super.describe(input);
     }
 }

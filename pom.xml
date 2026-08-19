@@ -87,7 +87,7 @@
     <spring-boot.version>3.3.8</spring-boot.version>
 
     <!-- Application dependencies -->
-    <temporal-sdk.version>1.27.1</temporal-sdk.version>
+    <temporal-sdk.version>1.38.0</temporal-sdk.version>
     <awssdk.version>2.29.17</awssdk.version>
     <commons-io.version>2.18.0</commons-io.version>
     <commons-text.version>1.12.0</commons-text.version>

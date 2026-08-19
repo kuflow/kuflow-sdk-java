@@ -30,6 +30,26 @@ import io.temporal.common.interceptors.WorkflowOutboundCallsInterceptor;
 import io.temporal.common.interceptors.WorkflowOutboundCallsInterceptorBase;
 import java.util.Map;
 
+/**
+ * Marks the payloads sent from workflow code so that EncryptionPayloadConverter and EncryptionPayloadCodec encrypt them.
+ *
+ * <p>Overridden, because they carry workflow payloads: executeActivity, executeLocalActivity, executeChildWorkflow,
+ * executeNexusOperation, continueAsNew and signalExternalWorkflow.
+ *
+ * <p>Not overridden: the remaining calls carry no payload (sleep, await, newTimer, newRandom, randomUUID, getVersion,
+ * currentTimeMillis, cancelWorkflow, the handler registrations...), with three deliberate exceptions that are NOT
+ * encrypted today:
+ *
+ * <ul>
+ *   <li>sideEffect and mutableSideEffect: their result is written to and read back from the workflow history using the
+ *       result type declared by the caller, and EncryptionWrapper is only unwrapped when serializing, never restored
+ *       when deserializing, so marking the value would break the replay.
+ *   <li>upsertMemo: memos would be encryptable, but they do not go through this marking mechanism.
+ *   <li>upsertSearchAttributes and upsertTypedSearchAttributes: they must stay in clear text, the server indexes them.
+ * </ul>
+ *
+ * <p>Keep sensitive computations inside an activity, whose arguments and result do go through the encryption path.
+ */
 public class EncryptionWorkerWorkflowOutboundCallsInterceptor extends WorkflowOutboundCallsInterceptorBase {
 
     private final EncryptionState encryptionState;

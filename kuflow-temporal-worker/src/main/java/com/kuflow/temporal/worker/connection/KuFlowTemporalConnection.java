@@ -39,8 +39,8 @@ import com.kuflow.temporal.worker.connection.WorkerBuilder.ActivityImplementatio
 import com.kuflow.temporal.worker.connection.WorkerBuilder.WorkflowImplementationRegister;
 import com.kuflow.temporal.worker.encryption.codec.EncryptionPayloadCodec;
 import com.kuflow.temporal.worker.encryption.converter.EncryptionPayloadConverter;
-import com.kuflow.temporal.worker.encryption.interceptors.EncryptionClientInterceptor;
 import com.kuflow.temporal.worker.encryption.interceptors.EncryptionWorkerInterceptor;
+import com.kuflow.temporal.worker.encryption.interceptors.EncryptionWorkflowClientInterceptor;
 import com.kuflow.temporal.worker.jackson.AutorestModule;
 import com.kuflow.temporal.worker.jackson.KuFlowModule;
 import com.kuflow.temporal.worker.ssl.SslContextBuilder;
@@ -357,7 +357,7 @@ public class KuFlowTemporalConnection {
         WorkflowClientOptions workflowClientOptions = this.workflowClientBuilder
             .setContextPropagators(List.of(new MDCContextPropagator()))
             .setDataConverter(dataConverter)
-            .setInterceptors(new EncryptionClientInterceptor())
+            .setInterceptors(new EncryptionWorkflowClientInterceptor())
             .validateAndBuildWithDefaults();
 
         this.workflowClient = WorkflowClient.newInstance(workflowServiceStubs, workflowClientOptions);

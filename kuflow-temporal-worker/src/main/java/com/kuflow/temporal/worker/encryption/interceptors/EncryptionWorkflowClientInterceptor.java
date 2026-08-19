@@ -26,10 +26,10 @@ package com.kuflow.temporal.worker.encryption.interceptors;
 import io.temporal.common.interceptors.WorkflowClientCallsInterceptor;
 import io.temporal.common.interceptors.WorkflowClientInterceptorBase;
 
-public class EncryptionClientInterceptor extends WorkflowClientInterceptorBase {
+public class EncryptionWorkflowClientInterceptor extends WorkflowClientInterceptorBase {
 
     @Override
     public WorkflowClientCallsInterceptor workflowClientCallsInterceptor(WorkflowClientCallsInterceptor next) {
-        return new EncryptionClientCallsInterceptor(next);
+        return new EncryptionWorkflowClientCallsInterceptor(next);
     }
 }
