@@ -25,7 +25,6 @@ package com.kuflow.temporal.activity.datasource.model;
 
 import com.kuflow.common.Experimental;
 import jakarta.validation.constraints.NotNull;
-import java.time.Duration;
 import java.util.UUID;
 
 /**
