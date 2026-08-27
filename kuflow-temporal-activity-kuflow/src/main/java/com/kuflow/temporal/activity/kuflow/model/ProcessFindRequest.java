@@ -39,7 +39,11 @@ public class ProcessFindRequest extends AbstractModel {
 
     private Integer size;
 
-    private List<String> sorts;
+    /**
+     * Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
+     * <p>Default sort order is ascending. Multiple sort criteria are supported.
+     */
+    private final List<String> sorts = new LinkedList<>();
 
     /**
      * Filter by tenantId.
@@ -80,43 +84,55 @@ public class ProcessFindRequest extends AbstractModel {
         return this.page;
     }
 
-    public void setPage(Integer page) {
+    public ProcessFindRequest setPage(Integer page) {
         this.page = page;
+
+        return this;
     }
 
     public Integer getSize() {
         return this.size;
     }
 
-    public void setSize(Integer size) {
+    public ProcessFindRequest setSize(Integer size) {
         this.size = size;
+
+        return this;
     }
 
     public List<String> getSorts() {
-        if (this.sorts == null) {
-            this.sorts = new LinkedList<>();
-        }
-
         return unmodifiableList(this.sorts);
     }
 
-    public void setSorts(List<String> sorts) {
+    public ProcessFindRequest setSorts(List<String> sorts) {
         this.sorts.clear();
         if (sorts != null) {
             this.sorts.addAll(sorts);
         }
+
+        return this;
     }
 
-    public void addSort(String sort) {
+    public ProcessFindRequest setSort(String sort) {
+        Objects.requireNonNull(sort, "'sort' is required");
+
+        return this.setSorts(List.of(sort));
+    }
+
+    public ProcessFindRequest addSort(String sort) {
         Objects.requireNonNull(sort, "'sort' is required");
         if (!this.sorts.contains(sort)) {
             this.sorts.add(sort);
         }
+
+        return this;
     }
 
-    public void removeSort(String sort) {
+    public ProcessFindRequest removeSort(String sort) {
         Objects.requireNonNull(sort, "'sort' is required");
         this.sorts.remove(sort);
+
+        return this;
     }
 
     public List<UUID> getTenantIds() {
@@ -342,7 +358,20 @@ public class ProcessFindRequest extends AbstractModel {
         return this;
     }
 
-    public ProcessFindRequest setMetadata(String metadata) {
+    /**
+     * Replaces the filter expressions with a single one.
+     * <p>
+     * Named {@code setMetadataItem} and not {@code setMetadata} on purpose. "Metadata" is uncountable, so a
+     * single-value {@code setMetadata(String)} overload would be mapped by Jackson to the very same property as
+     * {@link #setMetadata(List)}. Jackson would then pick the {@code String} overload as the mutator for the
+     * {@code metadata} property and fail to deserialize the JSON array when this request travels as a Temporal
+     * activity input. Countable filters do not have this problem: {@code setProcessDefinitionCode(String)} maps
+     * to the {@code processDefinitionCode} property, which is a different one from
+     * {@code processDefinitionCodes}.
+     *
+     * @param metadata the filter expression
+     */
+    public ProcessFindRequest setMetadataItem(String metadata) {
         Objects.requireNonNull(metadata, "'metadata' is required");
 
         return this.setMetadata(List.of(metadata));
@@ -353,15 +382,17 @@ public class ProcessFindRequest extends AbstractModel {
      * encoded so that a value containing a space (or any character requiring percent-encoding) still
      * round-trips correctly. See {@link SearchCriteriaUtils#encodeFilterExpression} for details on the
      * encoding.
+     * <p>
+     * See {@link #setMetadataItem(String)} for why this method is not named {@code setMetadata}.
      *
      * @param code the metadata field code to filter/sort by
      * @param operation the operation code, e.g. "eq", "le", "ge", "between", "contains", "in"
      * @param values one or more values for the operation
      */
-    public ProcessFindRequest setMetadata(String code, String operation, String... values) {
+    public ProcessFindRequest setMetadataItem(String code, String operation, String... values) {
         String encoded = SearchCriteriaUtils.encodeFilterExpression(code, operation, values);
 
-        return this.setMetadata(encoded);
+        return this.setMetadataItem(encoded);
     }
 
     public ProcessFindRequest addMetadata(String metadata) {

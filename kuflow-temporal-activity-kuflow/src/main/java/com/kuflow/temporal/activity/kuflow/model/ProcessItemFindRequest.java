@@ -50,7 +50,7 @@ public class ProcessItemFindRequest extends AbstractModel {
      * <p>Default sort order is ascending. Multiple sort criteria are supported.
      * <p>Please refer to the method description for supported properties.
      */
-    private List<String> sorts = new LinkedList<>();
+    private final List<String> sorts = new LinkedList<>();
 
     /**
      * Filter principals that exists in one of tenant ids.
@@ -60,22 +60,22 @@ public class ProcessItemFindRequest extends AbstractModel {
     /**
      * Filter by an array of process ids.
      */
-    private List<UUID> processIds = new LinkedList<>();
+    private final List<UUID> processIds = new LinkedList<>();
 
     /**
      * Filter by an array of types.
      */
-    private List<ProcessItemType> types = new LinkedList<>();
+    private final List<ProcessItemType> types = new LinkedList<>();
 
     /**
      * Filter by an array of process item task states.
      */
-    private List<ProcessItemTaskState> taskStates = new LinkedList<>();
+    private final List<ProcessItemTaskState> taskStates = new LinkedList<>();
 
     /**
      * Filter by an array of process item definition codes.
      */
-    private List<String> processItemDefinitionCodes = new LinkedList<>();
+    private final List<String> processItemDefinitionCodes = new LinkedList<>();
 
     /**
      * Filter by process definition ids.
@@ -108,10 +108,6 @@ public class ProcessItemFindRequest extends AbstractModel {
     }
 
     public List<String> getSorts() {
-        if (this.sorts == null) {
-            this.sorts = new LinkedList<>();
-        }
-
         return unmodifiableList(this.sorts);
     }
 
@@ -182,10 +178,6 @@ public class ProcessItemFindRequest extends AbstractModel {
     }
 
     public List<UUID> getProcessIds() {
-        if (this.processIds == null) {
-            this.processIds = new LinkedList<>();
-        }
-
         return unmodifiableList(this.processIds);
     }
 
@@ -221,10 +213,6 @@ public class ProcessItemFindRequest extends AbstractModel {
     }
 
     public List<ProcessItemType> getTypes() {
-        if (this.types == null) {
-            this.types = new LinkedList<>();
-        }
-
         return unmodifiableList(this.types);
     }
 
@@ -260,10 +248,6 @@ public class ProcessItemFindRequest extends AbstractModel {
     }
 
     public List<ProcessItemTaskState> getTaskStates() {
-        if (this.taskStates == null) {
-            this.taskStates = new LinkedList<>();
-        }
-
         return unmodifiableList(this.taskStates);
     }
 
@@ -299,10 +283,6 @@ public class ProcessItemFindRequest extends AbstractModel {
     }
 
     public List<String> getProcessItemDefinitionCodes() {
-        if (this.processItemDefinitionCodes == null) {
-            this.processItemDefinitionCodes = new LinkedList<>();
-        }
-
         return unmodifiableList(this.processItemDefinitionCodes);
     }
 

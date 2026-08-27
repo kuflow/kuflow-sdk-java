@@ -361,7 +361,19 @@ public class ProcessFindOptions {
         return this;
     }
 
-    public ProcessFindOptions setMetadata(String metadata) {
+    /**
+     * Replaces the filter expressions with a single one.
+     * <p>
+     * Named {@code setMetadataItem} and not {@code setMetadata} on purpose. "Metadata" is uncountable, so a
+     * single-value {@code setMetadata(String)} overload would be mapped by Jackson to the very same property as
+     * {@link #setMetadata(List)}, and Jackson would then pick the {@code String} overload as the mutator for the
+     * {@code metadata} property and fail to deserialize the JSON array. Countable filters do not have this
+     * problem: {@code setProcessDefinitionCode(String)} maps to the {@code processDefinitionCode} property,
+     * which is a different one from {@code processDefinitionCodes}.
+     *
+     * @param metadata the filter expression
+     */
+    public ProcessFindOptions setMetadataItem(String metadata) {
         Objects.requireNonNull(metadata, "'metadata' is required");
 
         return this.setMetadata(List.of(metadata));
@@ -372,15 +384,17 @@ public class ProcessFindOptions {
      * encoded so that a value containing a space (or any character requiring percent-encoding) still
      * round-trips correctly. See {@link com.kuflow.rest.util.SearchCriteriaUtils#encodeFilterExpression}
      * for details on the encoding.
+     * <p>
+     * See {@link #setMetadataItem(String)} for why this method is not named {@code setMetadata}.
      *
      * @param code the metadata field code to filter/sort by
      * @param operation the operation code, e.g. "eq", "le", "ge", "between", "contains", "in"
      * @param values one or more values for the operation
      */
-    public ProcessFindOptions setMetadata(String code, String operation, String... values) {
+    public ProcessFindOptions setMetadataItem(String code, String operation, String... values) {
         String encoded = SearchCriteriaUtils.encodeFilterExpression(code, operation, values);
 
-        return this.setMetadata(encoded);
+        return this.setMetadataItem(encoded);
     }
 
     public ProcessFindOptions addMetadata(String metadata) {

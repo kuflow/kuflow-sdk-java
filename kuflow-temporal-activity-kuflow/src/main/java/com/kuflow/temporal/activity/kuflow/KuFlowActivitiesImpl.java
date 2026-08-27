@@ -445,7 +445,7 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
                 .setProcessIds(request.getProcessIds())
                 .setTypes(request.getTypes())
                 .setTaskStates(request.getTaskStates())
-                .setProcessItemDefinitionCode(request.getProcessItemDefinitionCodes())
+                .setProcessItemDefinitionCodes(request.getProcessItemDefinitionCodes())
                 .setProcessDefinitionIds(request.getProcessDefinitionIds())
                 .setProcessDefinitionCodes(request.getProcessDefinitionCodes());
 
