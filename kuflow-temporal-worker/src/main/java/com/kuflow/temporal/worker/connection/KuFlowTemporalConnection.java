@@ -23,9 +23,6 @@
 
 package com.kuflow.temporal.worker.connection;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kuflow.rest.KuFlowRestClient;
 import com.kuflow.rest.model.Authentication;
@@ -41,8 +38,7 @@ import com.kuflow.temporal.worker.encryption.codec.EncryptionPayloadCodec;
 import com.kuflow.temporal.worker.encryption.converter.EncryptionPayloadConverter;
 import com.kuflow.temporal.worker.encryption.interceptors.EncryptionWorkerInterceptor;
 import com.kuflow.temporal.worker.encryption.interceptors.EncryptionWorkflowClientInterceptor;
-import com.kuflow.temporal.worker.jackson.AutorestModule;
-import com.kuflow.temporal.worker.jackson.KuFlowModule;
+import com.kuflow.temporal.worker.jackson.KuFlowObjectMapperFactory;
 import com.kuflow.temporal.worker.ssl.SslContextBuilder;
 import com.kuflow.temporal.worker.tracing.MDCContextPropagator;
 import io.grpc.netty.shaded.io.netty.handler.ssl.SslContext;
@@ -413,13 +409,7 @@ public class KuFlowTemporalConnection {
     }
 
     private DataConverter dataConverter() {
-        // Customize Temporal default Jackson object mapper to support unknown properties
-        ObjectMapper objectMapper = JacksonJsonPayloadConverter.newDefaultObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        objectMapper.configure(JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION, true);
-        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        objectMapper.registerModule(new AutorestModule());
-        objectMapper.registerModule(new KuFlowModule());
+        ObjectMapper objectMapper = KuFlowObjectMapperFactory.createObjectMapper();
 
         JacksonJsonPayloadConverter jacksonJsonPayloadConverter = new JacksonJsonPayloadConverter(objectMapper);
 

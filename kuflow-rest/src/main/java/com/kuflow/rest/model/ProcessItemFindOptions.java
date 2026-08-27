@@ -47,7 +47,7 @@ public class ProcessItemFindOptions {
      * <p>Default sort order is ascending. Multiple sort criteria are supported.
      * <p>Please refer to the method description for supported properties.
      */
-    private List<String> sorts = new LinkedList<>();
+    private final List<String> sorts = new LinkedList<>();
 
     /**
      * Filter principals that exists in one of tenant ids.
@@ -57,22 +57,22 @@ public class ProcessItemFindOptions {
     /**
      * Filter by an array of process ids.
      */
-    private List<UUID> processIds = new LinkedList<>();
+    private final List<UUID> processIds = new LinkedList<>();
 
     /**
      * Filter by an array of types.
      */
-    private List<ProcessItemType> types = new LinkedList<>();
+    private final List<ProcessItemType> types = new LinkedList<>();
 
     /**
      * Filter by an array of process item task states.
      */
-    private List<ProcessItemTaskState> taskStates = new LinkedList<>();
+    private final List<ProcessItemTaskState> taskStates = new LinkedList<>();
 
     /**
      * Filter by an array of process item definition codes.
      */
-    private List<String> processItemDefinitionCode = new LinkedList<>();
+    private final List<String> processItemDefinitionCodes = new LinkedList<>();
 
     /**
      * Filter by process definition ids.
@@ -105,10 +105,6 @@ public class ProcessItemFindOptions {
     }
 
     public List<String> getSorts() {
-        if (this.sorts == null) {
-            this.sorts = new LinkedList<>();
-        }
-
         return unmodifiableList(this.sorts);
     }
 
@@ -179,10 +175,6 @@ public class ProcessItemFindOptions {
     }
 
     public List<UUID> getProcessIds() {
-        if (this.processIds == null) {
-            this.processIds = new LinkedList<>();
-        }
-
         return unmodifiableList(this.processIds);
     }
 
@@ -218,10 +210,6 @@ public class ProcessItemFindOptions {
     }
 
     public List<ProcessItemType> getTypes() {
-        if (this.types == null) {
-            this.types = new LinkedList<>();
-        }
-
         return unmodifiableList(this.types);
     }
 
@@ -257,10 +245,6 @@ public class ProcessItemFindOptions {
     }
 
     public List<ProcessItemTaskState> getTaskStates() {
-        if (this.taskStates == null) {
-            this.taskStates = new LinkedList<>();
-        }
-
         return unmodifiableList(this.taskStates);
     }
 
@@ -295,18 +279,14 @@ public class ProcessItemFindOptions {
         return this;
     }
 
-    public List<String> getProcessItemDefinitionCode() {
-        if (this.processItemDefinitionCode == null) {
-            this.processItemDefinitionCode = new LinkedList<>();
-        }
-
-        return unmodifiableList(this.processItemDefinitionCode);
+    public List<String> getProcessItemDefinitionCodes() {
+        return unmodifiableList(this.processItemDefinitionCodes);
     }
 
-    public ProcessItemFindOptions setProcessItemDefinitionCode(List<String> processItemDefinitionCode) {
-        this.processItemDefinitionCode.clear();
-        if (processItemDefinitionCode != null) {
-            this.processItemDefinitionCode.addAll(processItemDefinitionCode);
+    public ProcessItemFindOptions setProcessItemDefinitionCodes(List<String> processItemDefinitionCodes) {
+        this.processItemDefinitionCodes.clear();
+        if (processItemDefinitionCodes != null) {
+            this.processItemDefinitionCodes.addAll(processItemDefinitionCodes);
         }
 
         return this;
@@ -315,13 +295,13 @@ public class ProcessItemFindOptions {
     public ProcessItemFindOptions setProcessItemDefinitionCode(String processItemDefinitionCode) {
         Objects.requireNonNull(processItemDefinitionCode, "'processItemDefinitionCode' is required");
 
-        return this.setProcessItemDefinitionCode(List.of(processItemDefinitionCode));
+        return this.setProcessItemDefinitionCodes(List.of(processItemDefinitionCode));
     }
 
     public ProcessItemFindOptions addProcessItemDefinitionCode(String processItemDefinitionCode) {
         Objects.requireNonNull(processItemDefinitionCode, "'processItemDefinitionCode' is required");
-        if (!this.processItemDefinitionCode.contains(processItemDefinitionCode)) {
-            this.processItemDefinitionCode.add(processItemDefinitionCode);
+        if (!this.processItemDefinitionCodes.contains(processItemDefinitionCode)) {
+            this.processItemDefinitionCodes.add(processItemDefinitionCode);
         }
 
         return this;
@@ -329,7 +309,7 @@ public class ProcessItemFindOptions {
 
     public ProcessItemFindOptions removeProcessItemDefinitionCode(String processItemDefinitionCode) {
         Objects.requireNonNull(processItemDefinitionCode, "'processItemDefinitionCode' is required");
-        this.processItemDefinitionCode.remove(processItemDefinitionCode);
+        this.processItemDefinitionCodes.remove(processItemDefinitionCode);
 
         return this;
     }

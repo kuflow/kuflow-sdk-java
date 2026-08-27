@@ -87,8 +87,8 @@ public class ProcessItemOperations {
         List<UUID> processId = !options.getProcessIds().isEmpty() ? options.getProcessIds() : null;
         List<ProcessItemType> type = !options.getTypes().isEmpty() ? options.getTypes() : null;
         List<ProcessItemTaskState> taskState = !options.getTaskStates().isEmpty() ? options.getTaskStates() : null;
-        List<String> processItemDefinitionCode = !options.getProcessItemDefinitionCode().isEmpty()
-            ? options.getProcessItemDefinitionCode()
+        List<String> processItemDefinitionCode = !options.getProcessItemDefinitionCodes().isEmpty()
+            ? options.getProcessItemDefinitionCodes()
             : null;
         List<UUID> processDefinitionId = !options.getProcessDefinitionIds().isEmpty() ? options.getProcessDefinitionIds() : null;
         List<String> processDefinitionCode = !options.getProcessDefinitionCodes().isEmpty() ? options.getProcessDefinitionCodes() : null;
