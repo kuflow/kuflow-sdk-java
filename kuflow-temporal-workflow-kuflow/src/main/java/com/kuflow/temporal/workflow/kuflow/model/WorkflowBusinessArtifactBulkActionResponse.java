@@ -23,18 +23,11 @@
 
 package com.kuflow.temporal.workflow.kuflow.model;
 
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.Objects;
-
 /**
  * Result returned by the user's workflow when a BULK batch action finishes. Bulk executions are START_WORKFLOW-only,
  * so unlike {@link WorkflowBusinessArtifactActionResponse} there is no downloadable payload.
  */
-public class WorkflowBusinessArtifactBulkActionResponse implements JsonSerializable<WorkflowBusinessArtifactBulkActionResponse> {
+public class WorkflowBusinessArtifactBulkActionResponse {
 
     /**
      * Optional human-readable message describing the outcome of the bulk action.
@@ -47,39 +40,5 @@ public class WorkflowBusinessArtifactBulkActionResponse implements JsonSerializa
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("message", Objects.toString(this.message, null));
-
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of WorkflowBusinessArtifactBulkActionResponse from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of WorkflowBusinessArtifactBulkActionResponse if the JsonReader was pointing to an instance
-     * of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the WorkflowBusinessArtifactBulkActionResponse.
-     */
-    public static WorkflowBusinessArtifactBulkActionResponse fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            WorkflowBusinessArtifactBulkActionResponse value = new WorkflowBusinessArtifactBulkActionResponse();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("message".equals(fieldName)) {
-                    value.message = reader.getNullable(JsonReader::getString);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return value;
-        });
     }
 }
