@@ -23,12 +23,6 @@
 
 package com.kuflow.temporal.workflow.kuflow.model;
 
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -38,7 +32,7 @@ import java.util.UUID;
  * businessArtifactActionValueId)}) and download its per-artifact document copies
  * ({@code downloadBusinessArtifactDocument(businessArtifactId, documentUri)}).
  */
-public class WorkflowBusinessArtifactBulkActionRequestItem implements JsonSerializable<WorkflowBusinessArtifactBulkActionRequestItem> {
+public class WorkflowBusinessArtifactBulkActionRequestItem {
 
     /**
      * The unique identifier of the business artifact.
@@ -65,33 +59,5 @@ public class WorkflowBusinessArtifactBulkActionRequestItem implements JsonSerial
 
     public void setBusinessArtifactActionValueId(UUID businessArtifactActionValueId) {
         this.businessArtifactActionValueId = businessArtifactActionValueId;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("businessArtifactId", Objects.toString(this.businessArtifactId, null));
-        jsonWriter.writeStringField("businessArtifactActionValueId", Objects.toString(this.businessArtifactActionValueId, null));
-        return jsonWriter.writeEndObject();
-    }
-
-    public static WorkflowBusinessArtifactBulkActionRequestItem fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            WorkflowBusinessArtifactBulkActionRequestItem value = new WorkflowBusinessArtifactBulkActionRequestItem();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("businessArtifactId".equals(fieldName)) {
-                    value.businessArtifactId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
-                } else if ("businessArtifactActionValueId".equals(fieldName)) {
-                    value.businessArtifactActionValueId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return value;
-        });
     }
 }

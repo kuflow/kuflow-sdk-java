@@ -23,15 +23,8 @@
 
 package com.kuflow.temporal.workflow.kuflow.model;
 
-import com.azure.core.util.CoreUtils;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -50,7 +43,7 @@ import javax.annotation.Nullable;
  * artifact-scoped API using the pair. {@code businessArtifactBatchExecutionId} is the correlation key back to the
  * batch execution that fired the workflow.
  */
-public class WorkflowBusinessArtifactBulkActionRequest implements JsonSerializable<WorkflowBusinessArtifactBulkActionRequest> {
+public class WorkflowBusinessArtifactBulkActionRequest {
 
     /**
      * The materialized selection: one entry per business artifact that passed the per-artifact checks, in ascending
@@ -110,7 +103,7 @@ public class WorkflowBusinessArtifactBulkActionRequest implements JsonSerializab
             return List.of();
         }
 
-        return Objects.requireNonNull(Collections.unmodifiableList(this.items));
+        return Collections.unmodifiableList(this.items);
     }
 
     public void setItems(@Nullable List<WorkflowBusinessArtifactBulkActionRequestItem> items) {
@@ -180,7 +173,7 @@ public class WorkflowBusinessArtifactBulkActionRequest implements JsonSerializab
             return Map.of();
         }
 
-        return Objects.requireNonNull(Collections.unmodifiableMap(this.extras));
+        return Collections.unmodifiableMap(this.extras);
     }
 
     public void setExtras(@Nullable Map<String, Object> extras) {
@@ -212,58 +205,5 @@ public class WorkflowBusinessArtifactBulkActionRequest implements JsonSerializab
         Objects.requireNonNull(name, "'name' is required");
 
         return this.getExtras().get(name);
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("items", this.items, (writer, element) -> element.toJson(writer));
-        jsonWriter.writeStringField(
-            "businessArtifactActionDefinitionType",
-            Objects.toString(this.businessArtifactActionDefinitionType, null)
-        );
-        jsonWriter.writeStringField("businessArtifactActionDefinitionCode", this.businessArtifactActionDefinitionCode);
-        jsonWriter.writeStringField("businessArtifactBatchExecutionId", Objects.toString(this.businessArtifactBatchExecutionId, null));
-        jsonWriter.writeStringField("requestorPrincipalId", Objects.toString(this.requestorPrincipalId, null));
-        jsonWriter.writeStringField(
-            "requestTime",
-            this.requestTime != null ? DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.requestTime) : null
-        );
-        jsonWriter.writeStringField("requestTimeZone", this.requestTimeZone != null ? this.requestTimeZone.toString() : null);
-        return jsonWriter.writeEndObject();
-    }
-
-    public static WorkflowBusinessArtifactBulkActionRequest fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            WorkflowBusinessArtifactBulkActionRequest value = new WorkflowBusinessArtifactBulkActionRequest();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("items".equals(fieldName)) {
-                    value.items = reader.readArray(WorkflowBusinessArtifactBulkActionRequestItem::fromJson);
-                } else if ("businessArtifactActionDefinitionType".equals(fieldName)) {
-                    value.businessArtifactActionDefinitionType = reader.getNullable(nonNullReader ->
-                        WorkflowBusinessArtifactActionDefinitionType.fromString(nonNullReader.getString())
-                    );
-                } else if ("businessArtifactActionDefinitionCode".equals(fieldName)) {
-                    value.businessArtifactActionDefinitionCode = reader.getNullable(JsonReader::getString);
-                } else if ("businessArtifactBatchExecutionId".equals(fieldName)) {
-                    value.businessArtifactBatchExecutionId = reader.getNullable(nonNullReader ->
-                        UUID.fromString(nonNullReader.getString())
-                    );
-                } else if ("requestorPrincipalId".equals(fieldName)) {
-                    value.requestorPrincipalId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
-                } else if ("requestTime".equals(fieldName)) {
-                    value.requestTime = reader.getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("requestTimeZone".equals(fieldName)) {
-                    value.requestTimeZone = reader.getNullable(nonNullReader -> ZoneId.of(nonNullReader.getString()));
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return value;
-        });
     }
 }
