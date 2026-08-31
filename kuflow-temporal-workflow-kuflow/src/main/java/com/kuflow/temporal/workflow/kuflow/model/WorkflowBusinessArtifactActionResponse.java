@@ -23,19 +23,12 @@
 
 package com.kuflow.temporal.workflow.kuflow.model;
 
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.Objects;
-
 /**
  * Result returned by the workflow that handles a business artifact action. Carries an optional
  * human-readable message and, depending on the action definition type that triggered it, exactly
  * one of the type-specific payloads ({@link WorkflowBusinessArtifactActionResponseDownloadable}).
  */
-public class WorkflowBusinessArtifactActionResponse implements JsonSerializable<WorkflowBusinessArtifactActionResponse> {
+public class WorkflowBusinessArtifactActionResponse {
 
     /**
      * Optional human-readable message describing the outcome of the action. Surfaced to the
@@ -62,42 +55,5 @@ public class WorkflowBusinessArtifactActionResponse implements JsonSerializable<
 
     public void setDownloadable(WorkflowBusinessArtifactActionResponseDownloadable downloadable) {
         this.downloadable = downloadable;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("message", Objects.toString(this.message, null));
-        jsonWriter.writeJsonField("downloadable", this.downloadable);
-
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of WorkflowBusinessArtifactActionResponse from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of WorkflowBusinessArtifactActionResponse if the JsonReader was pointing to an instance of
-     * it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the WorkflowBusinessArtifactActionResponse.
-     */
-    public static WorkflowBusinessArtifactActionResponse fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            WorkflowBusinessArtifactActionResponse value = new WorkflowBusinessArtifactActionResponse();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("message".equals(fieldName)) {
-                    value.message = reader.getNullable(JsonReader::getString);
-                } else if ("downloadable".equals(fieldName)) {
-                    value.downloadable = WorkflowBusinessArtifactActionResponseDownloadable.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return value;
-        });
     }
 }
