@@ -23,15 +23,8 @@
 
 package com.kuflow.temporal.workflow.kuflow.model;
 
-import com.azure.core.util.CoreUtils;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +38,7 @@ import javax.annotation.Nullable;
  * Carries the artifact reference, the action definition that fired, and metadata about who/when
  * requested it so the workflow can run with the proper context.
  */
-public class WorkflowBusinessArtifactActionRequest implements JsonSerializable<WorkflowBusinessArtifactActionRequest> {
+public class WorkflowBusinessArtifactActionRequest {
 
     /**
      * The unique identifier of a business artifact.
@@ -197,56 +190,5 @@ public class WorkflowBusinessArtifactActionRequest implements JsonSerializable<W
         Objects.requireNonNull(name, "'name' is required");
 
         return this.getExtras().get(name);
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("businessArtifactId", Objects.toString(this.businessArtifactId, null));
-        jsonWriter.writeStringField(
-            "businessArtifactActionDefinitionType",
-            Objects.toString(this.businessArtifactActionDefinitionType, null)
-        );
-        jsonWriter.writeStringField("businessArtifactActionDefinitionCode", this.businessArtifactActionDefinitionCode);
-        jsonWriter.writeStringField("businessArtifactActionValueId", Objects.toString(this.businessArtifactActionValueId, null));
-        jsonWriter.writeStringField("requestorPrincipalId", Objects.toString(this.requestorPrincipalId, null));
-        jsonWriter.writeStringField(
-            "requestTime",
-            this.requestTime != null ? DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.requestTime) : null
-        );
-        jsonWriter.writeStringField("requestTimeZone", this.requestTimeZone != null ? this.requestTimeZone.toString() : null);
-        return jsonWriter.writeEndObject();
-    }
-
-    public static WorkflowBusinessArtifactActionRequest fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            WorkflowBusinessArtifactActionRequest value = new WorkflowBusinessArtifactActionRequest();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("businessArtifactId".equals(fieldName)) {
-                    value.businessArtifactId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
-                } else if ("businessArtifactActionDefinitionType".equals(fieldName)) {
-                    value.businessArtifactActionDefinitionType = reader.getNullable(nonNullReader ->
-                        WorkflowBusinessArtifactActionDefinitionType.fromString(nonNullReader.getString())
-                    );
-                } else if ("businessArtifactActionDefinitionCode".equals(fieldName)) {
-                    value.businessArtifactActionDefinitionCode = reader.getNullable(JsonReader::getString);
-                } else if ("businessArtifactActionValueId".equals(fieldName)) {
-                    value.businessArtifactActionValueId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
-                } else if ("requestorPrincipalId".equals(fieldName)) {
-                    value.requestorPrincipalId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
-                } else if ("requestTime".equals(fieldName)) {
-                    value.requestTime = reader.getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("requestTimeZone".equals(fieldName)) {
-                    value.requestTimeZone = reader.getNullable(nonNullReader -> ZoneId.of(nonNullReader.getString()));
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return value;
-        });
     }
 }
