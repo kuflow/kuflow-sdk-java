@@ -43,6 +43,12 @@ public final class ProcessActionSendWorkflowSignal implements JsonSerializable<P
     @Generated
     private String signalName;
 
+    /*
+     * Json value.
+     */
+    @Generated
+    private JsonValue input;
+
     /**
      * Creates an instance of ProcessActionSendWorkflowSignal class.
      */
@@ -72,6 +78,28 @@ public final class ProcessActionSendWorkflowSignal implements JsonSerializable<P
     }
 
     /**
+     * Get the input property: Json value.
+     *
+     * @return the input value.
+     */
+    @Generated
+    public JsonValue getInput() {
+        return this.input;
+    }
+
+    /**
+     * Set the input property: Json value.
+     *
+     * @param input the input value to set.
+     * @return the ProcessActionSendWorkflowSignal object itself.
+     */
+    @Generated
+    public ProcessActionSendWorkflowSignal setInput(JsonValue input) {
+        this.input = input;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -79,6 +107,7 @@ public final class ProcessActionSendWorkflowSignal implements JsonSerializable<P
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("signalName", this.signalName);
+        jsonWriter.writeJsonField("input", this.input);
         return jsonWriter.writeEndObject();
     }
 
@@ -100,6 +129,8 @@ public final class ProcessActionSendWorkflowSignal implements JsonSerializable<P
 
                 if ("signalName".equals(fieldName)) {
                     deserializedProcessActionSendWorkflowSignal.signalName = reader.getString();
+                } else if ("input".equals(fieldName)) {
+                    deserializedProcessActionSendWorkflowSignal.input = JsonValue.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

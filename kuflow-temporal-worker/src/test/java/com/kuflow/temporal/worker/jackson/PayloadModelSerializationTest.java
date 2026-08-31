@@ -29,6 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kuflow.temporal.activity.kuflow.model.ProcessFindRequest;
+import com.kuflow.temporal.workflow.kuflow.model.SignalUserAction;
 import com.kuflow.temporal.workflow.kuflow.model.WorkflowRequest;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
@@ -93,6 +94,33 @@ public class PayloadModelSerializationTest {
         }
 
         assertThat(failures).as("Models that do not survive a json round trip").isEmpty();
+    }
+
+    @Test
+    @DisplayName("GIVEN a signal payload with input WHEN it is deserialized THEN the input survives the round trip")
+    public void givenASignalPayloadWithInputWhenItIsDeserializedThenTheInputSurvivesTheRoundTrip() throws IOException {
+        SignalUserAction source = new SignalUserAction();
+        source.setUserActionDefinitionCode("MY_ACTION");
+        source.setInput(Map.of("amount", 100));
+
+        byte[] serialized = this.objectMapper.writeValueAsBytes(source);
+        SignalUserAction deserialized = this.objectMapper.readValue(serialized, SignalUserAction.class);
+
+        assertThat(deserialized.getUserActionDefinitionCode()).isEqualTo("MY_ACTION");
+        assertThat(deserialized.getInput()).containsEntry("amount", 100);
+    }
+
+    @Test
+    @DisplayName("GIVEN a signal payload from a newer engine WHEN it carries unknown properties THEN they are ignored")
+    public void givenASignalPayloadFromANewerEngineWhenItCarriesUnknownPropertiesThenTheyAreIgnored() throws IOException {
+        // Workers built against an older SDK must keep deserializing payloads that gained new properties
+        String payload = """
+        {"userActionDefinitionCode":"MY_ACTION","input":{"amount":100},"aFutureProperty":"ignored"}""";
+
+        SignalUserAction deserialized = this.objectMapper.readValue(payload.getBytes(UTF_8), SignalUserAction.class);
+
+        assertThat(deserialized.getUserActionDefinitionCode()).isEqualTo("MY_ACTION");
+        assertThat(deserialized.getInput()).containsEntry("amount", 100);
     }
 
     private List<Class<?>> findModels() throws IOException {

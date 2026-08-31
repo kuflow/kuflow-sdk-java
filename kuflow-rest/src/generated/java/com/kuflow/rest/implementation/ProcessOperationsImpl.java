@@ -1306,6 +1306,12 @@ public final class ProcessOperationsImpl {
      *
      * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
+     * Actions of type `SEND_WORKFLOW_SIGNAL` whose definition declares an input form accept a
+     * `sendWorkflowSignal.input` payload: it is validated against the definition schema,
+     * persisted on the action and delivered inside the workflow signal. The input is not part
+     * of the idempotency key — replaying the same `id` with a different input returns the
+     * original action untouched.
+     *
      * @param id The resource ID.
      * @param processActionCreateParams Params identifying the action to invoke.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1336,6 +1342,12 @@ public final class ProcessOperationsImpl {
      * The response returns with `status=COMPLETED` (or an error status).
      *
      * If you want the method to be idempotent, please specify the `id` field in the request body.
+     *
+     * Actions of type `SEND_WORKFLOW_SIGNAL` whose definition declares an input form accept a
+     * `sendWorkflowSignal.input` payload: it is validated against the definition schema,
+     * persisted on the action and delivered inside the workflow signal. The input is not part
+     * of the idempotency key — replaying the same `id` with a different input returns the
+     * original action untouched.
      *
      * @param id The resource ID.
      * @param processActionCreateParams Params identifying the action to invoke.
@@ -1371,6 +1383,12 @@ public final class ProcessOperationsImpl {
      *
      * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
+     * Actions of type `SEND_WORKFLOW_SIGNAL` whose definition declares an input form accept a
+     * `sendWorkflowSignal.input` payload: it is validated against the definition schema,
+     * persisted on the action and delivered inside the workflow signal. The input is not part
+     * of the idempotency key — replaying the same `id` with a different input returns the
+     * original action untouched.
+     *
      * @param id The resource ID.
      * @param processActionCreateParams Params identifying the action to invoke.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1398,6 +1416,12 @@ public final class ProcessOperationsImpl {
      * The response returns with `status=COMPLETED` (or an error status).
      *
      * If you want the method to be idempotent, please specify the `id` field in the request body.
+     *
+     * Actions of type `SEND_WORKFLOW_SIGNAL` whose definition declares an input form accept a
+     * `sendWorkflowSignal.input` payload: it is validated against the definition schema,
+     * persisted on the action and delivered inside the workflow signal. The input is not part
+     * of the idempotency key — replaying the same `id` with a different input returns the
+     * original action untouched.
      *
      * @param id The resource ID.
      * @param processActionCreateParams Params identifying the action to invoke.
@@ -1429,6 +1453,12 @@ public final class ProcessOperationsImpl {
      * The response returns with `status=COMPLETED` (or an error status).
      *
      * If you want the method to be idempotent, please specify the `id` field in the request body.
+     *
+     * Actions of type `SEND_WORKFLOW_SIGNAL` whose definition declares an input form accept a
+     * `sendWorkflowSignal.input` payload: it is validated against the definition schema,
+     * persisted on the action and delivered inside the workflow signal. The input is not part
+     * of the idempotency key — replaying the same `id` with a different input returns the
+     * original action untouched.
      *
      * @param id The resource ID.
      * @param processActionCreateParams Params identifying the action to invoke.
@@ -1463,6 +1493,12 @@ public final class ProcessOperationsImpl {
      * The response returns with `status=COMPLETED` (or an error status).
      *
      * If you want the method to be idempotent, please specify the `id` field in the request body.
+     *
+     * Actions of type `SEND_WORKFLOW_SIGNAL` whose definition declares an input form accept a
+     * `sendWorkflowSignal.input` payload: it is validated against the definition schema,
+     * persisted on the action and delivered inside the workflow signal. The input is not part
+     * of the idempotency key — replaying the same `id` with a different input returns the
+     * original action untouched.
      *
      * @param id The resource ID.
      * @param processActionCreateParams Params identifying the action to invoke.

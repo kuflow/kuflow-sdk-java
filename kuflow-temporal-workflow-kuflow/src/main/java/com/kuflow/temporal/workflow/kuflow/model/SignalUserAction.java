@@ -25,6 +25,7 @@ package com.kuflow.temporal.workflow.kuflow.model;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.util.Map;
 
 public class SignalUserAction {
 
@@ -49,6 +50,13 @@ public class SignalUserAction {
      */
     private ZoneId requestTimeZone;
 
+    /**
+     * The validated input collected when the user action was requested.
+     * It is {@code null} when the action definition declares no input form, and also when the signal
+     * was sent by an engine version that predates input support.
+     */
+    private Map<String, Object> input;
+
     public String getUserActionDefinitionCode() {
         return this.userActionDefinitionCode;
     }
@@ -71,5 +79,13 @@ public class SignalUserAction {
 
     public void setRequestTimeZone(ZoneId requestTimeZone) {
         this.requestTimeZone = requestTimeZone;
+    }
+
+    public Map<String, Object> getInput() {
+        return this.input;
+    }
+
+    public void setInput(Map<String, Object> input) {
+        this.input = input;
     }
 }
