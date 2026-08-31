@@ -366,7 +366,8 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
                 .setProcessActionDefinitionCode(request.getProcessActionDefinitionCode())
                 .setCreateTask(request.getCreateTask())
                 .setCreateProcessItemMessage(request.getCreateProcessItemMessage())
-                .setStartRelatedProcess(request.getStartRelatedProcess());
+                .setStartRelatedProcess(request.getStartRelatedProcess())
+                .setSendWorkflowSignal(request.getSendWorkflowSignal());
 
             ProcessAction processAction = this.processOperations.createProcessAction(request.getProcessId(), params);
 

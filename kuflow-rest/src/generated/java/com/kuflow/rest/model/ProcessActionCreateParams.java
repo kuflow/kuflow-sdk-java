@@ -35,8 +35,8 @@ import java.util.UUID;
 
 /**
  * Params to invoke an action on a Process. The populated sub-field
- * (`createTask`, `createProcessItemMessage`, `startRelatedProcess`) must
- * match the type of the action identified by
+ * (`createTask`, `createProcessItemMessage`, `startRelatedProcess`,
+ * `sendWorkflowSignal`) must match the type of the action identified by
  * `processActionDefinitionCode`; the remaining action types take no
  * params.
  */
@@ -74,6 +74,12 @@ public final class ProcessActionCreateParams implements JsonSerializable<Process
      */
     @Generated
     private ProcessActionCreateParamsStartRelatedProcess startRelatedProcess;
+
+    /*
+     * Params for invoking an action of type SEND_WORKFLOW_SIGNAL.
+     */
+    @Generated
+    private ProcessActionCreateParamsSendWorkflowSignal sendWorkflowSignal;
 
     /**
      * Creates an instance of ProcessActionCreateParams class.
@@ -198,6 +204,28 @@ public final class ProcessActionCreateParams implements JsonSerializable<Process
     }
 
     /**
+     * Get the sendWorkflowSignal property: Params for invoking an action of type SEND_WORKFLOW_SIGNAL.
+     *
+     * @return the sendWorkflowSignal value.
+     */
+    @Generated
+    public ProcessActionCreateParamsSendWorkflowSignal getSendWorkflowSignal() {
+        return this.sendWorkflowSignal;
+    }
+
+    /**
+     * Set the sendWorkflowSignal property: Params for invoking an action of type SEND_WORKFLOW_SIGNAL.
+     *
+     * @param sendWorkflowSignal the sendWorkflowSignal value to set.
+     * @return the ProcessActionCreateParams object itself.
+     */
+    @Generated
+    public ProcessActionCreateParams setSendWorkflowSignal(ProcessActionCreateParamsSendWorkflowSignal sendWorkflowSignal) {
+        this.sendWorkflowSignal = sendWorkflowSignal;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -209,6 +237,7 @@ public final class ProcessActionCreateParams implements JsonSerializable<Process
         jsonWriter.writeJsonField("createTask", this.createTask);
         jsonWriter.writeJsonField("createProcessItemMessage", this.createProcessItemMessage);
         jsonWriter.writeJsonField("startRelatedProcess", this.startRelatedProcess);
+        jsonWriter.writeJsonField("sendWorkflowSignal", this.sendWorkflowSignal);
         return jsonWriter.writeEndObject();
     }
 
@@ -244,6 +273,8 @@ public final class ProcessActionCreateParams implements JsonSerializable<Process
                     deserializedProcessActionCreateParams.startRelatedProcess = ProcessActionCreateParamsStartRelatedProcess.fromJson(
                         reader
                     );
+                } else if ("sendWorkflowSignal".equals(fieldName)) {
+                    deserializedProcessActionCreateParams.sendWorkflowSignal = ProcessActionCreateParamsSendWorkflowSignal.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

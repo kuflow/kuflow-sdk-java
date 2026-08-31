@@ -25,6 +25,7 @@ package com.kuflow.temporal.activity.kuflow.model;
 
 import com.kuflow.rest.model.ProcessActionCreateParamsCreateProcessItemMessage;
 import com.kuflow.rest.model.ProcessActionCreateParamsCreateTask;
+import com.kuflow.rest.model.ProcessActionCreateParamsSendWorkflowSignal;
 import com.kuflow.rest.model.ProcessActionCreateParamsStartRelatedProcess;
 import com.kuflow.temporal.common.model.AbstractModel;
 import java.util.UUID;
@@ -42,6 +43,8 @@ public class ProcessActionCreateRequest extends AbstractModel {
     private ProcessActionCreateParamsCreateProcessItemMessage createProcessItemMessage;
 
     private ProcessActionCreateParamsStartRelatedProcess startRelatedProcess;
+
+    private ProcessActionCreateParamsSendWorkflowSignal sendWorkflowSignal;
 
     public UUID getProcessId() {
         return this.processId;
@@ -89,5 +92,13 @@ public class ProcessActionCreateRequest extends AbstractModel {
 
     public void setStartRelatedProcess(ProcessActionCreateParamsStartRelatedProcess startRelatedProcess) {
         this.startRelatedProcess = startRelatedProcess;
+    }
+
+    public ProcessActionCreateParamsSendWorkflowSignal getSendWorkflowSignal() {
+        return this.sendWorkflowSignal;
+    }
+
+    public void setSendWorkflowSignal(ProcessActionCreateParamsSendWorkflowSignal sendWorkflowSignal) {
+        this.sendWorkflowSignal = sendWorkflowSignal;
     }
 }
