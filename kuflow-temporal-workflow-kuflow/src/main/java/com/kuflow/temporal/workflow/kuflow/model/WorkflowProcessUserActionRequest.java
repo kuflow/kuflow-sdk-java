@@ -23,15 +23,8 @@
 
 package com.kuflow.temporal.workflow.kuflow.model;
 
-import com.azure.core.util.CoreUtils;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +33,7 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class WorkflowProcessUserActionRequest implements JsonSerializable<WorkflowProcessUserActionRequest> {
+public class WorkflowProcessUserActionRequest {
 
     /**
      * The unique identifier of a process.
@@ -192,53 +185,5 @@ public class WorkflowProcessUserActionRequest implements JsonSerializable<Workfl
         Objects.requireNonNull(name, "'name' is required");
 
         return this.getExtras().get(name);
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("processId", Objects.toString(this.processId, null));
-        jsonWriter.writeStringField("userActionDefinitionType", Objects.toString(this.userActionDefinitionType, null));
-        jsonWriter.writeStringField("userActionDefinitionCode", this.userActionDefinitionCode);
-        jsonWriter.writeStringField("userActionId", Objects.toString(this.userActionId, null));
-        jsonWriter.writeStringField("requestorPrincipalId", Objects.toString(this.requestorPrincipalId, null));
-        jsonWriter.writeStringField(
-            "requestTime",
-            this.requestTime != null ? DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.requestTime) : null
-        );
-        jsonWriter.writeStringField("requestTimeZone", this.requestTimeZone != null ? this.requestTimeZone.toString() : null);
-        return jsonWriter.writeEndObject();
-    }
-
-    public static WorkflowProcessUserActionRequest fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            WorkflowProcessUserActionRequest value = new WorkflowProcessUserActionRequest();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("processId".equals(fieldName)) {
-                    value.processId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
-                } else if ("userActionDefinitionType".equals(fieldName)) {
-                    value.userActionDefinitionType = reader.getNullable(nonNullReader ->
-                        WorkflowProcessUserActionDefinitionType.fromString(nonNullReader.getString())
-                    );
-                } else if ("userActionDefinitionCode".equals(fieldName)) {
-                    value.userActionDefinitionCode = reader.getNullable(JsonReader::getString);
-                } else if ("userActionId".equals(fieldName)) {
-                    value.userActionId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
-                } else if ("requestorPrincipalId".equals(fieldName)) {
-                    value.requestorPrincipalId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
-                } else if ("requestTime".equals(fieldName)) {
-                    value.requestTime = reader.getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("requestTimeZone".equals(fieldName)) {
-                    value.requestTimeZone = reader.getNullable(nonNullReader -> ZoneId.of(nonNullReader.getString()));
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return value;
-        });
     }
 }
