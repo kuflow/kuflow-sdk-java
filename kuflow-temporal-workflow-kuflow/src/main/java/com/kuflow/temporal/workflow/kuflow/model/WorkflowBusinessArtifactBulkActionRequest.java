@@ -103,7 +103,7 @@ public class WorkflowBusinessArtifactBulkActionRequest {
             return List.of();
         }
 
-        return Objects.requireNonNull(Collections.unmodifiableList(this.items));
+        return Collections.unmodifiableList(this.items);
     }
 
     public void setItems(@Nullable List<WorkflowBusinessArtifactBulkActionRequestItem> items) {
@@ -173,7 +173,7 @@ public class WorkflowBusinessArtifactBulkActionRequest {
             return Map.of();
         }
 
-        return Objects.requireNonNull(Collections.unmodifiableMap(this.extras));
+        return Collections.unmodifiableMap(this.extras);
     }
 
     public void setExtras(@Nullable Map<String, Object> extras) {
