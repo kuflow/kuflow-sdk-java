@@ -23,19 +23,11 @@
 
 package com.kuflow.temporal.workflow.kuflow.model;
 
-import com.azure.core.util.CoreUtils;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 import java.util.UUID;
 
-public class SignalProcessItem implements JsonSerializable<SignalProcessItem> {
+public class SignalProcessItem {
 
     /**
      * Represents the unique identifier for a SignalProcessItem.
@@ -109,50 +101,5 @@ public class SignalProcessItem implements JsonSerializable<SignalProcessItem> {
 
     public ZoneId getRequestTimeZone() {
         return this.requestTimeZone;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", Objects.toString(this.id, null));
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeJsonField("payload", this.payload);
-        jsonWriter.writeStringField(
-            "requestTime",
-            this.requestTime != null ? DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.requestTime) : null
-        );
-        jsonWriter.writeStringField("requestTimeZone", this.requestTimeZone != null ? this.requestTimeZone.toString() : null);
-
-        return jsonWriter.writeEndObject();
-    }
-
-    public static SignalProcessItem fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            SignalProcessItem deserializedSignalProcessItem = new SignalProcessItem();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("id".equals(fieldName)) {
-                    deserializedSignalProcessItem.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
-                } else if ("type".equals(fieldName)) {
-                    deserializedSignalProcessItem.type = SignalProcessItemType.fromString(reader.getString());
-                } else if ("payload".equals(fieldName)) {
-                    deserializedSignalProcessItem.payload = SignalProcessItemPayload.fromJson(reader);
-                } else if ("requestTime".equals(fieldName)) {
-                    deserializedSignalProcessItem.requestTime = reader.getNullable(nonNullReader ->
-                        CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())
-                    );
-                } else if ("requestTimeZone".equals(fieldName)) {
-                    deserializedSignalProcessItem.requestTimeZone = reader.getNullable(nonNullReader ->
-                        ZoneId.of(nonNullReader.getString())
-                    );
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedSignalProcessItem;
-        });
     }
 }
