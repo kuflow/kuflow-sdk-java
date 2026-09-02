@@ -27,9 +27,10 @@ import static com.kuflow.temporal.activity.kuflow.KuFlowFailureType.ACTIVITIES_V
 
 import com.kuflow.rest.model.ProcessItemType;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionCancelRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionCreateArtifactPrepareRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionCreateRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionRetrieveRequest;
-import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateArtifactPrepareRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionStartProcessPrepareRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactDeleteRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactPatchRequest;
@@ -134,7 +135,21 @@ public class KuFlowActivitiesValidation {
         }
     }
 
-    public static void validateBusinessArtifactCreateArtifactPrepareRequest(BusinessArtifactCreateArtifactPrepareRequest request) {
+    public static void validateBusinessArtifactActionCreateArtifactPrepareRequest(
+        BusinessArtifactActionCreateArtifactPrepareRequest request
+    ) {
+        if (request.getBusinessArtifactId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'businessArtifactId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+        if (request.getBusinessArtifactActionDefinitionCode() == null) {
+            throw ApplicationFailure.newNonRetryableFailure(
+                "'businessArtifactActionDefinitionCode' is required",
+                ACTIVITIES_VALIDATION_FAILURE.getType()
+            );
+        }
+    }
+
+    public static void validateBusinessArtifactActionStartProcessPrepareRequest(BusinessArtifactActionStartProcessPrepareRequest request) {
         if (request.getBusinessArtifactId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'businessArtifactId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }

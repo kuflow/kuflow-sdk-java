@@ -26,7 +26,7 @@ package com.kuflow.temporal.activity.kuflow.model;
 import com.kuflow.temporal.common.model.AbstractModel;
 import java.util.UUID;
 
-public class BusinessArtifactActionCreateArtifactPrepareRequest extends AbstractModel {
+public class BusinessArtifactActionStartProcessPrepareRequest extends AbstractModel {
 
     private UUID businessArtifactId;
 

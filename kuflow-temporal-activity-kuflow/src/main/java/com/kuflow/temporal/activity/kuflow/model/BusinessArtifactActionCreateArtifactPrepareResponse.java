@@ -23,18 +23,20 @@
 
 package com.kuflow.temporal.activity.kuflow.model;
 
-import com.kuflow.rest.model.BusinessArtifactCreateArtifactPrepare;
+import com.kuflow.rest.model.BusinessArtifactActionCreateArtifactPrepare;
 import com.kuflow.temporal.common.model.AbstractModel;
 
-public class BusinessArtifactCreateArtifactPrepareResponse extends AbstractModel {
+public class BusinessArtifactActionCreateArtifactPrepareResponse extends AbstractModel {
 
-    private BusinessArtifactCreateArtifactPrepare businessArtifactCreateArtifactPrepare;
+    private BusinessArtifactActionCreateArtifactPrepare businessArtifactActionCreateArtifactPrepare;
 
-    public BusinessArtifactCreateArtifactPrepare getBusinessArtifactCreateArtifactPrepare() {
-        return this.businessArtifactCreateArtifactPrepare;
+    public BusinessArtifactActionCreateArtifactPrepare getBusinessArtifactActionCreateArtifactPrepare() {
+        return this.businessArtifactActionCreateArtifactPrepare;
     }
 
-    public void setBusinessArtifactCreateArtifactPrepare(BusinessArtifactCreateArtifactPrepare businessArtifactCreateArtifactPrepare) {
-        this.businessArtifactCreateArtifactPrepare = businessArtifactCreateArtifactPrepare;
+    public void setBusinessArtifactActionCreateArtifactPrepare(
+        BusinessArtifactActionCreateArtifactPrepare businessArtifactActionCreateArtifactPrepare
+    ) {
+        this.businessArtifactActionCreateArtifactPrepare = businessArtifactActionCreateArtifactPrepare;
     }
 }
