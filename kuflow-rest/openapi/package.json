@@ -14,6 +14,6 @@
     "generate:move:mkdir": "mkdir -p ../src/generated/java/",
     "generate:move:cp": "cp -r ../target/openapi-generated/src/main/java/* ../src/generated/java/",
     "generate:move:rm": "rm -rf ../target/openapi-generated",
-    "generate:format": "cd ../../ && ./mvnw generate-sources -pl kuflow-rest"
+    "generate:format": "cd ../../ && ./mvnw spotless:apply@spotless-apply-generated -pl kuflow-rest"
   }
 }
