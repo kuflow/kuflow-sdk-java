@@ -37,7 +37,7 @@ import java.util.Map;
  * prepare operation; nothing is persisted on the server.
  */
 @Fluent
-public final class BusinessArtifactCreateArtifactPrepare implements JsonSerializable<BusinessArtifactCreateArtifactPrepare> {
+public final class BusinessArtifactActionCreateArtifactPrepare implements JsonSerializable<BusinessArtifactActionCreateArtifactPrepare> {
 
     /*
      * The businessArtifactDefinitionRef property.
@@ -52,10 +52,10 @@ public final class BusinessArtifactCreateArtifactPrepare implements JsonSerializ
     private Map<String, Object> value;
 
     /**
-     * Creates an instance of BusinessArtifactCreateArtifactPrepare class.
+     * Creates an instance of BusinessArtifactActionCreateArtifactPrepare class.
      */
     @Generated
-    public BusinessArtifactCreateArtifactPrepare() {}
+    public BusinessArtifactActionCreateArtifactPrepare() {}
 
     /**
      * Get the businessArtifactDefinitionRef property: The businessArtifactDefinitionRef property.
@@ -71,10 +71,10 @@ public final class BusinessArtifactCreateArtifactPrepare implements JsonSerializ
      * Set the businessArtifactDefinitionRef property: The businessArtifactDefinitionRef property.
      *
      * @param businessArtifactDefinitionRef the businessArtifactDefinitionRef value to set.
-     * @return the BusinessArtifactCreateArtifactPrepare object itself.
+     * @return the BusinessArtifactActionCreateArtifactPrepare object itself.
      */
     @Generated
-    public BusinessArtifactCreateArtifactPrepare setBusinessArtifactDefinitionRef(
+    public BusinessArtifactActionCreateArtifactPrepare setBusinessArtifactDefinitionRef(
         BusinessArtifactDefinitionRef businessArtifactDefinitionRef
     ) {
         this.businessArtifactDefinitionRef = businessArtifactDefinitionRef;
@@ -95,10 +95,10 @@ public final class BusinessArtifactCreateArtifactPrepare implements JsonSerializ
      * Set the value property: Pre-filled form value computed from the action definition.
      *
      * @param value the value value to set.
-     * @return the BusinessArtifactCreateArtifactPrepare object itself.
+     * @return the BusinessArtifactActionCreateArtifactPrepare object itself.
      */
     @Generated
-    public BusinessArtifactCreateArtifactPrepare setValue(Map<String, Object> value) {
+    public BusinessArtifactActionCreateArtifactPrepare setValue(Map<String, Object> value) {
         this.value = value;
         return this;
     }
@@ -116,35 +116,35 @@ public final class BusinessArtifactCreateArtifactPrepare implements JsonSerializ
     }
 
     /**
-     * Reads an instance of BusinessArtifactCreateArtifactPrepare from the JsonReader.
+     * Reads an instance of BusinessArtifactActionCreateArtifactPrepare from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of BusinessArtifactCreateArtifactPrepare if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
+     * @return An instance of BusinessArtifactActionCreateArtifactPrepare if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the BusinessArtifactCreateArtifactPrepare.
+     * @throws IOException If an error occurs while reading the BusinessArtifactActionCreateArtifactPrepare.
      */
     @Generated
-    public static BusinessArtifactCreateArtifactPrepare fromJson(JsonReader jsonReader) throws IOException {
+    public static BusinessArtifactActionCreateArtifactPrepare fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            BusinessArtifactCreateArtifactPrepare deserializedBusinessArtifactCreateArtifactPrepare =
-                new BusinessArtifactCreateArtifactPrepare();
+            BusinessArtifactActionCreateArtifactPrepare deserializedBusinessArtifactActionCreateArtifactPrepare =
+                new BusinessArtifactActionCreateArtifactPrepare();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("businessArtifactDefinitionRef".equals(fieldName)) {
-                    deserializedBusinessArtifactCreateArtifactPrepare.businessArtifactDefinitionRef =
+                    deserializedBusinessArtifactActionCreateArtifactPrepare.businessArtifactDefinitionRef =
                         BusinessArtifactDefinitionRef.fromJson(reader);
                 } else if ("value".equals(fieldName)) {
                     Map<String, Object> value = reader.readMap(reader1 -> reader1.readUntyped());
-                    deserializedBusinessArtifactCreateArtifactPrepare.value = value;
+                    deserializedBusinessArtifactActionCreateArtifactPrepare.value = value;
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedBusinessArtifactCreateArtifactPrepare;
+            return deserializedBusinessArtifactActionCreateArtifactPrepare;
         });
     }
 }

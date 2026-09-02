@@ -41,7 +41,10 @@ public final class BusinessArtifactActionCreateParamsStartProcess
 {
 
     /*
-     * Metadata applied to the process created by this action.
+     * Metadata applied to the process created by this action. If empty or omitted, the
+     * action's metadata expression (if any) is evaluated against this Business Artifact
+     * and its result is applied instead. A non-empty value is applied as provided, with
+     * no merging.
      */
     @Generated
     private Map<String, Object> metadata;
@@ -62,7 +65,10 @@ public final class BusinessArtifactActionCreateParamsStartProcess
     public BusinessArtifactActionCreateParamsStartProcess() {}
 
     /**
-     * Get the metadata property: Metadata applied to the process created by this action.
+     * Get the metadata property: Metadata applied to the process created by this action. If empty or omitted, the
+     * action's metadata expression (if any) is evaluated against this Business Artifact
+     * and its result is applied instead. A non-empty value is applied as provided, with
+     * no merging.
      *
      * @return the metadata value.
      */
@@ -72,7 +78,10 @@ public final class BusinessArtifactActionCreateParamsStartProcess
     }
 
     /**
-     * Set the metadata property: Metadata applied to the process created by this action.
+     * Set the metadata property: Metadata applied to the process created by this action. If empty or omitted, the
+     * action's metadata expression (if any) is evaluated against this Business Artifact
+     * and its result is applied instead. A non-empty value is applied as provided, with
+     * no merging.
      *
      * @param metadata the metadata value to set.
      * @return the BusinessArtifactActionCreateParamsStartProcess object itself.

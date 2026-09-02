@@ -46,9 +46,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.kuflow.rest.model.BusinessArtifact;
 import com.kuflow.rest.model.BusinessArtifactAction;
+import com.kuflow.rest.model.BusinessArtifactActionCreateArtifactPrepare;
+import com.kuflow.rest.model.BusinessArtifactActionCreateArtifactPrepareParams;
 import com.kuflow.rest.model.BusinessArtifactActionCreateParams;
-import com.kuflow.rest.model.BusinessArtifactCreateArtifactPrepare;
-import com.kuflow.rest.model.BusinessArtifactCreateArtifactPrepareParams;
+import com.kuflow.rest.model.BusinessArtifactActionStartProcessPrepare;
+import com.kuflow.rest.model.BusinessArtifactActionStartProcessPrepareParams;
 import com.kuflow.rest.model.BusinessArtifactCreateParams;
 import com.kuflow.rest.model.BusinessArtifactDataUpdateParams;
 import com.kuflow.rest.model.BusinessArtifactPage;
@@ -301,10 +303,12 @@ public final class BusinessArtifactOperationsImpl {
         @Post("/business-artifacts/{id}/~actions/prepare-create-artifact")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<BusinessArtifactCreateArtifactPrepare>> prepareBusinessArtifactCreateArtifact(
+        Mono<Response<BusinessArtifactActionCreateArtifactPrepare>> prepareBusinessArtifactActionCreateArtifact(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
-            @BodyParam("application/json") BusinessArtifactCreateArtifactPrepareParams businessArtifactCreateArtifactPrepareParams,
+            @BodyParam(
+                "application/json"
+            ) BusinessArtifactActionCreateArtifactPrepareParams businessArtifactActionCreateArtifactPrepareParams,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -312,10 +316,34 @@ public final class BusinessArtifactOperationsImpl {
         @Post("/business-artifacts/{id}/~actions/prepare-create-artifact")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Response<BusinessArtifactCreateArtifactPrepare> prepareBusinessArtifactCreateArtifactSync(
+        Response<BusinessArtifactActionCreateArtifactPrepare> prepareBusinessArtifactActionCreateArtifactSync(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
-            @BodyParam("application/json") BusinessArtifactCreateArtifactPrepareParams businessArtifactCreateArtifactPrepareParams,
+            @BodyParam(
+                "application/json"
+            ) BusinessArtifactActionCreateArtifactPrepareParams businessArtifactActionCreateArtifactPrepareParams,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/business-artifacts/{id}/~actions/prepare-start-process")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<BusinessArtifactActionStartProcessPrepare>> prepareBusinessArtifactActionStartProcess(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") BusinessArtifactActionStartProcessPrepareParams businessArtifactActionStartProcessPrepareParams,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/business-artifacts/{id}/~actions/prepare-start-process")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<BusinessArtifactActionStartProcessPrepare> prepareBusinessArtifactActionStartProcessSync(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") BusinessArtifactActionStartProcessPrepareParams businessArtifactActionStartProcessPrepareParams,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -1844,8 +1872,8 @@ public final class BusinessArtifactOperationsImpl {
      * `createArtifact.value` field).
      *
      * @param id The resource ID.
-     * @param businessArtifactCreateArtifactPrepareParams Params identifying the CREATE_BUSINESS_ARTIFACT action to
-     * prepare.
+     * @param businessArtifactActionCreateArtifactPrepareParams Params identifying the CREATE_BUSINESS_ARTIFACT action
+     * to prepare.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1853,12 +1881,12 @@ public final class BusinessArtifactOperationsImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BusinessArtifactCreateArtifactPrepare>> prepareBusinessArtifactCreateArtifactWithResponseAsync(
+    public Mono<Response<BusinessArtifactActionCreateArtifactPrepare>> prepareBusinessArtifactActionCreateArtifactWithResponseAsync(
         UUID id,
-        BusinessArtifactCreateArtifactPrepareParams businessArtifactCreateArtifactPrepareParams
+        BusinessArtifactActionCreateArtifactPrepareParams businessArtifactActionCreateArtifactPrepareParams
     ) {
         return FluxUtil.withContext(context ->
-            prepareBusinessArtifactCreateArtifactWithResponseAsync(id, businessArtifactCreateArtifactPrepareParams, context)
+            prepareBusinessArtifactActionCreateArtifactWithResponseAsync(id, businessArtifactActionCreateArtifactPrepareParams, context)
         );
     }
 
@@ -1873,8 +1901,8 @@ public final class BusinessArtifactOperationsImpl {
      * `createArtifact.value` field).
      *
      * @param id The resource ID.
-     * @param businessArtifactCreateArtifactPrepareParams Params identifying the CREATE_BUSINESS_ARTIFACT action to
-     * prepare.
+     * @param businessArtifactActionCreateArtifactPrepareParams Params identifying the CREATE_BUSINESS_ARTIFACT action
+     * to prepare.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -1883,16 +1911,16 @@ public final class BusinessArtifactOperationsImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BusinessArtifactCreateArtifactPrepare>> prepareBusinessArtifactCreateArtifactWithResponseAsync(
+    public Mono<Response<BusinessArtifactActionCreateArtifactPrepare>> prepareBusinessArtifactActionCreateArtifactWithResponseAsync(
         UUID id,
-        BusinessArtifactCreateArtifactPrepareParams businessArtifactCreateArtifactPrepareParams,
+        BusinessArtifactActionCreateArtifactPrepareParams businessArtifactActionCreateArtifactPrepareParams,
         Context context
     ) {
         final String accept = "application/json";
-        return service.prepareBusinessArtifactCreateArtifact(
+        return service.prepareBusinessArtifactActionCreateArtifact(
             this.client.getHost(),
             id,
-            businessArtifactCreateArtifactPrepareParams,
+            businessArtifactActionCreateArtifactPrepareParams,
             accept,
             context
         );
@@ -1909,49 +1937,19 @@ public final class BusinessArtifactOperationsImpl {
      * `createArtifact.value` field).
      *
      * @param id The resource ID.
-     * @param businessArtifactCreateArtifactPrepareParams Params identifying the CREATE_BUSINESS_ARTIFACT action to
-     * prepare.
+     * @param businessArtifactActionCreateArtifactPrepareParams Params identifying the CREATE_BUSINESS_ARTIFACT action
+     * to prepare.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return pre-filled value for a CREATE_BUSINESS_ARTIFACT action on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BusinessArtifactCreateArtifactPrepare> prepareBusinessArtifactCreateArtifactAsync(
+    public Mono<BusinessArtifactActionCreateArtifactPrepare> prepareBusinessArtifactActionCreateArtifactAsync(
         UUID id,
-        BusinessArtifactCreateArtifactPrepareParams businessArtifactCreateArtifactPrepareParams
+        BusinessArtifactActionCreateArtifactPrepareParams businessArtifactActionCreateArtifactPrepareParams
     ) {
-        return prepareBusinessArtifactCreateArtifactWithResponseAsync(id, businessArtifactCreateArtifactPrepareParams).flatMap(res ->
-            Mono.justOrEmpty(res.getValue())
-        );
-    }
-
-    /**
-     * Prepare the data for a CREATE_BUSINESS_ARTIFACT action
-     *
-     * Compute the pre-filled value that a `CREATE_BUSINESS_ARTIFACT` action would produce
-     * for this Business Artifact, without invoking the action or persisting any state.
-     *
-     * Use it to populate a form that the user can review and edit. Once the user submits,
-     * the filled value is sent back via `createBusinessArtifactAction` (in the
-     * `createArtifact.value` field).
-     *
-     * @param id The resource ID.
-     * @param businessArtifactCreateArtifactPrepareParams Params identifying the CREATE_BUSINESS_ARTIFACT action to
-     * prepare.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pre-filled value for a CREATE_BUSINESS_ARTIFACT action on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BusinessArtifactCreateArtifactPrepare> prepareBusinessArtifactCreateArtifactAsync(
-        UUID id,
-        BusinessArtifactCreateArtifactPrepareParams businessArtifactCreateArtifactPrepareParams,
-        Context context
-    ) {
-        return prepareBusinessArtifactCreateArtifactWithResponseAsync(id, businessArtifactCreateArtifactPrepareParams, context).flatMap(
+        return prepareBusinessArtifactActionCreateArtifactWithResponseAsync(id, businessArtifactActionCreateArtifactPrepareParams).flatMap(
             res -> Mono.justOrEmpty(res.getValue())
         );
     }
@@ -1967,8 +1965,40 @@ public final class BusinessArtifactOperationsImpl {
      * `createArtifact.value` field).
      *
      * @param id The resource ID.
-     * @param businessArtifactCreateArtifactPrepareParams Params identifying the CREATE_BUSINESS_ARTIFACT action to
-     * prepare.
+     * @param businessArtifactActionCreateArtifactPrepareParams Params identifying the CREATE_BUSINESS_ARTIFACT action
+     * to prepare.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return pre-filled value for a CREATE_BUSINESS_ARTIFACT action on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BusinessArtifactActionCreateArtifactPrepare> prepareBusinessArtifactActionCreateArtifactAsync(
+        UUID id,
+        BusinessArtifactActionCreateArtifactPrepareParams businessArtifactActionCreateArtifactPrepareParams,
+        Context context
+    ) {
+        return prepareBusinessArtifactActionCreateArtifactWithResponseAsync(
+            id,
+            businessArtifactActionCreateArtifactPrepareParams,
+            context
+        ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Prepare the data for a CREATE_BUSINESS_ARTIFACT action
+     *
+     * Compute the pre-filled value that a `CREATE_BUSINESS_ARTIFACT` action would produce
+     * for this Business Artifact, without invoking the action or persisting any state.
+     *
+     * Use it to populate a form that the user can review and edit. Once the user submits,
+     * the filled value is sent back via `createBusinessArtifactAction` (in the
+     * `createArtifact.value` field).
+     *
+     * @param id The resource ID.
+     * @param businessArtifactActionCreateArtifactPrepareParams Params identifying the CREATE_BUSINESS_ARTIFACT action
+     * to prepare.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -1976,16 +2006,16 @@ public final class BusinessArtifactOperationsImpl {
      * @return pre-filled value for a CREATE_BUSINESS_ARTIFACT action along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BusinessArtifactCreateArtifactPrepare> prepareBusinessArtifactCreateArtifactWithResponse(
+    public Response<BusinessArtifactActionCreateArtifactPrepare> prepareBusinessArtifactActionCreateArtifactWithResponse(
         UUID id,
-        BusinessArtifactCreateArtifactPrepareParams businessArtifactCreateArtifactPrepareParams,
+        BusinessArtifactActionCreateArtifactPrepareParams businessArtifactActionCreateArtifactPrepareParams,
         Context context
     ) {
         final String accept = "application/json";
-        return service.prepareBusinessArtifactCreateArtifactSync(
+        return service.prepareBusinessArtifactActionCreateArtifactSync(
             this.client.getHost(),
             id,
-            businessArtifactCreateArtifactPrepareParams,
+            businessArtifactActionCreateArtifactPrepareParams,
             accept,
             context
         );
@@ -2002,19 +2032,207 @@ public final class BusinessArtifactOperationsImpl {
      * `createArtifact.value` field).
      *
      * @param id The resource ID.
-     * @param businessArtifactCreateArtifactPrepareParams Params identifying the CREATE_BUSINESS_ARTIFACT action to
-     * prepare.
+     * @param businessArtifactActionCreateArtifactPrepareParams Params identifying the CREATE_BUSINESS_ARTIFACT action
+     * to prepare.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return pre-filled value for a CREATE_BUSINESS_ARTIFACT action.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BusinessArtifactCreateArtifactPrepare prepareBusinessArtifactCreateArtifact(
+    public BusinessArtifactActionCreateArtifactPrepare prepareBusinessArtifactActionCreateArtifact(
         UUID id,
-        BusinessArtifactCreateArtifactPrepareParams businessArtifactCreateArtifactPrepareParams
+        BusinessArtifactActionCreateArtifactPrepareParams businessArtifactActionCreateArtifactPrepareParams
     ) {
-        return prepareBusinessArtifactCreateArtifactWithResponse(id, businessArtifactCreateArtifactPrepareParams, Context.NONE).getValue();
+        return prepareBusinessArtifactActionCreateArtifactWithResponse(
+            id,
+            businessArtifactActionCreateArtifactPrepareParams,
+            Context.NONE
+        ).getValue();
+    }
+
+    /**
+     * Prepare the metadata for a START_PROCESS action
+     *
+     * Compute the pre-filled metadata that a `START_PROCESS` action would apply to the
+     * process it creates, without invoking the action or persisting any state.
+     *
+     * Use it to populate a form that the user can review and edit. Once the user submits,
+     * the filled metadata is sent back via `createBusinessArtifactAction` (in the
+     * `startProcess.metadata` field).
+     *
+     * @param id The resource ID.
+     * @param businessArtifactActionStartProcessPrepareParams Params identifying the START_PROCESS action to prepare.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return pre-filled metadata for a START_PROCESS action along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BusinessArtifactActionStartProcessPrepare>> prepareBusinessArtifactActionStartProcessWithResponseAsync(
+        UUID id,
+        BusinessArtifactActionStartProcessPrepareParams businessArtifactActionStartProcessPrepareParams
+    ) {
+        return FluxUtil.withContext(context ->
+            prepareBusinessArtifactActionStartProcessWithResponseAsync(id, businessArtifactActionStartProcessPrepareParams, context)
+        );
+    }
+
+    /**
+     * Prepare the metadata for a START_PROCESS action
+     *
+     * Compute the pre-filled metadata that a `START_PROCESS` action would apply to the
+     * process it creates, without invoking the action or persisting any state.
+     *
+     * Use it to populate a form that the user can review and edit. Once the user submits,
+     * the filled metadata is sent back via `createBusinessArtifactAction` (in the
+     * `startProcess.metadata` field).
+     *
+     * @param id The resource ID.
+     * @param businessArtifactActionStartProcessPrepareParams Params identifying the START_PROCESS action to prepare.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return pre-filled metadata for a START_PROCESS action along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BusinessArtifactActionStartProcessPrepare>> prepareBusinessArtifactActionStartProcessWithResponseAsync(
+        UUID id,
+        BusinessArtifactActionStartProcessPrepareParams businessArtifactActionStartProcessPrepareParams,
+        Context context
+    ) {
+        final String accept = "application/json";
+        return service.prepareBusinessArtifactActionStartProcess(
+            this.client.getHost(),
+            id,
+            businessArtifactActionStartProcessPrepareParams,
+            accept,
+            context
+        );
+    }
+
+    /**
+     * Prepare the metadata for a START_PROCESS action
+     *
+     * Compute the pre-filled metadata that a `START_PROCESS` action would apply to the
+     * process it creates, without invoking the action or persisting any state.
+     *
+     * Use it to populate a form that the user can review and edit. Once the user submits,
+     * the filled metadata is sent back via `createBusinessArtifactAction` (in the
+     * `startProcess.metadata` field).
+     *
+     * @param id The resource ID.
+     * @param businessArtifactActionStartProcessPrepareParams Params identifying the START_PROCESS action to prepare.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return pre-filled metadata for a START_PROCESS action on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BusinessArtifactActionStartProcessPrepare> prepareBusinessArtifactActionStartProcessAsync(
+        UUID id,
+        BusinessArtifactActionStartProcessPrepareParams businessArtifactActionStartProcessPrepareParams
+    ) {
+        return prepareBusinessArtifactActionStartProcessWithResponseAsync(id, businessArtifactActionStartProcessPrepareParams).flatMap(
+            res -> Mono.justOrEmpty(res.getValue())
+        );
+    }
+
+    /**
+     * Prepare the metadata for a START_PROCESS action
+     *
+     * Compute the pre-filled metadata that a `START_PROCESS` action would apply to the
+     * process it creates, without invoking the action or persisting any state.
+     *
+     * Use it to populate a form that the user can review and edit. Once the user submits,
+     * the filled metadata is sent back via `createBusinessArtifactAction` (in the
+     * `startProcess.metadata` field).
+     *
+     * @param id The resource ID.
+     * @param businessArtifactActionStartProcessPrepareParams Params identifying the START_PROCESS action to prepare.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return pre-filled metadata for a START_PROCESS action on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BusinessArtifactActionStartProcessPrepare> prepareBusinessArtifactActionStartProcessAsync(
+        UUID id,
+        BusinessArtifactActionStartProcessPrepareParams businessArtifactActionStartProcessPrepareParams,
+        Context context
+    ) {
+        return prepareBusinessArtifactActionStartProcessWithResponseAsync(
+            id,
+            businessArtifactActionStartProcessPrepareParams,
+            context
+        ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Prepare the metadata for a START_PROCESS action
+     *
+     * Compute the pre-filled metadata that a `START_PROCESS` action would apply to the
+     * process it creates, without invoking the action or persisting any state.
+     *
+     * Use it to populate a form that the user can review and edit. Once the user submits,
+     * the filled metadata is sent back via `createBusinessArtifactAction` (in the
+     * `startProcess.metadata` field).
+     *
+     * @param id The resource ID.
+     * @param businessArtifactActionStartProcessPrepareParams Params identifying the START_PROCESS action to prepare.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return pre-filled metadata for a START_PROCESS action along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BusinessArtifactActionStartProcessPrepare> prepareBusinessArtifactActionStartProcessWithResponse(
+        UUID id,
+        BusinessArtifactActionStartProcessPrepareParams businessArtifactActionStartProcessPrepareParams,
+        Context context
+    ) {
+        final String accept = "application/json";
+        return service.prepareBusinessArtifactActionStartProcessSync(
+            this.client.getHost(),
+            id,
+            businessArtifactActionStartProcessPrepareParams,
+            accept,
+            context
+        );
+    }
+
+    /**
+     * Prepare the metadata for a START_PROCESS action
+     *
+     * Compute the pre-filled metadata that a `START_PROCESS` action would apply to the
+     * process it creates, without invoking the action or persisting any state.
+     *
+     * Use it to populate a form that the user can review and edit. Once the user submits,
+     * the filled metadata is sent back via `createBusinessArtifactAction` (in the
+     * `startProcess.metadata` field).
+     *
+     * @param id The resource ID.
+     * @param businessArtifactActionStartProcessPrepareParams Params identifying the START_PROCESS action to prepare.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return pre-filled metadata for a START_PROCESS action.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BusinessArtifactActionStartProcessPrepare prepareBusinessArtifactActionStartProcess(
+        UUID id,
+        BusinessArtifactActionStartProcessPrepareParams businessArtifactActionStartProcessPrepareParams
+    ) {
+        return prepareBusinessArtifactActionStartProcessWithResponse(
+            id,
+            businessArtifactActionStartProcessPrepareParams,
+            Context.NONE
+        ).getValue();
     }
 
     /**

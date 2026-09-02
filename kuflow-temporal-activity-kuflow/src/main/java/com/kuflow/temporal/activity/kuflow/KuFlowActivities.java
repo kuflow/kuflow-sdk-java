@@ -25,12 +25,14 @@ package com.kuflow.temporal.activity.kuflow;
 
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionCancelRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionCancelResponse;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionCreateArtifactPrepareRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionCreateArtifactPrepareResponse;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionCreateRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionCreateResponse;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionRetrieveRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionRetrieveResponse;
-import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateArtifactPrepareRequest;
-import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateArtifactPrepareResponse;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionStartProcessPrepareRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionStartProcessPrepareResponse;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateResponse;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactDeleteRequest;
@@ -498,7 +500,21 @@ public interface KuFlowActivities {
      */
     @ActivityMethod
     @Nonnull
-    BusinessArtifactCreateArtifactPrepareResponse prepareBusinessArtifactCreateArtifact(
-        @Nonnull BusinessArtifactCreateArtifactPrepareRequest request
+    BusinessArtifactActionCreateArtifactPrepareResponse prepareBusinessArtifactActionCreateArtifact(
+        @Nonnull BusinessArtifactActionCreateArtifactPrepareRequest request
+    );
+
+    /**
+     * Prepare the metadata that a {@code START_PROCESS} action would apply.
+     *
+     * <p>Computes the pre-filled metadata of the process the action would create, without persisting any state.
+     *
+     * @param request must not be {@literal null}.
+     * @return prepared process metadata
+     */
+    @ActivityMethod
+    @Nonnull
+    BusinessArtifactActionStartProcessPrepareResponse prepareBusinessArtifactActionStartProcess(
+        @Nonnull BusinessArtifactActionStartProcessPrepareRequest request
     );
 }

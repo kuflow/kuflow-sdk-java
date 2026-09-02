@@ -35,7 +35,7 @@ import java.util.Map;
 /**
  * Params for invoking an action of type CREATE_BUSINESS_ARTIFACT. The `value` is
  * the (potentially user-edited) form previously obtained via the
- * `prepareBusinessArtifactCreateArtifact` operation.
+ * `prepareBusinessArtifactActionCreateArtifact` operation.
  */
 @Fluent
 public final class BusinessArtifactActionCreateParamsCreateArtifact

@@ -23,18 +23,28 @@
 
 package com.kuflow.temporal.activity.kuflow.model;
 
-import com.kuflow.rest.model.BusinessArtifactCreateArtifactPrepare;
 import com.kuflow.temporal.common.model.AbstractModel;
+import java.util.UUID;
 
-public class BusinessArtifactCreateArtifactPrepareResponse extends AbstractModel {
+public class BusinessArtifactActionCreateArtifactPrepareRequest extends AbstractModel {
 
-    private BusinessArtifactCreateArtifactPrepare businessArtifactCreateArtifactPrepare;
+    private UUID businessArtifactId;
 
-    public BusinessArtifactCreateArtifactPrepare getBusinessArtifactCreateArtifactPrepare() {
-        return this.businessArtifactCreateArtifactPrepare;
+    private String businessArtifactActionDefinitionCode;
+
+    public UUID getBusinessArtifactId() {
+        return this.businessArtifactId;
     }
 
-    public void setBusinessArtifactCreateArtifactPrepare(BusinessArtifactCreateArtifactPrepare businessArtifactCreateArtifactPrepare) {
-        this.businessArtifactCreateArtifactPrepare = businessArtifactCreateArtifactPrepare;
+    public void setBusinessArtifactId(UUID businessArtifactId) {
+        this.businessArtifactId = businessArtifactId;
+    }
+
+    public String getBusinessArtifactActionDefinitionCode() {
+        return this.businessArtifactActionDefinitionCode;
+    }
+
+    public void setBusinessArtifactActionDefinitionCode(String businessArtifactActionDefinitionCode) {
+        this.businessArtifactActionDefinitionCode = businessArtifactActionDefinitionCode;
     }
 }
