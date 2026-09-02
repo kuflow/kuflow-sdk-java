@@ -32,9 +32,11 @@ import com.kuflow.rest.implementation.BusinessArtifactOperationsImpl;
 import com.kuflow.rest.implementation.KuFlowClientImpl;
 import com.kuflow.rest.model.BusinessArtifact;
 import com.kuflow.rest.model.BusinessArtifactAction;
+import com.kuflow.rest.model.BusinessArtifactActionCreateArtifactPrepare;
+import com.kuflow.rest.model.BusinessArtifactActionCreateArtifactPrepareParams;
 import com.kuflow.rest.model.BusinessArtifactActionCreateParams;
-import com.kuflow.rest.model.BusinessArtifactCreateArtifactPrepare;
-import com.kuflow.rest.model.BusinessArtifactCreateArtifactPrepareParams;
+import com.kuflow.rest.model.BusinessArtifactActionStartProcessPrepare;
+import com.kuflow.rest.model.BusinessArtifactActionStartProcessPrepareParams;
 import com.kuflow.rest.model.BusinessArtifactCreateParams;
 import com.kuflow.rest.model.BusinessArtifactDataUpdateParams;
 import com.kuflow.rest.model.BusinessArtifactFindOptions;
@@ -525,12 +527,12 @@ public class BusinessArtifactOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BusinessArtifactCreateArtifactPrepare> prepareBusinessArtifactCreateArtifactWithResponse(
+    public Response<BusinessArtifactActionCreateArtifactPrepare> prepareBusinessArtifactActionCreateArtifactWithResponse(
         UUID id,
-        BusinessArtifactCreateArtifactPrepareParams params,
+        BusinessArtifactActionCreateArtifactPrepareParams params,
         Context context
     ) {
-        return this.service.prepareBusinessArtifactCreateArtifactWithResponse(id, params, context);
+        return this.service.prepareBusinessArtifactActionCreateArtifactWithResponse(id, params, context);
     }
 
     /**
@@ -544,10 +546,51 @@ public class BusinessArtifactOperations {
      * @return the response body.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BusinessArtifactCreateArtifactPrepare prepareBusinessArtifactCreateArtifact(
+    public BusinessArtifactActionCreateArtifactPrepare prepareBusinessArtifactActionCreateArtifact(
         UUID id,
-        BusinessArtifactCreateArtifactPrepareParams params
+        BusinessArtifactActionCreateArtifactPrepareParams params
     ) {
-        return this.prepareBusinessArtifactCreateArtifactWithResponse(id, params, Context.NONE).getValue();
+        return this.prepareBusinessArtifactActionCreateArtifactWithResponse(id, params, Context.NONE).getValue();
+    }
+
+    /**
+     * Prepare the metadata that a {@code START_PROCESS} action would apply.
+     * <p>
+     * Computes the pre-filled metadata of the process the action would create, without persisting
+     * any state, so it can be reviewed or edited before the actual action is executed.
+     *
+     * @param id The Business Artifact ID.
+     * @param params Identifier of the action definition to prepare.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BusinessArtifactActionStartProcessPrepare> prepareBusinessArtifactActionStartProcessWithResponse(
+        UUID id,
+        BusinessArtifactActionStartProcessPrepareParams params,
+        Context context
+    ) {
+        return this.service.prepareBusinessArtifactActionStartProcessWithResponse(id, params, context);
+    }
+
+    /**
+     * Prepare the metadata that a {@code START_PROCESS} action would apply.
+     *
+     * @param id The Business Artifact ID.
+     * @param params Identifier of the action definition to prepare.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BusinessArtifactActionStartProcessPrepare prepareBusinessArtifactActionStartProcess(
+        UUID id,
+        BusinessArtifactActionStartProcessPrepareParams params
+    ) {
+        return this.prepareBusinessArtifactActionStartProcessWithResponse(id, params, Context.NONE).getValue();
     }
 }

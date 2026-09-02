@@ -75,7 +75,7 @@ public final class BusinessArtifactActionCreateParams implements JsonSerializabl
     /*
      * Params for invoking an action of type CREATE_BUSINESS_ARTIFACT. The `value` is
      * the (potentially user-edited) form previously obtained via the
-     * `prepareBusinessArtifactCreateArtifact` operation.
+     * `prepareBusinessArtifactActionCreateArtifact` operation.
      */
     @Generated
     private BusinessArtifactActionCreateParamsCreateArtifact createArtifact;
@@ -199,7 +199,7 @@ public final class BusinessArtifactActionCreateParams implements JsonSerializabl
     /**
      * Get the createArtifact property: Params for invoking an action of type CREATE_BUSINESS_ARTIFACT. The `value` is
      * the (potentially user-edited) form previously obtained via the
-     * `prepareBusinessArtifactCreateArtifact` operation.
+     * `prepareBusinessArtifactActionCreateArtifact` operation.
      *
      * @return the createArtifact value.
      */
@@ -211,7 +211,7 @@ public final class BusinessArtifactActionCreateParams implements JsonSerializabl
     /**
      * Set the createArtifact property: Params for invoking an action of type CREATE_BUSINESS_ARTIFACT. The `value` is
      * the (potentially user-edited) form previously obtained via the
-     * `prepareBusinessArtifactCreateArtifact` operation.
+     * `prepareBusinessArtifactActionCreateArtifact` operation.
      *
      * @param createArtifact the createArtifact value to set.
      * @return the BusinessArtifactActionCreateParams object itself.
