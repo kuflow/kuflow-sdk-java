@@ -1,0 +1,113 @@
+/*
+ * The MIT License
+ * Copyright © 2021-present KuFlow S.L.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+package com.kuflow.rest.model;
+
+import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+
+/**
+ * Params to complete a Process action. The populated sub-field must match the type of the action;
+ * action types without a sub-field here complete on their own and cannot be completed through the
+ * API.
+ */
+@Fluent
+public final class ProcessActionCompleteParams implements JsonSerializable<ProcessActionCompleteParams> {
+
+    /*
+     * Params for completing an action of type DOWNLOADABLE.
+     */
+    @Generated
+    private ProcessActionCompleteParamsDownloadable downloadable;
+
+    /**
+     * Creates an instance of ProcessActionCompleteParams class.
+     */
+    @Generated
+    public ProcessActionCompleteParams() {}
+
+    /**
+     * Get the downloadable property: Params for completing an action of type DOWNLOADABLE.
+     *
+     * @return the downloadable value.
+     */
+    @Generated
+    public ProcessActionCompleteParamsDownloadable getDownloadable() {
+        return this.downloadable;
+    }
+
+    /**
+     * Set the downloadable property: Params for completing an action of type DOWNLOADABLE.
+     *
+     * @param downloadable the downloadable value to set.
+     * @return the ProcessActionCompleteParams object itself.
+     */
+    @Generated
+    public ProcessActionCompleteParams setDownloadable(ProcessActionCompleteParamsDownloadable downloadable) {
+        this.downloadable = downloadable;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("downloadable", this.downloadable);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProcessActionCompleteParams from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProcessActionCompleteParams if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProcessActionCompleteParams.
+     */
+    @Generated
+    public static ProcessActionCompleteParams fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProcessActionCompleteParams deserializedProcessActionCompleteParams = new ProcessActionCompleteParams();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("downloadable".equals(fieldName)) {
+                    deserializedProcessActionCompleteParams.downloadable = ProcessActionCompleteParamsDownloadable.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProcessActionCompleteParams;
+        });
+    }
+}

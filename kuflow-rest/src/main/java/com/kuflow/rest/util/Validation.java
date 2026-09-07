@@ -23,10 +23,23 @@
 
 package com.kuflow.rest.util;
 
+import com.kuflow.rest.model.Document;
 import java.net.URI;
 import java.net.URL;
+import java.util.Objects;
 
 public class Validation {
+
+    public static void checkDocument(Document document) {
+        Objects.requireNonNull(document, "'document' is required");
+        Objects.requireNonNull(document.getFileContent(), "'document.fileContent' is required");
+        Objects.requireNonNull(document.getFileContent().getLength(), "'document.fileContent.length' is required");
+        Objects.requireNonNull(document.getFileName(), "'document.fileName' is required");
+        Objects.requireNonNull(document.getContentType(), "'document.contentType' is required");
+        if (document.getFileContent().getLength() == 0) {
+            throw new IllegalArgumentException("File size must be greater that 0");
+        }
+    }
 
     public static void checkValidURL(String url, String message) {
         boolean valid = isValidURL(url);

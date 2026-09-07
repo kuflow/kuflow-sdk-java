@@ -36,6 +36,8 @@ import com.azure.core.util.BinaryData;
 import com.kuflow.rest.model.Document;
 import com.kuflow.rest.model.Process;
 import com.kuflow.rest.model.ProcessAction;
+import com.kuflow.rest.model.ProcessActionCompleteParams;
+import com.kuflow.rest.model.ProcessActionCompleteParamsDownloadable;
 import com.kuflow.rest.model.ProcessActionCreateParams;
 import com.kuflow.rest.model.ProcessActionStatus;
 import com.kuflow.rest.model.ProcessActionType;
@@ -243,7 +245,31 @@ public class ProcessOperationTest extends AbstractOperationTest {
     }
 
     @Test
+    @DisplayName("GIVEN an authenticated user WHEN complete a process action THEN the request body is sent")
+    public void givenAnAuthenticatedUserWhenCompleteAProcessActionThenTheRequestBodyIsSent() {
+        UUID processId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
+        UUID actionId = UUID.fromString("b9d7a2a1-0b52-4c6b-a44f-4c78bbcd8a01");
+        String documentUri = "kuflow-file:uri=ku:process/aaa/document/bbb;type=text/plain;size=12;name=test.txt;";
+
+        givenThat(
+            post(urlPathEqualTo("/v2024-06-14/processes/" + processId + "/actions/" + actionId + "/~actions/complete"))
+                .withRequestBody(matchingJsonPath("$.downloadable.documentUri", equalTo(documentUri)))
+                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.action-retrieve.ok.json"))
+        );
+
+        ProcessActionCompleteParams params = new ProcessActionCompleteParams().setDownloadable(
+            new ProcessActionCompleteParamsDownloadable().setDocumentUri(documentUri)
+        );
+
+        ProcessAction processAction = this.kuFlowRestClient.getProcessOperations().completeProcessAction(processId, actionId, params);
+
+        assertThat(processAction.getId()).isEqualTo(actionId);
+        assertThat(processAction.getStatus()).isEqualTo(ProcessActionStatus.COMPLETED);
+    }
+
+    @Test
     @DisplayName("GIVEN an authenticated user WHEN upload a process action document THEN the query parameters are sent")
+    @SuppressWarnings("deprecation")
     public void givenAnAuthenticatedUserWhenUploadAProcessActionDocumentThenTheQueryParametersAreSent() {
         UUID processId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
         UUID actionId = UUID.fromString("b9d7a2a1-0b52-4c6b-a44f-4c78bbcd8a01");

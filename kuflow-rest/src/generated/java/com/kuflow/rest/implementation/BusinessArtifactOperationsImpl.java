@@ -2246,6 +2246,9 @@ public final class BusinessArtifactOperationsImpl {
      * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
      * business artifact.
      *
+     * **Deprecated:** use the `uploadDocument` operation with `targetUri=ku:business-artifact/{businessArtifactId}`
+     * instead.
+     *
      * @param id The resource ID.
      * @param fileContentType Document content type.
      * @param fileName Document name.
@@ -2279,6 +2282,9 @@ public final class BusinessArtifactOperationsImpl {
      *
      * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
      * business artifact.
+     *
+     * **Deprecated:** use the `uploadDocument` operation with `targetUri=ku:business-artifact/{businessArtifactId}`
+     * instead.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
@@ -2324,6 +2330,9 @@ public final class BusinessArtifactOperationsImpl {
      * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
      * business artifact.
      *
+     * **Deprecated:** use the `uploadDocument` operation with `targetUri=ku:business-artifact/{businessArtifactId}`
+     * instead.
+     *
      * @param id The resource ID.
      * @param fileContentType Document content type.
      * @param fileName Document name.
@@ -2357,6 +2366,9 @@ public final class BusinessArtifactOperationsImpl {
      *
      * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
      * business artifact.
+     *
+     * **Deprecated:** use the `uploadDocument` operation with `targetUri=ku:business-artifact/{businessArtifactId}`
+     * instead.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
@@ -2394,6 +2406,9 @@ public final class BusinessArtifactOperationsImpl {
      * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
      * business artifact.
      *
+     * **Deprecated:** use the `uploadDocument` operation with `targetUri=ku:business-artifact/{businessArtifactId}`
+     * instead.
+     *
      * @param id The resource ID.
      * @param fileContentType Document content type.
      * @param fileName Document name.
@@ -2427,6 +2442,9 @@ public final class BusinessArtifactOperationsImpl {
      *
      * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
      * business artifact.
+     *
+     * **Deprecated:** use the `uploadDocument` operation with `targetUri=ku:business-artifact/{businessArtifactId}`
+     * instead.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
@@ -2472,6 +2490,9 @@ public final class BusinessArtifactOperationsImpl {
      * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
      * business artifact.
      *
+     * **Deprecated:** use the `uploadDocument` operation with `targetUri=ku:business-artifact/{businessArtifactId}`
+     * instead.
+     *
      * @param id The resource ID.
      * @param fileContentType Document content type.
      * @param fileName Document name.
@@ -2505,6 +2526,9 @@ public final class BusinessArtifactOperationsImpl {
      *
      * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
      * business artifact.
+     *
+     * **Deprecated:** use the `uploadDocument` operation with `targetUri=ku:business-artifact/{businessArtifactId}`
+     * instead.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
@@ -2541,6 +2565,9 @@ public final class BusinessArtifactOperationsImpl {
      *
      * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
      * business artifact.
+     *
+     * **Deprecated:** use the `uploadDocument` operation with `targetUri=ku:business-artifact/{businessArtifactId}`
+     * instead.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
@@ -2586,6 +2613,9 @@ public final class BusinessArtifactOperationsImpl {
      * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
      * business artifact.
      *
+     * **Deprecated:** use the `uploadDocument` operation with `targetUri=ku:business-artifact/{businessArtifactId}`
+     * instead.
+     *
      * @param id The resource ID.
      * @param fileContentType Document content type.
      * @param fileName Document name.
@@ -2612,6 +2642,9 @@ public final class BusinessArtifactOperationsImpl {
      *
      * Given a document uri download a document.
      *
+     * **Deprecated:** use the `downloadDocument` operation instead; it resolves any document the
+     * credentials can read without requiring the owning Business Artifact in the path.
+     *
      * @param id The resource ID.
      * @param documentUri Document URI to download.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2628,6 +2661,9 @@ public final class BusinessArtifactOperationsImpl {
      * Download document
      *
      * Given a document uri download a document.
+     *
+     * **Deprecated:** use the `downloadDocument` operation instead; it resolves any document the
+     * credentials can read without requiring the owning Business Artifact in the path.
      *
      * @param id The resource ID.
      * @param documentUri Document URI to download.
@@ -2648,6 +2684,9 @@ public final class BusinessArtifactOperationsImpl {
      *
      * Given a document uri download a document.
      *
+     * **Deprecated:** use the `downloadDocument` operation instead; it resolves any document the
+     * credentials can read without requiring the owning Business Artifact in the path.
+     *
      * @param id The resource ID.
      * @param documentUri Document URI to download.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2664,6 +2703,9 @@ public final class BusinessArtifactOperationsImpl {
      * Download document
      *
      * Given a document uri download a document.
+     *
+     * **Deprecated:** use the `downloadDocument` operation instead; it resolves any document the
+     * credentials can read without requiring the owning Business Artifact in the path.
      *
      * @param id The resource ID.
      * @param documentUri Document URI to download.
@@ -2683,6 +2725,9 @@ public final class BusinessArtifactOperationsImpl {
      *
      * Given a document uri download a document.
      *
+     * **Deprecated:** use the `downloadDocument` operation instead; it resolves any document the
+     * credentials can read without requiring the owning Business Artifact in the path.
+     *
      * @param id The resource ID.
      * @param documentUri Document URI to download.
      * @param context The context to associate with this operation.
@@ -2701,6 +2746,9 @@ public final class BusinessArtifactOperationsImpl {
      * Download document
      *
      * Given a document uri download a document.
+     *
+     * **Deprecated:** use the `downloadDocument` operation instead; it resolves any document the
+     * credentials can read without requiring the owning Business Artifact in the path.
      *
      * @param id The resource ID.
      * @param documentUri Document URI to download.

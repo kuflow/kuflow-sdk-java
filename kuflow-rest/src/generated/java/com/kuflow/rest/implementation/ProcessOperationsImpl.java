@@ -48,6 +48,7 @@ import com.kuflow.rest.model.DocumentReference;
 import com.kuflow.rest.model.JsonPatchOperation;
 import com.kuflow.rest.model.Process;
 import com.kuflow.rest.model.ProcessAction;
+import com.kuflow.rest.model.ProcessActionCompleteParams;
 import com.kuflow.rest.model.ProcessActionCreateParams;
 import com.kuflow.rest.model.ProcessChangeInitiatorParams;
 import com.kuflow.rest.model.ProcessCreateParams;
@@ -236,6 +237,30 @@ public final class ProcessOperationsImpl {
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @PathParam("actionId") UUID actionId,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/processes/{id}/actions/{actionId}/~actions/complete")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<ProcessAction>> completeProcessAction(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @PathParam("actionId") UUID actionId,
+            @BodyParam("application/json") ProcessActionCompleteParams processActionCompleteParams,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Post("/processes/{id}/actions/{actionId}/~actions/complete")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<ProcessAction> completeProcessActionSync(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @PathParam("actionId") UUID actionId,
+            @BodyParam("application/json") ProcessActionCompleteParams processActionCompleteParams,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -1751,10 +1776,209 @@ public final class ProcessOperationsImpl {
     }
 
     /**
+     * Complete a Process action
+     *
+     * Complete an action whose result is produced externally. Currently only actions of type
+     * `DOWNLOADABLE` can be completed through this operation: upload the produced document first with
+     * the `uploadDocument` operation using the owning Process as `targetUri`, then pass the returned
+     * document reference in `downloadable.documentUri`.
+     *
+     * The referenced document must be a temporal document of the same Process, otherwise the operation
+     * answers `404`. The temporal document is consumed by the operation: its ownership is transferred
+     * to the action and it is no longer available through its temporal URI.
+     *
+     * Only meaningful for actions still in `REQUESTED` state; completing an action in any other state
+     * answers `409`.
+     *
+     * @param id The resource ID.
+     * @param actionId The Process action ID.
+     * @param processActionCompleteParams Params to complete the action.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ProcessAction>> completeProcessActionWithResponseAsync(
+        UUID id,
+        UUID actionId,
+        ProcessActionCompleteParams processActionCompleteParams
+    ) {
+        return FluxUtil.withContext(context -> completeProcessActionWithResponseAsync(id, actionId, processActionCompleteParams, context));
+    }
+
+    /**
+     * Complete a Process action
+     *
+     * Complete an action whose result is produced externally. Currently only actions of type
+     * `DOWNLOADABLE` can be completed through this operation: upload the produced document first with
+     * the `uploadDocument` operation using the owning Process as `targetUri`, then pass the returned
+     * document reference in `downloadable.documentUri`.
+     *
+     * The referenced document must be a temporal document of the same Process, otherwise the operation
+     * answers `404`. The temporal document is consumed by the operation: its ownership is transferred
+     * to the action and it is no longer available through its temporal URI.
+     *
+     * Only meaningful for actions still in `REQUESTED` state; completing an action in any other state
+     * answers `409`.
+     *
+     * @param id The resource ID.
+     * @param actionId The Process action ID.
+     * @param processActionCompleteParams Params to complete the action.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ProcessAction>> completeProcessActionWithResponseAsync(
+        UUID id,
+        UUID actionId,
+        ProcessActionCompleteParams processActionCompleteParams,
+        Context context
+    ) {
+        final String accept = "application/json";
+        return service.completeProcessAction(this.client.getHost(), id, actionId, processActionCompleteParams, accept, context);
+    }
+
+    /**
+     * Complete a Process action
+     *
+     * Complete an action whose result is produced externally. Currently only actions of type
+     * `DOWNLOADABLE` can be completed through this operation: upload the produced document first with
+     * the `uploadDocument` operation using the owning Process as `targetUri`, then pass the returned
+     * document reference in `downloadable.documentUri`.
+     *
+     * The referenced document must be a temporal document of the same Process, otherwise the operation
+     * answers `404`. The temporal document is consumed by the operation: its ownership is transferred
+     * to the action and it is no longer available through its temporal URI.
+     *
+     * Only meaningful for actions still in `REQUESTED` state; completing an action in any other state
+     * answers `409`.
+     *
+     * @param id The resource ID.
+     * @param actionId The Process action ID.
+     * @param processActionCompleteParams Params to complete the action.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ProcessAction> completeProcessActionAsync(UUID id, UUID actionId, ProcessActionCompleteParams processActionCompleteParams) {
+        return completeProcessActionWithResponseAsync(id, actionId, processActionCompleteParams).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
+        );
+    }
+
+    /**
+     * Complete a Process action
+     *
+     * Complete an action whose result is produced externally. Currently only actions of type
+     * `DOWNLOADABLE` can be completed through this operation: upload the produced document first with
+     * the `uploadDocument` operation using the owning Process as `targetUri`, then pass the returned
+     * document reference in `downloadable.documentUri`.
+     *
+     * The referenced document must be a temporal document of the same Process, otherwise the operation
+     * answers `404`. The temporal document is consumed by the operation: its ownership is transferred
+     * to the action and it is no longer available through its temporal URI.
+     *
+     * Only meaningful for actions still in `REQUESTED` state; completing an action in any other state
+     * answers `409`.
+     *
+     * @param id The resource ID.
+     * @param actionId The Process action ID.
+     * @param processActionCompleteParams Params to complete the action.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ProcessAction> completeProcessActionAsync(
+        UUID id,
+        UUID actionId,
+        ProcessActionCompleteParams processActionCompleteParams,
+        Context context
+    ) {
+        return completeProcessActionWithResponseAsync(id, actionId, processActionCompleteParams, context).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
+        );
+    }
+
+    /**
+     * Complete a Process action
+     *
+     * Complete an action whose result is produced externally. Currently only actions of type
+     * `DOWNLOADABLE` can be completed through this operation: upload the produced document first with
+     * the `uploadDocument` operation using the owning Process as `targetUri`, then pass the returned
+     * document reference in `downloadable.documentUri`.
+     *
+     * The referenced document must be a temporal document of the same Process, otherwise the operation
+     * answers `404`. The temporal document is consumed by the operation: its ownership is transferred
+     * to the action and it is no longer available through its temporal URI.
+     *
+     * Only meaningful for actions still in `REQUESTED` state; completing an action in any other state
+     * answers `409`.
+     *
+     * @param id The resource ID.
+     * @param actionId The Process action ID.
+     * @param processActionCompleteParams Params to complete the action.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ProcessAction> completeProcessActionWithResponse(
+        UUID id,
+        UUID actionId,
+        ProcessActionCompleteParams processActionCompleteParams,
+        Context context
+    ) {
+        final String accept = "application/json";
+        return service.completeProcessActionSync(this.client.getHost(), id, actionId, processActionCompleteParams, accept, context);
+    }
+
+    /**
+     * Complete a Process action
+     *
+     * Complete an action whose result is produced externally. Currently only actions of type
+     * `DOWNLOADABLE` can be completed through this operation: upload the produced document first with
+     * the `uploadDocument` operation using the owning Process as `targetUri`, then pass the returned
+     * document reference in `downloadable.documentUri`.
+     *
+     * The referenced document must be a temporal document of the same Process, otherwise the operation
+     * answers `404`. The temporal document is consumed by the operation: its ownership is transferred
+     * to the action and it is no longer available through its temporal URI.
+     *
+     * Only meaningful for actions still in `REQUESTED` state; completing an action in any other state
+     * answers `409`.
+     *
+     * @param id The resource ID.
+     * @param actionId The Process action ID.
+     * @param processActionCompleteParams Params to complete the action.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Process action invocation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProcessAction completeProcessAction(UUID id, UUID actionId, ProcessActionCompleteParams processActionCompleteParams) {
+        return completeProcessActionWithResponse(id, actionId, processActionCompleteParams, Context.NONE).getValue();
+    }
+
+    /**
      * Upload the document produced by a DOWNLOADABLE Process action
      *
      * Upload the document produced by a `DOWNLOADABLE` action and complete the
      * action with it. Only meaningful for actions still in `REQUESTED` state.
+     *
+     * **Deprecated:** upload the document with the `uploadDocument` operation using the owning Process
+     * as `targetUri` and complete the action with the `completeProcessAction` operation instead.
      *
      * @param id The resource ID.
      * @param actionId The Process action ID.
@@ -1786,6 +2010,9 @@ public final class ProcessOperationsImpl {
      *
      * Upload the document produced by a `DOWNLOADABLE` action and complete the
      * action with it. Only meaningful for actions still in `REQUESTED` state.
+     *
+     * **Deprecated:** upload the document with the `uploadDocument` operation using the owning Process
+     * as `targetUri` and complete the action with the `completeProcessAction` operation instead.
      *
      * @param id The resource ID.
      * @param actionId The Process action ID.
@@ -1829,6 +2056,9 @@ public final class ProcessOperationsImpl {
      * Upload the document produced by a `DOWNLOADABLE` action and complete the
      * action with it. Only meaningful for actions still in `REQUESTED` state.
      *
+     * **Deprecated:** upload the document with the `uploadDocument` operation using the owning Process
+     * as `targetUri` and complete the action with the `completeProcessAction` operation instead.
+     *
      * @param id The resource ID.
      * @param actionId The Process action ID.
      * @param fileContentType Document content type.
@@ -1859,6 +2089,9 @@ public final class ProcessOperationsImpl {
      *
      * Upload the document produced by a `DOWNLOADABLE` action and complete the
      * action with it. Only meaningful for actions still in `REQUESTED` state.
+     *
+     * **Deprecated:** upload the document with the `uploadDocument` operation using the owning Process
+     * as `targetUri` and complete the action with the `completeProcessAction` operation instead.
      *
      * @param id The resource ID.
      * @param actionId The Process action ID.
@@ -1893,6 +2126,9 @@ public final class ProcessOperationsImpl {
      * Upload the document produced by a `DOWNLOADABLE` action and complete the
      * action with it. Only meaningful for actions still in `REQUESTED` state.
      *
+     * **Deprecated:** upload the document with the `uploadDocument` operation using the owning Process
+     * as `targetUri` and complete the action with the `completeProcessAction` operation instead.
+     *
      * @param id The resource ID.
      * @param actionId The Process action ID.
      * @param fileContentType Document content type.
@@ -1923,6 +2159,9 @@ public final class ProcessOperationsImpl {
      *
      * Upload the document produced by a `DOWNLOADABLE` action and complete the
      * action with it. Only meaningful for actions still in `REQUESTED` state.
+     *
+     * **Deprecated:** upload the document with the `uploadDocument` operation using the owning Process
+     * as `targetUri` and complete the action with the `completeProcessAction` operation instead.
      *
      * @param id The resource ID.
      * @param actionId The Process action ID.
@@ -1966,6 +2205,9 @@ public final class ProcessOperationsImpl {
      * Upload the document produced by a `DOWNLOADABLE` action and complete the
      * action with it. Only meaningful for actions still in `REQUESTED` state.
      *
+     * **Deprecated:** upload the document with the `uploadDocument` operation using the owning Process
+     * as `targetUri` and complete the action with the `completeProcessAction` operation instead.
+     *
      * @param id The resource ID.
      * @param actionId The Process action ID.
      * @param fileContentType Document content type.
@@ -1996,6 +2238,9 @@ public final class ProcessOperationsImpl {
      *
      * Upload the document produced by a `DOWNLOADABLE` action and complete the
      * action with it. Only meaningful for actions still in `REQUESTED` state.
+     *
+     * **Deprecated:** upload the document with the `uploadDocument` operation using the owning Process
+     * as `targetUri` and complete the action with the `completeProcessAction` operation instead.
      *
      * @param id The resource ID.
      * @param actionId The Process action ID.
@@ -2029,6 +2274,9 @@ public final class ProcessOperationsImpl {
      *
      * Upload the document produced by a `DOWNLOADABLE` action and complete the
      * action with it. Only meaningful for actions still in `REQUESTED` state.
+     *
+     * **Deprecated:** upload the document with the `uploadDocument` operation using the owning Process
+     * as `targetUri` and complete the action with the `completeProcessAction` operation instead.
      *
      * @param id The resource ID.
      * @param actionId The Process action ID.
@@ -2071,6 +2319,9 @@ public final class ProcessOperationsImpl {
      *
      * Upload the document produced by a `DOWNLOADABLE` action and complete the
      * action with it. Only meaningful for actions still in `REQUESTED` state.
+     *
+     * **Deprecated:** upload the document with the `uploadDocument` operation using the owning Process
+     * as `targetUri` and complete the action with the `completeProcessAction` operation instead.
      *
      * @param id The resource ID.
      * @param actionId The Process action ID.
@@ -3166,8 +3417,10 @@ public final class ProcessOperationsImpl {
      *
      * Upload a temporal document into the process that later on must be linked with a process domain resource.
      *
-     * Documents uploaded with this API will be deleted after 24 hours as long as they have not been linked to a
-     * process or process item..
+     * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
+     * process or process item.
+     *
+     * **Deprecated:** use the `uploadDocument` operation with `targetUri=ku:process/{processId}` instead.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
@@ -3197,8 +3450,10 @@ public final class ProcessOperationsImpl {
      *
      * Upload a temporal document into the process that later on must be linked with a process domain resource.
      *
-     * Documents uploaded with this API will be deleted after 24 hours as long as they have not been linked to a
-     * process or process item..
+     * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
+     * process or process item.
+     *
+     * **Deprecated:** use the `uploadDocument` operation with `targetUri=ku:process/{processId}` instead.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
@@ -3229,8 +3484,10 @@ public final class ProcessOperationsImpl {
      *
      * Upload a temporal document into the process that later on must be linked with a process domain resource.
      *
-     * Documents uploaded with this API will be deleted after 24 hours as long as they have not been linked to a
-     * process or process item..
+     * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
+     * process or process item.
+     *
+     * **Deprecated:** use the `uploadDocument` operation with `targetUri=ku:process/{processId}` instead.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
@@ -3260,8 +3517,10 @@ public final class ProcessOperationsImpl {
      *
      * Upload a temporal document into the process that later on must be linked with a process domain resource.
      *
-     * Documents uploaded with this API will be deleted after 24 hours as long as they have not been linked to a
-     * process or process item..
+     * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
+     * process or process item.
+     *
+     * **Deprecated:** use the `uploadDocument` operation with `targetUri=ku:process/{processId}` instead.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
@@ -3293,8 +3552,10 @@ public final class ProcessOperationsImpl {
      *
      * Upload a temporal document into the process that later on must be linked with a process domain resource.
      *
-     * Documents uploaded with this API will be deleted after 24 hours as long as they have not been linked to a
-     * process or process item..
+     * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
+     * process or process item.
+     *
+     * **Deprecated:** use the `uploadDocument` operation with `targetUri=ku:process/{processId}` instead.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
@@ -3324,8 +3585,10 @@ public final class ProcessOperationsImpl {
      *
      * Upload a temporal document into the process that later on must be linked with a process domain resource.
      *
-     * Documents uploaded with this API will be deleted after 24 hours as long as they have not been linked to a
-     * process or process item..
+     * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
+     * process or process item.
+     *
+     * **Deprecated:** use the `uploadDocument` operation with `targetUri=ku:process/{processId}` instead.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
@@ -3356,8 +3619,10 @@ public final class ProcessOperationsImpl {
      *
      * Upload a temporal document into the process that later on must be linked with a process domain resource.
      *
-     * Documents uploaded with this API will be deleted after 24 hours as long as they have not been linked to a
-     * process or process item..
+     * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
+     * process or process item.
+     *
+     * **Deprecated:** use the `uploadDocument` operation with `targetUri=ku:process/{processId}` instead.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
@@ -3387,8 +3652,10 @@ public final class ProcessOperationsImpl {
      *
      * Upload a temporal document into the process that later on must be linked with a process domain resource.
      *
-     * Documents uploaded with this API will be deleted after 24 hours as long as they have not been linked to a
-     * process or process item..
+     * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
+     * process or process item.
+     *
+     * **Deprecated:** use the `uploadDocument` operation with `targetUri=ku:process/{processId}` instead.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
@@ -3420,8 +3687,10 @@ public final class ProcessOperationsImpl {
      *
      * Upload a temporal document into the process that later on must be linked with a process domain resource.
      *
-     * Documents uploaded with this API will be deleted after 24 hours as long as they have not been linked to a
-     * process or process item..
+     * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
+     * process or process item.
+     *
+     * **Deprecated:** use the `uploadDocument` operation with `targetUri=ku:process/{processId}` instead.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
@@ -3461,8 +3730,10 @@ public final class ProcessOperationsImpl {
      *
      * Upload a temporal document into the process that later on must be linked with a process domain resource.
      *
-     * Documents uploaded with this API will be deleted after 24 hours as long as they have not been linked to a
-     * process or process item..
+     * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
+     * process or process item.
+     *
+     * **Deprecated:** use the `uploadDocument` operation with `targetUri=ku:process/{processId}` instead.
      *
      * @param id The resource ID.
      * @param fileContentType Document content type.
@@ -3484,6 +3755,9 @@ public final class ProcessOperationsImpl {
      *
      * Given a document uri download a document.
      *
+     * **Deprecated:** use the `downloadDocument` operation instead; it resolves any document the
+     * credentials can read without requiring the owning Process in the path.
+     *
      * @param id The resource ID.
      * @param documentUri Document URI to download.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3500,6 +3774,9 @@ public final class ProcessOperationsImpl {
      * Download document
      *
      * Given a document uri download a document.
+     *
+     * **Deprecated:** use the `downloadDocument` operation instead; it resolves any document the
+     * credentials can read without requiring the owning Process in the path.
      *
      * @param id The resource ID.
      * @param documentUri Document URI to download.
@@ -3520,6 +3797,9 @@ public final class ProcessOperationsImpl {
      *
      * Given a document uri download a document.
      *
+     * **Deprecated:** use the `downloadDocument` operation instead; it resolves any document the
+     * credentials can read without requiring the owning Process in the path.
+     *
      * @param id The resource ID.
      * @param documentUri Document URI to download.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3536,6 +3816,9 @@ public final class ProcessOperationsImpl {
      * Download document
      *
      * Given a document uri download a document.
+     *
+     * **Deprecated:** use the `downloadDocument` operation instead; it resolves any document the
+     * credentials can read without requiring the owning Process in the path.
      *
      * @param id The resource ID.
      * @param documentUri Document URI to download.
@@ -3555,6 +3838,9 @@ public final class ProcessOperationsImpl {
      *
      * Given a document uri download a document.
      *
+     * **Deprecated:** use the `downloadDocument` operation instead; it resolves any document the
+     * credentials can read without requiring the owning Process in the path.
+     *
      * @param id The resource ID.
      * @param documentUri Document URI to download.
      * @param context The context to associate with this operation.
@@ -3573,6 +3859,9 @@ public final class ProcessOperationsImpl {
      * Download document
      *
      * Given a document uri download a document.
+     *
+     * **Deprecated:** use the `downloadDocument` operation instead; it resolves any document the
+     * credentials can read without requiring the owning Process in the path.
      *
      * @param id The resource ID.
      * @param documentUri Document URI to download.

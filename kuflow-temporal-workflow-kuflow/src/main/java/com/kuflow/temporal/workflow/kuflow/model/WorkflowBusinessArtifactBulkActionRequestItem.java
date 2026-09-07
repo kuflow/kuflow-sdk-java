@@ -29,8 +29,8 @@ import java.util.UUID;
  * One artifact of the materialized selection of a BULK batch action: the business artifact and the action value the
  * bulk invocation created for it. With the pair, the workflow can retrieve the validated input
  * ({@code KuFlowRestClient.getBusinessArtifactOperations().retrieveBusinessArtifactAction(businessArtifactId,
- * businessArtifactActionValueId)}) and download its per-artifact document copies
- * ({@code downloadBusinessArtifactDocument(businessArtifactId, documentUri)}).
+ * businessArtifactActionValueId)}) and download its per-artifact document copies with the unified
+ * {@code KuFlowRestClient.getDocumentOperations().downloadDocument(documentUri)} operation.
  */
 public class WorkflowBusinessArtifactBulkActionRequestItem {
 

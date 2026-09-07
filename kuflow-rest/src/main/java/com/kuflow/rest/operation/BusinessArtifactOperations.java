@@ -45,8 +45,8 @@ import com.kuflow.rest.model.DefaultErrorException;
 import com.kuflow.rest.model.Document;
 import com.kuflow.rest.model.DocumentReference;
 import com.kuflow.rest.model.JsonPatchOperation;
+import com.kuflow.rest.util.Validation;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 /** An instance of this class provides access to all the operations defined in BusinessArtifactOperations. */
@@ -334,17 +334,13 @@ public class BusinessArtifactOperations {
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
+     * @deprecated Use {@link DocumentOperations#uploadDocument(String, Document)} with the business artifact uri as
+     * {@code targetUri} instead.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentReference> uploadBusinessArtifactDocumentWithResponse(UUID id, Document document, Context context) {
-        Objects.requireNonNull(document, "'document' is required");
-        Objects.requireNonNull(document.getFileContent(), "'document.fileContent' is required");
-        Objects.requireNonNull(document.getFileContent().getLength(), "'document.fileContent.length' is required");
-        Objects.requireNonNull(document.getFileName(), "'document.fileName' is required");
-        Objects.requireNonNull(document.getContentType(), "'document.contentType' is required");
-        if (document.getFileContent().getLength() == 0) {
-            throw new IllegalArgumentException("File size must be greater that 0");
-        }
+        Validation.checkDocument(document);
 
         String fileContentType = document.getContentType();
         String fileName = document.getFileName();
@@ -367,7 +363,10 @@ public class BusinessArtifactOperations {
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
+     * @deprecated Use {@link DocumentOperations#uploadDocument(String, Document)} with the business artifact uri as
+     * {@code targetUri} instead.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentReference uploadBusinessArtifactDocument(UUID id, Document document) {
         return this.uploadBusinessArtifactDocumentWithResponse(id, document, Context.NONE).getValue();
@@ -385,7 +384,10 @@ public class BusinessArtifactOperations {
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
+     * @deprecated Use {@link DocumentOperations#downloadDocument(String)} instead; it resolves any document the
+     * credentials can read without requiring the owning business artifact.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> downloadBusinessArtifactDocumentWithResponse(UUID id, String documentUri, Context context) {
         return this.service.downloadBusinessArtifactDocumentWithResponse(id, documentUri, context);
@@ -402,7 +404,10 @@ public class BusinessArtifactOperations {
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
+     * @deprecated Use {@link DocumentOperations#downloadDocument(String)} instead; it resolves any document the
+     * credentials can read without requiring the owning business artifact.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData downloadBusinessArtifactDocument(UUID id, String documentUri) {
         return this.downloadBusinessArtifactDocumentWithResponse(id, documentUri, Context.NONE).getValue();

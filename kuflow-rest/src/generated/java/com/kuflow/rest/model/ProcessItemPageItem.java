@@ -48,6 +48,12 @@ public final class ProcessItemPageItem extends AbstractAudited {
     private UUID id;
 
     /*
+     * Process Item resource URI. Format `ku:process-item/{id}`.
+     */
+    @Generated
+    private String uri;
+
+    /*
      * Process Item Type
      */
     @Generated
@@ -115,6 +121,16 @@ public final class ProcessItemPageItem extends AbstractAudited {
     public ProcessItemPageItem setId(UUID id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Get the uri property: Process Item resource URI. Format `ku:process-item/{id}`.
+     *
+     * @return the uri value.
+     */
+    @Generated
+    public String getUri() {
+        return this.uri;
     }
 
     /**
@@ -384,6 +400,8 @@ public final class ProcessItemPageItem extends AbstractAudited {
                     deserializedProcessItemPageItem.tenantId = reader.getNullable(nonNullReader ->
                         UUID.fromString(nonNullReader.getString())
                     );
+                } else if ("uri".equals(fieldName)) {
+                    deserializedProcessItemPageItem.uri = reader.getString();
                 } else if ("ownerId".equals(fieldName)) {
                     deserializedProcessItemPageItem.ownerId = reader.getNullable(nonNullReader ->
                         UUID.fromString(nonNullReader.getString())

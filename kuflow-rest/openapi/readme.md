@@ -27,7 +27,8 @@ java: true
 title: KuFlow
 override-client-name: KuFlowClient
 
-input-file: https://raw.githubusercontent.com/kuflow/kuflow-openapi/49d96b8a1436be66e4ca3220ef2d772035c8ef55/specs/api.kuflow.com/v2024-06-14/openapi.yaml
+# TODO(kuflow/kuflow#1672): branch commit of kuflow-openapi#107; re-pin to its squash-merge commit once merged
+input-file: https://raw.githubusercontent.com/kuflow/kuflow-openapi/3aead21341a91eb39d439196848f6a069ca62172/specs/api.kuflow.com/v2024-06-14/openapi.yaml
 output-folder: ../target/openapi-generated
 
 openapi-type: data-plane

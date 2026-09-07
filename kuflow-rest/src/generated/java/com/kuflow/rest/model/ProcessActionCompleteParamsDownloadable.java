@@ -32,39 +32,27 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The DocumentReference model.
+ * Params for completing an action of type DOWNLOADABLE.
  */
 @Fluent
-public final class DocumentReference implements JsonSerializable<DocumentReference> {
+public final class ProcessActionCompleteParamsDownloadable implements JsonSerializable<ProcessActionCompleteParamsDownloadable> {
 
     /*
-     * Reference to the uploaded file.
-     *
-     * Format: `kuflow-file:uri=<ku-uri>;type=<media-type>;size=<bytes>;name=<file-name>;`
-     *
-     * Example: `kuflow-file:uri=ku:process/xxx/document/yyy;type=application/json;size=500;name=file.json;`
-     *
-     * Operations that receive a document uri accept both this full form and the inner `ku:`
-     * document uri.
+     * Reference to the document produced by the action, previously uploaded with the
+     * `uploadDocument` operation using the owning Process as `targetUri`.
      */
     @Generated
     private String documentUri;
 
     /**
-     * Creates an instance of DocumentReference class.
+     * Creates an instance of ProcessActionCompleteParamsDownloadable class.
      */
     @Generated
-    public DocumentReference() {}
+    public ProcessActionCompleteParamsDownloadable() {}
 
     /**
-     * Get the documentUri property: Reference to the uploaded file.
-     *
-     * Format: `kuflow-file:uri=&lt;ku-uri&gt;;type=&lt;media-type&gt;;size=&lt;bytes&gt;;name=&lt;file-name&gt;;`
-     *
-     * Example: `kuflow-file:uri=ku:process/xxx/document/yyy;type=application/json;size=500;name=file.json;`
-     *
-     * Operations that receive a document uri accept both this full form and the inner `ku:`
-     * document uri.
+     * Get the documentUri property: Reference to the document produced by the action, previously uploaded with the
+     * `uploadDocument` operation using the owning Process as `targetUri`.
      *
      * @return the documentUri value.
      */
@@ -74,20 +62,14 @@ public final class DocumentReference implements JsonSerializable<DocumentReferen
     }
 
     /**
-     * Set the documentUri property: Reference to the uploaded file.
-     *
-     * Format: `kuflow-file:uri=&lt;ku-uri&gt;;type=&lt;media-type&gt;;size=&lt;bytes&gt;;name=&lt;file-name&gt;;`
-     *
-     * Example: `kuflow-file:uri=ku:process/xxx/document/yyy;type=application/json;size=500;name=file.json;`
-     *
-     * Operations that receive a document uri accept both this full form and the inner `ku:`
-     * document uri.
+     * Set the documentUri property: Reference to the document produced by the action, previously uploaded with the
+     * `uploadDocument` operation using the owning Process as `targetUri`.
      *
      * @param documentUri the documentUri value to set.
-     * @return the DocumentReference object itself.
+     * @return the ProcessActionCompleteParamsDownloadable object itself.
      */
     @Generated
-    public DocumentReference setDocumentUri(String documentUri) {
+    public ProcessActionCompleteParamsDownloadable setDocumentUri(String documentUri) {
         this.documentUri = documentUri;
         return this;
     }
@@ -104,30 +86,31 @@ public final class DocumentReference implements JsonSerializable<DocumentReferen
     }
 
     /**
-     * Reads an instance of DocumentReference from the JsonReader.
+     * Reads an instance of ProcessActionCompleteParamsDownloadable from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of DocumentReference if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     * @return An instance of ProcessActionCompleteParamsDownloadable if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the DocumentReference.
+     * @throws IOException If an error occurs while reading the ProcessActionCompleteParamsDownloadable.
      */
     @Generated
-    public static DocumentReference fromJson(JsonReader jsonReader) throws IOException {
+    public static ProcessActionCompleteParamsDownloadable fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            DocumentReference deserializedDocumentReference = new DocumentReference();
+            ProcessActionCompleteParamsDownloadable deserializedProcessActionCompleteParamsDownloadable =
+                new ProcessActionCompleteParamsDownloadable();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("documentUri".equals(fieldName)) {
-                    deserializedDocumentReference.documentUri = reader.getString();
+                    deserializedProcessActionCompleteParamsDownloadable.documentUri = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedDocumentReference;
+            return deserializedProcessActionCompleteParamsDownloadable;
         });
     }
 }
