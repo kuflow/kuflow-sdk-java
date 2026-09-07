@@ -37,6 +37,8 @@ import com.kuflow.temporal.workflow.kuflow.model.WorkflowBusinessArtifactActionR
 import com.kuflow.temporal.workflow.kuflow.model.WorkflowBusinessArtifactActionResponseDownloadable;
 import com.kuflow.temporal.workflow.kuflow.model.WorkflowProcessUserActionDefinitionType;
 import com.kuflow.temporal.workflow.kuflow.model.WorkflowProcessUserActionRequest;
+import com.kuflow.temporal.workflow.kuflow.model.WorkflowProcessUserActionResponse;
+import com.kuflow.temporal.workflow.kuflow.model.WorkflowProcessUserActionResponseDownloadable;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -130,6 +132,28 @@ public class WorkflowPayloadModelWireContractTest {
         assertThat(json.get("downloadable").get("documentUri").asText()).isEqualTo("kuflow-document://an-uri");
 
         WorkflowBusinessArtifactActionResponse result = this.objectMapper.readValue(payload, WorkflowBusinessArtifactActionResponse.class);
+
+        assertThat(result.getMessage()).isEqualTo("done");
+        assertThat(result.getDownloadable().getDocumentUri()).isEqualTo("kuflow-document://an-uri");
+    }
+
+    @Test
+    @DisplayName("GIVEN a process user action response WHEN it is serialized THEN the nested downloadable is written inline")
+    public void givenAProcessUserActionResponseWhenItIsSerializedThenTheNestedDownloadableIsWrittenInline() throws IOException {
+        WorkflowProcessUserActionResponseDownloadable downloadable = new WorkflowProcessUserActionResponseDownloadable();
+        downloadable.setDocumentUri("kuflow-document://an-uri");
+
+        WorkflowProcessUserActionResponse response = new WorkflowProcessUserActionResponse();
+        response.setMessage("done");
+        response.setDownloadable(downloadable);
+
+        byte[] payload = this.objectMapper.writeValueAsBytes(response);
+        JsonNode json = this.objectMapper.readTree(payload);
+
+        assertThat(json.get("message").asText()).isEqualTo("done");
+        assertThat(json.get("downloadable").get("documentUri").asText()).isEqualTo("kuflow-document://an-uri");
+
+        WorkflowProcessUserActionResponse result = this.objectMapper.readValue(payload, WorkflowProcessUserActionResponse.class);
 
         assertThat(result.getMessage()).isEqualTo("done");
         assertThat(result.getDownloadable().getDocumentUri()).isEqualTo("kuflow-document://an-uri");

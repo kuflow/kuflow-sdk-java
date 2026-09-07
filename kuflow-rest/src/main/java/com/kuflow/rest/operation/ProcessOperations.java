@@ -318,7 +318,9 @@ public class ProcessOperations {
      * be completed through this operation: upload the produced document first with
      * {@link DocumentOperations#uploadDocument(String, Document)} using the owning Process as {@code targetUri}, then
      * pass the returned document reference in {@code downloadable.documentUri}. The temporal document is consumed by
-     * the operation. Only meaningful for actions still in {@code REQUESTED} state.
+     * the operation. Only meaningful for actions still in {@code REQUESTED} state. Workflows implemented on Temporal
+     * can alternatively return the document reference in their workflow response
+     * ({@code WorkflowProcessUserActionResponse#downloadable}); whichever channel completes the action first wins.
      *
      * @param id The Process ID.
      * @param actionId The Action ID.
@@ -346,7 +348,9 @@ public class ProcessOperations {
      * be completed through this operation: upload the produced document first with
      * {@link DocumentOperations#uploadDocument(String, Document)} using the owning Process as {@code targetUri}, then
      * pass the returned document reference in {@code downloadable.documentUri}. The temporal document is consumed by
-     * the operation. Only meaningful for actions still in {@code REQUESTED} state.
+     * the operation. Only meaningful for actions still in {@code REQUESTED} state. Workflows implemented on Temporal
+     * can alternatively return the document reference in their workflow response
+     * ({@code WorkflowProcessUserActionResponse#downloadable}); whichever channel completes the action first wins.
      *
      * @param id The Process ID.
      * @param actionId The Action ID.

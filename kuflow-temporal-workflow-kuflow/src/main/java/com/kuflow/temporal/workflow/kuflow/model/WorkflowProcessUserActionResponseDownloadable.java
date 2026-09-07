@@ -24,32 +24,24 @@
 package com.kuflow.temporal.workflow.kuflow.model;
 
 /**
- * Result returned by the workflow that handles a process action. Carries an optional human-readable message and,
- * depending on the action definition type that triggered it, exactly one of the type-specific payloads
- * ({@link WorkflowProcessUserActionResponseDownloadable}).
+ * Type-specific result for actions of type {@code DOWNLOADABLE}. The user's workflow uploads the generated document
+ * with the unified {@code uploadDocument} operation, using the owning process as {@code targetUri}, and returns its
+ * URI here so the launcher links it to the action value. Alternative to the {@code completeProcessAction} REST
+ * operation: whichever channel completes the action first wins.
  */
-public class WorkflowProcessUserActionResponse {
-
-    private String message;
+public class WorkflowProcessUserActionResponseDownloadable {
 
     /**
-     * Payload populated when the action was of type {@code DOWNLOADABLE}; {@code null} otherwise.
+     * URI of the document previously uploaded with the unified {@code uploadDocument} operation.
+     * The launcher uses it to link the document to the process action.
      */
-    private WorkflowProcessUserActionResponseDownloadable downloadable;
+    private String documentUri;
 
-    public String getMessage() {
-        return this.message;
+    public String getDocumentUri() {
+        return this.documentUri;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public WorkflowProcessUserActionResponseDownloadable getDownloadable() {
-        return this.downloadable;
-    }
-
-    public void setDownloadable(WorkflowProcessUserActionResponseDownloadable downloadable) {
-        this.downloadable = downloadable;
+    public void setDocumentUri(String documentUri) {
+        this.documentUri = documentUri;
     }
 }
