@@ -26,8 +26,7 @@ package com.kuflow.temporal.workflow.kuflow.model;
 /**
  * Type-specific result for actions of type {@code DOWNLOADABLE}. The user's workflow uploads the generated document
  * with the unified {@code uploadDocument} operation, using the owning process as {@code targetUri}, and returns its
- * URI here so the launcher links it to the action value. Alternative to the {@code completeProcessAction} REST
- * operation: whichever channel completes the action first wins.
+ * URI here so the launcher links it to the action value. This is the only completion channel of the action.
  */
 public class WorkflowProcessUserActionResponseDownloadable {
 

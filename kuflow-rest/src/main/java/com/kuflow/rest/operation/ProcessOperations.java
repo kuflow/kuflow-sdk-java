@@ -36,7 +36,6 @@ import com.kuflow.rest.model.DocumentReference;
 import com.kuflow.rest.model.JsonPatchOperation;
 import com.kuflow.rest.model.Process;
 import com.kuflow.rest.model.ProcessAction;
-import com.kuflow.rest.model.ProcessActionCompleteParams;
 import com.kuflow.rest.model.ProcessActionCreateParams;
 import com.kuflow.rest.model.ProcessChangeInitiatorParams;
 import com.kuflow.rest.model.ProcessCreateParams;
@@ -309,111 +308,6 @@ public class ProcessOperations {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProcessAction cancelProcessAction(UUID id, UUID actionId) {
         return this.cancelProcessActionWithResponse(id, actionId, Context.NONE).getValue();
-    }
-
-    /**
-     * Complete a Process action.
-     * <p>
-     * Complete an action whose result is produced externally. Currently only actions of type {@code DOWNLOADABLE} can
-     * be completed through this operation: upload the produced document first with
-     * {@link DocumentOperations#uploadDocument(String, Document)} using the owning Process as {@code targetUri}, then
-     * pass the returned document reference in {@code downloadable.documentUri}. The temporal document is consumed by
-     * the operation. Only meaningful for actions still in {@code REQUESTED} state. Workflows implemented on Temporal
-     * can alternatively return the document reference in their workflow response
-     * ({@code WorkflowProcessUserActionResponse#downloadable}); whichever channel completes the action first wins.
-     *
-     * @param id The Process ID.
-     * @param actionId The Action ID.
-     * @param params Params to complete the action.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProcessAction> completeProcessActionWithResponse(
-        UUID id,
-        UUID actionId,
-        ProcessActionCompleteParams params,
-        Context context
-    ) {
-        return this.service.completeProcessActionWithResponse(id, actionId, params, context);
-    }
-
-    /**
-     * Complete a Process action.
-     * <p>
-     * Complete an action whose result is produced externally. Currently only actions of type {@code DOWNLOADABLE} can
-     * be completed through this operation: upload the produced document first with
-     * {@link DocumentOperations#uploadDocument(String, Document)} using the owning Process as {@code targetUri}, then
-     * pass the returned document reference in {@code downloadable.documentUri}. The temporal document is consumed by
-     * the operation. Only meaningful for actions still in {@code REQUESTED} state. Workflows implemented on Temporal
-     * can alternatively return the document reference in their workflow response
-     * ({@code WorkflowProcessUserActionResponse#downloadable}); whichever channel completes the action first wins.
-     *
-     * @param id The Process ID.
-     * @param actionId The Action ID.
-     * @param params Params to complete the action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProcessAction completeProcessAction(UUID id, UUID actionId, ProcessActionCompleteParams params) {
-        return this.completeProcessActionWithResponse(id, actionId, params, Context.NONE).getValue();
-    }
-
-    /**
-     * Upload the document produced by a DOWNLOADABLE Process action.
-     * <p>
-     * Uploads the document and completes the action with it. Only meaningful for actions still in
-     * {@code REQUESTED} state.
-     *
-     * @param id The Process ID.
-     * @param actionId The Action ID.
-     * @param document Document to upload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     * @deprecated Upload the document with {@link DocumentOperations#uploadDocument(String, Document)} using the
-     * owning Process as {@code targetUri} and complete the action with
-     * {@link #completeProcessAction(UUID, UUID, ProcessActionCompleteParams)} instead.
-     */
-    @Deprecated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProcessAction> uploadProcessActionDocumentWithResponse(UUID id, UUID actionId, Document document, Context context) {
-        Validation.checkDocument(document);
-
-        String fileContentType = document.getContentType();
-        String fileName = document.getFileName();
-        BinaryData file = document.getFileContent();
-        long contentLength = file.getLength();
-
-        return this.service.uploadProcessActionDocumentWithResponse(id, actionId, fileContentType, fileName, file, contentLength, context);
-    }
-
-    /**
-     * Upload the document produced by a DOWNLOADABLE Process action.
-     *
-     * @param id The Process ID.
-     * @param actionId The Action ID.
-     * @param document Document to upload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body.
-     * @deprecated Upload the document with {@link DocumentOperations#uploadDocument(String, Document)} using the
-     * owning Process as {@code targetUri} and complete the action with
-     * {@link #completeProcessAction(UUID, UUID, ProcessActionCompleteParams)} instead.
-     */
-    @Deprecated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProcessAction uploadProcessActionDocument(UUID id, UUID actionId, Document document) {
-        return this.uploadProcessActionDocumentWithResponse(id, actionId, document, Context.NONE).getValue();
     }
 
     /**
