@@ -24,15 +24,15 @@
 package com.kuflow.temporal.workflow.kuflow.model;
 
 /**
- * Type-specific result for actions of type {@code DOWNLOADABLE}. The user's workflow uploads the generated document with
- * the unified {@code uploadDocument} operation, using the owning business artifact as {@code targetUri}, and returns its
- * URI here so the launcher links it to the action value.
+ * Type-specific result for actions of type {@code DOWNLOADABLE}. The user's workflow uploads the generated document
+ * with the unified {@code uploadDocument} operation, using the owning process as {@code targetUri}, and returns its
+ * URI here so the launcher links it to the action value. This is the only completion channel of the action.
  */
-public class WorkflowBusinessArtifactActionResponseDownloadable {
+public class WorkflowProcessUserActionResponseDownloadable {
 
     /**
      * URI of the document previously uploaded with the unified {@code uploadDocument} operation.
-     * The launcher uses it to link the document to the business artifact action.
+     * The launcher uses it to link the document to the process action.
      */
     private String documentUri;
 

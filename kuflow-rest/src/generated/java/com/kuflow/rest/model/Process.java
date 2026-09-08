@@ -48,6 +48,13 @@ public final class Process extends AbstractAudited {
     private UUID id;
 
     /*
+     * Process resource URI, e.g. usable as `targetUri` of the `uploadDocument` operation.
+     * Format `ku:process/{id}`.
+     */
+    @Generated
+    private String uri;
+
+    /*
      * Process state
      */
     @Generated
@@ -115,6 +122,17 @@ public final class Process extends AbstractAudited {
     public Process setId(UUID id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Get the uri property: Process resource URI, e.g. usable as `targetUri` of the `uploadDocument` operation.
+     * Format `ku:process/{id}`.
+     *
+     * @return the uri value.
+     */
+    @Generated
+    public String getUri() {
+        return this.uri;
     }
 
     /**
@@ -374,6 +392,8 @@ public final class Process extends AbstractAudited {
                     deserializedProcess.state = ProcessState.fromString(reader.getString());
                 } else if ("tenantId".equals(fieldName)) {
                     deserializedProcess.tenantId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("uri".equals(fieldName)) {
+                    deserializedProcess.uri = reader.getString();
                 } else if ("processDefinitionRef".equals(fieldName)) {
                     deserializedProcess.processDefinitionRef = ProcessDefinitionRef.fromJson(reader);
                 } else if ("metadata".equals(fieldName)) {

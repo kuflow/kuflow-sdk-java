@@ -38,9 +38,14 @@ import java.io.IOException;
 public final class DocumentReference implements JsonSerializable<DocumentReference> {
 
     /*
-     * JSON value representing the uploaded file.
+     * Reference to the uploaded file.
      *
-     * Example: `kuflow-file:uri=xxx-yyy-zzz;type=application/json;size=500;name=file.json;`
+     * Format: `kuflow-file:uri=<ku-uri>;type=<media-type>;size=<bytes>;name=<file-name>;`
+     *
+     * Example: `kuflow-file:uri=ku:process/xxx/document/yyy;type=application/json;size=500;name=file.json;`
+     *
+     * Operations that receive a document uri accept both this full form and the inner `ku:`
+     * document uri.
      */
     @Generated
     private String documentUri;
@@ -52,9 +57,14 @@ public final class DocumentReference implements JsonSerializable<DocumentReferen
     public DocumentReference() {}
 
     /**
-     * Get the documentUri property: JSON value representing the uploaded file.
+     * Get the documentUri property: Reference to the uploaded file.
      *
-     * Example: `kuflow-file:uri=xxx-yyy-zzz;type=application/json;size=500;name=file.json;`.
+     * Format: `kuflow-file:uri=&lt;ku-uri&gt;;type=&lt;media-type&gt;;size=&lt;bytes&gt;;name=&lt;file-name&gt;;`
+     *
+     * Example: `kuflow-file:uri=ku:process/xxx/document/yyy;type=application/json;size=500;name=file.json;`
+     *
+     * Operations that receive a document uri accept both this full form and the inner `ku:`
+     * document uri.
      *
      * @return the documentUri value.
      */
@@ -64,9 +74,14 @@ public final class DocumentReference implements JsonSerializable<DocumentReferen
     }
 
     /**
-     * Set the documentUri property: JSON value representing the uploaded file.
+     * Set the documentUri property: Reference to the uploaded file.
      *
-     * Example: `kuflow-file:uri=xxx-yyy-zzz;type=application/json;size=500;name=file.json;`.
+     * Format: `kuflow-file:uri=&lt;ku-uri&gt;;type=&lt;media-type&gt;;size=&lt;bytes&gt;;name=&lt;file-name&gt;;`
+     *
+     * Example: `kuflow-file:uri=ku:process/xxx/document/yyy;type=application/json;size=500;name=file.json;`
+     *
+     * Operations that receive a document uri accept both this full form and the inner `ku:`
+     * document uri.
      *
      * @param documentUri the documentUri value to set.
      * @return the DocumentReference object itself.

@@ -1,25 +1,3 @@
-/*
- * The MIT License
- * Copyright © 2021-present KuFlow S.L.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
 /**
  * Package containing the data models for KuFlowClient.
  * # Introduction
@@ -51,6 +29,21 @@
  * clients. The way to achieve this is very simple, in the methods that create resources, you simply have to specify a
  * UUID in the input data and the API will respond by creating or returning the resource if it previously existed. With
  * this mechanism, your systems can implement retry logic without worrying about performing data tradeoffs.
+ *
+ * # Resource URIs
+ *
+ * Some operations identify resources and documents through URIs instead of plain IDs:
+ *
+ * * `ku:` URIs identify KuFlow resources, e.g. `ku:process/{processId}` or
+ * `ku:business-artifact/{businessArtifactId}`. Resources that can be referenced this way expose their
+ * URI in a read-only `uri` field. Documents owned by a resource extend its URI, e.g.
+ * `ku:process/{processId}/document/{documentId}`.
+ * * `kuflow-file:` values are document references: they wrap a `ku:` document URI together with its
+ * metadata using the format
+ * `kuflow-file:uri=&lt;ku-uri&gt;;type=&lt;media-type&gt;;size=&lt;bytes&gt;;name=&lt;file-name&gt;;`.
+ *
+ * Operations that receive a document URI accept both the full `kuflow-file:` reference and the inner
+ * `ku:` document URI.
  *
  * # OpenAPI Specification
  *

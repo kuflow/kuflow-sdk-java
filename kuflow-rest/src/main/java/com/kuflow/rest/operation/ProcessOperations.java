@@ -44,8 +44,8 @@ import com.kuflow.rest.model.ProcessFindOptions;
 import com.kuflow.rest.model.ProcessMetadataUpdateParams;
 import com.kuflow.rest.model.ProcessPage;
 import com.kuflow.rest.model.ProcessState;
+import com.kuflow.rest.util.Validation;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 /** An instance of this class provides access to all the operations defined in ProcessOperations. */
@@ -308,56 +308,6 @@ public class ProcessOperations {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProcessAction cancelProcessAction(UUID id, UUID actionId) {
         return this.cancelProcessActionWithResponse(id, actionId, Context.NONE).getValue();
-    }
-
-    /**
-     * Upload the document produced by a DOWNLOADABLE Process action.
-     * <p>
-     * Uploads the document and completes the action with it. Only meaningful for actions still in
-     * {@code REQUESTED} state.
-     *
-     * @param id The Process ID.
-     * @param actionId The Action ID.
-     * @param document Document to upload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProcessAction> uploadProcessActionDocumentWithResponse(UUID id, UUID actionId, Document document, Context context) {
-        Objects.requireNonNull(document, "'document' is required");
-        Objects.requireNonNull(document.getFileContent(), "'document.fileContent' is required");
-        Objects.requireNonNull(document.getFileContent().getLength(), "'document.fileContent.length' is required");
-        Objects.requireNonNull(document.getFileName(), "'document.fileName' is required");
-        Objects.requireNonNull(document.getContentType(), "'document.contentType' is required");
-        if (document.getFileContent().getLength() == 0) {
-            throw new IllegalArgumentException("File size must be greater that 0");
-        }
-
-        String fileContentType = document.getContentType();
-        String fileName = document.getFileName();
-        BinaryData file = document.getFileContent();
-        long contentLength = file.getLength();
-
-        return this.service.uploadProcessActionDocumentWithResponse(id, actionId, fileContentType, fileName, file, contentLength, context);
-    }
-
-    /**
-     * Upload the document produced by a DOWNLOADABLE Process action.
-     *
-     * @param id The Process ID.
-     * @param actionId The Action ID.
-     * @param document Document to upload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProcessAction uploadProcessActionDocument(UUID id, UUID actionId, Document document) {
-        return this.uploadProcessActionDocumentWithResponse(id, actionId, document, Context.NONE).getValue();
     }
 
     /**
@@ -726,7 +676,7 @@ public class ProcessOperations {
      * <p>
      * Upload a temporal document into the process that later on must be linked with a process domain resource.
      * <p>
-     * Documents uploaded with this API will be deleted after 24 hours as long as they have not been linked to a
+     * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
      * process or process item.
      *
      * @param id The resource ID.
@@ -736,17 +686,13 @@ public class ProcessOperations {
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
+     * @deprecated Use {@link DocumentOperations#uploadDocument(String, Document)} with the process uri as
+     * {@code targetUri} instead.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentReference> uploadProcessDocumentWithResponse(UUID id, Document document, Context context) {
-        Objects.requireNonNull(document, "'document' is required");
-        Objects.requireNonNull(document.getFileContent(), "'document.fileContent' is required");
-        Objects.requireNonNull(document.getFileContent().getLength(), "'document.fileContent.length' is required");
-        Objects.requireNonNull(document.getFileName(), "'document.fileName' is required");
-        Objects.requireNonNull(document.getContentType(), "'document.contentType' is required");
-        if (document.getFileContent().getLength() == 0) {
-            throw new IllegalArgumentException("File size must be greater that 0");
-        }
+        Validation.checkDocument(document);
 
         String fileContentType = document.getContentType();
         String fileName = document.getFileName();
@@ -760,7 +706,7 @@ public class ProcessOperations {
      * <p>
      * Upload a temporal document into the process that later on must be linked with a process domain resource.
      * <p>
-     * Documents uploaded with this API will be deleted after 24 hours as long as they have not been linked to a
+     * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked to a
      * process or process item.
      *
      * @param id The resource ID.
@@ -769,7 +715,10 @@ public class ProcessOperations {
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
+     * @deprecated Use {@link DocumentOperations#uploadDocument(String, Document)} with the process uri as
+     * {@code targetUri} instead.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentReference uploadProcessDocument(UUID id, Document document) {
         return this.uploadProcessDocumentWithResponse(id, document, Context.NONE).getValue();
@@ -787,7 +736,10 @@ public class ProcessOperations {
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
+     * @deprecated Use {@link DocumentOperations#downloadDocument(String)} instead; it resolves any document the
+     * credentials can read without requiring the owning process.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> downloadProcessDocumentWithResponse(UUID id, String documentUri, Context context) {
         return this.service.downloadProcessDocumentWithResponse(id, documentUri, context);
@@ -804,7 +756,10 @@ public class ProcessOperations {
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
+     * @deprecated Use {@link DocumentOperations#downloadDocument(String)} instead; it resolves any document the
+     * credentials can read without requiring the owning process.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData downloadProcessDocument(UUID id, String documentUri) {
         return this.downloadProcessDocumentWithResponse(id, documentUri, Context.NONE).getValue();

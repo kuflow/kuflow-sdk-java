@@ -23,9 +23,19 @@
 
 package com.kuflow.temporal.workflow.kuflow.model;
 
+/**
+ * Result returned by the workflow that handles a process action. Carries an optional human-readable message and,
+ * depending on the action definition type that triggered it, exactly one of the type-specific payloads
+ * ({@link WorkflowProcessUserActionResponseDownloadable}).
+ */
 public class WorkflowProcessUserActionResponse {
 
     private String message;
+
+    /**
+     * Payload populated when the action was of type {@code DOWNLOADABLE}; {@code null} otherwise.
+     */
+    private WorkflowProcessUserActionResponseDownloadable downloadable;
 
     public String getMessage() {
         return this.message;
@@ -33,5 +43,13 @@ public class WorkflowProcessUserActionResponse {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public WorkflowProcessUserActionResponseDownloadable getDownloadable() {
+        return this.downloadable;
+    }
+
+    public void setDownloadable(WorkflowProcessUserActionResponseDownloadable downloadable) {
+        this.downloadable = downloadable;
     }
 }

@@ -48,6 +48,13 @@ public final class BusinessArtifact extends AbstractAudited {
     private UUID id;
 
     /*
+     * Business Artifact resource URI, e.g. usable as `targetUri` of the `uploadDocument`
+     * operation. Format `ku:business-artifact/{id}`.
+     */
+    @Generated
+    private String uri;
+
+    /*
      * Tenant ID.
      */
     @Generated
@@ -91,6 +98,17 @@ public final class BusinessArtifact extends AbstractAudited {
     public BusinessArtifact setId(UUID id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Get the uri property: Business Artifact resource URI, e.g. usable as `targetUri` of the `uploadDocument`
+     * operation. Format `ku:business-artifact/{id}`.
+     *
+     * @return the uri value.
+     */
+    @Generated
+    public String getUri() {
+        return this.uri;
     }
 
     /**
@@ -262,6 +280,8 @@ public final class BusinessArtifact extends AbstractAudited {
                     deserializedBusinessArtifact.tenantId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("businessArtifactDefinitionRef".equals(fieldName)) {
                     deserializedBusinessArtifact.businessArtifactDefinitionRef = BusinessArtifactDefinitionRef.fromJson(reader);
+                } else if ("uri".equals(fieldName)) {
+                    deserializedBusinessArtifact.uri = reader.getString();
                 } else if ("data".equals(fieldName)) {
                     deserializedBusinessArtifact.data = JsonValue.fromJson(reader);
                 } else {
