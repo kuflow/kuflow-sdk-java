@@ -66,18 +66,6 @@ public final class BusinessArtifactPageItem extends AbstractAudited {
     @Generated
     private BusinessArtifactDefinitionRef businessArtifactDefinitionRef;
 
-    /*
-     * Who deleted this Business Artifact, present only when it is deleted.
-     */
-    @Generated
-    private UUID deletedBy;
-
-    /*
-     * When this Business Artifact was deleted, present only when it is deleted.
-     */
-    @Generated
-    private OffsetDateTime deletedAt;
-
     /**
      * Creates an instance of BusinessArtifactPageItem class.
      */
@@ -159,26 +147,6 @@ public final class BusinessArtifactPageItem extends AbstractAudited {
     public BusinessArtifactPageItem setBusinessArtifactDefinitionRef(BusinessArtifactDefinitionRef businessArtifactDefinitionRef) {
         this.businessArtifactDefinitionRef = businessArtifactDefinitionRef;
         return this;
-    }
-
-    /**
-     * Get the deletedBy property: Who deleted this Business Artifact, present only when it is deleted.
-     *
-     * @return the deletedBy value.
-     */
-    @Generated
-    public UUID getDeletedBy() {
-        return this.deletedBy;
-    }
-
-    /**
-     * Get the deletedAt property: When this Business Artifact was deleted, present only when it is deleted.
-     *
-     * @return the deletedAt value.
-     */
-    @Generated
-    public OffsetDateTime getDeletedAt() {
-        return this.deletedAt;
     }
 
     /**
@@ -289,14 +257,6 @@ public final class BusinessArtifactPageItem extends AbstractAudited {
                     deserializedBusinessArtifactPageItem.businessArtifactDefinitionRef = BusinessArtifactDefinitionRef.fromJson(reader);
                 } else if ("uri".equals(fieldName)) {
                     deserializedBusinessArtifactPageItem.uri = reader.getString();
-                } else if ("deletedBy".equals(fieldName)) {
-                    deserializedBusinessArtifactPageItem.deletedBy = reader.getNullable(nonNullReader ->
-                        UUID.fromString(nonNullReader.getString())
-                    );
-                } else if ("deletedAt".equals(fieldName)) {
-                    deserializedBusinessArtifactPageItem.deletedAt = reader.getNullable(nonNullReader ->
-                        CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())
-                    );
                 } else {
                     reader.skipChildren();
                 }

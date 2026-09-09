@@ -145,44 +145,6 @@ public class BusinessArtifactOperationTest extends AbstractOperationTest {
     }
 
     @Test
-    @DisplayName("GIVEN the includeDeleted option WHEN list business artifacts THEN the query parameter is sent")
-    public void givenTheIncludeDeletedOptionWhenListBusinessArtifactsThenTheQueryParameterIsSent() {
-        UUID businessArtifactDefinitionId = UUID.randomUUID();
-
-        givenThat(
-            get(urlPathEqualTo("/v2024-06-14/business-artifacts"))
-                .withQueryParam("businessArtifactDefinitionId", equalTo(businessArtifactDefinitionId.toString()))
-                .withQueryParam("includeDeleted", equalTo("true"))
-                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("business-artifacts-api.list.ok.json"))
-        );
-
-        BusinessArtifactFindOptions options = new BusinessArtifactFindOptions()
-            .setBusinessArtifactDefinitionId(businessArtifactDefinitionId)
-            .setIncludeDeleted(true);
-
-        this.kuFlowRestClient.getBusinessArtifactOperations().findBusinessArtifacts(options);
-    }
-
-    @Test
-    @DisplayName("GIVEN a deleted business artifact WHEN restore THEN the restored artifact is returned")
-    public void givenADeletedBusinessArtifactWhenRestoreThenTheRestoredArtifactIsReturned() {
-        UUID businessArtifactId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
-
-        givenThat(
-            post(urlPathEqualTo("/v2024-06-14/business-artifacts/" + businessArtifactId + "/~actions/restore")).willReturn(
-                ok().withHeader("Content-Type", "application/json").withBodyFile("business-artifacts-api.retrieve.ok.json")
-            )
-        );
-
-        BusinessArtifact businessArtifact = this.kuFlowRestClient
-            .getBusinessArtifactOperations()
-            .restoreBusinessArtifact(businessArtifactId);
-
-        assertThat(businessArtifact.getId()).isEqualTo(businessArtifactId);
-        assertThat(businessArtifact.getDeletedAt()).isNull();
-    }
-
-    @Test
     @DisplayName("GIVEN a value filter built from parts with a space WHEN list business artifacts THEN the encoded query parameter is sent")
     public void givenValueFilterBuiltFromPartsWithASpaceWhenListBusinessArtifactsThenTheEncodedQueryParameterIsSent() {
         String expectedValueParam = SearchCriteriaUtils.encodeFilterExpression("invoiceNumber", "eq", "INV 001");

@@ -68,14 +68,6 @@ public class BusinessArtifactFindOptions {
      */
     private final List<String> values = new LinkedList<>();
 
-    /**
-     * When {@code true}, deleted Business Artifacts are included in the results, with their {@code deletedAt} and
-     * {@code deletedBy} fields set. Only honored when the request filters by exactly one
-     * {@code businessArtifactDefinitionId} and the credentials hold manager rights over that Business Artifact
-     * Definition; in any other case the flag is silently ignored.
-     */
-    private Boolean includeDeleted;
-
     public Integer getSize() {
         return this.size;
     }
@@ -305,16 +297,6 @@ public class BusinessArtifactFindOptions {
 
     public BusinessArtifactFindOptions removeValues() {
         this.values.clear();
-
-        return this;
-    }
-
-    public Boolean getIncludeDeleted() {
-        return this.includeDeleted;
-    }
-
-    public BusinessArtifactFindOptions setIncludeDeleted(Boolean includeDeleted) {
-        this.includeDeleted = includeDeleted;
 
         return this;
     }

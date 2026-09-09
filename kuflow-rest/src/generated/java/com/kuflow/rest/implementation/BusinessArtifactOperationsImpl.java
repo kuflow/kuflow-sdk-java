@@ -110,7 +110,6 @@ public final class BusinessArtifactOperationsImpl {
             @QueryParam(value = "businessArtifactDefinitionId", multipleQueryParams = true) List<String> businessArtifactDefinitionId,
             @QueryParam(value = "businessArtifactDefinitionCode", multipleQueryParams = true) List<String> businessArtifactDefinitionCode,
             @QueryParam(value = "value", multipleQueryParams = true) List<String> value,
-            @QueryParam("includeDeleted") Boolean includeDeleted,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -127,7 +126,6 @@ public final class BusinessArtifactOperationsImpl {
             @QueryParam(value = "businessArtifactDefinitionId", multipleQueryParams = true) List<String> businessArtifactDefinitionId,
             @QueryParam(value = "businessArtifactDefinitionCode", multipleQueryParams = true) List<String> businessArtifactDefinitionCode,
             @QueryParam(value = "value", multipleQueryParams = true) List<String> value,
-            @QueryParam("includeDeleted") Boolean includeDeleted,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -186,26 +184,6 @@ public final class BusinessArtifactOperationsImpl {
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<Void> deleteBusinessArtifactSync(
-            @HostParam("$host") String host,
-            @PathParam("id") UUID id,
-            @HeaderParam("Accept") String accept,
-            Context context
-        );
-
-        @Post("/business-artifacts/{id}/~actions/restore")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<BusinessArtifact>> restoreBusinessArtifact(
-            @HostParam("$host") String host,
-            @PathParam("id") UUID id,
-            @HeaderParam("Accept") String accept,
-            Context context
-        );
-
-        @Post("/business-artifacts/{id}/~actions/restore")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Response<BusinessArtifact> restoreBusinessArtifactSync(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @HeaderParam("Accept") String accept,
@@ -456,10 +434,6 @@ public final class BusinessArtifactOperationsImpl {
      * `fieldCode operation value1 value2...` (space-separated).
      *
      * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
-     * @param includeDeleted When `true`, deleted Business Artifacts are included in the results, with their `deletedAt`
-     * and `deletedBy` fields set. Only honored when the request filters by exactly one
-     * `businessArtifactDefinitionId` and the credentials hold manager rights over that Business
-     * Artifact Definition; in any other case the flag is silently ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -473,8 +447,7 @@ public final class BusinessArtifactOperationsImpl {
         List<UUID> tenantId,
         List<UUID> businessArtifactDefinitionId,
         List<String> businessArtifactDefinitionCode,
-        List<String> value,
-        Boolean includeDeleted
+        List<String> value
     ) {
         return FluxUtil.withContext(context ->
             findBusinessArtifactsWithResponseAsync(
@@ -485,7 +458,6 @@ public final class BusinessArtifactOperationsImpl {
                 businessArtifactDefinitionId,
                 businessArtifactDefinitionCode,
                 value,
-                includeDeleted,
                 context
             )
         );
@@ -512,10 +484,6 @@ public final class BusinessArtifactOperationsImpl {
      * `fieldCode operation value1 value2...` (space-separated).
      *
      * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
-     * @param includeDeleted When `true`, deleted Business Artifacts are included in the results, with their `deletedAt`
-     * and `deletedBy` fields set. Only honored when the request filters by exactly one
-     * `businessArtifactDefinitionId` and the credentials hold manager rights over that Business
-     * Artifact Definition; in any other case the flag is silently ignored.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -531,7 +499,6 @@ public final class BusinessArtifactOperationsImpl {
         List<UUID> businessArtifactDefinitionId,
         List<String> businessArtifactDefinitionCode,
         List<String> value,
-        Boolean includeDeleted,
         Context context
     ) {
         final String accept = "application/json";
@@ -579,7 +546,6 @@ public final class BusinessArtifactOperationsImpl {
             businessArtifactDefinitionIdConverted,
             businessArtifactDefinitionCodeConverted,
             valueConverted,
-            includeDeleted,
             accept,
             context
         );
@@ -606,10 +572,6 @@ public final class BusinessArtifactOperationsImpl {
      * `fieldCode operation value1 value2...` (space-separated).
      *
      * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
-     * @param includeDeleted When `true`, deleted Business Artifacts are included in the results, with their `deletedAt`
-     * and `deletedBy` fields set. Only honored when the request filters by exactly one
-     * `businessArtifactDefinitionId` and the credentials hold manager rights over that Business
-     * Artifact Definition; in any other case the flag is silently ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -623,8 +585,7 @@ public final class BusinessArtifactOperationsImpl {
         List<UUID> tenantId,
         List<UUID> businessArtifactDefinitionId,
         List<String> businessArtifactDefinitionCode,
-        List<String> value,
-        Boolean includeDeleted
+        List<String> value
     ) {
         return findBusinessArtifactsWithResponseAsync(
             size,
@@ -633,8 +594,7 @@ public final class BusinessArtifactOperationsImpl {
             tenantId,
             businessArtifactDefinitionId,
             businessArtifactDefinitionCode,
-            value,
-            includeDeleted
+            value
         ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -658,7 +618,6 @@ public final class BusinessArtifactOperationsImpl {
         final List<UUID> businessArtifactDefinitionId = null;
         final List<String> businessArtifactDefinitionCode = null;
         final List<String> value = null;
-        final Boolean includeDeleted = null;
         return findBusinessArtifactsWithResponseAsync(
             size,
             page,
@@ -666,8 +625,7 @@ public final class BusinessArtifactOperationsImpl {
             tenantId,
             businessArtifactDefinitionId,
             businessArtifactDefinitionCode,
-            value,
-            includeDeleted
+            value
         ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -692,10 +650,6 @@ public final class BusinessArtifactOperationsImpl {
      * `fieldCode operation value1 value2...` (space-separated).
      *
      * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
-     * @param includeDeleted When `true`, deleted Business Artifacts are included in the results, with their `deletedAt`
-     * and `deletedBy` fields set. Only honored when the request filters by exactly one
-     * `businessArtifactDefinitionId` and the credentials hold manager rights over that Business
-     * Artifact Definition; in any other case the flag is silently ignored.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -711,7 +665,6 @@ public final class BusinessArtifactOperationsImpl {
         List<UUID> businessArtifactDefinitionId,
         List<String> businessArtifactDefinitionCode,
         List<String> value,
-        Boolean includeDeleted,
         Context context
     ) {
         return findBusinessArtifactsWithResponseAsync(
@@ -722,7 +675,6 @@ public final class BusinessArtifactOperationsImpl {
             businessArtifactDefinitionId,
             businessArtifactDefinitionCode,
             value,
-            includeDeleted,
             context
         ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -748,10 +700,6 @@ public final class BusinessArtifactOperationsImpl {
      * `fieldCode operation value1 value2...` (space-separated).
      *
      * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
-     * @param includeDeleted When `true`, deleted Business Artifacts are included in the results, with their `deletedAt`
-     * and `deletedBy` fields set. Only honored when the request filters by exactly one
-     * `businessArtifactDefinitionId` and the credentials hold manager rights over that Business
-     * Artifact Definition; in any other case the flag is silently ignored.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -767,7 +715,6 @@ public final class BusinessArtifactOperationsImpl {
         List<UUID> businessArtifactDefinitionId,
         List<String> businessArtifactDefinitionCode,
         List<String> value,
-        Boolean includeDeleted,
         Context context
     ) {
         final String accept = "application/json";
@@ -815,7 +762,6 @@ public final class BusinessArtifactOperationsImpl {
             businessArtifactDefinitionIdConverted,
             businessArtifactDefinitionCodeConverted,
             valueConverted,
-            includeDeleted,
             accept,
             context
         );
@@ -842,10 +788,6 @@ public final class BusinessArtifactOperationsImpl {
      * `fieldCode operation value1 value2...` (space-separated).
      *
      * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
-     * @param includeDeleted When `true`, deleted Business Artifacts are included in the results, with their `deletedAt`
-     * and `deletedBy` fields set. Only honored when the request filters by exactly one
-     * `businessArtifactDefinitionId` and the credentials hold manager rights over that Business
-     * Artifact Definition; in any other case the flag is silently ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -859,8 +801,7 @@ public final class BusinessArtifactOperationsImpl {
         List<UUID> tenantId,
         List<UUID> businessArtifactDefinitionId,
         List<String> businessArtifactDefinitionCode,
-        List<String> value,
-        Boolean includeDeleted
+        List<String> value
     ) {
         return findBusinessArtifactsWithResponse(
             size,
@@ -870,7 +811,6 @@ public final class BusinessArtifactOperationsImpl {
             businessArtifactDefinitionId,
             businessArtifactDefinitionCode,
             value,
-            includeDeleted,
             Context.NONE
         ).getValue();
     }
@@ -895,7 +835,6 @@ public final class BusinessArtifactOperationsImpl {
         final List<UUID> businessArtifactDefinitionId = null;
         final List<String> businessArtifactDefinitionCode = null;
         final List<String> value = null;
-        final Boolean includeDeleted = null;
         return findBusinessArtifactsWithResponse(
             size,
             page,
@@ -904,7 +843,6 @@ public final class BusinessArtifactOperationsImpl {
             businessArtifactDefinitionId,
             businessArtifactDefinitionCode,
             value,
-            includeDeleted,
             Context.NONE
         ).getValue();
     }
@@ -1136,8 +1074,7 @@ public final class BusinessArtifactOperationsImpl {
     /**
      * Delete a Business Artifact by ID
      *
-     * Deletes the requested Business Artifact. The deletion is soft: the Business Artifact can be
-     * brought back with the `restoreBusinessArtifact` operation.
+     * Deletes the requested Business Artifact.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1153,8 +1090,7 @@ public final class BusinessArtifactOperationsImpl {
     /**
      * Delete a Business Artifact by ID
      *
-     * Deletes the requested Business Artifact. The deletion is soft: the Business Artifact can be
-     * brought back with the `restoreBusinessArtifact` operation.
+     * Deletes the requested Business Artifact.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -1172,8 +1108,7 @@ public final class BusinessArtifactOperationsImpl {
     /**
      * Delete a Business Artifact by ID
      *
-     * Deletes the requested Business Artifact. The deletion is soft: the Business Artifact can be
-     * brought back with the `restoreBusinessArtifact` operation.
+     * Deletes the requested Business Artifact.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1189,8 +1124,7 @@ public final class BusinessArtifactOperationsImpl {
     /**
      * Delete a Business Artifact by ID
      *
-     * Deletes the requested Business Artifact. The deletion is soft: the Business Artifact can be
-     * brought back with the `restoreBusinessArtifact` operation.
+     * Deletes the requested Business Artifact.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -1207,8 +1141,7 @@ public final class BusinessArtifactOperationsImpl {
     /**
      * Delete a Business Artifact by ID
      *
-     * Deletes the requested Business Artifact. The deletion is soft: the Business Artifact can be
-     * brought back with the `restoreBusinessArtifact` operation.
+     * Deletes the requested Business Artifact.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -1226,8 +1159,7 @@ public final class BusinessArtifactOperationsImpl {
     /**
      * Delete a Business Artifact by ID
      *
-     * Deletes the requested Business Artifact. The deletion is soft: the Business Artifact can be
-     * brought back with the `restoreBusinessArtifact` operation.
+     * Deletes the requested Business Artifact.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1237,113 +1169,6 @@ public final class BusinessArtifactOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteBusinessArtifact(UUID id) {
         deleteBusinessArtifactWithResponse(id, Context.NONE);
-    }
-
-    /**
-     * Restore a deleted Business Artifact by ID
-     *
-     * Restore a previously deleted Business Artifact, the undo of the `deleteBusinessArtifact`
-     * operation. If the Business Artifact is not deleted, no action is taken.
-     *
-     * @param id The resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BusinessArtifact>> restoreBusinessArtifactWithResponseAsync(UUID id) {
-        return FluxUtil.withContext(context -> restoreBusinessArtifactWithResponseAsync(id, context));
-    }
-
-    /**
-     * Restore a deleted Business Artifact by ID
-     *
-     * Restore a previously deleted Business Artifact, the undo of the `deleteBusinessArtifact`
-     * operation. If the Business Artifact is not deleted, no action is taken.
-     *
-     * @param id The resource ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BusinessArtifact>> restoreBusinessArtifactWithResponseAsync(UUID id, Context context) {
-        final String accept = "application/json";
-        return service.restoreBusinessArtifact(this.client.getHost(), id, accept, context);
-    }
-
-    /**
-     * Restore a deleted Business Artifact by ID
-     *
-     * Restore a previously deleted Business Artifact, the undo of the `deleteBusinessArtifact`
-     * operation. If the Business Artifact is not deleted, no action is taken.
-     *
-     * @param id The resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BusinessArtifact> restoreBusinessArtifactAsync(UUID id) {
-        return restoreBusinessArtifactWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Restore a deleted Business Artifact by ID
-     *
-     * Restore a previously deleted Business Artifact, the undo of the `deleteBusinessArtifact`
-     * operation. If the Business Artifact is not deleted, no action is taken.
-     *
-     * @param id The resource ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BusinessArtifact> restoreBusinessArtifactAsync(UUID id, Context context) {
-        return restoreBusinessArtifactWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Restore a deleted Business Artifact by ID
-     *
-     * Restore a previously deleted Business Artifact, the undo of the `deleteBusinessArtifact`
-     * operation. If the Business Artifact is not deleted, no action is taken.
-     *
-     * @param id The resource ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BusinessArtifact> restoreBusinessArtifactWithResponse(UUID id, Context context) {
-        final String accept = "application/json";
-        return service.restoreBusinessArtifactSync(this.client.getHost(), id, accept, context);
-    }
-
-    /**
-     * Restore a deleted Business Artifact by ID
-     *
-     * Restore a previously deleted Business Artifact, the undo of the `deleteBusinessArtifact`
-     * operation. If the Business Artifact is not deleted, no action is taken.
-     *
-     * @param id The resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BusinessArtifact restoreBusinessArtifact(UUID id) {
-        return restoreBusinessArtifactWithResponse(id, Context.NONE).getValue();
     }
 
     /**
