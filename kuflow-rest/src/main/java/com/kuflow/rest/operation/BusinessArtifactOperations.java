@@ -93,7 +93,6 @@ public class BusinessArtifactOperations {
             ? options.getBusinessArtifactDefinitionCodes()
             : null;
         List<String> value = !options.getValues().isEmpty() ? options.getValues() : null;
-        Boolean includeDeleted = options.getIncludeDeleted();
 
         return this.service.findBusinessArtifactsWithResponse(
             size,
@@ -103,7 +102,6 @@ public class BusinessArtifactOperations {
             businessArtifactDefinitionId,
             businessArtifactDefinitionCode,
             value,
-            includeDeleted,
             context
         );
     }
@@ -242,41 +240,6 @@ public class BusinessArtifactOperations {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteBusinessArtifact(UUID id) {
         this.deleteBusinessArtifactWithResponse(id, Context.NONE);
-    }
-
-    /**
-     * Restore a deleted Business Artifact by ID
-     * <p>
-     * Restore a previously deleted Business Artifact, the undo of the delete operation. If the Business Artifact
-     * is not deleted, no action is taken.
-     *
-     * @param id The resource ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BusinessArtifact> restoreBusinessArtifactWithResponse(UUID id, Context context) {
-        return this.service.restoreBusinessArtifactWithResponse(id, context);
-    }
-
-    /**
-     * Restore a deleted Business Artifact by ID
-     * <p>
-     * Restore a previously deleted Business Artifact, the undo of the delete operation. If the Business Artifact
-     * is not deleted, no action is taken.
-     *
-     * @param id The resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BusinessArtifact restoreBusinessArtifact(UUID id) {
-        return this.restoreBusinessArtifactWithResponse(id, Context.NONE).getValue();
     }
 
     /**
