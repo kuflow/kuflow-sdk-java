@@ -45,10 +45,22 @@ import javax.annotation.Nullable;
 public class WorkflowBusinessArtifactGenericActionRequest {
 
     /**
+     * The unique identifier of the tenant the business artifact definition belongs to.
+     */
+    private UUID tenantId;
+
+    /**
      * The unique identifier of the business artifact definition the action belongs to: the definition this workflow
      * acts for.
      */
     private UUID businessArtifactDefinitionId;
+
+    /**
+     * The code of the business artifact definition the action belongs to. A generic execution may run before any
+     * artifact of the definition exists, so the code travels inline: there is no instance the workflow could retrieve
+     * it from.
+     */
+    private String businessArtifactDefinitionCode;
 
     /**
      * The type of action definition associated with this action request. Generic executions are only supported for
@@ -102,12 +114,28 @@ public class WorkflowBusinessArtifactGenericActionRequest {
     @Nullable
     private Map<String, Object> extras;
 
+    public UUID getTenantId() {
+        return this.tenantId;
+    }
+
+    public void setTenantId(UUID tenantId) {
+        this.tenantId = tenantId;
+    }
+
     public UUID getBusinessArtifactDefinitionId() {
         return this.businessArtifactDefinitionId;
     }
 
     public void setBusinessArtifactDefinitionId(UUID businessArtifactDefinitionId) {
         this.businessArtifactDefinitionId = businessArtifactDefinitionId;
+    }
+
+    public String getBusinessArtifactDefinitionCode() {
+        return this.businessArtifactDefinitionCode;
+    }
+
+    public void setBusinessArtifactDefinitionCode(String businessArtifactDefinitionCode) {
+        this.businessArtifactDefinitionCode = businessArtifactDefinitionCode;
     }
 
     public WorkflowBusinessArtifactActionDefinitionType getBusinessArtifactActionDefinitionType() {

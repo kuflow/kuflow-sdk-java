@@ -42,6 +42,7 @@ import com.kuflow.rest.model.BusinessArtifactDataUpdateParams;
 import com.kuflow.rest.model.BusinessArtifactFindOptions;
 import com.kuflow.rest.model.BusinessArtifactPage;
 import com.kuflow.rest.model.DefaultErrorException;
+import com.kuflow.rest.model.DeletedQueryParam;
 import com.kuflow.rest.model.Document;
 import com.kuflow.rest.model.DocumentReference;
 import com.kuflow.rest.model.JsonPatchOperation;
@@ -93,7 +94,7 @@ public class BusinessArtifactOperations {
             ? options.getBusinessArtifactDefinitionCodes()
             : null;
         List<String> value = !options.getValues().isEmpty() ? options.getValues() : null;
-        Boolean includeDeleted = options.getIncludeDeleted();
+        DeletedQueryParam deleted = options.getDeleted();
 
         return this.service.findBusinessArtifactsWithResponse(
             size,
@@ -103,7 +104,7 @@ public class BusinessArtifactOperations {
             businessArtifactDefinitionId,
             businessArtifactDefinitionCode,
             value,
-            includeDeleted,
+            deleted,
             context
         );
     }

@@ -55,6 +55,7 @@ import com.kuflow.rest.model.BusinessArtifactCreateParams;
 import com.kuflow.rest.model.BusinessArtifactDataUpdateParams;
 import com.kuflow.rest.model.BusinessArtifactPage;
 import com.kuflow.rest.model.DefaultErrorException;
+import com.kuflow.rest.model.DeletedQueryParam;
 import com.kuflow.rest.model.DocumentReference;
 import com.kuflow.rest.model.JsonPatchOperation;
 import java.nio.ByteBuffer;
@@ -110,7 +111,7 @@ public final class BusinessArtifactOperationsImpl {
             @QueryParam(value = "businessArtifactDefinitionId", multipleQueryParams = true) List<String> businessArtifactDefinitionId,
             @QueryParam(value = "businessArtifactDefinitionCode", multipleQueryParams = true) List<String> businessArtifactDefinitionCode,
             @QueryParam(value = "value", multipleQueryParams = true) List<String> value,
-            @QueryParam("includeDeleted") Boolean includeDeleted,
+            @QueryParam("deleted") DeletedQueryParam deleted,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -127,7 +128,7 @@ public final class BusinessArtifactOperationsImpl {
             @QueryParam(value = "businessArtifactDefinitionId", multipleQueryParams = true) List<String> businessArtifactDefinitionId,
             @QueryParam(value = "businessArtifactDefinitionCode", multipleQueryParams = true) List<String> businessArtifactDefinitionCode,
             @QueryParam(value = "value", multipleQueryParams = true) List<String> value,
-            @QueryParam("includeDeleted") Boolean includeDeleted,
+            @QueryParam("deleted") DeletedQueryParam deleted,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -456,10 +457,11 @@ public final class BusinessArtifactOperationsImpl {
      * `fieldCode operation value1 value2...` (space-separated).
      *
      * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
-     * @param includeDeleted When `true`, deleted Business Artifacts are included in the results, with their `deletedAt`
-     * and `deletedBy` fields set. Only honored when the request filters by exactly one
-     * `businessArtifactDefinitionId` and the credentials hold manager rights over that Business
-     * Artifact Definition; in any other case the flag is silently ignored.
+     * @param deleted Soft-deleted Business Artifacts filtering mode; when omitted, `EXCLUDE` applies. With `INCLUDE`
+     * or `ONLY`, deleted Business Artifacts are returned with their `deletedAt` and `deletedBy`
+     * fields set. Only honored when the request filters by exactly one `businessArtifactDefinitionId`
+     * and the credentials hold manager rights over that Business Artifact Definition; in any other
+     * case the filter silently falls back to `EXCLUDE`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -474,7 +476,7 @@ public final class BusinessArtifactOperationsImpl {
         List<UUID> businessArtifactDefinitionId,
         List<String> businessArtifactDefinitionCode,
         List<String> value,
-        Boolean includeDeleted
+        DeletedQueryParam deleted
     ) {
         return FluxUtil.withContext(context ->
             findBusinessArtifactsWithResponseAsync(
@@ -485,7 +487,7 @@ public final class BusinessArtifactOperationsImpl {
                 businessArtifactDefinitionId,
                 businessArtifactDefinitionCode,
                 value,
-                includeDeleted,
+                deleted,
                 context
             )
         );
@@ -512,10 +514,11 @@ public final class BusinessArtifactOperationsImpl {
      * `fieldCode operation value1 value2...` (space-separated).
      *
      * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
-     * @param includeDeleted When `true`, deleted Business Artifacts are included in the results, with their `deletedAt`
-     * and `deletedBy` fields set. Only honored when the request filters by exactly one
-     * `businessArtifactDefinitionId` and the credentials hold manager rights over that Business
-     * Artifact Definition; in any other case the flag is silently ignored.
+     * @param deleted Soft-deleted Business Artifacts filtering mode; when omitted, `EXCLUDE` applies. With `INCLUDE`
+     * or `ONLY`, deleted Business Artifacts are returned with their `deletedAt` and `deletedBy`
+     * fields set. Only honored when the request filters by exactly one `businessArtifactDefinitionId`
+     * and the credentials hold manager rights over that Business Artifact Definition; in any other
+     * case the filter silently falls back to `EXCLUDE`.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -531,7 +534,7 @@ public final class BusinessArtifactOperationsImpl {
         List<UUID> businessArtifactDefinitionId,
         List<String> businessArtifactDefinitionCode,
         List<String> value,
-        Boolean includeDeleted,
+        DeletedQueryParam deleted,
         Context context
     ) {
         final String accept = "application/json";
@@ -579,7 +582,7 @@ public final class BusinessArtifactOperationsImpl {
             businessArtifactDefinitionIdConverted,
             businessArtifactDefinitionCodeConverted,
             valueConverted,
-            includeDeleted,
+            deleted,
             accept,
             context
         );
@@ -606,10 +609,11 @@ public final class BusinessArtifactOperationsImpl {
      * `fieldCode operation value1 value2...` (space-separated).
      *
      * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
-     * @param includeDeleted When `true`, deleted Business Artifacts are included in the results, with their `deletedAt`
-     * and `deletedBy` fields set. Only honored when the request filters by exactly one
-     * `businessArtifactDefinitionId` and the credentials hold manager rights over that Business
-     * Artifact Definition; in any other case the flag is silently ignored.
+     * @param deleted Soft-deleted Business Artifacts filtering mode; when omitted, `EXCLUDE` applies. With `INCLUDE`
+     * or `ONLY`, deleted Business Artifacts are returned with their `deletedAt` and `deletedBy`
+     * fields set. Only honored when the request filters by exactly one `businessArtifactDefinitionId`
+     * and the credentials hold manager rights over that Business Artifact Definition; in any other
+     * case the filter silently falls back to `EXCLUDE`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -624,7 +628,7 @@ public final class BusinessArtifactOperationsImpl {
         List<UUID> businessArtifactDefinitionId,
         List<String> businessArtifactDefinitionCode,
         List<String> value,
-        Boolean includeDeleted
+        DeletedQueryParam deleted
     ) {
         return findBusinessArtifactsWithResponseAsync(
             size,
@@ -634,7 +638,7 @@ public final class BusinessArtifactOperationsImpl {
             businessArtifactDefinitionId,
             businessArtifactDefinitionCode,
             value,
-            includeDeleted
+            deleted
         ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -658,7 +662,7 @@ public final class BusinessArtifactOperationsImpl {
         final List<UUID> businessArtifactDefinitionId = null;
         final List<String> businessArtifactDefinitionCode = null;
         final List<String> value = null;
-        final Boolean includeDeleted = null;
+        final DeletedQueryParam deleted = null;
         return findBusinessArtifactsWithResponseAsync(
             size,
             page,
@@ -667,7 +671,7 @@ public final class BusinessArtifactOperationsImpl {
             businessArtifactDefinitionId,
             businessArtifactDefinitionCode,
             value,
-            includeDeleted
+            deleted
         ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -692,10 +696,11 @@ public final class BusinessArtifactOperationsImpl {
      * `fieldCode operation value1 value2...` (space-separated).
      *
      * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
-     * @param includeDeleted When `true`, deleted Business Artifacts are included in the results, with their `deletedAt`
-     * and `deletedBy` fields set. Only honored when the request filters by exactly one
-     * `businessArtifactDefinitionId` and the credentials hold manager rights over that Business
-     * Artifact Definition; in any other case the flag is silently ignored.
+     * @param deleted Soft-deleted Business Artifacts filtering mode; when omitted, `EXCLUDE` applies. With `INCLUDE`
+     * or `ONLY`, deleted Business Artifacts are returned with their `deletedAt` and `deletedBy`
+     * fields set. Only honored when the request filters by exactly one `businessArtifactDefinitionId`
+     * and the credentials hold manager rights over that Business Artifact Definition; in any other
+     * case the filter silently falls back to `EXCLUDE`.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -711,7 +716,7 @@ public final class BusinessArtifactOperationsImpl {
         List<UUID> businessArtifactDefinitionId,
         List<String> businessArtifactDefinitionCode,
         List<String> value,
-        Boolean includeDeleted,
+        DeletedQueryParam deleted,
         Context context
     ) {
         return findBusinessArtifactsWithResponseAsync(
@@ -722,7 +727,7 @@ public final class BusinessArtifactOperationsImpl {
             businessArtifactDefinitionId,
             businessArtifactDefinitionCode,
             value,
-            includeDeleted,
+            deleted,
             context
         ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -748,10 +753,11 @@ public final class BusinessArtifactOperationsImpl {
      * `fieldCode operation value1 value2...` (space-separated).
      *
      * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
-     * @param includeDeleted When `true`, deleted Business Artifacts are included in the results, with their `deletedAt`
-     * and `deletedBy` fields set. Only honored when the request filters by exactly one
-     * `businessArtifactDefinitionId` and the credentials hold manager rights over that Business
-     * Artifact Definition; in any other case the flag is silently ignored.
+     * @param deleted Soft-deleted Business Artifacts filtering mode; when omitted, `EXCLUDE` applies. With `INCLUDE`
+     * or `ONLY`, deleted Business Artifacts are returned with their `deletedAt` and `deletedBy`
+     * fields set. Only honored when the request filters by exactly one `businessArtifactDefinitionId`
+     * and the credentials hold manager rights over that Business Artifact Definition; in any other
+     * case the filter silently falls back to `EXCLUDE`.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -767,7 +773,7 @@ public final class BusinessArtifactOperationsImpl {
         List<UUID> businessArtifactDefinitionId,
         List<String> businessArtifactDefinitionCode,
         List<String> value,
-        Boolean includeDeleted,
+        DeletedQueryParam deleted,
         Context context
     ) {
         final String accept = "application/json";
@@ -815,7 +821,7 @@ public final class BusinessArtifactOperationsImpl {
             businessArtifactDefinitionIdConverted,
             businessArtifactDefinitionCodeConverted,
             valueConverted,
-            includeDeleted,
+            deleted,
             accept,
             context
         );
@@ -842,10 +848,11 @@ public final class BusinessArtifactOperationsImpl {
      * `fieldCode operation value1 value2...` (space-separated).
      *
      * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
-     * @param includeDeleted When `true`, deleted Business Artifacts are included in the results, with their `deletedAt`
-     * and `deletedBy` fields set. Only honored when the request filters by exactly one
-     * `businessArtifactDefinitionId` and the credentials hold manager rights over that Business
-     * Artifact Definition; in any other case the flag is silently ignored.
+     * @param deleted Soft-deleted Business Artifacts filtering mode; when omitted, `EXCLUDE` applies. With `INCLUDE`
+     * or `ONLY`, deleted Business Artifacts are returned with their `deletedAt` and `deletedBy`
+     * fields set. Only honored when the request filters by exactly one `businessArtifactDefinitionId`
+     * and the credentials hold manager rights over that Business Artifact Definition; in any other
+     * case the filter silently falls back to `EXCLUDE`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -860,7 +867,7 @@ public final class BusinessArtifactOperationsImpl {
         List<UUID> businessArtifactDefinitionId,
         List<String> businessArtifactDefinitionCode,
         List<String> value,
-        Boolean includeDeleted
+        DeletedQueryParam deleted
     ) {
         return findBusinessArtifactsWithResponse(
             size,
@@ -870,7 +877,7 @@ public final class BusinessArtifactOperationsImpl {
             businessArtifactDefinitionId,
             businessArtifactDefinitionCode,
             value,
-            includeDeleted,
+            deleted,
             Context.NONE
         ).getValue();
     }
@@ -895,7 +902,7 @@ public final class BusinessArtifactOperationsImpl {
         final List<UUID> businessArtifactDefinitionId = null;
         final List<String> businessArtifactDefinitionCode = null;
         final List<String> value = null;
-        final Boolean includeDeleted = null;
+        final DeletedQueryParam deleted = null;
         return findBusinessArtifactsWithResponse(
             size,
             page,
@@ -904,7 +911,7 @@ public final class BusinessArtifactOperationsImpl {
             businessArtifactDefinitionId,
             businessArtifactDefinitionCode,
             value,
-            includeDeleted,
+            deleted,
             Context.NONE
         ).getValue();
     }
