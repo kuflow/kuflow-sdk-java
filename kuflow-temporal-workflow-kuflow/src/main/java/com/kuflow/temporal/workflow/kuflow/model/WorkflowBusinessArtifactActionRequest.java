@@ -41,6 +41,23 @@ import javax.annotation.Nullable;
 public class WorkflowBusinessArtifactActionRequest {
 
     /**
+     * The unique identifier of the tenant the business artifact belongs to.
+     */
+    private UUID tenantId;
+
+    /**
+     * The unique identifier of the business artifact definition the artifact belongs to. Denormalized — the same
+     * context header as the bulk and generic payloads — so the workflow does not need to retrieve the artifact just
+     * to learn it.
+     */
+    private UUID businessArtifactDefinitionId;
+
+    /**
+     * The code of the business artifact definition the artifact belongs to.
+     */
+    private String businessArtifactDefinitionCode;
+
+    /**
      * The unique identifier of a business artifact.
      * This identifier is used to track, manage, and reference a specific business artifact
      * within the workflow system.
@@ -95,6 +112,30 @@ public class WorkflowBusinessArtifactActionRequest {
      */
     @Nullable
     private Map<String, Object> extras;
+
+    public UUID getTenantId() {
+        return this.tenantId;
+    }
+
+    public void setTenantId(UUID tenantId) {
+        this.tenantId = tenantId;
+    }
+
+    public UUID getBusinessArtifactDefinitionId() {
+        return this.businessArtifactDefinitionId;
+    }
+
+    public void setBusinessArtifactDefinitionId(UUID businessArtifactDefinitionId) {
+        this.businessArtifactDefinitionId = businessArtifactDefinitionId;
+    }
+
+    public String getBusinessArtifactDefinitionCode() {
+        return this.businessArtifactDefinitionCode;
+    }
+
+    public void setBusinessArtifactDefinitionCode(String businessArtifactDefinitionCode) {
+        this.businessArtifactDefinitionCode = businessArtifactDefinitionCode;
+    }
 
     public UUID getBusinessArtifactId() {
         return this.businessArtifactId;

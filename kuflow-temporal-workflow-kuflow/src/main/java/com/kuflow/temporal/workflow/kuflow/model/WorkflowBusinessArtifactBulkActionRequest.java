@@ -41,9 +41,26 @@ import javax.annotation.Nullable;
  * selection as {@code items}: one action value exists per artifact — all sharing this workflow's instance id — and the
  * workflow retrieves each artifact's validated input (and downloads its per-artifact document copies) through the
  * artifact-scoped API using the pair. {@code businessArtifactBatchExecutionId} is the correlation key back to the
- * batch execution that fired the workflow.
+ * batch execution that fired the workflow. The tenant and business artifact definition (id and code) travel
+ * denormalized — the same context header as the individual and generic payloads — so the workflow does not need to
+ * retrieve an anchor artifact just to learn them.
  */
 public class WorkflowBusinessArtifactBulkActionRequest {
+
+    /**
+     * The unique identifier of the tenant the business artifact definition belongs to.
+     */
+    private UUID tenantId;
+
+    /**
+     * The unique identifier of the business artifact definition the selection belongs to.
+     */
+    private UUID businessArtifactDefinitionId;
+
+    /**
+     * The code of the business artifact definition the selection belongs to.
+     */
+    private String businessArtifactDefinitionCode;
 
     /**
      * The materialized selection: one entry per business artifact that passed the per-artifact checks, in ascending
@@ -96,6 +113,30 @@ public class WorkflowBusinessArtifactBulkActionRequest {
      */
     @Nullable
     private Map<String, Object> extras;
+
+    public UUID getTenantId() {
+        return this.tenantId;
+    }
+
+    public void setTenantId(UUID tenantId) {
+        this.tenantId = tenantId;
+    }
+
+    public UUID getBusinessArtifactDefinitionId() {
+        return this.businessArtifactDefinitionId;
+    }
+
+    public void setBusinessArtifactDefinitionId(UUID businessArtifactDefinitionId) {
+        this.businessArtifactDefinitionId = businessArtifactDefinitionId;
+    }
+
+    public String getBusinessArtifactDefinitionCode() {
+        return this.businessArtifactDefinitionCode;
+    }
+
+    public void setBusinessArtifactDefinitionCode(String businessArtifactDefinitionCode) {
+        this.businessArtifactDefinitionCode = businessArtifactDefinitionCode;
+    }
 
     @Nonnull
     public List<WorkflowBusinessArtifactBulkActionRequestItem> getItems() {
