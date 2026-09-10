@@ -36,6 +36,7 @@ import com.azure.core.util.BinaryData;
 import com.kuflow.rest.model.BusinessArtifact;
 import com.kuflow.rest.model.BusinessArtifactFindOptions;
 import com.kuflow.rest.model.BusinessArtifactPage;
+import com.kuflow.rest.model.DeletedQueryParam;
 import com.kuflow.rest.model.Document;
 import com.kuflow.rest.model.DocumentReference;
 import com.kuflow.rest.util.SearchCriteriaUtils;
@@ -145,20 +146,20 @@ public class BusinessArtifactOperationTest extends AbstractOperationTest {
     }
 
     @Test
-    @DisplayName("GIVEN the includeDeleted option WHEN list business artifacts THEN the query parameter is sent")
-    public void givenTheIncludeDeletedOptionWhenListBusinessArtifactsThenTheQueryParameterIsSent() {
+    @DisplayName("GIVEN the deleted filter option WHEN list business artifacts THEN the query parameter is sent")
+    public void givenTheDeletedQueryParamOptionWhenListBusinessArtifactsThenTheQueryParameterIsSent() {
         UUID businessArtifactDefinitionId = UUID.randomUUID();
 
         givenThat(
             get(urlPathEqualTo("/v2024-06-14/business-artifacts"))
                 .withQueryParam("businessArtifactDefinitionId", equalTo(businessArtifactDefinitionId.toString()))
-                .withQueryParam("includeDeleted", equalTo("true"))
+                .withQueryParam("deleted", equalTo("INCLUDE"))
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("business-artifacts-api.list.ok.json"))
         );
 
         BusinessArtifactFindOptions options = new BusinessArtifactFindOptions()
             .setBusinessArtifactDefinitionId(businessArtifactDefinitionId)
-            .setIncludeDeleted(true);
+            .setDeleted(DeletedQueryParam.INCLUDE);
 
         this.kuFlowRestClient.getBusinessArtifactOperations().findBusinessArtifacts(options);
     }

@@ -69,12 +69,13 @@ public class BusinessArtifactFindOptions {
     private final List<String> values = new LinkedList<>();
 
     /**
-     * When {@code true}, deleted Business Artifacts are included in the results, with their {@code deletedAt} and
-     * {@code deletedBy} fields set. Only honored when the request filters by exactly one
+     * Soft-deleted Business Artifacts filtering mode; when {@code null}, {@link DeletedQueryParam#EXCLUDE} applies. With
+     * {@link DeletedQueryParam#INCLUDE} or {@link DeletedQueryParam#ONLY}, deleted Business Artifacts are returned with their
+     * {@code deletedAt} and {@code deletedBy} fields set. Only honored when the request filters by exactly one
      * {@code businessArtifactDefinitionId} and the credentials hold manager rights over that Business Artifact
-     * Definition; in any other case the flag is silently ignored.
+     * Definition; in any other case the filter silently falls back to {@code EXCLUDE}.
      */
-    private Boolean includeDeleted;
+    private DeletedQueryParam deleted;
 
     public Integer getSize() {
         return this.size;
@@ -309,12 +310,12 @@ public class BusinessArtifactFindOptions {
         return this;
     }
 
-    public Boolean getIncludeDeleted() {
-        return this.includeDeleted;
+    public DeletedQueryParam getDeleted() {
+        return this.deleted;
     }
 
-    public BusinessArtifactFindOptions setIncludeDeleted(Boolean includeDeleted) {
-        this.includeDeleted = includeDeleted;
+    public BusinessArtifactFindOptions setDeleted(DeletedQueryParam deleted) {
+        this.deleted = deleted;
 
         return this;
     }
