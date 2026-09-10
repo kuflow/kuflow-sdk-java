@@ -72,6 +72,18 @@ public final class BusinessArtifact extends AbstractAudited {
     @Generated
     private JsonValue data;
 
+    /*
+     * Who deleted this Business Artifact, present only when it is deleted.
+     */
+    @Generated
+    private UUID deletedBy;
+
+    /*
+     * When this Business Artifact was deleted, present only when it is deleted.
+     */
+    @Generated
+    private OffsetDateTime deletedAt;
+
     /**
      * Creates an instance of BusinessArtifact class.
      */
@@ -175,6 +187,26 @@ public final class BusinessArtifact extends AbstractAudited {
     public BusinessArtifact setData(JsonValue data) {
         this.data = data;
         return this;
+    }
+
+    /**
+     * Get the deletedBy property: Who deleted this Business Artifact, present only when it is deleted.
+     *
+     * @return the deletedBy value.
+     */
+    @Generated
+    public UUID getDeletedBy() {
+        return this.deletedBy;
+    }
+
+    /**
+     * Get the deletedAt property: When this Business Artifact was deleted, present only when it is deleted.
+     *
+     * @return the deletedAt value.
+     */
+    @Generated
+    public OffsetDateTime getDeletedAt() {
+        return this.deletedAt;
     }
 
     /**
@@ -284,6 +316,14 @@ public final class BusinessArtifact extends AbstractAudited {
                     deserializedBusinessArtifact.uri = reader.getString();
                 } else if ("data".equals(fieldName)) {
                     deserializedBusinessArtifact.data = JsonValue.fromJson(reader);
+                } else if ("deletedBy".equals(fieldName)) {
+                    deserializedBusinessArtifact.deletedBy = reader.getNullable(nonNullReader ->
+                        UUID.fromString(nonNullReader.getString())
+                    );
+                } else if ("deletedAt".equals(fieldName)) {
+                    deserializedBusinessArtifact.deletedAt = reader.getNullable(nonNullReader ->
+                        CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())
+                    );
                 } else {
                     reader.skipChildren();
                 }
