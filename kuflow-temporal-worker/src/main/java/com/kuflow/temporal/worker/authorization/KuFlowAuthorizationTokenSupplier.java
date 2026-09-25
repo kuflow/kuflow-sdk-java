@@ -33,6 +33,9 @@ import com.kuflow.temporal.worker.connection.WorkerInformation;
 import io.temporal.authorization.AuthorizationTokenSupplier;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.function.Supplier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,15 +49,28 @@ public class KuFlowAuthorizationTokenSupplier implements AuthorizationTokenSuppl
 
     private final AuthenticationOperations authenticationOperations;
 
-    private final WorkerInformation workerInformation;
+    private final Supplier<UUID> tenantIdSupplier;
 
     private volatile String token;
 
     private volatile Instant tokenExpireAt;
 
-    public KuFlowAuthorizationTokenSupplier(KuFlowRestClient kuFlowRestClient, WorkerInformation workerInformation) {
+    /**
+     * @param kuFlowRestClient rest client to request the tokens
+     * @param tenantIdSupplier tenant of the tokens, read on each token request. It can supply {@code null}
+     */
+    public KuFlowAuthorizationTokenSupplier(KuFlowRestClient kuFlowRestClient, Supplier<UUID> tenantIdSupplier) {
         this.authenticationOperations = kuFlowRestClient.getAuthenticationOperations();
-        this.workerInformation = workerInformation;
+        this.tenantIdSupplier = Objects.requireNonNull(tenantIdSupplier, "'tenantIdSupplier' is required");
+    }
+
+    /**
+     * @deprecated Use {@link #KuFlowAuthorizationTokenSupplier(KuFlowRestClient, Supplier)} instead, the tenant belongs
+     * to the connection, not to a worker. This constructor is maintained for backward compatibility.
+     */
+    @Deprecated
+    public KuFlowAuthorizationTokenSupplier(KuFlowRestClient kuFlowRestClient, WorkerInformation workerInformation) {
+        this(kuFlowRestClient, workerInformation::getTenantId);
     }
 
     @Override
@@ -80,7 +96,7 @@ public class KuFlowAuthorizationTokenSupplier implements AuthorizationTokenSuppl
 
             AuthenticationCreateParams params = new AuthenticationCreateParams()
                 .setType(AuthenticationType.ENGINE_TOKEN)
-                .setTenantId(this.workerInformation.getTenantId());
+                .setTenantId(this.tenantIdSupplier.get());
 
             Authentication authentication = this.authenticationOperations.createAuthentication(params);
             AuthenticationEngineToken authenticationEngineToken = authentication.getEngineToken();

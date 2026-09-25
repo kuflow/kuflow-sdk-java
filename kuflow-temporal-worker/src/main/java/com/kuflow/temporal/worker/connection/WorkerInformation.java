@@ -42,6 +42,8 @@ public class WorkerInformation {
 
     private final String taskQueue;
 
+    private final String identity;
+
     private final Set<String> workflowTypes;
 
     private final Set<String> activityTypes;
@@ -56,6 +58,7 @@ public class WorkerInformation {
 
     public WorkerInformation(WorkerBuilder workerBuilder) {
         this.taskQueue = workerBuilder.getTaskQueue();
+        this.identity = workerBuilder.getWorkerOptions() != null ? workerBuilder.getWorkerOptions().getIdentity() : null;
         this.workflowTypes = workerBuilder
             .getWorkflowImplementationClasses()
             .stream()
@@ -71,6 +74,7 @@ public class WorkerInformation {
 
     protected WorkerInformation(String taskQueue, Set<String> workflowTypes, Set<String> activityTypes) {
         this.taskQueue = Objects.requireNonNull(taskQueue, "'taskQueue' is required");
+        this.identity = null;
         this.workflowTypes = Objects.requireNonNull(workflowTypes, "'workflowTypes' is required");
         this.activityTypes = Objects.requireNonNull(activityTypes, "'activityTypes' is required");
     }
@@ -104,6 +108,16 @@ public class WorkerInformation {
 
     public String getTaskQueue() {
         return this.taskQueue;
+    }
+
+    /**
+     * Identity configured in the worker options.
+     *
+     * @return the identity, or {@code null} if the worker uses the identity of the workflow client
+     */
+    @Nullable
+    public String getIdentity() {
+        return this.identity;
     }
 
     public Set<String> getWorkflowTypes() {
