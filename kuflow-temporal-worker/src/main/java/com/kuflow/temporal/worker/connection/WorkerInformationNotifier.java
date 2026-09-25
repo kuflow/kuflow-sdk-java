@@ -112,13 +112,27 @@ public class WorkerInformationNotifier {
         }
     }
 
+    /**
+     * A failure of any worker counts once per round, so a registered worker does not hide the failure of another one.
+     */
     private void createOrUpdateWorkers() {
-        InetAddress localHostInetAddress = this.getLocalHostInetAddress();
-        this.workerInformationList.forEach(workerInformation -> this.createOrUpdateWorker(workerInformation, localHostInetAddress));
+        boolean registered = true;
+        try {
+            InetAddress localHostInetAddress = this.getLocalHostInetAddress();
+            for (WorkerInformation workerInformation : this.workerInformationList) {
+                registered &= this.createOrUpdateWorker(workerInformation, localHostInetAddress);
+            }
+        } catch (Exception e) {
+            LOGGER.error("There are some problems registering the workers", e);
+            registered = false;
+        }
+
+        this.consecutiveFailures = registered ? 0 : this.consecutiveFailures + 1;
     }
 
-    private void createOrUpdateWorker(WorkerInformation workerInformation, InetAddress localHostInetAddress) {
-        String workerIdentity = this.workflowClientOptions.getIdentity();
+    private boolean createOrUpdateWorker(WorkerInformation workerInformation, InetAddress localHostInetAddress) {
+        String workerIdentity =
+            workerInformation.getIdentity() != null ? workerInformation.getIdentity() : this.workflowClientOptions.getIdentity();
 
         try {
             WorkerCreateParams workerCreateParams = new WorkerCreateParams()
@@ -141,15 +155,17 @@ public class WorkerInformationNotifier {
                 workerIdentity,
                 workerRestResponse.getValue().getId()
             );
-            this.consecutiveFailures = 0;
 
             HttpHeader delayWindowHeader = workerRestResponse.getHeaders().get(HttpHeaderName.fromString(HEADER_X_KF_DELAY_WINDOW));
             if (delayWindowHeader != null) {
                 this.delayWindow = Duration.ofSeconds(Long.parseLong(delayWindowHeader.getValue()));
             }
+
+            return true;
         } catch (Exception e) {
             LOGGER.error("There are some problems registering worker {}/{}", workerInformation.getTaskQueue(), workerIdentity, e);
-            this.consecutiveFailures++;
+
+            return false;
         }
     }
 

@@ -49,13 +49,17 @@ import io.temporal.common.converter.CodecDataConverter;
 import io.temporal.common.converter.DataConverter;
 import io.temporal.common.converter.DefaultDataConverter;
 import io.temporal.common.converter.JacksonJsonPayloadConverter;
+import io.temporal.common.interceptors.WorkerInterceptor;
 import io.temporal.serviceclient.WorkflowServiceStubs;
 import io.temporal.serviceclient.WorkflowServiceStubsOptions;
 import io.temporal.worker.Worker;
 import io.temporal.worker.WorkerFactory;
 import io.temporal.worker.WorkerFactoryOptions;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -65,7 +69,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Configure a temporal client and worker with KuFlow requirements.
+ * Configure a temporal client and workers with KuFlow requirements.
  */
 public class KuFlowTemporalConnection {
 
@@ -81,12 +85,14 @@ public class KuFlowTemporalConnection {
 
     private final WorkflowClientOptions.Builder workflowClientBuilder = WorkflowClientOptions.newBuilder();
 
+    private final WorkerFactoryOptions.Builder workerFactoryBuilder = WorkerFactoryOptions.newBuilder();
+
     private final WorkerInformationNotifierConfigurationBuilder workerInformationNotifierConfigurationBuilder =
         WorkerInformationNotifierConfigurationBuilder.instance();
 
-    private WorkerBuilder workerBuilder;
+    private final Map<String, WorkerBuilder> workerBuilderByTaskQueue = new LinkedHashMap<>();
 
-    private WorkerInformation workerInformation;
+    private final Map<String, WorkerInformation> workerInformationByTaskQueue = new LinkedHashMap<>();
 
     private WorkerInformationNotifier workerInformationNotifier;
 
@@ -149,12 +155,69 @@ public class KuFlowTemporalConnection {
         return this.createWorkerFactory();
     }
 
+    /**
+     * @deprecated Use {@link #getWorker(String)} or {@link #getWorkers()} instead, a connection can serve several task
+     * queues. This method is maintained for backward compatibility and fails if more than one worker is configured.
+     */
+    @Deprecated
     public Worker getWorker() {
-        return this.workerInformation.getWorker();
+        WorkerInformation workerInformation = this.getSingleWorkerInformation();
+
+        return workerInformation != null ? workerInformation.getWorker() : null;
     }
 
+    /**
+     * Get the worker of a task queue. It is available once the worker factory is created.
+     *
+     * @param taskQueue task queue of the worker
+     * @return the worker, or {@code null} if no worker is configured for the task queue or the worker factory is not
+     * created yet
+     */
+    @Nullable
+    public Worker getWorker(String taskQueue) {
+        WorkerInformation workerInformation = this.workerInformationByTaskQueue.get(taskQueue);
+
+        return workerInformation != null ? workerInformation.getWorker() : null;
+    }
+
+    /**
+     * Get the workers, one per configured task queue, in configuration order. They are available once the worker
+     * factory is created.
+     *
+     * @return the created workers
+     */
+    public List<Worker> getWorkers() {
+        return this.workerInformationByTaskQueue.values().stream().map(WorkerInformation::getWorker).filter(Objects::nonNull).toList();
+    }
+
+    /**
+     * @deprecated Use {@link #getWorkerInformation(String)} or {@link #getWorkerInformationList()} instead, a
+     * connection can serve several task queues. This method is maintained for backward compatibility and fails if more
+     * than one worker is configured.
+     */
+    @Deprecated
     public WorkerInformation getWorkerInformation() {
-        return this.workerInformation;
+        return this.getSingleWorkerInformation();
+    }
+
+    /**
+     * Get the information of the worker configured for a task queue.
+     *
+     * @param taskQueue task queue of the worker
+     * @return the worker information, or {@code null} if no worker is configured for the task queue
+     */
+    @Nullable
+    public WorkerInformation getWorkerInformation(String taskQueue) {
+        return this.workerInformationByTaskQueue.get(taskQueue);
+    }
+
+    /**
+     * Get the information of the configured workers, one per task queue, in configuration order.
+     *
+     * @return the worker information list
+     */
+    public List<WorkerInformation> getWorkerInformationList() {
+        return List.copyOf(this.workerInformationByTaskQueue.values());
     }
 
     public KuFlowTemporalConnection withInstallationId(@Nullable UUID installationId) {
@@ -228,7 +291,23 @@ public class KuFlowTemporalConnection {
     }
 
     /**
-     * Configure a {@link Worker} to be started
+     * Configure the {@link WorkerFactory} that creates all the workers. Its workflow cache and workflow threads are
+     * shared by every task queue. The KuFlow encryption interceptor is always added after the configured worker
+     * interceptors.
+     */
+    public synchronized KuFlowTemporalConnection configureWorkerFactory(Consumer<WorkerFactoryOptions.Builder> configurer) {
+        this.checkIsNotStarted();
+
+        configurer.accept(this.workerFactoryBuilder);
+
+        return this;
+    }
+
+    /**
+     * Configure a {@link Worker} to be started. Each invocation configures one more worker, polling the task queue of
+     * the builder, so the same connection can serve several task queues.
+     *
+     * @throws KuFlowTemporalException if the task queue is missing or another worker is configured for it
      */
     public synchronized KuFlowTemporalConnection configureWorker(Consumer<WorkerBuilder> configurer) {
         this.checkIsNotStarted();
@@ -236,8 +315,22 @@ public class KuFlowTemporalConnection {
         WorkerBuilder workerBuilder = WorkerBuilder.instance();
         configurer.accept(workerBuilder);
 
-        this.workerBuilder = workerBuilder;
-        this.workerInformation = new WorkerInformation(workerBuilder);
+        String taskQueue = workerBuilder.getTaskQueue();
+        if (taskQueue == null || taskQueue.isBlank()) {
+            throw new KuFlowTemporalException("The worker task queue is required");
+        }
+        if (this.workerBuilderByTaskQueue.containsKey(taskQueue)) {
+            throw new KuFlowTemporalException("Duplicate task queue: " + taskQueue);
+        }
+
+        WorkerInformation workerInformation = new WorkerInformation(workerBuilder);
+
+        this.workerBuilderByTaskQueue.put(taskQueue, workerBuilder);
+        this.workerInformationByTaskQueue.put(taskQueue, workerInformation);
+
+        if (this.workerFactory != null) {
+            this.newWorker(workerBuilder);
+        }
 
         return this;
     }
@@ -250,11 +343,17 @@ public class KuFlowTemporalConnection {
             return;
         }
 
+        if (this.workerInformationByTaskQueue.isEmpty()) {
+            throw new KuFlowTemporalException("At least one worker must be configured");
+        }
+
         LOGGER.info("Starting KuFlowTemporal Connection");
 
-        this.workerInformation.setInstallationId(this.installationId);
-        this.workerInformation.setTenantId(this.tenantId);
-        this.workerInformation.setRobotIds(this.robotIds);
+        this.workerInformationByTaskQueue.values().forEach(workerInformation -> {
+            workerInformation.setInstallationId(this.installationId);
+            workerInformation.setTenantId(this.tenantId);
+            workerInformation.setRobotIds(this.robotIds);
+        });
 
         this.applyDefaultConfiguration();
 
@@ -262,7 +361,7 @@ public class KuFlowTemporalConnection {
             this.kuFlowRestClient,
             this.workflowClientBuilder.validateAndBuildWithDefaults(),
             this.workerInformationNotifierConfigurationBuilder.build(),
-            List.of(this.workerInformation)
+            this.getWorkerInformationList()
         );
         this.workerInformationNotifier.start();
 
@@ -329,7 +428,7 @@ public class KuFlowTemporalConnection {
         }
 
         AuthorizationGrpcMetadataProvider authorizationGrpcMetadataProvider = new AuthorizationGrpcMetadataProvider(
-            new KuFlowAuthorizationTokenSupplier(this.kuFlowRestClient, this.workerInformation)
+            new KuFlowAuthorizationTokenSupplier(this.kuFlowRestClient, () -> this.tenantId)
         );
 
         WorkflowServiceStubsOptions options = this.workflowServiceStubsBuilder
@@ -368,13 +467,9 @@ public class KuFlowTemporalConnection {
 
         WorkflowClient workflowClient = this.getOrCreateWorkflowClient();
 
-        WorkerFactoryOptions workerFactoryOptions = WorkerFactoryOptions.newBuilder()
-            .setWorkerInterceptors(new EncryptionWorkerInterceptor())
-            .validateAndBuildWithDefaults();
+        this.workerFactory = WorkerFactory.newInstance(workflowClient, this.workerFactoryOptions());
 
-        this.workerFactory = WorkerFactory.newInstance(workflowClient, workerFactoryOptions);
-
-        this.newWorker(this.workerBuilder);
+        this.workerBuilderByTaskQueue.values().forEach(this::newWorker);
 
         return this.workerFactory;
     }
@@ -390,7 +485,7 @@ public class KuFlowTemporalConnection {
             .getActivityImplementations()
             .forEach(activityImplementationRegister -> this.configureWorker(worker, activityImplementationRegister));
 
-        this.workerInformation.registerWorker(worker);
+        this.workerInformationByTaskQueue.get(workerBuilder.getTaskQueue()).registerWorker(worker);
     }
 
     private void configureWorker(Worker worker, WorkflowImplementationRegister workflowImplementationRegister) {
@@ -406,6 +501,31 @@ public class KuFlowTemporalConnection {
 
     private void configureWorker(Worker worker, ActivityImplementationRegister activityImplementationRegister) {
         worker.registerActivitiesImplementations(activityImplementationRegister.getActivityImplementations());
+    }
+
+    /**
+     * Options of the {@link WorkerFactory}: the configured ones plus the KuFlow encryption interceptor.
+     */
+    WorkerFactoryOptions workerFactoryOptions() {
+        WorkerFactoryOptions configuredWorkerFactoryOptions = this.workerFactoryBuilder.build();
+
+        return WorkerFactoryOptions.newBuilder(configuredWorkerFactoryOptions)
+            .setWorkerInterceptors(this.workerInterceptors(configuredWorkerFactoryOptions.getWorkerInterceptors()))
+            .validateAndBuildWithDefaults();
+    }
+
+    /**
+     * The encryption interceptor goes last so that it is the outermost one: the encryption wrappers it adds reach the
+     * payload converter without passing through the configured interceptors.
+     */
+    private WorkerInterceptor[] workerInterceptors(@Nullable WorkerInterceptor[] configuredWorkerInterceptors) {
+        List<WorkerInterceptor> workerInterceptors = new LinkedList<>();
+        if (configuredWorkerInterceptors != null) {
+            workerInterceptors.addAll(Arrays.asList(configuredWorkerInterceptors));
+        }
+        workerInterceptors.add(new EncryptionWorkerInterceptor());
+
+        return workerInterceptors.toArray(WorkerInterceptor[]::new);
     }
 
     private DataConverter dataConverter() {
@@ -425,7 +545,7 @@ public class KuFlowTemporalConnection {
     private void applyDefaultConfiguration() {
         AuthenticationCreateParams params = new AuthenticationCreateParams()
             .setType(AuthenticationType.ENGINE_CERTIFICATE)
-            .setTenantId(this.workerInformation.getTenantId());
+            .setTenantId(this.tenantId);
 
         Authentication authentication = this.kuFlowRestClient.getAuthenticationOperations().createAuthentication(params);
 
@@ -450,6 +570,15 @@ public class KuFlowTemporalConnection {
                 builder.setNamespace(authenticationEngineCertificate.getNamespace());
             }
         });
+    }
+
+    @Nullable
+    private WorkerInformation getSingleWorkerInformation() {
+        if (this.workerInformationByTaskQueue.size() > 1) {
+            throw new KuFlowTemporalException("Several workers are configured, get them by task queue");
+        }
+
+        return this.workerInformationByTaskQueue.values().stream().findFirst().orElse(null);
     }
 
     private void checkIsNotStarted() {

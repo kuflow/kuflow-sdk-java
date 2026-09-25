@@ -38,6 +38,7 @@ import com.kuflow.rest.model.Worker;
 import com.kuflow.rest.model.WorkerCreateParams;
 import com.kuflow.rest.operation.WorkerOperations;
 import io.temporal.client.WorkflowClientOptions;
+import io.temporal.worker.WorkerOptions;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -201,6 +202,128 @@ public class WorkerInformationNotifierTest {
         assertThat(fourthInvocation - thirdInvocation).isCloseTo(delayWindow.toMillis(), withPercentage(20));
     }
 
+    @Test
+    @DisplayName("GIVEN workerInformationNotifier with several workers WHEN is started THEN each worker is sent with its task queue")
+    public void givenWorkerInformationNotifierWithSeveralWorkersWhenIsStartedThenEachWorkerIsSentWithItsTaskQueue() {
+        ArgumentCaptor<WorkerCreateParams> workerCreateParamsArgumentCaptor = ArgumentCaptor.forClass(WorkerCreateParams.class);
+        ArgumentCaptor<Context> contextArgumentCaptor = ArgumentCaptor.forClass(Context.class);
+
+        WorkerOperations workerOperations = mock(WorkerOperations.class);
+        when(this.kuFlowRestClient.getWorkerOperations()).thenReturn(workerOperations);
+        when(
+            workerOperations.createWorkerWithResponse(workerCreateParamsArgumentCaptor.capture(), contextArgumentCaptor.capture())
+        ).thenAnswer(this.prepareCreateWorkerWithResponseAnswer(Duration.ofMinutes(5)));
+
+        WorkerInformation workerInformation1 = this.prepareWorkerInfo();
+        WorkerInformation workerInformation2 = this.prepareWorkerInfo();
+
+        WorkflowClientOptions workflowClientOptions = WorkflowClientOptions.newBuilder().validateAndBuildWithDefaults();
+        WorkerInformationNotifier workerInformationNotifier = new WorkerInformationNotifier(
+            this.kuFlowRestClient,
+            workflowClientOptions,
+            WorkerInformationNotifierConfigurationBuilder.instance().build(),
+            List.of(workerInformation1, workerInformation2)
+        );
+
+        workerInformationNotifier.start();
+
+        List<WorkerCreateParams> workerCreateParamsList = workerCreateParamsArgumentCaptor.getAllValues();
+        assertThat(workerCreateParamsList).hasSize(2);
+        assertThat(workerCreateParamsList).extracting(WorkerCreateParams::getIdentity).containsOnly(workflowClientOptions.getIdentity());
+
+        assertThat(workerCreateParamsList.get(0).getTaskQueue()).isEqualTo(workerInformation1.getTaskQueue());
+        assertThat(workerCreateParamsList.get(0).getWorkflowTypes()).containsExactlyElementsOf(workerInformation1.getWorkflowTypes());
+        assertThat(workerCreateParamsList.get(0).getActivityTypes()).containsExactlyElementsOf(workerInformation1.getActivityTypes());
+
+        assertThat(workerCreateParamsList.get(1).getTaskQueue()).isEqualTo(workerInformation2.getTaskQueue());
+        assertThat(workerCreateParamsList.get(1).getWorkflowTypes()).containsExactlyElementsOf(workerInformation2.getWorkflowTypes());
+        assertThat(workerCreateParamsList.get(1).getActivityTypes()).containsExactlyElementsOf(workerInformation2.getActivityTypes());
+
+        workerInformationNotifier.shutdown();
+    }
+
+    @Test
+    @DisplayName("GIVEN a worker with its own identity WHEN workerInformationNotifier is started THEN the worker identity is sent")
+    public void givenAWorkerWithItsOwnIdentityWhenWorkerInformationNotifierIsStartedThenTheWorkerIdentityIsSent() {
+        ArgumentCaptor<WorkerCreateParams> workerCreateParamsArgumentCaptor = ArgumentCaptor.forClass(WorkerCreateParams.class);
+        ArgumentCaptor<Context> contextArgumentCaptor = ArgumentCaptor.forClass(Context.class);
+
+        WorkerOperations workerOperations = mock(WorkerOperations.class);
+        when(this.kuFlowRestClient.getWorkerOperations()).thenReturn(workerOperations);
+        when(
+            workerOperations.createWorkerWithResponse(workerCreateParamsArgumentCaptor.capture(), contextArgumentCaptor.capture())
+        ).thenAnswer(this.prepareCreateWorkerWithResponseAnswer(Duration.ofMinutes(5)));
+
+        WorkerInformation workerInformationWithIdentity = new WorkerInformation(
+            WorkerBuilder.instance()
+                .withTaskQueue("TASK_QUEUE_" + RandomString.make())
+                .withWorkerOptions(WorkerOptions.newBuilder().setIdentity("worker-identity").build())
+        );
+        WorkerInformation workerInformationWithoutIdentity = this.prepareWorkerInfo();
+
+        WorkerInformationNotifier workerInformationNotifier = new WorkerInformationNotifier(
+            this.kuFlowRestClient,
+            WorkflowClientOptions.newBuilder().setIdentity("client-identity").validateAndBuildWithDefaults(),
+            WorkerInformationNotifierConfigurationBuilder.instance().build(),
+            List.of(workerInformationWithIdentity, workerInformationWithoutIdentity)
+        );
+
+        workerInformationNotifier.start();
+
+        assertThat(workerCreateParamsArgumentCaptor.getAllValues())
+            .extracting(WorkerCreateParams::getIdentity)
+            .containsExactly("worker-identity", "client-identity");
+
+        workerInformationNotifier.shutdown();
+    }
+
+    @Test
+    @DisplayName("GIVEN several workers WHEN one fails and another one is registered THEN a backoff process is started")
+    public void givenSeveralWorkersWhenOneFailsAndAnotherOneIsRegisteredThenABackoffProcessIsStarted() {
+        ArgumentCaptor<WorkerCreateParams> workerCreateParamsArgumentCaptor = ArgumentCaptor.forClass(WorkerCreateParams.class);
+        ArgumentCaptor<Context> contextArgumentCaptor = ArgumentCaptor.forClass(Context.class);
+
+        Duration delayWindow = Duration.ofSeconds(5);
+
+        WorkerOperations workerOperations = mock(WorkerOperations.class);
+        when(this.kuFlowRestClient.getWorkerOperations()).thenReturn(workerOperations);
+        when(workerOperations.createWorkerWithResponse(workerCreateParamsArgumentCaptor.capture(), contextArgumentCaptor.capture()))
+            .then(this.prepareCreateWorkerWithResponseAnswer(delayWindow))
+            .then(this.prepareCreateWorkerWithResponseAnswer(delayWindow))
+            .thenThrow(RuntimeException.class)
+            .then(this.prepareCreateWorkerWithResponseAnswer(delayWindow));
+
+        WorkerInformationNotifier workerInformationNotifier = new WorkerInformationNotifier(
+            this.kuFlowRestClient,
+            WorkflowClientOptions.newBuilder().validateAndBuildWithDefaults(),
+            WorkerInformationNotifierConfigurationBuilder.instance().build(),
+            List.of(this.prepareWorkerInfo(), this.prepareWorkerInfo())
+        );
+
+        workerInformationNotifier.start();
+
+        // First round, both workers are registered
+        long firstRound = System.currentTimeMillis();
+        assertThat(workerCreateParamsArgumentCaptor.getAllValues()).hasSize(2);
+
+        // Second round, the first worker fails and the second one is registered
+        await()
+            .atMost(1, MINUTES)
+            .until(() -> workerCreateParamsArgumentCaptor.getAllValues().size() == 4);
+        long secondRound = System.currentTimeMillis();
+
+        // Third round, sooner because of the failure
+        await()
+            .atMost(1, MINUTES)
+            .until(() -> workerCreateParamsArgumentCaptor.getAllValues().size() == 6);
+        long thirdRound = System.currentTimeMillis();
+
+        workerInformationNotifier.shutdown();
+
+        assertThat(secondRound - firstRound).isCloseTo(delayWindow.toMillis(), withPercentage(20));
+        assertThat(thirdRound - secondRound).isCloseTo(3_000, withPercentage(20));
+    }
+
     private Answer<Object> prepareCreateWorkerWithResponseAnswer(Duration delay) {
         return answer -> {
             WorkerCreateParams worker = answer.getArgument(0);
@@ -209,8 +332,8 @@ public class WorkerInformationNotifierTest {
             workerResponse.setId(UUID.randomUUID());
             workerResponse.setIdentity(worker.getIdentity());
             workerResponse.setTaskQueue(worker.getTaskQueue());
-            workerResponse.setWorkflowTypes(List.copyOf(worker.getWorkflowTypes()));
-            workerResponse.setActivityTypes(List.copyOf(worker.getActivityTypes()));
+            workerResponse.setWorkflowTypes(worker.getWorkflowTypes() != null ? List.copyOf(worker.getWorkflowTypes()) : null);
+            workerResponse.setActivityTypes(worker.getActivityTypes() != null ? List.copyOf(worker.getActivityTypes()) : null);
             workerResponse.setHostname(worker.getHostname());
             workerResponse.setIp(worker.getIp());
             workerResponse.setCreatedAt(OffsetDateTime.now());
