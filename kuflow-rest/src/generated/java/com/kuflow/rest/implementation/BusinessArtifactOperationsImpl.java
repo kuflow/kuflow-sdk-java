@@ -459,9 +459,11 @@ public final class BusinessArtifactOperationsImpl {
      * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
      * @param deleted Soft-deleted Business Artifacts filtering mode; when omitted, `EXCLUDE` applies. With `INCLUDE`
      * or `ONLY`, deleted Business Artifacts are returned with their `deletedAt` and `deletedBy`
-     * fields set. Only honored when the request filters by exactly one `businessArtifactDefinitionId`
-     * and the credentials hold manager rights over that Business Artifact Definition; in any other
-     * case the filter silently falls back to `EXCLUDE`.
+     * fields set. Only honored when the request identifies exactly one Business Artifact Definition —
+     * by exactly one `businessArtifactDefinitionId`, or by exactly one `businessArtifactDefinitionCode`
+     * together with exactly one `tenantId` (codes are unique per tenant) — and the credentials hold
+     * manager rights over that Business Artifact Definition; in any other case the filter silently
+     * falls back to `EXCLUDE`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -516,9 +518,11 @@ public final class BusinessArtifactOperationsImpl {
      * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
      * @param deleted Soft-deleted Business Artifacts filtering mode; when omitted, `EXCLUDE` applies. With `INCLUDE`
      * or `ONLY`, deleted Business Artifacts are returned with their `deletedAt` and `deletedBy`
-     * fields set. Only honored when the request filters by exactly one `businessArtifactDefinitionId`
-     * and the credentials hold manager rights over that Business Artifact Definition; in any other
-     * case the filter silently falls back to `EXCLUDE`.
+     * fields set. Only honored when the request identifies exactly one Business Artifact Definition —
+     * by exactly one `businessArtifactDefinitionId`, or by exactly one `businessArtifactDefinitionCode`
+     * together with exactly one `tenantId` (codes are unique per tenant) — and the credentials hold
+     * manager rights over that Business Artifact Definition; in any other case the filter silently
+     * falls back to `EXCLUDE`.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -611,9 +615,11 @@ public final class BusinessArtifactOperationsImpl {
      * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
      * @param deleted Soft-deleted Business Artifacts filtering mode; when omitted, `EXCLUDE` applies. With `INCLUDE`
      * or `ONLY`, deleted Business Artifacts are returned with their `deletedAt` and `deletedBy`
-     * fields set. Only honored when the request filters by exactly one `businessArtifactDefinitionId`
-     * and the credentials hold manager rights over that Business Artifact Definition; in any other
-     * case the filter silently falls back to `EXCLUDE`.
+     * fields set. Only honored when the request identifies exactly one Business Artifact Definition —
+     * by exactly one `businessArtifactDefinitionId`, or by exactly one `businessArtifactDefinitionCode`
+     * together with exactly one `tenantId` (codes are unique per tenant) — and the credentials hold
+     * manager rights over that Business Artifact Definition; in any other case the filter silently
+     * falls back to `EXCLUDE`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -698,9 +704,11 @@ public final class BusinessArtifactOperationsImpl {
      * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
      * @param deleted Soft-deleted Business Artifacts filtering mode; when omitted, `EXCLUDE` applies. With `INCLUDE`
      * or `ONLY`, deleted Business Artifacts are returned with their `deletedAt` and `deletedBy`
-     * fields set. Only honored when the request filters by exactly one `businessArtifactDefinitionId`
-     * and the credentials hold manager rights over that Business Artifact Definition; in any other
-     * case the filter silently falls back to `EXCLUDE`.
+     * fields set. Only honored when the request identifies exactly one Business Artifact Definition —
+     * by exactly one `businessArtifactDefinitionId`, or by exactly one `businessArtifactDefinitionCode`
+     * together with exactly one `tenantId` (codes are unique per tenant) — and the credentials hold
+     * manager rights over that Business Artifact Definition; in any other case the filter silently
+     * falls back to `EXCLUDE`.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -755,9 +763,11 @@ public final class BusinessArtifactOperationsImpl {
      * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
      * @param deleted Soft-deleted Business Artifacts filtering mode; when omitted, `EXCLUDE` applies. With `INCLUDE`
      * or `ONLY`, deleted Business Artifacts are returned with their `deletedAt` and `deletedBy`
-     * fields set. Only honored when the request filters by exactly one `businessArtifactDefinitionId`
-     * and the credentials hold manager rights over that Business Artifact Definition; in any other
-     * case the filter silently falls back to `EXCLUDE`.
+     * fields set. Only honored when the request identifies exactly one Business Artifact Definition —
+     * by exactly one `businessArtifactDefinitionId`, or by exactly one `businessArtifactDefinitionCode`
+     * together with exactly one `tenantId` (codes are unique per tenant) — and the credentials hold
+     * manager rights over that Business Artifact Definition; in any other case the filter silently
+     * falls back to `EXCLUDE`.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -850,9 +860,11 @@ public final class BusinessArtifactOperationsImpl {
      * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
      * @param deleted Soft-deleted Business Artifacts filtering mode; when omitted, `EXCLUDE` applies. With `INCLUDE`
      * or `ONLY`, deleted Business Artifacts are returned with their `deletedAt` and `deletedBy`
-     * fields set. Only honored when the request filters by exactly one `businessArtifactDefinitionId`
-     * and the credentials hold manager rights over that Business Artifact Definition; in any other
-     * case the filter silently falls back to `EXCLUDE`.
+     * fields set. Only honored when the request identifies exactly one Business Artifact Definition —
+     * by exactly one `businessArtifactDefinitionId`, or by exactly one `businessArtifactDefinitionCode`
+     * together with exactly one `tenantId` (codes are unique per tenant) — and the credentials hold
+     * manager rights over that Business Artifact Definition; in any other case the filter silently
+     * falls back to `EXCLUDE`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

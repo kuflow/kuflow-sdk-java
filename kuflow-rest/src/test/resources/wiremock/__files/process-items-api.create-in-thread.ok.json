@@ -1,0 +1,16 @@
+{
+  "id": "0192f1c8-5e6a-7a3b-9c4d-1e2f3a4b5c6d",
+  "type": "TASK",
+  "processId": "4821b000-88b4-447e-bdca-2b5d811e746b",
+  "processItemThreadId": "0192f1c8-5e6a-7a3b-9c4d-0a1b2c3d4e5f",
+  "tenantId": "750ef2e1-0c07-48fd-a2f9-5fc1dbcc2be3",
+  "processItemDefinitionRef": {
+    "id": "5279a366-2401-4c3e-8eb6-2d2c71d74f0e",
+    "version": "022311ae-ce15-460c-90ba-0469c61f959b",
+    "code": "TASK_001",
+    "name": "Task 001 Definition"
+  },
+  "task": {
+    "state": "READY"
+  }
+}

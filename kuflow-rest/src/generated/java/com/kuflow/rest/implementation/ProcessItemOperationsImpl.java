@@ -917,6 +917,9 @@ public final class ProcessItemOperationsImpl {
      *
      * Create a Process Item and optionally fill its value.
      *
+     * To create a `TASK` or a `MESSAGE` inside a thread, set `processItemThreadId` to the id of a Process Item of
+     * type `THREAD` that belongs to the same Process.
+     *
      * If you want to add document type elements, you can pass a reference to an existing document type element
      * indicating its 'uri'. This will copy that document into the element. In case you want to add a new document,
      * please use the corresponding API method.
@@ -938,6 +941,9 @@ public final class ProcessItemOperationsImpl {
      * Create a new Process Item in the selected Process
      *
      * Create a Process Item and optionally fill its value.
+     *
+     * To create a `TASK` or a `MESSAGE` inside a thread, set `processItemThreadId` to the id of a Process Item of
+     * type `THREAD` that belongs to the same Process.
      *
      * If you want to add document type elements, you can pass a reference to an existing document type element
      * indicating its 'uri'. This will copy that document into the element. In case you want to add a new document,
@@ -966,6 +972,9 @@ public final class ProcessItemOperationsImpl {
      *
      * Create a Process Item and optionally fill its value.
      *
+     * To create a `TASK` or a `MESSAGE` inside a thread, set `processItemThreadId` to the id of a Process Item of
+     * type `THREAD` that belongs to the same Process.
+     *
      * If you want to add document type elements, you can pass a reference to an existing document type element
      * indicating its 'uri'. This will copy that document into the element. In case you want to add a new document,
      * please use the corresponding API method.
@@ -987,6 +996,9 @@ public final class ProcessItemOperationsImpl {
      * Create a new Process Item in the selected Process
      *
      * Create a Process Item and optionally fill its value.
+     *
+     * To create a `TASK` or a `MESSAGE` inside a thread, set `processItemThreadId` to the id of a Process Item of
+     * type `THREAD` that belongs to the same Process.
      *
      * If you want to add document type elements, you can pass a reference to an existing document type element
      * indicating its 'uri'. This will copy that document into the element. In case you want to add a new document,
@@ -1011,6 +1023,9 @@ public final class ProcessItemOperationsImpl {
      *
      * Create a Process Item and optionally fill its value.
      *
+     * To create a `TASK` or a `MESSAGE` inside a thread, set `processItemThreadId` to the id of a Process Item of
+     * type `THREAD` that belongs to the same Process.
+     *
      * If you want to add document type elements, you can pass a reference to an existing document type element
      * indicating its 'uri'. This will copy that document into the element. In case you want to add a new document,
      * please use the corresponding API method.
@@ -1034,6 +1049,9 @@ public final class ProcessItemOperationsImpl {
      * Create a new Process Item in the selected Process
      *
      * Create a Process Item and optionally fill its value.
+     *
+     * To create a `TASK` or a `MESSAGE` inside a thread, set `processItemThreadId` to the id of a Process Item of
+     * type `THREAD` that belongs to the same Process.
      *
      * If you want to add document type elements, you can pass a reference to an existing document type element
      * indicating its 'uri'. This will copy that document into the element. In case you want to add a new document,

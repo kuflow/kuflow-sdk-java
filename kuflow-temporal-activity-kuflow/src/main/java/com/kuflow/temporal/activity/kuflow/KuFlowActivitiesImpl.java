@@ -493,6 +493,7 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
                 .setId(request.getId())
                 .setType(request.getType())
                 .setProcessId(request.getProcessId())
+                .setProcessItemThreadId(request.getProcessItemThreadId())
                 .setOwnerId(request.getOwnerId())
                 .setOwnerEmail(request.getOwnerEmail())
                 .setProcessItemDefinitionCode(request.getProcessItemDefinitionCode())

@@ -66,6 +66,12 @@ public final class ProcessItem extends AbstractAudited {
     private UUID processId;
 
     /*
+     * ID of the thread Process Item this item is attached to, if any.
+     */
+    @Generated
+    private UUID processItemThreadId;
+
+    /*
      * Owner Principal ID.
      */
     @Generated
@@ -174,6 +180,28 @@ public final class ProcessItem extends AbstractAudited {
     @Generated
     public ProcessItem setProcessId(UUID processId) {
         this.processId = processId;
+        return this;
+    }
+
+    /**
+     * Get the processItemThreadId property: ID of the thread Process Item this item is attached to, if any.
+     *
+     * @return the processItemThreadId value.
+     */
+    @Generated
+    public UUID getProcessItemThreadId() {
+        return this.processItemThreadId;
+    }
+
+    /**
+     * Set the processItemThreadId property: ID of the thread Process Item this item is attached to, if any.
+     *
+     * @param processItemThreadId the processItemThreadId value to set.
+     * @return the ProcessItem object itself.
+     */
+    @Generated
+    public ProcessItem setProcessItemThreadId(UUID processItemThreadId) {
+        this.processItemThreadId = processItemThreadId;
         return this;
     }
 
@@ -347,6 +375,7 @@ public final class ProcessItem extends AbstractAudited {
         jsonWriter.writeStringField("id", Objects.toString(this.id, null));
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("processId", Objects.toString(this.processId, null));
+        jsonWriter.writeStringField("processItemThreadId", Objects.toString(this.processItemThreadId, null));
         jsonWriter.writeStringField("ownerId", Objects.toString(this.ownerId, null));
         jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
         jsonWriter.writeJsonField("processItemDefinitionRef", this.processItemDefinitionRef);
@@ -394,6 +423,10 @@ public final class ProcessItem extends AbstractAudited {
                     deserializedProcessItem.processId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("uri".equals(fieldName)) {
                     deserializedProcessItem.uri = reader.getString();
+                } else if ("processItemThreadId".equals(fieldName)) {
+                    deserializedProcessItem.processItemThreadId = reader.getNullable(nonNullReader ->
+                        UUID.fromString(nonNullReader.getString())
+                    );
                 } else if ("ownerId".equals(fieldName)) {
                     deserializedProcessItem.ownerId = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("tenantId".equals(fieldName)) {

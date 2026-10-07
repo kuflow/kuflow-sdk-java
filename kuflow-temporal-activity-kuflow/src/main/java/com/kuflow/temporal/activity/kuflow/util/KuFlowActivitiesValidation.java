@@ -311,6 +311,12 @@ public class KuFlowActivitiesValidation {
                     ACTIVITIES_VALIDATION_FAILURE.getType()
                 );
             }
+            if (request.getProcessItemThreadId() != null) {
+                throw ApplicationFailure.newNonRetryableFailure(
+                    "'processItemThreadId' is not allowed for thread items, threads cannot be nested",
+                    ACTIVITIES_VALIDATION_FAILURE.getType()
+                );
+            }
         }
     }
 
