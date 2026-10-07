@@ -46,6 +46,11 @@ public class ProcessItemCreateRequest extends AbstractModel {
      */
     private UUID processId;
 
+    /*
+     * ID of the thread Process Item the created item is attached to, if any.
+     */
+    private UUID processItemThreadId;
+
     /**
      * The ownerId property.
      */
@@ -93,6 +98,14 @@ public class ProcessItemCreateRequest extends AbstractModel {
 
     public void setProcessId(UUID processId) {
         this.processId = processId;
+    }
+
+    public UUID getProcessItemThreadId() {
+        return this.processItemThreadId;
+    }
+
+    public void setProcessItemThreadId(UUID processItemThreadId) {
+        this.processItemThreadId = processItemThreadId;
     }
 
     public UUID getOwnerId() {

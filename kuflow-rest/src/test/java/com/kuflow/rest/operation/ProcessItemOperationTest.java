@@ -26,14 +26,18 @@ package com.kuflow.rest.operation;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
+import static com.github.tomakehurst.wiremock.client.WireMock.matchingJsonPath;
 import static com.github.tomakehurst.wiremock.client.WireMock.ok;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.put;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.kuflow.rest.model.JsonValue;
 import com.kuflow.rest.model.ProcessItem;
+import com.kuflow.rest.model.ProcessItemCreateParams;
 import com.kuflow.rest.model.ProcessItemFindOptions;
+import com.kuflow.rest.model.ProcessItemTaskCreateParams;
 import com.kuflow.rest.model.ProcessItemTaskDataUpdateParams;
 import com.kuflow.rest.model.ProcessItemTaskState;
 import com.kuflow.rest.model.ProcessItemType;
@@ -122,6 +126,31 @@ public class ProcessItemOperationTest extends AbstractOperationTest {
             .addProcessItemDefinitionCode("code2");
 
         this.kuFlowRestClient.getProcessItemOperations().findProcessItems(options);
+    }
+
+    @Test
+    @DisplayName("GIVEN an authenticated user WHEN create a process item inside a thread THEN the thread is sent and returned")
+    public void givenAnAuthenticatedUserWhenCreateAProcessItemInsideAThreadThenTheThreadIsSentAndReturned() {
+        UUID processId = UUID.fromString("4821b000-88b4-447e-bdca-2b5d811e746b");
+        UUID processItemThreadId = UUID.fromString("0192f1c8-5e6a-7a3b-9c4d-0a1b2c3d4e5f");
+
+        givenThat(
+            post("/v2024-06-14/process-items")
+                .withHeader("Authorization", equalTo("Bearer Q0xJRU5UX0lEOkNMSUVOVF9TRUNSRVQ="))
+                .withRequestBody(matchingJsonPath("$.processItemThreadId", equalTo(processItemThreadId.toString())))
+                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("process-items-api.create-in-thread.ok.json"))
+        );
+
+        ProcessItemCreateParams params = new ProcessItemCreateParams()
+            .setType(ProcessItemType.TASK)
+            .setProcessId(processId)
+            .setProcessItemThreadId(processItemThreadId)
+            .setProcessItemDefinitionCode("TASK_001")
+            .setTask(new ProcessItemTaskCreateParams());
+
+        ProcessItem processItem = this.kuFlowRestClient.getProcessItemOperations().createProcessItem(params);
+
+        assertThat(processItem.getProcessItemThreadId()).isEqualTo(processItemThreadId);
     }
 
     @Test

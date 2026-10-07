@@ -58,6 +58,14 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
     private UUID processId;
 
     /*
+     * ID of the thread Process Item the created item is attached to. Only allowed for items
+     * of type `TASK` or `MESSAGE`; it must reference a Process Item of type `THREAD` that
+     * belongs to the same Process. It is not part of the idempotency key.
+     */
+    @Generated
+    private UUID processItemThreadId;
+
+    /*
      * The ownerId property.
      */
     @Generated
@@ -156,6 +164,34 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
     @Generated
     public ProcessItemCreateParams setProcessId(UUID processId) {
         this.processId = processId;
+        return this;
+    }
+
+    /**
+     * Get the processItemThreadId property: ID of the thread Process Item the created item is attached to. Only allowed
+     * for items
+     * of type `TASK` or `MESSAGE`; it must reference a Process Item of type `THREAD` that
+     * belongs to the same Process. It is not part of the idempotency key.
+     *
+     * @return the processItemThreadId value.
+     */
+    @Generated
+    public UUID getProcessItemThreadId() {
+        return this.processItemThreadId;
+    }
+
+    /**
+     * Set the processItemThreadId property: ID of the thread Process Item the created item is attached to. Only allowed
+     * for items
+     * of type `TASK` or `MESSAGE`; it must reference a Process Item of type `THREAD` that
+     * belongs to the same Process. It is not part of the idempotency key.
+     *
+     * @param processItemThreadId the processItemThreadId value to set.
+     * @return the ProcessItemCreateParams object itself.
+     */
+    @Generated
+    public ProcessItemCreateParams setProcessItemThreadId(UUID processItemThreadId) {
+        this.processItemThreadId = processItemThreadId;
         return this;
     }
 
@@ -279,6 +315,7 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("processId", Objects.toString(this.processId, null));
         jsonWriter.writeStringField("id", Objects.toString(this.id, null));
+        jsonWriter.writeStringField("processItemThreadId", Objects.toString(this.processItemThreadId, null));
         jsonWriter.writeStringField("ownerId", Objects.toString(this.ownerId, null));
         jsonWriter.writeStringField("ownerEmail", this.ownerEmail);
         jsonWriter.writeStringField("processItemDefinitionCode", this.processItemDefinitionCode);
@@ -312,6 +349,10 @@ public final class ProcessItemCreateParams implements JsonSerializable<ProcessIt
                     );
                 } else if ("id".equals(fieldName)) {
                     deserializedProcessItemCreateParams.id = reader.getNullable(nonNullReader ->
+                        UUID.fromString(nonNullReader.getString())
+                    );
+                } else if ("processItemThreadId".equals(fieldName)) {
+                    deserializedProcessItemCreateParams.processItemThreadId = reader.getNullable(nonNullReader ->
                         UUID.fromString(nonNullReader.getString())
                     );
                 } else if ("ownerId".equals(fieldName)) {
