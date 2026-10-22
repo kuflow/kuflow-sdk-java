@@ -39,6 +39,7 @@ import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidatio
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessActionCancelRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessActionCreateRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessActionRetrieveRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessDeleteRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessEntityPatchRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessEntityUpdateRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateProcessInitiatorChangeRequest;
@@ -125,6 +126,8 @@ import com.kuflow.temporal.activity.kuflow.model.ProcessActionCreateRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessActionCreateResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessActionRetrieveRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessActionRetrieveResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessDeleteRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessDeleteResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessEntityPatchRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessEntityPatchResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessEntityUpdateRequest;
@@ -237,7 +240,8 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
                 .setStates(request.getStates())
                 .setInitiatorIds(request.getInitiatorIds())
                 .setInitiatorEmails(request.getInitiatorEmails())
-                .setMetadata(request.getMetadata());
+                .setMetadata(request.getMetadata())
+                .setDeleted(request.getDeleted());
 
             ProcessPage processes = this.processOperations.findProcesses(options);
 
@@ -262,6 +266,20 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
             response.setProcess(process);
 
             return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Nonnull
+    @Override
+    public ProcessDeleteResponse deleteProcess(@Nonnull ProcessDeleteRequest request) {
+        try {
+            validateProcessDeleteRequest(request);
+
+            this.processOperations.deleteProcess(request.getProcessId());
+
+            return new ProcessDeleteResponse();
         } catch (Exception e) {
             throw createApplicationFailure(e);
         }
@@ -453,7 +471,8 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
                 .setTaskStates(request.getTaskStates())
                 .setProcessItemDefinitionCodes(request.getProcessItemDefinitionCodes())
                 .setProcessDefinitionIds(request.getProcessDefinitionIds())
-                .setProcessDefinitionCodes(request.getProcessDefinitionCodes());
+                .setProcessDefinitionCodes(request.getProcessDefinitionCodes())
+                .setDeleted(request.getDeleted());
 
             ProcessItemPage processItems = this.processItemOperations.findProcessItems(options);
 
@@ -701,7 +720,8 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
                 .setTenantIds(request.getTenantIds())
                 .setBusinessArtifactDefinitionIds(request.getBusinessArtifactDefinitionIds())
                 .setBusinessArtifactDefinitionCodes(request.getBusinessArtifactDefinitionCodes())
-                .setValues(request.getValues());
+                .setValues(request.getValues())
+                .setDeleted(request.getDeleted());
 
             BusinessArtifactPage businessArtifacts = this.businessArtifactOperations.findBusinessArtifacts(options);
 

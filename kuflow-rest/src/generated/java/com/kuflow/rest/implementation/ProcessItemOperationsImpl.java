@@ -44,6 +44,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.kuflow.rest.model.DefaultErrorException;
+import com.kuflow.rest.model.DeletedQueryParam;
 import com.kuflow.rest.model.JsonPatchOperation;
 import com.kuflow.rest.model.ProcessItem;
 import com.kuflow.rest.model.ProcessItemAiAssistance;
@@ -110,6 +111,7 @@ public final class ProcessItemOperationsImpl {
             @QueryParam(value = "processDefinitionId", multipleQueryParams = true) List<String> processDefinitionId,
             @QueryParam(value = "processDefinitionCode", multipleQueryParams = true) List<String> processDefinitionCode,
             @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
+            @QueryParam("deleted") DeletedQueryParam deleted,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -129,6 +131,7 @@ public final class ProcessItemOperationsImpl {
             @QueryParam(value = "processDefinitionId", multipleQueryParams = true) List<String> processDefinitionId,
             @QueryParam(value = "processDefinitionCode", multipleQueryParams = true) List<String> processDefinitionCode,
             @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
+            @QueryParam("deleted") DeletedQueryParam deleted,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -409,6 +412,13 @@ public final class ProcessItemOperationsImpl {
      * @param processDefinitionId Filter by process definition ids.
      * @param processDefinitionCode Filter by process definition codes.
      * @param tenantId Filter by tenantId.
+     * @param deleted Deleted Process Items filtering mode; when omitted, `EXCLUDE` applies. The Process Items of a
+     * deleted
+     * Process are deleted with it. With `INCLUDE` or `ONLY`, deleted Process Items are returned with their
+     * `deletedAt` and `deletedBy` fields set. They are only returned when the request identifies exactly one
+     * Process Definition — by exactly one `processDefinitionId`, or by exactly one `processDefinitionCode`
+     * together with exactly one `tenantId` (codes are unique per tenant) — and the credentials can delete any
+     * Process of that definition; otherwise they are silently left out.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -425,7 +435,8 @@ public final class ProcessItemOperationsImpl {
         List<String> processItemDefinitionCode,
         List<UUID> processDefinitionId,
         List<String> processDefinitionCode,
-        List<UUID> tenantId
+        List<UUID> tenantId,
+        DeletedQueryParam deleted
     ) {
         return FluxUtil.withContext(context ->
             findProcessItemsWithResponseAsync(
@@ -439,6 +450,7 @@ public final class ProcessItemOperationsImpl {
                 processDefinitionId,
                 processDefinitionCode,
                 tenantId,
+                deleted,
                 context
             )
         );
@@ -465,6 +477,13 @@ public final class ProcessItemOperationsImpl {
      * @param processDefinitionId Filter by process definition ids.
      * @param processDefinitionCode Filter by process definition codes.
      * @param tenantId Filter by tenantId.
+     * @param deleted Deleted Process Items filtering mode; when omitted, `EXCLUDE` applies. The Process Items of a
+     * deleted
+     * Process are deleted with it. With `INCLUDE` or `ONLY`, deleted Process Items are returned with their
+     * `deletedAt` and `deletedBy` fields set. They are only returned when the request identifies exactly one
+     * Process Definition — by exactly one `processDefinitionId`, or by exactly one `processDefinitionCode`
+     * together with exactly one `tenantId` (codes are unique per tenant) — and the credentials can delete any
+     * Process of that definition; otherwise they are silently left out.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -483,6 +502,7 @@ public final class ProcessItemOperationsImpl {
         List<UUID> processDefinitionId,
         List<String> processDefinitionCode,
         List<UUID> tenantId,
+        DeletedQueryParam deleted,
         Context context
     ) {
         final String accept = "application/json";
@@ -554,6 +574,7 @@ public final class ProcessItemOperationsImpl {
             processDefinitionIdConverted,
             processDefinitionCodeConverted,
             tenantIdConverted,
+            deleted,
             accept,
             context
         );
@@ -580,6 +601,13 @@ public final class ProcessItemOperationsImpl {
      * @param processDefinitionId Filter by process definition ids.
      * @param processDefinitionCode Filter by process definition codes.
      * @param tenantId Filter by tenantId.
+     * @param deleted Deleted Process Items filtering mode; when omitted, `EXCLUDE` applies. The Process Items of a
+     * deleted
+     * Process are deleted with it. With `INCLUDE` or `ONLY`, deleted Process Items are returned with their
+     * `deletedAt` and `deletedBy` fields set. They are only returned when the request identifies exactly one
+     * Process Definition — by exactly one `processDefinitionId`, or by exactly one `processDefinitionCode`
+     * together with exactly one `tenantId` (codes are unique per tenant) — and the credentials can delete any
+     * Process of that definition; otherwise they are silently left out.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -596,7 +624,8 @@ public final class ProcessItemOperationsImpl {
         List<String> processItemDefinitionCode,
         List<UUID> processDefinitionId,
         List<String> processDefinitionCode,
-        List<UUID> tenantId
+        List<UUID> tenantId,
+        DeletedQueryParam deleted
     ) {
         return findProcessItemsWithResponseAsync(
             size,
@@ -608,7 +637,8 @@ public final class ProcessItemOperationsImpl {
             processItemDefinitionCode,
             processDefinitionId,
             processDefinitionCode,
-            tenantId
+            tenantId,
+            deleted
         ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -635,6 +665,7 @@ public final class ProcessItemOperationsImpl {
         final List<UUID> processDefinitionId = null;
         final List<String> processDefinitionCode = null;
         final List<UUID> tenantId = null;
+        final DeletedQueryParam deleted = null;
         return findProcessItemsWithResponseAsync(
             size,
             page,
@@ -645,7 +676,8 @@ public final class ProcessItemOperationsImpl {
             processItemDefinitionCode,
             processDefinitionId,
             processDefinitionCode,
-            tenantId
+            tenantId,
+            deleted
         ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -670,6 +702,13 @@ public final class ProcessItemOperationsImpl {
      * @param processDefinitionId Filter by process definition ids.
      * @param processDefinitionCode Filter by process definition codes.
      * @param tenantId Filter by tenantId.
+     * @param deleted Deleted Process Items filtering mode; when omitted, `EXCLUDE` applies. The Process Items of a
+     * deleted
+     * Process are deleted with it. With `INCLUDE` or `ONLY`, deleted Process Items are returned with their
+     * `deletedAt` and `deletedBy` fields set. They are only returned when the request identifies exactly one
+     * Process Definition — by exactly one `processDefinitionId`, or by exactly one `processDefinitionCode`
+     * together with exactly one `tenantId` (codes are unique per tenant) — and the credentials can delete any
+     * Process of that definition; otherwise they are silently left out.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -688,6 +727,7 @@ public final class ProcessItemOperationsImpl {
         List<UUID> processDefinitionId,
         List<String> processDefinitionCode,
         List<UUID> tenantId,
+        DeletedQueryParam deleted,
         Context context
     ) {
         return findProcessItemsWithResponseAsync(
@@ -701,6 +741,7 @@ public final class ProcessItemOperationsImpl {
             processDefinitionId,
             processDefinitionCode,
             tenantId,
+            deleted,
             context
         ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -726,6 +767,13 @@ public final class ProcessItemOperationsImpl {
      * @param processDefinitionId Filter by process definition ids.
      * @param processDefinitionCode Filter by process definition codes.
      * @param tenantId Filter by tenantId.
+     * @param deleted Deleted Process Items filtering mode; when omitted, `EXCLUDE` applies. The Process Items of a
+     * deleted
+     * Process are deleted with it. With `INCLUDE` or `ONLY`, deleted Process Items are returned with their
+     * `deletedAt` and `deletedBy` fields set. They are only returned when the request identifies exactly one
+     * Process Definition — by exactly one `processDefinitionId`, or by exactly one `processDefinitionCode`
+     * together with exactly one `tenantId` (codes are unique per tenant) — and the credentials can delete any
+     * Process of that definition; otherwise they are silently left out.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -744,6 +792,7 @@ public final class ProcessItemOperationsImpl {
         List<UUID> processDefinitionId,
         List<String> processDefinitionCode,
         List<UUID> tenantId,
+        DeletedQueryParam deleted,
         Context context
     ) {
         final String accept = "application/json";
@@ -815,6 +864,7 @@ public final class ProcessItemOperationsImpl {
             processDefinitionIdConverted,
             processDefinitionCodeConverted,
             tenantIdConverted,
+            deleted,
             accept,
             context
         );
@@ -841,6 +891,13 @@ public final class ProcessItemOperationsImpl {
      * @param processDefinitionId Filter by process definition ids.
      * @param processDefinitionCode Filter by process definition codes.
      * @param tenantId Filter by tenantId.
+     * @param deleted Deleted Process Items filtering mode; when omitted, `EXCLUDE` applies. The Process Items of a
+     * deleted
+     * Process are deleted with it. With `INCLUDE` or `ONLY`, deleted Process Items are returned with their
+     * `deletedAt` and `deletedBy` fields set. They are only returned when the request identifies exactly one
+     * Process Definition — by exactly one `processDefinitionId`, or by exactly one `processDefinitionCode`
+     * together with exactly one `tenantId` (codes are unique per tenant) — and the credentials can delete any
+     * Process of that definition; otherwise they are silently left out.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -857,7 +914,8 @@ public final class ProcessItemOperationsImpl {
         List<String> processItemDefinitionCode,
         List<UUID> processDefinitionId,
         List<String> processDefinitionCode,
-        List<UUID> tenantId
+        List<UUID> tenantId,
+        DeletedQueryParam deleted
     ) {
         return findProcessItemsWithResponse(
             size,
@@ -870,6 +928,7 @@ public final class ProcessItemOperationsImpl {
             processDefinitionId,
             processDefinitionCode,
             tenantId,
+            deleted,
             Context.NONE
         ).getValue();
     }
@@ -897,6 +956,7 @@ public final class ProcessItemOperationsImpl {
         final List<UUID> processDefinitionId = null;
         final List<String> processDefinitionCode = null;
         final List<UUID> tenantId = null;
+        final DeletedQueryParam deleted = null;
         return findProcessItemsWithResponse(
             size,
             page,
@@ -908,6 +968,7 @@ public final class ProcessItemOperationsImpl {
             processDefinitionId,
             processDefinitionCode,
             tenantId,
+            deleted,
             Context.NONE
         ).getValue();
     }
@@ -1073,7 +1134,8 @@ public final class ProcessItemOperationsImpl {
     /**
      * Get a process item given it ID
      *
-     * Allow to get a process item by ID.
+     * Allow to get a process item by ID. A deleted Process Item (the ones of a deleted Process) is returned too,
+     * with its `deletedAt` and `deletedBy` fields set.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1089,7 +1151,8 @@ public final class ProcessItemOperationsImpl {
     /**
      * Get a process item given it ID
      *
-     * Allow to get a process item by ID.
+     * Allow to get a process item by ID. A deleted Process Item (the ones of a deleted Process) is returned too,
+     * with its `deletedAt` and `deletedBy` fields set.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -1107,7 +1170,8 @@ public final class ProcessItemOperationsImpl {
     /**
      * Get a process item given it ID
      *
-     * Allow to get a process item by ID.
+     * Allow to get a process item by ID. A deleted Process Item (the ones of a deleted Process) is returned too,
+     * with its `deletedAt` and `deletedBy` fields set.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1123,7 +1187,8 @@ public final class ProcessItemOperationsImpl {
     /**
      * Get a process item given it ID
      *
-     * Allow to get a process item by ID.
+     * Allow to get a process item by ID. A deleted Process Item (the ones of a deleted Process) is returned too,
+     * with its `deletedAt` and `deletedBy` fields set.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -1140,7 +1205,8 @@ public final class ProcessItemOperationsImpl {
     /**
      * Get a process item given it ID
      *
-     * Allow to get a process item by ID.
+     * Allow to get a process item by ID. A deleted Process Item (the ones of a deleted Process) is returned too,
+     * with its `deletedAt` and `deletedBy` fields set.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -1158,7 +1224,8 @@ public final class ProcessItemOperationsImpl {
     /**
      * Get a process item given it ID
      *
-     * Allow to get a process item by ID.
+     * Allow to get a process item by ID. A deleted Process Item (the ones of a deleted Process) is returned too,
+     * with its `deletedAt` and `deletedBy` fields set.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

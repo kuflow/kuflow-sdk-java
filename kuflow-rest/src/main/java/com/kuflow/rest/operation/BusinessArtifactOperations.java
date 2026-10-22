@@ -150,7 +150,7 @@ public class BusinessArtifactOperations {
      * <p>
      * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
-     * @param params Business Artifact to create.
+     * @param businessArtifactCreateParams Business Artifact to create.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -158,8 +158,11 @@ public class BusinessArtifactOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BusinessArtifact> createBusinessArtifactWithResponse(BusinessArtifactCreateParams params, Context context) {
-        return this.service.createBusinessArtifactWithResponse(params, context);
+    public Response<BusinessArtifact> createBusinessArtifactWithResponse(
+        BusinessArtifactCreateParams businessArtifactCreateParams,
+        Context context
+    ) {
+        return this.service.createBusinessArtifactWithResponse(businessArtifactCreateParams, context);
     }
 
     /**
@@ -169,15 +172,15 @@ public class BusinessArtifactOperations {
      * <p>
      * If you want the method to be idempotent, please specify the `id` field in the request body.
      *
-     * @param params Business Artifact to create.
+     * @param businessArtifactCreateParams Business Artifact to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BusinessArtifact createBusinessArtifact(BusinessArtifactCreateParams params) {
-        return this.createBusinessArtifactWithResponse(params, Context.NONE).getValue();
+    public BusinessArtifact createBusinessArtifact(BusinessArtifactCreateParams businessArtifactCreateParams) {
+        return this.createBusinessArtifactWithResponse(businessArtifactCreateParams, Context.NONE).getValue();
     }
 
     /**
@@ -287,7 +290,7 @@ public class BusinessArtifactOperations {
      * the json is marked as invalid.
      *
      * @param id The resource ID.
-     * @param params Params used to update the JSON value.
+     * @param businessArtifactDataUpdateParams Params used to update the JSON value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -297,10 +300,10 @@ public class BusinessArtifactOperations {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BusinessArtifact> updateBusinessArtifactDataWithResponse(
         UUID id,
-        BusinessArtifactDataUpdateParams params,
+        BusinessArtifactDataUpdateParams businessArtifactDataUpdateParams,
         Context context
     ) {
-        return this.service.updateBusinessArtifactDataWithResponse(id, params, context);
+        return this.service.updateBusinessArtifactDataWithResponse(id, businessArtifactDataUpdateParams, context);
     }
 
     /**
@@ -310,15 +313,15 @@ public class BusinessArtifactOperations {
      * the json is marked as invalid.
      *
      * @param id The resource ID.
-     * @param params Params used to update the JSON value.
+     * @param businessArtifactDataUpdateParams Params used to update the JSON value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BusinessArtifact updateBusinessArtifactData(UUID id, BusinessArtifactDataUpdateParams params) {
-        return this.updateBusinessArtifactDataWithResponse(id, params, Context.NONE).getValue();
+    public BusinessArtifact updateBusinessArtifactData(UUID id, BusinessArtifactDataUpdateParams businessArtifactDataUpdateParams) {
+        return this.updateBusinessArtifactDataWithResponse(id, businessArtifactDataUpdateParams, Context.NONE).getValue();
     }
 
     /**
@@ -460,7 +463,7 @@ public class BusinessArtifactOperations {
      * to track progress.
      *
      * @param id The Business Artifact ID.
-     * @param params Action create parameters.
+     * @param businessArtifactActionCreateParams Action create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -470,25 +473,28 @@ public class BusinessArtifactOperations {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BusinessArtifactAction> createBusinessArtifactActionWithResponse(
         UUID id,
-        BusinessArtifactActionCreateParams params,
+        BusinessArtifactActionCreateParams businessArtifactActionCreateParams,
         Context context
     ) {
-        return this.service.createBusinessArtifactActionWithResponse(id, params, context);
+        return this.service.createBusinessArtifactActionWithResponse(id, businessArtifactActionCreateParams, context);
     }
 
     /**
      * Create a Business Artifact Action.
      *
      * @param id The Business Artifact ID.
-     * @param params Action create parameters.
+     * @param businessArtifactActionCreateParams Action create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BusinessArtifactAction createBusinessArtifactAction(UUID id, BusinessArtifactActionCreateParams params) {
-        return this.createBusinessArtifactActionWithResponse(id, params, Context.NONE).getValue();
+    public BusinessArtifactAction createBusinessArtifactAction(
+        UUID id,
+        BusinessArtifactActionCreateParams businessArtifactActionCreateParams
+    ) {
+        return this.createBusinessArtifactActionWithResponse(id, businessArtifactActionCreateParams, Context.NONE).getValue();
     }
 
     /**
@@ -562,7 +568,7 @@ public class BusinessArtifactOperations {
      * or edited before the actual action is executed.
      *
      * @param id The Business Artifact ID.
-     * @param params Identifier of the action definition to prepare.
+     * @param businessArtifactActionCreateArtifactPrepareParams Identifier of the action definition to prepare.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -572,17 +578,21 @@ public class BusinessArtifactOperations {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BusinessArtifactActionCreateArtifactPrepare> prepareBusinessArtifactActionCreateArtifactWithResponse(
         UUID id,
-        BusinessArtifactActionCreateArtifactPrepareParams params,
+        BusinessArtifactActionCreateArtifactPrepareParams businessArtifactActionCreateArtifactPrepareParams,
         Context context
     ) {
-        return this.service.prepareBusinessArtifactActionCreateArtifactWithResponse(id, params, context);
+        return this.service.prepareBusinessArtifactActionCreateArtifactWithResponse(
+            id,
+            businessArtifactActionCreateArtifactPrepareParams,
+            context
+        );
     }
 
     /**
      * Prepare the value that a {@code CREATE_BUSINESS_ARTIFACT} action would produce.
      *
      * @param id The Business Artifact ID.
-     * @param params Identifier of the action definition to prepare.
+     * @param businessArtifactActionCreateArtifactPrepareParams Identifier of the action definition to prepare.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -591,9 +601,13 @@ public class BusinessArtifactOperations {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BusinessArtifactActionCreateArtifactPrepare prepareBusinessArtifactActionCreateArtifact(
         UUID id,
-        BusinessArtifactActionCreateArtifactPrepareParams params
+        BusinessArtifactActionCreateArtifactPrepareParams businessArtifactActionCreateArtifactPrepareParams
     ) {
-        return this.prepareBusinessArtifactActionCreateArtifactWithResponse(id, params, Context.NONE).getValue();
+        return this.prepareBusinessArtifactActionCreateArtifactWithResponse(
+            id,
+            businessArtifactActionCreateArtifactPrepareParams,
+            Context.NONE
+        ).getValue();
     }
 
     /**
@@ -603,7 +617,7 @@ public class BusinessArtifactOperations {
      * any state, so it can be reviewed or edited before the actual action is executed.
      *
      * @param id The Business Artifact ID.
-     * @param params Identifier of the action definition to prepare.
+     * @param businessArtifactActionStartProcessPrepareParams Identifier of the action definition to prepare.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -613,17 +627,21 @@ public class BusinessArtifactOperations {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BusinessArtifactActionStartProcessPrepare> prepareBusinessArtifactActionStartProcessWithResponse(
         UUID id,
-        BusinessArtifactActionStartProcessPrepareParams params,
+        BusinessArtifactActionStartProcessPrepareParams businessArtifactActionStartProcessPrepareParams,
         Context context
     ) {
-        return this.service.prepareBusinessArtifactActionStartProcessWithResponse(id, params, context);
+        return this.service.prepareBusinessArtifactActionStartProcessWithResponse(
+            id,
+            businessArtifactActionStartProcessPrepareParams,
+            context
+        );
     }
 
     /**
      * Prepare the metadata that a {@code START_PROCESS} action would apply.
      *
      * @param id The Business Artifact ID.
-     * @param params Identifier of the action definition to prepare.
+     * @param businessArtifactActionStartProcessPrepareParams Identifier of the action definition to prepare.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -632,8 +650,12 @@ public class BusinessArtifactOperations {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BusinessArtifactActionStartProcessPrepare prepareBusinessArtifactActionStartProcess(
         UUID id,
-        BusinessArtifactActionStartProcessPrepareParams params
+        BusinessArtifactActionStartProcessPrepareParams businessArtifactActionStartProcessPrepareParams
     ) {
-        return this.prepareBusinessArtifactActionStartProcessWithResponse(id, params, Context.NONE).getValue();
+        return this.prepareBusinessArtifactActionStartProcessWithResponse(
+            id,
+            businessArtifactActionStartProcessPrepareParams,
+            Context.NONE
+        ).getValue();
     }
 }

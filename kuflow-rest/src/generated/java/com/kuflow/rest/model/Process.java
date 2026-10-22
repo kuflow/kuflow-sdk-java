@@ -39,7 +39,7 @@ import java.util.UUID;
  * The Process model.
  */
 @Fluent
-public final class Process extends AbstractAudited {
+public final class Process extends AbstractDeleted {
 
     /*
      * Process ID.
@@ -133,6 +133,19 @@ public final class Process extends AbstractAudited {
     @Generated
     public String getUri() {
         return this.uri;
+    }
+
+    /**
+     * Set the uri property: Process resource URI, e.g. usable as `targetUri` of the `uploadDocument` operation.
+     * Format `ku:process/{id}`.
+     *
+     * @param uri the uri value to set.
+     * @return the Process object itself.
+     */
+    @Generated
+    public Process setUri(String uri) {
+        this.uri = uri;
+        return this;
     }
 
     /**
@@ -294,6 +307,26 @@ public final class Process extends AbstractAudited {
      */
     @Generated
     @Override
+    public Process setDeletedBy(UUID deletedBy) {
+        super.setDeletedBy(deletedBy);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public Process setDeletedAt(OffsetDateTime deletedAt) {
+        super.setDeletedAt(deletedAt);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
     public Process setCreatedBy(UUID createdBy) {
         super.setCreatedBy(createdBy);
         return this;
@@ -346,9 +379,15 @@ public final class Process extends AbstractAudited {
             "lastModifiedAt",
             getLastModifiedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getLastModifiedAt())
         );
+        jsonWriter.writeStringField("deletedBy", Objects.toString(getDeletedBy(), null));
+        jsonWriter.writeStringField(
+            "deletedAt",
+            getDeletedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getDeletedAt())
+        );
         jsonWriter.writeStringField("id", Objects.toString(this.id, null));
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
         jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
+        jsonWriter.writeStringField("uri", this.uri);
         jsonWriter.writeJsonField("processDefinitionRef", this.processDefinitionRef);
         jsonWriter.writeJsonField("metadata", this.metadata);
         jsonWriter.writeJsonField("entity", this.entity);
@@ -384,6 +423,12 @@ public final class Process extends AbstractAudited {
                     deserializedProcess.setLastModifiedBy(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
                 } else if ("lastModifiedAt".equals(fieldName)) {
                     deserializedProcess.setLastModifiedAt(
+                        reader.getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()))
+                    );
+                } else if ("deletedBy".equals(fieldName)) {
+                    deserializedProcess.setDeletedBy(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
+                } else if ("deletedAt".equals(fieldName)) {
+                    deserializedProcess.setDeletedAt(
                         reader.getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()))
                     );
                 } else if ("id".equals(fieldName)) {

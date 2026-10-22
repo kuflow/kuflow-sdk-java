@@ -24,6 +24,7 @@
 package com.kuflow.rest.implementation;
 
 import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
@@ -44,6 +45,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.kuflow.rest.model.DefaultErrorException;
+import com.kuflow.rest.model.DeletedQueryParam;
 import com.kuflow.rest.model.DocumentReference;
 import com.kuflow.rest.model.JsonPatchOperation;
 import com.kuflow.rest.model.Process;
@@ -111,6 +113,7 @@ public final class ProcessOperationsImpl {
             @QueryParam(value = "initiatorId", multipleQueryParams = true) List<String> initiatorId,
             @QueryParam(value = "initiatorEmail", multipleQueryParams = true) List<String> initiatorEmail,
             @QueryParam(value = "metadata", multipleQueryParams = true) List<String> metadata,
+            @QueryParam("deleted") DeletedQueryParam deleted,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -130,6 +133,7 @@ public final class ProcessOperationsImpl {
             @QueryParam(value = "initiatorId", multipleQueryParams = true) List<String> initiatorId,
             @QueryParam(value = "initiatorEmail", multipleQueryParams = true) List<String> initiatorEmail,
             @QueryParam(value = "metadata", multipleQueryParams = true) List<String> metadata,
+            @QueryParam("deleted") DeletedQueryParam deleted,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -168,6 +172,26 @@ public final class ProcessOperationsImpl {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<Process> retrieveProcessSync(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Delete("/processes/{id}")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<Void>> deleteProcess(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Delete("/processes/{id}")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<Void> deleteProcessSync(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @HeaderParam("Accept") String accept,
@@ -503,6 +527,12 @@ public final class ProcessOperationsImpl {
      * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
      *
      * Filtering by metadata requires specifying exactly one `processDefinitionId` or `processDefinitionCode`.
+     * @param deleted Deleted Processes filtering mode; when omitted, `EXCLUDE` applies. With `INCLUDE` or `ONLY`,
+     * deleted
+     * Processes are returned with their `deletedAt` and `deletedBy` fields set. They are only returned when the
+     * request identifies exactly one Process Definition — by exactly one `processDefinitionId`, or by exactly one
+     * `processDefinitionCode` together with exactly one `tenantId` (codes are unique per tenant) — and the
+     * credentials can delete any Process of that definition; otherwise they are silently left out.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -519,7 +549,8 @@ public final class ProcessOperationsImpl {
         List<ProcessState> state,
         List<UUID> initiatorId,
         List<String> initiatorEmail,
-        List<String> metadata
+        List<String> metadata,
+        DeletedQueryParam deleted
     ) {
         return FluxUtil.withContext(context ->
             findProcessesWithResponseAsync(
@@ -533,6 +564,7 @@ public final class ProcessOperationsImpl {
                 initiatorId,
                 initiatorEmail,
                 metadata,
+                deleted,
                 context
             )
         );
@@ -564,6 +596,12 @@ public final class ProcessOperationsImpl {
      * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
      *
      * Filtering by metadata requires specifying exactly one `processDefinitionId` or `processDefinitionCode`.
+     * @param deleted Deleted Processes filtering mode; when omitted, `EXCLUDE` applies. With `INCLUDE` or `ONLY`,
+     * deleted
+     * Processes are returned with their `deletedAt` and `deletedBy` fields set. They are only returned when the
+     * request identifies exactly one Process Definition — by exactly one `processDefinitionId`, or by exactly one
+     * `processDefinitionCode` together with exactly one `tenantId` (codes are unique per tenant) — and the
+     * credentials can delete any Process of that definition; otherwise they are silently left out.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -582,6 +620,7 @@ public final class ProcessOperationsImpl {
         List<UUID> initiatorId,
         List<String> initiatorEmail,
         List<String> metadata,
+        DeletedQueryParam deleted,
         Context context
     ) {
         final String accept = "application/json";
@@ -653,6 +692,7 @@ public final class ProcessOperationsImpl {
             initiatorIdConverted,
             initiatorEmailConverted,
             metadataConverted,
+            deleted,
             accept,
             context
         );
@@ -684,6 +724,12 @@ public final class ProcessOperationsImpl {
      * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
      *
      * Filtering by metadata requires specifying exactly one `processDefinitionId` or `processDefinitionCode`.
+     * @param deleted Deleted Processes filtering mode; when omitted, `EXCLUDE` applies. With `INCLUDE` or `ONLY`,
+     * deleted
+     * Processes are returned with their `deletedAt` and `deletedBy` fields set. They are only returned when the
+     * request identifies exactly one Process Definition — by exactly one `processDefinitionId`, or by exactly one
+     * `processDefinitionCode` together with exactly one `tenantId` (codes are unique per tenant) — and the
+     * credentials can delete any Process of that definition; otherwise they are silently left out.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -700,7 +746,8 @@ public final class ProcessOperationsImpl {
         List<ProcessState> state,
         List<UUID> initiatorId,
         List<String> initiatorEmail,
-        List<String> metadata
+        List<String> metadata,
+        DeletedQueryParam deleted
     ) {
         return findProcessesWithResponseAsync(
             size,
@@ -712,7 +759,8 @@ public final class ProcessOperationsImpl {
             state,
             initiatorId,
             initiatorEmail,
-            metadata
+            metadata,
+            deleted
         ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -739,6 +787,7 @@ public final class ProcessOperationsImpl {
         final List<UUID> initiatorId = null;
         final List<String> initiatorEmail = null;
         final List<String> metadata = null;
+        final DeletedQueryParam deleted = null;
         return findProcessesWithResponseAsync(
             size,
             page,
@@ -749,7 +798,8 @@ public final class ProcessOperationsImpl {
             state,
             initiatorId,
             initiatorEmail,
-            metadata
+            metadata,
+            deleted
         ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -779,6 +829,12 @@ public final class ProcessOperationsImpl {
      * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
      *
      * Filtering by metadata requires specifying exactly one `processDefinitionId` or `processDefinitionCode`.
+     * @param deleted Deleted Processes filtering mode; when omitted, `EXCLUDE` applies. With `INCLUDE` or `ONLY`,
+     * deleted
+     * Processes are returned with their `deletedAt` and `deletedBy` fields set. They are only returned when the
+     * request identifies exactly one Process Definition — by exactly one `processDefinitionId`, or by exactly one
+     * `processDefinitionCode` together with exactly one `tenantId` (codes are unique per tenant) — and the
+     * credentials can delete any Process of that definition; otherwise they are silently left out.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -797,6 +853,7 @@ public final class ProcessOperationsImpl {
         List<UUID> initiatorId,
         List<String> initiatorEmail,
         List<String> metadata,
+        DeletedQueryParam deleted,
         Context context
     ) {
         return findProcessesWithResponseAsync(
@@ -810,6 +867,7 @@ public final class ProcessOperationsImpl {
             initiatorId,
             initiatorEmail,
             metadata,
+            deleted,
             context
         ).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -840,6 +898,12 @@ public final class ProcessOperationsImpl {
      * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
      *
      * Filtering by metadata requires specifying exactly one `processDefinitionId` or `processDefinitionCode`.
+     * @param deleted Deleted Processes filtering mode; when omitted, `EXCLUDE` applies. With `INCLUDE` or `ONLY`,
+     * deleted
+     * Processes are returned with their `deletedAt` and `deletedBy` fields set. They are only returned when the
+     * request identifies exactly one Process Definition — by exactly one `processDefinitionId`, or by exactly one
+     * `processDefinitionCode` together with exactly one `tenantId` (codes are unique per tenant) — and the
+     * credentials can delete any Process of that definition; otherwise they are silently left out.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -858,6 +922,7 @@ public final class ProcessOperationsImpl {
         List<UUID> initiatorId,
         List<String> initiatorEmail,
         List<String> metadata,
+        DeletedQueryParam deleted,
         Context context
     ) {
         final String accept = "application/json";
@@ -929,6 +994,7 @@ public final class ProcessOperationsImpl {
             initiatorIdConverted,
             initiatorEmailConverted,
             metadataConverted,
+            deleted,
             accept,
             context
         );
@@ -960,6 +1026,12 @@ public final class ProcessOperationsImpl {
      * Supported operations: `eq`, `le`, `ge`, `between`, `contains`, `in`.
      *
      * Filtering by metadata requires specifying exactly one `processDefinitionId` or `processDefinitionCode`.
+     * @param deleted Deleted Processes filtering mode; when omitted, `EXCLUDE` applies. With `INCLUDE` or `ONLY`,
+     * deleted
+     * Processes are returned with their `deletedAt` and `deletedBy` fields set. They are only returned when the
+     * request identifies exactly one Process Definition — by exactly one `processDefinitionId`, or by exactly one
+     * `processDefinitionCode` together with exactly one `tenantId` (codes are unique per tenant) — and the
+     * credentials can delete any Process of that definition; otherwise they are silently left out.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -976,7 +1048,8 @@ public final class ProcessOperationsImpl {
         List<ProcessState> state,
         List<UUID> initiatorId,
         List<String> initiatorEmail,
-        List<String> metadata
+        List<String> metadata,
+        DeletedQueryParam deleted
     ) {
         return findProcessesWithResponse(
             size,
@@ -989,6 +1062,7 @@ public final class ProcessOperationsImpl {
             initiatorId,
             initiatorEmail,
             metadata,
+            deleted,
             Context.NONE
         ).getValue();
     }
@@ -1016,6 +1090,7 @@ public final class ProcessOperationsImpl {
         final List<UUID> initiatorId = null;
         final List<String> initiatorEmail = null;
         final List<String> metadata = null;
+        final DeletedQueryParam deleted = null;
         return findProcessesWithResponse(
             size,
             page,
@@ -1027,6 +1102,7 @@ public final class ProcessOperationsImpl {
             initiatorId,
             initiatorEmail,
             metadata,
+            deleted,
             Context.NONE
         ).getValue();
     }
@@ -1147,7 +1223,8 @@ public final class ProcessOperationsImpl {
     /**
      * Get a Process by ID
      *
-     * Returns the requested Process when has access to do it.
+     * Returns the requested Process when has access to do it. A deleted Process is returned too, with its
+     * `deletedAt` and `deletedBy` fields set.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1163,7 +1240,8 @@ public final class ProcessOperationsImpl {
     /**
      * Get a Process by ID
      *
-     * Returns the requested Process when has access to do it.
+     * Returns the requested Process when has access to do it. A deleted Process is returned too, with its
+     * `deletedAt` and `deletedBy` fields set.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -1181,7 +1259,8 @@ public final class ProcessOperationsImpl {
     /**
      * Get a Process by ID
      *
-     * Returns the requested Process when has access to do it.
+     * Returns the requested Process when has access to do it. A deleted Process is returned too, with its
+     * `deletedAt` and `deletedBy` fields set.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1197,7 +1276,8 @@ public final class ProcessOperationsImpl {
     /**
      * Get a Process by ID
      *
-     * Returns the requested Process when has access to do it.
+     * Returns the requested Process when has access to do it. A deleted Process is returned too, with its
+     * `deletedAt` and `deletedBy` fields set.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -1214,7 +1294,8 @@ public final class ProcessOperationsImpl {
     /**
      * Get a Process by ID
      *
-     * Returns the requested Process when has access to do it.
+     * Returns the requested Process when has access to do it. A deleted Process is returned too, with its
+     * `deletedAt` and `deletedBy` fields set.
      *
      * @param id The resource ID.
      * @param context The context to associate with this operation.
@@ -1232,7 +1313,8 @@ public final class ProcessOperationsImpl {
     /**
      * Get a Process by ID
      *
-     * Returns the requested Process when has access to do it.
+     * Returns the requested Process when has access to do it. A deleted Process is returned too, with its
+     * `deletedAt` and `deletedBy` fields set.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1243,6 +1325,130 @@ public final class ProcessOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Process retrieveProcess(UUID id) {
         return retrieveProcessWithResponse(id, Context.NONE).getValue();
+    }
+
+    /**
+     * Delete a Process by ID
+     *
+     * Deletes the requested Process, and its Process Items with it. Only a finished Process (`COMPLETED` or
+     * `CANCELLED`) with nothing in progress, neither tasks still to be done nor workflows of its actions still
+     * running, can be deleted; otherwise it answers conflict. The deletion is soft: the Process is still returned
+     * by id and with `deleted=INCLUDE|ONLY`, with its `deletedAt` and `deletedBy` fields set, but it cannot be
+     * restored. Deleting a Process that is already deleted does nothing.
+     *
+     * @param id The resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteProcessWithResponseAsync(UUID id) {
+        return FluxUtil.withContext(context -> deleteProcessWithResponseAsync(id, context));
+    }
+
+    /**
+     * Delete a Process by ID
+     *
+     * Deletes the requested Process, and its Process Items with it. Only a finished Process (`COMPLETED` or
+     * `CANCELLED`) with nothing in progress, neither tasks still to be done nor workflows of its actions still
+     * running, can be deleted; otherwise it answers conflict. The deletion is soft: the Process is still returned
+     * by id and with `deleted=INCLUDE|ONLY`, with its `deletedAt` and `deletedBy` fields set, but it cannot be
+     * restored. Deleting a Process that is already deleted does nothing.
+     *
+     * @param id The resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteProcessWithResponseAsync(UUID id, Context context) {
+        final String accept = "application/json";
+        return service.deleteProcess(this.client.getHost(), id, accept, context);
+    }
+
+    /**
+     * Delete a Process by ID
+     *
+     * Deletes the requested Process, and its Process Items with it. Only a finished Process (`COMPLETED` or
+     * `CANCELLED`) with nothing in progress, neither tasks still to be done nor workflows of its actions still
+     * running, can be deleted; otherwise it answers conflict. The deletion is soft: the Process is still returned
+     * by id and with `deleted=INCLUDE|ONLY`, with its `deletedAt` and `deletedBy` fields set, but it cannot be
+     * restored. Deleting a Process that is already deleted does nothing.
+     *
+     * @param id The resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteProcessAsync(UUID id) {
+        return deleteProcessWithResponseAsync(id).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Delete a Process by ID
+     *
+     * Deletes the requested Process, and its Process Items with it. Only a finished Process (`COMPLETED` or
+     * `CANCELLED`) with nothing in progress, neither tasks still to be done nor workflows of its actions still
+     * running, can be deleted; otherwise it answers conflict. The deletion is soft: the Process is still returned
+     * by id and with `deleted=INCLUDE|ONLY`, with its `deletedAt` and `deletedBy` fields set, but it cannot be
+     * restored. Deleting a Process that is already deleted does nothing.
+     *
+     * @param id The resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteProcessAsync(UUID id, Context context) {
+        return deleteProcessWithResponseAsync(id, context).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Delete a Process by ID
+     *
+     * Deletes the requested Process, and its Process Items with it. Only a finished Process (`COMPLETED` or
+     * `CANCELLED`) with nothing in progress, neither tasks still to be done nor workflows of its actions still
+     * running, can be deleted; otherwise it answers conflict. The deletion is soft: the Process is still returned
+     * by id and with `deleted=INCLUDE|ONLY`, with its `deletedAt` and `deletedBy` fields set, but it cannot be
+     * restored. Deleting a Process that is already deleted does nothing.
+     *
+     * @param id The resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteProcessWithResponse(UUID id, Context context) {
+        final String accept = "application/json";
+        return service.deleteProcessSync(this.client.getHost(), id, accept, context);
+    }
+
+    /**
+     * Delete a Process by ID
+     *
+     * Deletes the requested Process, and its Process Items with it. Only a finished Process (`COMPLETED` or
+     * `CANCELLED`) with nothing in progress, neither tasks still to be done nor workflows of its actions still
+     * running, can be deleted; otherwise it answers conflict. The deletion is soft: the Process is still returned
+     * by id and with `deleted=INCLUDE|ONLY`, with its `deletedAt` and `deletedBy` fields set, but it cannot be
+     * restored. Deleting a Process that is already deleted does nothing.
+     *
+     * @param id The resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteProcess(UUID id) {
+        deleteProcessWithResponse(id, Context.NONE);
     }
 
     /**

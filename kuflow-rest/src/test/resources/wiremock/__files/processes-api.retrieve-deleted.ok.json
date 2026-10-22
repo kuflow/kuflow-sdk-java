@@ -1,0 +1,15 @@
+{
+  "id": "80d8c9a1-e3d2-4c35-a0a9-77ec21d28950",
+  "state": "COMPLETED",
+  "tenantId": "2f0c0d4e-7a1b-4c3d-9e8f-1a2b3c4d5e6f",
+  "processDefinitionRef": {
+    "id": "0edf54c6-c1c9-4426-a7ec-26dd4fa5c98e",
+    "version": "fbde55ae-49f9-4591-967c-6c07f116c616"
+  },
+  "createdBy": "0edf54c6-c1c9-4426-a7ec-26dd4fa5c98e",
+  "createdAt": "2026-10-01T10:00:00Z",
+  "lastModifiedBy": "0edf54c6-c1c9-4426-a7ec-26dd4fa5c98e",
+  "lastModifiedAt": "2026-10-02T10:00:00Z",
+  "deletedBy": "5b1e2c3d-4f5a-4b6c-8d7e-9f0a1b2c3d4e",
+  "deletedAt": "2026-10-03T10:00:00Z"
+}

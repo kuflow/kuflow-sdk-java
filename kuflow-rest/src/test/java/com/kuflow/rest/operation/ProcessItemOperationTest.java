@@ -23,22 +23,35 @@
 
 package com.kuflow.rest.operation;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.containing;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
 import static com.github.tomakehurst.wiremock.client.WireMock.matchingJsonPath;
 import static com.github.tomakehurst.wiremock.client.WireMock.ok;
+import static com.github.tomakehurst.wiremock.client.WireMock.patch;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.put;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.azure.core.util.BinaryData;
+import com.kuflow.rest.model.DeletedQueryParam;
+import com.kuflow.rest.model.JsonPatchOperation;
+import com.kuflow.rest.model.JsonPatchOperationType;
 import com.kuflow.rest.model.JsonValue;
 import com.kuflow.rest.model.ProcessItem;
+import com.kuflow.rest.model.ProcessItemAiAssistance;
+import com.kuflow.rest.model.ProcessItemAiAssistanceGenerateParams;
+import com.kuflow.rest.model.ProcessItemAiAssistanceState;
 import com.kuflow.rest.model.ProcessItemCreateParams;
 import com.kuflow.rest.model.ProcessItemFindOptions;
+import com.kuflow.rest.model.ProcessItemTaskAppendLogParams;
+import com.kuflow.rest.model.ProcessItemTaskAssignParams;
+import com.kuflow.rest.model.ProcessItemTaskContextDataUpdateParams;
 import com.kuflow.rest.model.ProcessItemTaskCreateParams;
 import com.kuflow.rest.model.ProcessItemTaskDataUpdateParams;
+import com.kuflow.rest.model.ProcessItemTaskLogLevel;
 import com.kuflow.rest.model.ProcessItemTaskState;
 import com.kuflow.rest.model.ProcessItemType;
 import java.util.List;
@@ -129,6 +142,25 @@ public class ProcessItemOperationTest extends AbstractOperationTest {
     }
 
     @Test
+    @DisplayName("GIVEN the deleted filter option WHEN list process items THEN the query parameter is sent")
+    public void givenTheDeletedFilterOptionWhenListProcessItemsThenTheQueryParameterIsSent() {
+        UUID processDefinitionId = UUID.randomUUID();
+
+        givenThat(
+            get(urlPathEqualTo("/v2024-06-14/process-items"))
+                .withQueryParam("processDefinitionId", equalTo(processDefinitionId.toString()))
+                .withQueryParam("deleted", equalTo("ONLY"))
+                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("process-items-api.list.ok.json"))
+        );
+
+        ProcessItemFindOptions options = new ProcessItemFindOptions()
+            .setProcessDefinitionId(processDefinitionId)
+            .setDeleted(DeletedQueryParam.ONLY);
+
+        this.kuFlowRestClient.getProcessItemOperations().findProcessItems(options);
+    }
+
+    @Test
     @DisplayName("GIVEN an authenticated user WHEN create a process item inside a thread THEN the thread is sent and returned")
     public void givenAnAuthenticatedUserWhenCreateAProcessItemInsideAThreadThenTheThreadIsSentAndReturned() {
         UUID processId = UUID.fromString("4821b000-88b4-447e-bdca-2b5d811e746b");
@@ -204,5 +236,183 @@ public class ProcessItemOperationTest extends AbstractOperationTest {
                 List.of(true, false)
             )
         );
+    }
+
+    @Test
+    @DisplayName("GIVEN a log entry WHEN append process item task log THEN the log is sent")
+    public void givenALogEntryWhenAppendProcessItemTaskLogThenTheLogIsSent() {
+        UUID processItemId = UUID.fromString("e2d0fdf9-0aae-4eed-9e07-8e4b76df733c");
+
+        givenThat(
+            post("/v2024-06-14/process-items/" + processItemId + "/task/~actions/append-log")
+                .withRequestBody(matchingJsonPath("$.message", equalTo("A message")))
+                .withRequestBody(matchingJsonPath("$.level", equalTo("WARN")))
+                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("process-items-api.retrieve.ok.json"))
+        );
+
+        ProcessItemTaskAppendLogParams processItemTaskAppendLogParams = new ProcessItemTaskAppendLogParams()
+            .setMessage("A message")
+            .setLevel(ProcessItemTaskLogLevel.WARN);
+
+        ProcessItem processItem = this.kuFlowRestClient
+            .getProcessItemOperations()
+            .appendProcessItemTaskLog(processItemId, processItemTaskAppendLogParams);
+
+        assertThat(processItem.getId()).isEqualTo(processItemId);
+    }
+
+    @Test
+    @DisplayName("GIVEN an owner WHEN assign process item task THEN the owner is sent")
+    public void givenAnOwnerWhenAssignProcessItemTaskThenTheOwnerIsSent() {
+        UUID processItemId = UUID.fromString("e2d0fdf9-0aae-4eed-9e07-8e4b76df733c");
+        UUID ownerId = UUID.fromString("23c7c277-70da-4d5c-9dbb-181f363b1d10");
+
+        givenThat(
+            post("/v2024-06-14/process-items/" + processItemId + "/task/~actions/assign")
+                .withRequestBody(matchingJsonPath("$.ownerId", equalTo(ownerId.toString())))
+                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("process-items-api.retrieve.ok.json"))
+        );
+
+        ProcessItemTaskAssignParams processItemTaskAssignParams = new ProcessItemTaskAssignParams().setOwnerId(ownerId);
+
+        ProcessItem processItem = this.kuFlowRestClient
+            .getProcessItemOperations()
+            .assignProcessItemTask(processItemId, processItemTaskAssignParams);
+
+        assertThat(processItem.getOwnerId()).isEqualTo(ownerId);
+    }
+
+    @Test
+    @DisplayName("GIVEN a ready task WHEN claim process item task THEN the claimed task is returned")
+    public void givenAReadyTaskWhenClaimProcessItemTaskThenTheClaimedTaskIsReturned() {
+        UUID processItemId = UUID.fromString("e2d0fdf9-0aae-4eed-9e07-8e4b76df733c");
+
+        givenThat(
+            post("/v2024-06-14/process-items/" + processItemId + "/task/~actions/claim").willReturn(
+                ok().withHeader("Content-Type", "application/json").withBodyFile("process-items-api.retrieve.ok.json")
+            )
+        );
+
+        ProcessItem processItem = this.kuFlowRestClient.getProcessItemOperations().claimProcessItemTask(processItemId);
+
+        assertThat(processItem.getTask().getState()).isEqualTo(ProcessItemTaskState.CLAIMED);
+    }
+
+    @Test
+    @DisplayName("GIVEN a claimed task WHEN complete process item task THEN the complete action is sent")
+    public void givenAClaimedTaskWhenCompleteProcessItemTaskThenTheCompleteActionIsSent() {
+        UUID processItemId = UUID.fromString("e2d0fdf9-0aae-4eed-9e07-8e4b76df733c");
+
+        givenThat(
+            post("/v2024-06-14/process-items/" + processItemId + "/task/~actions/complete").willReturn(
+                ok().withHeader("Content-Type", "application/json").withBodyFile("process-items-api.retrieve.ok.json")
+            )
+        );
+
+        ProcessItem processItem = this.kuFlowRestClient.getProcessItemOperations().completeProcessItemTask(processItemId);
+
+        assertThat(processItem.getId()).isEqualTo(processItemId);
+    }
+
+    @Test
+    @DisplayName("GIVEN a json patch WHEN patch process item task data THEN the patch is sent as json patch")
+    public void givenAJsonPatchWhenPatchProcessItemTaskDataThenThePatchIsSentAsJsonPatch() {
+        UUID processItemId = UUID.fromString("e2d0fdf9-0aae-4eed-9e07-8e4b76df733c");
+
+        givenThat(
+            patch(urlPathEqualTo("/v2024-06-14/process-items/" + processItemId + "/task/data"))
+                .withHeader("Content-Type", containing("application/json-patch+json"))
+                .withRequestBody(matchingJsonPath("$[0].op", equalTo("remove")))
+                .withRequestBody(matchingJsonPath("$[0].path", equalTo("/key")))
+                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("process-items-api.retrieve.ok.json"))
+        );
+
+        List<JsonPatchOperation> jsonPatch = List.of(new JsonPatchOperation().setOp(JsonPatchOperationType.REMOVE).setPath("/key"));
+
+        ProcessItem processItem = this.kuFlowRestClient.getProcessItemOperations().patchProcessItemTaskData(processItemId, jsonPatch);
+
+        assertThat(processItem.getId()).isEqualTo(processItemId);
+    }
+
+    @Test
+    @DisplayName("GIVEN a context data value WHEN update process item task context data THEN the data is sent")
+    public void givenAContextDataValueWhenUpdateProcessItemTaskContextDataThenTheDataIsSent() {
+        UUID processItemId = UUID.fromString("e2d0fdf9-0aae-4eed-9e07-8e4b76df733c");
+
+        givenThat(
+            put("/v2024-06-14/process-items/" + processItemId + "/task/context-data")
+                .withRequestBody(matchingJsonPath("$.data.value.key", equalTo("value")))
+                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("process-items-api.retrieve.ok.json"))
+        );
+
+        ProcessItemTaskContextDataUpdateParams processItemTaskContextDataUpdateParams =
+            new ProcessItemTaskContextDataUpdateParams().setData(new JsonValue().setValue(Map.of("key", "value")));
+
+        ProcessItem processItem = this.kuFlowRestClient
+            .getProcessItemOperations()
+            .updateProcessItemTaskContextData(processItemId, processItemTaskContextDataUpdateParams);
+
+        assertThat(processItem.getId()).isEqualTo(processItemId);
+    }
+
+    @Test
+    @DisplayName("GIVEN a property path WHEN download process item task data webforms as document THEN the content is returned")
+    public void givenAPropertyPathWhenDownloadProcessItemTaskDataWebformsAsDocumentThenTheContentIsReturned() {
+        UUID processItemId = UUID.fromString("e2d0fdf9-0aae-4eed-9e07-8e4b76df733c");
+
+        givenThat(
+            get(urlPathEqualTo("/v2024-06-14/process-items/" + processItemId + "/task/data/~actions/download-webforms-as-document"))
+                .withQueryParam("propertyPath", equalTo("/form"))
+                .willReturn(ok().withHeader("Content-Type", "application/pdf").withBody("pdf content"))
+        );
+
+        BinaryData result = this.kuFlowRestClient
+            .getProcessItemOperations()
+            .downloadProcessItemTaskDataWebformsAsDocument(processItemId, "/form");
+
+        assertThat(result.toString()).isEqualTo("pdf content");
+    }
+
+    @Test
+    @DisplayName("GIVEN a request id WHEN generate process item ai assistance THEN the request id is sent and the state is parsed")
+    public void givenARequestIdWhenGenerateProcessItemAiAssistanceThenTheRequestIdIsSentAndTheStateIsParsed() {
+        UUID processItemId = UUID.fromString("e2d0fdf9-0aae-4eed-9e07-8e4b76df733c");
+        UUID requestId = UUID.fromString("8c9d0e1f-2a3b-4c4d-8e5f-6a7b8c9d0e1f");
+
+        givenThat(
+            post("/v2024-06-14/process-items/" + processItemId + "/~actions/ai-assistance")
+                .withRequestBody(matchingJsonPath("$.requestId", equalTo(requestId.toString())))
+                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("process-items-api.ai-assistance.ok.json"))
+        );
+
+        ProcessItemAiAssistanceGenerateParams processItemAiAssistanceGenerateParams =
+            new ProcessItemAiAssistanceGenerateParams().setRequestId(requestId);
+
+        ProcessItemAiAssistance processItemAiAssistance = this.kuFlowRestClient
+            .getProcessItemOperations()
+            .generateProcessItemAiAssistance(processItemId, processItemAiAssistanceGenerateParams);
+
+        assertThat(processItemAiAssistance.getRequestId()).isEqualTo(requestId);
+        assertThat(processItemAiAssistance.getState()).isEqualTo(ProcessItemAiAssistanceState.PENDING);
+        assertThat(processItemAiAssistance.getRetryAfterSeconds()).isEqualTo(5);
+    }
+
+    @Test
+    @DisplayName("GIVEN a process item WHEN retrieve process item ai assistance THEN the state is parsed")
+    public void givenAProcessItemWhenRetrieveProcessItemAiAssistanceThenTheStateIsParsed() {
+        UUID processItemId = UUID.fromString("e2d0fdf9-0aae-4eed-9e07-8e4b76df733c");
+
+        givenThat(
+            get("/v2024-06-14/process-items/" + processItemId + "/~actions/ai-assistance").willReturn(
+                ok().withHeader("Content-Type", "application/json").withBodyFile("process-items-api.ai-assistance.ok.json")
+            )
+        );
+
+        ProcessItemAiAssistance processItemAiAssistance = this.kuFlowRestClient
+            .getProcessItemOperations()
+            .retrieveProcessItemAiAssistance(processItemId);
+
+        assertThat(processItemAiAssistance.getState()).isEqualTo(ProcessItemAiAssistanceState.PENDING);
+        assertThat(processItemAiAssistance.getEmbeddingPending()).isEqualTo(2);
     }
 }

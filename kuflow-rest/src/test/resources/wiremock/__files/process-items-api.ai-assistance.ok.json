@@ -1,0 +1,8 @@
+{
+  "requestId": "8c9d0e1f-2a3b-4c4d-8e5f-6a7b8c9d0e1f",
+  "state": "PENDING",
+  "embeddingPending": 2,
+  "embeddingProcessing": 1,
+  "retryAfterSeconds": 5,
+  "startedAt": "2026-10-22T10:00:00Z"
+}

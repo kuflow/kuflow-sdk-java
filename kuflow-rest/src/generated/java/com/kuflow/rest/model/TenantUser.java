@@ -148,6 +148,18 @@ public final class TenantUser extends AbstractAudited {
     }
 
     /**
+     * Set the tenantId property: The tenantId property.
+     *
+     * @param tenantId the tenantId value to set.
+     * @return the TenantUser object itself.
+     */
+    @Generated
+    public TenantUser setTenantId(UUID tenantId) {
+        this.tenantId = tenantId;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -206,6 +218,7 @@ public final class TenantUser extends AbstractAudited {
         );
         jsonWriter.writeStringField("id", Objects.toString(this.id, null));
         jsonWriter.writeJsonField("principal", this.principal);
+        jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
         jsonWriter.writeJsonField("metadata", this.metadata);
         return jsonWriter.writeEndObject();
     }

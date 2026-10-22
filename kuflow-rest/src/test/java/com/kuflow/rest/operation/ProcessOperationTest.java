@@ -23,25 +23,50 @@
 
 package com.kuflow.rest.operation;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.absent;
+import static com.github.tomakehurst.wiremock.client.WireMock.containing;
+import static com.github.tomakehurst.wiremock.client.WireMock.delete;
+import static com.github.tomakehurst.wiremock.client.WireMock.deleteRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
 import static com.github.tomakehurst.wiremock.client.WireMock.matchingJsonPath;
+import static com.github.tomakehurst.wiremock.client.WireMock.noContent;
 import static com.github.tomakehurst.wiremock.client.WireMock.ok;
+import static com.github.tomakehurst.wiremock.client.WireMock.patch;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.put;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.azure.core.util.BinaryData;
+import com.kuflow.rest.model.AbstractDeleted;
+import com.kuflow.rest.model.DeletedQueryParam;
+import com.kuflow.rest.model.Document;
+import com.kuflow.rest.model.DocumentReference;
+import com.kuflow.rest.model.JsonPatchOperation;
+import com.kuflow.rest.model.JsonPatchOperationType;
+import com.kuflow.rest.model.JsonValue;
 import com.kuflow.rest.model.Process;
 import com.kuflow.rest.model.ProcessAction;
 import com.kuflow.rest.model.ProcessActionCreateParams;
 import com.kuflow.rest.model.ProcessActionStatus;
 import com.kuflow.rest.model.ProcessActionType;
+import com.kuflow.rest.model.ProcessChangeInitiatorParams;
+import com.kuflow.rest.model.ProcessCreateParams;
+import com.kuflow.rest.model.ProcessEntityUpdateParams;
 import com.kuflow.rest.model.ProcessFindOptions;
+import com.kuflow.rest.model.ProcessMetadataUpdateParams;
 import com.kuflow.rest.model.ProcessPage;
 import com.kuflow.rest.model.ProcessPageItem;
 import com.kuflow.rest.model.ProcessState;
 import com.kuflow.rest.util.SearchCriteriaUtils;
+import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -182,6 +207,62 @@ public class ProcessOperationTest extends AbstractOperationTest {
     }
 
     @Test
+    @DisplayName("GIVEN the deleted filter option WHEN list processes THEN the query parameter is sent")
+    public void givenTheDeletedFilterOptionWhenListProcessesThenTheQueryParameterIsSent() {
+        UUID processDefinitionId = UUID.randomUUID();
+
+        givenThat(
+            get(urlPathEqualTo("/v2024-06-14/processes"))
+                .withQueryParam("processDefinitionId", equalTo(processDefinitionId.toString()))
+                .withQueryParam("deleted", equalTo("INCLUDE"))
+                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.list.ok.json"))
+        );
+
+        ProcessFindOptions options = new ProcessFindOptions()
+            .setProcessDefinitionId(processDefinitionId)
+            .setDeleted(DeletedQueryParam.INCLUDE);
+
+        this.kuFlowRestClient.getProcessOperations().findProcesses(options);
+    }
+
+    @Test
+    @DisplayName("GIVEN a finished process WHEN delete process THEN the delete request is sent")
+    public void givenAFinishedProcessWhenDeleteProcessThenTheDeleteRequestIsSent() {
+        UUID processId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
+
+        givenThat(delete("/v2024-06-14/processes/" + processId).willReturn(noContent()));
+
+        this.kuFlowRestClient.getProcessOperations().deleteProcess(processId);
+
+        verify(deleteRequestedFor(urlPathEqualTo("/v2024-06-14/processes/" + processId)));
+    }
+
+    @Test
+    @DisplayName("GIVEN a deleted process WHEN retrieve process THEN the audit and delete fields are parsed")
+    public void givenADeletedProcessWhenRetrieveProcessThenTheAuditAndDeleteFieldsAreParsed() {
+        UUID processId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
+
+        givenThat(
+            get("/v2024-06-14/processes/" + processId).willReturn(
+                ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.retrieve-deleted.ok.json")
+            )
+        );
+
+        Process process = this.kuFlowRestClient.getProcessOperations().retrieveProcess(processId);
+
+        UUID expectedCreatedBy = UUID.fromString("0edf54c6-c1c9-4426-a7ec-26dd4fa5c98e");
+        UUID expectedDeletedBy = UUID.fromString("5b1e2c3d-4f5a-4b6c-8d7e-9f0a1b2c3d4e");
+        OffsetDateTime expectedDeletedAt = OffsetDateTime.parse("2026-10-03T10:00:00Z");
+        AbstractDeleted deleted = process;
+
+        assertThat(process.getCreatedBy()).isEqualTo(expectedCreatedBy);
+        assertThat(process.getDeletedBy()).isEqualTo(expectedDeletedBy);
+        assertThat(process.getDeletedAt()).isEqualTo(expectedDeletedAt);
+        assertThat(deleted.getDeletedBy()).isEqualTo(expectedDeletedBy);
+        assertThat(deleted.getDeletedAt()).isEqualTo(expectedDeletedAt);
+    }
+
+    @Test
     @DisplayName("GIVEN an authenticated user WHEN create a process action THEN the params are sent and the body is parsed correctly")
     public void givenAnAuthenticatedUserWhenCreateAProcessActionThenTheParamsAreSentAndTheBodyIsParsedCorrectly() {
         UUID processId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
@@ -237,5 +318,239 @@ public class ProcessOperationTest extends AbstractOperationTest {
         ProcessAction processAction = this.kuFlowRestClient.getProcessOperations().cancelProcessAction(processId, actionId);
 
         assertThat(processAction.getId()).isEqualTo(actionId);
+    }
+
+    @Test
+    @DisplayName("GIVEN process create params WHEN create process THEN the params are sent and the body is parsed correctly")
+    public void givenProcessCreateParamsWhenCreateProcessThenTheParamsAreSentAndTheBodyIsParsedCorrectly() {
+        UUID processDefinitionId = UUID.fromString("0edf54c6-c1c9-4426-a7ec-26dd4fa5c98e");
+
+        givenThat(
+            post("/v2024-06-14/processes")
+                .withRequestBody(matchingJsonPath("$.processDefinitionId", equalTo(processDefinitionId.toString())))
+                .withRequestBody(matchingJsonPath("$.initiatorEmail", equalTo("jdoe@example.com")))
+                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.retrieve.ok.json"))
+        );
+
+        ProcessCreateParams processCreateParams = new ProcessCreateParams()
+            .setProcessDefinitionId(processDefinitionId)
+            .setInitiatorEmail("jdoe@example.com");
+
+        Process process = this.kuFlowRestClient.getProcessOperations().createProcess(processCreateParams);
+
+        assertThat(process.getId()).isEqualTo(UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950"));
+        assertThat(process.getState()).isEqualTo(ProcessState.RUNNING);
+    }
+
+    @Test
+    @DisplayName("GIVEN a running process WHEN complete process THEN the complete action is sent")
+    public void givenARunningProcessWhenCompleteProcessThenTheCompleteActionIsSent() {
+        UUID processId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
+
+        givenThat(
+            post("/v2024-06-14/processes/" + processId + "/~actions/complete").willReturn(
+                ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.retrieve.ok.json")
+            )
+        );
+
+        Process process = this.kuFlowRestClient.getProcessOperations().completeProcess(processId);
+
+        assertThat(process.getId()).isEqualTo(processId);
+    }
+
+    @Test
+    @DisplayName("GIVEN a running process WHEN cancel process THEN the cancel action is sent")
+    public void givenARunningProcessWhenCancelProcessThenTheCancelActionIsSent() {
+        UUID processId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
+
+        givenThat(
+            post("/v2024-06-14/processes/" + processId + "/~actions/cancel").willReturn(
+                ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.retrieve.ok.json")
+            )
+        );
+
+        Process process = this.kuFlowRestClient.getProcessOperations().cancelProcess(processId);
+
+        assertThat(process.getId()).isEqualTo(processId);
+    }
+
+    @Test
+    @DisplayName("GIVEN some process item ids WHEN cancel process items THEN the ids are sent as query parameters")
+    public void givenSomeProcessItemIdsWhenCancelProcessItemsThenTheIdsAreSentAsQueryParameters() {
+        UUID processId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
+        UUID processItemId1 = UUID.randomUUID();
+        UUID processItemId2 = UUID.randomUUID();
+
+        givenThat(
+            post(urlPathEqualTo("/v2024-06-14/processes/" + processId + "/~actions/cancel-process-items"))
+                .withQueryParam("processItemId", equalTo(processItemId1.toString()))
+                .withQueryParam("processItemId", equalTo(processItemId2.toString()))
+                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.retrieve.ok.json"))
+        );
+
+        Process process = this.kuFlowRestClient
+            .getProcessOperations()
+            .cancelProcessItems(processId, List.of(processItemId1, processItemId2));
+
+        assertThat(process.getId()).isEqualTo(processId);
+    }
+
+    @Test
+    @DisplayName("GIVEN no process item ids WHEN cancel process items THEN no query parameter is sent")
+    public void givenNoProcessItemIdsWhenCancelProcessItemsThenNoQueryParameterIsSent() {
+        UUID processId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
+
+        givenThat(
+            post(urlPathEqualTo("/v2024-06-14/processes/" + processId + "/~actions/cancel-process-items"))
+                .withQueryParam("processItemId", absent())
+                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.retrieve.ok.json"))
+        );
+
+        Process process = this.kuFlowRestClient.getProcessOperations().cancelProcessItems(processId);
+
+        assertThat(process.getId()).isEqualTo(processId);
+    }
+
+    @Test
+    @DisplayName("GIVEN a new initiator WHEN change process initiator THEN the params are sent")
+    public void givenANewInitiatorWhenChangeProcessInitiatorThenTheParamsAreSent() {
+        UUID processId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
+        UUID initiatorId = UUID.randomUUID();
+
+        givenThat(
+            post("/v2024-06-14/processes/" + processId + "/~actions/change-initiator")
+                .withRequestBody(matchingJsonPath("$.initiatorId", equalTo(initiatorId.toString())))
+                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.retrieve.ok.json"))
+        );
+
+        ProcessChangeInitiatorParams processChangeInitiatorParams = new ProcessChangeInitiatorParams().setInitiatorId(initiatorId);
+
+        Process process = this.kuFlowRestClient.getProcessOperations().changeProcessInitiator(processId, processChangeInitiatorParams);
+
+        assertThat(process.getId()).isEqualTo(processId);
+    }
+
+    @Test
+    @DisplayName("GIVEN a metadata value WHEN update process metadata THEN the metadata is sent")
+    public void givenAMetadataValueWhenUpdateProcessMetadataThenTheMetadataIsSent() {
+        UUID processId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
+
+        givenThat(
+            put("/v2024-06-14/processes/" + processId + "/metadata")
+                .withRequestBody(matchingJsonPath("$.metadata.value.key", equalTo("value")))
+                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.retrieve.ok.json"))
+        );
+
+        ProcessMetadataUpdateParams processMetadataUpdateParams = new ProcessMetadataUpdateParams().setMetadata(
+            new JsonValue().setValue(Map.of("key", "value"))
+        );
+
+        Process process = this.kuFlowRestClient.getProcessOperations().updateProcessMetadata(processId, processMetadataUpdateParams);
+
+        assertThat(process.getId()).isEqualTo(processId);
+    }
+
+    @Test
+    @DisplayName("GIVEN a json patch WHEN patch process metadata THEN the patch is sent as json patch")
+    public void givenAJsonPatchWhenPatchProcessMetadataThenThePatchIsSentAsJsonPatch() {
+        UUID processId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
+
+        givenThat(
+            patch(urlPathEqualTo("/v2024-06-14/processes/" + processId + "/metadata"))
+                .withHeader("Content-Type", containing("application/json-patch+json"))
+                .withRequestBody(matchingJsonPath("$[0].op", equalTo("replace")))
+                .withRequestBody(matchingJsonPath("$[0].path", equalTo("/key")))
+                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.retrieve.ok.json"))
+        );
+
+        List<JsonPatchOperation> jsonPatch = List.of(
+            new JsonPatchOperation().setOp(JsonPatchOperationType.REPLACE).setPath("/key").setValue("value")
+        );
+
+        Process process = this.kuFlowRestClient.getProcessOperations().patchProcessMetadata(processId, jsonPatch);
+
+        assertThat(process.getId()).isEqualTo(processId);
+    }
+
+    @Test
+    @DisplayName("GIVEN an entity value WHEN update process entity THEN the entity is sent")
+    public void givenAnEntityValueWhenUpdateProcessEntityThenTheEntityIsSent() {
+        UUID processId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
+
+        givenThat(
+            put("/v2024-06-14/processes/" + processId + "/entity")
+                .withRequestBody(matchingJsonPath("$.entity.value.key", equalTo("value")))
+                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.retrieve.ok.json"))
+        );
+
+        ProcessEntityUpdateParams processEntityUpdateParams = new ProcessEntityUpdateParams().setEntity(
+            new JsonValue().setValue(Map.of("key", "value"))
+        );
+
+        Process process = this.kuFlowRestClient.getProcessOperations().updateProcessEntity(processId, processEntityUpdateParams);
+
+        assertThat(process.getId()).isEqualTo(processId);
+    }
+
+    @Test
+    @DisplayName("GIVEN a json patch WHEN patch process entity THEN the patch is sent as json patch")
+    public void givenAJsonPatchWhenPatchProcessEntityThenThePatchIsSentAsJsonPatch() {
+        UUID processId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
+
+        givenThat(
+            patch(urlPathEqualTo("/v2024-06-14/processes/" + processId + "/entity"))
+                .withHeader("Content-Type", containing("application/json-patch+json"))
+                .withRequestBody(matchingJsonPath("$[0].op", equalTo("add")))
+                .withRequestBody(matchingJsonPath("$[0].path", equalTo("/key")))
+                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.retrieve.ok.json"))
+        );
+
+        List<JsonPatchOperation> jsonPatch = List.of(
+            new JsonPatchOperation().setOp(JsonPatchOperationType.ADD).setPath("/key").setValue("value")
+        );
+
+        Process process = this.kuFlowRestClient.getProcessOperations().patchProcessEntity(processId, jsonPatch);
+
+        assertThat(process.getId()).isEqualTo(processId);
+    }
+
+    @Test
+    @DisplayName("GIVEN a document WHEN upload process document THEN the query parameters are sent and the response is parsed")
+    public void givenADocumentWhenUploadProcessDocumentThenTheQueryParametersAreSentAndTheResponseIsParsed() {
+        UUID processId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
+
+        givenThat(
+            post(urlPathEqualTo("/v2024-06-14/processes/" + processId + "/~actions/upload-document"))
+                .withQueryParam("fileContentType", equalTo("text/plain"))
+                .withQueryParam("fileName", equalTo("test.txt"))
+                .willReturn(
+                    ok().withHeader("Content-Type", "application/json").withBodyFile("business-artifacts-api.upload-document.ok.json")
+                )
+        );
+
+        BinaryData fileContent = BinaryData.fromBytes("test content".getBytes(StandardCharsets.UTF_8));
+        Document document = new Document().setFileContent(fileContent).setFileName("test.txt").setContentType("text/plain");
+
+        DocumentReference documentReference = this.kuFlowRestClient.getProcessOperations().uploadProcessDocument(processId, document);
+
+        assertThat(documentReference.getDocumentUri()).isEqualTo("kuflow-file:uri=aaa-bbb-ccc;type=text/plain;size=12;name=test.txt;");
+        verify(postRequestedFor(urlPathEqualTo("/v2024-06-14/processes/" + processId + "/~actions/upload-document")));
+    }
+
+    @Test
+    @DisplayName("GIVEN a document uri WHEN download process document THEN the query parameter is sent and the content is returned")
+    public void givenADocumentUriWhenDownloadProcessDocumentThenTheQueryParameterIsSentAndTheContentIsReturned() {
+        UUID processId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
+        String documentUri = "kuflow-file:uri=aaa-bbb-ccc;type=text/plain;size=12;name=test.txt;";
+
+        givenThat(
+            get(urlPathEqualTo("/v2024-06-14/processes/" + processId + "/~actions/download-document"))
+                .withQueryParam("documentUri", equalTo(documentUri))
+                .willReturn(ok().withHeader("Content-Type", "application/octet-stream").withBody("test content"))
+        );
+
+        BinaryData result = this.kuFlowRestClient.getProcessOperations().downloadProcessDocument(processId, documentUri);
+
+        assertThat(result.toString()).isEqualTo("test content");
     }
 }

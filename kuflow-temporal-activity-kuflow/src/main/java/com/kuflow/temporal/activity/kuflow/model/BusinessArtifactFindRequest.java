@@ -25,6 +25,7 @@ package com.kuflow.temporal.activity.kuflow.model;
 
 import static java.util.Collections.unmodifiableList;
 
+import com.kuflow.rest.model.DeletedQueryParam;
 import com.kuflow.rest.util.SearchCriteriaUtils;
 import com.kuflow.temporal.common.model.AbstractModel;
 import java.util.LinkedList;
@@ -70,6 +71,16 @@ public class BusinessArtifactFindRequest extends AbstractModel {
      * Filter by indexed field values.
      */
     private final List<String> values = new LinkedList<>();
+
+    /**
+     * Soft-deleted Business Artifacts filtering mode; when {@code null}, {@link DeletedQueryParam#EXCLUDE} applies. With
+     * {@link DeletedQueryParam#INCLUDE} or {@link DeletedQueryParam#ONLY}, deleted Business Artifacts are returned with their
+     * {@code deletedAt} and {@code deletedBy} fields set. They are only returned when the request identifies exactly one
+     * Business Artifact Definition (by exactly one {@code businessArtifactDefinitionId}, or by exactly one
+     * {@code businessArtifactDefinitionCode} together with exactly one {@code tenantId}) and the credentials can archive
+     * or supervise its Business Artifacts; otherwise they are silently left out.
+     */
+    private DeletedQueryParam deleted;
 
     public Integer getSize() {
         return this.size;
@@ -294,6 +305,16 @@ public class BusinessArtifactFindRequest extends AbstractModel {
     public BusinessArtifactFindRequest removeValue(String value) {
         Objects.requireNonNull(value, "'value' is required");
         this.values.remove(value);
+
+        return this;
+    }
+
+    public DeletedQueryParam getDeleted() {
+        return this.deleted;
+    }
+
+    public BusinessArtifactFindRequest setDeleted(DeletedQueryParam deleted) {
+        this.deleted = deleted;
 
         return this;
     }

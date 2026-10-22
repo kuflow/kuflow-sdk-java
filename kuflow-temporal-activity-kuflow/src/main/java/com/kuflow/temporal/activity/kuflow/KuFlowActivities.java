@@ -53,6 +53,8 @@ import com.kuflow.temporal.activity.kuflow.model.ProcessActionCreateRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessActionCreateResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessActionRetrieveRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessActionRetrieveResponse;
+import com.kuflow.temporal.activity.kuflow.model.ProcessDeleteRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessDeleteResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessEntityPatchRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessEntityPatchResponse;
 import com.kuflow.temporal.activity.kuflow.model.ProcessEntityUpdateRequest;
@@ -144,6 +146,18 @@ public interface KuFlowActivities {
     @ActivityMethod
     @Nonnull
     ProcessRetrieveResponse retrieveProcess(@Nonnull ProcessRetrieveRequest request);
+
+    /**
+     * Delete a Process.
+     *
+     * <p>The process is soft deleted (archived) and cannot be restored.
+     *
+     * @param request must not be {@literal null}.
+     * @return empty response
+     */
+    @ActivityMethod
+    @Nonnull
+    ProcessDeleteResponse deleteProcess(@Nonnull ProcessDeleteRequest request);
 
     /**
      * Update a Process Entity.

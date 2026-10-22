@@ -23,24 +23,24 @@
 
 package com.kuflow.temporal.worker.jackson;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kuflow.rest.model.DeletedQueryParam;
 import com.kuflow.rest.model.ProcessState;
 import com.kuflow.rest.util.SearchCriteriaUtils;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFindRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessFindRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessItemFindRequest;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-/**
- * Regression tests for <a href="https://github.com/kuflow/kuflow-sdk-java/issues/177">issue #177</a>: a
- * {@link ProcessFindRequest} could not travel as an activity input, so {@code KuFlowActivities.findProcesses}
- * was unusable from a workflow.
- */
 public class ProcessFindRequestSerializationTest {
 
     private final ObjectMapper objectMapper = KuFlowObjectMapperFactory.createObjectMapper();
@@ -109,6 +109,49 @@ public class ProcessFindRequestSerializationTest {
         assertThatNoException().isThrownBy(() -> new ProcessFindRequest().setSorts(List.of("createdAt,asc")));
         assertThatNoException().isThrownBy(() -> new ProcessFindRequest().setSorts(null));
         assertThatNoException().isThrownBy(() -> new ProcessFindRequest().removeSort("createdAt,asc"));
+    }
+
+    @Test
+    @DisplayName("GIVEN find requests with the deleted filter WHEN they are serialized THEN the deleted field is written as a string")
+    public void givenFindRequestsWithTheDeletedFilterWhenTheyAreSerializedThenTheDeletedFieldIsWrittenAsAString() throws IOException {
+        JsonNode processJson = this.objectMapper.readTree(
+            this.objectMapper.writeValueAsBytes(new ProcessFindRequest().setDeleted(DeletedQueryParam.INCLUDE))
+        );
+        JsonNode processItemJson = this.objectMapper.readTree(
+            this.objectMapper.writeValueAsBytes(new ProcessItemFindRequest().setDeleted(DeletedQueryParam.ONLY))
+        );
+        JsonNode businessArtifactJson = this.objectMapper.readTree(
+            this.objectMapper.writeValueAsBytes(new BusinessArtifactFindRequest().setDeleted(DeletedQueryParam.EXCLUDE))
+        );
+
+        assertThat(processJson.get("deleted").asText()).isEqualTo("INCLUDE");
+        assertThat(processItemJson.get("deleted").asText()).isEqualTo("ONLY");
+        assertThat(businessArtifactJson.get("deleted").asText()).isEqualTo("EXCLUDE");
+    }
+
+    @Test
+    @DisplayName("GIVEN find request payloads with the deleted filter WHEN they are deserialized THEN the deleted filter is bound")
+    public void givenFindRequestPayloadsWithTheDeletedFilterWhenTheyAreDeserializedThenTheDeletedFilterIsBound() throws IOException {
+        byte[] payload = "{\"deleted\":\"ONLY\"}".getBytes(UTF_8);
+
+        ProcessFindRequest processFindRequest = this.objectMapper.readValue(payload, ProcessFindRequest.class);
+        ProcessItemFindRequest processItemFindRequest = this.objectMapper.readValue(payload, ProcessItemFindRequest.class);
+        BusinessArtifactFindRequest businessArtifactFindRequest = this.objectMapper.readValue(payload, BusinessArtifactFindRequest.class);
+
+        assertThat(processFindRequest.getDeleted()).isEqualTo(DeletedQueryParam.ONLY);
+        assertThat(processItemFindRequest.getDeleted()).isEqualTo(DeletedQueryParam.ONLY);
+        assertThat(businessArtifactFindRequest.getDeleted()).isEqualTo(DeletedQueryParam.ONLY);
+    }
+
+    @Test
+    @DisplayName(
+        "GIVEN a find request without the deleted filter WHEN it is serialized and deserialized THEN the deleted filter stays null"
+    )
+    public void givenAFindRequestWithoutTheDeletedFilterWhenItIsSerializedAndDeserializedThenTheDeletedFilterStaysNull()
+        throws IOException {
+        ProcessFindRequest result = this.roundTrip(new ProcessFindRequest());
+
+        assertThat(result.getDeleted()).isNull();
     }
 
     private ProcessFindRequest roundTrip(ProcessFindRequest request) throws IOException {

@@ -25,6 +25,7 @@ package com.kuflow.temporal.activity.kuflow.model;
 
 import static java.util.Collections.unmodifiableList;
 
+import com.kuflow.rest.model.DeletedQueryParam;
 import com.kuflow.rest.model.ProcessState;
 import com.kuflow.rest.util.SearchCriteriaUtils;
 import com.kuflow.temporal.common.model.AbstractModel;
@@ -79,6 +80,16 @@ public class ProcessFindRequest extends AbstractModel {
      * Filter by indexed metadata field values.
      */
     private final List<String> metadata = new LinkedList<>();
+
+    /**
+     * Deleted Processes filtering mode; when {@code null}, {@link DeletedQueryParam#EXCLUDE} applies. With
+     * {@link DeletedQueryParam#INCLUDE} or {@link DeletedQueryParam#ONLY}, deleted Processes are returned with their
+     * {@code deletedAt} and {@code deletedBy} fields set. They are only returned when the request identifies exactly one
+     * Process Definition (by exactly one {@code processDefinitionId}, or by exactly one {@code processDefinitionCode}
+     * together with exactly one {@code tenantId}) and the credentials can delete any Process of that definition;
+     * otherwise they are silently left out.
+     */
+    private DeletedQueryParam deleted;
 
     public Integer getPage() {
         return this.page;
@@ -423,6 +434,16 @@ public class ProcessFindRequest extends AbstractModel {
     public ProcessFindRequest removeMetadata(String metadata) {
         Objects.requireNonNull(metadata, "'metadata' is required");
         this.metadata.remove(metadata);
+
+        return this;
+    }
+
+    public DeletedQueryParam getDeleted() {
+        return this.deleted;
+    }
+
+    public ProcessFindRequest setDeleted(DeletedQueryParam deleted) {
+        this.deleted = deleted;
 
         return this;
     }

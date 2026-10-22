@@ -181,7 +181,7 @@ public class RobotOperations {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData downloadRobotSourceCodeWithResponse(UUID id) {
+    public BinaryData downloadRobotSourceCode(UUID id) {
         return this.downloadRobotSourceCodeWithResponse(id, Context.NONE).getValue();
     }
 
@@ -229,7 +229,7 @@ public class RobotOperations {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData downloadRobotAssetWithResponse(
+    public BinaryData downloadRobotAsset(
         UUID id,
         RobotAssetType type,
         String version,

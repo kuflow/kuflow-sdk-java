@@ -31,6 +31,7 @@ import com.azure.core.util.Context;
 import com.kuflow.rest.implementation.KuFlowClientImpl;
 import com.kuflow.rest.implementation.ProcessOperationsImpl;
 import com.kuflow.rest.model.DefaultErrorException;
+import com.kuflow.rest.model.DeletedQueryParam;
 import com.kuflow.rest.model.Document;
 import com.kuflow.rest.model.DocumentReference;
 import com.kuflow.rest.model.JsonPatchOperation;
@@ -91,6 +92,7 @@ public class ProcessOperations {
         List<UUID> initiatorId = !options.getInitiatorIds().isEmpty() ? options.getInitiatorIds() : null;
         List<String> initiatorEmail = !options.getInitiatorEmails().isEmpty() ? options.getInitiatorEmails() : null;
         List<String> metadata = !options.getMetadata().isEmpty() ? options.getMetadata() : null;
+        DeletedQueryParam deleted = options.getDeleted();
 
         return this.service.findProcessesWithResponse(
             size,
@@ -103,6 +105,7 @@ public class ProcessOperations {
             initiatorId,
             initiatorEmail,
             metadata,
+            deleted,
             context
         );
     }
@@ -212,6 +215,46 @@ public class ProcessOperations {
     }
 
     /**
+     * Delete a Process by ID
+     * <p>
+     * Deletes the requested Process, and its Process Items with it. Only a finished Process ({@code COMPLETED} or
+     * {@code CANCELLED}) with nothing in progress, neither tasks still to be done nor workflows of its actions still
+     * running, can be deleted; otherwise it answers conflict. The deletion is soft: the Process is still returned by id
+     * and with {@code deleted=INCLUDE|ONLY}, with its {@code deletedAt} and {@code deletedBy} fields set, but it cannot be
+     * restored. Deleting a Process that is already deleted does nothing.
+     *
+     * @param id The resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteProcessWithResponse(UUID id, Context context) {
+        return this.service.deleteProcessWithResponse(id, context);
+    }
+
+    /**
+     * Delete a Process by ID
+     * <p>
+     * Deletes the requested Process, and its Process Items with it. Only a finished Process ({@code COMPLETED} or
+     * {@code CANCELLED}) with nothing in progress, neither tasks still to be done nor workflows of its actions still
+     * running, can be deleted; otherwise it answers conflict. The deletion is soft: the Process is still returned by id
+     * and with {@code deleted=INCLUDE|ONLY}, with its {@code deletedAt} and {@code deletedBy} fields set, but it cannot be
+     * restored. Deleting a Process that is already deleted does nothing.
+     *
+     * @param id The resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteProcess(UUID id) {
+        this.deleteProcessWithResponse(id, Context.NONE);
+    }
+
+    /**
      * Create a Process Action.
      * <p>
      * Invokes an action on the process. Asynchronous action types ({@code START_WORKFLOW}, {@code DOWNLOADABLE})
@@ -219,7 +262,7 @@ public class ProcessOperations {
      * complete synchronously.
      *
      * @param id The Process ID.
-     * @param params Action create parameters.
+     * @param processActionCreateParams Action create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -227,23 +270,27 @@ public class ProcessOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProcessAction> createProcessActionWithResponse(UUID id, ProcessActionCreateParams params, Context context) {
-        return this.service.createProcessActionWithResponse(id, params, context);
+    public Response<ProcessAction> createProcessActionWithResponse(
+        UUID id,
+        ProcessActionCreateParams processActionCreateParams,
+        Context context
+    ) {
+        return this.service.createProcessActionWithResponse(id, processActionCreateParams, context);
     }
 
     /**
      * Create a Process Action.
      *
      * @param id The Process ID.
-     * @param params Action create parameters.
+     * @param processActionCreateParams Action create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProcessAction createProcessAction(UUID id, ProcessActionCreateParams params) {
-        return this.createProcessActionWithResponse(id, params, Context.NONE).getValue();
+    public ProcessAction createProcessAction(UUID id, ProcessActionCreateParams processActionCreateParams) {
+        return this.createProcessActionWithResponse(id, processActionCreateParams, Context.NONE).getValue();
     }
 
     /**

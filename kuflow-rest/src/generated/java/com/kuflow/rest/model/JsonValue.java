@@ -74,6 +74,18 @@ public final class JsonValue implements JsonSerializable<JsonValue> {
     }
 
     /**
+     * Set the valid property: true if the data complain the related json schema.
+     *
+     * @param valid the valid value to set.
+     * @return the JsonValue object itself.
+     */
+    @Generated
+    public JsonValue setValid(Boolean valid) {
+        this.valid = valid;
+        return this;
+    }
+
+    /**
      * Get the value property: json value filled that complain with the related json schema.
      *
      * @return the value value.
@@ -106,6 +118,18 @@ public final class JsonValue implements JsonSerializable<JsonValue> {
     }
 
     /**
+     * Set the errors property: The errors property.
+     *
+     * @param errors the errors value to set.
+     * @return the JsonValue object itself.
+     */
+    @Generated
+    public JsonValue setErrors(List<JsonValueError> errors) {
+        this.errors = errors;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -113,6 +137,8 @@ public final class JsonValue implements JsonSerializable<JsonValue> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("value", this.value, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeBooleanField("valid", this.valid);
+        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
