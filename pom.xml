@@ -65,6 +65,8 @@
     <java.version>17</java.version>
     <argLine>-Djava.security.egd=file:/dev/./urandom -Xmx256m</argLine>
 
+    <spotless.npm.cache>${maven.multiModuleProjectDirectory}/.cache/spotless-npm</spotless.npm.cache>
+
     <!-- Maven plugin dependencies -->
     <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
     <maven-install-plugin.version>3.1.3</maven-install-plugin.version>
@@ -318,7 +320,7 @@
                   <tabWidth>4</tabWidth>
                 </config>
                 <!-- Node/npm are expected on the system PATH (provided by mise locally, by the CI image setup) -->
-                <npmInstallCache>${maven.multiModuleProjectDirectory}/.cache/spotless-npm</npmInstallCache>
+                <npmInstallCache>${spotless.npm.cache}</npmInstallCache>
               </prettier>
 
               <!-- Replaces license-maven-plugin (this one also auto-inserts the header) -->
@@ -370,7 +372,7 @@
                       <tabWidth>4</tabWidth>
                     </config>
                     <!-- Node/npm are expected on the system PATH (provided by mise locally, by the CI image setup) -->
-                    <npmInstallCache>${maven.multiModuleProjectDirectory}/.cache/spotless-npm</npmInstallCache>
+                    <npmInstallCache>${spotless.npm.cache}</npmInstallCache>
                   </prettier>
 
                   <!-- Replaces license-maven-plugin (this one also auto-inserts the header) -->
