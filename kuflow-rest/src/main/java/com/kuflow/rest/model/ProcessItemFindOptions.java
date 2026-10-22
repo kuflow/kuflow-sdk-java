@@ -84,6 +84,17 @@ public class ProcessItemFindOptions {
      */
     private final List<String> processDefinitionCodes = new LinkedList<>();
 
+    /**
+     * Deleted Process Items filtering mode; when {@code null}, {@link DeletedQueryParam#EXCLUDE} applies. The Process
+     * Items of a deleted Process are deleted with it. With {@link DeletedQueryParam#INCLUDE} or
+     * {@link DeletedQueryParam#ONLY}, deleted Process Items are returned with their {@code deletedAt} and
+     * {@code deletedBy} fields set. They are only returned when the request identifies exactly one Process Definition
+     * (by exactly one {@code processDefinitionId}, or by exactly one {@code processDefinitionCode} together with exactly
+     * one {@code tenantId}) and the credentials can delete any Process of that definition; otherwise they are silently
+     * left out.
+     */
+    private DeletedQueryParam deleted;
+
     public Integer getSize() {
         return this.size;
     }
@@ -380,6 +391,16 @@ public class ProcessItemFindOptions {
     public ProcessItemFindOptions removeProcessDefinitionCode(String processDefinitionCode) {
         Objects.requireNonNull(processDefinitionCode, "'processDefinitionCode' is required");
         this.processDefinitionCodes.remove(processDefinitionCode);
+
+        return this;
+    }
+
+    public DeletedQueryParam getDeleted() {
+        return this.deleted;
+    }
+
+    public ProcessItemFindOptions setDeleted(DeletedQueryParam deleted) {
+        this.deleted = deleted;
 
         return this;
     }

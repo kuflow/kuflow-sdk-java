@@ -76,6 +76,18 @@ public final class TenantUserPageItem extends AbstractAudited {
     }
 
     /**
+     * Set the id property: The id property.
+     *
+     * @param id the id value to set.
+     * @return the TenantUserPageItem object itself.
+     */
+    @Generated
+    public TenantUserPageItem setId(UUID id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
      * Get the principalId property: The principalId property.
      *
      * @return the principalId value.
@@ -86,6 +98,18 @@ public final class TenantUserPageItem extends AbstractAudited {
     }
 
     /**
+     * Set the principalId property: The principalId property.
+     *
+     * @param principalId the principalId value to set.
+     * @return the TenantUserPageItem object itself.
+     */
+    @Generated
+    public TenantUserPageItem setPrincipalId(UUID principalId) {
+        this.principalId = principalId;
+        return this;
+    }
+
+    /**
      * Get the tenantId property: The tenantId property.
      *
      * @return the tenantId value.
@@ -93,6 +117,18 @@ public final class TenantUserPageItem extends AbstractAudited {
     @Generated
     public UUID getTenantId() {
         return this.tenantId;
+    }
+
+    /**
+     * Set the tenantId property: The tenantId property.
+     *
+     * @param tenantId the tenantId value to set.
+     * @return the TenantUserPageItem object itself.
+     */
+    @Generated
+    public TenantUserPageItem setTenantId(UUID tenantId) {
+        this.tenantId = tenantId;
+        return this;
     }
 
     /**
@@ -152,6 +188,9 @@ public final class TenantUserPageItem extends AbstractAudited {
             "lastModifiedAt",
             getLastModifiedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getLastModifiedAt())
         );
+        jsonWriter.writeStringField("id", Objects.toString(this.id, null));
+        jsonWriter.writeStringField("principalId", Objects.toString(this.principalId, null));
+        jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
         return jsonWriter.writeEndObject();
     }
 

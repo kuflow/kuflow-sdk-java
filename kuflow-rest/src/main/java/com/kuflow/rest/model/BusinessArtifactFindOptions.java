@@ -71,9 +71,10 @@ public class BusinessArtifactFindOptions {
     /**
      * Soft-deleted Business Artifacts filtering mode; when {@code null}, {@link DeletedQueryParam#EXCLUDE} applies. With
      * {@link DeletedQueryParam#INCLUDE} or {@link DeletedQueryParam#ONLY}, deleted Business Artifacts are returned with their
-     * {@code deletedAt} and {@code deletedBy} fields set. Only honored when the request filters by exactly one
-     * {@code businessArtifactDefinitionId} and the credentials hold manager rights over that Business Artifact
-     * Definition; in any other case the filter silently falls back to {@code EXCLUDE}.
+     * {@code deletedAt} and {@code deletedBy} fields set. They are only returned when the request identifies exactly one
+     * Business Artifact Definition (by exactly one {@code businessArtifactDefinitionId}, or by exactly one
+     * {@code businessArtifactDefinitionCode} together with exactly one {@code tenantId}) and the credentials can archive
+     * or supervise its Business Artifacts; otherwise they are silently left out.
      */
     private DeletedQueryParam deleted;
 

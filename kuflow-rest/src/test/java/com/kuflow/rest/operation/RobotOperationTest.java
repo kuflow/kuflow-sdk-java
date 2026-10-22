@@ -30,7 +30,11 @@ import static com.github.tomakehurst.wiremock.client.WireMock.ok;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.azure.core.util.BinaryData;
 import com.kuflow.rest.model.Robot;
+import com.kuflow.rest.model.RobotAssetArchitecture;
+import com.kuflow.rest.model.RobotAssetPlatform;
+import com.kuflow.rest.model.RobotAssetType;
 import com.kuflow.rest.model.RobotFindOptions;
 import com.kuflow.rest.model.RobotPage;
 import com.kuflow.rest.model.RobotSourceType;
@@ -137,5 +141,42 @@ public class RobotOperationTest extends AbstractOperationTest {
         assertThat(robot.getName()).isEqualTo("NAME");
         assertThat(robot.getSourceType()).isEqualTo(RobotSourceType.PACKAGE);
         assertThat(robot.getEnvironmentVariables()).containsExactlyInAnyOrderEntriesOf(Map.of("env1", "value1", "env2", "value2"));
+    }
+
+    @Test
+    @DisplayName("GIVEN a robot WHEN download robot source code THEN the content is returned")
+    public void givenARobotWhenDownloadRobotSourceCodeThenTheContentIsReturned() {
+        UUID robotId = UUID.fromString("8a1e2f0b-3c4d-4e5f-9a6b-7c8d9e0f1a2b");
+
+        givenThat(
+            get("/v2024-06-14/robots/" + robotId + "/~actions/download-source-code").willReturn(
+                ok().withHeader("Content-Type", "application/octet-stream").withBody("source code")
+            )
+        );
+
+        BinaryData result = this.kuFlowRestClient.getRobotOperations().downloadRobotSourceCode(robotId);
+
+        assertThat(result.toString()).isEqualTo("source code");
+    }
+
+    @Test
+    @DisplayName("GIVEN asset parameters WHEN download robot asset THEN the query parameters are sent and the content is returned")
+    public void givenAssetParametersWhenDownloadRobotAssetThenTheQueryParametersAreSentAndTheContentIsReturned() {
+        UUID robotId = UUID.fromString("8a1e2f0b-3c4d-4e5f-9a6b-7c8d9e0f1a2b");
+
+        givenThat(
+            get(urlPathEqualTo("/v2024-06-14/robots/" + robotId + "/~actions/download-asset"))
+                .withQueryParam("type", equalTo("PYTHON"))
+                .withQueryParam("version", equalTo("3.12"))
+                .withQueryParam("platform", equalTo("LINUX"))
+                .withQueryParam("architecture", equalTo("X86_64"))
+                .willReturn(ok().withHeader("Content-Type", "application/octet-stream").withBody("asset"))
+        );
+
+        BinaryData result = this.kuFlowRestClient
+            .getRobotOperations()
+            .downloadRobotAsset(robotId, RobotAssetType.PYTHON, "3.12", RobotAssetPlatform.LINUX, RobotAssetArchitecture.X8664);
+
+        assertThat(result.toString()).isEqualTo("asset");
     }
 }

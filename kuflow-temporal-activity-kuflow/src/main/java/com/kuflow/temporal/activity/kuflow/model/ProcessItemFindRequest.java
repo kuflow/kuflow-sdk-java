@@ -25,6 +25,7 @@ package com.kuflow.temporal.activity.kuflow.model;
 
 import static java.util.Collections.unmodifiableList;
 
+import com.kuflow.rest.model.DeletedQueryParam;
 import com.kuflow.rest.model.ProcessItemTaskState;
 import com.kuflow.rest.model.ProcessItemType;
 import com.kuflow.temporal.common.model.AbstractModel;
@@ -86,6 +87,17 @@ public class ProcessItemFindRequest extends AbstractModel {
      * Filter by process definition codes.
      */
     private final List<String> processDefinitionCodes = new LinkedList<>();
+
+    /**
+     * Deleted Process Items filtering mode; when {@code null}, {@link DeletedQueryParam#EXCLUDE} applies. The Process
+     * Items of a deleted Process are deleted with it. With {@link DeletedQueryParam#INCLUDE} or
+     * {@link DeletedQueryParam#ONLY}, deleted Process Items are returned with their {@code deletedAt} and
+     * {@code deletedBy} fields set. They are only returned when the request identifies exactly one Process Definition
+     * (by exactly one {@code processDefinitionId}, or by exactly one {@code processDefinitionCode} together with exactly
+     * one {@code tenantId}) and the credentials can delete any Process of that definition; otherwise they are silently
+     * left out.
+     */
+    private DeletedQueryParam deleted;
 
     public Integer getSize() {
         return this.size;
@@ -383,6 +395,16 @@ public class ProcessItemFindRequest extends AbstractModel {
     public ProcessItemFindRequest removeProcessDefinitionCode(String processDefinitionCode) {
         Objects.requireNonNull(processDefinitionCode, "'processDefinitionCode' is required");
         this.processDefinitionCodes.remove(processDefinitionCode);
+
+        return this;
+    }
+
+    public DeletedQueryParam getDeleted() {
+        return this.deleted;
+    }
+
+    public ProcessItemFindRequest setDeleted(DeletedQueryParam deleted) {
+        this.deleted = deleted;
 
         return this;
     }

@@ -31,6 +31,7 @@ import com.azure.core.util.Context;
 import com.kuflow.rest.implementation.KuFlowClientImpl;
 import com.kuflow.rest.implementation.ProcessItemOperationsImpl;
 import com.kuflow.rest.model.DefaultErrorException;
+import com.kuflow.rest.model.DeletedQueryParam;
 import com.kuflow.rest.model.JsonPatchOperation;
 import com.kuflow.rest.model.ProcessItem;
 import com.kuflow.rest.model.ProcessItemAiAssistance;
@@ -93,6 +94,7 @@ public class ProcessItemOperations {
         List<UUID> processDefinitionId = !options.getProcessDefinitionIds().isEmpty() ? options.getProcessDefinitionIds() : null;
         List<String> processDefinitionCode = !options.getProcessDefinitionCodes().isEmpty() ? options.getProcessDefinitionCodes() : null;
         List<UUID> tenantId = !options.getTenantIds().isEmpty() ? options.getTenantIds() : null;
+        DeletedQueryParam deleted = options.getDeleted();
 
         return this.service.findProcessItemsWithResponse(
             size,
@@ -105,6 +107,7 @@ public class ProcessItemOperations {
             processDefinitionId,
             processDefinitionCode,
             tenantId,
+            deleted,
             context
         );
     }
@@ -525,10 +528,10 @@ public class ProcessItemOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData downloadProcessItemTaskDataWebformsAsDocumentWithResponse(UUID id, String propertyPath) {
+    public BinaryData downloadProcessItemTaskDataWebformsAsDocument(UUID id, String propertyPath) {
         return this.downloadProcessItemTaskDataWebformsAsDocumentWithResponse(id, propertyPath, Context.NONE).getValue();
     }
 

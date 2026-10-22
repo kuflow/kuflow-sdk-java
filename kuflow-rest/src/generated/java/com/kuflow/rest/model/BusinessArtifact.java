@@ -39,7 +39,7 @@ import java.util.UUID;
  * The BusinessArtifact model.
  */
 @Fluent
-public final class BusinessArtifact extends AbstractAudited {
+public final class BusinessArtifact extends AbstractDeleted {
 
     /*
      * Business Artifact ID.
@@ -71,18 +71,6 @@ public final class BusinessArtifact extends AbstractAudited {
      */
     @Generated
     private JsonValue data;
-
-    /*
-     * Who deleted this Business Artifact, present only when it is deleted.
-     */
-    @Generated
-    private UUID deletedBy;
-
-    /*
-     * When this Business Artifact was deleted, present only when it is deleted.
-     */
-    @Generated
-    private OffsetDateTime deletedAt;
 
     /**
      * Creates an instance of BusinessArtifact class.
@@ -121,6 +109,19 @@ public final class BusinessArtifact extends AbstractAudited {
     @Generated
     public String getUri() {
         return this.uri;
+    }
+
+    /**
+     * Set the uri property: Business Artifact resource URI, e.g. usable as `targetUri` of the `uploadDocument`
+     * operation. Format `ku:business-artifact/{id}`.
+     *
+     * @param uri the uri value to set.
+     * @return the BusinessArtifact object itself.
+     */
+    @Generated
+    public BusinessArtifact setUri(String uri) {
+        this.uri = uri;
+        return this;
     }
 
     /**
@@ -190,23 +191,23 @@ public final class BusinessArtifact extends AbstractAudited {
     }
 
     /**
-     * Get the deletedBy property: Who deleted this Business Artifact, present only when it is deleted.
-     *
-     * @return the deletedBy value.
+     * {@inheritDoc}
      */
     @Generated
-    public UUID getDeletedBy() {
-        return this.deletedBy;
+    @Override
+    public BusinessArtifact setDeletedBy(UUID deletedBy) {
+        super.setDeletedBy(deletedBy);
+        return this;
     }
 
     /**
-     * Get the deletedAt property: When this Business Artifact was deleted, present only when it is deleted.
-     *
-     * @return the deletedAt value.
+     * {@inheritDoc}
      */
     @Generated
-    public OffsetDateTime getDeletedAt() {
-        return this.deletedAt;
+    @Override
+    public BusinessArtifact setDeletedAt(OffsetDateTime deletedAt) {
+        super.setDeletedAt(deletedAt);
+        return this;
     }
 
     /**
@@ -266,9 +267,15 @@ public final class BusinessArtifact extends AbstractAudited {
             "lastModifiedAt",
             getLastModifiedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getLastModifiedAt())
         );
+        jsonWriter.writeStringField("deletedBy", Objects.toString(getDeletedBy(), null));
+        jsonWriter.writeStringField(
+            "deletedAt",
+            getDeletedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getDeletedAt())
+        );
         jsonWriter.writeStringField("id", Objects.toString(this.id, null));
         jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
         jsonWriter.writeJsonField("businessArtifactDefinitionRef", this.businessArtifactDefinitionRef);
+        jsonWriter.writeStringField("uri", this.uri);
         jsonWriter.writeJsonField("data", this.data);
         return jsonWriter.writeEndObject();
     }
@@ -306,6 +313,14 @@ public final class BusinessArtifact extends AbstractAudited {
                     deserializedBusinessArtifact.setLastModifiedAt(
                         reader.getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()))
                     );
+                } else if ("deletedBy".equals(fieldName)) {
+                    deserializedBusinessArtifact.setDeletedBy(
+                        reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()))
+                    );
+                } else if ("deletedAt".equals(fieldName)) {
+                    deserializedBusinessArtifact.setDeletedAt(
+                        reader.getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()))
+                    );
                 } else if ("id".equals(fieldName)) {
                     deserializedBusinessArtifact.id = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("tenantId".equals(fieldName)) {
@@ -316,14 +331,6 @@ public final class BusinessArtifact extends AbstractAudited {
                     deserializedBusinessArtifact.uri = reader.getString();
                 } else if ("data".equals(fieldName)) {
                     deserializedBusinessArtifact.data = JsonValue.fromJson(reader);
-                } else if ("deletedBy".equals(fieldName)) {
-                    deserializedBusinessArtifact.deletedBy = reader.getNullable(nonNullReader ->
-                        UUID.fromString(nonNullReader.getString())
-                    );
-                } else if ("deletedAt".equals(fieldName)) {
-                    deserializedBusinessArtifact.deletedAt = reader.getNullable(nonNullReader ->
-                        CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())
-                    );
                 } else {
                     reader.skipChildren();
                 }

@@ -40,6 +40,7 @@ import com.kuflow.temporal.activity.kuflow.model.PrincipalRetrieveRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessActionCancelRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessActionCreateRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessActionRetrieveRequest;
+import com.kuflow.temporal.activity.kuflow.model.ProcessDeleteRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessEntityPatchRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessEntityUpdateRequest;
 import com.kuflow.temporal.activity.kuflow.model.ProcessInitiatorChangeRequest;
@@ -96,6 +97,9 @@ public class KuFlowActivitiesValidation {
     public static void validateBusinessArtifactPatchRequest(BusinessArtifactPatchRequest request) {
         if (request.getBusinessArtifactId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'businessArtifactId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+        if (request.getJsonPatch() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'jsonPatch' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 
@@ -179,6 +183,12 @@ public class KuFlowActivitiesValidation {
         }
     }
 
+    public static void validateProcessDeleteRequest(ProcessDeleteRequest request) {
+        if (request.getProcessId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+    }
+
     public static void validateProcessEntityUpdateRequest(ProcessEntityUpdateRequest request) {
         if (request.getProcessId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
@@ -191,6 +201,9 @@ public class KuFlowActivitiesValidation {
     public static void validateProcessEntityPatchRequest(ProcessEntityPatchRequest request) {
         if (request.getProcessId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+        if (request.getJsonPatch() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'jsonPatch' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 
@@ -206,6 +219,9 @@ public class KuFlowActivitiesValidation {
     public static void validateProcessMetadataPatchRequest(ProcessMetadataPatchRequest request) {
         if (request.getProcessId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'processId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+        if (request.getJsonPatch() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'jsonPatch' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 
@@ -338,7 +354,7 @@ public class KuFlowActivitiesValidation {
         }
         if (request.getOwnerEmail() == null && request.getOwnerId() == null) {
             throw ApplicationFailure.newNonRetryableFailure(
-                "'email' or 'principalId' is required",
+                "'ownerEmail' or 'ownerId' is required",
                 ACTIVITIES_VALIDATION_FAILURE.getType()
             );
         }
@@ -348,17 +364,26 @@ public class KuFlowActivitiesValidation {
         if (request.getProcessItemId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'processItemId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
+        if (request.getData() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'data' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
     }
 
     public static void validateProcessItemTaskDataUpdateRequest(ProcessItemTaskDataUpdateRequest request) {
         if (request.getProcessItemId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'processItemId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
+        if (request.getData() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'data' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
     }
 
     public static void validateProcessItemTaskDataPatchRequest(ProcessItemTaskDataPatchRequest request) {
         if (request.getProcessItemId() == null) {
             throw ApplicationFailure.newNonRetryableFailure("'processItemId' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+        if (request.getJsonPatch() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'jsonPatch' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 
