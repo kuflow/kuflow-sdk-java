@@ -24,6 +24,7 @@
 package com.kuflow.rest.operation;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.containing;
+import static com.github.tomakehurst.wiremock.client.WireMock.created;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
 import static com.github.tomakehurst.wiremock.client.WireMock.deleteRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
@@ -40,7 +41,9 @@ import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import com.kuflow.rest.model.BusinessArtifact;
 import com.kuflow.rest.model.BusinessArtifactAction;
 import com.kuflow.rest.model.BusinessArtifactActionCreateArtifactPrepare;
@@ -52,6 +55,15 @@ import com.kuflow.rest.model.BusinessArtifactActionStatus;
 import com.kuflow.rest.model.BusinessArtifactActionType;
 import com.kuflow.rest.model.BusinessArtifactCreateParams;
 import com.kuflow.rest.model.BusinessArtifactDataUpdateParams;
+import com.kuflow.rest.model.BusinessArtifactFeedItem;
+import com.kuflow.rest.model.BusinessArtifactFeedItemCreateParams;
+import com.kuflow.rest.model.BusinessArtifactFeedItemMessageLevel;
+import com.kuflow.rest.model.BusinessArtifactFeedItemMessageParams;
+import com.kuflow.rest.model.BusinessArtifactFeedItemProgress;
+import com.kuflow.rest.model.BusinessArtifactFeedItemStatus;
+import com.kuflow.rest.model.BusinessArtifactFeedItemThreadParams;
+import com.kuflow.rest.model.BusinessArtifactFeedItemType;
+import com.kuflow.rest.model.BusinessArtifactFeedItemUpdateParams;
 import com.kuflow.rest.model.BusinessArtifactFindOptions;
 import com.kuflow.rest.model.BusinessArtifactPage;
 import com.kuflow.rest.model.DeletedQueryParam;
@@ -511,5 +523,153 @@ public class BusinessArtifactOperationTest extends AbstractOperationTest {
 
         assertThat(prepare.getProcessDefinitionId()).isEqualTo(UUID.fromString("7b8c9d0e-1f2a-4b3c-9d4e-5f6a7b8c9d0e"));
         assertThat(prepare.getMetadata()).containsEntry("customer", "ACME");
+    }
+
+    @Test
+    @DisplayName(
+        "GIVEN thread create params WHEN create business artifact feed item THEN the params are sent and the created thread is parsed"
+    )
+    public void givenThreadCreateParamsWhenCreateBusinessArtifactFeedItemThenTheParamsAreSentAndTheCreatedThreadIsParsed() {
+        UUID feedItemId = UUID.fromString("019a8c3e-4b2d-7f10-8a3b-5c6d7e8f9a0b");
+        UUID tenantId = UUID.fromString("00a9f1d4-3698-45a4-951c-66a468846aad");
+
+        givenThat(
+            post("/v2024-06-14/business-artifact-feed-items")
+                .withRequestBody(matchingJsonPath("$.id", equalTo(feedItemId.toString())))
+                .withRequestBody(matchingJsonPath("$.type", equalTo("THREAD")))
+                .withRequestBody(matchingJsonPath("$.tenantId", equalTo(tenantId.toString())))
+                .withRequestBody(matchingJsonPath("$.businessArtifactDefinitionCode", equalTo("ARTIFACT_DEF_CODE")))
+                .withRequestBody(matchingJsonPath("$.status", equalTo("RUNNING")))
+                .withRequestBody(matchingJsonPath("$.progress.completed", equalTo("3")))
+                .withRequestBody(matchingJsonPath("$.progress.total", equalTo("10")))
+                .withRequestBody(matchingJsonPath("$.thread.title", equalTo("Invoice import")))
+                .willReturn(
+                    created()
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("business-artifact-feed-items-api.retrieve-thread.ok.json")
+                )
+        );
+
+        BusinessArtifactFeedItemCreateParams businessArtifactFeedItemCreateParams = new BusinessArtifactFeedItemCreateParams()
+            .setId(feedItemId)
+            .setType(BusinessArtifactFeedItemType.THREAD)
+            .setTenantId(tenantId)
+            .setBusinessArtifactDefinitionCode("ARTIFACT_DEF_CODE")
+            .setStatus(BusinessArtifactFeedItemStatus.RUNNING)
+            .setProgress(new BusinessArtifactFeedItemProgress().setCompleted(3).setTotal(10))
+            .setThread(new BusinessArtifactFeedItemThreadParams().setTitle("Invoice import"));
+
+        Response<BusinessArtifactFeedItem> response = this.kuFlowRestClient
+            .getBusinessArtifactOperations()
+            .createBusinessArtifactFeedItemWithResponse(businessArtifactFeedItemCreateParams, Context.NONE);
+
+        assertThat(response.getStatusCode()).isEqualTo(201);
+        assertThat(response.getValue().getId()).isEqualTo(feedItemId);
+        assertThat(response.getValue().getType()).isEqualTo(BusinessArtifactFeedItemType.THREAD);
+        assertThat(response.getValue().getThread().getTitle()).isEqualTo("Invoice import");
+    }
+
+    @Test
+    @DisplayName("GIVEN an already created message WHEN create business artifact feed item THEN the existing message is returned")
+    public void givenAnAlreadyCreatedMessageWhenCreateBusinessArtifactFeedItemThenTheExistingMessageIsReturned() {
+        UUID feedItemId = UUID.fromString("019a8c3e-6d4f-7a21-9b4c-6d7e8f9a0b1c");
+        UUID businessArtifactDefinitionId = UUID.fromString("b1c2d3e4-5678-90ab-cdef-1234567890ab");
+        UUID threadId = UUID.fromString("019a8c3e-4b2d-7f10-8a3b-5c6d7e8f9a0b");
+
+        givenThat(
+            post("/v2024-06-14/business-artifact-feed-items")
+                .withRequestBody(matchingJsonPath("$.id", equalTo(feedItemId.toString())))
+                .withRequestBody(matchingJsonPath("$.type", equalTo("MESSAGE")))
+                .withRequestBody(matchingJsonPath("$.businessArtifactDefinitionId", equalTo(businessArtifactDefinitionId.toString())))
+                .withRequestBody(matchingJsonPath("$.businessArtifactFeedItemThreadId", equalTo(threadId.toString())))
+                .withRequestBody(matchingJsonPath("$.message.text", equalTo("Invoice **INV-001** imported")))
+                .withRequestBody(matchingJsonPath("$.message.level", equalTo("WARN")))
+                .willReturn(
+                    ok()
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("business-artifact-feed-items-api.retrieve-message.ok.json")
+                )
+        );
+
+        BusinessArtifactFeedItemCreateParams businessArtifactFeedItemCreateParams = new BusinessArtifactFeedItemCreateParams()
+            .setId(feedItemId)
+            .setType(BusinessArtifactFeedItemType.MESSAGE)
+            .setBusinessArtifactDefinitionId(businessArtifactDefinitionId)
+            .setBusinessArtifactFeedItemThreadId(threadId)
+            .setMessage(
+                new BusinessArtifactFeedItemMessageParams()
+                    .setText("Invoice **INV-001** imported")
+                    .setLevel(BusinessArtifactFeedItemMessageLevel.WARN)
+            );
+
+        BusinessArtifactFeedItem businessArtifactFeedItem = this.kuFlowRestClient
+            .getBusinessArtifactOperations()
+            .createBusinessArtifactFeedItem(businessArtifactFeedItemCreateParams);
+
+        assertThat(businessArtifactFeedItem.getId()).isEqualTo(feedItemId);
+        assertThat(businessArtifactFeedItem.getType()).isEqualTo(BusinessArtifactFeedItemType.MESSAGE);
+        assertThat(businessArtifactFeedItem.getBusinessArtifactFeedItemThreadId()).isEqualTo(threadId);
+        assertThat(businessArtifactFeedItem.getMessage().getLevel()).isEqualTo(BusinessArtifactFeedItemMessageLevel.WARN);
+    }
+
+    @Test
+    @DisplayName("GIVEN a business artifact feed item WHEN retrieve business artifact feed item THEN the body is parsed")
+    public void givenABusinessArtifactFeedItemWhenRetrieveBusinessArtifactFeedItemThenTheBodyIsParsed() {
+        UUID feedItemId = UUID.fromString("019a8c3e-4b2d-7f10-8a3b-5c6d7e8f9a0b");
+
+        givenThat(
+            get("/v2024-06-14/business-artifact-feed-items/" + feedItemId).willReturn(
+                ok().withHeader("Content-Type", "application/json").withBodyFile("business-artifact-feed-items-api.retrieve-thread.ok.json")
+            )
+        );
+
+        BusinessArtifactFeedItem businessArtifactFeedItem = this.kuFlowRestClient
+            .getBusinessArtifactOperations()
+            .retrieveBusinessArtifactFeedItem(feedItemId);
+
+        assertThat(businessArtifactFeedItem.getId()).isEqualTo(feedItemId);
+        assertThat(businessArtifactFeedItem.getTenantId()).isEqualTo(UUID.fromString("00a9f1d4-3698-45a4-951c-66a468846aad"));
+        assertThat(businessArtifactFeedItem.getBusinessArtifactDefinitionRef().getCode()).isEqualTo("ARTIFACT_DEF_CODE");
+        assertThat(businessArtifactFeedItem.getStatus()).isEqualTo(BusinessArtifactFeedItemStatus.RUNNING);
+        assertThat(businessArtifactFeedItem.getProgress().getCompleted()).isEqualTo(3);
+        assertThat(businessArtifactFeedItem.getProgress().getTotal()).isEqualTo(10);
+        assertThat(businessArtifactFeedItem.getStartedAt()).isNotNull();
+        assertThat(businessArtifactFeedItem.getFinishedAt()).isNull();
+        assertThat(businessArtifactFeedItem.getThread().getDescription()).isEqualTo("Importing the invoices of **November**");
+        assertThat(businessArtifactFeedItem.getCreatedBy()).isEqualTo(UUID.fromString("6a7b8c9d-0e1f-4a2b-8c3d-4e5f6a7b8c9d"));
+    }
+
+    @Test
+    @DisplayName("GIVEN update params WHEN update business artifact feed item THEN the params are sent and the body is parsed")
+    public void givenUpdateParamsWhenUpdateBusinessArtifactFeedItemThenTheParamsAreSentAndTheBodyIsParsed() {
+        UUID feedItemId = UUID.fromString("019a8c3e-6d4f-7a21-9b4c-6d7e8f9a0b1c");
+
+        givenThat(
+            put("/v2024-06-14/business-artifact-feed-items/" + feedItemId)
+                .withRequestBody(matchingJsonPath("$.status", equalTo("COMPLETED")))
+                .withRequestBody(matchingJsonPath("$.message.text", equalTo("Invoice **INV-001** imported")))
+                .withRequestBody(matchingJsonPath("$.message.level", equalTo("WARN")))
+                .willReturn(
+                    ok()
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("business-artifact-feed-items-api.retrieve-message.ok.json")
+                )
+        );
+
+        BusinessArtifactFeedItemUpdateParams businessArtifactFeedItemUpdateParams = new BusinessArtifactFeedItemUpdateParams()
+            .setStatus(BusinessArtifactFeedItemStatus.COMPLETED)
+            .setMessage(
+                new BusinessArtifactFeedItemMessageParams()
+                    .setText("Invoice **INV-001** imported")
+                    .setLevel(BusinessArtifactFeedItemMessageLevel.WARN)
+            );
+
+        BusinessArtifactFeedItem businessArtifactFeedItem = this.kuFlowRestClient
+            .getBusinessArtifactOperations()
+            .updateBusinessArtifactFeedItem(feedItemId, businessArtifactFeedItemUpdateParams);
+
+        assertThat(businessArtifactFeedItem.getId()).isEqualTo(feedItemId);
+        assertThat(businessArtifactFeedItem.getStatus()).isEqualTo(BusinessArtifactFeedItemStatus.COMPLETED);
+        assertThat(businessArtifactFeedItem.getFinishedAt()).isNotNull();
     }
 }

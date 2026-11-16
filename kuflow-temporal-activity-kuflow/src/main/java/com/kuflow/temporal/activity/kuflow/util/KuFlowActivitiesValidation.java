@@ -25,6 +25,7 @@ package com.kuflow.temporal.activity.kuflow.util;
 
 import static com.kuflow.temporal.activity.kuflow.KuFlowFailureType.ACTIVITIES_VALIDATION_FAILURE;
 
+import com.kuflow.rest.model.BusinessArtifactFeedItemType;
 import com.kuflow.rest.model.ProcessItemType;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionCancelRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionCreateArtifactPrepareRequest;
@@ -33,6 +34,9 @@ import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionRetrieveR
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactActionStartProcessPrepareRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactDeleteRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFeedItemCreateRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFeedItemRetrieveRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFeedItemUpdateRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactPatchRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactRetrieveRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactUpdateRequest;
@@ -68,6 +72,13 @@ public class KuFlowActivitiesValidation {
         if (request.getBusinessArtifactDefinitionId() == null && request.getBusinessArtifactDefinitionCode() == null) {
             throw ApplicationFailure.newNonRetryableFailure(
                 "'businessArtifactDefinitionId' or 'businessArtifactDefinitionCode' is required",
+                ACTIVITIES_VALIDATION_FAILURE.getType()
+            );
+        }
+
+        if (request.getBusinessArtifactDefinitionCode() != null && request.getTenantId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure(
+                "'tenantId' is required when using 'businessArtifactDefinitionCode'",
                 ACTIVITIES_VALIDATION_FAILURE.getType()
             );
         }
@@ -162,6 +173,75 @@ public class KuFlowActivitiesValidation {
                 "'businessArtifactActionDefinitionCode' is required",
                 ACTIVITIES_VALIDATION_FAILURE.getType()
             );
+        }
+    }
+
+    public static void validateBusinessArtifactFeedItemCreateRequest(BusinessArtifactFeedItemCreateRequest request) {
+        if (request.getId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'id' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+
+        if (request.getType() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'type' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
+        }
+
+        if (request.getBusinessArtifactDefinitionId() == null && request.getBusinessArtifactDefinitionCode() == null) {
+            throw ApplicationFailure.newNonRetryableFailure(
+                "'businessArtifactDefinitionId' or 'businessArtifactDefinitionCode' is required",
+                ACTIVITIES_VALIDATION_FAILURE.getType()
+            );
+        }
+
+        if (request.getBusinessArtifactDefinitionCode() != null && request.getTenantId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure(
+                "'tenantId' is required when using 'businessArtifactDefinitionCode'",
+                ACTIVITIES_VALIDATION_FAILURE.getType()
+            );
+        }
+
+        if (BusinessArtifactFeedItemType.THREAD.equals(request.getType())) {
+            if (request.getThread() == null || request.getThread().getTitle() == null) {
+                throw ApplicationFailure.newNonRetryableFailure(
+                    "'thread.title' is required for thread items",
+                    ACTIVITIES_VALIDATION_FAILURE.getType()
+                );
+            }
+            if (request.getBusinessArtifactFeedItemThreadId() != null) {
+                throw ApplicationFailure.newNonRetryableFailure(
+                    "'businessArtifactFeedItemThreadId' is not allowed for thread items, threads cannot be nested",
+                    ACTIVITIES_VALIDATION_FAILURE.getType()
+                );
+            }
+        }
+
+        if (BusinessArtifactFeedItemType.MESSAGE.equals(request.getType())) {
+            if (request.getMessage() == null || request.getMessage().getText() == null) {
+                throw ApplicationFailure.newNonRetryableFailure(
+                    "'message.text' is required for message items",
+                    ACTIVITIES_VALIDATION_FAILURE.getType()
+                );
+            }
+        }
+    }
+
+    public static void validateBusinessArtifactFeedItemRetrieveRequest(BusinessArtifactFeedItemRetrieveRequest request) {
+        if (request.getBusinessArtifactFeedItemId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure(
+                "'businessArtifactFeedItemId' is required",
+                ACTIVITIES_VALIDATION_FAILURE.getType()
+            );
+        }
+    }
+
+    public static void validateBusinessArtifactFeedItemUpdateRequest(BusinessArtifactFeedItemUpdateRequest request) {
+        if (request.getBusinessArtifactFeedItemId() == null) {
+            throw ApplicationFailure.newNonRetryableFailure(
+                "'businessArtifactFeedItemId' is required",
+                ACTIVITIES_VALIDATION_FAILURE.getType()
+            );
+        }
+        if (request.getThread() == null && request.getMessage() == null) {
+            throw ApplicationFailure.newNonRetryableFailure("'thread' or 'message' is required", ACTIVITIES_VALIDATION_FAILURE.getType());
         }
     }
 

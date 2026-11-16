@@ -39,6 +39,9 @@ import com.kuflow.rest.model.BusinessArtifactActionStartProcessPrepare;
 import com.kuflow.rest.model.BusinessArtifactActionStartProcessPrepareParams;
 import com.kuflow.rest.model.BusinessArtifactCreateParams;
 import com.kuflow.rest.model.BusinessArtifactDataUpdateParams;
+import com.kuflow.rest.model.BusinessArtifactFeedItem;
+import com.kuflow.rest.model.BusinessArtifactFeedItemCreateParams;
+import com.kuflow.rest.model.BusinessArtifactFeedItemUpdateParams;
 import com.kuflow.rest.model.BusinessArtifactFindOptions;
 import com.kuflow.rest.model.BusinessArtifactPage;
 import com.kuflow.rest.model.DefaultErrorException;
@@ -657,5 +660,140 @@ public class BusinessArtifactOperations {
             businessArtifactActionStartProcessPrepareParams,
             Context.NONE
         ).getValue();
+    }
+
+    /**
+     * Create a Business Artifact Feed Item
+     * <p>
+     * Creates a thread or a message in the activity feed of a Business Artifact Definition, the feed shown next to
+     * its list of Business Artifacts. The credentials need to manage the Business Artifact Definition.
+     * <p>
+     * A message goes to the top level of the feed, or into a thread when {@code businessArtifactFeedItemThreadId} is
+     * set. Only the author of a thread adds messages to it.
+     * <p>
+     * If you want the method to be idempotent, please specify the `id` field in the request body.
+     *
+     * @param businessArtifactFeedItemCreateParams Business Artifact Feed Item to create.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BusinessArtifactFeedItem> createBusinessArtifactFeedItemWithResponse(
+        BusinessArtifactFeedItemCreateParams businessArtifactFeedItemCreateParams,
+        Context context
+    ) {
+        return this.service.createBusinessArtifactFeedItemWithResponse(businessArtifactFeedItemCreateParams, context);
+    }
+
+    /**
+     * Create a Business Artifact Feed Item
+     * <p>
+     * Creates a thread or a message in the activity feed of a Business Artifact Definition, the feed shown next to
+     * its list of Business Artifacts. The credentials need to manage the Business Artifact Definition.
+     * <p>
+     * A message goes to the top level of the feed, or into a thread when {@code businessArtifactFeedItemThreadId} is
+     * set. Only the author of a thread adds messages to it.
+     * <p>
+     * If you want the method to be idempotent, please specify the `id` field in the request body.
+     *
+     * @param businessArtifactFeedItemCreateParams Business Artifact Feed Item to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BusinessArtifactFeedItem createBusinessArtifactFeedItem(
+        BusinessArtifactFeedItemCreateParams businessArtifactFeedItemCreateParams
+    ) {
+        return this.createBusinessArtifactFeedItemWithResponse(businessArtifactFeedItemCreateParams, Context.NONE).getValue();
+    }
+
+    /**
+     * Get a Business Artifact Feed Item by ID
+     * <p>
+     * Returns the requested Business Artifact Feed Item when has access to do it.
+     *
+     * @param id The resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BusinessArtifactFeedItem> retrieveBusinessArtifactFeedItemWithResponse(UUID id, Context context) {
+        return this.service.retrieveBusinessArtifactFeedItemWithResponse(id, context);
+    }
+
+    /**
+     * Get a Business Artifact Feed Item by ID
+     * <p>
+     * Returns the requested Business Artifact Feed Item when has access to do it.
+     *
+     * @param id The resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BusinessArtifactFeedItem retrieveBusinessArtifactFeedItem(UUID id) {
+        return this.retrieveBusinessArtifactFeedItemWithResponse(id, Context.NONE).getValue();
+    }
+
+    /**
+     * Update a Business Artifact Feed Item
+     * <p>
+     * Replaces what can change of an existing Business Artifact Feed Item: its content, status and progress. It never
+     * creates an item. Only its author updates it.
+     * <p>
+     * An item in a terminal status ({@code COMPLETED}, {@code FAILED}, {@code CANCELED}) is closed, and so are the
+     * messages of a closed thread: an update that leaves it as it is succeeds, so a retried call is harmless, and any
+     * other change is rejected with a conflict. The status of an item cannot be removed once set.
+     *
+     * @param id The resource ID.
+     * @param businessArtifactFeedItemUpdateParams Params used to update the Business Artifact Feed Item.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BusinessArtifactFeedItem> updateBusinessArtifactFeedItemWithResponse(
+        UUID id,
+        BusinessArtifactFeedItemUpdateParams businessArtifactFeedItemUpdateParams,
+        Context context
+    ) {
+        return this.service.updateBusinessArtifactFeedItemWithResponse(id, businessArtifactFeedItemUpdateParams, context);
+    }
+
+    /**
+     * Update a Business Artifact Feed Item
+     * <p>
+     * Replaces what can change of an existing Business Artifact Feed Item: its content, status and progress. It never
+     * creates an item. Only its author updates it.
+     * <p>
+     * An item in a terminal status ({@code COMPLETED}, {@code FAILED}, {@code CANCELED}) is closed, and so are the
+     * messages of a closed thread: an update that leaves it as it is succeeds, so a retried call is harmless, and any
+     * other change is rejected with a conflict. The status of an item cannot be removed once set.
+     *
+     * @param id The resource ID.
+     * @param businessArtifactFeedItemUpdateParams Params used to update the Business Artifact Feed Item.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BusinessArtifactFeedItem updateBusinessArtifactFeedItem(
+        UUID id,
+        BusinessArtifactFeedItemUpdateParams businessArtifactFeedItemUpdateParams
+    ) {
+        return this.updateBusinessArtifactFeedItemWithResponse(id, businessArtifactFeedItemUpdateParams, Context.NONE).getValue();
     }
 }

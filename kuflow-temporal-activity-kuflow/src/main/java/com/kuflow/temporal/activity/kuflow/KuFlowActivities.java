@@ -37,6 +37,12 @@ import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateResponse;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactDeleteRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactDeleteResponse;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFeedItemCreateRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFeedItemCreateResponse;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFeedItemRetrieveRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFeedItemRetrieveResponse;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFeedItemUpdateRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFeedItemUpdateResponse;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFindRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFindResponse;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactPatchRequest;
@@ -531,4 +537,44 @@ public interface KuFlowActivities {
     BusinessArtifactActionStartProcessPrepareResponse prepareBusinessArtifactActionStartProcess(
         @Nonnull BusinessArtifactActionStartProcessPrepareRequest request
     );
+
+    /**
+     * Create a Business Artifact Feed Item.
+     *
+     * <p>Creates a thread or a message in the activity feed of a Business Artifact Definition. A message goes to the
+     * top level of the feed, or into a thread when {@code businessArtifactFeedItemThreadId} is set.
+     *
+     * <p>The {@code id} is required so that a retried activity does not create the item twice: the item is created
+     * once, and a retry returns the existing one.
+     *
+     * @param request must not be {@literal null}.
+     * @return business artifact feed item created
+     */
+    @ActivityMethod
+    @Nonnull
+    BusinessArtifactFeedItemCreateResponse createBusinessArtifactFeedItem(@Nonnull BusinessArtifactFeedItemCreateRequest request);
+
+    /**
+     * Retrieve a Business Artifact Feed Item.
+     *
+     * @param request must not be {@literal null}.
+     * @return business artifact feed item
+     */
+    @ActivityMethod
+    @Nonnull
+    BusinessArtifactFeedItemRetrieveResponse retrieveBusinessArtifactFeedItem(@Nonnull BusinessArtifactFeedItemRetrieveRequest request);
+
+    /**
+     * Update a Business Artifact Feed Item.
+     *
+     * <p>Replaces the content, status and progress of an existing item: a field left out is cleared. An item in a
+     * terminal status ({@code COMPLETED}, {@code FAILED}, {@code CANCELED}) is closed, and so are the messages of a
+     * closed thread: an update that leaves it as it is succeeds, and any other change is rejected.
+     *
+     * @param request must not be {@literal null}.
+     * @return business artifact feed item updated
+     */
+    @ActivityMethod
+    @Nonnull
+    BusinessArtifactFeedItemUpdateResponse updateBusinessArtifactFeedItem(@Nonnull BusinessArtifactFeedItemUpdateRequest request);
 }

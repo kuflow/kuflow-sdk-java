@@ -1,0 +1,20 @@
+{
+  "id": "019a8c3e-6d4f-7a21-9b4c-6d7e8f9a0b1c",
+  "type": "MESSAGE",
+  "tenantId": "00a9f1d4-3698-45a4-951c-66a468846aad",
+  "businessArtifactDefinitionRef": {
+    "id": "b1c2d3e4-5678-90ab-cdef-1234567890ab",
+    "code": "ARTIFACT_DEF_CODE"
+  },
+  "businessArtifactFeedItemThreadId": "019a8c3e-4b2d-7f10-8a3b-5c6d7e8f9a0b",
+  "status": "COMPLETED",
+  "finishedAt": "2026-11-16T10:05:00Z",
+  "message": {
+    "text": "Invoice **INV-001** imported",
+    "level": "WARN"
+  },
+  "createdBy": "6a7b8c9d-0e1f-4a2b-8c3d-4e5f6a7b8c9d",
+  "createdAt": "2026-11-16T10:04:58Z",
+  "lastModifiedBy": "6a7b8c9d-0e1f-4a2b-8c3d-4e5f6a7b8c9d",
+  "lastModifiedAt": "2026-11-16T10:05:00Z"
+}
