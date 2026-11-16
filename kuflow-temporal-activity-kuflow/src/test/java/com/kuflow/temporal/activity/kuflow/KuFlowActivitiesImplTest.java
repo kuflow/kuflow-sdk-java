@@ -47,6 +47,15 @@ import com.kuflow.rest.model.BusinessArtifactActionStartProcessPrepare;
 import com.kuflow.rest.model.BusinessArtifactActionStartProcessPrepareParams;
 import com.kuflow.rest.model.BusinessArtifactCreateParams;
 import com.kuflow.rest.model.BusinessArtifactDataUpdateParams;
+import com.kuflow.rest.model.BusinessArtifactFeedItem;
+import com.kuflow.rest.model.BusinessArtifactFeedItemCreateParams;
+import com.kuflow.rest.model.BusinessArtifactFeedItemMessageLevel;
+import com.kuflow.rest.model.BusinessArtifactFeedItemMessageParams;
+import com.kuflow.rest.model.BusinessArtifactFeedItemProgress;
+import com.kuflow.rest.model.BusinessArtifactFeedItemStatus;
+import com.kuflow.rest.model.BusinessArtifactFeedItemThreadParams;
+import com.kuflow.rest.model.BusinessArtifactFeedItemType;
+import com.kuflow.rest.model.BusinessArtifactFeedItemUpdateParams;
 import com.kuflow.rest.model.BusinessArtifactFindOptions;
 import com.kuflow.rest.model.BusinessArtifactPage;
 import com.kuflow.rest.model.DefaultError;
@@ -104,6 +113,12 @@ import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateResponse;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactDeleteRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactDeleteResponse;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFeedItemCreateRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFeedItemCreateResponse;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFeedItemRetrieveRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFeedItemRetrieveResponse;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFeedItemUpdateRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFeedItemUpdateResponse;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFindRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFindResponse;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactPatchRequest;
@@ -1002,6 +1017,115 @@ public class KuFlowActivitiesImplTest {
         assertThat(response.getBusinessArtifactActionStartProcessPrepare()).isSameAs(prepare);
     }
 
+    @Test
+    @DisplayName(
+        "GIVEN every feed item field WHEN create business artifact feed item THEN all the fields are sent and the item is returned"
+    )
+    public void givenEveryFeedItemFieldWhenCreateBusinessArtifactFeedItemThenAllTheFieldsAreSentAndTheItemIsReturned() {
+        BusinessArtifactFeedItem businessArtifactFeedItem = new BusinessArtifactFeedItem();
+        BusinessArtifactFeedItemProgress progress = new BusinessArtifactFeedItemProgress().setCompleted(3).setTotal(10);
+        BusinessArtifactFeedItemMessageParams message = new BusinessArtifactFeedItemMessageParams()
+            .setText("Invoice imported")
+            .setLevel(BusinessArtifactFeedItemMessageLevel.WARN);
+        given(this.businessArtifactOperations.createBusinessArtifactFeedItem(any(BusinessArtifactFeedItemCreateParams.class))).willReturn(
+            businessArtifactFeedItem
+        );
+
+        BusinessArtifactFeedItemCreateResponse response = this.kuFlowActivities.createBusinessArtifactFeedItem(
+            with(new BusinessArtifactFeedItemCreateRequest(), r -> {
+                r.setId(ID_1);
+                r.setType(BusinessArtifactFeedItemType.MESSAGE);
+                r.setTenantId(ID_2);
+                r.setBusinessArtifactDefinitionId(ID_3);
+                r.setBusinessArtifactDefinitionCode("BAD_CODE");
+                r.setBusinessArtifactFeedItemThreadId(ID_4);
+                r.setStatus(BusinessArtifactFeedItemStatus.RUNNING);
+                r.setProgress(progress);
+                r.setMessage(message);
+            })
+        );
+
+        ArgumentCaptor<BusinessArtifactFeedItemCreateParams> captor = ArgumentCaptor.forClass(BusinessArtifactFeedItemCreateParams.class);
+        then(this.businessArtifactOperations).should().createBusinessArtifactFeedItem(captor.capture());
+        BusinessArtifactFeedItemCreateParams params = captor.getValue();
+        assertThat(params.getId()).isEqualTo(ID_1);
+        assertThat(params.getType()).isEqualTo(BusinessArtifactFeedItemType.MESSAGE);
+        assertThat(params.getTenantId()).isEqualTo(ID_2);
+        assertThat(params.getBusinessArtifactDefinitionId()).isEqualTo(ID_3);
+        assertThat(params.getBusinessArtifactDefinitionCode()).isEqualTo("BAD_CODE");
+        assertThat(params.getBusinessArtifactFeedItemThreadId()).isEqualTo(ID_4);
+        assertThat(params.getStatus()).isEqualTo(BusinessArtifactFeedItemStatus.RUNNING);
+        assertThat(params.getProgress()).isSameAs(progress);
+        assertThat(params.getThread()).isNull();
+        assertThat(params.getMessage()).isSameAs(message);
+        assertThat(response.getBusinessArtifactFeedItem()).isSameAs(businessArtifactFeedItem);
+    }
+
+    @Test
+    @DisplayName("GIVEN a thread WHEN create business artifact feed item THEN the thread is sent and the item is returned")
+    public void givenAThreadWhenCreateBusinessArtifactFeedItemThenTheThreadIsSentAndTheItemIsReturned() {
+        BusinessArtifactFeedItem businessArtifactFeedItem = new BusinessArtifactFeedItem();
+        BusinessArtifactFeedItemThreadParams thread = new BusinessArtifactFeedItemThreadParams()
+            .setTitle("Invoice import")
+            .setDescription("Importing the invoices");
+        given(this.businessArtifactOperations.createBusinessArtifactFeedItem(any(BusinessArtifactFeedItemCreateParams.class))).willReturn(
+            businessArtifactFeedItem
+        );
+
+        BusinessArtifactFeedItemCreateResponse response = this.kuFlowActivities.createBusinessArtifactFeedItem(
+            businessArtifactFeedItemCreateRequest(BusinessArtifactFeedItemType.THREAD, r -> r.setThread(thread))
+        );
+
+        ArgumentCaptor<BusinessArtifactFeedItemCreateParams> captor = ArgumentCaptor.forClass(BusinessArtifactFeedItemCreateParams.class);
+        then(this.businessArtifactOperations).should().createBusinessArtifactFeedItem(captor.capture());
+        assertThat(captor.getValue().getType()).isEqualTo(BusinessArtifactFeedItemType.THREAD);
+        assertThat(captor.getValue().getThread()).isSameAs(thread);
+        assertThat(captor.getValue().getMessage()).isNull();
+        assertThat(response.getBusinessArtifactFeedItem()).isSameAs(businessArtifactFeedItem);
+    }
+
+    @Test
+    @DisplayName("GIVEN a feed item id WHEN retrieve business artifact feed item THEN the item is retrieved and returned")
+    public void givenAFeedItemIdWhenRetrieveBusinessArtifactFeedItemThenTheItemIsRetrievedAndReturned() {
+        BusinessArtifactFeedItem businessArtifactFeedItem = new BusinessArtifactFeedItem();
+        given(this.businessArtifactOperations.retrieveBusinessArtifactFeedItem(ID_1)).willReturn(businessArtifactFeedItem);
+
+        BusinessArtifactFeedItemRetrieveResponse response = this.kuFlowActivities.retrieveBusinessArtifactFeedItem(
+            with(new BusinessArtifactFeedItemRetrieveRequest(), r -> r.setBusinessArtifactFeedItemId(ID_1))
+        );
+
+        assertThat(response.getBusinessArtifactFeedItem()).isSameAs(businessArtifactFeedItem);
+    }
+
+    @Test
+    @DisplayName("GIVEN every update field WHEN update business artifact feed item THEN all the fields are sent and the item is returned")
+    public void givenEveryUpdateFieldWhenUpdateBusinessArtifactFeedItemThenAllTheFieldsAreSentAndTheItemIsReturned() {
+        BusinessArtifactFeedItem businessArtifactFeedItem = new BusinessArtifactFeedItem();
+        BusinessArtifactFeedItemProgress progress = new BusinessArtifactFeedItemProgress().setCompleted(10).setTotal(10);
+        BusinessArtifactFeedItemThreadParams thread = new BusinessArtifactFeedItemThreadParams().setTitle("Invoice import");
+        given(
+            this.businessArtifactOperations.updateBusinessArtifactFeedItem(eq(ID_1), any(BusinessArtifactFeedItemUpdateParams.class))
+        ).willReturn(businessArtifactFeedItem);
+
+        BusinessArtifactFeedItemUpdateResponse response = this.kuFlowActivities.updateBusinessArtifactFeedItem(
+            with(new BusinessArtifactFeedItemUpdateRequest(), r -> {
+                r.setBusinessArtifactFeedItemId(ID_1);
+                r.setStatus(BusinessArtifactFeedItemStatus.COMPLETED);
+                r.setProgress(progress);
+                r.setThread(thread);
+            })
+        );
+
+        ArgumentCaptor<BusinessArtifactFeedItemUpdateParams> captor = ArgumentCaptor.forClass(BusinessArtifactFeedItemUpdateParams.class);
+        then(this.businessArtifactOperations).should().updateBusinessArtifactFeedItem(eq(ID_1), captor.capture());
+        BusinessArtifactFeedItemUpdateParams params = captor.getValue();
+        assertThat(params.getStatus()).isEqualTo(BusinessArtifactFeedItemStatus.COMPLETED);
+        assertThat(params.getProgress()).isSameAs(progress);
+        assertThat(params.getThread()).isSameAs(thread);
+        assertThat(params.getMessage()).isNull();
+        assertThat(response.getBusinessArtifactFeedItem()).isSameAs(businessArtifactFeedItem);
+    }
+
     // ---------------------------------------------------------------------------------------------------------------
     // Failures
     // ---------------------------------------------------------------------------------------------------------------
@@ -1342,6 +1466,17 @@ public class KuFlowActivitiesImplTest {
                 "'businessArtifactDefinitionId' or 'businessArtifactDefinitionCode' is required"
             ),
             invalid(
+                "createBusinessArtifact with definition code without tenant",
+                a ->
+                    a.createBusinessArtifact(
+                        with(new BusinessArtifactCreateRequest(), r -> {
+                            r.setBusinessArtifactDefinitionCode("BAD_CODE");
+                            r.setData(JSON_VALUE);
+                        })
+                    ),
+                "'tenantId' is required when using 'businessArtifactDefinitionCode'"
+            ),
+            invalid(
                 "retrieveBusinessArtifact without businessArtifactId",
                 a -> a.retrieveBusinessArtifact(new BusinessArtifactRetrieveRequest()),
                 "'businessArtifactId' is required"
@@ -1446,6 +1581,121 @@ public class KuFlowActivitiesImplTest {
                         with(new BusinessArtifactActionStartProcessPrepareRequest(), r -> r.setBusinessArtifactId(ID_1))
                     ),
                 "'businessArtifactActionDefinitionCode' is required"
+            ),
+            invalid(
+                "createBusinessArtifactFeedItem without id",
+                a ->
+                    a.createBusinessArtifactFeedItem(
+                        with(new BusinessArtifactFeedItemCreateRequest(), r -> {
+                            r.setType(BusinessArtifactFeedItemType.MESSAGE);
+                            r.setBusinessArtifactDefinitionId(ID_2);
+                            r.setMessage(new BusinessArtifactFeedItemMessageParams().setText("A message"));
+                        })
+                    ),
+                "'id' is required"
+            ),
+            invalid(
+                "createBusinessArtifactFeedItem without type",
+                a ->
+                    a.createBusinessArtifactFeedItem(
+                        with(new BusinessArtifactFeedItemCreateRequest(), r -> {
+                            r.setId(ID_1);
+                            r.setBusinessArtifactDefinitionId(ID_2);
+                        })
+                    ),
+                "'type' is required"
+            ),
+            invalid(
+                "createBusinessArtifactFeedItem without definition",
+                a ->
+                    a.createBusinessArtifactFeedItem(
+                        with(new BusinessArtifactFeedItemCreateRequest(), r -> {
+                            r.setId(ID_1);
+                            r.setType(BusinessArtifactFeedItemType.MESSAGE);
+                            r.setMessage(new BusinessArtifactFeedItemMessageParams().setText("A message"));
+                        })
+                    ),
+                "'businessArtifactDefinitionId' or 'businessArtifactDefinitionCode' is required"
+            ),
+            invalid(
+                "createBusinessArtifactFeedItem with definition code without tenant",
+                a ->
+                    a.createBusinessArtifactFeedItem(
+                        with(new BusinessArtifactFeedItemCreateRequest(), r -> {
+                            r.setId(ID_1);
+                            r.setType(BusinessArtifactFeedItemType.MESSAGE);
+                            r.setBusinessArtifactDefinitionCode("BAD_CODE");
+                            r.setMessage(new BusinessArtifactFeedItemMessageParams().setText("A message"));
+                        })
+                    ),
+                "'tenantId' is required when using 'businessArtifactDefinitionCode'"
+            ),
+            invalid(
+                "createBusinessArtifactFeedItem thread without thread",
+                a -> a.createBusinessArtifactFeedItem(businessArtifactFeedItemCreateRequest(BusinessArtifactFeedItemType.THREAD, r -> {})),
+                "'thread.title' is required for thread items"
+            ),
+            invalid(
+                "createBusinessArtifactFeedItem thread without title",
+                a ->
+                    a.createBusinessArtifactFeedItem(
+                        businessArtifactFeedItemCreateRequest(BusinessArtifactFeedItemType.THREAD, r ->
+                            r.setThread(new BusinessArtifactFeedItemThreadParams().setDescription("A description"))
+                        )
+                    ),
+                "'thread.title' is required for thread items"
+            ),
+            invalid(
+                "createBusinessArtifactFeedItem thread inside a thread",
+                a ->
+                    a.createBusinessArtifactFeedItem(
+                        businessArtifactFeedItemCreateRequest(BusinessArtifactFeedItemType.THREAD, r -> {
+                            r.setThread(new BusinessArtifactFeedItemThreadParams().setTitle("A thread"));
+                            r.setBusinessArtifactFeedItemThreadId(ID_3);
+                        })
+                    ),
+                "'businessArtifactFeedItemThreadId' is not allowed for thread items, threads cannot be nested"
+            ),
+            invalid(
+                "createBusinessArtifactFeedItem message without message",
+                a -> a.createBusinessArtifactFeedItem(businessArtifactFeedItemCreateRequest(BusinessArtifactFeedItemType.MESSAGE, r -> {})),
+                "'message.text' is required for message items"
+            ),
+            invalid(
+                "createBusinessArtifactFeedItem message without text",
+                a ->
+                    a.createBusinessArtifactFeedItem(
+                        businessArtifactFeedItemCreateRequest(BusinessArtifactFeedItemType.MESSAGE, r ->
+                            r.setMessage(new BusinessArtifactFeedItemMessageParams().setLevel(BusinessArtifactFeedItemMessageLevel.INFO))
+                        )
+                    ),
+                "'message.text' is required for message items"
+            ),
+            invalid(
+                "retrieveBusinessArtifactFeedItem without businessArtifactFeedItemId",
+                a -> a.retrieveBusinessArtifactFeedItem(new BusinessArtifactFeedItemRetrieveRequest()),
+                "'businessArtifactFeedItemId' is required"
+            ),
+            invalid(
+                "updateBusinessArtifactFeedItem without businessArtifactFeedItemId",
+                a ->
+                    a.updateBusinessArtifactFeedItem(
+                        with(new BusinessArtifactFeedItemUpdateRequest(), r ->
+                            r.setMessage(new BusinessArtifactFeedItemMessageParams().setText("A message"))
+                        )
+                    ),
+                "'businessArtifactFeedItemId' is required"
+            ),
+            invalid(
+                "updateBusinessArtifactFeedItem without thread nor message",
+                a ->
+                    a.updateBusinessArtifactFeedItem(
+                        with(new BusinessArtifactFeedItemUpdateRequest(), r -> {
+                            r.setBusinessArtifactFeedItemId(ID_1);
+                            r.setStatus(BusinessArtifactFeedItemStatus.COMPLETED);
+                        })
+                    ),
+                "'thread' or 'message' is required"
             )
         );
     }
@@ -1458,6 +1708,19 @@ public class KuFlowActivitiesImplTest {
         ProcessItemCreateRequest request = new ProcessItemCreateRequest();
         request.setId(ID_1);
         request.setProcessId(ID_2);
+        request.setType(type);
+        customizer.accept(request);
+
+        return request;
+    }
+
+    private static BusinessArtifactFeedItemCreateRequest businessArtifactFeedItemCreateRequest(
+        BusinessArtifactFeedItemType type,
+        Consumer<BusinessArtifactFeedItemCreateRequest> customizer
+    ) {
+        BusinessArtifactFeedItemCreateRequest request = new BusinessArtifactFeedItemCreateRequest();
+        request.setId(ID_1);
+        request.setBusinessArtifactDefinitionId(ID_2);
         request.setType(type);
         customizer.accept(request);
 

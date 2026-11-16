@@ -31,6 +31,9 @@ import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidatio
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateBusinessArtifactActionStartProcessPrepareRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateBusinessArtifactCreateRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateBusinessArtifactDeleteRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateBusinessArtifactFeedItemCreateRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateBusinessArtifactFeedItemRetrieveRequest;
+import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateBusinessArtifactFeedItemUpdateRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateBusinessArtifactPatchRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateBusinessArtifactRetrieveRequest;
 import static com.kuflow.temporal.activity.kuflow.util.KuFlowActivitiesValidation.validateBusinessArtifactUpdateRequest;
@@ -69,6 +72,9 @@ import com.kuflow.rest.model.BusinessArtifactActionStartProcessPrepare;
 import com.kuflow.rest.model.BusinessArtifactActionStartProcessPrepareParams;
 import com.kuflow.rest.model.BusinessArtifactCreateParams;
 import com.kuflow.rest.model.BusinessArtifactDataUpdateParams;
+import com.kuflow.rest.model.BusinessArtifactFeedItem;
+import com.kuflow.rest.model.BusinessArtifactFeedItemCreateParams;
+import com.kuflow.rest.model.BusinessArtifactFeedItemUpdateParams;
 import com.kuflow.rest.model.BusinessArtifactFindOptions;
 import com.kuflow.rest.model.BusinessArtifactPage;
 import com.kuflow.rest.model.Principal;
@@ -110,6 +116,12 @@ import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactCreateResponse;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactDeleteRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactDeleteResponse;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFeedItemCreateRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFeedItemCreateResponse;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFeedItemRetrieveRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFeedItemRetrieveResponse;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFeedItemUpdateRequest;
+import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFeedItemUpdateResponse;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFindRequest;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactFindResponse;
 import com.kuflow.temporal.activity.kuflow.model.BusinessArtifactPatchRequest;
@@ -944,6 +956,82 @@ public class KuFlowActivitiesImpl implements KuFlowActivities {
 
             BusinessArtifactActionStartProcessPrepareResponse response = new BusinessArtifactActionStartProcessPrepareResponse();
             response.setBusinessArtifactActionStartProcessPrepare(prepare);
+
+            return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Nonnull
+    @Override
+    public BusinessArtifactFeedItemCreateResponse createBusinessArtifactFeedItem(@Nonnull BusinessArtifactFeedItemCreateRequest request) {
+        try {
+            validateBusinessArtifactFeedItemCreateRequest(request);
+
+            BusinessArtifactFeedItemCreateParams params = new BusinessArtifactFeedItemCreateParams()
+                .setId(request.getId())
+                .setType(request.getType())
+                .setTenantId(request.getTenantId())
+                .setBusinessArtifactDefinitionId(request.getBusinessArtifactDefinitionId())
+                .setBusinessArtifactDefinitionCode(request.getBusinessArtifactDefinitionCode())
+                .setBusinessArtifactFeedItemThreadId(request.getBusinessArtifactFeedItemThreadId())
+                .setStatus(request.getStatus())
+                .setProgress(request.getProgress())
+                .setThread(request.getThread())
+                .setMessage(request.getMessage());
+
+            BusinessArtifactFeedItem businessArtifactFeedItem = this.businessArtifactOperations.createBusinessArtifactFeedItem(params);
+
+            BusinessArtifactFeedItemCreateResponse response = new BusinessArtifactFeedItemCreateResponse();
+            response.setBusinessArtifactFeedItem(businessArtifactFeedItem);
+
+            return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Nonnull
+    @Override
+    public BusinessArtifactFeedItemRetrieveResponse retrieveBusinessArtifactFeedItem(
+        @Nonnull BusinessArtifactFeedItemRetrieveRequest request
+    ) {
+        try {
+            validateBusinessArtifactFeedItemRetrieveRequest(request);
+
+            BusinessArtifactFeedItem businessArtifactFeedItem = this.businessArtifactOperations.retrieveBusinessArtifactFeedItem(
+                request.getBusinessArtifactFeedItemId()
+            );
+
+            BusinessArtifactFeedItemRetrieveResponse response = new BusinessArtifactFeedItemRetrieveResponse();
+            response.setBusinessArtifactFeedItem(businessArtifactFeedItem);
+
+            return response;
+        } catch (Exception e) {
+            throw createApplicationFailure(e);
+        }
+    }
+
+    @Nonnull
+    @Override
+    public BusinessArtifactFeedItemUpdateResponse updateBusinessArtifactFeedItem(@Nonnull BusinessArtifactFeedItemUpdateRequest request) {
+        try {
+            validateBusinessArtifactFeedItemUpdateRequest(request);
+
+            BusinessArtifactFeedItemUpdateParams params = new BusinessArtifactFeedItemUpdateParams()
+                .setStatus(request.getStatus())
+                .setProgress(request.getProgress())
+                .setThread(request.getThread())
+                .setMessage(request.getMessage());
+
+            BusinessArtifactFeedItem businessArtifactFeedItem = this.businessArtifactOperations.updateBusinessArtifactFeedItem(
+                request.getBusinessArtifactFeedItemId(),
+                params
+            );
+
+            BusinessArtifactFeedItemUpdateResponse response = new BusinessArtifactFeedItemUpdateResponse();
+            response.setBusinessArtifactFeedItem(businessArtifactFeedItem);
 
             return response;
         } catch (Exception e) {

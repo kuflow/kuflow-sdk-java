@@ -1,0 +1,23 @@
+{
+  "id": "019a8c3e-4b2d-7f10-8a3b-5c6d7e8f9a0b",
+  "type": "THREAD",
+  "tenantId": "00a9f1d4-3698-45a4-951c-66a468846aad",
+  "businessArtifactDefinitionRef": {
+    "id": "b1c2d3e4-5678-90ab-cdef-1234567890ab",
+    "code": "ARTIFACT_DEF_CODE"
+  },
+  "status": "RUNNING",
+  "progress": {
+    "completed": 3,
+    "total": 10
+  },
+  "startedAt": "2026-11-16T10:00:00Z",
+  "thread": {
+    "title": "Invoice import",
+    "description": "Importing the invoices of **November**"
+  },
+  "createdBy": "6a7b8c9d-0e1f-4a2b-8c3d-4e5f6a7b8c9d",
+  "createdAt": "2026-11-16T09:59:58Z",
+  "lastModifiedBy": "6a7b8c9d-0e1f-4a2b-8c3d-4e5f6a7b8c9d",
+  "lastModifiedAt": "2026-11-16T10:00:00Z"
+}
