@@ -51,9 +51,10 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-json</artifactId>
     </dependency>
+    <!-- The HTTP client that azure-core finds when the builder is given none -->
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-communication-common</artifactId>
+      <artifactId>azure-core-http-jdk-httpclient</artifactId>
     </dependency>
 
     <dependency>
