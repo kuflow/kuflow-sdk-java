@@ -63,6 +63,7 @@ import com.kuflow.rest.model.ProcessPage;
 import com.kuflow.rest.model.ProcessPageItem;
 import com.kuflow.rest.model.ProcessState;
 import com.kuflow.rest.util.SearchCriteriaUtils;
+import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -204,6 +205,28 @@ public class ProcessOperationTest extends AbstractOperationTest {
         Process process = this.kuFlowRestClient.getProcessOperations().retrieveProcess(processId);
 
         assertThat(process.getState()).isEqualTo(ProcessState.RUNNING);
+    }
+
+    @Test
+    @DisplayName(
+        "GIVEN a process with an integer beyond a long and a number with an exponent in its metadata WHEN retrieve process THEN they are parsed"
+    )
+    public void givenAProcessWithAnIntegerBeyondALongAndANumberWithAnExponentInItsMetadataWhenRetrieveProcessThenTheyAreParsed() {
+        UUID processId = UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
+
+        givenThat(
+            get("/v2024-06-14/processes/" + processId).willReturn(
+                ok().withHeader("Content-Type", "application/json").withBodyFile("processes-api.retrieve-metadata-numbers.ok.json")
+            )
+        );
+
+        Process process = this.kuFlowRestClient.getProcessOperations().retrieveProcess(processId);
+
+        Map<String, Object> metadata = process.getMetadata().getValue();
+        assertThat(metadata.get("days")).isEqualTo(3);
+        assertThat(metadata.get("rate")).isEqualTo(1.25);
+        assertThat(metadata.get("exponent")).isEqualTo(1000.0);
+        assertThat(metadata.get("big")).isEqualTo(new BigInteger("123456789012345678901234567890"));
     }
 
     @Test
