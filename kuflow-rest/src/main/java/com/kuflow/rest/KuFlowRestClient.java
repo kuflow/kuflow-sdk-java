@@ -33,6 +33,7 @@ import com.kuflow.rest.operation.DocumentOperations;
 import com.kuflow.rest.operation.GroupOperations;
 import com.kuflow.rest.operation.KmsOperations;
 import com.kuflow.rest.operation.PrincipalOperations;
+import com.kuflow.rest.operation.ProcessDefinitionOperations;
 import com.kuflow.rest.operation.ProcessItemOperations;
 import com.kuflow.rest.operation.ProcessOperations;
 import com.kuflow.rest.operation.RobotOperations;
@@ -59,6 +60,8 @@ public class KuFlowRestClient {
 
     private final TenantUserOperations tenantUserOperations;
 
+    private final ProcessDefinitionOperations processDefinitionOperations;
+
     private final ProcessOperations processOperations;
 
     private final ProcessItemOperations processItemOperations;
@@ -81,6 +84,7 @@ public class KuFlowRestClient {
         this.principalOperations = new PrincipalOperations(client);
         this.groupOperations = new GroupOperations(client);
         this.tenantUserOperations = new TenantUserOperations(client);
+        this.processDefinitionOperations = new ProcessDefinitionOperations(client);
         this.processOperations = new ProcessOperations(client);
         this.processItemOperations = new ProcessItemOperations(client);
         this.businessArtifactOperations = new BusinessArtifactOperations(client);
@@ -105,6 +109,10 @@ public class KuFlowRestClient {
 
     public TenantUserOperations getTenantUserOperations() {
         return this.tenantUserOperations;
+    }
+
+    public ProcessDefinitionOperations getProcessDefinitionOperations() {
+        return this.processDefinitionOperations;
     }
 
     public ProcessOperations getProcessOperations() {
