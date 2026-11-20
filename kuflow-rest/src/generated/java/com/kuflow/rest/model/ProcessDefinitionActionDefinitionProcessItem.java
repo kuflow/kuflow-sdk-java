@@ -30,18 +30,28 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
- * The ProcessDefinitionActionDefinitionProcessItem model.
+ * The task or thread that the action creates, by its code. When the version does not have it, by its id: KuFlow
+ * does not offer the action in the processes of that version. Actions belong to the process definition, and
+ * tasks and threads to each version.
  */
 @Fluent
 public final class ProcessDefinitionActionDefinitionProcessItem implements JsonSerializable<ProcessDefinitionActionDefinitionProcessItem> {
 
     /*
-     * The code of the task or thread that the action creates.
+     * The code of the task or thread that the action creates, when the version has it.
      */
     @Generated
     private String processItemDefinitionCode;
+
+    /*
+     * The id of the task or thread that the action creates, when the version does not have it.
+     */
+    @Generated
+    private UUID processItemDefinitionId;
 
     /**
      * Creates an instance of ProcessDefinitionActionDefinitionProcessItem class.
@@ -50,7 +60,8 @@ public final class ProcessDefinitionActionDefinitionProcessItem implements JsonS
     public ProcessDefinitionActionDefinitionProcessItem() {}
 
     /**
-     * Get the processItemDefinitionCode property: The code of the task or thread that the action creates.
+     * Get the processItemDefinitionCode property: The code of the task or thread that the action creates, when the
+     * version has it.
      *
      * @return the processItemDefinitionCode value.
      */
@@ -60,7 +71,8 @@ public final class ProcessDefinitionActionDefinitionProcessItem implements JsonS
     }
 
     /**
-     * Set the processItemDefinitionCode property: The code of the task or thread that the action creates.
+     * Set the processItemDefinitionCode property: The code of the task or thread that the action creates, when the
+     * version has it.
      *
      * @param processItemDefinitionCode the processItemDefinitionCode value to set.
      * @return the ProcessDefinitionActionDefinitionProcessItem object itself.
@@ -72,6 +84,30 @@ public final class ProcessDefinitionActionDefinitionProcessItem implements JsonS
     }
 
     /**
+     * Get the processItemDefinitionId property: The id of the task or thread that the action creates, when the version
+     * does not have it.
+     *
+     * @return the processItemDefinitionId value.
+     */
+    @Generated
+    public UUID getProcessItemDefinitionId() {
+        return this.processItemDefinitionId;
+    }
+
+    /**
+     * Set the processItemDefinitionId property: The id of the task or thread that the action creates, when the version
+     * does not have it.
+     *
+     * @param processItemDefinitionId the processItemDefinitionId value to set.
+     * @return the ProcessDefinitionActionDefinitionProcessItem object itself.
+     */
+    @Generated
+    public ProcessDefinitionActionDefinitionProcessItem setProcessItemDefinitionId(UUID processItemDefinitionId) {
+        this.processItemDefinitionId = processItemDefinitionId;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -79,6 +115,7 @@ public final class ProcessDefinitionActionDefinitionProcessItem implements JsonS
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("processItemDefinitionCode", this.processItemDefinitionCode);
+        jsonWriter.writeStringField("processItemDefinitionId", Objects.toString(this.processItemDefinitionId, null));
         return jsonWriter.writeEndObject();
     }
 
@@ -88,7 +125,6 @@ public final class ProcessDefinitionActionDefinitionProcessItem implements JsonS
      * @param jsonReader The JsonReader being read.
      * @return An instance of ProcessDefinitionActionDefinitionProcessItem if the JsonReader was pointing to an instance
      * of it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ProcessDefinitionActionDefinitionProcessItem.
      */
     @Generated
@@ -102,6 +138,10 @@ public final class ProcessDefinitionActionDefinitionProcessItem implements JsonS
 
                 if ("processItemDefinitionCode".equals(fieldName)) {
                     deserializedProcessDefinitionActionDefinitionProcessItem.processItemDefinitionCode = reader.getString();
+                } else if ("processItemDefinitionId".equals(fieldName)) {
+                    deserializedProcessDefinitionActionDefinitionProcessItem.processItemDefinitionId = reader.getNullable(nonNullReader ->
+                        UUID.fromString(nonNullReader.getString())
+                    );
                 } else {
                     reader.skipChildren();
                 }

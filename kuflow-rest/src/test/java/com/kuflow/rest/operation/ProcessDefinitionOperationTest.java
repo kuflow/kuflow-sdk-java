@@ -92,6 +92,7 @@ public class ProcessDefinitionOperationTest extends AbstractOperationTest {
                 .withQueryParam("processDefinitionCode", equalTo("HOLIDAYS"))
                 .withQueryParam("state", equalTo("PUBLISHED"))
                 .withQueryParam("state", equalTo("UNPUBLISHED"))
+                .withQueryParam("name", equalTo("vacation request"))
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("process-definitions-api.list.ok.json"))
         );
 
@@ -104,7 +105,8 @@ public class ProcessDefinitionOperationTest extends AbstractOperationTest {
             .addProcessDefinitionCode("EXPENSES")
             .addProcessDefinitionCode("HOLIDAYS")
             .addState(ProcessDefinitionState.PUBLISHED)
-            .addState(ProcessDefinitionState.UNPUBLISHED);
+            .addState(ProcessDefinitionState.UNPUBLISHED)
+            .setName("vacation request");
 
         ProcessDefinitionPage page = this.kuFlowRestClient.getProcessDefinitionOperations().findProcessDefinitions(options);
 
@@ -146,11 +148,18 @@ public class ProcessDefinitionOperationTest extends AbstractOperationTest {
         assertThat(task.getNotifications().isProcessItemTaskCreatedCandidates()).isTrue();
 
         assertThat(processDefinition.getActionDefinitions())
-            .singleElement()
+            .hasSize(2)
+            .first()
             .satisfies(it -> {
                 assertThat(it.getType()).isEqualTo(ProcessActionType.CREATE_TASK);
                 assertThat(it.getCreateTask().getProcessItemDefinitionCode()).isEqualTo(task.getCode());
+                assertThat(it.getCreateTask().getProcessItemDefinitionId()).isNull();
             });
+        // A task that the version does not have comes by its id
+        assertThat(processDefinition.getActionDefinitions().get(1).getCreateTask()).satisfies(it -> {
+            assertThat(it.getProcessItemDefinitionCode()).isNull();
+            assertThat(it.getProcessItemDefinitionId()).isEqualTo(UUID.fromString("2c3d4e5f-0000-4000-8000-0000000000aa"));
+        });
         assertThat(processDefinition.getRbacEntries())
             .filteredOn(it -> ProcessDefinitionRbacPrincipalType.EXPRESSION.equals(it.getPrincipalType()))
             .singleElement()

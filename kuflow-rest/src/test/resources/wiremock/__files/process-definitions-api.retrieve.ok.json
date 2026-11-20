@@ -57,6 +57,18 @@
       "createTask": {
         "processItemDefinitionCode": "APPROVE_EXPENSE"
       }
+    },
+    {
+      "id": "2c3d4e5f-0000-4000-8000-000000000002",
+      "type": "CREATE_TASK",
+      "code": "REVIEW",
+      "name": "Review",
+      "roles": [
+        "PROCESS_DEFINITION_ADMINISTRATOR"
+      ],
+      "createTask": {
+        "processItemDefinitionId": "2c3d4e5f-0000-4000-8000-0000000000aa"
+      }
     }
   ],
   "schedulers": [

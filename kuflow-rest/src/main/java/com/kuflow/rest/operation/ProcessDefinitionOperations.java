@@ -79,8 +79,9 @@ public class ProcessDefinitionOperations {
         List<UUID> tenantId = !options.getTenantIds().isEmpty() ? options.getTenantIds() : null;
         List<String> processDefinitionCode = !options.getProcessDefinitionCodes().isEmpty() ? options.getProcessDefinitionCodes() : null;
         List<ProcessDefinitionState> state = !options.getStates().isEmpty() ? options.getStates() : null;
+        String name = options.getName();
 
-        return this.service.findProcessDefinitionsWithResponse(size, page, sort, tenantId, processDefinitionCode, state, context);
+        return this.service.findProcessDefinitionsWithResponse(size, page, sort, tenantId, processDefinitionCode, state, name, context);
     }
 
     /**

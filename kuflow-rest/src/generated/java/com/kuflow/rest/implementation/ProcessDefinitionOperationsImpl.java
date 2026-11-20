@@ -92,6 +92,7 @@ public final class ProcessDefinitionOperationsImpl {
             @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
             @QueryParam(value = "processDefinitionCode", multipleQueryParams = true) List<String> processDefinitionCode,
             @QueryParam(value = "state", multipleQueryParams = true) List<String> state,
+            @QueryParam("name") String name,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -107,6 +108,7 @@ public final class ProcessDefinitionOperationsImpl {
             @QueryParam(value = "tenantId", multipleQueryParams = true) List<String> tenantId,
             @QueryParam(value = "processDefinitionCode", multipleQueryParams = true) List<String> processDefinitionCode,
             @QueryParam(value = "state", multipleQueryParams = true) List<String> state,
+            @QueryParam("name") String name,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -152,6 +154,9 @@ public final class ProcessDefinitionOperationsImpl {
      * @param tenantId Filter by tenantId.
      * @param processDefinitionCode Filter by process definition codes.
      * @param state Filter by process definition states.
+     * @param name Filter by the process definitions whose name has every word of this text, in any order, without
+     * regard to
+     * case or accents.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -164,10 +169,11 @@ public final class ProcessDefinitionOperationsImpl {
         List<String> sort,
         List<UUID> tenantId,
         List<String> processDefinitionCode,
-        List<ProcessDefinitionState> state
+        List<ProcessDefinitionState> state,
+        String name
     ) {
         return FluxUtil.withContext(context ->
-            findProcessDefinitionsWithResponseAsync(size, page, sort, tenantId, processDefinitionCode, state, context)
+            findProcessDefinitionsWithResponseAsync(size, page, sort, tenantId, processDefinitionCode, state, name, context)
         );
     }
 
@@ -189,6 +195,9 @@ public final class ProcessDefinitionOperationsImpl {
      * @param tenantId Filter by tenantId.
      * @param processDefinitionCode Filter by process definition codes.
      * @param state Filter by process definition states.
+     * @param name Filter by the process definitions whose name has every word of this text, in any order, without
+     * regard to
+     * case or accents.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -203,6 +212,7 @@ public final class ProcessDefinitionOperationsImpl {
         List<UUID> tenantId,
         List<String> processDefinitionCode,
         List<ProcessDefinitionState> state,
+        String name,
         Context context
     ) {
         final String accept = "application/json";
@@ -242,6 +252,7 @@ public final class ProcessDefinitionOperationsImpl {
             tenantIdConverted,
             processDefinitionCodeConverted,
             stateConverted,
+            name,
             accept,
             context
         );
@@ -265,6 +276,9 @@ public final class ProcessDefinitionOperationsImpl {
      * @param tenantId Filter by tenantId.
      * @param processDefinitionCode Filter by process definition codes.
      * @param state Filter by process definition states.
+     * @param name Filter by the process definitions whose name has every word of this text, in any order, without
+     * regard to
+     * case or accents.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -277,9 +291,10 @@ public final class ProcessDefinitionOperationsImpl {
         List<String> sort,
         List<UUID> tenantId,
         List<String> processDefinitionCode,
-        List<ProcessDefinitionState> state
+        List<ProcessDefinitionState> state,
+        String name
     ) {
-        return findProcessDefinitionsWithResponseAsync(size, page, sort, tenantId, processDefinitionCode, state).flatMap(res ->
+        return findProcessDefinitionsWithResponseAsync(size, page, sort, tenantId, processDefinitionCode, state, name).flatMap(res ->
             Mono.justOrEmpty(res.getValue())
         );
     }
@@ -304,7 +319,8 @@ public final class ProcessDefinitionOperationsImpl {
         final List<UUID> tenantId = null;
         final List<String> processDefinitionCode = null;
         final List<ProcessDefinitionState> state = null;
-        return findProcessDefinitionsWithResponseAsync(size, page, sort, tenantId, processDefinitionCode, state).flatMap(res ->
+        final String name = null;
+        return findProcessDefinitionsWithResponseAsync(size, page, sort, tenantId, processDefinitionCode, state, name).flatMap(res ->
             Mono.justOrEmpty(res.getValue())
         );
     }
@@ -327,6 +343,9 @@ public final class ProcessDefinitionOperationsImpl {
      * @param tenantId Filter by tenantId.
      * @param processDefinitionCode Filter by process definition codes.
      * @param state Filter by process definition states.
+     * @param name Filter by the process definitions whose name has every word of this text, in any order, without
+     * regard to
+     * case or accents.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -341,10 +360,11 @@ public final class ProcessDefinitionOperationsImpl {
         List<UUID> tenantId,
         List<String> processDefinitionCode,
         List<ProcessDefinitionState> state,
+        String name,
         Context context
     ) {
-        return findProcessDefinitionsWithResponseAsync(size, page, sort, tenantId, processDefinitionCode, state, context).flatMap(res ->
-            Mono.justOrEmpty(res.getValue())
+        return findProcessDefinitionsWithResponseAsync(size, page, sort, tenantId, processDefinitionCode, state, name, context).flatMap(
+            res -> Mono.justOrEmpty(res.getValue())
         );
     }
 
@@ -366,6 +386,9 @@ public final class ProcessDefinitionOperationsImpl {
      * @param tenantId Filter by tenantId.
      * @param processDefinitionCode Filter by process definition codes.
      * @param state Filter by process definition states.
+     * @param name Filter by the process definitions whose name has every word of this text, in any order, without
+     * regard to
+     * case or accents.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -380,6 +403,7 @@ public final class ProcessDefinitionOperationsImpl {
         List<UUID> tenantId,
         List<String> processDefinitionCode,
         List<ProcessDefinitionState> state,
+        String name,
         Context context
     ) {
         final String accept = "application/json";
@@ -419,6 +443,7 @@ public final class ProcessDefinitionOperationsImpl {
             tenantIdConverted,
             processDefinitionCodeConverted,
             stateConverted,
+            name,
             accept,
             context
         );
@@ -442,6 +467,9 @@ public final class ProcessDefinitionOperationsImpl {
      * @param tenantId Filter by tenantId.
      * @param processDefinitionCode Filter by process definition codes.
      * @param state Filter by process definition states.
+     * @param name Filter by the process definitions whose name has every word of this text, in any order, without
+     * regard to
+     * case or accents.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -454,9 +482,10 @@ public final class ProcessDefinitionOperationsImpl {
         List<String> sort,
         List<UUID> tenantId,
         List<String> processDefinitionCode,
-        List<ProcessDefinitionState> state
+        List<ProcessDefinitionState> state,
+        String name
     ) {
-        return findProcessDefinitionsWithResponse(size, page, sort, tenantId, processDefinitionCode, state, Context.NONE).getValue();
+        return findProcessDefinitionsWithResponse(size, page, sort, tenantId, processDefinitionCode, state, name, Context.NONE).getValue();
     }
 
     /**
@@ -479,7 +508,8 @@ public final class ProcessDefinitionOperationsImpl {
         final List<UUID> tenantId = null;
         final List<String> processDefinitionCode = null;
         final List<ProcessDefinitionState> state = null;
-        return findProcessDefinitionsWithResponse(size, page, sort, tenantId, processDefinitionCode, state, Context.NONE).getValue();
+        final String name = null;
+        return findProcessDefinitionsWithResponse(size, page, sort, tenantId, processDefinitionCode, state, name, Context.NONE).getValue();
     }
 
     /**

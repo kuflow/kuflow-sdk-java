@@ -44,6 +44,8 @@ public class ProcessDefinitionFindOptions {
 
     private final List<ProcessDefinitionState> states = new LinkedList<>();
 
+    private String name;
+
     public Integer getSize() {
         return this.size;
     }
@@ -60,6 +62,20 @@ public class ProcessDefinitionFindOptions {
 
     public ProcessDefinitionFindOptions setPage(Integer page) {
         this.page = page;
+
+        return this;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Only the process definitions whose name has every word of this text, in any order, without regard to case or
+     * accents.
+     */
+    public ProcessDefinitionFindOptions setName(String name) {
+        this.name = name;
 
         return this;
     }

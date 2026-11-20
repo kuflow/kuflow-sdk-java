@@ -121,13 +121,17 @@ public final class ProcessDefinitionActionDefinition implements JsonSerializable
     private ProcessDefinitionActionDefinitionStartRelatedProcess startRelatedProcess;
 
     /*
-     * The createTask property.
+     * The task or thread that the action creates, by its code. When the version does not have it, by its id: KuFlow
+     * does not offer the action in the processes of that version. Actions belong to the process definition, and
+     * tasks and threads to each version.
      */
     @Generated
     private ProcessDefinitionActionDefinitionProcessItem createTask;
 
     /*
-     * The createProcessItemThread property.
+     * The task or thread that the action creates, by its code. When the version does not have it, by its id: KuFlow
+     * does not offer the action in the processes of that version. Actions belong to the process definition, and
+     * tasks and threads to each version.
      */
     @Generated
     private ProcessDefinitionActionDefinitionProcessItem createProcessItemThread;
@@ -433,7 +437,10 @@ public final class ProcessDefinitionActionDefinition implements JsonSerializable
     }
 
     /**
-     * Get the createTask property: The createTask property.
+     * Get the createTask property: The task or thread that the action creates, by its code. When the version does not
+     * have it, by its id: KuFlow
+     * does not offer the action in the processes of that version. Actions belong to the process definition, and
+     * tasks and threads to each version.
      *
      * @return the createTask value.
      */
@@ -443,7 +450,10 @@ public final class ProcessDefinitionActionDefinition implements JsonSerializable
     }
 
     /**
-     * Set the createTask property: The createTask property.
+     * Set the createTask property: The task or thread that the action creates, by its code. When the version does not
+     * have it, by its id: KuFlow
+     * does not offer the action in the processes of that version. Actions belong to the process definition, and
+     * tasks and threads to each version.
      *
      * @param createTask the createTask value to set.
      * @return the ProcessDefinitionActionDefinition object itself.
@@ -455,7 +465,10 @@ public final class ProcessDefinitionActionDefinition implements JsonSerializable
     }
 
     /**
-     * Get the createProcessItemThread property: The createProcessItemThread property.
+     * Get the createProcessItemThread property: The task or thread that the action creates, by its code. When the
+     * version does not have it, by its id: KuFlow
+     * does not offer the action in the processes of that version. Actions belong to the process definition, and
+     * tasks and threads to each version.
      *
      * @return the createProcessItemThread value.
      */
@@ -465,7 +478,10 @@ public final class ProcessDefinitionActionDefinition implements JsonSerializable
     }
 
     /**
-     * Set the createProcessItemThread property: The createProcessItemThread property.
+     * Set the createProcessItemThread property: The task or thread that the action creates, by its code. When the
+     * version does not have it, by its id: KuFlow
+     * does not offer the action in the processes of that version. Actions belong to the process definition, and
+     * tasks and threads to each version.
      *
      * @param createProcessItemThread the createProcessItemThread value to set.
      * @return the ProcessDefinitionActionDefinition object itself.
