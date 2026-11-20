@@ -38,14 +38,6 @@ import java.io.IOException;
 public final class ProcessItemDefinitionTask implements JsonSerializable<ProcessItemDefinitionTask> {
 
     /*
-     * Where the form of a task comes from: STRUCTURE_DATA, a form of the definition, the one of
-     * structureDataDefinitionCode. ELEMENTS is deprecated: the elements of such a task are not part of the definition
-     * returned.
-     */
-    @Generated
-    private ProcessItemDefinitionTaskFormOrigin formOrigin;
-
-    /*
      * The code of the form of the task.
      */
     @Generated
@@ -74,34 +66,6 @@ public final class ProcessItemDefinitionTask implements JsonSerializable<Process
      */
     @Generated
     public ProcessItemDefinitionTask() {}
-
-    /**
-     * Get the formOrigin property: Where the form of a task comes from: STRUCTURE_DATA, a form of the definition, the
-     * one of
-     * structureDataDefinitionCode. ELEMENTS is deprecated: the elements of such a task are not part of the definition
-     * returned.
-     *
-     * @return the formOrigin value.
-     */
-    @Generated
-    public ProcessItemDefinitionTaskFormOrigin getFormOrigin() {
-        return this.formOrigin;
-    }
-
-    /**
-     * Set the formOrigin property: Where the form of a task comes from: STRUCTURE_DATA, a form of the definition, the
-     * one of
-     * structureDataDefinitionCode. ELEMENTS is deprecated: the elements of such a task are not part of the definition
-     * returned.
-     *
-     * @param formOrigin the formOrigin value to set.
-     * @return the ProcessItemDefinitionTask object itself.
-     */
-    @Generated
-    public ProcessItemDefinitionTask setFormOrigin(ProcessItemDefinitionTaskFormOrigin formOrigin) {
-        this.formOrigin = formOrigin;
-        return this;
-    }
 
     /**
      * Get the structureDataDefinitionCode property: The code of the form of the task.
@@ -198,7 +162,6 @@ public final class ProcessItemDefinitionTask implements JsonSerializable<Process
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("formOrigin", this.formOrigin == null ? null : this.formOrigin.toString());
         jsonWriter.writeStringField("structureDataDefinitionCode", this.structureDataDefinitionCode);
         jsonWriter.writeStringField("contextDefinitionCode", this.contextDefinitionCode);
         jsonWriter.writeJsonField("robot", this.robot);
@@ -222,9 +185,7 @@ public final class ProcessItemDefinitionTask implements JsonSerializable<Process
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("formOrigin".equals(fieldName)) {
-                    deserializedProcessItemDefinitionTask.formOrigin = ProcessItemDefinitionTaskFormOrigin.fromString(reader.getString());
-                } else if ("structureDataDefinitionCode".equals(fieldName)) {
+                if ("structureDataDefinitionCode".equals(fieldName)) {
                     deserializedProcessItemDefinitionTask.structureDataDefinitionCode = reader.getString();
                 } else if ("contextDefinitionCode".equals(fieldName)) {
                     deserializedProcessItemDefinitionTask.contextDefinitionCode = reader.getString();

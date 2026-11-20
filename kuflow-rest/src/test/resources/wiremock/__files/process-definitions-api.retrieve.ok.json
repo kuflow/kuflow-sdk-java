@@ -146,7 +146,6 @@
         }
       ],
       "task": {
-        "formOrigin": "STRUCTURE_DATA",
         "structureDataDefinitionCode": "EXPENSE"
       }
     },
