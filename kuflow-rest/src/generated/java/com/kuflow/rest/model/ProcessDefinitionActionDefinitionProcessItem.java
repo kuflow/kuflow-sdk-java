@@ -36,7 +36,7 @@ import java.util.UUID;
 /**
  * The task or thread that the action creates, by its code. When the version does not have it, by its id: KuFlow
  * does not offer the action in the processes of that version. Actions belong to the process definition, and
- * tasks and threads to each version.
+ * tasks and threads to each version. Empty when the action does not say which task or thread it creates.
  */
 @Fluent
 public final class ProcessDefinitionActionDefinitionProcessItem implements JsonSerializable<ProcessDefinitionActionDefinitionProcessItem> {

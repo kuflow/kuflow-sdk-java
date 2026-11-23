@@ -26,6 +26,7 @@ package com.kuflow.rest.operation;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
+import static com.github.tomakehurst.wiremock.client.WireMock.havingExactly;
 import static com.github.tomakehurst.wiremock.client.WireMock.ok;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -86,12 +87,9 @@ public class ProcessDefinitionOperationTest extends AbstractOperationTest {
                 .withQueryParam("size", equalTo("30"))
                 .withQueryParam("page", equalTo("2"))
                 .withQueryParam("sort", equalTo("name,asc"))
-                .withQueryParam("tenantId", equalTo(tenantId1.toString()))
-                .withQueryParam("tenantId", equalTo(tenantId2.toString()))
-                .withQueryParam("processDefinitionCode", equalTo("EXPENSES"))
-                .withQueryParam("processDefinitionCode", equalTo("HOLIDAYS"))
-                .withQueryParam("state", equalTo("PUBLISHED"))
-                .withQueryParam("state", equalTo("UNPUBLISHED"))
+                .withQueryParam("tenantId", havingExactly(tenantId1.toString(), tenantId2.toString()))
+                .withQueryParam("processDefinitionCode", havingExactly("EXPENSES", "HOLIDAYS"))
+                .withQueryParam("state", havingExactly("PUBLISHED", "UNPUBLISHED"))
                 .withQueryParam("name", equalTo("vacation request"))
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("process-definitions-api.list.ok.json"))
         );
@@ -146,6 +144,7 @@ public class ProcessDefinitionOperationTest extends AbstractOperationTest {
         assertThat(task.getType()).isEqualTo(ProcessItemDefinitionType.TASK);
         assertThat(task.getTask().getStructureDataDefinitionCode()).isEqualTo("EXPENSE");
         assertThat(task.getNotifications().isProcessItemTaskCreatedCandidates()).isTrue();
+        assertThat(task.getNotifications().isProcessItemTaskAssignedOwner()).isFalse();
 
         assertThat(processDefinition.getActionDefinitions())
             .hasSize(2)

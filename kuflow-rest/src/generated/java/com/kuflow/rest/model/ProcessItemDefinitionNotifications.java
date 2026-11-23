@@ -38,25 +38,25 @@ import java.io.IOException;
 public final class ProcessItemDefinitionNotifications implements JsonSerializable<ProcessItemDefinitionNotifications> {
 
     /*
-     * The PROCESS_ITEM_TASK_CREATED_CANDIDATES property.
+     * The processItemTaskCreatedCandidates property.
      */
     @Generated
     private Boolean processItemTaskCreatedCandidates;
 
     /*
-     * The PROCESS_ITEM_TASK_ASSIGNED_OWNER property.
+     * The processItemTaskAssignedOwner property.
      */
     @Generated
     private Boolean processItemTaskAssignedOwner;
 
     /*
-     * The PROCESS_ITEM_TASK_PENDING_REMINDER_LISTED property.
+     * The processItemTaskPendingReminderListed property.
      */
     @Generated
     private Boolean processItemTaskPendingReminderListed;
 
     /*
-     * The PROCESS_ITEM_TASK_PENDING_REMINDER property.
+     * The processItemTaskPendingReminder property.
      */
     @Generated
     private Boolean processItemTaskPendingReminder;
@@ -68,7 +68,7 @@ public final class ProcessItemDefinitionNotifications implements JsonSerializabl
     public ProcessItemDefinitionNotifications() {}
 
     /**
-     * Get the processItemTaskCreatedCandidates property: The PROCESS_ITEM_TASK_CREATED_CANDIDATES property.
+     * Get the processItemTaskCreatedCandidates property: The processItemTaskCreatedCandidates property.
      *
      * @return the processItemTaskCreatedCandidates value.
      */
@@ -78,7 +78,7 @@ public final class ProcessItemDefinitionNotifications implements JsonSerializabl
     }
 
     /**
-     * Set the processItemTaskCreatedCandidates property: The PROCESS_ITEM_TASK_CREATED_CANDIDATES property.
+     * Set the processItemTaskCreatedCandidates property: The processItemTaskCreatedCandidates property.
      *
      * @param processItemTaskCreatedCandidates the processItemTaskCreatedCandidates value to set.
      * @return the ProcessItemDefinitionNotifications object itself.
@@ -90,7 +90,7 @@ public final class ProcessItemDefinitionNotifications implements JsonSerializabl
     }
 
     /**
-     * Get the processItemTaskAssignedOwner property: The PROCESS_ITEM_TASK_ASSIGNED_OWNER property.
+     * Get the processItemTaskAssignedOwner property: The processItemTaskAssignedOwner property.
      *
      * @return the processItemTaskAssignedOwner value.
      */
@@ -100,7 +100,7 @@ public final class ProcessItemDefinitionNotifications implements JsonSerializabl
     }
 
     /**
-     * Set the processItemTaskAssignedOwner property: The PROCESS_ITEM_TASK_ASSIGNED_OWNER property.
+     * Set the processItemTaskAssignedOwner property: The processItemTaskAssignedOwner property.
      *
      * @param processItemTaskAssignedOwner the processItemTaskAssignedOwner value to set.
      * @return the ProcessItemDefinitionNotifications object itself.
@@ -112,7 +112,7 @@ public final class ProcessItemDefinitionNotifications implements JsonSerializabl
     }
 
     /**
-     * Get the processItemTaskPendingReminderListed property: The PROCESS_ITEM_TASK_PENDING_REMINDER_LISTED property.
+     * Get the processItemTaskPendingReminderListed property: The processItemTaskPendingReminderListed property.
      *
      * @return the processItemTaskPendingReminderListed value.
      */
@@ -122,7 +122,7 @@ public final class ProcessItemDefinitionNotifications implements JsonSerializabl
     }
 
     /**
-     * Set the processItemTaskPendingReminderListed property: The PROCESS_ITEM_TASK_PENDING_REMINDER_LISTED property.
+     * Set the processItemTaskPendingReminderListed property: The processItemTaskPendingReminderListed property.
      *
      * @param processItemTaskPendingReminderListed the processItemTaskPendingReminderListed value to set.
      * @return the ProcessItemDefinitionNotifications object itself.
@@ -134,7 +134,7 @@ public final class ProcessItemDefinitionNotifications implements JsonSerializabl
     }
 
     /**
-     * Get the processItemTaskPendingReminder property: The PROCESS_ITEM_TASK_PENDING_REMINDER property.
+     * Get the processItemTaskPendingReminder property: The processItemTaskPendingReminder property.
      *
      * @return the processItemTaskPendingReminder value.
      */
@@ -144,7 +144,7 @@ public final class ProcessItemDefinitionNotifications implements JsonSerializabl
     }
 
     /**
-     * Set the processItemTaskPendingReminder property: The PROCESS_ITEM_TASK_PENDING_REMINDER property.
+     * Set the processItemTaskPendingReminder property: The processItemTaskPendingReminder property.
      *
      * @param processItemTaskPendingReminder the processItemTaskPendingReminder value to set.
      * @return the ProcessItemDefinitionNotifications object itself.
@@ -162,10 +162,10 @@ public final class ProcessItemDefinitionNotifications implements JsonSerializabl
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeBooleanField("PROCESS_ITEM_TASK_CREATED_CANDIDATES", this.processItemTaskCreatedCandidates);
-        jsonWriter.writeBooleanField("PROCESS_ITEM_TASK_ASSIGNED_OWNER", this.processItemTaskAssignedOwner);
-        jsonWriter.writeBooleanField("PROCESS_ITEM_TASK_PENDING_REMINDER_LISTED", this.processItemTaskPendingReminderListed);
-        jsonWriter.writeBooleanField("PROCESS_ITEM_TASK_PENDING_REMINDER", this.processItemTaskPendingReminder);
+        jsonWriter.writeBooleanField("processItemTaskCreatedCandidates", this.processItemTaskCreatedCandidates);
+        jsonWriter.writeBooleanField("processItemTaskAssignedOwner", this.processItemTaskAssignedOwner);
+        jsonWriter.writeBooleanField("processItemTaskPendingReminderListed", this.processItemTaskPendingReminderListed);
+        jsonWriter.writeBooleanField("processItemTaskPendingReminder", this.processItemTaskPendingReminder);
         return jsonWriter.writeEndObject();
     }
 
@@ -185,19 +185,19 @@ public final class ProcessItemDefinitionNotifications implements JsonSerializabl
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("PROCESS_ITEM_TASK_CREATED_CANDIDATES".equals(fieldName)) {
+                if ("processItemTaskCreatedCandidates".equals(fieldName)) {
                     deserializedProcessItemDefinitionNotifications.processItemTaskCreatedCandidates = reader.getNullable(
                         JsonReader::getBoolean
                     );
-                } else if ("PROCESS_ITEM_TASK_ASSIGNED_OWNER".equals(fieldName)) {
+                } else if ("processItemTaskAssignedOwner".equals(fieldName)) {
                     deserializedProcessItemDefinitionNotifications.processItemTaskAssignedOwner = reader.getNullable(
                         JsonReader::getBoolean
                     );
-                } else if ("PROCESS_ITEM_TASK_PENDING_REMINDER_LISTED".equals(fieldName)) {
+                } else if ("processItemTaskPendingReminderListed".equals(fieldName)) {
                     deserializedProcessItemDefinitionNotifications.processItemTaskPendingReminderListed = reader.getNullable(
                         JsonReader::getBoolean
                     );
-                } else if ("PROCESS_ITEM_TASK_PENDING_REMINDER".equals(fieldName)) {
+                } else if ("processItemTaskPendingReminder".equals(fieldName)) {
                     deserializedProcessItemDefinitionNotifications.processItemTaskPendingReminder = reader.getNullable(
                         JsonReader::getBoolean
                     );

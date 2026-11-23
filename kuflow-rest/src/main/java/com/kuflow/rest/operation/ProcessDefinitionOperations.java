@@ -58,7 +58,8 @@ public class ProcessDefinitionOperations {
      * Find the Process Definitions that the credentials administer
      *
      * List the live Process Definitions that the credentials used can update, each one at its latest version: the
-     * draft when there is one, otherwise the current one. Archived ones are not listed.
+     * draft when there is one, otherwise the current one. Archived ones are not listed, nor the ones with a task
+     * whose form is made of elements, a deprecated kind of form.
      *
      * Available sort query values: name, code.
      *
@@ -88,7 +89,8 @@ public class ProcessDefinitionOperations {
      * Find the Process Definitions that the credentials administer
      *
      * List the live Process Definitions that the credentials used can update, each one at its latest version: the
-     * draft when there is one, otherwise the current one. Archived ones are not listed.
+     * draft when there is one, otherwise the current one. Archived ones are not listed, nor the ones with a task
+     * whose form is made of elements, a deprecated kind of form.
      *
      * Available sort query values: name, code.
      *
@@ -107,7 +109,8 @@ public class ProcessDefinitionOperations {
      * Find the Process Definitions that the credentials administer
      *
      * List the live Process Definitions that the credentials used can update, each one at its latest version: the
-     * draft when there is one, otherwise the current one. Archived ones are not listed.
+     * draft when there is one, otherwise the current one. Archived ones are not listed, nor the ones with a task
+     * whose form is made of elements, a deprecated kind of form.
      *
      * Available sort query values: name, code.
      *
@@ -125,7 +128,8 @@ public class ProcessDefinitionOperations {
      *
      * Returns the whole Process Definition when the credentials used can update it: its forms, its tasks and threads,
      * its actions, schedulers and permissions, and its workflow. Without `version`, at its latest version: the draft
-     * when there is one, otherwise the current one.
+     * when there is one, otherwise the current one. An archived one is not found, nor one whose version has a task
+     * whose form is made of elements, a deprecated kind of form.
      *
      * @param id The resource ID.
      * @param version The id of a version of the process definition. Without it, its latest version.
@@ -143,7 +147,7 @@ public class ProcessDefinitionOperations {
     /**
      * Get a Process Definition by ID
      *
-     * Returns the whole Process Definition, at the version given.
+     * Returns the whole Process Definition at the version given, or at its latest version without it.
      *
      * @param id The resource ID.
      * @param version The id of a version of the process definition. Without it, its latest version.

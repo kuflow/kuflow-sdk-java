@@ -146,8 +146,8 @@
       "type": "TASK",
       "description": "Check the amount",
       "notifications": {
-        "PROCESS_ITEM_TASK_CREATED_CANDIDATES": true,
-        "PROCESS_ITEM_TASK_ASSIGNED_OWNER": false
+        "processItemTaskCreatedCandidates": true,
+        "processItemTaskAssignedOwner": false
       },
       "rbacEntries": [
         {

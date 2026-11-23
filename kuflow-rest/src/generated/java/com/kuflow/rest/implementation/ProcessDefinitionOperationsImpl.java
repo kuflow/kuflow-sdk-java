@@ -140,7 +140,8 @@ public final class ProcessDefinitionOperationsImpl {
      * Find the Process Definitions that the credentials administer
      *
      * List the live Process Definitions that the credentials used can update, each one at its latest version: the
-     * draft when there is one, otherwise the current one. Archived ones are not listed.
+     * draft when there is one, otherwise the current one. Archived ones are not listed, nor the ones with a task
+     * whose form is made of elements, a deprecated kind of form.
      *
      * Available sort query values: name, code.
      *
@@ -181,7 +182,8 @@ public final class ProcessDefinitionOperationsImpl {
      * Find the Process Definitions that the credentials administer
      *
      * List the live Process Definitions that the credentials used can update, each one at its latest version: the
-     * draft when there is one, otherwise the current one. Archived ones are not listed.
+     * draft when there is one, otherwise the current one. Archived ones are not listed, nor the ones with a task
+     * whose form is made of elements, a deprecated kind of form.
      *
      * Available sort query values: name, code.
      *
@@ -262,7 +264,8 @@ public final class ProcessDefinitionOperationsImpl {
      * Find the Process Definitions that the credentials administer
      *
      * List the live Process Definitions that the credentials used can update, each one at its latest version: the
-     * draft when there is one, otherwise the current one. Archived ones are not listed.
+     * draft when there is one, otherwise the current one. Archived ones are not listed, nor the ones with a task
+     * whose form is made of elements, a deprecated kind of form.
      *
      * Available sort query values: name, code.
      *
@@ -303,7 +306,8 @@ public final class ProcessDefinitionOperationsImpl {
      * Find the Process Definitions that the credentials administer
      *
      * List the live Process Definitions that the credentials used can update, each one at its latest version: the
-     * draft when there is one, otherwise the current one. Archived ones are not listed.
+     * draft when there is one, otherwise the current one. Archived ones are not listed, nor the ones with a task
+     * whose form is made of elements, a deprecated kind of form.
      *
      * Available sort query values: name, code.
      *
@@ -329,7 +333,8 @@ public final class ProcessDefinitionOperationsImpl {
      * Find the Process Definitions that the credentials administer
      *
      * List the live Process Definitions that the credentials used can update, each one at its latest version: the
-     * draft when there is one, otherwise the current one. Archived ones are not listed.
+     * draft when there is one, otherwise the current one. Archived ones are not listed, nor the ones with a task
+     * whose form is made of elements, a deprecated kind of form.
      *
      * Available sort query values: name, code.
      *
@@ -372,7 +377,8 @@ public final class ProcessDefinitionOperationsImpl {
      * Find the Process Definitions that the credentials administer
      *
      * List the live Process Definitions that the credentials used can update, each one at its latest version: the
-     * draft when there is one, otherwise the current one. Archived ones are not listed.
+     * draft when there is one, otherwise the current one. Archived ones are not listed, nor the ones with a task
+     * whose form is made of elements, a deprecated kind of form.
      *
      * Available sort query values: name, code.
      *
@@ -453,7 +459,8 @@ public final class ProcessDefinitionOperationsImpl {
      * Find the Process Definitions that the credentials administer
      *
      * List the live Process Definitions that the credentials used can update, each one at its latest version: the
-     * draft when there is one, otherwise the current one. Archived ones are not listed.
+     * draft when there is one, otherwise the current one. Archived ones are not listed, nor the ones with a task
+     * whose form is made of elements, a deprecated kind of form.
      *
      * Available sort query values: name, code.
      *
@@ -492,7 +499,8 @@ public final class ProcessDefinitionOperationsImpl {
      * Find the Process Definitions that the credentials administer
      *
      * List the live Process Definitions that the credentials used can update, each one at its latest version: the
-     * draft when there is one, otherwise the current one. Archived ones are not listed.
+     * draft when there is one, otherwise the current one. Archived ones are not listed, nor the ones with a task
+     * whose form is made of elements, a deprecated kind of form.
      *
      * Available sort query values: name, code.
      *
@@ -517,7 +525,8 @@ public final class ProcessDefinitionOperationsImpl {
      *
      * Returns the whole Process Definition when the credentials used can update it: its forms, its tasks and threads,
      * its actions, schedulers and permissions, and its workflow. Without `version`, at its latest version: the draft
-     * when there is one, otherwise the current one.
+     * when there is one, otherwise the current one. An archived one is not found, nor one whose version has a task
+     * whose form is made of elements, a deprecated kind of form.
      *
      * @param id The resource ID.
      * @param version The id of a version of the process definition. Without it, its latest version.
@@ -537,7 +546,8 @@ public final class ProcessDefinitionOperationsImpl {
      *
      * Returns the whole Process Definition when the credentials used can update it: its forms, its tasks and threads,
      * its actions, schedulers and permissions, and its workflow. Without `version`, at its latest version: the draft
-     * when there is one, otherwise the current one.
+     * when there is one, otherwise the current one. An archived one is not found, nor one whose version has a task
+     * whose form is made of elements, a deprecated kind of form.
      *
      * @param id The resource ID.
      * @param version The id of a version of the process definition. Without it, its latest version.
@@ -559,7 +569,8 @@ public final class ProcessDefinitionOperationsImpl {
      *
      * Returns the whole Process Definition when the credentials used can update it: its forms, its tasks and threads,
      * its actions, schedulers and permissions, and its workflow. Without `version`, at its latest version: the draft
-     * when there is one, otherwise the current one.
+     * when there is one, otherwise the current one. An archived one is not found, nor one whose version has a task
+     * whose form is made of elements, a deprecated kind of form.
      *
      * @param id The resource ID.
      * @param version The id of a version of the process definition. Without it, its latest version.
@@ -578,7 +589,8 @@ public final class ProcessDefinitionOperationsImpl {
      *
      * Returns the whole Process Definition when the credentials used can update it: its forms, its tasks and threads,
      * its actions, schedulers and permissions, and its workflow. Without `version`, at its latest version: the draft
-     * when there is one, otherwise the current one.
+     * when there is one, otherwise the current one. An archived one is not found, nor one whose version has a task
+     * whose form is made of elements, a deprecated kind of form.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -597,7 +609,8 @@ public final class ProcessDefinitionOperationsImpl {
      *
      * Returns the whole Process Definition when the credentials used can update it: its forms, its tasks and threads,
      * its actions, schedulers and permissions, and its workflow. Without `version`, at its latest version: the draft
-     * when there is one, otherwise the current one.
+     * when there is one, otherwise the current one. An archived one is not found, nor one whose version has a task
+     * whose form is made of elements, a deprecated kind of form.
      *
      * @param id The resource ID.
      * @param version The id of a version of the process definition. Without it, its latest version.
@@ -617,7 +630,8 @@ public final class ProcessDefinitionOperationsImpl {
      *
      * Returns the whole Process Definition when the credentials used can update it: its forms, its tasks and threads,
      * its actions, schedulers and permissions, and its workflow. Without `version`, at its latest version: the draft
-     * when there is one, otherwise the current one.
+     * when there is one, otherwise the current one. An archived one is not found, nor one whose version has a task
+     * whose form is made of elements, a deprecated kind of form.
      *
      * @param id The resource ID.
      * @param version The id of a version of the process definition. Without it, its latest version.
@@ -638,7 +652,8 @@ public final class ProcessDefinitionOperationsImpl {
      *
      * Returns the whole Process Definition when the credentials used can update it: its forms, its tasks and threads,
      * its actions, schedulers and permissions, and its workflow. Without `version`, at its latest version: the draft
-     * when there is one, otherwise the current one.
+     * when there is one, otherwise the current one. An archived one is not found, nor one whose version has a task
+     * whose form is made of elements, a deprecated kind of form.
      *
      * @param id The resource ID.
      * @param version The id of a version of the process definition. Without it, its latest version.
@@ -657,7 +672,8 @@ public final class ProcessDefinitionOperationsImpl {
      *
      * Returns the whole Process Definition when the credentials used can update it: its forms, its tasks and threads,
      * its actions, schedulers and permissions, and its workflow. Without `version`, at its latest version: the draft
-     * when there is one, otherwise the current one.
+     * when there is one, otherwise the current one. An archived one is not found, nor one whose version has a task
+     * whose form is made of elements, a deprecated kind of form.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

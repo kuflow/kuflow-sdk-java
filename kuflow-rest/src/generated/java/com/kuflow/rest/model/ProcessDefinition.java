@@ -137,7 +137,7 @@ public final class ProcessDefinition extends AbstractAudited {
     private String workflowType;
 
     /*
-     * The serverless workflow, as JSON. Only with a SERVERLESS_WORKFLOW engine.
+     * The serverless workflow, as JSON. Only with a SERVERLESS_WORKFLOW or SERVERLESS_WORKFLOW_V2 engine.
      */
     @Generated
     private Map<String, Object> workflowDefinition;
@@ -535,7 +535,8 @@ public final class ProcessDefinition extends AbstractAudited {
     }
 
     /**
-     * Get the workflowDefinition property: The serverless workflow, as JSON. Only with a SERVERLESS_WORKFLOW engine.
+     * Get the workflowDefinition property: The serverless workflow, as JSON. Only with a SERVERLESS_WORKFLOW or
+     * SERVERLESS_WORKFLOW_V2 engine.
      *
      * @return the workflowDefinition value.
      */
@@ -545,7 +546,8 @@ public final class ProcessDefinition extends AbstractAudited {
     }
 
     /**
-     * Set the workflowDefinition property: The serverless workflow, as JSON. Only with a SERVERLESS_WORKFLOW engine.
+     * Set the workflowDefinition property: The serverless workflow, as JSON. Only with a SERVERLESS_WORKFLOW or
+     * SERVERLESS_WORKFLOW_V2 engine.
      *
      * @param workflowDefinition the workflowDefinition value to set.
      * @return the ProcessDefinition object itself.
