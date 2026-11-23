@@ -1,0 +1,32 @@
+{
+  "metadata": {
+    "size": 25,
+    "page": 0,
+    "totalElements": 2,
+    "totalPages": 1
+  },
+  "content": [
+    {
+      "id": "5a0f6a3e-5a1b-4c4e-9a59-1e0b7c3a1d01",
+      "code": "EXPENSES",
+      "name": "Expenses",
+      "tenantId": "00a9f1d4-3698-45a4-951c-66a468846aad",
+      "state": "PUBLISHED",
+      "version": {
+        "id": "7d1c2b30-8e4f-4f6a-9c1d-2b3e4f5a6b01",
+        "state": "DRAFT"
+      }
+    },
+    {
+      "id": "5a0f6a3e-5a1b-4c4e-9a59-1e0b7c3a1d02",
+      "code": "HOLIDAYS",
+      "name": "Holidays",
+      "tenantId": "00a9f1d4-3698-45a4-951c-66a468846aad",
+      "state": "UNPUBLISHED",
+      "version": {
+        "id": "7d1c2b30-8e4f-4f6a-9c1d-2b3e4f5a6b02",
+        "state": "CURRENT"
+      }
+    }
+  ]
+}

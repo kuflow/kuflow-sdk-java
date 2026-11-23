@@ -162,6 +162,20 @@ public final class KuFlowClientImpl {
     }
 
     /**
+     * The ProcessDefinitionOperationsImpl object to access its operations.
+     */
+    private final ProcessDefinitionOperationsImpl processDefinitionOperations;
+
+    /**
+     * Gets the ProcessDefinitionOperationsImpl object to access its operations.
+     *
+     * @return the ProcessDefinitionOperationsImpl object.
+     */
+    public ProcessDefinitionOperationsImpl getProcessDefinitionOperations() {
+        return this.processDefinitionOperations;
+    }
+
+    /**
      * The ProcessOperationsImpl object to access its operations.
      */
     private final ProcessOperationsImpl processOperations;
@@ -285,6 +299,7 @@ public final class KuFlowClientImpl {
         this.groupOperations = new GroupOperationsImpl(this);
         this.tenantOperations = new TenantOperationsImpl(this);
         this.tenantUserOperations = new TenantUserOperationsImpl(this);
+        this.processDefinitionOperations = new ProcessDefinitionOperationsImpl(this);
         this.processOperations = new ProcessOperationsImpl(this);
         this.processItemOperations = new ProcessItemOperationsImpl(this);
         this.businessArtifactOperations = new BusinessArtifactOperationsImpl(this);
