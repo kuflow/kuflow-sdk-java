@@ -147,7 +147,8 @@ public class ProcessDefinitionOperations {
     /**
      * Get a Process Definition by ID
      *
-     * Returns the whole Process Definition at the version given, or at its latest version without it.
+     * Returns the whole Process Definition at the version given, or at its latest version without it. An archived one is
+     * not found, nor one whose version has a task whose form is made of elements, a deprecated kind of form.
      *
      * @param id The resource ID.
      * @param version The id of a version of the process definition. Without it, its latest version.
@@ -165,7 +166,8 @@ public class ProcessDefinitionOperations {
      * Get a Process Definition by ID
      *
      * Returns the whole Process Definition, at its latest version: the draft when there is one, otherwise the current
-     * one.
+     * one. An archived one is not found, nor one whose version has a task whose form is made of elements, a deprecated
+     * kind of form.
      *
      * @param id The resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
