@@ -23,6 +23,7 @@
 
 package com.kuflow.rest.operation;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.absent;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
@@ -45,6 +46,26 @@ public class DocumentOperationTest extends AbstractOperationTest {
     @Test
     @DisplayName("GIVEN an authenticated user WHEN upload a document THEN the query parameters are sent and response is parsed")
     public void givenAnAuthenticatedUserWhenUploadADocumentThenTheQueryParametersAreSentAndResponseIsParsed() {
+        givenThat(
+            post(urlPathEqualTo("/v2024-06-14/documents/~actions/upload"))
+                .withQueryParam("targetUri", absent())
+                .withQueryParam("fileContentType", equalTo("text/plain"))
+                .withQueryParam("fileName", equalTo("test.txt"))
+                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("documents-api.upload-document.ok.json"))
+        );
+
+        BinaryData fileContent = BinaryData.fromBytes("test content".getBytes(StandardCharsets.UTF_8));
+        Document document = new Document().setFileContent(fileContent).setFileName("test.txt").setContentType("text/plain");
+
+        DocumentReference documentReference = this.kuFlowRestClient.getDocumentOperations().uploadDocument(document);
+
+        assertThat(documentReference.getDocumentUri()).isEqualTo("kuflow-file:uri=aaa-bbb-ccc;type=text/plain;size=12;name=test.txt;");
+    }
+
+    @Test
+    @DisplayName("GIVEN a target uri WHEN upload a document with the deprecated operation THEN the target is still sent")
+    @SuppressWarnings("deprecation")
+    public void givenATargetUriWhenUploadADocumentWithTheDeprecatedOperationThenTheTargetIsStillSent() {
         String targetUri = "ku:process/" + UUID.fromString("80d8c9a1-e3d2-4c35-a0a9-77ec21d28950");
 
         givenThat(
@@ -66,9 +87,7 @@ public class DocumentOperationTest extends AbstractOperationTest {
     @Test
     @DisplayName("GIVEN a null document WHEN upload a document THEN a NullPointerException is thrown")
     public void givenANullDocumentWhenUploadADocumentThenANullPointerExceptionIsThrown() {
-        String targetUri = "ku:process/" + UUID.randomUUID();
-
-        assertThatThrownBy(() -> this.kuFlowRestClient.getDocumentOperations().uploadDocument(targetUri, null))
+        assertThatThrownBy(() -> this.kuFlowRestClient.getDocumentOperations().uploadDocument(null))
             .isInstanceOf(NullPointerException.class)
             .hasMessageContaining("'document' is required");
     }
@@ -76,12 +95,10 @@ public class DocumentOperationTest extends AbstractOperationTest {
     @Test
     @DisplayName("GIVEN an empty file WHEN upload a document THEN an IllegalArgumentException is thrown")
     public void givenAnEmptyFileWhenUploadADocumentThenAnIllegalArgumentExceptionIsThrown() {
-        String targetUri = "ku:business-artifact/" + UUID.randomUUID();
-
         BinaryData emptyContent = BinaryData.fromBytes(new byte[0]);
         Document document = new Document().setFileContent(emptyContent).setFileName("empty.txt").setContentType("text/plain");
 
-        assertThatThrownBy(() -> this.kuFlowRestClient.getDocumentOperations().uploadDocument(targetUri, document))
+        assertThatThrownBy(() -> this.kuFlowRestClient.getDocumentOperations().uploadDocument(document))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("File size must be greater that 0");
     }

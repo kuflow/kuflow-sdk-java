@@ -36,8 +36,9 @@
  *
  * * `ku:` URIs identify KuFlow resources, e.g. `ku:process/{processId}` or
  * `ku:business-artifact/{businessArtifactId}`. Resources that can be referenced this way expose their
- * URI in a read-only `uri` field. Documents owned by a resource extend its URI, e.g.
- * `ku:process/{processId}/document/{documentId}`.
+ * URI in a read-only `uri` field. Documents stored in a resource extend its URI, e.g.
+ * `ku:business-artifact/{businessArtifactId}/value-document/{documentId}`. A document uploaded and not
+ * linked yet has a URI of its own, `ku:storage-staging/{id}`.
  * * `kuflow-file:` values are document references: they wrap a `ku:` document URI together with its
  * metadata using the format
  * `kuflow-file:uri=&lt;ku-uri&gt;;type=&lt;media-type&gt;;size=&lt;bytes&gt;;name=&lt;file-name&gt;;`.

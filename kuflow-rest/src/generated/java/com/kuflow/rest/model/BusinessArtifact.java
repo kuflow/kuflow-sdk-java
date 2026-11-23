@@ -48,8 +48,7 @@ public final class BusinessArtifact extends AbstractDeleted {
     private UUID id;
 
     /*
-     * Business Artifact resource URI, e.g. usable as `targetUri` of the `uploadDocument`
-     * operation. Format `ku:business-artifact/{id}`.
+     * Business Artifact resource URI. Format `ku:business-artifact/{id}`.
      */
     @Generated
     private String uri;
@@ -101,8 +100,7 @@ public final class BusinessArtifact extends AbstractDeleted {
     }
 
     /**
-     * Get the uri property: Business Artifact resource URI, e.g. usable as `targetUri` of the `uploadDocument`
-     * operation. Format `ku:business-artifact/{id}`.
+     * Get the uri property: Business Artifact resource URI. Format `ku:business-artifact/{id}`.
      *
      * @return the uri value.
      */
@@ -112,8 +110,7 @@ public final class BusinessArtifact extends AbstractDeleted {
     }
 
     /**
-     * Set the uri property: Business Artifact resource URI, e.g. usable as `targetUri` of the `uploadDocument`
-     * operation. Format `ku:business-artifact/{id}`.
+     * Set the uri property: Business Artifact resource URI. Format `ku:business-artifact/{id}`.
      *
      * @param uri the uri value to set.
      * @return the BusinessArtifact object itself.

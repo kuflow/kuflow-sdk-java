@@ -42,7 +42,7 @@ public final class DocumentReference implements JsonSerializable<DocumentReferen
      *
      * Format: `kuflow-file:uri=<ku-uri>;type=<media-type>;size=<bytes>;name=<file-name>;`
      *
-     * Example: `kuflow-file:uri=ku:process/xxx/document/yyy;type=application/json;size=500;name=file.json;`
+     * Example: `kuflow-file:uri=ku:storage-staging/xxx;type=application/json;size=500;name=file.json;`
      *
      * Operations that receive a document uri accept both this full form and the inner `ku:`
      * document uri.
@@ -61,7 +61,7 @@ public final class DocumentReference implements JsonSerializable<DocumentReferen
      *
      * Format: `kuflow-file:uri=&lt;ku-uri&gt;;type=&lt;media-type&gt;;size=&lt;bytes&gt;;name=&lt;file-name&gt;;`
      *
-     * Example: `kuflow-file:uri=ku:process/xxx/document/yyy;type=application/json;size=500;name=file.json;`
+     * Example: `kuflow-file:uri=ku:storage-staging/xxx;type=application/json;size=500;name=file.json;`
      *
      * Operations that receive a document uri accept both this full form and the inner `ku:`
      * document uri.
@@ -78,7 +78,7 @@ public final class DocumentReference implements JsonSerializable<DocumentReferen
      *
      * Format: `kuflow-file:uri=&lt;ku-uri&gt;;type=&lt;media-type&gt;;size=&lt;bytes&gt;;name=&lt;file-name&gt;;`
      *
-     * Example: `kuflow-file:uri=ku:process/xxx/document/yyy;type=application/json;size=500;name=file.json;`
+     * Example: `kuflow-file:uri=ku:storage-staging/xxx;type=application/json;size=500;name=file.json;`
      *
      * Operations that receive a document uri accept both this full form and the inner `ku:`
      * document uri.

@@ -53,13 +53,13 @@ public class DocumentOperations {
     /**
      * Upload a temporal document
      * <p>
-     * Upload a temporal document that later on must be linked with a domain resource of its target. The target
-     * resource is identified by {@code targetUri}, e.g. {@code ku:process/{processId}} or
-     * {@code ku:business-artifact/{businessArtifactId}}; resources expose their uri in their {@code uri} field.
+     * Upload a temporal document that later on must be linked with a domain resource. The document belongs to the
+     * credentials that upload it, and its reference has the uri {@code ku:storage-staging/{id}}. Only those credentials
+     * can download it and link it, by sending its reference in the data of any resource they can update; the
+     * permission on that resource is checked when the data is saved.
      * <p>
      * Documents not linked to a domain resource are deleted after a retention period.
      *
-     * @param targetUri URI of the resource the document is uploaded for.
      * @param document Document to upload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -68,27 +68,20 @@ public class DocumentOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentReference> uploadDocumentWithResponse(String targetUri, Document document, Context context) {
-        Validation.checkDocument(document);
-
-        String fileContentType = document.getContentType();
-        String fileName = document.getFileName();
-        BinaryData file = document.getFileContent();
-        long contentLength = file.getLength();
-
-        return this.service.uploadDocumentWithResponse(targetUri, fileContentType, fileName, file, contentLength, context);
+    public Response<DocumentReference> uploadDocumentWithResponse(Document document, Context context) {
+        return this.uploadDocumentWithResponseAndTarget(null, document, context);
     }
 
     /**
      * Upload a temporal document
      * <p>
-     * Upload a temporal document that later on must be linked with a domain resource of its target. The target
-     * resource is identified by {@code targetUri}, e.g. {@code ku:process/{processId}} or
-     * {@code ku:business-artifact/{businessArtifactId}}; resources expose their uri in their {@code uri} field.
+     * Upload a temporal document that later on must be linked with a domain resource. The document belongs to the
+     * credentials that upload it, and its reference has the uri {@code ku:storage-staging/{id}}. Only those credentials
+     * can download it and link it, by sending its reference in the data of any resource they can update; the
+     * permission on that resource is checked when the data is saved.
      * <p>
      * Documents not linked to a domain resource are deleted after a retention period.
      *
-     * @param targetUri URI of the resource the document is uploaded for.
      * @param document Document to upload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -96,8 +89,59 @@ public class DocumentOperations {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public DocumentReference uploadDocument(Document document) {
+        return this.uploadDocumentWithResponse(document, Context.NONE).getValue();
+    }
+
+    /**
+     * Upload a temporal document
+     * <p>
+     * Upload a temporal document that later on must be linked with a domain resource.
+     *
+     * @param targetUri Ignored: the document can be linked to any resource the credentials can update.
+     * @param document Document to upload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     * @deprecated Use {@link #uploadDocumentWithResponse(Document, Context)} instead: the target is ignored.
+     */
+    @Deprecated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DocumentReference> uploadDocumentWithResponse(String targetUri, Document document, Context context) {
+        return this.uploadDocumentWithResponseAndTarget(targetUri, document, context);
+    }
+
+    /**
+     * Upload a temporal document
+     * <p>
+     * Upload a temporal document that later on must be linked with a domain resource.
+     *
+     * @param targetUri Ignored: the document can be linked to any resource the credentials can update.
+     * @param document Document to upload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     * @deprecated Use {@link #uploadDocument(Document)} instead: the target is ignored.
+     */
+    @Deprecated
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentReference uploadDocument(String targetUri, Document document) {
-        return this.uploadDocumentWithResponse(targetUri, document, Context.NONE).getValue();
+        return this.uploadDocumentWithResponseAndTarget(targetUri, document, Context.NONE).getValue();
+    }
+
+    // The deprecated variants still send their target, which the API ignores
+    private Response<DocumentReference> uploadDocumentWithResponseAndTarget(String targetUri, Document document, Context context) {
+        Validation.checkDocument(document);
+
+        String fileContentType = document.getContentType();
+        String fileName = document.getFileName();
+        BinaryData file = document.getFileContent();
+        long contentLength = file.getLength();
+
+        return this.service.uploadDocumentWithResponse(fileContentType, fileName, file, contentLength, targetUri, context);
     }
 
     /**
