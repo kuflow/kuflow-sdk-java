@@ -367,9 +367,9 @@ public class BusinessArtifactOperations {
     /**
      * Upload a temporal document
      *
-     * <p>Upload a temporal document that can be later linked to a business artifact.
-     * <p>
-     * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked.
+     * <p>Upload a temporal document that later on must be linked with a domain resource. It behaves as
+     * {@link DocumentOperations#uploadDocument(Document)}: the business artifact of the path must be readable by the
+     * credentials, but the document is not bound to it and can be linked to any resource the credentials can update.
      *
      * @param id The resource ID.
      * @param document Document to upload.
@@ -378,8 +378,7 @@ public class BusinessArtifactOperations {
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
-     * @deprecated Use {@link DocumentOperations#uploadDocument(String, Document)} with the business artifact uri as
-     * {@code targetUri} instead.
+     * @deprecated Use {@link DocumentOperations#uploadDocument(Document)} instead.
      */
     @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -397,9 +396,9 @@ public class BusinessArtifactOperations {
     /**
      * Upload a temporal document
      *
-     * <p>Upload a temporal document that can be later linked to a business artifact.
-     * <p>
-     * Documents uploaded with this API will be deleted after 2 hours as long as they have not been linked.
+     * <p>Upload a temporal document that later on must be linked with a domain resource. It behaves as
+     * {@link DocumentOperations#uploadDocument(Document)}: the business artifact of the path must be readable by the
+     * credentials, but the document is not bound to it and can be linked to any resource the credentials can update.
      *
      * @param id The resource ID.
      * @param document Document to upload.
@@ -407,8 +406,7 @@ public class BusinessArtifactOperations {
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
-     * @deprecated Use {@link DocumentOperations#uploadDocument(String, Document)} with the business artifact uri as
-     * {@code targetUri} instead.
+     * @deprecated Use {@link DocumentOperations#uploadDocument(Document)} instead.
      */
     @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)

@@ -144,23 +144,22 @@ public final class DocumentOperationsImpl {
     /**
      * Upload a temporal document
      *
-     * Upload a temporal document that later on must be linked with a domain resource of its target.
+     * Upload a temporal document that later on must be linked with a domain resource.
      *
-     * The target resource is identified by `targetUri`:
+     * The document belongs to the credentials that upload it, and its reference has the URI
+     * `ku:storage-staging/{id}`. Only those credentials can download it and link it, by sending its reference in
+     * the data of any resource they can update: the entity of a process, the data of a task, the value of a
+     * business artifact or the result of a downloadable action. The permission on that resource is checked when the
+     * data is saved. Linking copies the document into the resource, which gets a reference of its own; the uploaded
+     * document can be linked only once, and a save sent again with the same reference is accepted.
      *
-     * * `ku:process/{processId}`: the document is deleted after 2 hours as long as it has not been
-     * linked to the process or to one of its process items.
-     * * `ku:business-artifact/{businessArtifactId}`: the document is deleted after 2 hours as long
-     * as it has not been linked to the business artifact.
+     * Documents not linked are deleted after 2 hours.
      *
-     * A target the credentials cannot read answers `404`.
-     *
-     * @param targetUri URI of the resource the document is uploaded for. Supported forms are `ku:process/{id}`
-     * and `ku:business-artifact/{id}`.
      * @param fileContentType Document content type.
      * @param fileName Document name.
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
+     * @param targetUri Ignored: the document can be linked to any resource the credentials can update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -168,37 +167,36 @@ public final class DocumentOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DocumentReference>> uploadDocumentWithResponseAsync(
-        String targetUri,
         String fileContentType,
         String fileName,
         Flux<ByteBuffer> file,
-        long contentLength
+        long contentLength,
+        String targetUri
     ) {
         return FluxUtil.withContext(context ->
-            uploadDocumentWithResponseAsync(targetUri, fileContentType, fileName, file, contentLength, context)
+            uploadDocumentWithResponseAsync(fileContentType, fileName, file, contentLength, targetUri, context)
         );
     }
 
     /**
      * Upload a temporal document
      *
-     * Upload a temporal document that later on must be linked with a domain resource of its target.
+     * Upload a temporal document that later on must be linked with a domain resource.
      *
-     * The target resource is identified by `targetUri`:
+     * The document belongs to the credentials that upload it, and its reference has the URI
+     * `ku:storage-staging/{id}`. Only those credentials can download it and link it, by sending its reference in
+     * the data of any resource they can update: the entity of a process, the data of a task, the value of a
+     * business artifact or the result of a downloadable action. The permission on that resource is checked when the
+     * data is saved. Linking copies the document into the resource, which gets a reference of its own; the uploaded
+     * document can be linked only once, and a save sent again with the same reference is accepted.
      *
-     * * `ku:process/{processId}`: the document is deleted after 2 hours as long as it has not been
-     * linked to the process or to one of its process items.
-     * * `ku:business-artifact/{businessArtifactId}`: the document is deleted after 2 hours as long
-     * as it has not been linked to the business artifact.
+     * Documents not linked are deleted after 2 hours.
      *
-     * A target the credentials cannot read answers `404`.
-     *
-     * @param targetUri URI of the resource the document is uploaded for. Supported forms are `ku:process/{id}`
-     * and `ku:business-artifact/{id}`.
      * @param fileContentType Document content type.
      * @param fileName Document name.
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
+     * @param targetUri Ignored: the document can be linked to any resource the credentials can update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -207,11 +205,11 @@ public final class DocumentOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DocumentReference>> uploadDocumentWithResponseAsync(
-        String targetUri,
         String fileContentType,
         String fileName,
         Flux<ByteBuffer> file,
         long contentLength,
+        String targetUri,
         Context context
     ) {
         final String accept = "application/json";
@@ -221,19 +219,54 @@ public final class DocumentOperationsImpl {
     /**
      * Upload a temporal document
      *
-     * Upload a temporal document that later on must be linked with a domain resource of its target.
+     * Upload a temporal document that later on must be linked with a domain resource.
      *
-     * The target resource is identified by `targetUri`:
+     * The document belongs to the credentials that upload it, and its reference has the URI
+     * `ku:storage-staging/{id}`. Only those credentials can download it and link it, by sending its reference in
+     * the data of any resource they can update: the entity of a process, the data of a task, the value of a
+     * business artifact or the result of a downloadable action. The permission on that resource is checked when the
+     * data is saved. Linking copies the document into the resource, which gets a reference of its own; the uploaded
+     * document can be linked only once, and a save sent again with the same reference is accepted.
      *
-     * * `ku:process/{processId}`: the document is deleted after 2 hours as long as it has not been
-     * linked to the process or to one of its process items.
-     * * `ku:business-artifact/{businessArtifactId}`: the document is deleted after 2 hours as long
-     * as it has not been linked to the business artifact.
+     * Documents not linked are deleted after 2 hours.
      *
-     * A target the credentials cannot read answers `404`.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @param targetUri Ignored: the document can be linked to any resource the credentials can update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DocumentReference> uploadDocumentAsync(
+        String fileContentType,
+        String fileName,
+        Flux<ByteBuffer> file,
+        long contentLength,
+        String targetUri
+    ) {
+        return uploadDocumentWithResponseAsync(fileContentType, fileName, file, contentLength, targetUri).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
+        );
+    }
+
+    /**
+     * Upload a temporal document
      *
-     * @param targetUri URI of the resource the document is uploaded for. Supported forms are `ku:process/{id}`
-     * and `ku:business-artifact/{id}`.
+     * Upload a temporal document that later on must be linked with a domain resource.
+     *
+     * The document belongs to the credentials that upload it, and its reference has the URI
+     * `ku:storage-staging/{id}`. Only those credentials can download it and link it, by sending its reference in
+     * the data of any resource they can update: the entity of a process, the data of a task, the value of a
+     * business artifact or the result of a downloadable action. The permission on that resource is checked when the
+     * data is saved. Linking copies the document into the resource, which gets a reference of its own; the uploaded
+     * document can be linked only once, and a save sent again with the same reference is accepted.
+     *
+     * Documents not linked are deleted after 2 hours.
+     *
      * @param fileContentType Document content type.
      * @param fileName Document name.
      * @param file Document to save.
@@ -244,14 +277,9 @@ public final class DocumentOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentReference> uploadDocumentAsync(
-        String targetUri,
-        String fileContentType,
-        String fileName,
-        Flux<ByteBuffer> file,
-        long contentLength
-    ) {
-        return uploadDocumentWithResponseAsync(targetUri, fileContentType, fileName, file, contentLength).flatMap(res ->
+    public Mono<DocumentReference> uploadDocumentAsync(String fileContentType, String fileName, Flux<ByteBuffer> file, long contentLength) {
+        final String targetUri = null;
+        return uploadDocumentWithResponseAsync(fileContentType, fileName, file, contentLength, targetUri).flatMap(res ->
             Mono.justOrEmpty(res.getValue())
         );
     }
@@ -259,23 +287,22 @@ public final class DocumentOperationsImpl {
     /**
      * Upload a temporal document
      *
-     * Upload a temporal document that later on must be linked with a domain resource of its target.
+     * Upload a temporal document that later on must be linked with a domain resource.
      *
-     * The target resource is identified by `targetUri`:
+     * The document belongs to the credentials that upload it, and its reference has the URI
+     * `ku:storage-staging/{id}`. Only those credentials can download it and link it, by sending its reference in
+     * the data of any resource they can update: the entity of a process, the data of a task, the value of a
+     * business artifact or the result of a downloadable action. The permission on that resource is checked when the
+     * data is saved. Linking copies the document into the resource, which gets a reference of its own; the uploaded
+     * document can be linked only once, and a save sent again with the same reference is accepted.
      *
-     * * `ku:process/{processId}`: the document is deleted after 2 hours as long as it has not been
-     * linked to the process or to one of its process items.
-     * * `ku:business-artifact/{businessArtifactId}`: the document is deleted after 2 hours as long
-     * as it has not been linked to the business artifact.
+     * Documents not linked are deleted after 2 hours.
      *
-     * A target the credentials cannot read answers `404`.
-     *
-     * @param targetUri URI of the resource the document is uploaded for. Supported forms are `ku:process/{id}`
-     * and `ku:business-artifact/{id}`.
      * @param fileContentType Document content type.
      * @param fileName Document name.
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
+     * @param targetUri Ignored: the document can be linked to any resource the credentials can update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -284,14 +311,14 @@ public final class DocumentOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentReference> uploadDocumentAsync(
-        String targetUri,
         String fileContentType,
         String fileName,
         Flux<ByteBuffer> file,
         long contentLength,
+        String targetUri,
         Context context
     ) {
-        return uploadDocumentWithResponseAsync(targetUri, fileContentType, fileName, file, contentLength, context).flatMap(res ->
+        return uploadDocumentWithResponseAsync(fileContentType, fileName, file, contentLength, targetUri, context).flatMap(res ->
             Mono.justOrEmpty(res.getValue())
         );
     }
@@ -299,23 +326,22 @@ public final class DocumentOperationsImpl {
     /**
      * Upload a temporal document
      *
-     * Upload a temporal document that later on must be linked with a domain resource of its target.
+     * Upload a temporal document that later on must be linked with a domain resource.
      *
-     * The target resource is identified by `targetUri`:
+     * The document belongs to the credentials that upload it, and its reference has the URI
+     * `ku:storage-staging/{id}`. Only those credentials can download it and link it, by sending its reference in
+     * the data of any resource they can update: the entity of a process, the data of a task, the value of a
+     * business artifact or the result of a downloadable action. The permission on that resource is checked when the
+     * data is saved. Linking copies the document into the resource, which gets a reference of its own; the uploaded
+     * document can be linked only once, and a save sent again with the same reference is accepted.
      *
-     * * `ku:process/{processId}`: the document is deleted after 2 hours as long as it has not been
-     * linked to the process or to one of its process items.
-     * * `ku:business-artifact/{businessArtifactId}`: the document is deleted after 2 hours as long
-     * as it has not been linked to the business artifact.
+     * Documents not linked are deleted after 2 hours.
      *
-     * A target the credentials cannot read answers `404`.
-     *
-     * @param targetUri URI of the resource the document is uploaded for. Supported forms are `ku:process/{id}`
-     * and `ku:business-artifact/{id}`.
      * @param fileContentType Document content type.
      * @param fileName Document name.
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
+     * @param targetUri Ignored: the document can be linked to any resource the credentials can update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -323,37 +349,36 @@ public final class DocumentOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DocumentReference>> uploadDocumentWithResponseAsync(
-        String targetUri,
         String fileContentType,
         String fileName,
         BinaryData file,
-        long contentLength
+        long contentLength,
+        String targetUri
     ) {
         return FluxUtil.withContext(context ->
-            uploadDocumentWithResponseAsync(targetUri, fileContentType, fileName, file, contentLength, context)
+            uploadDocumentWithResponseAsync(fileContentType, fileName, file, contentLength, targetUri, context)
         );
     }
 
     /**
      * Upload a temporal document
      *
-     * Upload a temporal document that later on must be linked with a domain resource of its target.
+     * Upload a temporal document that later on must be linked with a domain resource.
      *
-     * The target resource is identified by `targetUri`:
+     * The document belongs to the credentials that upload it, and its reference has the URI
+     * `ku:storage-staging/{id}`. Only those credentials can download it and link it, by sending its reference in
+     * the data of any resource they can update: the entity of a process, the data of a task, the value of a
+     * business artifact or the result of a downloadable action. The permission on that resource is checked when the
+     * data is saved. Linking copies the document into the resource, which gets a reference of its own; the uploaded
+     * document can be linked only once, and a save sent again with the same reference is accepted.
      *
-     * * `ku:process/{processId}`: the document is deleted after 2 hours as long as it has not been
-     * linked to the process or to one of its process items.
-     * * `ku:business-artifact/{businessArtifactId}`: the document is deleted after 2 hours as long
-     * as it has not been linked to the business artifact.
+     * Documents not linked are deleted after 2 hours.
      *
-     * A target the credentials cannot read answers `404`.
-     *
-     * @param targetUri URI of the resource the document is uploaded for. Supported forms are `ku:process/{id}`
-     * and `ku:business-artifact/{id}`.
      * @param fileContentType Document content type.
      * @param fileName Document name.
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
+     * @param targetUri Ignored: the document can be linked to any resource the credentials can update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -362,11 +387,11 @@ public final class DocumentOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DocumentReference>> uploadDocumentWithResponseAsync(
-        String targetUri,
         String fileContentType,
         String fileName,
         BinaryData file,
         long contentLength,
+        String targetUri,
         Context context
     ) {
         final String accept = "application/json";
@@ -376,19 +401,54 @@ public final class DocumentOperationsImpl {
     /**
      * Upload a temporal document
      *
-     * Upload a temporal document that later on must be linked with a domain resource of its target.
+     * Upload a temporal document that later on must be linked with a domain resource.
      *
-     * The target resource is identified by `targetUri`:
+     * The document belongs to the credentials that upload it, and its reference has the URI
+     * `ku:storage-staging/{id}`. Only those credentials can download it and link it, by sending its reference in
+     * the data of any resource they can update: the entity of a process, the data of a task, the value of a
+     * business artifact or the result of a downloadable action. The permission on that resource is checked when the
+     * data is saved. Linking copies the document into the resource, which gets a reference of its own; the uploaded
+     * document can be linked only once, and a save sent again with the same reference is accepted.
      *
-     * * `ku:process/{processId}`: the document is deleted after 2 hours as long as it has not been
-     * linked to the process or to one of its process items.
-     * * `ku:business-artifact/{businessArtifactId}`: the document is deleted after 2 hours as long
-     * as it has not been linked to the business artifact.
+     * Documents not linked are deleted after 2 hours.
      *
-     * A target the credentials cannot read answers `404`.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @param targetUri Ignored: the document can be linked to any resource the credentials can update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DocumentReference> uploadDocumentAsync(
+        String fileContentType,
+        String fileName,
+        BinaryData file,
+        long contentLength,
+        String targetUri
+    ) {
+        return uploadDocumentWithResponseAsync(fileContentType, fileName, file, contentLength, targetUri).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
+        );
+    }
+
+    /**
+     * Upload a temporal document
      *
-     * @param targetUri URI of the resource the document is uploaded for. Supported forms are `ku:process/{id}`
-     * and `ku:business-artifact/{id}`.
+     * Upload a temporal document that later on must be linked with a domain resource.
+     *
+     * The document belongs to the credentials that upload it, and its reference has the URI
+     * `ku:storage-staging/{id}`. Only those credentials can download it and link it, by sending its reference in
+     * the data of any resource they can update: the entity of a process, the data of a task, the value of a
+     * business artifact or the result of a downloadable action. The permission on that resource is checked when the
+     * data is saved. Linking copies the document into the resource, which gets a reference of its own; the uploaded
+     * document can be linked only once, and a save sent again with the same reference is accepted.
+     *
+     * Documents not linked are deleted after 2 hours.
+     *
      * @param fileContentType Document content type.
      * @param fileName Document name.
      * @param file Document to save.
@@ -399,14 +459,9 @@ public final class DocumentOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentReference> uploadDocumentAsync(
-        String targetUri,
-        String fileContentType,
-        String fileName,
-        BinaryData file,
-        long contentLength
-    ) {
-        return uploadDocumentWithResponseAsync(targetUri, fileContentType, fileName, file, contentLength).flatMap(res ->
+    public Mono<DocumentReference> uploadDocumentAsync(String fileContentType, String fileName, BinaryData file, long contentLength) {
+        final String targetUri = null;
+        return uploadDocumentWithResponseAsync(fileContentType, fileName, file, contentLength, targetUri).flatMap(res ->
             Mono.justOrEmpty(res.getValue())
         );
     }
@@ -414,23 +469,22 @@ public final class DocumentOperationsImpl {
     /**
      * Upload a temporal document
      *
-     * Upload a temporal document that later on must be linked with a domain resource of its target.
+     * Upload a temporal document that later on must be linked with a domain resource.
      *
-     * The target resource is identified by `targetUri`:
+     * The document belongs to the credentials that upload it, and its reference has the URI
+     * `ku:storage-staging/{id}`. Only those credentials can download it and link it, by sending its reference in
+     * the data of any resource they can update: the entity of a process, the data of a task, the value of a
+     * business artifact or the result of a downloadable action. The permission on that resource is checked when the
+     * data is saved. Linking copies the document into the resource, which gets a reference of its own; the uploaded
+     * document can be linked only once, and a save sent again with the same reference is accepted.
      *
-     * * `ku:process/{processId}`: the document is deleted after 2 hours as long as it has not been
-     * linked to the process or to one of its process items.
-     * * `ku:business-artifact/{businessArtifactId}`: the document is deleted after 2 hours as long
-     * as it has not been linked to the business artifact.
+     * Documents not linked are deleted after 2 hours.
      *
-     * A target the credentials cannot read answers `404`.
-     *
-     * @param targetUri URI of the resource the document is uploaded for. Supported forms are `ku:process/{id}`
-     * and `ku:business-artifact/{id}`.
      * @param fileContentType Document content type.
      * @param fileName Document name.
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
+     * @param targetUri Ignored: the document can be linked to any resource the credentials can update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -439,14 +493,14 @@ public final class DocumentOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentReference> uploadDocumentAsync(
-        String targetUri,
         String fileContentType,
         String fileName,
         BinaryData file,
         long contentLength,
+        String targetUri,
         Context context
     ) {
-        return uploadDocumentWithResponseAsync(targetUri, fileContentType, fileName, file, contentLength, context).flatMap(res ->
+        return uploadDocumentWithResponseAsync(fileContentType, fileName, file, contentLength, targetUri, context).flatMap(res ->
             Mono.justOrEmpty(res.getValue())
         );
     }
@@ -454,23 +508,22 @@ public final class DocumentOperationsImpl {
     /**
      * Upload a temporal document
      *
-     * Upload a temporal document that later on must be linked with a domain resource of its target.
+     * Upload a temporal document that later on must be linked with a domain resource.
      *
-     * The target resource is identified by `targetUri`:
+     * The document belongs to the credentials that upload it, and its reference has the URI
+     * `ku:storage-staging/{id}`. Only those credentials can download it and link it, by sending its reference in
+     * the data of any resource they can update: the entity of a process, the data of a task, the value of a
+     * business artifact or the result of a downloadable action. The permission on that resource is checked when the
+     * data is saved. Linking copies the document into the resource, which gets a reference of its own; the uploaded
+     * document can be linked only once, and a save sent again with the same reference is accepted.
      *
-     * * `ku:process/{processId}`: the document is deleted after 2 hours as long as it has not been
-     * linked to the process or to one of its process items.
-     * * `ku:business-artifact/{businessArtifactId}`: the document is deleted after 2 hours as long
-     * as it has not been linked to the business artifact.
+     * Documents not linked are deleted after 2 hours.
      *
-     * A target the credentials cannot read answers `404`.
-     *
-     * @param targetUri URI of the resource the document is uploaded for. Supported forms are `ku:process/{id}`
-     * and `ku:business-artifact/{id}`.
      * @param fileContentType Document content type.
      * @param fileName Document name.
      * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
+     * @param targetUri Ignored: the document can be linked to any resource the credentials can update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -479,11 +532,11 @@ public final class DocumentOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentReference> uploadDocumentWithResponse(
-        String targetUri,
         String fileContentType,
         String fileName,
         BinaryData file,
         long contentLength,
+        String targetUri,
         Context context
     ) {
         final String accept = "application/json";
@@ -502,19 +555,52 @@ public final class DocumentOperationsImpl {
     /**
      * Upload a temporal document
      *
-     * Upload a temporal document that later on must be linked with a domain resource of its target.
+     * Upload a temporal document that later on must be linked with a domain resource.
      *
-     * The target resource is identified by `targetUri`:
+     * The document belongs to the credentials that upload it, and its reference has the URI
+     * `ku:storage-staging/{id}`. Only those credentials can download it and link it, by sending its reference in
+     * the data of any resource they can update: the entity of a process, the data of a task, the value of a
+     * business artifact or the result of a downloadable action. The permission on that resource is checked when the
+     * data is saved. Linking copies the document into the resource, which gets a reference of its own; the uploaded
+     * document can be linked only once, and a save sent again with the same reference is accepted.
      *
-     * * `ku:process/{processId}`: the document is deleted after 2 hours as long as it has not been
-     * linked to the process or to one of its process items.
-     * * `ku:business-artifact/{businessArtifactId}`: the document is deleted after 2 hours as long
-     * as it has not been linked to the business artifact.
+     * Documents not linked are deleted after 2 hours.
      *
-     * A target the credentials cannot read answers `404`.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @param targetUri Ignored: the document can be linked to any resource the credentials can update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DocumentReference uploadDocument(
+        String fileContentType,
+        String fileName,
+        BinaryData file,
+        long contentLength,
+        String targetUri
+    ) {
+        return uploadDocumentWithResponse(fileContentType, fileName, file, contentLength, targetUri, Context.NONE).getValue();
+    }
+
+    /**
+     * Upload a temporal document
      *
-     * @param targetUri URI of the resource the document is uploaded for. Supported forms are `ku:process/{id}`
-     * and `ku:business-artifact/{id}`.
+     * Upload a temporal document that later on must be linked with a domain resource.
+     *
+     * The document belongs to the credentials that upload it, and its reference has the URI
+     * `ku:storage-staging/{id}`. Only those credentials can download it and link it, by sending its reference in
+     * the data of any resource they can update: the entity of a process, the data of a task, the value of a
+     * business artifact or the result of a downloadable action. The permission on that resource is checked when the
+     * data is saved. Linking copies the document into the resource, which gets a reference of its own; the uploaded
+     * document can be linked only once, and a save sent again with the same reference is accepted.
+     *
+     * Documents not linked are deleted after 2 hours.
+     *
      * @param fileContentType Document content type.
      * @param fileName Document name.
      * @param file Document to save.
@@ -525,14 +611,9 @@ public final class DocumentOperationsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentReference uploadDocument(
-        String targetUri,
-        String fileContentType,
-        String fileName,
-        BinaryData file,
-        long contentLength
-    ) {
-        return uploadDocumentWithResponse(targetUri, fileContentType, fileName, file, contentLength, Context.NONE).getValue();
+    public DocumentReference uploadDocument(String fileContentType, String fileName, BinaryData file, long contentLength) {
+        final String targetUri = null;
+        return uploadDocumentWithResponse(fileContentType, fileName, file, contentLength, targetUri, Context.NONE).getValue();
     }
 
     /**

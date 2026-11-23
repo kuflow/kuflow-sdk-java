@@ -48,8 +48,7 @@ public final class Process extends AbstractDeleted {
     private UUID id;
 
     /*
-     * Process resource URI, e.g. usable as `targetUri` of the `uploadDocument` operation.
-     * Format `ku:process/{id}`.
+     * Process resource URI. Format `ku:process/{id}`.
      */
     @Generated
     private String uri;
@@ -125,8 +124,7 @@ public final class Process extends AbstractDeleted {
     }
 
     /**
-     * Get the uri property: Process resource URI, e.g. usable as `targetUri` of the `uploadDocument` operation.
-     * Format `ku:process/{id}`.
+     * Get the uri property: Process resource URI. Format `ku:process/{id}`.
      *
      * @return the uri value.
      */
@@ -136,8 +134,7 @@ public final class Process extends AbstractDeleted {
     }
 
     /**
-     * Set the uri property: Process resource URI, e.g. usable as `targetUri` of the `uploadDocument` operation.
-     * Format `ku:process/{id}`.
+     * Set the uri property: Process resource URI. Format `ku:process/{id}`.
      *
      * @param uri the uri value to set.
      * @return the Process object itself.
