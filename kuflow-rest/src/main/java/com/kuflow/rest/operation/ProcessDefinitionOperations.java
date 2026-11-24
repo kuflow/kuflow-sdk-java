@@ -34,7 +34,6 @@ import com.kuflow.rest.model.ProcessDefinition;
 import com.kuflow.rest.model.ProcessDefinitionFindOptions;
 import com.kuflow.rest.model.ProcessDefinitionPage;
 import com.kuflow.rest.model.ProcessDefinitionState;
-import com.kuflow.rest.model.ProcessDefinitionUpdateResult;
 import java.util.List;
 import java.util.UUID;
 
@@ -195,7 +194,7 @@ public class ProcessDefinitionOperations {
      *
      * @param id The resource ID.
      * @param processDefinition The whole Process Definition, as it has to be.
-     * @param dryRun When true, nothing is applied, and the answer says what would change.
+     * @param dryRun When true, nothing is applied, and the answer is what it would be.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -203,7 +202,7 @@ public class ProcessDefinitionOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProcessDefinitionUpdateResult> updateProcessDefinitionWithResponse(
+    public Response<ProcessDefinition> updateProcessDefinitionWithResponse(
         UUID id,
         ProcessDefinition processDefinition,
         Boolean dryRun,
@@ -215,19 +214,19 @@ public class ProcessDefinitionOperations {
     /**
      * Update a Process Definition
      *
-     * Replaces the Process Definition with the one given, or, with `dryRun`, says what would change without applying
+     * Replaces the Process Definition with the one given, or, with `dryRun`, answers it as it would be without applying
      * anything.
      *
      * @param id The resource ID.
      * @param processDefinition The whole Process Definition, as it has to be.
-     * @param dryRun When true, nothing is applied, and the answer says what would change.
+     * @param dryRun When true, nothing is applied, and the answer is what it would be.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProcessDefinitionUpdateResult updateProcessDefinition(UUID id, ProcessDefinition processDefinition, boolean dryRun) {
+    public ProcessDefinition updateProcessDefinition(UUID id, ProcessDefinition processDefinition, boolean dryRun) {
         return this.updateProcessDefinitionWithResponse(id, processDefinition, dryRun, Context.NONE).getValue();
     }
 
@@ -244,7 +243,7 @@ public class ProcessDefinitionOperations {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProcessDefinitionUpdateResult updateProcessDefinition(UUID id, ProcessDefinition processDefinition) {
+    public ProcessDefinition updateProcessDefinition(UUID id, ProcessDefinition processDefinition) {
         return this.updateProcessDefinitionWithResponse(id, processDefinition, null, Context.NONE).getValue();
     }
 }

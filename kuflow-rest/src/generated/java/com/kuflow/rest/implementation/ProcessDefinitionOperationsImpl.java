@@ -44,7 +44,6 @@ import com.kuflow.rest.model.DefaultErrorException;
 import com.kuflow.rest.model.ProcessDefinition;
 import com.kuflow.rest.model.ProcessDefinitionPage;
 import com.kuflow.rest.model.ProcessDefinitionState;
-import com.kuflow.rest.model.ProcessDefinitionUpdateResult;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -141,7 +140,7 @@ public final class ProcessDefinitionOperationsImpl {
         @Put("/process-definitions/{id}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<ProcessDefinitionUpdateResult>> updateProcessDefinition(
+        Mono<Response<ProcessDefinition>> updateProcessDefinition(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @QueryParam("dryRun") Boolean dryRun,
@@ -153,7 +152,7 @@ public final class ProcessDefinitionOperationsImpl {
         @Put("/process-definitions/{id}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Response<ProcessDefinitionUpdateResult> updateProcessDefinitionSync(
+        Response<ProcessDefinition> updateProcessDefinitionSync(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @QueryParam("dryRun") Boolean dryRun,
@@ -729,19 +728,20 @@ public final class ProcessDefinitionOperationsImpl {
      * What can be changed yet: the content of the forms that the definition has (their `jsonDefinition`, but its
      * `type`). The changes go to the draft, which a published definition gets when it has none. Nothing is published.
      *
-     * With `dryRun`, nothing is applied: the answer says what would change.
+     * With `dryRun`, nothing is applied, and the answer is the Process Definition as it would be. When the changes
+     * would start a draft, the `id` of its version is not kept, nor is the `revision`.
      *
      * @param id The resource ID.
      * @param processDefinition The whole Process Definition, as it has to be.
-     * @param dryRun When true, nothing is applied, and the answer says what would change.
+     * @param dryRun When true, nothing is applied, and the answer is what it would be.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return what an update of a Process Definition changed, or would change with `dryRun` along with {@link Response}
-     * on successful completion of {@link Mono}.
+     * @return a whole Process Definition at one of its versions along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ProcessDefinitionUpdateResult>> updateProcessDefinitionWithResponseAsync(
+    public Mono<Response<ProcessDefinition>> updateProcessDefinitionWithResponseAsync(
         UUID id,
         ProcessDefinition processDefinition,
         Boolean dryRun
@@ -764,20 +764,21 @@ public final class ProcessDefinitionOperationsImpl {
      * What can be changed yet: the content of the forms that the definition has (their `jsonDefinition`, but its
      * `type`). The changes go to the draft, which a published definition gets when it has none. Nothing is published.
      *
-     * With `dryRun`, nothing is applied: the answer says what would change.
+     * With `dryRun`, nothing is applied, and the answer is the Process Definition as it would be. When the changes
+     * would start a draft, the `id` of its version is not kept, nor is the `revision`.
      *
      * @param id The resource ID.
      * @param processDefinition The whole Process Definition, as it has to be.
-     * @param dryRun When true, nothing is applied, and the answer says what would change.
+     * @param dryRun When true, nothing is applied, and the answer is what it would be.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return what an update of a Process Definition changed, or would change with `dryRun` along with {@link Response}
-     * on successful completion of {@link Mono}.
+     * @return a whole Process Definition at one of its versions along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ProcessDefinitionUpdateResult>> updateProcessDefinitionWithResponseAsync(
+    public Mono<Response<ProcessDefinition>> updateProcessDefinitionWithResponseAsync(
         UUID id,
         ProcessDefinition processDefinition,
         Boolean dryRun,
@@ -802,19 +803,19 @@ public final class ProcessDefinitionOperationsImpl {
      * What can be changed yet: the content of the forms that the definition has (their `jsonDefinition`, but its
      * `type`). The changes go to the draft, which a published definition gets when it has none. Nothing is published.
      *
-     * With `dryRun`, nothing is applied: the answer says what would change.
+     * With `dryRun`, nothing is applied, and the answer is the Process Definition as it would be. When the changes
+     * would start a draft, the `id` of its version is not kept, nor is the `revision`.
      *
      * @param id The resource ID.
      * @param processDefinition The whole Process Definition, as it has to be.
-     * @param dryRun When true, nothing is applied, and the answer says what would change.
+     * @param dryRun When true, nothing is applied, and the answer is what it would be.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return what an update of a Process Definition changed, or would change with `dryRun` on successful completion of
-     * {@link Mono}.
+     * @return a whole Process Definition at one of its versions on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProcessDefinitionUpdateResult> updateProcessDefinitionAsync(UUID id, ProcessDefinition processDefinition, Boolean dryRun) {
+    public Mono<ProcessDefinition> updateProcessDefinitionAsync(UUID id, ProcessDefinition processDefinition, Boolean dryRun) {
         return updateProcessDefinitionWithResponseAsync(id, processDefinition, dryRun).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -833,18 +834,18 @@ public final class ProcessDefinitionOperationsImpl {
      * What can be changed yet: the content of the forms that the definition has (their `jsonDefinition`, but its
      * `type`). The changes go to the draft, which a published definition gets when it has none. Nothing is published.
      *
-     * With `dryRun`, nothing is applied: the answer says what would change.
+     * With `dryRun`, nothing is applied, and the answer is the Process Definition as it would be. When the changes
+     * would start a draft, the `id` of its version is not kept, nor is the `revision`.
      *
      * @param id The resource ID.
      * @param processDefinition The whole Process Definition, as it has to be.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return what an update of a Process Definition changed, or would change with `dryRun` on successful completion of
-     * {@link Mono}.
+     * @return a whole Process Definition at one of its versions on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProcessDefinitionUpdateResult> updateProcessDefinitionAsync(UUID id, ProcessDefinition processDefinition) {
+    public Mono<ProcessDefinition> updateProcessDefinitionAsync(UUID id, ProcessDefinition processDefinition) {
         final Boolean dryRun = null;
         return updateProcessDefinitionWithResponseAsync(id, processDefinition, dryRun).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -864,20 +865,20 @@ public final class ProcessDefinitionOperationsImpl {
      * What can be changed yet: the content of the forms that the definition has (their `jsonDefinition`, but its
      * `type`). The changes go to the draft, which a published definition gets when it has none. Nothing is published.
      *
-     * With `dryRun`, nothing is applied: the answer says what would change.
+     * With `dryRun`, nothing is applied, and the answer is the Process Definition as it would be. When the changes
+     * would start a draft, the `id` of its version is not kept, nor is the `revision`.
      *
      * @param id The resource ID.
      * @param processDefinition The whole Process Definition, as it has to be.
-     * @param dryRun When true, nothing is applied, and the answer says what would change.
+     * @param dryRun When true, nothing is applied, and the answer is what it would be.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return what an update of a Process Definition changed, or would change with `dryRun` on successful completion of
-     * {@link Mono}.
+     * @return a whole Process Definition at one of its versions on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProcessDefinitionUpdateResult> updateProcessDefinitionAsync(
+    public Mono<ProcessDefinition> updateProcessDefinitionAsync(
         UUID id,
         ProcessDefinition processDefinition,
         Boolean dryRun,
@@ -903,20 +904,20 @@ public final class ProcessDefinitionOperationsImpl {
      * What can be changed yet: the content of the forms that the definition has (their `jsonDefinition`, but its
      * `type`). The changes go to the draft, which a published definition gets when it has none. Nothing is published.
      *
-     * With `dryRun`, nothing is applied: the answer says what would change.
+     * With `dryRun`, nothing is applied, and the answer is the Process Definition as it would be. When the changes
+     * would start a draft, the `id` of its version is not kept, nor is the `revision`.
      *
      * @param id The resource ID.
      * @param processDefinition The whole Process Definition, as it has to be.
-     * @param dryRun When true, nothing is applied, and the answer says what would change.
+     * @param dryRun When true, nothing is applied, and the answer is what it would be.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return what an update of a Process Definition changed, or would change with `dryRun` along with
-     * {@link Response}.
+     * @return a whole Process Definition at one of its versions along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProcessDefinitionUpdateResult> updateProcessDefinitionWithResponse(
+    public Response<ProcessDefinition> updateProcessDefinitionWithResponse(
         UUID id,
         ProcessDefinition processDefinition,
         Boolean dryRun,
@@ -941,18 +942,19 @@ public final class ProcessDefinitionOperationsImpl {
      * What can be changed yet: the content of the forms that the definition has (their `jsonDefinition`, but its
      * `type`). The changes go to the draft, which a published definition gets when it has none. Nothing is published.
      *
-     * With `dryRun`, nothing is applied: the answer says what would change.
+     * With `dryRun`, nothing is applied, and the answer is the Process Definition as it would be. When the changes
+     * would start a draft, the `id` of its version is not kept, nor is the `revision`.
      *
      * @param id The resource ID.
      * @param processDefinition The whole Process Definition, as it has to be.
-     * @param dryRun When true, nothing is applied, and the answer says what would change.
+     * @param dryRun When true, nothing is applied, and the answer is what it would be.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return what an update of a Process Definition changed, or would change with `dryRun`.
+     * @return a whole Process Definition at one of its versions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProcessDefinitionUpdateResult updateProcessDefinition(UUID id, ProcessDefinition processDefinition, Boolean dryRun) {
+    public ProcessDefinition updateProcessDefinition(UUID id, ProcessDefinition processDefinition, Boolean dryRun) {
         return updateProcessDefinitionWithResponse(id, processDefinition, dryRun, Context.NONE).getValue();
     }
 
@@ -971,17 +973,18 @@ public final class ProcessDefinitionOperationsImpl {
      * What can be changed yet: the content of the forms that the definition has (their `jsonDefinition`, but its
      * `type`). The changes go to the draft, which a published definition gets when it has none. Nothing is published.
      *
-     * With `dryRun`, nothing is applied: the answer says what would change.
+     * With `dryRun`, nothing is applied, and the answer is the Process Definition as it would be. When the changes
+     * would start a draft, the `id` of its version is not kept, nor is the `revision`.
      *
      * @param id The resource ID.
      * @param processDefinition The whole Process Definition, as it has to be.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return what an update of a Process Definition changed, or would change with `dryRun`.
+     * @return a whole Process Definition at one of its versions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProcessDefinitionUpdateResult updateProcessDefinition(UUID id, ProcessDefinition processDefinition) {
+    public ProcessDefinition updateProcessDefinition(UUID id, ProcessDefinition processDefinition) {
         final Boolean dryRun = null;
         return updateProcessDefinitionWithResponse(id, processDefinition, dryRun, Context.NONE).getValue();
     }

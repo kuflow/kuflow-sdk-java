@@ -37,8 +37,6 @@ import static org.assertj.core.api.Assertions.tuple;
 
 import com.kuflow.rest.model.ProcessActionType;
 import com.kuflow.rest.model.ProcessDefinition;
-import com.kuflow.rest.model.ProcessDefinitionChange;
-import com.kuflow.rest.model.ProcessDefinitionChangeOperation;
 import com.kuflow.rest.model.ProcessDefinitionFindOptions;
 import com.kuflow.rest.model.ProcessDefinitionFormType;
 import com.kuflow.rest.model.ProcessDefinitionPage;
@@ -46,7 +44,6 @@ import com.kuflow.rest.model.ProcessDefinitionPageItem;
 import com.kuflow.rest.model.ProcessDefinitionRbacPrincipalType;
 import com.kuflow.rest.model.ProcessDefinitionState;
 import com.kuflow.rest.model.ProcessDefinitionStructureDataDefinitionEntry;
-import com.kuflow.rest.model.ProcessDefinitionUpdateResult;
 import com.kuflow.rest.model.ProcessDefinitionVersionState;
 import com.kuflow.rest.model.ProcessItemDefinition;
 import com.kuflow.rest.model.ProcessItemDefinitionType;
@@ -191,9 +188,9 @@ public class ProcessDefinitionOperationTest extends AbstractOperationTest {
 
     @Test
     @DisplayName(
-        "GIVEN a process definition that was read WHEN update it with dryRun THEN the document and dryRun are sent and the changes come"
+        "GIVEN a process definition that was read WHEN update it with dryRun THEN the document and dryRun are sent and it comes as it would be"
     )
-    public void givenAProcessDefinitionThatWasReadWhenUpdateItWithDryRunThenTheDocumentAndDryRunAreSentAndTheChangesCome() {
+    public void givenAProcessDefinitionThatWasReadWhenUpdateItWithDryRunThenTheDocumentAndDryRunAreSentAndItComesAsItWouldBe() {
         ProcessDefinition processDefinition = this.retrieveProcessDefinition();
         givenThat(
             put(urlPathEqualTo("/v2024-06-14/process-definitions/" + PROCESS_DEFINITION_ID))
@@ -205,20 +202,13 @@ public class ProcessDefinitionOperationTest extends AbstractOperationTest {
                 )
         );
 
-        ProcessDefinitionUpdateResult result = this.kuFlowRestClient
+        ProcessDefinition result = this.kuFlowRestClient
             .getProcessDefinitionOperations()
             .updateProcessDefinition(PROCESS_DEFINITION_ID, processDefinition, true);
 
-        assertThat(result.isDryRun()).isTrue();
-        assertThat(result.getProcessDefinition()).isNull();
-        assertThat(result.getChanges())
-            .extracting(ProcessDefinitionChange::getPath, ProcessDefinitionChange::getOperation)
-            .containsExactly(
-                tuple(
-                    "/structureDataDefinitionEntries/0/jsonDefinition/schema/components/0/label",
-                    ProcessDefinitionChangeOperation.REPLACE
-                )
-            );
+        assertThat(result.getRevision()).hasSize(64).isNotEqualTo(processDefinition.getRevision());
+        List<?> components = (List<?>) result.getStructureDataDefinitionEntries().get(0).getJsonDefinition().getSchema().get("components");
+        assertThat(((Map<?, ?>) components.get(0)).get("label")).isEqualTo("Importe");
     }
 
     @Test
@@ -232,13 +222,11 @@ public class ProcessDefinitionOperationTest extends AbstractOperationTest {
                 .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("process-definitions-api.update.ok.json"))
         );
 
-        ProcessDefinitionUpdateResult result = this.kuFlowRestClient
+        ProcessDefinition result = this.kuFlowRestClient
             .getProcessDefinitionOperations()
             .updateProcessDefinition(PROCESS_DEFINITION_ID, processDefinition);
 
-        assertThat(result.isDryRun()).isFalse();
-        assertThat(result.getChanges()).hasSize(1);
-        assertThat(result.getProcessDefinition().getRevision()).hasSize(64).isNotEqualTo(processDefinition.getRevision());
+        assertThat(result.getRevision()).hasSize(64).isNotEqualTo(processDefinition.getRevision());
     }
 
     private ProcessDefinition retrieveProcessDefinition() {
