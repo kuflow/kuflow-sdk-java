@@ -34,6 +34,7 @@ import com.kuflow.rest.model.ProcessDefinition;
 import com.kuflow.rest.model.ProcessDefinitionFindOptions;
 import com.kuflow.rest.model.ProcessDefinitionPage;
 import com.kuflow.rest.model.ProcessDefinitionState;
+import com.kuflow.rest.model.ProcessDefinitionUpdateResult;
 import java.util.List;
 import java.util.UUID;
 
@@ -178,5 +179,72 @@ public class ProcessDefinitionOperations {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProcessDefinition retrieveProcessDefinition(UUID id) {
         return this.retrieveProcessDefinitionWithResponse(id, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Update a Process Definition
+     *
+     * Replaces the Process Definition with the one given, a whole document as `retrieveProcessDefinition` returns it,
+     * when the credentials used can update it. Its `revision` and its `version` have to be the ones that the definition
+     * has now, at its latest version: otherwise the answer is a conflict (409). A document equal to the one that the
+     * definition has changes nothing and is not a conflict, whatever its revision.
+     *
+     * Strict, and all or nothing: a change outside what can be changed yet is a bad request (400) with the JSON Pointer
+     * of each one, and nothing is applied. What can be changed yet: the content of the forms that the definition has.
+     * The changes go to the draft. Nothing is published.
+     *
+     * @param id The resource ID.
+     * @param processDefinition The whole Process Definition, as it has to be.
+     * @param dryRun When true, nothing is applied, and the answer says what would change.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ProcessDefinitionUpdateResult> updateProcessDefinitionWithResponse(
+        UUID id,
+        ProcessDefinition processDefinition,
+        Boolean dryRun,
+        Context context
+    ) {
+        return this.service.updateProcessDefinitionWithResponse(id, processDefinition, dryRun, context);
+    }
+
+    /**
+     * Update a Process Definition
+     *
+     * Replaces the Process Definition with the one given, or, with `dryRun`, says what would change without applying
+     * anything.
+     *
+     * @param id The resource ID.
+     * @param processDefinition The whole Process Definition, as it has to be.
+     * @param dryRun When true, nothing is applied, and the answer says what would change.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProcessDefinitionUpdateResult updateProcessDefinition(UUID id, ProcessDefinition processDefinition, boolean dryRun) {
+        return this.updateProcessDefinitionWithResponse(id, processDefinition, dryRun, Context.NONE).getValue();
+    }
+
+    /**
+     * Update a Process Definition
+     *
+     * Replaces the Process Definition with the one given.
+     *
+     * @param id The resource ID.
+     * @param processDefinition The whole Process Definition, as it has to be.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProcessDefinitionUpdateResult updateProcessDefinition(UUID id, ProcessDefinition processDefinition) {
+        return this.updateProcessDefinitionWithResponse(id, processDefinition, null, Context.NONE).getValue();
     }
 }

@@ -23,17 +23,22 @@
 
 package com.kuflow.rest.operation;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.absent;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
 import static com.github.tomakehurst.wiremock.client.WireMock.havingExactly;
+import static com.github.tomakehurst.wiremock.client.WireMock.matchingJsonPath;
 import static com.github.tomakehurst.wiremock.client.WireMock.ok;
+import static com.github.tomakehurst.wiremock.client.WireMock.put;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
 import com.kuflow.rest.model.ProcessActionType;
 import com.kuflow.rest.model.ProcessDefinition;
+import com.kuflow.rest.model.ProcessDefinitionChange;
+import com.kuflow.rest.model.ProcessDefinitionChangeOperation;
 import com.kuflow.rest.model.ProcessDefinitionFindOptions;
 import com.kuflow.rest.model.ProcessDefinitionFormType;
 import com.kuflow.rest.model.ProcessDefinitionPage;
@@ -41,6 +46,7 @@ import com.kuflow.rest.model.ProcessDefinitionPageItem;
 import com.kuflow.rest.model.ProcessDefinitionRbacPrincipalType;
 import com.kuflow.rest.model.ProcessDefinitionState;
 import com.kuflow.rest.model.ProcessDefinitionStructureDataDefinitionEntry;
+import com.kuflow.rest.model.ProcessDefinitionUpdateResult;
 import com.kuflow.rest.model.ProcessDefinitionVersionState;
 import com.kuflow.rest.model.ProcessItemDefinition;
 import com.kuflow.rest.model.ProcessItemDefinitionType;
@@ -181,5 +187,67 @@ public class ProcessDefinitionOperationTest extends AbstractOperationTest {
             .retrieveProcessDefinition(PROCESS_DEFINITION_ID, version);
 
         assertThat(processDefinition.getVersion().getId()).isEqualTo(version);
+    }
+
+    @Test
+    @DisplayName(
+        "GIVEN a process definition that was read WHEN update it with dryRun THEN the document and dryRun are sent and the changes come"
+    )
+    public void givenAProcessDefinitionThatWasReadWhenUpdateItWithDryRunThenTheDocumentAndDryRunAreSentAndTheChangesCome() {
+        ProcessDefinition processDefinition = this.retrieveProcessDefinition();
+        givenThat(
+            put(urlPathEqualTo("/v2024-06-14/process-definitions/" + PROCESS_DEFINITION_ID))
+                .withQueryParam("dryRun", equalTo("true"))
+                .withRequestBody(matchingJsonPath("$.revision", equalTo(processDefinition.getRevision())))
+                .withRequestBody(matchingJsonPath("$.structureDataDefinitionEntries[0].jsonDefinition.schema.components[0]"))
+                .willReturn(
+                    ok().withHeader("Content-Type", "application/json").withBodyFile("process-definitions-api.update.dry-run.ok.json")
+                )
+        );
+
+        ProcessDefinitionUpdateResult result = this.kuFlowRestClient
+            .getProcessDefinitionOperations()
+            .updateProcessDefinition(PROCESS_DEFINITION_ID, processDefinition, true);
+
+        assertThat(result.isDryRun()).isTrue();
+        assertThat(result.getProcessDefinition()).isNull();
+        assertThat(result.getChanges())
+            .extracting(ProcessDefinitionChange::getPath, ProcessDefinitionChange::getOperation)
+            .containsExactly(
+                tuple(
+                    "/structureDataDefinitionEntries/0/jsonDefinition/schema/components/0/label",
+                    ProcessDefinitionChangeOperation.REPLACE
+                )
+            );
+    }
+
+    @Test
+    @DisplayName("GIVEN a process definition that was read WHEN update it THEN no dryRun is sent and it comes with its new revision")
+    public void givenAProcessDefinitionThatWasReadWhenUpdateItThenNoDryRunIsSentAndItComesWithItsNewRevision() {
+        ProcessDefinition processDefinition = this.retrieveProcessDefinition();
+        givenThat(
+            put(urlPathEqualTo("/v2024-06-14/process-definitions/" + PROCESS_DEFINITION_ID))
+                .withQueryParam("dryRun", absent())
+                .withRequestBody(matchingJsonPath("$.revision", equalTo(processDefinition.getRevision())))
+                .willReturn(ok().withHeader("Content-Type", "application/json").withBodyFile("process-definitions-api.update.ok.json"))
+        );
+
+        ProcessDefinitionUpdateResult result = this.kuFlowRestClient
+            .getProcessDefinitionOperations()
+            .updateProcessDefinition(PROCESS_DEFINITION_ID, processDefinition);
+
+        assertThat(result.isDryRun()).isFalse();
+        assertThat(result.getChanges()).hasSize(1);
+        assertThat(result.getProcessDefinition().getRevision()).hasSize(64).isNotEqualTo(processDefinition.getRevision());
+    }
+
+    private ProcessDefinition retrieveProcessDefinition() {
+        givenThat(
+            get("/v2024-06-14/process-definitions/" + PROCESS_DEFINITION_ID).willReturn(
+                ok().withHeader("Content-Type", "application/json").withBodyFile("process-definitions-api.retrieve.ok.json")
+            )
+        );
+
+        return this.kuFlowRestClient.getProcessDefinitionOperations().retrieveProcessDefinition(PROCESS_DEFINITION_ID);
     }
 }

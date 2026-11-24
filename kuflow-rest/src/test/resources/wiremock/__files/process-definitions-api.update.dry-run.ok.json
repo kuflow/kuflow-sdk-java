@@ -1,0 +1,9 @@
+{
+  "dryRun": true,
+  "changes": [
+    {
+      "path": "/structureDataDefinitionEntries/0/jsonDefinition/schema/components/0/label",
+      "operation": "REPLACE"
+    }
+  ]
+}
