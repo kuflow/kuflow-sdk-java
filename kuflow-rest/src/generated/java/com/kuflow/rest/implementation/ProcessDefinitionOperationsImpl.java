@@ -23,12 +23,14 @@
 
 package com.kuflow.rest.implementation;
 
+import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
@@ -131,6 +133,30 @@ public final class ProcessDefinitionOperationsImpl {
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             @QueryParam("version") UUID version,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Put("/process-definitions/{id}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Mono<Response<ProcessDefinition>> updateProcessDefinition(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("dryRun") Boolean dryRun,
+            @BodyParam("application/json") ProcessDefinition processDefinition,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
+
+        @Put("/process-definitions/{id}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorException.class)
+        Response<ProcessDefinition> updateProcessDefinitionSync(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("dryRun") Boolean dryRun,
+            @BodyParam("application/json") ProcessDefinition processDefinition,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -685,5 +711,281 @@ public final class ProcessDefinitionOperationsImpl {
     public ProcessDefinition retrieveProcessDefinition(UUID id) {
         final UUID version = null;
         return retrieveProcessDefinitionWithResponse(id, version, Context.NONE).getValue();
+    }
+
+    /**
+     * Update a Process Definition
+     *
+     * Replaces the Process Definition with the one given, a whole document as `GET` returns it, when the credentials
+     * used can update it. Its `revision` and its `version` have to be the ones that the definition has now, at its
+     * latest version: otherwise the answer is a conflict (409), because it changed after it was read. A document equal
+     * to the one that the definition has changes nothing and is not a conflict, whatever its revision.
+     *
+     * Strict, and all or nothing: a property that is not known, a value that is not valid or a change outside what
+     * can be changed yet is a bad request (400) with one error for each, whose location is the JSON Pointer of the
+     * change in the document, and nothing is applied.
+     *
+     * What can be changed yet: the content of the forms that the definition has (their `jsonDefinition`, but its
+     * `type`). The changes go to the draft, which a published definition gets when it has none. Nothing is published.
+     *
+     * With `dryRun`, nothing is applied, and the answer is the Process Definition as it would be. When the changes
+     * would start a draft, the `id` of its version is not kept, nor is the `revision`.
+     *
+     * @param id The resource ID.
+     * @param processDefinition The whole Process Definition, as it has to be.
+     * @param dryRun When true, nothing is applied, and the answer is what it would be.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a whole Process Definition at one of its versions along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ProcessDefinition>> updateProcessDefinitionWithResponseAsync(
+        UUID id,
+        ProcessDefinition processDefinition,
+        Boolean dryRun
+    ) {
+        return FluxUtil.withContext(context -> updateProcessDefinitionWithResponseAsync(id, processDefinition, dryRun, context));
+    }
+
+    /**
+     * Update a Process Definition
+     *
+     * Replaces the Process Definition with the one given, a whole document as `GET` returns it, when the credentials
+     * used can update it. Its `revision` and its `version` have to be the ones that the definition has now, at its
+     * latest version: otherwise the answer is a conflict (409), because it changed after it was read. A document equal
+     * to the one that the definition has changes nothing and is not a conflict, whatever its revision.
+     *
+     * Strict, and all or nothing: a property that is not known, a value that is not valid or a change outside what
+     * can be changed yet is a bad request (400) with one error for each, whose location is the JSON Pointer of the
+     * change in the document, and nothing is applied.
+     *
+     * What can be changed yet: the content of the forms that the definition has (their `jsonDefinition`, but its
+     * `type`). The changes go to the draft, which a published definition gets when it has none. Nothing is published.
+     *
+     * With `dryRun`, nothing is applied, and the answer is the Process Definition as it would be. When the changes
+     * would start a draft, the `id` of its version is not kept, nor is the `revision`.
+     *
+     * @param id The resource ID.
+     * @param processDefinition The whole Process Definition, as it has to be.
+     * @param dryRun When true, nothing is applied, and the answer is what it would be.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a whole Process Definition at one of its versions along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ProcessDefinition>> updateProcessDefinitionWithResponseAsync(
+        UUID id,
+        ProcessDefinition processDefinition,
+        Boolean dryRun,
+        Context context
+    ) {
+        final String accept = "application/json";
+        return service.updateProcessDefinition(this.client.getHost(), id, dryRun, processDefinition, accept, context);
+    }
+
+    /**
+     * Update a Process Definition
+     *
+     * Replaces the Process Definition with the one given, a whole document as `GET` returns it, when the credentials
+     * used can update it. Its `revision` and its `version` have to be the ones that the definition has now, at its
+     * latest version: otherwise the answer is a conflict (409), because it changed after it was read. A document equal
+     * to the one that the definition has changes nothing and is not a conflict, whatever its revision.
+     *
+     * Strict, and all or nothing: a property that is not known, a value that is not valid or a change outside what
+     * can be changed yet is a bad request (400) with one error for each, whose location is the JSON Pointer of the
+     * change in the document, and nothing is applied.
+     *
+     * What can be changed yet: the content of the forms that the definition has (their `jsonDefinition`, but its
+     * `type`). The changes go to the draft, which a published definition gets when it has none. Nothing is published.
+     *
+     * With `dryRun`, nothing is applied, and the answer is the Process Definition as it would be. When the changes
+     * would start a draft, the `id` of its version is not kept, nor is the `revision`.
+     *
+     * @param id The resource ID.
+     * @param processDefinition The whole Process Definition, as it has to be.
+     * @param dryRun When true, nothing is applied, and the answer is what it would be.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a whole Process Definition at one of its versions on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ProcessDefinition> updateProcessDefinitionAsync(UUID id, ProcessDefinition processDefinition, Boolean dryRun) {
+        return updateProcessDefinitionWithResponseAsync(id, processDefinition, dryRun).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Update a Process Definition
+     *
+     * Replaces the Process Definition with the one given, a whole document as `GET` returns it, when the credentials
+     * used can update it. Its `revision` and its `version` have to be the ones that the definition has now, at its
+     * latest version: otherwise the answer is a conflict (409), because it changed after it was read. A document equal
+     * to the one that the definition has changes nothing and is not a conflict, whatever its revision.
+     *
+     * Strict, and all or nothing: a property that is not known, a value that is not valid or a change outside what
+     * can be changed yet is a bad request (400) with one error for each, whose location is the JSON Pointer of the
+     * change in the document, and nothing is applied.
+     *
+     * What can be changed yet: the content of the forms that the definition has (their `jsonDefinition`, but its
+     * `type`). The changes go to the draft, which a published definition gets when it has none. Nothing is published.
+     *
+     * With `dryRun`, nothing is applied, and the answer is the Process Definition as it would be. When the changes
+     * would start a draft, the `id` of its version is not kept, nor is the `revision`.
+     *
+     * @param id The resource ID.
+     * @param processDefinition The whole Process Definition, as it has to be.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a whole Process Definition at one of its versions on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ProcessDefinition> updateProcessDefinitionAsync(UUID id, ProcessDefinition processDefinition) {
+        final Boolean dryRun = null;
+        return updateProcessDefinitionWithResponseAsync(id, processDefinition, dryRun).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Update a Process Definition
+     *
+     * Replaces the Process Definition with the one given, a whole document as `GET` returns it, when the credentials
+     * used can update it. Its `revision` and its `version` have to be the ones that the definition has now, at its
+     * latest version: otherwise the answer is a conflict (409), because it changed after it was read. A document equal
+     * to the one that the definition has changes nothing and is not a conflict, whatever its revision.
+     *
+     * Strict, and all or nothing: a property that is not known, a value that is not valid or a change outside what
+     * can be changed yet is a bad request (400) with one error for each, whose location is the JSON Pointer of the
+     * change in the document, and nothing is applied.
+     *
+     * What can be changed yet: the content of the forms that the definition has (their `jsonDefinition`, but its
+     * `type`). The changes go to the draft, which a published definition gets when it has none. Nothing is published.
+     *
+     * With `dryRun`, nothing is applied, and the answer is the Process Definition as it would be. When the changes
+     * would start a draft, the `id` of its version is not kept, nor is the `revision`.
+     *
+     * @param id The resource ID.
+     * @param processDefinition The whole Process Definition, as it has to be.
+     * @param dryRun When true, nothing is applied, and the answer is what it would be.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a whole Process Definition at one of its versions on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ProcessDefinition> updateProcessDefinitionAsync(
+        UUID id,
+        ProcessDefinition processDefinition,
+        Boolean dryRun,
+        Context context
+    ) {
+        return updateProcessDefinitionWithResponseAsync(id, processDefinition, dryRun, context).flatMap(res ->
+            Mono.justOrEmpty(res.getValue())
+        );
+    }
+
+    /**
+     * Update a Process Definition
+     *
+     * Replaces the Process Definition with the one given, a whole document as `GET` returns it, when the credentials
+     * used can update it. Its `revision` and its `version` have to be the ones that the definition has now, at its
+     * latest version: otherwise the answer is a conflict (409), because it changed after it was read. A document equal
+     * to the one that the definition has changes nothing and is not a conflict, whatever its revision.
+     *
+     * Strict, and all or nothing: a property that is not known, a value that is not valid or a change outside what
+     * can be changed yet is a bad request (400) with one error for each, whose location is the JSON Pointer of the
+     * change in the document, and nothing is applied.
+     *
+     * What can be changed yet: the content of the forms that the definition has (their `jsonDefinition`, but its
+     * `type`). The changes go to the draft, which a published definition gets when it has none. Nothing is published.
+     *
+     * With `dryRun`, nothing is applied, and the answer is the Process Definition as it would be. When the changes
+     * would start a draft, the `id` of its version is not kept, nor is the `revision`.
+     *
+     * @param id The resource ID.
+     * @param processDefinition The whole Process Definition, as it has to be.
+     * @param dryRun When true, nothing is applied, and the answer is what it would be.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a whole Process Definition at one of its versions along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ProcessDefinition> updateProcessDefinitionWithResponse(
+        UUID id,
+        ProcessDefinition processDefinition,
+        Boolean dryRun,
+        Context context
+    ) {
+        final String accept = "application/json";
+        return service.updateProcessDefinitionSync(this.client.getHost(), id, dryRun, processDefinition, accept, context);
+    }
+
+    /**
+     * Update a Process Definition
+     *
+     * Replaces the Process Definition with the one given, a whole document as `GET` returns it, when the credentials
+     * used can update it. Its `revision` and its `version` have to be the ones that the definition has now, at its
+     * latest version: otherwise the answer is a conflict (409), because it changed after it was read. A document equal
+     * to the one that the definition has changes nothing and is not a conflict, whatever its revision.
+     *
+     * Strict, and all or nothing: a property that is not known, a value that is not valid or a change outside what
+     * can be changed yet is a bad request (400) with one error for each, whose location is the JSON Pointer of the
+     * change in the document, and nothing is applied.
+     *
+     * What can be changed yet: the content of the forms that the definition has (their `jsonDefinition`, but its
+     * `type`). The changes go to the draft, which a published definition gets when it has none. Nothing is published.
+     *
+     * With `dryRun`, nothing is applied, and the answer is the Process Definition as it would be. When the changes
+     * would start a draft, the `id` of its version is not kept, nor is the `revision`.
+     *
+     * @param id The resource ID.
+     * @param processDefinition The whole Process Definition, as it has to be.
+     * @param dryRun When true, nothing is applied, and the answer is what it would be.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a whole Process Definition at one of its versions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProcessDefinition updateProcessDefinition(UUID id, ProcessDefinition processDefinition, Boolean dryRun) {
+        return updateProcessDefinitionWithResponse(id, processDefinition, dryRun, Context.NONE).getValue();
+    }
+
+    /**
+     * Update a Process Definition
+     *
+     * Replaces the Process Definition with the one given, a whole document as `GET` returns it, when the credentials
+     * used can update it. Its `revision` and its `version` have to be the ones that the definition has now, at its
+     * latest version: otherwise the answer is a conflict (409), because it changed after it was read. A document equal
+     * to the one that the definition has changes nothing and is not a conflict, whatever its revision.
+     *
+     * Strict, and all or nothing: a property that is not known, a value that is not valid or a change outside what
+     * can be changed yet is a bad request (400) with one error for each, whose location is the JSON Pointer of the
+     * change in the document, and nothing is applied.
+     *
+     * What can be changed yet: the content of the forms that the definition has (their `jsonDefinition`, but its
+     * `type`). The changes go to the draft, which a published definition gets when it has none. Nothing is published.
+     *
+     * With `dryRun`, nothing is applied, and the answer is the Process Definition as it would be. When the changes
+     * would start a draft, the `id` of its version is not kept, nor is the `revision`.
+     *
+     * @param id The resource ID.
+     * @param processDefinition The whole Process Definition, as it has to be.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a whole Process Definition at one of its versions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProcessDefinition updateProcessDefinition(UUID id, ProcessDefinition processDefinition) {
+        final Boolean dryRun = null;
+        return updateProcessDefinitionWithResponse(id, processDefinition, dryRun, Context.NONE).getValue();
     }
 }
