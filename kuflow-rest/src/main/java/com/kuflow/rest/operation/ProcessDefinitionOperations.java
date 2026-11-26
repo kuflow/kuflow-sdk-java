@@ -198,9 +198,10 @@ public class ProcessDefinitionOperations {
      * - The name of a form, and the name, description and notifications of a task or thread, while only the draft has
      *   it: in a published version they would change at once.
      *
-     * Codes, types and permissions (`rbacEntries`) do not change, and a new task or thread has no permissions. Removing
-     * what another part names (the form of a task, the form of the metadata or of the entity, or the task or thread
-     * that an action creates) is a bad request that says who names it. Nothing is published.
+     * Codes, types and permissions (`rbacEntries`) do not change. A new task or thread has no permissions, and it needs
+     * a `description`, as every one has it. Removing what another part names (the form of a task, the form of the
+     * metadata or of the entity, or the task or thread that an action creates) is a bad request that says who names it.
+     * Nothing is published.
      *
      * With `dryRun`, the answer is the Process Definition as it would be. When the changes would start a draft, the
      * `id` of its version is not kept, nor is the `revision`.
