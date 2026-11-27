@@ -52,7 +52,7 @@ public final class ProcessItemDefinitionTaskRobot implements JsonSerializable<Pr
     private String code;
 
     /*
-     * The name property.
+     * The one of the robot with the `id`. An update can leave it out, but not give another one.
      */
     @Generated
     private String name;
@@ -126,7 +126,7 @@ public final class ProcessItemDefinitionTaskRobot implements JsonSerializable<Pr
     }
 
     /**
-     * Get the name property: The name property.
+     * Get the name property: The one of the robot with the `id`. An update can leave it out, but not give another one.
      *
      * @return the name value.
      */
@@ -136,7 +136,7 @@ public final class ProcessItemDefinitionTaskRobot implements JsonSerializable<Pr
     }
 
     /**
-     * Set the name property: The name property.
+     * Set the name property: The one of the robot with the `id`. An update can leave it out, but not give another one.
      *
      * @param name the name value to set.
      * @return the ProcessItemDefinitionTaskRobot object itself.

@@ -65,7 +65,7 @@ public final class ProcessItemDefinition implements JsonSerializable<ProcessItem
     private ProcessItemDefinitionType type;
 
     /*
-     * The description property.
+     * Of 1 to 4000 characters. Every task or thread has one, so a new one needs it.
      */
     @Generated
     private String description;
@@ -183,7 +183,7 @@ public final class ProcessItemDefinition implements JsonSerializable<ProcessItem
     }
 
     /**
-     * Get the description property: The description property.
+     * Get the description property: Of 1 to 4000 characters. Every task or thread has one, so a new one needs it.
      *
      * @return the description value.
      */
@@ -193,7 +193,7 @@ public final class ProcessItemDefinition implements JsonSerializable<ProcessItem
     }
 
     /**
-     * Set the description property: The description property.
+     * Set the description property: Of 1 to 4000 characters. Every task or thread has one, so a new one needs it.
      *
      * @param description the description value to set.
      * @return the ProcessItemDefinition object itself.

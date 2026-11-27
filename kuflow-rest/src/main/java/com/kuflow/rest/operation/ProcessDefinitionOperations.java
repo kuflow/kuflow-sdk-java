@@ -183,14 +183,28 @@ public class ProcessDefinitionOperations {
     /**
      * Update a Process Definition
      *
-     * Replaces the Process Definition with the one given, a whole document as `retrieveProcessDefinition` returns it,
-     * when the credentials used can update it. Its `revision` and its `version` have to be the ones that the definition
-     * has now, at its latest version: otherwise the answer is a conflict (409). A document equal to the one that the
-     * definition has changes nothing and is not a conflict, whatever its revision.
+     * Replaces the Process Definition with the one given, whole, as `retrieveProcessDefinition` returns it, when the
+     * credentials used can update it. Its `revision` and its `version` have to be the ones that the definition has now,
+     * at its latest version: otherwise the answer is a conflict (409). One equal to the one that the definition has
+     * changes nothing and is not a conflict, whatever its revision.
      *
-     * Strict, and all or nothing: a change outside what can be changed yet is a bad request (400) with the JSON Pointer
-     * of each one, and nothing is applied. What can be changed yet: the content of the forms that the definition has.
-     * The changes go to the draft. Nothing is published.
+     * Strict, and all or nothing: a property that is not known, a value that is not valid or a change outside what can
+     * be changed yet is a bad request (400) with the JSON Pointer of each one, and nothing is applied.
+     *
+     * What can be changed yet, all of it in the draft, which a published definition gets when it has none:
+     * - Its forms (`structureDataDefinitionEntries`) and its tasks and threads (`processItemDefinitions`): add, remove
+     *   or change them. They are matched by their `id`, and a new one comes with a new UUID that the client gives.
+     * - Of a form, its content (its `jsonDefinition`, but its `type`). Of a task, what it does (its `task`).
+     * - The name of a form, and the name, description and notifications of a task or thread, while only the draft has
+     *   it: in a published version they would change at once.
+     *
+     * Codes, types and permissions (`rbacEntries`) do not change. A new task or thread has no permissions, and it needs
+     * a `description`, as every one has it. Removing what another part names (the form of a task, the form of the
+     * metadata or of the entity, or the task or thread that an action creates) is a bad request that says who names it.
+     * Nothing is published.
+     *
+     * With `dryRun`, the answer is the Process Definition as it would be. When the changes would start a draft, the
+     * `id` of its version is not kept, nor is the `revision`.
      *
      * @param id The resource ID.
      * @param processDefinition The whole Process Definition, as it has to be.
